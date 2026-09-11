@@ -1,0 +1,32 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { join } from 'node:path';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { runNativeInterop } from '../../scripts/native-interop.js';
+import { canonical, ContentStore, decryptBundle, importVault, validateIdentity, verifyBundle } from '../../packages/core/src/index.js';
+
+test('Node ↔ Go generated vectors preserve canonical bytes, identities, vaults, reader authority, chunks and disk seeds', { timeout: 150_000 }, () => {
+  const { dir, fixture, result } = runNativeInterop();
+  assert.equal(result.nodeIdentityVerified, true); assert.equal(result.loneIdentityVerified, true); assert.equal(result.nodeVaultRecovered, true);
+  assert.equal(result.unauthorizedRejected, true); assert.equal(result.readerForgeryRejected, true); assert.equal(result.corruptionRejected, true);
+  assert.deepEqual(result.nodePrivatePayload, fixture.payload); assert.deepEqual(result.nodePublicPayload, fixture.payload);
+  assert.deepEqual(result.canonicalCases, fixture.canonicalCases.map(raw => canonical(JSON.parse(raw))));
+  assert.equal(validateIdentity(result.goIdentity.public), true);
+  assert.deepEqual(importVault(result.goVault, fixture.password), result.goIdentity); assert.throws(() => importVault(result.goVault, 'wrong password'));
+  verifyBundle(result.goPrivate); verifyBundle(result.goPublic);
+  assert.deepEqual(decryptBundle(result.goPrivate, fixture.nodeIdentity), fixture.payload);
+  assert.deepEqual(decryptBundle(result.goPrivate, fixture.readerIdentity), fixture.payload);
+  assert.deepEqual(decryptBundle(result.goPublic), fixture.payload);
+  assert.throws(() => decryptBundle(result.goPrivate, fixture.eveIdentity));
+  const forgery = structuredClone(result.goPrivate); forgery.manifest.author = fixture.readerIdentity.public; assert.throws(() => verifyBundle(forgery));
+  const damaged = structuredClone(result.goPrivate), chunk = damaged.manifest.chunks[0].hash;
+  damaged.chunks[chunk] = (damaged.chunks[chunk][0] === 'A' ? 'B' : 'A') + damaged.chunks[chunk].slice(1); assert.throws(() => verifyBundle(damaged));
+  assert.equal(result.nodeStoreRead, true);
+  const seeded = new ContentStore(fixture.goStoreDir, 8 * 1024 * 1024);
+  assert.equal(seeded.isPinned(result.goPrivate.manifest.id), true);
+  assert.deepEqual(decryptBundle(seeded.get(result.goPrivate.manifest.id), fixture.nodeIdentity), fixture.payload);
+  assert.deepEqual(decryptBundle(seeded.get(fixture.nodePrivate.manifest.id), fixture.readerIdentity), fixture.payload);
+  const storedPath = join(fixture.goStoreDir, 'objects', result.goPrivate.manifest.id + '.json');
+  assert.equal(readFileSync(storedPath, 'utf8').includes('Private <>&'), false);
+  writeFileSync(join(dir, 'report.json'), JSON.stringify({ result: 'pass', host: process.platform, coreRuntime: 'Go native executable + Node process', canonicalFloatVectors: 1500, bidirectionalIdentityVaultBundle: true, encryptedChunkCount: result.goPrivate.manifest.chunks.length, unauthorizedReaderAndForgeryRejected: true, bidirectionalPersistentSeed: true, android: 'not built or run', ios: 'not built or run' }, null, 2), { mode: 0o600 });
+});
