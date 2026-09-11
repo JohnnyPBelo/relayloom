@@ -1,0 +1,39 @@
+{
+  "testedAt": "2026-09-11T16:41:36.133Z",
+  "platform": "linux",
+  "architecture": "x64",
+  "node": "v22.22.3",
+  "freeGiB": 141,
+  "checks": [
+    {
+      "name": "build",
+      "invocation": "node node_modules/typescript/bin/tsc --noEmit",
+      "exit": 0,
+      "durationMs": 2298
+    },
+    {
+      "name": "web-build",
+      "invocation": "node node_modules/vite/bin/vite.js build",
+      "exit": 0,
+      "durationMs": 1596
+    },
+    {
+      "name": "tests",
+      "invocation": "node --import tsx --test --test-concurrency=1 tests/core.test.ts tests/heterogeneous.test.ts tests/node.test.ts tests/security.test.ts tests/simulation.test.ts tests/transport-hardening.test.ts tests/transport.test.ts",
+      "exit": 0,
+      "durationMs": 24055
+    },
+    {
+      "name": "e2e",
+      "invocation": "node scripts/e2e.mjs",
+      "exit": 0,
+      "durationMs": 19643
+    },
+    {
+      "name": "simulation",
+      "invocation": "node --import tsx scripts/simulate.ts",
+      "exit": 0,
+      "durationMs": 221
+    }
+  ]
+}

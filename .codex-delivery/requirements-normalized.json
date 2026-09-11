@@ -1,0 +1,1292 @@
+{
+  "meta": {
+    "primary_source": "PROJECT-BRIEF.md",
+    "sources": [
+      "PROJECT-BRIEF.md"
+    ],
+    "generated_at": "2026-09-11T16:22:15.403613+00:00",
+    "version": 1
+  },
+  "requirements": [
+    {
+      "id": "FR-001",
+      "type": "functional",
+      "title": "Local cryptographic identity and proofs",
+      "statement": "Local cryptographic identity and proofs",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P1"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-002",
+      "type": "functional",
+      "title": "Encrypted key vault and native secure storage",
+      "statement": "Encrypted key vault and native secure storage",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P1"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-003",
+      "type": "functional",
+      "title": "Identity export and recovery",
+      "statement": "Identity export and recovery",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P1"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-004",
+      "type": "functional",
+      "title": "Signed updates and rotation/revocation limits",
+      "statement": "Signed updates and rotation/revocation limits",
+      "status": "todo",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P4"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-005",
+      "type": "functional",
+      "title": "Separate authorship from reading and seeding",
+      "statement": "Separate authorship from reading and seeding",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P1"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-006",
+      "type": "functional",
+      "title": "One-to-one conversations",
+      "statement": "One-to-one conversations",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P3"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-007",
+      "type": "functional",
+      "title": "Group conversations and membership authorization",
+      "statement": "Group conversations and membership authorization",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P3"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-008",
+      "type": "functional",
+      "title": "Text messages and replies",
+      "statement": "Text messages and replies",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P3"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-009",
+      "type": "functional",
+      "title": "Photo attachments",
+      "statement": "Photo attachments",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P3"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-010",
+      "type": "functional",
+      "title": "Audio and voice recording",
+      "statement": "Audio and voice recording",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P3"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-011",
+      "type": "functional",
+      "title": "Video and file attachments",
+      "statement": "Video and file attachments",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P3"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-012",
+      "type": "functional",
+      "title": "Durable offline outbox",
+      "statement": "Durable offline outbox",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P2"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-013",
+      "type": "functional",
+      "title": "Delivery and expiry states",
+      "statement": "Delivery and expiry states",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P3"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-014",
+      "type": "functional",
+      "title": "Message reactions",
+      "statement": "Message reactions",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P3"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-015",
+      "type": "functional",
+      "title": "Message search",
+      "statement": "Message search",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P3"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-016",
+      "type": "functional",
+      "title": "Owner-only edit and delete semantics",
+      "statement": "Owner-only edit and delete semantics",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P3"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-017",
+      "type": "functional",
+      "title": "Blocking and local moderation/reporting strategy",
+      "statement": "Blocking and local moderation/reporting strategy",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P3"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-018",
+      "type": "functional",
+      "title": "Notifications where supported",
+      "statement": "Notifications where supported",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P3"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-019",
+      "type": "functional",
+      "title": "Social profiles and following",
+      "statement": "Social profiles and following",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P3"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-020",
+      "type": "functional",
+      "title": "Social posts and privacy controls",
+      "statement": "Social posts and privacy controls",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P3"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-021",
+      "type": "functional",
+      "title": "Feed and comments/reactions",
+      "statement": "Feed and comments/reactions",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P3"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-022",
+      "type": "functional",
+      "title": "Collections and sharing",
+      "statement": "Collections and sharing",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P3"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-023",
+      "type": "functional",
+      "title": "Capability matrix for every social feature",
+      "statement": "Capability matrix for every social feature",
+      "status": "todo",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P7"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-024",
+      "type": "functional",
+      "title": "Content addressed encrypted chunks and author signed manifests",
+      "statement": "Content addressed encrypted chunks and author signed manifests",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P1"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-025",
+      "type": "functional",
+      "title": "Verification on receipt and before display",
+      "statement": "Verification on receipt and before display",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P1"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-026",
+      "type": "functional",
+      "title": "Peer retrieval and reader seed takeover",
+      "statement": "Peer retrieval and reader seed takeover",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P2"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-027",
+      "type": "functional",
+      "title": "Pin/unpin quotas and eviction/TTL",
+      "statement": "Pin/unpin quotas and eviction/TTL",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P1"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-028",
+      "type": "functional",
+      "title": "Bandwidth/battery policy",
+      "statement": "Bandwidth/battery policy",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P2"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-029",
+      "type": "functional",
+      "title": "Honest replicated availability/deletion semantics",
+      "statement": "Honest replicated availability/deletion semantics",
+      "status": "todo",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P7"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-030",
+      "type": "functional",
+      "title": "Transport adapter abstraction and real sockets",
+      "statement": "Transport adapter abstraction and real sockets",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P2"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-031",
+      "type": "functional",
+      "title": "Genuinely different serial transport",
+      "statement": "Genuinely different serial transport",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P2"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-032",
+      "type": "functional",
+      "title": "Multiple-hop routes cross supported media",
+      "statement": "Multiple-hop routes cross supported media",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P2"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-033",
+      "type": "functional",
+      "title": "Priority and fair scheduling",
+      "statement": "Priority and fair scheduling",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P2"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-034",
+      "type": "functional",
+      "title": "MTU fragmentation and reassembly",
+      "statement": "MTU fragmentation and reassembly",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P2"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-035",
+      "type": "functional",
+      "title": "Retransmission, TTL/hop limits and duplicates",
+      "statement": "Retransmission, TTL/hop limits and duplicates",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P2"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-036",
+      "type": "functional",
+      "title": "Corruption, replay and abuse controls",
+      "statement": "Corruption, replay and abuse controls",
+      "status": "todo",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P4"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-037",
+      "type": "functional",
+      "title": "Bootstrap/discovery and NAT tradeoffs",
+      "statement": "Bootstrap/discovery and NAT tradeoffs",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P2"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-038",
+      "type": "functional",
+      "title": "Responsive drag/drop personal site builder",
+      "statement": "Responsive drag/drop personal site builder",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P3"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-039",
+      "type": "functional",
+      "title": "Safe declarative block rendering and keyboard/touch alternatives",
+      "statement": "Safe declarative block rendering and keyboard/touch alternatives",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P3"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-040",
+      "type": "functional",
+      "title": "Signed site publication and offline cached foreign site",
+      "statement": "Signed site publication and offline cached foreign site",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P3"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-041",
+      "type": "functional",
+      "title": "Emergency health, peers and alert provenance",
+      "statement": "Emergency health, peers and alert provenance",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P3"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "FR-042",
+      "type": "functional",
+      "title": "High contrast, large targets and low-power critical messaging",
+      "statement": "High contrast, large targets and low-power critical messaging",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P5"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "UX-001",
+      "type": "ux",
+      "title": "Original cohesive typography and spacing",
+      "statement": "Original cohesive typography and spacing",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P5"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "UX-002",
+      "type": "ux",
+      "title": "Responsive light/dark states",
+      "statement": "Responsive light/dark states",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P5"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "UX-003",
+      "type": "ux",
+      "title": "Reduced motion and keyboard/screen reader checks",
+      "statement": "Reduced motion and keyboard/screen reader checks",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P5"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "UX-004",
+      "type": "ux",
+      "title": "Real empty/error/loading/offline states without fake controls",
+      "statement": "Real empty/error/loading/offline states without fake controls",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P5"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "UX-005",
+      "type": "ux",
+      "title": "Real screenshots and accessibility audit",
+      "statement": "Real screenshots and accessibility audit",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P5"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "INT-001",
+      "type": "integration",
+      "title": "Evaluate RNS interoperability and licensing",
+      "statement": "Evaluate RNS interoperability and licensing",
+      "status": "todo",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P4"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "INT-002",
+      "type": "integration",
+      "title": "Truth matrix for IP BLE Wi-Fi Direct LoRa serial simulation",
+      "statement": "Truth matrix for IP BLE Wi-Fi Direct LoRa serial simulation",
+      "status": "todo",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P7"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "INT-003",
+      "type": "integration",
+      "title": "Linux native build and execution",
+      "statement": "Linux native build and execution",
+      "status": "todo",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P6"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "INT-004",
+      "type": "integration",
+      "title": "Windows build and native execution",
+      "statement": "Windows build and native execution",
+      "status": "todo",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P6"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "INT-005",
+      "type": "integration",
+      "title": "macOS build and native execution",
+      "statement": "macOS build and native execution",
+      "status": "todo",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P6"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "INT-006",
+      "type": "integration",
+      "title": "Android app build and device/emulator execution",
+      "statement": "Android app build and device/emulator execution",
+      "status": "todo",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P6"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "INT-007",
+      "type": "integration",
+      "title": "iOS app build signing and device execution",
+      "statement": "iOS app build signing and device execution",
+      "status": "todo",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P6"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "INT-008",
+      "type": "integration",
+      "title": "Document mobile background relaying restrictions",
+      "statement": "Document mobile background relaying restrictions",
+      "status": "todo",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P6"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "ACC-001",
+      "type": "acceptance",
+      "title": "Unit/property/fuzz bounds crypto ACL and addressing tests",
+      "statement": "Unit/property/fuzz bounds crypto ACL and addressing tests",
+      "status": "todo",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P4"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "ACC-002",
+      "type": "acceptance",
+      "title": "Real multi-process A-B-C isolation with positive/negative controls",
+      "statement": "Real multi-process A-B-C isolation with positive/negative controls",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P2"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "ACC-003",
+      "type": "acceptance",
+      "title": "Heterogeneous multi-hop payload integrity and route evidence",
+      "statement": "Heterogeneous multi-hop payload integrity and route evidence",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P2"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "ACC-004",
+      "type": "acceptance",
+      "title": "Offline publisher seeder takeover",
+      "statement": "Offline publisher seeder takeover",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P2"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "ACC-005",
+      "type": "acceptance",
+      "title": "Unauthorized edit/decrypt tamper and replay rejection",
+      "statement": "Unauthorized edit/decrypt tamper and replay rejection",
+      "status": "todo",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P4"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "ACC-006",
+      "type": "acceptance",
+      "title": "Persistence restart and duplicate flood/churn/partition/heal",
+      "statement": "Persistence restart and duplicate flood/churn/partition/heal",
+      "status": "todo",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P4"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "ACC-007",
+      "type": "acceptance",
+      "title": "Deterministic bandwidth latency loss asymmetry MTU congestion simulation",
+      "statement": "Deterministic bandwidth latency loss asymmetry MTU congestion simulation",
+      "status": "todo",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P4"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "ACC-008",
+      "type": "acceptance",
+      "title": "Storage exhaustion and low-power simulation",
+      "statement": "Storage exhaustion and low-power simulation",
+      "status": "todo",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P4"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "ACC-009",
+      "type": "acceptance",
+      "title": "Mutation controls fail if crypto/routing is broken",
+      "statement": "Mutation controls fail if crypto/routing is broken",
+      "status": "todo",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P4"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "ACC-010",
+      "type": "acceptance",
+      "title": "Real-client UI end-to-end all critical workflows",
+      "statement": "Real-client UI end-to-end all critical workflows",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P5"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "ACC-011",
+      "type": "acceptance",
+      "title": "Platform CI build matrix without device-test overclaims",
+      "statement": "Platform CI build matrix without device-test overclaims",
+      "status": "todo",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P6"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "ACC-012",
+      "type": "acceptance",
+      "title": "Independent security reliability/design review and fix/rerun",
+      "statement": "Independent security reliability/design review and fix/rerun",
+      "status": "todo",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P7"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "ACC-013",
+      "type": "acceptance",
+      "title": "Acceptance evidence audit and precise README/STATUS",
+      "statement": "Acceptance evidence audit and precise README/STATUS",
+      "status": "todo",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P7"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "CON-001",
+      "type": "constraint",
+      "title": "No mandatory central content service or hidden runtime CDN",
+      "statement": "No mandatory central content service or hidden runtime CDN",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P1"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "CON-002",
+      "type": "constraint",
+      "title": "No arbitrary site scripts or HTML execution",
+      "statement": "No arbitrary site scripts or HTML execution",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P3"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "CON-003",
+      "type": "constraint",
+      "title": "Use maintained crypto primitives and disclose protocol limits",
+      "statement": "Use maintained crypto primitives and disclose protocol limits",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P1"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "CON-004",
+      "type": "constraint",
+      "title": "Keep current Astra/Copilot Ultra harness/provider/auth unchanged",
+      "statement": "Keep current Astra/Copilot Ultra harness/provider/auth unchanged",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P0"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "CON-005",
+      "type": "constraint",
+      "title": "Real complementary agents and truthful task evidence",
+      "statement": "Real complementary agents and truthful task evidence",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P0"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "CON-006",
+      "type": "constraint",
+      "title": "Work only RelayLoom with explicit file ownership",
+      "statement": "Work only RelayLoom with explicit file ownership",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P0"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "CON-007",
+      "type": "constraint",
+      "title": "Project-scoped caches and at least 15 GiB free",
+      "statement": "Project-scoped caches and at least 15 GiB free",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P0"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "CON-008",
+      "type": "constraint",
+      "title": "No paid services/root/security changes or unrelated data",
+      "statement": "No paid services/root/security changes or unrelated data",
+      "status": "in_progress",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P0"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "CON-009",
+      "type": "constraint",
+      "title": "Small coherent verified commits and authorized non-force pushes",
+      "statement": "Small coherent verified commits and authorized non-force pushes",
+      "status": "todo",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P7"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "CON-010",
+      "type": "constraint",
+      "title": "No disaster readiness or all-OS claim without evidence",
+      "statement": "No disaster readiness or all-OS claim without evidence",
+      "status": "todo",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P7"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "CON-011",
+      "type": "constraint",
+      "title": "No unsafe mobile background policy evasion",
+      "statement": "No unsafe mobile background policy evasion",
+      "status": "todo",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P6"
+      },
+      "validation": {},
+      "evidence": []
+    },
+    {
+      "id": "CON-012",
+      "type": "constraint",
+      "title": "No merge or secret publication",
+      "statement": "No merge or secret publication",
+      "status": "todo",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md"
+      },
+      "implementation": {
+        "milestone": "P7"
+      },
+      "validation": {},
+      "evidence": []
+    }
+  ]
+}

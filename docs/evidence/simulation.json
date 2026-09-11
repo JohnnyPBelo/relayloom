@@ -1,0 +1,4900 @@
+{
+  "kind": "SIMULATION",
+  "seed": 1369907238,
+  "pass": true,
+  "checks": [
+    {
+      "name": "partition-heal deliveries and expiration",
+      "pass": true,
+      "failures": []
+    },
+    {
+      "name": "congestion preserves SOS",
+      "pass": true,
+      "failures": []
+    },
+    {
+      "name": "pinned storage rejects replacement",
+      "pass": true,
+      "failures": []
+    },
+    {
+      "name": "unpinned storage evicts for replacement",
+      "pass": true,
+      "failures": []
+    },
+    {
+      "name": "TTL and hop limit",
+      "pass": true,
+      "failures": []
+    },
+    {
+      "name": "asymmetric directions deliver",
+      "pass": true,
+      "failures": []
+    },
+    {
+      "name": "fairness makes bulk progress",
+      "pass": true,
+      "failures": []
+    },
+    {
+      "name": "real signatures and chunks verified",
+      "pass": true,
+      "failures": []
+    },
+    {
+      "name": "loss and retransmission exercised",
+      "pass": true,
+      "failures": []
+    },
+    {
+      "name": "bulk resumes after low power",
+      "pass": true,
+      "failures": []
+    },
+    {
+      "name": "SOS precedes bulk",
+      "pass": true,
+      "failures": []
+    },
+    {
+      "name": "queue exhaustion exercised",
+      "pass": true,
+      "failures": []
+    },
+    {
+      "name": "storage exhaustion exercised",
+      "pass": true,
+      "failures": []
+    },
+    {
+      "name": "storage eviction exercised",
+      "pass": true,
+      "failures": []
+    },
+    {
+      "name": "disabled routing detected",
+      "pass": true,
+      "failures": []
+    },
+    {
+      "name": "bypassed verification detected",
+      "pass": true,
+      "failures": []
+    }
+  ],
+  "negativeControls": {
+    "routingDisabled": {
+      "pass": false,
+      "failures": [
+        "Missing required delivery valid at C"
+      ]
+    },
+    "verificationBypassed": {
+      "pass": false,
+      "failures": [
+        "Forbidden delivery bad-signature accepted at C",
+        "Forbidden delivery bad-chunk accepted at C"
+      ]
+    }
+  },
+  "reports": {
+    "partitionPowerLoss": {
+      "kind": "SIMULATION",
+      "model": "directed-frame-store-forward-v1",
+      "seed": 1369907238,
+      "elapsedMs": 60000,
+      "processedEvents": 254,
+      "faults": {},
+      "bounds": {
+        "maxPacketBytes": 6291456,
+        "maxPendingBytes": 16777216,
+        "fragmentBytes": 2048,
+        "maxFrameBytes": 4096,
+        "maxTransfers": 64,
+        "maxAssemblies": 8,
+        "maxHops": 12,
+        "maxTtlMs": 3600000
+      },
+      "nodes": [
+        {
+          "relay": true,
+          "lowPower": false,
+          "maxObjects": 1024,
+          "id": "A",
+          "storageBytes": 2097152,
+          "bytes": 35106,
+          "accepted": 0,
+          "evicted": 0,
+          "rejectedStorage": 0,
+          "rejectedCrypto": 0,
+          "rejectedEnvelope": 0,
+          "duplicates": 0,
+          "maxStoredBytes": 35106,
+          "maxStoredObjects": 3,
+          "storedObjects": 3
+        },
+        {
+          "relay": true,
+          "lowPower": false,
+          "maxObjects": 1024,
+          "id": "B",
+          "storageBytes": 2097152,
+          "bytes": 35106,
+          "accepted": 3,
+          "evicted": 0,
+          "rejectedStorage": 0,
+          "rejectedCrypto": 0,
+          "rejectedEnvelope": 0,
+          "duplicates": 2,
+          "maxStoredBytes": 35106,
+          "maxStoredObjects": 3,
+          "storedObjects": 3
+        },
+        {
+          "relay": true,
+          "lowPower": false,
+          "maxObjects": 1024,
+          "id": "C",
+          "storageBytes": 2097152,
+          "bytes": 34049,
+          "accepted": 2,
+          "evicted": 0,
+          "rejectedStorage": 0,
+          "rejectedCrypto": 0,
+          "rejectedEnvelope": 0,
+          "duplicates": 1,
+          "maxStoredBytes": 34049,
+          "maxStoredObjects": 2,
+          "storedObjects": 2
+        }
+      ],
+      "links": [
+        {
+          "queueBytes": 16777216,
+          "queueSlots": 64,
+          "retryMs": 1000,
+          "up": true,
+          "id": "AB",
+          "from": "A",
+          "to": "B",
+          "bytesPerSecond": 32000,
+          "latencyMs": 20,
+          "loss": 0.04,
+          "mtu": 512,
+          "wireBytes": 104690,
+          "frames": 38,
+          "segments": 212,
+          "lostSegments": 7,
+          "retransmits": 3,
+          "droppedQueue": 0,
+          "expired": 0,
+          "rejectedAssembly": 0,
+          "acknowledgements": 0,
+          "maxQueueBytes": 35674,
+          "maxQueueObjects": 3,
+          "maxAssemblyBytes": 33189,
+          "maxAssemblies": 2,
+          "maxWireSegment": 512,
+          "maxFrameBytes": 2848,
+          "queuedBytes": 0,
+          "queuedObjects": 0
+        },
+        {
+          "queueBytes": 16777216,
+          "queueSlots": 64,
+          "retryMs": 1000,
+          "up": true,
+          "id": "BA",
+          "from": "B",
+          "to": "A",
+          "bytesPerSecond": 10666,
+          "latencyMs": 40,
+          "loss": 0.04,
+          "mtu": 256,
+          "wireBytes": 540,
+          "frames": 5,
+          "segments": 5,
+          "lostSegments": 1,
+          "retransmits": 0,
+          "droppedQueue": 0,
+          "expired": 0,
+          "rejectedAssembly": 0,
+          "acknowledgements": 4,
+          "maxQueueBytes": 0,
+          "maxQueueObjects": 0,
+          "maxAssemblyBytes": 0,
+          "maxAssemblies": 0,
+          "maxWireSegment": 108,
+          "maxFrameBytes": 83,
+          "queuedBytes": 0,
+          "queuedObjects": 0
+        },
+        {
+          "queueBytes": 16777216,
+          "queueSlots": 64,
+          "retryMs": 1000,
+          "up": true,
+          "id": "BC",
+          "from": "B",
+          "to": "C",
+          "bytesPerSecond": 8000,
+          "latencyMs": 80,
+          "loss": 0.04,
+          "mtu": 256,
+          "wireBytes": 203337,
+          "frames": 67,
+          "segments": 836,
+          "lostSegments": 39,
+          "retransmits": 3,
+          "droppedQueue": 0,
+          "expired": 1,
+          "rejectedAssembly": 0,
+          "acknowledgements": 0,
+          "maxQueueBytes": 33193,
+          "maxQueueObjects": 2,
+          "maxAssemblyBytes": 33193,
+          "maxAssemblies": 1,
+          "maxWireSegment": 256,
+          "maxFrameBytes": 2848,
+          "queuedBytes": 0,
+          "queuedObjects": 0
+        },
+        {
+          "queueBytes": 16777216,
+          "queueSlots": 64,
+          "retryMs": 1000,
+          "up": true,
+          "id": "CB",
+          "from": "C",
+          "to": "B",
+          "bytesPerSecond": 2666,
+          "latencyMs": 160,
+          "loss": 0.04,
+          "mtu": 128,
+          "wireBytes": 324,
+          "frames": 3,
+          "segments": 3,
+          "lostSegments": 0,
+          "retransmits": 0,
+          "droppedQueue": 0,
+          "expired": 0,
+          "rejectedAssembly": 0,
+          "acknowledgements": 3,
+          "maxQueueBytes": 0,
+          "maxQueueObjects": 0,
+          "maxAssemblyBytes": 0,
+          "maxAssemblies": 0,
+          "maxWireSegment": 108,
+          "maxFrameBytes": 83,
+          "queuedBytes": 0,
+          "queuedObjects": 0
+        }
+      ],
+      "deliveries": [
+        {
+          "node": "B",
+          "label": "short-ttl",
+          "at": 267,
+          "hops": [
+            "A",
+            "B"
+          ],
+          "priority": "normal",
+          "verified": true
+        },
+        {
+          "node": "B",
+          "label": "sos",
+          "at": 1572,
+          "hops": [
+            "A",
+            "B"
+          ],
+          "priority": "sos",
+          "verified": true
+        },
+        {
+          "node": "C",
+          "label": "sos",
+          "at": 2826,
+          "hops": [
+            "A",
+            "B",
+            "C"
+          ],
+          "priority": "sos",
+          "verified": true
+        },
+        {
+          "node": "B",
+          "label": "bulk",
+          "at": 4287,
+          "hops": [
+            "A",
+            "B"
+          ],
+          "priority": "bulk",
+          "verified": true
+        },
+        {
+          "node": "C",
+          "label": "bulk",
+          "at": 37877,
+          "hops": [
+            "A",
+            "B",
+            "C"
+          ],
+          "priority": "bulk",
+          "verified": true
+        }
+      ],
+      "trace": [
+        {
+          "at": 0,
+          "event": "link-partitioned",
+          "link": "BC"
+        },
+        {
+          "at": 0,
+          "event": "link-partitioned",
+          "link": "CB"
+        },
+        {
+          "at": 0,
+          "event": "injected",
+          "node": "A",
+          "label": "bulk"
+        },
+        {
+          "at": 0,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:0/17"
+        },
+        {
+          "at": 94,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:1/17"
+        },
+        {
+          "at": 100,
+          "event": "injected",
+          "node": "A",
+          "label": "short-ttl"
+        },
+        {
+          "at": 188,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "short-ttl",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 247,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:2/17"
+        },
+        {
+          "at": 267,
+          "event": "accepted",
+          "node": "B",
+          "label": "short-ttl"
+        },
+        {
+          "at": 267,
+          "event": "frame-sent",
+          "link": "BA",
+          "label": "short-ttl",
+          "detail": "ack"
+        },
+        {
+          "at": 300,
+          "event": "injected",
+          "node": "A",
+          "label": "sos"
+        },
+        {
+          "at": 318,
+          "event": "frame-lost",
+          "link": "BA",
+          "label": "short-ttl",
+          "detail": "ack"
+        },
+        {
+          "at": 341,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "sos",
+          "detail": "sos:0/1"
+        },
+        {
+          "at": 400,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:3/17"
+        },
+        {
+          "at": 420,
+          "event": "frame-lost",
+          "link": "AB",
+          "label": "sos",
+          "detail": "sos:0/1"
+        },
+        {
+          "at": 494,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:4/17"
+        },
+        {
+          "at": 588,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:5/17"
+        },
+        {
+          "at": 682,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:6/17"
+        },
+        {
+          "at": 776,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:7/17"
+        },
+        {
+          "at": 870,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:8/17"
+        },
+        {
+          "at": 964,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:9/17"
+        },
+        {
+          "at": 1058,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:10/17"
+        },
+        {
+          "at": 1152,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:11/17"
+        },
+        {
+          "at": 1246,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:12/17"
+        },
+        {
+          "at": 1340,
+          "event": "retransmit",
+          "link": "AB",
+          "label": "short-ttl"
+        },
+        {
+          "at": 1340,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "short-ttl",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 1360,
+          "event": "frame-lost",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:12/17"
+        },
+        {
+          "at": 1399,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:13/17"
+        },
+        {
+          "at": 1419,
+          "event": "frame-sent",
+          "link": "BA",
+          "label": "short-ttl",
+          "detail": "ack"
+        },
+        {
+          "at": 1470,
+          "event": "acknowledged",
+          "link": "BA",
+          "label": "short-ttl"
+        },
+        {
+          "at": 1493,
+          "event": "retransmit",
+          "link": "AB",
+          "label": "sos"
+        },
+        {
+          "at": 1493,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "sos",
+          "detail": "sos:0/1"
+        },
+        {
+          "at": 1552,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:14/17"
+        },
+        {
+          "at": 1572,
+          "event": "accepted",
+          "node": "B",
+          "label": "sos"
+        },
+        {
+          "at": 1572,
+          "event": "frame-sent",
+          "link": "BA",
+          "label": "sos",
+          "detail": "ack"
+        },
+        {
+          "at": 1600,
+          "event": "queued-expired",
+          "link": "BC",
+          "label": "short-ttl"
+        },
+        {
+          "at": 1623,
+          "event": "acknowledged",
+          "link": "BA",
+          "label": "sos"
+        },
+        {
+          "at": 1646,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:15/17"
+        },
+        {
+          "at": 1740,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:16/17"
+        },
+        {
+          "at": 1760,
+          "event": "frame-lost",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:15/17"
+        },
+        {
+          "at": 2500,
+          "event": "link-healed",
+          "link": "BC"
+        },
+        {
+          "at": 2500,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "sos",
+          "detail": "sos:0/1"
+        },
+        {
+          "at": 2500,
+          "event": "link-healed",
+          "link": "CB"
+        },
+        {
+          "at": 2763,
+          "event": "retransmit",
+          "link": "AB",
+          "label": "bulk"
+        },
+        {
+          "at": 2763,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:0/17"
+        },
+        {
+          "at": 2826,
+          "event": "accepted",
+          "node": "C",
+          "label": "sos"
+        },
+        {
+          "at": 2826,
+          "event": "frame-sent",
+          "link": "CB",
+          "label": "sos",
+          "detail": "ack"
+        },
+        {
+          "at": 2857,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:1/17"
+        },
+        {
+          "at": 2951,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:2/17"
+        },
+        {
+          "at": 3027,
+          "event": "acknowledged",
+          "link": "CB",
+          "label": "sos"
+        },
+        {
+          "at": 3045,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:3/17"
+        },
+        {
+          "at": 3139,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:4/17"
+        },
+        {
+          "at": 3233,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:5/17"
+        },
+        {
+          "at": 3327,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:6/17"
+        },
+        {
+          "at": 3421,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:7/17"
+        },
+        {
+          "at": 3441,
+          "event": "frame-lost",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:6/17"
+        },
+        {
+          "at": 3515,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:8/17"
+        },
+        {
+          "at": 3609,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:9/17"
+        },
+        {
+          "at": 3629,
+          "event": "frame-lost",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:8/17"
+        },
+        {
+          "at": 3703,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:10/17"
+        },
+        {
+          "at": 3797,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:11/17"
+        },
+        {
+          "at": 3817,
+          "event": "frame-lost",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:10/17"
+        },
+        {
+          "at": 3891,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:12/17"
+        },
+        {
+          "at": 3985,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:13/17"
+        },
+        {
+          "at": 4079,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:14/17"
+        },
+        {
+          "at": 4173,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:15/17"
+        },
+        {
+          "at": 4267,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:16/17"
+        },
+        {
+          "at": 4287,
+          "event": "accepted",
+          "node": "B",
+          "label": "bulk"
+        },
+        {
+          "at": 4287,
+          "event": "frame-sent",
+          "link": "BA",
+          "label": "bulk",
+          "detail": "ack"
+        },
+        {
+          "at": 4310,
+          "event": "frame-sent",
+          "link": "BA",
+          "label": "bulk",
+          "detail": "ack"
+        },
+        {
+          "at": 4338,
+          "event": "acknowledged",
+          "link": "BA",
+          "label": "bulk"
+        },
+        {
+          "at": 4361,
+          "event": "acknowledged",
+          "link": "BA",
+          "label": "bulk"
+        },
+        {
+          "at": 10000,
+          "event": "low-power-off",
+          "node": "B"
+        },
+        {
+          "at": 10000,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:0/17"
+        },
+        {
+          "at": 10395,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:1/17"
+        },
+        {
+          "at": 10475,
+          "event": "frame-lost",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:0/17"
+        },
+        {
+          "at": 10790,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:2/17"
+        },
+        {
+          "at": 11185,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:3/17"
+        },
+        {
+          "at": 11265,
+          "event": "frame-lost",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:2/17"
+        },
+        {
+          "at": 11580,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:4/17"
+        },
+        {
+          "at": 11975,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:5/17"
+        },
+        {
+          "at": 12055,
+          "event": "frame-lost",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:4/17"
+        },
+        {
+          "at": 12370,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:6/17"
+        },
+        {
+          "at": 12765,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:7/17"
+        },
+        {
+          "at": 13160,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:8/17"
+        },
+        {
+          "at": 13240,
+          "event": "frame-lost",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:7/17"
+        },
+        {
+          "at": 13555,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:9/17"
+        },
+        {
+          "at": 13950,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:10/17"
+        },
+        {
+          "at": 14346,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:11/17"
+        },
+        {
+          "at": 14742,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:12/17"
+        },
+        {
+          "at": 14822,
+          "event": "frame-lost",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:11/17"
+        },
+        {
+          "at": 15138,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:13/17"
+        },
+        {
+          "at": 15218,
+          "event": "frame-lost",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:12/17"
+        },
+        {
+          "at": 15534,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:14/17"
+        },
+        {
+          "at": 15614,
+          "event": "frame-lost",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:13/17"
+        },
+        {
+          "at": 15930,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:15/17"
+        },
+        {
+          "at": 16010,
+          "event": "frame-lost",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:14/17"
+        },
+        {
+          "at": 16326,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:16/17"
+        },
+        {
+          "at": 17421,
+          "event": "retransmit",
+          "link": "BC",
+          "label": "bulk"
+        },
+        {
+          "at": 17421,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:0/17"
+        },
+        {
+          "at": 17816,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:1/17"
+        },
+        {
+          "at": 17896,
+          "event": "frame-lost",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:0/17"
+        },
+        {
+          "at": 18211,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:2/17"
+        },
+        {
+          "at": 18291,
+          "event": "frame-lost",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:1/17"
+        },
+        {
+          "at": 18606,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:3/17"
+        },
+        {
+          "at": 19001,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:4/17"
+        },
+        {
+          "at": 19396,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:5/17"
+        },
+        {
+          "at": 19791,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:6/17"
+        },
+        {
+          "at": 19871,
+          "event": "frame-lost",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:5/17"
+        },
+        {
+          "at": 20186,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:7/17"
+        },
+        {
+          "at": 20266,
+          "event": "frame-lost",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:6/17"
+        },
+        {
+          "at": 20581,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:8/17"
+        },
+        {
+          "at": 20976,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:9/17"
+        },
+        {
+          "at": 21056,
+          "event": "frame-lost",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:8/17"
+        },
+        {
+          "at": 21371,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:10/17"
+        },
+        {
+          "at": 21451,
+          "event": "frame-lost",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:9/17"
+        },
+        {
+          "at": 21767,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:11/17"
+        },
+        {
+          "at": 22163,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:12/17"
+        },
+        {
+          "at": 22559,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:13/17"
+        },
+        {
+          "at": 22955,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:14/17"
+        },
+        {
+          "at": 23035,
+          "event": "frame-lost",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:13/17"
+        },
+        {
+          "at": 23351,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:15/17"
+        },
+        {
+          "at": 23747,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:16/17"
+        },
+        {
+          "at": 23827,
+          "event": "frame-lost",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:15/17"
+        },
+        {
+          "at": 24842,
+          "event": "retransmit",
+          "link": "BC",
+          "label": "bulk"
+        },
+        {
+          "at": 24842,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:0/17"
+        },
+        {
+          "at": 25237,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:1/17"
+        },
+        {
+          "at": 25317,
+          "event": "frame-lost",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:0/17"
+        },
+        {
+          "at": 25632,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:2/17"
+        },
+        {
+          "at": 26027,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:3/17"
+        },
+        {
+          "at": 26107,
+          "event": "frame-lost",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:2/17"
+        },
+        {
+          "at": 26422,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:4/17"
+        },
+        {
+          "at": 26817,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:5/17"
+        },
+        {
+          "at": 26897,
+          "event": "frame-lost",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:4/17"
+        },
+        {
+          "at": 27212,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:6/17"
+        },
+        {
+          "at": 27292,
+          "event": "frame-lost",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:5/17"
+        },
+        {
+          "at": 27607,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:7/17"
+        },
+        {
+          "at": 28002,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:8/17"
+        },
+        {
+          "at": 28082,
+          "event": "frame-lost",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:7/17"
+        },
+        {
+          "at": 28397,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:9/17"
+        },
+        {
+          "at": 28477,
+          "event": "frame-lost",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:8/17"
+        },
+        {
+          "at": 28792,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:10/17"
+        },
+        {
+          "at": 28872,
+          "event": "frame-lost",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:9/17"
+        },
+        {
+          "at": 29188,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:11/17"
+        },
+        {
+          "at": 29268,
+          "event": "frame-lost",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:10/17"
+        },
+        {
+          "at": 29584,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:12/17"
+        },
+        {
+          "at": 29980,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:13/17"
+        },
+        {
+          "at": 30376,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:14/17"
+        },
+        {
+          "at": 30456,
+          "event": "frame-lost",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:13/17"
+        },
+        {
+          "at": 30772,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:15/17"
+        },
+        {
+          "at": 31168,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:16/17"
+        },
+        {
+          "at": 32263,
+          "event": "retransmit",
+          "link": "BC",
+          "label": "bulk"
+        },
+        {
+          "at": 32263,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:0/17"
+        },
+        {
+          "at": 32658,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:1/17"
+        },
+        {
+          "at": 33053,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:2/17"
+        },
+        {
+          "at": 33448,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:3/17"
+        },
+        {
+          "at": 33843,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:4/17"
+        },
+        {
+          "at": 34238,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:5/17"
+        },
+        {
+          "at": 34318,
+          "event": "frame-lost",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:4/17"
+        },
+        {
+          "at": 34633,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:6/17"
+        },
+        {
+          "at": 34713,
+          "event": "frame-lost",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:5/17"
+        },
+        {
+          "at": 35028,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:7/17"
+        },
+        {
+          "at": 35423,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:8/17"
+        },
+        {
+          "at": 35818,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:9/17"
+        },
+        {
+          "at": 35898,
+          "event": "frame-lost",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:8/17"
+        },
+        {
+          "at": 36213,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:10/17"
+        },
+        {
+          "at": 36609,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:11/17"
+        },
+        {
+          "at": 37005,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:12/17"
+        },
+        {
+          "at": 37401,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:13/17"
+        },
+        {
+          "at": 37481,
+          "event": "frame-lost",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:12/17"
+        },
+        {
+          "at": 37797,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bulk",
+          "detail": "bulk:14/17"
+        },
+        {
+          "at": 37877,
+          "event": "accepted",
+          "node": "C",
+          "label": "bulk"
+        },
+        {
+          "at": 37877,
+          "event": "frame-sent",
+          "link": "CB",
+          "label": "bulk",
+          "detail": "ack"
+        },
+        {
+          "at": 38078,
+          "event": "acknowledged",
+          "link": "CB",
+          "label": "bulk"
+        },
+        {
+          "at": 38273,
+          "event": "frame-sent",
+          "link": "CB",
+          "label": "bulk",
+          "detail": "ack"
+        },
+        {
+          "at": 38474,
+          "event": "acknowledged",
+          "link": "CB",
+          "label": "bulk"
+        }
+      ],
+      "omittedTraceEvents": 0
+    },
+    "congestion": {
+      "kind": "SIMULATION",
+      "model": "directed-frame-store-forward-v1",
+      "seed": 1369907238,
+      "elapsedMs": 10000,
+      "processedEvents": 22,
+      "faults": {},
+      "bounds": {
+        "maxPacketBytes": 6291456,
+        "maxPendingBytes": 16777216,
+        "fragmentBytes": 2048,
+        "maxFrameBytes": 4096,
+        "maxTransfers": 64,
+        "maxAssemblies": 8,
+        "maxHops": 12,
+        "maxTtlMs": 3600000
+      },
+      "nodes": [
+        {
+          "relay": true,
+          "lowPower": false,
+          "maxObjects": 1024,
+          "id": "A",
+          "storageBytes": 2097152,
+          "bytes": 12479,
+          "accepted": 0,
+          "evicted": 0,
+          "rejectedStorage": 0,
+          "rejectedCrypto": 0,
+          "rejectedEnvelope": 0,
+          "duplicates": 0,
+          "maxStoredBytes": 12479,
+          "maxStoredObjects": 10,
+          "storedObjects": 10
+        },
+        {
+          "relay": true,
+          "lowPower": false,
+          "maxObjects": 1024,
+          "id": "B",
+          "storageBytes": 2097152,
+          "bytes": 3589,
+          "accepted": 3,
+          "evicted": 0,
+          "rejectedStorage": 0,
+          "rejectedCrypto": 0,
+          "rejectedEnvelope": 0,
+          "duplicates": 0,
+          "maxStoredBytes": 3589,
+          "maxStoredObjects": 3,
+          "storedObjects": 3
+        }
+      ],
+      "links": [
+        {
+          "queueBytes": 6500,
+          "queueSlots": 4,
+          "retryMs": 1000,
+          "up": true,
+          "id": "AB",
+          "from": "A",
+          "to": "B",
+          "bytesPerSecond": 4000,
+          "latencyMs": 20,
+          "loss": 0,
+          "mtu": 256,
+          "wireBytes": 6517,
+          "frames": 3,
+          "segments": 26,
+          "lostSegments": 0,
+          "retransmits": 0,
+          "droppedQueue": 7,
+          "expired": 0,
+          "rejectedAssembly": 0,
+          "acknowledgements": 0,
+          "maxQueueBytes": 4155,
+          "maxQueueObjects": 3,
+          "maxAssemblyBytes": 1459,
+          "maxAssemblies": 1,
+          "maxWireSegment": 256,
+          "maxFrameBytes": 2062,
+          "queuedBytes": 0,
+          "queuedObjects": 0
+        },
+        {
+          "queueBytes": 16777216,
+          "queueSlots": 64,
+          "retryMs": 1000,
+          "up": true,
+          "id": "BA",
+          "from": "B",
+          "to": "A",
+          "bytesPerSecond": 2000,
+          "latencyMs": 40,
+          "loss": 0,
+          "mtu": 128,
+          "wireBytes": 324,
+          "frames": 3,
+          "segments": 3,
+          "lostSegments": 0,
+          "retransmits": 0,
+          "droppedQueue": 0,
+          "expired": 0,
+          "rejectedAssembly": 0,
+          "acknowledgements": 3,
+          "maxQueueBytes": 0,
+          "maxQueueObjects": 0,
+          "maxAssemblyBytes": 0,
+          "maxAssemblies": 0,
+          "maxWireSegment": 108,
+          "maxFrameBytes": 83,
+          "queuedBytes": 0,
+          "queuedObjects": 0
+        }
+      ],
+      "deliveries": [
+        {
+          "node": "B",
+          "label": "sos",
+          "at": 560,
+          "hops": [
+            "A",
+            "B"
+          ],
+          "priority": "sos",
+          "verified": true
+        },
+        {
+          "node": "B",
+          "label": "bulk-0",
+          "at": 3590,
+          "hops": [
+            "A",
+            "B"
+          ],
+          "priority": "bulk",
+          "verified": true
+        },
+        {
+          "node": "B",
+          "label": "bulk-1",
+          "at": 4160,
+          "hops": [
+            "A",
+            "B"
+          ],
+          "priority": "bulk",
+          "verified": true
+        }
+      ],
+      "trace": [
+        {
+          "at": 0,
+          "event": "injected",
+          "node": "A",
+          "label": "bulk-0"
+        },
+        {
+          "at": 0,
+          "event": "injected",
+          "node": "A",
+          "label": "bulk-1"
+        },
+        {
+          "at": 0,
+          "event": "injected",
+          "node": "A",
+          "label": "bulk-2"
+        },
+        {
+          "at": 0,
+          "event": "queue-rejected",
+          "link": "AB",
+          "label": "bulk-2"
+        },
+        {
+          "at": 0,
+          "event": "injected",
+          "node": "A",
+          "label": "bulk-3"
+        },
+        {
+          "at": 0,
+          "event": "queue-rejected",
+          "link": "AB",
+          "label": "bulk-3"
+        },
+        {
+          "at": 0,
+          "event": "injected",
+          "node": "A",
+          "label": "bulk-4"
+        },
+        {
+          "at": 0,
+          "event": "queue-rejected",
+          "link": "AB",
+          "label": "bulk-4"
+        },
+        {
+          "at": 0,
+          "event": "injected",
+          "node": "A",
+          "label": "bulk-5"
+        },
+        {
+          "at": 0,
+          "event": "queue-rejected",
+          "link": "AB",
+          "label": "bulk-5"
+        },
+        {
+          "at": 0,
+          "event": "injected",
+          "node": "A",
+          "label": "bulk-6"
+        },
+        {
+          "at": 0,
+          "event": "queue-rejected",
+          "link": "AB",
+          "label": "bulk-6"
+        },
+        {
+          "at": 0,
+          "event": "injected",
+          "node": "A",
+          "label": "bulk-7"
+        },
+        {
+          "at": 0,
+          "event": "queue-rejected",
+          "link": "AB",
+          "label": "bulk-7"
+        },
+        {
+          "at": 0,
+          "event": "injected",
+          "node": "A",
+          "label": "bulk-8"
+        },
+        {
+          "at": 0,
+          "event": "queue-rejected",
+          "link": "AB",
+          "label": "bulk-8"
+        },
+        {
+          "at": 50,
+          "event": "injected",
+          "node": "A",
+          "label": "sos"
+        },
+        {
+          "at": 50,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "sos",
+          "detail": "sos:0/1"
+        },
+        {
+          "at": 560,
+          "event": "accepted",
+          "node": "B",
+          "label": "sos"
+        },
+        {
+          "at": 560,
+          "event": "frame-sent",
+          "link": "BA",
+          "label": "sos",
+          "detail": "ack"
+        },
+        {
+          "at": 654,
+          "event": "acknowledged",
+          "link": "BA",
+          "label": "sos"
+        },
+        {
+          "at": 3000,
+          "event": "low-power-off",
+          "node": "A"
+        },
+        {
+          "at": 3000,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk-0",
+          "detail": "bulk:0/1"
+        },
+        {
+          "at": 3570,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk-1",
+          "detail": "bulk:0/1"
+        },
+        {
+          "at": 3590,
+          "event": "accepted",
+          "node": "B",
+          "label": "bulk-0"
+        },
+        {
+          "at": 3590,
+          "event": "frame-sent",
+          "link": "BA",
+          "label": "bulk-0",
+          "detail": "ack"
+        },
+        {
+          "at": 3684,
+          "event": "acknowledged",
+          "link": "BA",
+          "label": "bulk-0"
+        },
+        {
+          "at": 4160,
+          "event": "accepted",
+          "node": "B",
+          "label": "bulk-1"
+        },
+        {
+          "at": 4160,
+          "event": "frame-sent",
+          "link": "BA",
+          "label": "bulk-1",
+          "detail": "ack"
+        },
+        {
+          "at": 4254,
+          "event": "acknowledged",
+          "link": "BA",
+          "label": "bulk-1"
+        }
+      ],
+      "omittedTraceEvents": 0
+    },
+    "storagePinned": {
+      "kind": "SIMULATION",
+      "model": "directed-frame-store-forward-v1",
+      "seed": 1369907238,
+      "elapsedMs": 4000,
+      "processedEvents": 21,
+      "faults": {},
+      "bounds": {
+        "maxPacketBytes": 6291456,
+        "maxPendingBytes": 16777216,
+        "fragmentBytes": 2048,
+        "maxFrameBytes": 4096,
+        "maxTransfers": 64,
+        "maxAssemblies": 8,
+        "maxHops": 12,
+        "maxTtlMs": 3600000
+      },
+      "nodes": [
+        {
+          "relay": true,
+          "lowPower": false,
+          "maxObjects": 1024,
+          "id": "A",
+          "storageBytes": 2097152,
+          "bytes": 2540,
+          "accepted": 1,
+          "evicted": 0,
+          "rejectedStorage": 0,
+          "rejectedCrypto": 0,
+          "rejectedEnvelope": 0,
+          "duplicates": 0,
+          "maxStoredBytes": 2540,
+          "maxStoredObjects": 2,
+          "storedObjects": 2
+        },
+        {
+          "relay": false,
+          "lowPower": false,
+          "maxObjects": 1,
+          "id": "B",
+          "storageBytes": 1338,
+          "bytes": 1266,
+          "accepted": 0,
+          "evicted": 0,
+          "rejectedStorage": 4,
+          "rejectedCrypto": 0,
+          "rejectedEnvelope": 0,
+          "duplicates": 0,
+          "maxStoredBytes": 1266,
+          "maxStoredObjects": 1,
+          "storedObjects": 1
+        }
+      ],
+      "links": [
+        {
+          "queueBytes": 16777216,
+          "queueSlots": 64,
+          "retryMs": 1000,
+          "up": true,
+          "id": "AB",
+          "from": "A",
+          "to": "B",
+          "bytesPerSecond": 32000,
+          "latencyMs": 15,
+          "loss": 0,
+          "mtu": 512,
+          "wireBytes": 8872,
+          "frames": 5,
+          "segments": 21,
+          "lostSegments": 0,
+          "retransmits": 3,
+          "droppedQueue": 0,
+          "expired": 0,
+          "rejectedAssembly": 0,
+          "acknowledgements": 1,
+          "maxQueueBytes": 1465,
+          "maxQueueObjects": 1,
+          "maxAssemblyBytes": 1465,
+          "maxAssemblies": 1,
+          "maxWireSegment": 512,
+          "maxFrameBytes": 2070,
+          "queuedBytes": 1465,
+          "queuedObjects": 1
+        },
+        {
+          "queueBytes": 16777216,
+          "queueSlots": 64,
+          "retryMs": 1000,
+          "up": true,
+          "id": "BA",
+          "from": "B",
+          "to": "A",
+          "bytesPerSecond": 10666,
+          "latencyMs": 30,
+          "loss": 0,
+          "mtu": 256,
+          "wireBytes": 2275,
+          "frames": 1,
+          "segments": 9,
+          "lostSegments": 0,
+          "retransmits": 0,
+          "droppedQueue": 0,
+          "expired": 0,
+          "rejectedAssembly": 0,
+          "acknowledgements": 0,
+          "maxQueueBytes": 1457,
+          "maxQueueObjects": 1,
+          "maxAssemblyBytes": 1457,
+          "maxAssemblies": 1,
+          "maxWireSegment": 256,
+          "maxFrameBytes": 2058,
+          "queuedBytes": 0,
+          "queuedObjects": 0
+        }
+      ],
+      "deliveries": [
+        {
+          "node": "A",
+          "label": "existing",
+          "at": 244,
+          "hops": [
+            "B",
+            "A"
+          ],
+          "priority": "normal",
+          "verified": true
+        }
+      ],
+      "trace": [
+        {
+          "at": 0,
+          "event": "injected",
+          "node": "B",
+          "label": "existing"
+        },
+        {
+          "at": 0,
+          "event": "frame-sent",
+          "link": "BA",
+          "label": "existing",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 100,
+          "event": "injected",
+          "node": "A",
+          "label": "replacement"
+        },
+        {
+          "at": 100,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "replacement",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 184,
+          "event": "storage-rejected",
+          "node": "B",
+          "label": "replacement"
+        },
+        {
+          "at": 244,
+          "event": "accepted",
+          "node": "A",
+          "label": "existing"
+        },
+        {
+          "at": 244,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "existing",
+          "detail": "ack"
+        },
+        {
+          "at": 263,
+          "event": "acknowledged",
+          "link": "AB",
+          "label": "existing"
+        },
+        {
+          "at": 1169,
+          "event": "retransmit",
+          "link": "AB",
+          "label": "replacement"
+        },
+        {
+          "at": 1169,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "replacement",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 1253,
+          "event": "storage-rejected",
+          "node": "B",
+          "label": "replacement"
+        },
+        {
+          "at": 2238,
+          "event": "retransmit",
+          "link": "AB",
+          "label": "replacement"
+        },
+        {
+          "at": 2238,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "replacement",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 2322,
+          "event": "storage-rejected",
+          "node": "B",
+          "label": "replacement"
+        },
+        {
+          "at": 3307,
+          "event": "retransmit",
+          "link": "AB",
+          "label": "replacement"
+        },
+        {
+          "at": 3307,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "replacement",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 3391,
+          "event": "storage-rejected",
+          "node": "B",
+          "label": "replacement"
+        }
+      ],
+      "omittedTraceEvents": 0
+    },
+    "storageEviction": {
+      "kind": "SIMULATION",
+      "model": "directed-frame-store-forward-v1",
+      "seed": 1369907238,
+      "elapsedMs": 4000,
+      "processedEvents": 16,
+      "faults": {},
+      "bounds": {
+        "maxPacketBytes": 6291456,
+        "maxPendingBytes": 16777216,
+        "fragmentBytes": 2048,
+        "maxFrameBytes": 4096,
+        "maxTransfers": 64,
+        "maxAssemblies": 8,
+        "maxHops": 12,
+        "maxTtlMs": 3600000
+      },
+      "nodes": [
+        {
+          "relay": true,
+          "lowPower": false,
+          "maxObjects": 1024,
+          "id": "A",
+          "storageBytes": 2097152,
+          "bytes": 2540,
+          "accepted": 1,
+          "evicted": 0,
+          "rejectedStorage": 0,
+          "rejectedCrypto": 0,
+          "rejectedEnvelope": 0,
+          "duplicates": 0,
+          "maxStoredBytes": 2540,
+          "maxStoredObjects": 2,
+          "storedObjects": 2
+        },
+        {
+          "relay": false,
+          "lowPower": false,
+          "maxObjects": 1,
+          "id": "B",
+          "storageBytes": 1338,
+          "bytes": 1274,
+          "accepted": 1,
+          "evicted": 1,
+          "rejectedStorage": 0,
+          "rejectedCrypto": 0,
+          "rejectedEnvelope": 0,
+          "duplicates": 0,
+          "maxStoredBytes": 1274,
+          "maxStoredObjects": 1,
+          "storedObjects": 1
+        }
+      ],
+      "links": [
+        {
+          "queueBytes": 16777216,
+          "queueSlots": 64,
+          "retryMs": 1000,
+          "up": true,
+          "id": "AB",
+          "from": "A",
+          "to": "B",
+          "bytesPerSecond": 32000,
+          "latencyMs": 15,
+          "loss": 0,
+          "mtu": 512,
+          "wireBytes": 2299,
+          "frames": 2,
+          "segments": 6,
+          "lostSegments": 0,
+          "retransmits": 0,
+          "droppedQueue": 0,
+          "expired": 0,
+          "rejectedAssembly": 0,
+          "acknowledgements": 1,
+          "maxQueueBytes": 1465,
+          "maxQueueObjects": 1,
+          "maxAssemblyBytes": 1465,
+          "maxAssemblies": 1,
+          "maxWireSegment": 512,
+          "maxFrameBytes": 2070,
+          "queuedBytes": 0,
+          "queuedObjects": 0
+        },
+        {
+          "queueBytes": 16777216,
+          "queueSlots": 64,
+          "retryMs": 1000,
+          "up": true,
+          "id": "BA",
+          "from": "B",
+          "to": "A",
+          "bytesPerSecond": 10666,
+          "latencyMs": 30,
+          "loss": 0,
+          "mtu": 256,
+          "wireBytes": 2383,
+          "frames": 2,
+          "segments": 10,
+          "lostSegments": 0,
+          "retransmits": 0,
+          "droppedQueue": 0,
+          "expired": 0,
+          "rejectedAssembly": 0,
+          "acknowledgements": 1,
+          "maxQueueBytes": 1457,
+          "maxQueueObjects": 1,
+          "maxAssemblyBytes": 1457,
+          "maxAssemblies": 1,
+          "maxWireSegment": 256,
+          "maxFrameBytes": 2058,
+          "queuedBytes": 0,
+          "queuedObjects": 0
+        }
+      ],
+      "deliveries": [
+        {
+          "node": "B",
+          "label": "replacement",
+          "at": 184,
+          "hops": [
+            "A",
+            "B"
+          ],
+          "priority": "normal",
+          "verified": true
+        },
+        {
+          "node": "A",
+          "label": "existing",
+          "at": 244,
+          "hops": [
+            "B",
+            "A"
+          ],
+          "priority": "normal",
+          "verified": true
+        }
+      ],
+      "trace": [
+        {
+          "at": 0,
+          "event": "injected",
+          "node": "B",
+          "label": "existing"
+        },
+        {
+          "at": 0,
+          "event": "frame-sent",
+          "link": "BA",
+          "label": "existing",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 100,
+          "event": "injected",
+          "node": "A",
+          "label": "replacement"
+        },
+        {
+          "at": 100,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "replacement",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 184,
+          "event": "storage-evicted",
+          "node": "B",
+          "label": "existing"
+        },
+        {
+          "at": 184,
+          "event": "accepted",
+          "node": "B",
+          "label": "replacement"
+        },
+        {
+          "at": 214,
+          "event": "frame-sent",
+          "link": "BA",
+          "label": "replacement",
+          "detail": "ack"
+        },
+        {
+          "at": 244,
+          "event": "accepted",
+          "node": "A",
+          "label": "existing"
+        },
+        {
+          "at": 244,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "existing",
+          "detail": "ack"
+        },
+        {
+          "at": 255,
+          "event": "acknowledged",
+          "link": "BA",
+          "label": "replacement"
+        },
+        {
+          "at": 263,
+          "event": "acknowledged",
+          "link": "AB",
+          "label": "existing"
+        }
+      ],
+      "omittedTraceEvents": 0
+    },
+    "ttlAndHopLimit": {
+      "kind": "SIMULATION",
+      "model": "directed-frame-store-forward-v1",
+      "seed": 1369907238,
+      "elapsedMs": 5000,
+      "processedEvents": 19,
+      "faults": {},
+      "bounds": {
+        "maxPacketBytes": 6291456,
+        "maxPendingBytes": 16777216,
+        "fragmentBytes": 2048,
+        "maxFrameBytes": 4096,
+        "maxTransfers": 64,
+        "maxAssemblies": 8,
+        "maxHops": 12,
+        "maxTtlMs": 3600000
+      },
+      "nodes": [
+        {
+          "relay": true,
+          "lowPower": false,
+          "maxObjects": 1024,
+          "id": "A",
+          "storageBytes": 2097152,
+          "bytes": 2110,
+          "accepted": 0,
+          "evicted": 0,
+          "rejectedStorage": 0,
+          "rejectedCrypto": 0,
+          "rejectedEnvelope": 0,
+          "duplicates": 0,
+          "maxStoredBytes": 2110,
+          "maxStoredObjects": 2,
+          "storedObjects": 2
+        },
+        {
+          "relay": true,
+          "lowPower": false,
+          "maxObjects": 1024,
+          "id": "B",
+          "storageBytes": 2097152,
+          "bytes": 1053,
+          "accepted": 1,
+          "evicted": 0,
+          "rejectedStorage": 0,
+          "rejectedCrypto": 0,
+          "rejectedEnvelope": 1,
+          "duplicates": 1,
+          "maxStoredBytes": 1053,
+          "maxStoredObjects": 1,
+          "storedObjects": 1
+        },
+        {
+          "relay": true,
+          "lowPower": false,
+          "maxObjects": 1024,
+          "id": "C",
+          "storageBytes": 2097152,
+          "bytes": 0,
+          "accepted": 0,
+          "evicted": 0,
+          "rejectedStorage": 0,
+          "rejectedCrypto": 0,
+          "rejectedEnvelope": 0,
+          "duplicates": 0,
+          "maxStoredBytes": 0,
+          "maxStoredObjects": 0,
+          "storedObjects": 0
+        }
+      ],
+      "links": [
+        {
+          "queueBytes": 16777216,
+          "queueSlots": 64,
+          "retryMs": 1000,
+          "up": true,
+          "id": "AB",
+          "from": "A",
+          "to": "B",
+          "bytesPerSecond": 100000,
+          "latencyMs": 600,
+          "loss": 0,
+          "mtu": 512,
+          "wireBytes": 5617,
+          "frames": 3,
+          "segments": 12,
+          "lostSegments": 0,
+          "retransmits": 1,
+          "droppedQueue": 0,
+          "expired": 1,
+          "rejectedAssembly": 0,
+          "acknowledgements": 0,
+          "maxQueueBytes": 2491,
+          "maxQueueObjects": 2,
+          "maxAssemblyBytes": 1248,
+          "maxAssemblies": 1,
+          "maxWireSegment": 512,
+          "maxFrameBytes": 1778,
+          "queuedBytes": 0,
+          "queuedObjects": 0
+        },
+        {
+          "queueBytes": 16777216,
+          "queueSlots": 64,
+          "retryMs": 1000,
+          "up": true,
+          "id": "BA",
+          "from": "B",
+          "to": "A",
+          "bytesPerSecond": 33333,
+          "latencyMs": 1200,
+          "loss": 0,
+          "mtu": 256,
+          "wireBytes": 216,
+          "frames": 2,
+          "segments": 2,
+          "lostSegments": 0,
+          "retransmits": 0,
+          "droppedQueue": 0,
+          "expired": 0,
+          "rejectedAssembly": 0,
+          "acknowledgements": 2,
+          "maxQueueBytes": 0,
+          "maxQueueObjects": 0,
+          "maxAssemblyBytes": 0,
+          "maxAssemblies": 0,
+          "maxWireSegment": 108,
+          "maxFrameBytes": 83,
+          "queuedBytes": 0,
+          "queuedObjects": 0
+        },
+        {
+          "queueBytes": 16777216,
+          "queueSlots": 64,
+          "retryMs": 1000,
+          "up": true,
+          "id": "BC",
+          "from": "B",
+          "to": "C",
+          "bytesPerSecond": 100000,
+          "latencyMs": 10,
+          "loss": 0,
+          "mtu": 512,
+          "wireBytes": 0,
+          "frames": 0,
+          "segments": 0,
+          "lostSegments": 0,
+          "retransmits": 0,
+          "droppedQueue": 0,
+          "expired": 0,
+          "rejectedAssembly": 0,
+          "acknowledgements": 0,
+          "maxQueueBytes": 0,
+          "maxQueueObjects": 0,
+          "maxAssemblyBytes": 0,
+          "maxAssemblies": 0,
+          "maxWireSegment": 0,
+          "maxFrameBytes": 0,
+          "queuedBytes": 0,
+          "queuedObjects": 0
+        },
+        {
+          "queueBytes": 16777216,
+          "queueSlots": 64,
+          "retryMs": 1000,
+          "up": true,
+          "id": "CB",
+          "from": "C",
+          "to": "B",
+          "bytesPerSecond": 33333,
+          "latencyMs": 20,
+          "loss": 0,
+          "mtu": 256,
+          "wireBytes": 0,
+          "frames": 0,
+          "segments": 0,
+          "lostSegments": 0,
+          "retransmits": 0,
+          "droppedQueue": 0,
+          "expired": 0,
+          "rejectedAssembly": 0,
+          "acknowledgements": 0,
+          "maxQueueBytes": 0,
+          "maxQueueObjects": 0,
+          "maxAssemblyBytes": 0,
+          "maxAssemblies": 0,
+          "maxWireSegment": 0,
+          "maxFrameBytes": 0,
+          "queuedBytes": 0,
+          "queuedObjects": 0
+        }
+      ],
+      "deliveries": [
+        {
+          "node": "B",
+          "label": "one-hop",
+          "at": 638,
+          "hops": [
+            "A",
+            "B"
+          ],
+          "priority": "normal",
+          "verified": true
+        }
+      ],
+      "trace": [
+        {
+          "at": 0,
+          "event": "injected",
+          "node": "A",
+          "label": "expired-in-flight"
+        },
+        {
+          "at": 0,
+          "event": "injected",
+          "node": "A",
+          "label": "one-hop"
+        },
+        {
+          "at": 0,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "expired-in-flight",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 19,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "one-hop",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 300,
+          "event": "queued-expired",
+          "link": "AB",
+          "label": "expired-in-flight"
+        },
+        {
+          "at": 619,
+          "event": "envelope-rejected",
+          "node": "B",
+          "label": "expired-in-flight"
+        },
+        {
+          "at": 638,
+          "event": "accepted",
+          "node": "B",
+          "label": "one-hop"
+        },
+        {
+          "at": 638,
+          "event": "frame-sent",
+          "link": "BA",
+          "label": "one-hop",
+          "detail": "ack"
+        },
+        {
+          "at": 1038,
+          "event": "retransmit",
+          "link": "AB",
+          "label": "one-hop"
+        },
+        {
+          "at": 1038,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "one-hop",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 1657,
+          "event": "frame-sent",
+          "link": "BA",
+          "label": "one-hop",
+          "detail": "ack"
+        },
+        {
+          "at": 1842,
+          "event": "acknowledged",
+          "link": "BA",
+          "label": "one-hop"
+        },
+        {
+          "at": 2500,
+          "event": "link-partitioned",
+          "link": "BC"
+        },
+        {
+          "at": 2500,
+          "event": "link-healed",
+          "link": "BC"
+        },
+        {
+          "at": 2861,
+          "event": "acknowledged",
+          "link": "BA",
+          "label": "one-hop"
+        }
+      ],
+      "omittedTraceEvents": 0
+    },
+    "asymmetric": {
+      "kind": "SIMULATION",
+      "model": "directed-frame-store-forward-v1",
+      "seed": 1369907238,
+      "elapsedMs": 8000,
+      "processedEvents": 22,
+      "faults": {},
+      "bounds": {
+        "maxPacketBytes": 6291456,
+        "maxPendingBytes": 16777216,
+        "fragmentBytes": 2048,
+        "maxFrameBytes": 4096,
+        "maxTransfers": 64,
+        "maxAssemblies": 8,
+        "maxHops": 12,
+        "maxTtlMs": 3600000
+      },
+      "nodes": [
+        {
+          "relay": true,
+          "lowPower": false,
+          "maxObjects": 1024,
+          "id": "A",
+          "storageBytes": 2097152,
+          "bytes": 2098,
+          "accepted": 1,
+          "evicted": 0,
+          "rejectedStorage": 0,
+          "rejectedCrypto": 0,
+          "rejectedEnvelope": 0,
+          "duplicates": 0,
+          "maxStoredBytes": 2098,
+          "maxStoredObjects": 2,
+          "storedObjects": 2
+        },
+        {
+          "relay": true,
+          "lowPower": false,
+          "maxObjects": 1024,
+          "id": "B",
+          "storageBytes": 2097152,
+          "bytes": 2098,
+          "accepted": 1,
+          "evicted": 0,
+          "rejectedStorage": 0,
+          "rejectedCrypto": 0,
+          "rejectedEnvelope": 0,
+          "duplicates": 1,
+          "maxStoredBytes": 2098,
+          "maxStoredObjects": 2,
+          "storedObjects": 2
+        }
+      ],
+      "links": [
+        {
+          "queueBytes": 16777216,
+          "queueSlots": 64,
+          "retryMs": 1000,
+          "up": true,
+          "id": "AB",
+          "from": "A",
+          "to": "B",
+          "bytesPerSecond": 24000,
+          "latencyMs": 25,
+          "loss": 0,
+          "mtu": 512,
+          "wireBytes": 3842,
+          "frames": 3,
+          "segments": 9,
+          "lostSegments": 0,
+          "retransmits": 1,
+          "droppedQueue": 0,
+          "expired": 0,
+          "rejectedAssembly": 0,
+          "acknowledgements": 1,
+          "maxQueueBytes": 1240,
+          "maxQueueObjects": 1,
+          "maxAssemblyBytes": 1240,
+          "maxAssemblies": 1,
+          "maxWireSegment": 512,
+          "maxFrameBytes": 1770,
+          "queuedBytes": 0,
+          "queuedObjects": 0
+        },
+        {
+          "queueBytes": 16777216,
+          "queueSlots": 64,
+          "retryMs": 3000,
+          "up": true,
+          "id": "BA",
+          "from": "B",
+          "to": "A",
+          "bytesPerSecond": 2000,
+          "latencyMs": 250,
+          "loss": 0,
+          "mtu": 128,
+          "wireBytes": 2419,
+          "frames": 3,
+          "segments": 20,
+          "lostSegments": 0,
+          "retransmits": 0,
+          "droppedQueue": 0,
+          "expired": 0,
+          "rejectedAssembly": 0,
+          "acknowledgements": 2,
+          "maxQueueBytes": 1240,
+          "maxQueueObjects": 1,
+          "maxAssemblyBytes": 1240,
+          "maxAssemblies": 1,
+          "maxWireSegment": 128,
+          "maxFrameBytes": 1770,
+          "queuedBytes": 0,
+          "queuedObjects": 0
+        }
+      ],
+      "deliveries": [
+        {
+          "node": "B",
+          "label": "fast-direction",
+          "at": 103,
+          "hops": [
+            "A",
+            "B"
+          ],
+          "priority": "normal",
+          "verified": true
+        },
+        {
+          "node": "A",
+          "label": "slow-direction",
+          "at": 1352,
+          "hops": [
+            "B",
+            "A"
+          ],
+          "priority": "normal",
+          "verified": true
+        }
+      ],
+      "trace": [
+        {
+          "at": 0,
+          "event": "injected",
+          "node": "A",
+          "label": "fast-direction"
+        },
+        {
+          "at": 0,
+          "event": "injected",
+          "node": "B",
+          "label": "slow-direction"
+        },
+        {
+          "at": 0,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "fast-direction",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 0,
+          "event": "frame-sent",
+          "link": "BA",
+          "label": "slow-direction",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 103,
+          "event": "accepted",
+          "node": "B",
+          "label": "fast-direction"
+        },
+        {
+          "at": 1078,
+          "event": "retransmit",
+          "link": "AB",
+          "label": "fast-direction"
+        },
+        {
+          "at": 1078,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "fast-direction",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 1102,
+          "event": "frame-sent",
+          "link": "BA",
+          "label": "fast-direction",
+          "detail": "ack"
+        },
+        {
+          "at": 1181,
+          "event": "frame-sent",
+          "link": "BA",
+          "label": "fast-direction",
+          "detail": "ack"
+        },
+        {
+          "at": 1352,
+          "event": "accepted",
+          "node": "A",
+          "label": "slow-direction"
+        },
+        {
+          "at": 1352,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "slow-direction",
+          "detail": "ack"
+        },
+        {
+          "at": 1382,
+          "event": "acknowledged",
+          "link": "AB",
+          "label": "slow-direction"
+        },
+        {
+          "at": 1406,
+          "event": "acknowledged",
+          "link": "BA",
+          "label": "fast-direction"
+        },
+        {
+          "at": 1485,
+          "event": "acknowledged",
+          "link": "BA",
+          "label": "fast-direction"
+        }
+      ],
+      "omittedTraceEvents": 0
+    },
+    "fairness": {
+      "kind": "SIMULATION",
+      "model": "directed-frame-store-forward-v1",
+      "seed": 1369907238,
+      "elapsedMs": 10000,
+      "processedEvents": 93,
+      "faults": {},
+      "bounds": {
+        "maxPacketBytes": 6291456,
+        "maxPendingBytes": 16777216,
+        "fragmentBytes": 2048,
+        "maxFrameBytes": 4096,
+        "maxTransfers": 64,
+        "maxAssemblies": 8,
+        "maxHops": 12,
+        "maxTtlMs": 3600000
+      },
+      "nodes": [
+        {
+          "relay": true,
+          "lowPower": false,
+          "maxObjects": 1024,
+          "id": "A",
+          "storageBytes": 2097152,
+          "bytes": 44430,
+          "accepted": 0,
+          "evicted": 0,
+          "rejectedStorage": 0,
+          "rejectedCrypto": 0,
+          "rejectedEnvelope": 0,
+          "duplicates": 0,
+          "maxStoredBytes": 44430,
+          "maxStoredObjects": 10,
+          "storedObjects": 10
+        },
+        {
+          "relay": true,
+          "lowPower": false,
+          "maxObjects": 1024,
+          "id": "B",
+          "storageBytes": 2097152,
+          "bytes": 44430,
+          "accepted": 10,
+          "evicted": 0,
+          "rejectedStorage": 0,
+          "rejectedCrypto": 0,
+          "rejectedEnvelope": 0,
+          "duplicates": 0,
+          "maxStoredBytes": 44430,
+          "maxStoredObjects": 10,
+          "storedObjects": 10
+        }
+      ],
+      "links": [
+        {
+          "queueBytes": 16777216,
+          "queueSlots": 64,
+          "retryMs": 1000,
+          "up": true,
+          "id": "AB",
+          "from": "A",
+          "to": "B",
+          "bytesPerSecond": 100000,
+          "latencyMs": 10,
+          "loss": 0,
+          "mtu": 512,
+          "wireBytes": 68218,
+          "frames": 26,
+          "segments": 143,
+          "lostSegments": 0,
+          "retransmits": 0,
+          "droppedQueue": 0,
+          "expired": 0,
+          "rejectedAssembly": 0,
+          "acknowledgements": 0,
+          "maxQueueBytes": 46311,
+          "maxQueueObjects": 10,
+          "maxAssemblyBytes": 33189,
+          "maxAssemblies": 2,
+          "maxWireSegment": 512,
+          "maxFrameBytes": 2848,
+          "queuedBytes": 0,
+          "queuedObjects": 0
+        },
+        {
+          "queueBytes": 16777216,
+          "queueSlots": 64,
+          "retryMs": 1000,
+          "up": true,
+          "id": "BA",
+          "from": "B",
+          "to": "A",
+          "bytesPerSecond": 33333,
+          "latencyMs": 20,
+          "loss": 0,
+          "mtu": 256,
+          "wireBytes": 1080,
+          "frames": 10,
+          "segments": 10,
+          "lostSegments": 0,
+          "retransmits": 0,
+          "droppedQueue": 0,
+          "expired": 0,
+          "rejectedAssembly": 0,
+          "acknowledgements": 10,
+          "maxQueueBytes": 0,
+          "maxQueueObjects": 0,
+          "maxAssemblyBytes": 0,
+          "maxAssemblies": 0,
+          "maxWireSegment": 108,
+          "maxFrameBytes": 83,
+          "queuedBytes": 0,
+          "queuedObjects": 0
+        }
+      ],
+      "deliveries": [
+        {
+          "node": "B",
+          "label": "urgent-0",
+          "at": 32,
+          "hops": [
+            "A",
+            "B"
+          ],
+          "priority": "sos",
+          "verified": true
+        },
+        {
+          "node": "B",
+          "label": "urgent-1",
+          "at": 54,
+          "hops": [
+            "A",
+            "B"
+          ],
+          "priority": "sos",
+          "verified": true
+        },
+        {
+          "node": "B",
+          "label": "urgent-2",
+          "at": 76,
+          "hops": [
+            "A",
+            "B"
+          ],
+          "priority": "sos",
+          "verified": true
+        },
+        {
+          "node": "B",
+          "label": "urgent-3",
+          "at": 128,
+          "hops": [
+            "A",
+            "B"
+          ],
+          "priority": "sos",
+          "verified": true
+        },
+        {
+          "node": "B",
+          "label": "urgent-4",
+          "at": 150,
+          "hops": [
+            "A",
+            "B"
+          ],
+          "priority": "sos",
+          "verified": true
+        },
+        {
+          "node": "B",
+          "label": "urgent-5",
+          "at": 172,
+          "hops": [
+            "A",
+            "B"
+          ],
+          "priority": "sos",
+          "verified": true
+        },
+        {
+          "node": "B",
+          "label": "urgent-6",
+          "at": 194,
+          "hops": [
+            "A",
+            "B"
+          ],
+          "priority": "sos",
+          "verified": true
+        },
+        {
+          "node": "B",
+          "label": "urgent-7",
+          "at": 216,
+          "hops": [
+            "A",
+            "B"
+          ],
+          "priority": "sos",
+          "verified": true
+        },
+        {
+          "node": "B",
+          "label": "urgent-8",
+          "at": 238,
+          "hops": [
+            "A",
+            "B"
+          ],
+          "priority": "sos",
+          "verified": true
+        },
+        {
+          "node": "B",
+          "label": "bulk",
+          "at": 696,
+          "hops": [
+            "A",
+            "B"
+          ],
+          "priority": "bulk",
+          "verified": true
+        }
+      ],
+      "trace": [
+        {
+          "at": 0,
+          "event": "injected",
+          "node": "A",
+          "label": "bulk"
+        },
+        {
+          "at": 0,
+          "event": "injected",
+          "node": "A",
+          "label": "urgent-0"
+        },
+        {
+          "at": 0,
+          "event": "injected",
+          "node": "A",
+          "label": "urgent-1"
+        },
+        {
+          "at": 0,
+          "event": "injected",
+          "node": "A",
+          "label": "urgent-2"
+        },
+        {
+          "at": 0,
+          "event": "injected",
+          "node": "A",
+          "label": "urgent-3"
+        },
+        {
+          "at": 0,
+          "event": "injected",
+          "node": "A",
+          "label": "urgent-4"
+        },
+        {
+          "at": 0,
+          "event": "injected",
+          "node": "A",
+          "label": "urgent-5"
+        },
+        {
+          "at": 0,
+          "event": "injected",
+          "node": "A",
+          "label": "urgent-6"
+        },
+        {
+          "at": 0,
+          "event": "injected",
+          "node": "A",
+          "label": "urgent-7"
+        },
+        {
+          "at": 0,
+          "event": "injected",
+          "node": "A",
+          "label": "urgent-8"
+        },
+        {
+          "at": 0,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "urgent-0",
+          "detail": "sos:0/1"
+        },
+        {
+          "at": 22,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "urgent-1",
+          "detail": "sos:0/1"
+        },
+        {
+          "at": 32,
+          "event": "accepted",
+          "node": "B",
+          "label": "urgent-0"
+        },
+        {
+          "at": 32,
+          "event": "frame-sent",
+          "link": "BA",
+          "label": "urgent-0",
+          "detail": "ack"
+        },
+        {
+          "at": 44,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "urgent-2",
+          "detail": "sos:0/1"
+        },
+        {
+          "at": 54,
+          "event": "accepted",
+          "node": "B",
+          "label": "urgent-1"
+        },
+        {
+          "at": 54,
+          "event": "frame-sent",
+          "link": "BA",
+          "label": "urgent-1",
+          "detail": "ack"
+        },
+        {
+          "at": 56,
+          "event": "acknowledged",
+          "link": "BA",
+          "label": "urgent-0"
+        },
+        {
+          "at": 66,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:0/17"
+        },
+        {
+          "at": 76,
+          "event": "accepted",
+          "node": "B",
+          "label": "urgent-2"
+        },
+        {
+          "at": 76,
+          "event": "frame-sent",
+          "link": "BA",
+          "label": "urgent-2",
+          "detail": "ack"
+        },
+        {
+          "at": 78,
+          "event": "acknowledged",
+          "link": "BA",
+          "label": "urgent-1"
+        },
+        {
+          "at": 96,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "urgent-3",
+          "detail": "sos:0/1"
+        },
+        {
+          "at": 100,
+          "event": "acknowledged",
+          "link": "BA",
+          "label": "urgent-2"
+        },
+        {
+          "at": 118,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "urgent-4",
+          "detail": "sos:0/1"
+        },
+        {
+          "at": 128,
+          "event": "accepted",
+          "node": "B",
+          "label": "urgent-3"
+        },
+        {
+          "at": 128,
+          "event": "frame-sent",
+          "link": "BA",
+          "label": "urgent-3",
+          "detail": "ack"
+        },
+        {
+          "at": 140,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "urgent-5",
+          "detail": "sos:0/1"
+        },
+        {
+          "at": 150,
+          "event": "accepted",
+          "node": "B",
+          "label": "urgent-4"
+        },
+        {
+          "at": 150,
+          "event": "frame-sent",
+          "link": "BA",
+          "label": "urgent-4",
+          "detail": "ack"
+        },
+        {
+          "at": 152,
+          "event": "acknowledged",
+          "link": "BA",
+          "label": "urgent-3"
+        },
+        {
+          "at": 162,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "urgent-6",
+          "detail": "sos:0/1"
+        },
+        {
+          "at": 172,
+          "event": "accepted",
+          "node": "B",
+          "label": "urgent-5"
+        },
+        {
+          "at": 172,
+          "event": "frame-sent",
+          "link": "BA",
+          "label": "urgent-5",
+          "detail": "ack"
+        },
+        {
+          "at": 174,
+          "event": "acknowledged",
+          "link": "BA",
+          "label": "urgent-4"
+        },
+        {
+          "at": 184,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "urgent-7",
+          "detail": "sos:0/1"
+        },
+        {
+          "at": 194,
+          "event": "accepted",
+          "node": "B",
+          "label": "urgent-6"
+        },
+        {
+          "at": 194,
+          "event": "frame-sent",
+          "link": "BA",
+          "label": "urgent-6",
+          "detail": "ack"
+        },
+        {
+          "at": 196,
+          "event": "acknowledged",
+          "link": "BA",
+          "label": "urgent-5"
+        },
+        {
+          "at": 206,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "urgent-8",
+          "detail": "sos:0/1"
+        },
+        {
+          "at": 216,
+          "event": "accepted",
+          "node": "B",
+          "label": "urgent-7"
+        },
+        {
+          "at": 216,
+          "event": "frame-sent",
+          "link": "BA",
+          "label": "urgent-7",
+          "detail": "ack"
+        },
+        {
+          "at": 218,
+          "event": "acknowledged",
+          "link": "BA",
+          "label": "urgent-6"
+        },
+        {
+          "at": 228,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:1/17"
+        },
+        {
+          "at": 238,
+          "event": "accepted",
+          "node": "B",
+          "label": "urgent-8"
+        },
+        {
+          "at": 238,
+          "event": "frame-sent",
+          "link": "BA",
+          "label": "urgent-8",
+          "detail": "ack"
+        },
+        {
+          "at": 240,
+          "event": "acknowledged",
+          "link": "BA",
+          "label": "urgent-7"
+        },
+        {
+          "at": 258,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:2/17"
+        },
+        {
+          "at": 262,
+          "event": "acknowledged",
+          "link": "BA",
+          "label": "urgent-8"
+        },
+        {
+          "at": 288,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:3/17"
+        },
+        {
+          "at": 318,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:4/17"
+        },
+        {
+          "at": 348,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:5/17"
+        },
+        {
+          "at": 378,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:6/17"
+        },
+        {
+          "at": 408,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:7/17"
+        },
+        {
+          "at": 438,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:8/17"
+        },
+        {
+          "at": 468,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:9/17"
+        },
+        {
+          "at": 498,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:10/17"
+        },
+        {
+          "at": 528,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:11/17"
+        },
+        {
+          "at": 558,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:12/17"
+        },
+        {
+          "at": 588,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:13/17"
+        },
+        {
+          "at": 618,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:14/17"
+        },
+        {
+          "at": 648,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:15/17"
+        },
+        {
+          "at": 678,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bulk",
+          "detail": "bulk:16/17"
+        },
+        {
+          "at": 696,
+          "event": "accepted",
+          "node": "B",
+          "label": "bulk"
+        },
+        {
+          "at": 696,
+          "event": "frame-sent",
+          "link": "BA",
+          "label": "bulk",
+          "detail": "ack"
+        },
+        {
+          "at": 720,
+          "event": "acknowledged",
+          "link": "BA",
+          "label": "bulk"
+        }
+      ],
+      "omittedTraceEvents": 0
+    },
+    "authenticControl": {
+      "kind": "SIMULATION",
+      "model": "directed-frame-store-forward-v1",
+      "seed": 1369907238,
+      "elapsedMs": 5000,
+      "processedEvents": 41,
+      "faults": {},
+      "bounds": {
+        "maxPacketBytes": 6291456,
+        "maxPendingBytes": 16777216,
+        "fragmentBytes": 2048,
+        "maxFrameBytes": 4096,
+        "maxTransfers": 64,
+        "maxAssemblies": 8,
+        "maxHops": 12,
+        "maxTtlMs": 3600000
+      },
+      "nodes": [
+        {
+          "relay": true,
+          "lowPower": false,
+          "maxObjects": 1024,
+          "id": "A",
+          "storageBytes": 2097152,
+          "bytes": 3147,
+          "accepted": 0,
+          "evicted": 0,
+          "rejectedStorage": 0,
+          "rejectedCrypto": 0,
+          "rejectedEnvelope": 0,
+          "duplicates": 0,
+          "maxStoredBytes": 3147,
+          "maxStoredObjects": 3,
+          "storedObjects": 3
+        },
+        {
+          "relay": true,
+          "lowPower": false,
+          "maxObjects": 1024,
+          "id": "B",
+          "storageBytes": 2097152,
+          "bytes": 1049,
+          "accepted": 1,
+          "evicted": 0,
+          "rejectedStorage": 0,
+          "rejectedCrypto": 10,
+          "rejectedEnvelope": 0,
+          "duplicates": 0,
+          "maxStoredBytes": 1049,
+          "maxStoredObjects": 1,
+          "storedObjects": 1
+        },
+        {
+          "relay": true,
+          "lowPower": false,
+          "maxObjects": 1024,
+          "id": "C",
+          "storageBytes": 2097152,
+          "bytes": 1049,
+          "accepted": 1,
+          "evicted": 0,
+          "rejectedStorage": 0,
+          "rejectedCrypto": 0,
+          "rejectedEnvelope": 0,
+          "duplicates": 0,
+          "maxStoredBytes": 1049,
+          "maxStoredObjects": 1,
+          "storedObjects": 1
+        }
+      ],
+      "links": [
+        {
+          "queueBytes": 16777216,
+          "queueSlots": 64,
+          "retryMs": 1000,
+          "up": true,
+          "id": "AB",
+          "from": "A",
+          "to": "B",
+          "bytesPerSecond": 32000,
+          "latencyMs": 15,
+          "loss": 0,
+          "mtu": 512,
+          "wireBytes": 20537,
+          "frames": 11,
+          "segments": 44,
+          "lostSegments": 0,
+          "retransmits": 8,
+          "droppedQueue": 0,
+          "expired": 0,
+          "rejectedAssembly": 0,
+          "acknowledgements": 0,
+          "maxQueueBytes": 3720,
+          "maxQueueObjects": 3,
+          "maxAssemblyBytes": 1240,
+          "maxAssemblies": 1,
+          "maxWireSegment": 512,
+          "maxFrameBytes": 1770,
+          "queuedBytes": 2480,
+          "queuedObjects": 2
+        },
+        {
+          "queueBytes": 16777216,
+          "queueSlots": 64,
+          "retryMs": 1000,
+          "up": true,
+          "id": "BA",
+          "from": "B",
+          "to": "A",
+          "bytesPerSecond": 10666,
+          "latencyMs": 30,
+          "loss": 0,
+          "mtu": 256,
+          "wireBytes": 108,
+          "frames": 1,
+          "segments": 1,
+          "lostSegments": 0,
+          "retransmits": 0,
+          "droppedQueue": 0,
+          "expired": 0,
+          "rejectedAssembly": 0,
+          "acknowledgements": 1,
+          "maxQueueBytes": 0,
+          "maxQueueObjects": 0,
+          "maxAssemblyBytes": 0,
+          "maxAssemblies": 0,
+          "maxWireSegment": 108,
+          "maxFrameBytes": 83,
+          "queuedBytes": 0,
+          "queuedObjects": 0
+        },
+        {
+          "queueBytes": 16777216,
+          "queueSlots": 64,
+          "retryMs": 1000,
+          "up": true,
+          "id": "BC",
+          "from": "B",
+          "to": "C",
+          "bytesPerSecond": 32000,
+          "latencyMs": 15,
+          "loss": 0,
+          "mtu": 512,
+          "wireBytes": 1871,
+          "frames": 1,
+          "segments": 4,
+          "lostSegments": 0,
+          "retransmits": 0,
+          "droppedQueue": 0,
+          "expired": 0,
+          "rejectedAssembly": 0,
+          "acknowledgements": 0,
+          "maxQueueBytes": 1244,
+          "maxQueueObjects": 1,
+          "maxAssemblyBytes": 1244,
+          "maxAssemblies": 1,
+          "maxWireSegment": 512,
+          "maxFrameBytes": 1774,
+          "queuedBytes": 0,
+          "queuedObjects": 0
+        },
+        {
+          "queueBytes": 16777216,
+          "queueSlots": 64,
+          "retryMs": 1000,
+          "up": true,
+          "id": "CB",
+          "from": "C",
+          "to": "B",
+          "bytesPerSecond": 10666,
+          "latencyMs": 30,
+          "loss": 0,
+          "mtu": 256,
+          "wireBytes": 108,
+          "frames": 1,
+          "segments": 1,
+          "lostSegments": 0,
+          "retransmits": 0,
+          "droppedQueue": 0,
+          "expired": 0,
+          "rejectedAssembly": 0,
+          "acknowledgements": 1,
+          "maxQueueBytes": 0,
+          "maxQueueObjects": 0,
+          "maxAssemblyBytes": 0,
+          "maxAssemblies": 0,
+          "maxWireSegment": 108,
+          "maxFrameBytes": 83,
+          "queuedBytes": 0,
+          "queuedObjects": 0
+        }
+      ],
+      "deliveries": [
+        {
+          "node": "B",
+          "label": "valid",
+          "at": 74,
+          "hops": [
+            "A",
+            "B"
+          ],
+          "priority": "normal",
+          "verified": true
+        },
+        {
+          "node": "C",
+          "label": "valid",
+          "at": 148,
+          "hops": [
+            "A",
+            "B",
+            "C"
+          ],
+          "priority": "normal",
+          "verified": true
+        }
+      ],
+      "trace": [
+        {
+          "at": 0,
+          "event": "injected",
+          "node": "A",
+          "label": "valid"
+        },
+        {
+          "at": 0,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "valid",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 20,
+          "event": "injected",
+          "node": "A",
+          "label": "bad-signature"
+        },
+        {
+          "at": 40,
+          "event": "injected",
+          "node": "A",
+          "label": "bad-chunk"
+        },
+        {
+          "at": 59,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bad-signature",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 74,
+          "event": "accepted",
+          "node": "B",
+          "label": "valid"
+        },
+        {
+          "at": 74,
+          "event": "frame-sent",
+          "link": "BA",
+          "label": "valid",
+          "detail": "ack"
+        },
+        {
+          "at": 74,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "valid",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 115,
+          "event": "acknowledged",
+          "link": "BA",
+          "label": "valid"
+        },
+        {
+          "at": 118,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bad-chunk",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 133,
+          "event": "crypto-rejected",
+          "node": "B",
+          "label": "bad-signature"
+        },
+        {
+          "at": 148,
+          "event": "accepted",
+          "node": "C",
+          "label": "valid"
+        },
+        {
+          "at": 148,
+          "event": "frame-sent",
+          "link": "CB",
+          "label": "valid",
+          "detail": "ack"
+        },
+        {
+          "at": 189,
+          "event": "acknowledged",
+          "link": "CB",
+          "label": "valid"
+        },
+        {
+          "at": 192,
+          "event": "crypto-rejected",
+          "node": "B",
+          "label": "bad-chunk"
+        },
+        {
+          "at": 1118,
+          "event": "retransmit",
+          "link": "AB",
+          "label": "bad-signature"
+        },
+        {
+          "at": 1118,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bad-signature",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 1177,
+          "event": "retransmit",
+          "link": "AB",
+          "label": "bad-chunk"
+        },
+        {
+          "at": 1177,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bad-chunk",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 1192,
+          "event": "crypto-rejected",
+          "node": "B",
+          "label": "bad-signature"
+        },
+        {
+          "at": 1251,
+          "event": "crypto-rejected",
+          "node": "B",
+          "label": "bad-chunk"
+        },
+        {
+          "at": 2177,
+          "event": "retransmit",
+          "link": "AB",
+          "label": "bad-signature"
+        },
+        {
+          "at": 2177,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bad-signature",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 2236,
+          "event": "retransmit",
+          "link": "AB",
+          "label": "bad-chunk"
+        },
+        {
+          "at": 2236,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bad-chunk",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 2251,
+          "event": "crypto-rejected",
+          "node": "B",
+          "label": "bad-signature"
+        },
+        {
+          "at": 2310,
+          "event": "crypto-rejected",
+          "node": "B",
+          "label": "bad-chunk"
+        },
+        {
+          "at": 3236,
+          "event": "retransmit",
+          "link": "AB",
+          "label": "bad-signature"
+        },
+        {
+          "at": 3236,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bad-signature",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 3295,
+          "event": "retransmit",
+          "link": "AB",
+          "label": "bad-chunk"
+        },
+        {
+          "at": 3295,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bad-chunk",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 3310,
+          "event": "crypto-rejected",
+          "node": "B",
+          "label": "bad-signature"
+        },
+        {
+          "at": 3369,
+          "event": "crypto-rejected",
+          "node": "B",
+          "label": "bad-chunk"
+        },
+        {
+          "at": 4295,
+          "event": "retransmit",
+          "link": "AB",
+          "label": "bad-signature"
+        },
+        {
+          "at": 4295,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bad-signature",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 4354,
+          "event": "retransmit",
+          "link": "AB",
+          "label": "bad-chunk"
+        },
+        {
+          "at": 4354,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bad-chunk",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 4369,
+          "event": "crypto-rejected",
+          "node": "B",
+          "label": "bad-signature"
+        },
+        {
+          "at": 4428,
+          "event": "crypto-rejected",
+          "node": "B",
+          "label": "bad-chunk"
+        }
+      ],
+      "omittedTraceEvents": 0
+    },
+    "brokenRouting": {
+      "kind": "SIMULATION",
+      "model": "directed-frame-store-forward-v1",
+      "seed": 1369907238,
+      "elapsedMs": 5000,
+      "processedEvents": 34,
+      "faults": {
+        "routingDisabled": true
+      },
+      "bounds": {
+        "maxPacketBytes": 6291456,
+        "maxPendingBytes": 16777216,
+        "fragmentBytes": 2048,
+        "maxFrameBytes": 4096,
+        "maxTransfers": 64,
+        "maxAssemblies": 8,
+        "maxHops": 12,
+        "maxTtlMs": 3600000
+      },
+      "nodes": [
+        {
+          "relay": true,
+          "lowPower": false,
+          "maxObjects": 1024,
+          "id": "A",
+          "storageBytes": 2097152,
+          "bytes": 3147,
+          "accepted": 0,
+          "evicted": 0,
+          "rejectedStorage": 0,
+          "rejectedCrypto": 0,
+          "rejectedEnvelope": 0,
+          "duplicates": 0,
+          "maxStoredBytes": 3147,
+          "maxStoredObjects": 3,
+          "storedObjects": 3
+        },
+        {
+          "relay": true,
+          "lowPower": false,
+          "maxObjects": 1024,
+          "id": "B",
+          "storageBytes": 2097152,
+          "bytes": 1049,
+          "accepted": 1,
+          "evicted": 0,
+          "rejectedStorage": 0,
+          "rejectedCrypto": 10,
+          "rejectedEnvelope": 0,
+          "duplicates": 0,
+          "maxStoredBytes": 1049,
+          "maxStoredObjects": 1,
+          "storedObjects": 1
+        },
+        {
+          "relay": true,
+          "lowPower": false,
+          "maxObjects": 1024,
+          "id": "C",
+          "storageBytes": 2097152,
+          "bytes": 0,
+          "accepted": 0,
+          "evicted": 0,
+          "rejectedStorage": 0,
+          "rejectedCrypto": 0,
+          "rejectedEnvelope": 0,
+          "duplicates": 0,
+          "maxStoredBytes": 0,
+          "maxStoredObjects": 0,
+          "storedObjects": 0
+        }
+      ],
+      "links": [
+        {
+          "queueBytes": 16777216,
+          "queueSlots": 64,
+          "retryMs": 1000,
+          "up": true,
+          "id": "AB",
+          "from": "A",
+          "to": "B",
+          "bytesPerSecond": 32000,
+          "latencyMs": 15,
+          "loss": 0,
+          "mtu": 512,
+          "wireBytes": 20537,
+          "frames": 11,
+          "segments": 44,
+          "lostSegments": 0,
+          "retransmits": 8,
+          "droppedQueue": 0,
+          "expired": 0,
+          "rejectedAssembly": 0,
+          "acknowledgements": 0,
+          "maxQueueBytes": 3720,
+          "maxQueueObjects": 3,
+          "maxAssemblyBytes": 1240,
+          "maxAssemblies": 1,
+          "maxWireSegment": 512,
+          "maxFrameBytes": 1770,
+          "queuedBytes": 2480,
+          "queuedObjects": 2
+        },
+        {
+          "queueBytes": 16777216,
+          "queueSlots": 64,
+          "retryMs": 1000,
+          "up": true,
+          "id": "BA",
+          "from": "B",
+          "to": "A",
+          "bytesPerSecond": 10666,
+          "latencyMs": 30,
+          "loss": 0,
+          "mtu": 256,
+          "wireBytes": 108,
+          "frames": 1,
+          "segments": 1,
+          "lostSegments": 0,
+          "retransmits": 0,
+          "droppedQueue": 0,
+          "expired": 0,
+          "rejectedAssembly": 0,
+          "acknowledgements": 1,
+          "maxQueueBytes": 0,
+          "maxQueueObjects": 0,
+          "maxAssemblyBytes": 0,
+          "maxAssemblies": 0,
+          "maxWireSegment": 108,
+          "maxFrameBytes": 83,
+          "queuedBytes": 0,
+          "queuedObjects": 0
+        },
+        {
+          "queueBytes": 16777216,
+          "queueSlots": 64,
+          "retryMs": 1000,
+          "up": true,
+          "id": "BC",
+          "from": "B",
+          "to": "C",
+          "bytesPerSecond": 32000,
+          "latencyMs": 15,
+          "loss": 0,
+          "mtu": 512,
+          "wireBytes": 0,
+          "frames": 0,
+          "segments": 0,
+          "lostSegments": 0,
+          "retransmits": 0,
+          "droppedQueue": 0,
+          "expired": 0,
+          "rejectedAssembly": 0,
+          "acknowledgements": 0,
+          "maxQueueBytes": 0,
+          "maxQueueObjects": 0,
+          "maxAssemblyBytes": 0,
+          "maxAssemblies": 0,
+          "maxWireSegment": 0,
+          "maxFrameBytes": 0,
+          "queuedBytes": 0,
+          "queuedObjects": 0
+        },
+        {
+          "queueBytes": 16777216,
+          "queueSlots": 64,
+          "retryMs": 1000,
+          "up": true,
+          "id": "CB",
+          "from": "C",
+          "to": "B",
+          "bytesPerSecond": 10666,
+          "latencyMs": 30,
+          "loss": 0,
+          "mtu": 256,
+          "wireBytes": 0,
+          "frames": 0,
+          "segments": 0,
+          "lostSegments": 0,
+          "retransmits": 0,
+          "droppedQueue": 0,
+          "expired": 0,
+          "rejectedAssembly": 0,
+          "acknowledgements": 0,
+          "maxQueueBytes": 0,
+          "maxQueueObjects": 0,
+          "maxAssemblyBytes": 0,
+          "maxAssemblies": 0,
+          "maxWireSegment": 0,
+          "maxFrameBytes": 0,
+          "queuedBytes": 0,
+          "queuedObjects": 0
+        }
+      ],
+      "deliveries": [
+        {
+          "node": "B",
+          "label": "valid",
+          "at": 74,
+          "hops": [
+            "A",
+            "B"
+          ],
+          "priority": "normal",
+          "verified": true
+        }
+      ],
+      "trace": [
+        {
+          "at": 0,
+          "event": "injected",
+          "node": "A",
+          "label": "valid"
+        },
+        {
+          "at": 0,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "valid",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 20,
+          "event": "injected",
+          "node": "A",
+          "label": "bad-signature"
+        },
+        {
+          "at": 40,
+          "event": "injected",
+          "node": "A",
+          "label": "bad-chunk"
+        },
+        {
+          "at": 59,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bad-signature",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 74,
+          "event": "accepted",
+          "node": "B",
+          "label": "valid"
+        },
+        {
+          "at": 74,
+          "event": "frame-sent",
+          "link": "BA",
+          "label": "valid",
+          "detail": "ack"
+        },
+        {
+          "at": 115,
+          "event": "acknowledged",
+          "link": "BA",
+          "label": "valid"
+        },
+        {
+          "at": 118,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bad-chunk",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 133,
+          "event": "crypto-rejected",
+          "node": "B",
+          "label": "bad-signature"
+        },
+        {
+          "at": 192,
+          "event": "crypto-rejected",
+          "node": "B",
+          "label": "bad-chunk"
+        },
+        {
+          "at": 1118,
+          "event": "retransmit",
+          "link": "AB",
+          "label": "bad-signature"
+        },
+        {
+          "at": 1118,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bad-signature",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 1177,
+          "event": "retransmit",
+          "link": "AB",
+          "label": "bad-chunk"
+        },
+        {
+          "at": 1177,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bad-chunk",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 1192,
+          "event": "crypto-rejected",
+          "node": "B",
+          "label": "bad-signature"
+        },
+        {
+          "at": 1251,
+          "event": "crypto-rejected",
+          "node": "B",
+          "label": "bad-chunk"
+        },
+        {
+          "at": 2177,
+          "event": "retransmit",
+          "link": "AB",
+          "label": "bad-signature"
+        },
+        {
+          "at": 2177,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bad-signature",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 2236,
+          "event": "retransmit",
+          "link": "AB",
+          "label": "bad-chunk"
+        },
+        {
+          "at": 2236,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bad-chunk",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 2251,
+          "event": "crypto-rejected",
+          "node": "B",
+          "label": "bad-signature"
+        },
+        {
+          "at": 2310,
+          "event": "crypto-rejected",
+          "node": "B",
+          "label": "bad-chunk"
+        },
+        {
+          "at": 3236,
+          "event": "retransmit",
+          "link": "AB",
+          "label": "bad-signature"
+        },
+        {
+          "at": 3236,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bad-signature",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 3295,
+          "event": "retransmit",
+          "link": "AB",
+          "label": "bad-chunk"
+        },
+        {
+          "at": 3295,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bad-chunk",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 3310,
+          "event": "crypto-rejected",
+          "node": "B",
+          "label": "bad-signature"
+        },
+        {
+          "at": 3369,
+          "event": "crypto-rejected",
+          "node": "B",
+          "label": "bad-chunk"
+        },
+        {
+          "at": 4295,
+          "event": "retransmit",
+          "link": "AB",
+          "label": "bad-signature"
+        },
+        {
+          "at": 4295,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bad-signature",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 4354,
+          "event": "retransmit",
+          "link": "AB",
+          "label": "bad-chunk"
+        },
+        {
+          "at": 4354,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bad-chunk",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 4369,
+          "event": "crypto-rejected",
+          "node": "B",
+          "label": "bad-signature"
+        },
+        {
+          "at": 4428,
+          "event": "crypto-rejected",
+          "node": "B",
+          "label": "bad-chunk"
+        }
+      ],
+      "omittedTraceEvents": 0
+    },
+    "brokenVerification": {
+      "kind": "SIMULATION",
+      "model": "directed-frame-store-forward-v1",
+      "seed": 1369907238,
+      "elapsedMs": 5000,
+      "processedEvents": 40,
+      "faults": {
+        "verificationBypassed": true
+      },
+      "bounds": {
+        "maxPacketBytes": 6291456,
+        "maxPendingBytes": 16777216,
+        "fragmentBytes": 2048,
+        "maxFrameBytes": 4096,
+        "maxTransfers": 64,
+        "maxAssemblies": 8,
+        "maxHops": 12,
+        "maxTtlMs": 3600000
+      },
+      "nodes": [
+        {
+          "relay": true,
+          "lowPower": false,
+          "maxObjects": 1024,
+          "id": "A",
+          "storageBytes": 2097152,
+          "bytes": 3147,
+          "accepted": 0,
+          "evicted": 0,
+          "rejectedStorage": 0,
+          "rejectedCrypto": 0,
+          "rejectedEnvelope": 0,
+          "duplicates": 0,
+          "maxStoredBytes": 3147,
+          "maxStoredObjects": 3,
+          "storedObjects": 3
+        },
+        {
+          "relay": true,
+          "lowPower": false,
+          "maxObjects": 1024,
+          "id": "B",
+          "storageBytes": 2097152,
+          "bytes": 3147,
+          "accepted": 3,
+          "evicted": 0,
+          "rejectedStorage": 0,
+          "rejectedCrypto": 0,
+          "rejectedEnvelope": 0,
+          "duplicates": 0,
+          "maxStoredBytes": 3147,
+          "maxStoredObjects": 3,
+          "storedObjects": 3
+        },
+        {
+          "relay": true,
+          "lowPower": false,
+          "maxObjects": 1024,
+          "id": "C",
+          "storageBytes": 2097152,
+          "bytes": 3147,
+          "accepted": 3,
+          "evicted": 0,
+          "rejectedStorage": 0,
+          "rejectedCrypto": 0,
+          "rejectedEnvelope": 0,
+          "duplicates": 0,
+          "maxStoredBytes": 3147,
+          "maxStoredObjects": 3,
+          "storedObjects": 3
+        }
+      ],
+      "links": [
+        {
+          "queueBytes": 16777216,
+          "queueSlots": 64,
+          "retryMs": 1000,
+          "up": true,
+          "id": "AB",
+          "from": "A",
+          "to": "B",
+          "bytesPerSecond": 32000,
+          "latencyMs": 15,
+          "loss": 0,
+          "mtu": 512,
+          "wireBytes": 5601,
+          "frames": 3,
+          "segments": 12,
+          "lostSegments": 0,
+          "retransmits": 0,
+          "droppedQueue": 0,
+          "expired": 0,
+          "rejectedAssembly": 0,
+          "acknowledgements": 0,
+          "maxQueueBytes": 3720,
+          "maxQueueObjects": 3,
+          "maxAssemblyBytes": 1240,
+          "maxAssemblies": 1,
+          "maxWireSegment": 512,
+          "maxFrameBytes": 1770,
+          "queuedBytes": 0,
+          "queuedObjects": 0
+        },
+        {
+          "queueBytes": 16777216,
+          "queueSlots": 64,
+          "retryMs": 1000,
+          "up": true,
+          "id": "BA",
+          "from": "B",
+          "to": "A",
+          "bytesPerSecond": 10666,
+          "latencyMs": 30,
+          "loss": 0,
+          "mtu": 256,
+          "wireBytes": 324,
+          "frames": 3,
+          "segments": 3,
+          "lostSegments": 0,
+          "retransmits": 0,
+          "droppedQueue": 0,
+          "expired": 0,
+          "rejectedAssembly": 0,
+          "acknowledgements": 3,
+          "maxQueueBytes": 0,
+          "maxQueueObjects": 0,
+          "maxAssemblyBytes": 0,
+          "maxAssemblies": 0,
+          "maxWireSegment": 108,
+          "maxFrameBytes": 83,
+          "queuedBytes": 0,
+          "queuedObjects": 0
+        },
+        {
+          "queueBytes": 16777216,
+          "queueSlots": 64,
+          "retryMs": 1000,
+          "up": true,
+          "id": "BC",
+          "from": "B",
+          "to": "C",
+          "bytesPerSecond": 32000,
+          "latencyMs": 15,
+          "loss": 0,
+          "mtu": 512,
+          "wireBytes": 5613,
+          "frames": 3,
+          "segments": 12,
+          "lostSegments": 0,
+          "retransmits": 0,
+          "droppedQueue": 0,
+          "expired": 0,
+          "rejectedAssembly": 0,
+          "acknowledgements": 0,
+          "maxQueueBytes": 2488,
+          "maxQueueObjects": 2,
+          "maxAssemblyBytes": 1244,
+          "maxAssemblies": 1,
+          "maxWireSegment": 512,
+          "maxFrameBytes": 1774,
+          "queuedBytes": 0,
+          "queuedObjects": 0
+        },
+        {
+          "queueBytes": 16777216,
+          "queueSlots": 64,
+          "retryMs": 1000,
+          "up": true,
+          "id": "CB",
+          "from": "C",
+          "to": "B",
+          "bytesPerSecond": 10666,
+          "latencyMs": 30,
+          "loss": 0,
+          "mtu": 256,
+          "wireBytes": 324,
+          "frames": 3,
+          "segments": 3,
+          "lostSegments": 0,
+          "retransmits": 0,
+          "droppedQueue": 0,
+          "expired": 0,
+          "rejectedAssembly": 0,
+          "acknowledgements": 3,
+          "maxQueueBytes": 0,
+          "maxQueueObjects": 0,
+          "maxAssemblyBytes": 0,
+          "maxAssemblies": 0,
+          "maxWireSegment": 108,
+          "maxFrameBytes": 83,
+          "queuedBytes": 0,
+          "queuedObjects": 0
+        }
+      ],
+      "deliveries": [
+        {
+          "node": "B",
+          "label": "valid",
+          "at": 74,
+          "hops": [
+            "A",
+            "B"
+          ],
+          "priority": "normal",
+          "verified": false
+        },
+        {
+          "node": "B",
+          "label": "bad-signature",
+          "at": 133,
+          "hops": [
+            "A",
+            "B"
+          ],
+          "priority": "normal",
+          "verified": false
+        },
+        {
+          "node": "C",
+          "label": "valid",
+          "at": 148,
+          "hops": [
+            "A",
+            "B",
+            "C"
+          ],
+          "priority": "normal",
+          "verified": false
+        },
+        {
+          "node": "B",
+          "label": "bad-chunk",
+          "at": 192,
+          "hops": [
+            "A",
+            "B"
+          ],
+          "priority": "normal",
+          "verified": false
+        },
+        {
+          "node": "C",
+          "label": "bad-signature",
+          "at": 207,
+          "hops": [
+            "A",
+            "B",
+            "C"
+          ],
+          "priority": "normal",
+          "verified": false
+        },
+        {
+          "node": "C",
+          "label": "bad-chunk",
+          "at": 266,
+          "hops": [
+            "A",
+            "B",
+            "C"
+          ],
+          "priority": "normal",
+          "verified": false
+        }
+      ],
+      "trace": [
+        {
+          "at": 0,
+          "event": "injected",
+          "node": "A",
+          "label": "valid"
+        },
+        {
+          "at": 0,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "valid",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 20,
+          "event": "injected",
+          "node": "A",
+          "label": "bad-signature"
+        },
+        {
+          "at": 40,
+          "event": "injected",
+          "node": "A",
+          "label": "bad-chunk"
+        },
+        {
+          "at": 59,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bad-signature",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 74,
+          "event": "accepted",
+          "node": "B",
+          "label": "valid"
+        },
+        {
+          "at": 74,
+          "event": "frame-sent",
+          "link": "BA",
+          "label": "valid",
+          "detail": "ack"
+        },
+        {
+          "at": 74,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "valid",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 115,
+          "event": "acknowledged",
+          "link": "BA",
+          "label": "valid"
+        },
+        {
+          "at": 118,
+          "event": "frame-sent",
+          "link": "AB",
+          "label": "bad-chunk",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 133,
+          "event": "accepted",
+          "node": "B",
+          "label": "bad-signature"
+        },
+        {
+          "at": 133,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bad-signature",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 133,
+          "event": "frame-sent",
+          "link": "BA",
+          "label": "bad-signature",
+          "detail": "ack"
+        },
+        {
+          "at": 148,
+          "event": "accepted",
+          "node": "C",
+          "label": "valid"
+        },
+        {
+          "at": 148,
+          "event": "frame-sent",
+          "link": "CB",
+          "label": "valid",
+          "detail": "ack"
+        },
+        {
+          "at": 174,
+          "event": "acknowledged",
+          "link": "BA",
+          "label": "bad-signature"
+        },
+        {
+          "at": 189,
+          "event": "acknowledged",
+          "link": "CB",
+          "label": "valid"
+        },
+        {
+          "at": 192,
+          "event": "accepted",
+          "node": "B",
+          "label": "bad-chunk"
+        },
+        {
+          "at": 192,
+          "event": "frame-sent",
+          "link": "BC",
+          "label": "bad-chunk",
+          "detail": "normal:0/1"
+        },
+        {
+          "at": 192,
+          "event": "frame-sent",
+          "link": "BA",
+          "label": "bad-chunk",
+          "detail": "ack"
+        },
+        {
+          "at": 207,
+          "event": "accepted",
+          "node": "C",
+          "label": "bad-signature"
+        },
+        {
+          "at": 207,
+          "event": "frame-sent",
+          "link": "CB",
+          "label": "bad-signature",
+          "detail": "ack"
+        },
+        {
+          "at": 233,
+          "event": "acknowledged",
+          "link": "BA",
+          "label": "bad-chunk"
+        },
+        {
+          "at": 248,
+          "event": "acknowledged",
+          "link": "CB",
+          "label": "bad-signature"
+        },
+        {
+          "at": 266,
+          "event": "accepted",
+          "node": "C",
+          "label": "bad-chunk"
+        },
+        {
+          "at": 266,
+          "event": "frame-sent",
+          "link": "CB",
+          "label": "bad-chunk",
+          "detail": "ack"
+        },
+        {
+          "at": 307,
+          "event": "acknowledged",
+          "link": "CB",
+          "label": "bad-chunk"
+        }
+      ],
+      "omittedTraceEvents": 0
+    }
+  },
+  "limitations": [
+    "SIMULATION only: no socket, PTY, radio, operating-system, mobile background or disaster field validation.",
+    "Seed controls modeled loss and event scheduling; cryptographic fixtures use production secure randomness.",
+    "Production core verifies signatures and encrypted chunks. Transport envelope/frame bounds are imported, but queues, medium MTU segmentation, ACK scheduling and cache behavior are models, not the live Router or ContentStore.",
+    "A medium frame is delivered only when every modeled segment survives; retransmission retries the application packet. No claim of BLE, Wi-Fi Direct, LoRa, Reticulum interoperability or measured physical parameters."
+  ]
+}
