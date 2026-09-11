@@ -1,39 +1,39 @@
 {
-  "testedAt": "2026-09-11T16:41:36.133Z",
+  "testedAt": "2026-09-11T22:30:11.296Z",
   "platform": "linux",
   "architecture": "x64",
   "node": "v22.22.3",
-  "freeGiB": 141,
+  "freeGiB": 129,
   "checks": [
     {
       "name": "build",
       "invocation": "node node_modules/typescript/bin/tsc --noEmit",
       "exit": 0,
-      "durationMs": 2298
+      "durationMs": 2997
     },
     {
       "name": "web-build",
       "invocation": "node node_modules/vite/bin/vite.js build",
       "exit": 0,
-      "durationMs": 1596
+      "durationMs": 1754
     },
     {
       "name": "tests",
-      "invocation": "node --import tsx --test --test-concurrency=1 tests/core.test.ts tests/heterogeneous.test.ts tests/node.test.ts tests/security.test.ts tests/simulation.test.ts tests/transport-hardening.test.ts tests/transport.test.ts",
+      "invocation": "node --import tsx --test --test-concurrency=1 tests/core.test.ts tests/desktop-policy.test.ts tests/fixture-lifecycle.test.ts tests/heterogeneous.test.ts tests/node.test.ts tests/security.test.ts tests/simulation.test.ts tests/snapshot.test.ts tests/social-integration.test.ts tests/social.test.ts tests/transport-hardening.test.ts tests/transport-serial.test.ts tests/transport.test.ts",
       "exit": 0,
-      "durationMs": 24055
+      "durationMs": 35640
     },
     {
       "name": "e2e",
       "invocation": "node scripts/e2e.mjs",
       "exit": 0,
-      "durationMs": 19643
+      "durationMs": 81463
     },
     {
       "name": "simulation",
       "invocation": "node --import tsx scripts/simulate.ts",
       "exit": 0,
-      "durationMs": 221
+      "durationMs": 172
     }
   ]
 }

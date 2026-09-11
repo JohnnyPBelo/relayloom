@@ -38,3 +38,110 @@ jobs:
             docs/evidence
             test-results
           retention-days: 7
+
+  native-go:
+    needs: native-node
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.26.8"
+          cache: false
+      - run: npm ci --ignore-scripts
+      - run: npm run build
+      - run: npm run native:build
+      - run: npm run test:native
+      - run: npm run test:interop
+      - name: Real UI against the native Go application
+        run: node scripts/e2e.mjs tests/e2e/flows.spec.ts --output=.cache/native-ui-e2e
+        env:
+          RELAYLOOM_TEST_BACKEND: native
+          RELAYLOOM_BROWSER_CHANNEL: chrome
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: native-go-evidence
+          path: |
+            .cache/native-mixed/*.json
+            .cache/native-interop/*/report.json
+            .cache/native-ui-e2e
+          retention-days: 7
+
+  desktop-package:
+    needs: native-go
+    strategy:
+      max-parallel: 1
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-22.04
+            target: linux
+            arch: x64
+          - os: windows-latest
+            target: win
+            arch: x64
+          - os: macos-latest
+            target: mac
+            arch: arm64
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm ci --ignore-scripts
+      - name: Install project Electron runtime
+        run: node node_modules/electron/install.js
+        env:
+          ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
+      - run: npm run build
+      - run: npm run desktop:build
+      - run: npm run desktop:package -- --${{ matrix.target }} --${{ matrix.arch }} --dir
+      - name: Actual sandboxed Linux desktop and packaged execution
+        if: runner.os == 'Linux'
+        run: |
+          xvfb-run -a npm run desktop:smoke
+          xvfb-run -a npm run desktop:packaged-smoke
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: desktop-${{ matrix.target }}-${{ matrix.arch }}-evidence
+          path: |
+            .cache/desktop/smoke.json
+            .cache/desktop/smoke.png
+            .cache/desktop/packaged-smoke.json
+          retention-days: 7
+
+  ios-simulator-build:
+    needs: native-go
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.26.8"
+          cache: false
+      - run: npm ci --ignore-scripts
+      - run: npm run build
+      - name: Actual Swift host policy tests
+        run: node scripts/ios-build.mjs --policy-test
+      - name: Unsigned iOS simulator app and native framework build
+        run: node scripts/ios-build.mjs --simulator
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ios-build-evidence
+          path: |
+            .cache/ios/*-report.json
+            .cache/ios/logs
+          retention-days: 7

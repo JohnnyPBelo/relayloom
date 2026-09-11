@@ -1,86 +1,86 @@
-# Acceptance traceability (in progress)
+# Acceptance traceability
 
-No requirement is complete solely because code exists. Exact gate evidence is tracked in docs/STATUS.md.
+Owner contract: `PROJECT-BRIEF.md`. “done” applies to the stated behavior with the evidence and limitations below, not to all OS/device variants or overall product completion. Constraints remain ongoing obligations. No requirement is closed by dispatch, a CI configuration, or cross-compilation alone.
 
-| ID | Requirement | Phase | Status |
+| ID | Requirement | Status | Evidence / limits |
 | --- | --- | --- | --- |
-| FR-001 | Local cryptographic identity and proofs | P1 | in_progress |
-| FR-002 | Encrypted key vault and native secure storage | P1 | in_progress |
-| FR-003 | Identity export and recovery | P1 | in_progress |
-| FR-004 | Signed updates and rotation/revocation limits | P4 | todo |
-| FR-005 | Separate authorship from reading and seeding | P1 | in_progress |
-| FR-006 | One-to-one conversations | P3 | in_progress |
-| FR-007 | Group conversations and membership authorization | P3 | in_progress |
-| FR-008 | Text messages and replies | P3 | in_progress |
-| FR-009 | Photo attachments | P3 | in_progress |
-| FR-010 | Audio and voice recording | P3 | in_progress |
-| FR-011 | Video and file attachments | P3 | in_progress |
-| FR-012 | Durable offline outbox | P2 | in_progress |
-| FR-013 | Delivery and expiry states | P3 | in_progress |
-| FR-014 | Message reactions | P3 | in_progress |
-| FR-015 | Message search | P3 | in_progress |
-| FR-016 | Owner-only edit and delete semantics | P3 | in_progress |
-| FR-017 | Blocking and local moderation/reporting strategy | P3 | in_progress |
-| FR-018 | Notifications where supported | P3 | in_progress |
-| FR-019 | Social profiles and following | P3 | in_progress |
-| FR-020 | Social posts and privacy controls | P3 | in_progress |
-| FR-021 | Feed and comments/reactions | P3 | in_progress |
-| FR-022 | Collections and sharing | P3 | in_progress |
-| FR-023 | Capability matrix for every social feature | P7 | todo |
-| FR-024 | Content addressed encrypted chunks and author signed manifests | P1 | in_progress |
-| FR-025 | Verification on receipt and before display | P1 | in_progress |
-| FR-026 | Peer retrieval and reader seed takeover | P2 | in_progress |
-| FR-027 | Pin/unpin quotas and eviction/TTL | P1 | in_progress |
-| FR-028 | Bandwidth/battery policy | P2 | in_progress |
-| FR-029 | Honest replicated availability/deletion semantics | P7 | todo |
-| FR-030 | Transport adapter abstraction and real sockets | P2 | in_progress |
-| FR-031 | Genuinely different serial transport | P2 | in_progress |
-| FR-032 | Multiple-hop routes cross supported media | P2 | in_progress |
-| FR-033 | Priority and fair scheduling | P2 | in_progress |
-| FR-034 | MTU fragmentation and reassembly | P2 | in_progress |
-| FR-035 | Retransmission, TTL/hop limits and duplicates | P2 | in_progress |
-| FR-036 | Corruption, replay and abuse controls | P4 | todo |
-| FR-037 | Bootstrap/discovery and NAT tradeoffs | P2 | in_progress |
-| FR-038 | Responsive drag/drop personal site builder | P3 | in_progress |
-| FR-039 | Safe declarative block rendering and keyboard/touch alternatives | P3 | in_progress |
-| FR-040 | Signed site publication and offline cached foreign site | P3 | in_progress |
-| FR-041 | Emergency health, peers and alert provenance | P3 | in_progress |
-| FR-042 | High contrast, large targets and low-power critical messaging | P5 | in_progress |
-| UX-001 | Original cohesive typography and spacing | P5 | in_progress |
-| UX-002 | Responsive light/dark states | P5 | in_progress |
-| UX-003 | Reduced motion and keyboard/screen reader checks | P5 | in_progress |
-| UX-004 | Real empty/error/loading/offline states without fake controls | P5 | in_progress |
-| UX-005 | Real screenshots and accessibility audit | P5 | in_progress |
-| INT-001 | Evaluate RNS interoperability and licensing | P4 | todo |
-| INT-002 | Truth matrix for IP BLE Wi-Fi Direct LoRa serial simulation | P7 | todo |
-| INT-003 | Linux native build and execution | P6 | todo |
-| INT-004 | Windows build and native execution | P6 | todo |
-| INT-005 | macOS build and native execution | P6 | todo |
-| INT-006 | Android app build and device/emulator execution | P6 | todo |
-| INT-007 | iOS app build signing and device execution | P6 | todo |
-| INT-008 | Document mobile background relaying restrictions | P6 | todo |
-| ACC-001 | Unit/property/fuzz bounds crypto ACL and addressing tests | P4 | todo |
-| ACC-002 | Real multi-process A-B-C isolation with positive/negative controls | P2 | in_progress |
-| ACC-003 | Heterogeneous multi-hop payload integrity and route evidence | P2 | in_progress |
-| ACC-004 | Offline publisher seeder takeover | P2 | in_progress |
-| ACC-005 | Unauthorized edit/decrypt tamper and replay rejection | P4 | todo |
-| ACC-006 | Persistence restart and duplicate flood/churn/partition/heal | P4 | todo |
-| ACC-007 | Deterministic bandwidth latency loss asymmetry MTU congestion simulation | P4 | todo |
-| ACC-008 | Storage exhaustion and low-power simulation | P4 | todo |
-| ACC-009 | Mutation controls fail if crypto/routing is broken | P4 | todo |
-| ACC-010 | Real-client UI end-to-end all critical workflows | P5 | in_progress |
-| ACC-011 | Platform CI build matrix without device-test overclaims | P6 | todo |
-| ACC-012 | Independent security reliability/design review and fix/rerun | P7 | todo |
-| ACC-013 | Acceptance evidence audit and precise README/STATUS | P7 | todo |
-| CON-001 | No mandatory central content service or hidden runtime CDN | P1 | in_progress |
-| CON-002 | No arbitrary site scripts or HTML execution | P3 | in_progress |
-| CON-003 | Use maintained crypto primitives and disclose protocol limits | P1 | in_progress |
-| CON-004 | Keep current Astra/Copilot Ultra harness/provider/auth unchanged | P0 | in_progress |
-| CON-005 | Real complementary agents and truthful task evidence | P0 | in_progress |
-| CON-006 | Work only RelayLoom with explicit file ownership | P0 | in_progress |
-| CON-007 | Project-scoped caches and at least 15 GiB free | P0 | in_progress |
-| CON-008 | No paid services/root/security changes or unrelated data | P0 | in_progress |
-| CON-009 | Small coherent verified commits and authorized non-force pushes | P7 | todo |
-| CON-010 | No disaster readiness or all-OS claim without evidence | P7 | todo |
-| CON-011 | No unsafe mobile background policy evasion | P6 | todo |
-| CON-012 | No merge or secret publication | P7 | todo |
+| FR-001 | Local cryptographic identity and proofs | done | `tests/core.test.ts`, `tests/native/native-interop.test.ts` — Identidades locais, provas e vectores Node↔Go. |
+| FR-002 | Encrypted key vault and native secure storage | partial | `tests/core.test.ts`, `docs/STATUS.md` — Cofres cifrados implementados; keychain nativa em falta. |
+| FR-003 | Identity export and recovery | done | `tests/e2e/flows.spec.ts`, `tests/native/mixed-network.test.ts` — Exportação/recuperação e identidade persistente no host; fluxos de ficheiros móveis limitados. |
+| FR-004 | Signed updates and rotation/revocation limits | partial | `docs/ARCHITECTURE.md`, `docs/REMAINING-SCOPE.md` — Alterações assinadas implementadas; rotação/revogação completa em falta. |
+| FR-005 | Separate authorship from reading and seeding | done | `docs/evidence/verification.json`, `tests/core.test.ts`, `tests/e2e/flows.spec.ts`, `docs/STATUS.md` — Implementação e testes do host; limites de plataforma continuam na matriz STATUS. |
+| FR-006 | One-to-one conversations | done | `docs/evidence/verification.json`, `tests/core.test.ts`, `tests/e2e/flows.spec.ts`, `docs/STATUS.md` — Implementação e testes do host; limites de plataforma continuam na matriz STATUS. |
+| FR-007 | Group conversations and membership authorization | partial | `tests/e2e/flows.spec.ts`, `tests/security.test.ts` — Grupos e ACL com membros fixos; alterações de membros em falta. |
+| FR-008 | Text messages and replies | done | `docs/evidence/verification.json`, `tests/core.test.ts`, `tests/e2e/flows.spec.ts`, `docs/STATUS.md` — Implementação e testes do host; limites de plataforma continuam na matriz STATUS. |
+| FR-009 | Photo attachments | done | `docs/evidence/verification.json`, `tests/core.test.ts`, `tests/e2e/flows.spec.ts`, `docs/STATUS.md` — Implementação e testes do host; limites de plataforma continuam na matriz STATUS. |
+| FR-010 | Audio and voice recording | partial | `tests/e2e/media.spec.ts`, `docs/MEDIA.md` — Codificador e transporte reais; captura sintética, microfone físico não verificado. |
+| FR-011 | Video and file attachments | partial | `tests/e2e/media.spec.ts`, `docs/ANDROID.md`, `docs/IOS.md` — Bytes e renderizadores reais; fluxos de escolha/guardar em hosts móveis incompletos. |
+| FR-012 | Durable offline outbox | partial | `tests/native/mixed-network.test.ts`, `docs/REMAINING-SCOPE.md` — Objectos cifrados persistem e são anunciados após restart; falta outbox por destinatário. |
+| FR-013 | Delivery and expiry states | partial | `tests/e2e/flows.spec.ts`, `docs/REMAINING-SCOPE.md` — Recibos assinados de leitura; falta quadro completo de entrega/expiração por membro. |
+| FR-014 | Message reactions | done | `docs/evidence/verification.json`, `tests/core.test.ts`, `tests/e2e/flows.spec.ts`, `docs/STATUS.md` — Implementação e testes do host; limites de plataforma continuam na matriz STATUS. |
+| FR-015 | Message search | partial | `docs/evidence/verification.json`, `tests/core.test.ts`, `tests/e2e/flows.spec.ts`, `docs/STATUS.md` — Pesquisa nos objectos carregados; pesquisa sobre todo o histórico autorizado ainda em falta. |
+| FR-016 | Owner-only edit and delete semantics | done | `docs/evidence/verification.json`, `tests/core.test.ts`, `tests/e2e/flows.spec.ts`, `docs/STATUS.md` — Implementação e testes do host; limites de plataforma continuam na matriz STATUS. |
+| FR-017 | Blocking and local moderation/reporting strategy | partial | `tests/security.test.ts`, `docs/ARCHITECTURE.md` — Bloqueio/denúncia locais; política de grupo/cancelamento em falta. |
+| FR-018 | Notifications where supported | partial | `tests/e2e/notifications.spec.ts`, `docs/NOTIFICATIONS.md` — Opt-in e privacidade testados com API substituída; apresentação real OS pendente. |
+| FR-019 | Social profiles and following | partial | `tests/e2e/social.spec.ts`, `docs/SOCIAL.md` — Perfil assinado e seguir local; relação pública/seguidores em falta. |
+| FR-020 | Social posts and privacy controls | done | `docs/evidence/verification.json`, `tests/core.test.ts`, `tests/e2e/flows.spec.ts`, `docs/STATUS.md` — Implementação e testes do host; limites de plataforma continuam na matriz STATUS. |
+| FR-021 | Feed and comments/reactions | done | `docs/evidence/verification.json`, `tests/core.test.ts`, `tests/e2e/flows.spec.ts`, `docs/STATUS.md` — Implementação e testes do host; limites de plataforma continuam na matriz STATUS. |
+| FR-022 | Collections and sharing | partial | `tests/social-integration.test.ts`, `tests/e2e/social.spec.ts` — Colecções locais cifradas e partilha por endereço; colecções partilhadas não implementadas. |
+| FR-023 | Capability matrix for every social feature | partial | `docs/SOCIAL.md`, `docs/STATUS.md` — Matriz funcional publicada; auditoria final contínua. |
+| FR-024 | Content addressed encrypted chunks and author signed manifests | done | `docs/evidence/verification.json`, `tests/core.test.ts`, `tests/e2e/flows.spec.ts`, `docs/STATUS.md` — Implementação e testes do host; limites de plataforma continuam na matriz STATUS. |
+| FR-025 | Verification on receipt and before display | done | `docs/evidence/verification.json`, `tests/core.test.ts`, `tests/e2e/flows.spec.ts`, `docs/STATUS.md` — Implementação e testes do host; limites de plataforma continuam na matriz STATUS. |
+| FR-026 | Peer retrieval and reader seed takeover | done | `docs/evidence/verification.json`, `tests/core.test.ts`, `tests/e2e/flows.spec.ts`, `docs/STATUS.md` — Implementação e testes do host; limites de plataforma continuam na matriz STATUS. |
+| FR-027 | Pin/unpin quotas and eviction/TTL | done | `docs/evidence/verification.json`, `tests/core.test.ts`, `tests/e2e/flows.spec.ts`, `docs/STATUS.md` — Implementação e testes do host; limites de plataforma continuam na matriz STATUS. |
+| FR-028 | Bandwidth/battery policy | partial | `tests/transport-hardening.test.ts`, `docs/TRANSPORT.md` — Modo baixo consumo e limites de bytes; consumo físico/bateria não medido. |
+| FR-029 | Honest replicated availability/deletion semantics | done | `docs/evidence/verification.json`, `tests/core.test.ts`, `tests/e2e/flows.spec.ts`, `docs/STATUS.md` — Implementação e testes do host; limites de plataforma continuam na matriz STATUS. |
+| FR-030 | Transport adapter abstraction and real sockets | done | `docs/evidence/verification.json`, `tests/core.test.ts`, `tests/e2e/flows.spec.ts`, `docs/STATUS.md` — Implementação e testes do host; limites de plataforma continuam na matriz STATUS. |
+| FR-031 | Genuinely different serial transport | done | `docs/evidence/verification.json`, `tests/core.test.ts`, `tests/e2e/flows.spec.ts`, `docs/STATUS.md` — Implementação e testes do host; limites de plataforma continuam na matriz STATUS. |
+| FR-032 | Multiple-hop routes cross supported media | done | `docs/evidence/verification.json`, `tests/core.test.ts`, `tests/e2e/flows.spec.ts`, `docs/STATUS.md` — Implementação e testes do host; limites de plataforma continuam na matriz STATUS. |
+| FR-033 | Priority and fair scheduling | done | `docs/evidence/verification.json`, `tests/core.test.ts`, `tests/e2e/flows.spec.ts`, `docs/STATUS.md` — Implementação e testes do host; limites de plataforma continuam na matriz STATUS. |
+| FR-034 | MTU fragmentation and reassembly | done | `docs/evidence/verification.json`, `tests/core.test.ts`, `tests/e2e/flows.spec.ts`, `docs/STATUS.md` — Implementação e testes do host; limites de plataforma continuam na matriz STATUS. |
+| FR-035 | Retransmission, TTL/hop limits and duplicates | done | `docs/evidence/verification.json`, `tests/core.test.ts`, `tests/e2e/flows.spec.ts`, `docs/STATUS.md` — Implementação e testes do host; limites de plataforma continuam na matriz STATUS. |
+| FR-036 | Corruption, replay and abuse controls | done | `docs/evidence/verification.json`, `tests/core.test.ts`, `tests/e2e/flows.spec.ts`, `docs/STATUS.md` — Implementação e testes do host; limites de plataforma continuam na matriz STATUS. |
+| FR-037 | Bootstrap/discovery and NAT tradeoffs | done | `docs/evidence/verification.json`, `tests/core.test.ts`, `tests/e2e/flows.spec.ts`, `docs/STATUS.md` — Implementação e testes do host; limites de plataforma continuam na matriz STATUS. |
+| FR-038 | Responsive drag/drop personal site builder | partial | `tests/e2e/flows.spec.ts` — Drag/drop real, setas/teclado, paletas e quatro blocos; mais templates/media e toque físico pendentes. |
+| FR-039 | Safe declarative block rendering and keyboard/touch alternatives | done | `docs/evidence/verification.json`, `tests/core.test.ts`, `tests/e2e/flows.spec.ts`, `docs/STATUS.md` — Implementação e testes do host; limites de plataforma continuam na matriz STATUS. |
+| FR-040 | Signed site publication and offline cached foreign site | done | `docs/evidence/verification.json`, `tests/core.test.ts`, `tests/e2e/flows.spec.ts`, `docs/STATUS.md` — Implementação e testes do host; limites de plataforma continuam na matriz STATUS. |
+| FR-041 | Emergency health, peers and alert provenance | done | `docs/evidence/verification.json`, `tests/core.test.ts`, `tests/e2e/flows.spec.ts`, `docs/STATUS.md` — Implementação e testes do host; limites de plataforma continuam na matriz STATUS. |
+| FR-042 | High contrast, large targets and low-power critical messaging | partial | `docs/evidence/ui`, `docs/SIMULATION.md` — Contraste/texto maior/baixo consumo implementados; leitor de ecrã físico e emergência não validados. |
+| UX-001 | Original cohesive typography and spacing | partial | `tests/e2e/flows.spec.ts`, `docs/evidence/ui` — Capturas/axe e browser reais; revisão em hardware e leitor de ecrã pendentes. |
+| UX-002 | Responsive light/dark states | partial | `tests/e2e/flows.spec.ts`, `docs/evidence/ui` — Capturas/axe e browser reais; revisão em hardware e leitor de ecrã pendentes. |
+| UX-003 | Reduced motion and keyboard/screen reader checks | partial | `tests/e2e/flows.spec.ts`, `docs/evidence/ui` — Capturas/axe e browser reais; revisão em hardware e leitor de ecrã pendentes. |
+| UX-004 | Real empty/error/loading/offline states without fake controls | partial | `tests/e2e/flows.spec.ts`, `docs/evidence/ui` — Capturas/axe e browser reais; revisão em hardware e leitor de ecrã pendentes. |
+| UX-005 | Real screenshots and accessibility audit | partial | `tests/e2e/flows.spec.ts`, `docs/evidence/ui` — Capturas/axe e browser reais; revisão em hardware e leitor de ecrã pendentes. |
+| INT-001 | Evaluate RNS interoperability and licensing | done | `docs/TRANSPORT.md` — RNS/licença avaliados; sem compatibilidade implementada ou alegada. |
+| INT-002 | Truth matrix for IP BLE Wi-Fi Direct LoRa serial simulation | done | `docs/TRANSPORT.md`, `docs/STATUS.md` — Matriz distingue TCP, série PTY, rádio físico, BLE/Wi-Fi Direct e simulação. |
+| INT-003 | Linux native build and execution | partial | `docs/evidence/desktop`, `docs/DESKTOP.md` — Electron e pacote Linux x64 executados; instalador/release assinada pendentes. |
+| INT-004 | Windows build and native execution | partial | `docs/evidence/ci-919beec.json` — Node real no runner Windows; desktop package/GUI Windows pendentes. |
+| INT-005 | macOS build and native execution | partial | `docs/evidence/ci-919beec.json` — Node/PTY real no runner macOS; desktop package/GUI/assinatura pendentes. |
+| INT-006 | Android app build and device/emulator execution | partial | `docs/ANDROID.md` — APK Go real no emulador API36 x86_64; dispositivo físico e ARM64 ainda não verificados. |
+| INT-007 | iOS app build signing and device execution | partial | `docs/IOS.md` — Shell iOS implementada; Swift/Xcode/simulador não executados ainda, hardware e assinatura bloqueados neste Linux. |
+| INT-008 | Document mobile background relaying restrictions | done | `docs/ANDROID.md`, `docs/IOS.md` — Relaying apenas em primeiro plano, Stop normal no background; restrições documentadas. |
+| ACC-001 | Unit/property/fuzz bounds crypto ACL and addressing tests | done | `tests/core.test.ts`, `tests/transport-hardening.test.ts`, `tests/snapshot.test.ts` — 66 testes Node passados, incluindo limites/corrupção/ACL; Go11core+11transport+17app com race. |
+| ACC-002 | Real multi-process A-B-C isolation with positive/negative controls | done | `docs/evidence/heterogeneous.json`, `docs/evidence/native/mixed-tcp.json` — Isolamento de topologia com controlos positivos/negativos; não firewall físico. |
+| ACC-003 | Heterogeneous multi-hop payload integrity and route evidence | done | `docs/evidence/heterogeneous.json`, `docs/evidence/native/mixed-serial.json` — TCP→serialport por PTYs reais; bytes/autor preservados. |
+| ACC-004 | Offline publisher seeder takeover | done | `docs/evidence/native/mixed-tcp.json`, `docs/ANDROID.md` — Autor termina; outro nó serve novo leitor sem reautoria. |
+| ACC-005 | Unauthorized edit/decrypt tamper and replay rejection | done | `tests/core.test.ts`, `tests/security.test.ts`, `tests/native/mixed-network.test.ts` — Falhas de escrita/leitura indevidas, tamper e replay com controlos válidos. |
+| ACC-006 | Persistence restart and duplicate flood/churn/partition/heal | done | `tests/transport-hardening.test.ts`, `tests/native/mixed-network.test.ts` — Restart, fragmentação, duplicados, churn e partição/heal reais. |
+| ACC-007 | Deterministic bandwidth latency loss asymmetry MTU congestion simulation | done | `tests/simulation.test.ts`, `docs/SIMULATION.md` — Simulação determinística separada; 9 testes e16 controlos de cenário. |
+| ACC-008 | Storage exhaustion and low-power simulation | done | `tests/simulation.test.ts`, `docs/SIMULATION.md` — Quotas/low-power virtuais explicitamente separados de hardware. |
+| ACC-009 | Mutation controls fail if crypto/routing is broken | done | `tests/simulation.test.ts`, `docs/SIMULATION.md` — Controlos deliberadamente quebrados de routing e verificação detectados. |
+| ACC-010 | Real-client UI end-to-end all critical workflows | partial | `docs/evidence/verification.json`, `tests/e2e` — 10 percursos browser Node e10 Go passaram; workflows nativos móveis completos pendentes. |
+| ACC-011 | Platform CI build matrix without device-test overclaims | partial | `docs/evidence/ci-919beec.json`, `.github/workflows/ci.yml` — Node nos3OS passou; novos jobs Go/desktop/iOS ainda por observar após push. |
+| ACC-012 | Independent security reliability/design review and fix/rerun | partial | `docs/AGENTS.md`, `docs/NATIVE-REVIEW.md`, `docs/APPLICATION-REVIEW.md`, `docs/RELEASE-REVIEW.md` — Revisões reais, correcções e repetição; auditoria continua no âmbito completo. |
+| ACC-013 | Acceptance evidence audit and precise README/STATUS | partial | `docs/STATUS.md`, `.codex-delivery/traceability.md` — Evidência actualizada por requisito; contrato total ainda incompleto. |
+| CON-001 | No mandatory central content service or hidden runtime CDN | in_progress | `docs/AGENTS.md`, `docs/STATUS.md` — Restrição preservada durante a implementação; obrigação contínua. |
+| CON-002 | No arbitrary site scripts or HTML execution | in_progress | `docs/AGENTS.md`, `docs/STATUS.md` — Restrição preservada durante a implementação; obrigação contínua. |
+| CON-003 | Use maintained crypto primitives and disclose protocol limits | in_progress | `docs/AGENTS.md`, `docs/STATUS.md` — Restrição preservada durante a implementação; obrigação contínua. |
+| CON-004 | Keep current Astra/Copilot Ultra harness/provider/auth unchanged | in_progress | `docs/AGENTS.md`, `docs/STATUS.md` — Restrição preservada durante a implementação; obrigação contínua. |
+| CON-005 | Real complementary agents and truthful task evidence | in_progress | `docs/AGENTS.md`, `docs/STATUS.md` — Restrição preservada durante a implementação; obrigação contínua. |
+| CON-006 | Work only RelayLoom with explicit file ownership | in_progress | `docs/AGENTS.md`, `docs/STATUS.md` — Restrição preservada durante a implementação; obrigação contínua. |
+| CON-007 | Project-scoped caches and at least 15 GiB free | in_progress | `docs/AGENTS.md`, `docs/STATUS.md` — Restrição preservada durante a implementação; obrigação contínua. |
+| CON-008 | No paid services/root/security changes or unrelated data | in_progress | `docs/AGENTS.md`, `docs/STATUS.md` — Restrição preservada durante a implementação; obrigação contínua. |
+| CON-009 | Small coherent verified commits and authorized non-force pushes | in_progress | `docs/AGENTS.md`, `docs/STATUS.md` — Restrição preservada durante a implementação; obrigação contínua. |
+| CON-010 | No disaster readiness or all-OS claim without evidence | in_progress | `docs/AGENTS.md`, `docs/STATUS.md` — Restrição preservada durante a implementação; obrigação contínua. |
+| CON-011 | No unsafe mobile background policy evasion | in_progress | `docs/AGENTS.md`, `docs/STATUS.md` — Restrição preservada durante a implementação; obrigação contínua. |
+| CON-012 | No merge or secret publication | in_progress | `docs/AGENTS.md`, `docs/STATUS.md` — Restrição preservada durante a implementação; obrigação contínua. |

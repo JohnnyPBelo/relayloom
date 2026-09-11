@@ -29,3 +29,23 @@ The independent design review was not a physical device or screen-reader test; s
 Simulation task completed: `/root/design_review` produced the bounded virtual-time engine, scenario/test suite and explicit evidence boundaries. Its 9/9 tests and all 16 baseline/control assessments passed. `/root/security_review` independently read the simulation and found its broken controls meaningful, while noting that model bundle acceptance is not application decryption/display; SIMULATION.md now states that scope directly.
 
 Subsequent work dispatched to `/root/transport_hardening`: secure desktop shell, exclusive ownership of `apps/desktop/**`, desktop scripts/docs. It is not part of the baseline verified code until integrated and tested; no native desktop result is yet claimed.
+
+## Later complementary tasks
+
+- `design_review` implemented VoiceRecorder/media tests and browser notification hook/tests in separate owned files. Media uses real browser encoders and real TCP peer nodes, with explicitly synthetic capture input; physical microphone capture remains unverified. Root fixed FileList and recipient-change integration bugs found by those tests.
+- `security_review` implemented strict immutable collection/following helper logic and 8 tests; root integrated encrypted persistence, APIs, retrieval and UI with independent process/browser tests.
+- `transport_hardening` built/executed the sandboxed Linux Electron shell and Linux unpacked package; `security_review` independently reviewed origin isolation, subprocess bootstrap, download names, clipboard/microphone policy and packaged fuses. Root must still rerun integrated desktop artifacts after later UI changes.
+- Mobile feasibility found maintained Go1.26/x-mobile viable. `security_review` now owns `native/core/**` and native vector tests; `transport_hardening` owns `native/transport/**` and interoperability tests, while temporarily prioritizing a demonstrated Node/macOS serial defect. Root owns toolchain/SDK prerequisites and native API/shell integration. Native/mobile code is not covered by earlier Node gate evidence.
+
+## Owner integration note and resumed work
+
+The owner reported the bridge correction and instructed resuming actual agent tasks without modifying configuration. Root revalidated the collaboration tree: security/core and transport tasks had real completed code/test results; the Android task had stopped with `408 copilot_upstream_rejected` after earlier verified tool installation work. Root resumed that Android task from existing files, then dispatched independent native transport/Android security review and mixed Go/Node application-process integration tests with disjoint file ownership. Each resumed agent returned an actual acknowledgement/status; completion still requires source and test output, not dispatch. No bridge/provider/authentication/safety settings were changed by these tasks.
+
+## Final returned results before native/platform milestone commits
+
+- `/root/transport_hardening` implemented native API snapshot/cache/request/mutation fixes and returned17 normal +17 race tests, rebuilt CLI hash and2 real mixed-process successes. A subsequent read-only task delivered `REMAINING-SCOPE.md` with eight concrete implementation slices and verified local links.
+- `/root/design_review` built and installed the final Go-embedded Android APK (`e1bdb088…d2a0`), returned16 simple +11 multi-hop/seed/lifecycle assertions in the single API36x86_64 emulator, and corrected a test's ambiguous UI wait before capturing the actual offline page. The final image was inspected by root. Sanitized reports/images live in `docs/evidence/android`; no physical-device/microphone/OS-notification result was inferred. The agent stopped only its owned AVD and isolated adb server.
+- `/root/security_review` delivered an explicit self-review of its iOS shell plus independent desktop/CI pre-commit review. It identified a false-positive desktop network control, replaced it with a reachable loopback fixture and independent sandboxed renderer, then returned actual Linux smoke counters main1/control1/protected0 and clean shutdown. Root read the helper and repeated packaging/execution of the unpacked Linux executable successfully.
+- Root reran66 Node tests, all10 Node browser cases, the later browser drag/drop input fixture, all10 Go browser cases, and3 mixed/vector tests. These are concrete returned/executed results; task dispatch was never used as completion evidence.
+
+All tasks used the existing harness without model/provider/authentication/bridge/security-setting changes. Source ownership remained disjoint; Android and heavy native builds shared one build slot.

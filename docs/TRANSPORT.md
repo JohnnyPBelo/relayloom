@@ -2,8 +2,8 @@
 
 | Carrier | Implementation | Actual evidence | Unverified or blocked |
 | --- | --- | --- | --- |
-| TCP/IP | Node TCP sockets, explicit peer addresses, reconnect | Linux process and socket tests, bridge controls | Internet/NAT traversal and non-Linux execution pending |
-| Serial byte stream | serialport device adapter, configurable baud | Linux OS PTY pair, real byte forwarding, heterogeneous three-process test | Physical UART/radio hardware and vendor packet modems not tested |
+| TCP/IP | Node TCP sockets, explicit peer addresses, reconnect | Linux process and socket tests, bridge controls | Internet/NAT and physical devices pending; Node CI executes on Windows/macOS |
+| Serial byte stream | serialport device adapter, configurable baud | Linux OS PTY pair, real byte forwarding, heterogeneous three-process test | Physical UART/radio hardware and vendor packet modems not tested; PTY also exercised on macOS CI |
 | BLE | Not implemented | None | Device APIs, pairing, MTU, OS restrictions |
 | Wi-Fi Direct | Not implemented | None | Platform APIs and real hardware |
 | LoRa/RNode | Not implemented | None | Physical radio, regional/airtime compliance, driver compatibility |
@@ -29,3 +29,7 @@ The observed licence is titled **Reticulum License**, copyright 2016–2026 Mark
 `npm test` runs `tests/heterogeneous.test.ts`: A only connects TCP to B; C has no TCP listener and only the serial transport. Disconnecting the PTY byte bridge prevents C from receiving while B stores the object. Reconnecting the bridge restores transfer of the exact 108,000-byte test attachment. Disabling B relay blocks new third-party delivery. With publisher A terminated and B enabled, B serves an object unseen by C without changing A’s author signature. See `docs/evidence/heterogeneous.json` for the actual last completed run.
 
 This is a local test fixture with real processes and supported carrier APIs. It is not a physical disaster deployment, a hostile-network certification or a radio-range test.
+
+## POSIX serial reliability correction
+
+The installed serialport13 native poller retained the OR of requested interests internally but passed only the latest flag set to `uv_poll_start`. CI diagnostics on macOS showed a writable wait stuck after a read ACK rearm. `serial.ts` wraps only the owned port instance to preserve pending read/write/disconnect interests; no installed dependency or OS setting is modified. A deterministic negative control reproduces the lost interest, while real PTY tests recover a stalled partial write using a baud-derived deadline, reconnect, delimiter resynchronization and exact packet replay. All19 transport tests passed locally, and the full Node CI matrix passed at919beec. Physical serial/radio timing remains unverified.

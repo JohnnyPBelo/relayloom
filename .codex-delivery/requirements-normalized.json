@@ -5,7 +5,8 @@
       "PROJECT-BRIEF.md"
     ],
     "generated_at": "2026-09-11T16:22:15.403613+00:00",
-    "version": 1
+    "version": 1,
+    "updated_at": "2026-09-11T22:38:51.518Z"
   },
   "requirements": [
     {
@@ -13,7 +14,7 @@
       "type": "functional",
       "title": "Local cryptographic identity and proofs",
       "statement": "Local cryptographic identity and proofs",
-      "status": "in_progress",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -21,15 +22,31 @@
       "implementation": {
         "milestone": "P1"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "tests/core.test.ts",
+          "tests/native/native-interop.test.ts"
+        ],
+        "limits": "Identidades locais, provas e vectores Node\u2194Go."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "tests/core.test.ts",
+            "tests/native/native-interop.test.ts"
+          ],
+          "notes": "Identidades locais, provas e vectores Node\u2194Go."
+        }
+      ]
     },
     {
       "id": "FR-002",
       "type": "functional",
       "title": "Encrypted key vault and native secure storage",
       "statement": "Encrypted key vault and native secure storage",
-      "status": "in_progress",
+      "status": "partial",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -37,15 +54,31 @@
       "implementation": {
         "milestone": "P1"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "tests/core.test.ts",
+          "docs/STATUS.md"
+        ],
+        "limits": "Cofres cifrados implementados; keychain nativa em falta."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "partial",
+          "paths": [
+            "tests/core.test.ts",
+            "docs/STATUS.md"
+          ],
+          "notes": "Cofres cifrados implementados; keychain nativa em falta."
+        }
+      ]
     },
     {
       "id": "FR-003",
       "type": "functional",
       "title": "Identity export and recovery",
       "statement": "Identity export and recovery",
-      "status": "in_progress",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -53,15 +86,31 @@
       "implementation": {
         "milestone": "P1"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "tests/e2e/flows.spec.ts",
+          "tests/native/mixed-network.test.ts"
+        ],
+        "limits": "Exporta\u00e7\u00e3o/recupera\u00e7\u00e3o e identidade persistente no host; fluxos de ficheiros m\u00f3veis limitados."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "tests/e2e/flows.spec.ts",
+            "tests/native/mixed-network.test.ts"
+          ],
+          "notes": "Exporta\u00e7\u00e3o/recupera\u00e7\u00e3o e identidade persistente no host; fluxos de ficheiros m\u00f3veis limitados."
+        }
+      ]
     },
     {
       "id": "FR-004",
       "type": "functional",
       "title": "Signed updates and rotation/revocation limits",
       "statement": "Signed updates and rotation/revocation limits",
-      "status": "todo",
+      "status": "partial",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -69,15 +118,31 @@
       "implementation": {
         "milestone": "P4"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/ARCHITECTURE.md",
+          "docs/REMAINING-SCOPE.md"
+        ],
+        "limits": "Altera\u00e7\u00f5es assinadas implementadas; rota\u00e7\u00e3o/revoga\u00e7\u00e3o completa em falta."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "partial",
+          "paths": [
+            "docs/ARCHITECTURE.md",
+            "docs/REMAINING-SCOPE.md"
+          ],
+          "notes": "Altera\u00e7\u00f5es assinadas implementadas; rota\u00e7\u00e3o/revoga\u00e7\u00e3o completa em falta."
+        }
+      ]
     },
     {
       "id": "FR-005",
       "type": "functional",
       "title": "Separate authorship from reading and seeding",
       "statement": "Separate authorship from reading and seeding",
-      "status": "in_progress",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -85,15 +150,35 @@
       "implementation": {
         "milestone": "P1"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/evidence/verification.json",
+          "tests/core.test.ts",
+          "tests/e2e/flows.spec.ts",
+          "docs/STATUS.md"
+        ],
+        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "docs/evidence/verification.json",
+            "tests/core.test.ts",
+            "tests/e2e/flows.spec.ts",
+            "docs/STATUS.md"
+          ],
+          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        }
+      ]
     },
     {
       "id": "FR-006",
       "type": "functional",
       "title": "One-to-one conversations",
       "statement": "One-to-one conversations",
-      "status": "in_progress",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -101,15 +186,35 @@
       "implementation": {
         "milestone": "P3"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/evidence/verification.json",
+          "tests/core.test.ts",
+          "tests/e2e/flows.spec.ts",
+          "docs/STATUS.md"
+        ],
+        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "docs/evidence/verification.json",
+            "tests/core.test.ts",
+            "tests/e2e/flows.spec.ts",
+            "docs/STATUS.md"
+          ],
+          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        }
+      ]
     },
     {
       "id": "FR-007",
       "type": "functional",
       "title": "Group conversations and membership authorization",
       "statement": "Group conversations and membership authorization",
-      "status": "in_progress",
+      "status": "partial",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -117,15 +222,31 @@
       "implementation": {
         "milestone": "P3"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "tests/e2e/flows.spec.ts",
+          "tests/security.test.ts"
+        ],
+        "limits": "Grupos e ACL com membros fixos; altera\u00e7\u00f5es de membros em falta."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "partial",
+          "paths": [
+            "tests/e2e/flows.spec.ts",
+            "tests/security.test.ts"
+          ],
+          "notes": "Grupos e ACL com membros fixos; altera\u00e7\u00f5es de membros em falta."
+        }
+      ]
     },
     {
       "id": "FR-008",
       "type": "functional",
       "title": "Text messages and replies",
       "statement": "Text messages and replies",
-      "status": "in_progress",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -133,15 +254,35 @@
       "implementation": {
         "milestone": "P3"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/evidence/verification.json",
+          "tests/core.test.ts",
+          "tests/e2e/flows.spec.ts",
+          "docs/STATUS.md"
+        ],
+        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "docs/evidence/verification.json",
+            "tests/core.test.ts",
+            "tests/e2e/flows.spec.ts",
+            "docs/STATUS.md"
+          ],
+          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        }
+      ]
     },
     {
       "id": "FR-009",
       "type": "functional",
       "title": "Photo attachments",
       "statement": "Photo attachments",
-      "status": "in_progress",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -149,15 +290,35 @@
       "implementation": {
         "milestone": "P3"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/evidence/verification.json",
+          "tests/core.test.ts",
+          "tests/e2e/flows.spec.ts",
+          "docs/STATUS.md"
+        ],
+        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "docs/evidence/verification.json",
+            "tests/core.test.ts",
+            "tests/e2e/flows.spec.ts",
+            "docs/STATUS.md"
+          ],
+          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        }
+      ]
     },
     {
       "id": "FR-010",
       "type": "functional",
       "title": "Audio and voice recording",
       "statement": "Audio and voice recording",
-      "status": "in_progress",
+      "status": "partial",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -165,15 +326,31 @@
       "implementation": {
         "milestone": "P3"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "tests/e2e/media.spec.ts",
+          "docs/MEDIA.md"
+        ],
+        "limits": "Codificador e transporte reais; captura sint\u00e9tica, microfone f\u00edsico n\u00e3o verificado."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "partial",
+          "paths": [
+            "tests/e2e/media.spec.ts",
+            "docs/MEDIA.md"
+          ],
+          "notes": "Codificador e transporte reais; captura sint\u00e9tica, microfone f\u00edsico n\u00e3o verificado."
+        }
+      ]
     },
     {
       "id": "FR-011",
       "type": "functional",
       "title": "Video and file attachments",
       "statement": "Video and file attachments",
-      "status": "in_progress",
+      "status": "partial",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -181,15 +358,33 @@
       "implementation": {
         "milestone": "P3"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "tests/e2e/media.spec.ts",
+          "docs/ANDROID.md",
+          "docs/IOS.md"
+        ],
+        "limits": "Bytes e renderizadores reais; fluxos de escolha/guardar em hosts m\u00f3veis incompletos."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "partial",
+          "paths": [
+            "tests/e2e/media.spec.ts",
+            "docs/ANDROID.md",
+            "docs/IOS.md"
+          ],
+          "notes": "Bytes e renderizadores reais; fluxos de escolha/guardar em hosts m\u00f3veis incompletos."
+        }
+      ]
     },
     {
       "id": "FR-012",
       "type": "functional",
       "title": "Durable offline outbox",
       "statement": "Durable offline outbox",
-      "status": "in_progress",
+      "status": "partial",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -197,15 +392,31 @@
       "implementation": {
         "milestone": "P2"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "tests/native/mixed-network.test.ts",
+          "docs/REMAINING-SCOPE.md"
+        ],
+        "limits": "Objectos cifrados persistem e s\u00e3o anunciados ap\u00f3s restart; falta outbox por destinat\u00e1rio."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "partial",
+          "paths": [
+            "tests/native/mixed-network.test.ts",
+            "docs/REMAINING-SCOPE.md"
+          ],
+          "notes": "Objectos cifrados persistem e s\u00e3o anunciados ap\u00f3s restart; falta outbox por destinat\u00e1rio."
+        }
+      ]
     },
     {
       "id": "FR-013",
       "type": "functional",
       "title": "Delivery and expiry states",
       "statement": "Delivery and expiry states",
-      "status": "in_progress",
+      "status": "partial",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -213,15 +424,31 @@
       "implementation": {
         "milestone": "P3"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "tests/e2e/flows.spec.ts",
+          "docs/REMAINING-SCOPE.md"
+        ],
+        "limits": "Recibos assinados de leitura; falta quadro completo de entrega/expira\u00e7\u00e3o por membro."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "partial",
+          "paths": [
+            "tests/e2e/flows.spec.ts",
+            "docs/REMAINING-SCOPE.md"
+          ],
+          "notes": "Recibos assinados de leitura; falta quadro completo de entrega/expira\u00e7\u00e3o por membro."
+        }
+      ]
     },
     {
       "id": "FR-014",
       "type": "functional",
       "title": "Message reactions",
       "statement": "Message reactions",
-      "status": "in_progress",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -229,15 +456,35 @@
       "implementation": {
         "milestone": "P3"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/evidence/verification.json",
+          "tests/core.test.ts",
+          "tests/e2e/flows.spec.ts",
+          "docs/STATUS.md"
+        ],
+        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "docs/evidence/verification.json",
+            "tests/core.test.ts",
+            "tests/e2e/flows.spec.ts",
+            "docs/STATUS.md"
+          ],
+          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        }
+      ]
     },
     {
       "id": "FR-015",
       "type": "functional",
       "title": "Message search",
       "statement": "Message search",
-      "status": "in_progress",
+      "status": "partial",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -245,15 +492,35 @@
       "implementation": {
         "milestone": "P3"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/evidence/verification.json",
+          "tests/core.test.ts",
+          "tests/e2e/flows.spec.ts",
+          "docs/STATUS.md"
+        ],
+        "limits": "Pesquisa nos objectos j\u00e1 carregados; pesquisa sobre todo o hist\u00f3rico autorizado ainda em falta."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "partial",
+          "paths": [
+            "docs/evidence/verification.json",
+            "tests/core.test.ts",
+            "tests/e2e/flows.spec.ts",
+            "docs/STATUS.md"
+          ],
+          "notes": "Pesquisa nos objectos j\u00e1 carregados; pesquisa sobre todo o hist\u00f3rico autorizado ainda em falta."
+        }
+      ]
     },
     {
       "id": "FR-016",
       "type": "functional",
       "title": "Owner-only edit and delete semantics",
       "statement": "Owner-only edit and delete semantics",
-      "status": "in_progress",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -261,15 +528,35 @@
       "implementation": {
         "milestone": "P3"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/evidence/verification.json",
+          "tests/core.test.ts",
+          "tests/e2e/flows.spec.ts",
+          "docs/STATUS.md"
+        ],
+        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "docs/evidence/verification.json",
+            "tests/core.test.ts",
+            "tests/e2e/flows.spec.ts",
+            "docs/STATUS.md"
+          ],
+          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        }
+      ]
     },
     {
       "id": "FR-017",
       "type": "functional",
       "title": "Blocking and local moderation/reporting strategy",
       "statement": "Blocking and local moderation/reporting strategy",
-      "status": "in_progress",
+      "status": "partial",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -277,15 +564,31 @@
       "implementation": {
         "milestone": "P3"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "tests/security.test.ts",
+          "docs/ARCHITECTURE.md"
+        ],
+        "limits": "Bloqueio/den\u00fancia locais; pol\u00edtica de grupo/cancelamento em falta."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "partial",
+          "paths": [
+            "tests/security.test.ts",
+            "docs/ARCHITECTURE.md"
+          ],
+          "notes": "Bloqueio/den\u00fancia locais; pol\u00edtica de grupo/cancelamento em falta."
+        }
+      ]
     },
     {
       "id": "FR-018",
       "type": "functional",
       "title": "Notifications where supported",
       "statement": "Notifications where supported",
-      "status": "in_progress",
+      "status": "partial",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -293,15 +596,31 @@
       "implementation": {
         "milestone": "P3"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "tests/e2e/notifications.spec.ts",
+          "docs/NOTIFICATIONS.md"
+        ],
+        "limits": "Opt-in e privacidade testados com API substitu\u00edda; apresenta\u00e7\u00e3o real OS pendente."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "partial",
+          "paths": [
+            "tests/e2e/notifications.spec.ts",
+            "docs/NOTIFICATIONS.md"
+          ],
+          "notes": "Opt-in e privacidade testados com API substitu\u00edda; apresenta\u00e7\u00e3o real OS pendente."
+        }
+      ]
     },
     {
       "id": "FR-019",
       "type": "functional",
       "title": "Social profiles and following",
       "statement": "Social profiles and following",
-      "status": "in_progress",
+      "status": "partial",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -309,15 +628,31 @@
       "implementation": {
         "milestone": "P3"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "tests/e2e/social.spec.ts",
+          "docs/SOCIAL.md"
+        ],
+        "limits": "Perfil assinado e seguir local; rela\u00e7\u00e3o p\u00fablica/seguidores em falta."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "partial",
+          "paths": [
+            "tests/e2e/social.spec.ts",
+            "docs/SOCIAL.md"
+          ],
+          "notes": "Perfil assinado e seguir local; rela\u00e7\u00e3o p\u00fablica/seguidores em falta."
+        }
+      ]
     },
     {
       "id": "FR-020",
       "type": "functional",
       "title": "Social posts and privacy controls",
       "statement": "Social posts and privacy controls",
-      "status": "in_progress",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -325,15 +660,35 @@
       "implementation": {
         "milestone": "P3"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/evidence/verification.json",
+          "tests/core.test.ts",
+          "tests/e2e/flows.spec.ts",
+          "docs/STATUS.md"
+        ],
+        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "docs/evidence/verification.json",
+            "tests/core.test.ts",
+            "tests/e2e/flows.spec.ts",
+            "docs/STATUS.md"
+          ],
+          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        }
+      ]
     },
     {
       "id": "FR-021",
       "type": "functional",
       "title": "Feed and comments/reactions",
       "statement": "Feed and comments/reactions",
-      "status": "in_progress",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -341,15 +696,35 @@
       "implementation": {
         "milestone": "P3"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/evidence/verification.json",
+          "tests/core.test.ts",
+          "tests/e2e/flows.spec.ts",
+          "docs/STATUS.md"
+        ],
+        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "docs/evidence/verification.json",
+            "tests/core.test.ts",
+            "tests/e2e/flows.spec.ts",
+            "docs/STATUS.md"
+          ],
+          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        }
+      ]
     },
     {
       "id": "FR-022",
       "type": "functional",
       "title": "Collections and sharing",
       "statement": "Collections and sharing",
-      "status": "in_progress",
+      "status": "partial",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -357,15 +732,31 @@
       "implementation": {
         "milestone": "P3"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "tests/social-integration.test.ts",
+          "tests/e2e/social.spec.ts"
+        ],
+        "limits": "Colec\u00e7\u00f5es locais cifradas e partilha por endere\u00e7o; colec\u00e7\u00f5es partilhadas n\u00e3o implementadas."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "partial",
+          "paths": [
+            "tests/social-integration.test.ts",
+            "tests/e2e/social.spec.ts"
+          ],
+          "notes": "Colec\u00e7\u00f5es locais cifradas e partilha por endere\u00e7o; colec\u00e7\u00f5es partilhadas n\u00e3o implementadas."
+        }
+      ]
     },
     {
       "id": "FR-023",
       "type": "functional",
       "title": "Capability matrix for every social feature",
       "statement": "Capability matrix for every social feature",
-      "status": "todo",
+      "status": "partial",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -373,15 +764,31 @@
       "implementation": {
         "milestone": "P7"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/SOCIAL.md",
+          "docs/STATUS.md"
+        ],
+        "limits": "Matriz funcional publicada; auditoria final cont\u00ednua."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "partial",
+          "paths": [
+            "docs/SOCIAL.md",
+            "docs/STATUS.md"
+          ],
+          "notes": "Matriz funcional publicada; auditoria final cont\u00ednua."
+        }
+      ]
     },
     {
       "id": "FR-024",
       "type": "functional",
       "title": "Content addressed encrypted chunks and author signed manifests",
       "statement": "Content addressed encrypted chunks and author signed manifests",
-      "status": "in_progress",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -389,15 +796,35 @@
       "implementation": {
         "milestone": "P1"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/evidence/verification.json",
+          "tests/core.test.ts",
+          "tests/e2e/flows.spec.ts",
+          "docs/STATUS.md"
+        ],
+        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "docs/evidence/verification.json",
+            "tests/core.test.ts",
+            "tests/e2e/flows.spec.ts",
+            "docs/STATUS.md"
+          ],
+          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        }
+      ]
     },
     {
       "id": "FR-025",
       "type": "functional",
       "title": "Verification on receipt and before display",
       "statement": "Verification on receipt and before display",
-      "status": "in_progress",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -405,15 +832,35 @@
       "implementation": {
         "milestone": "P1"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/evidence/verification.json",
+          "tests/core.test.ts",
+          "tests/e2e/flows.spec.ts",
+          "docs/STATUS.md"
+        ],
+        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "docs/evidence/verification.json",
+            "tests/core.test.ts",
+            "tests/e2e/flows.spec.ts",
+            "docs/STATUS.md"
+          ],
+          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        }
+      ]
     },
     {
       "id": "FR-026",
       "type": "functional",
       "title": "Peer retrieval and reader seed takeover",
       "statement": "Peer retrieval and reader seed takeover",
-      "status": "in_progress",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -421,15 +868,35 @@
       "implementation": {
         "milestone": "P2"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/evidence/verification.json",
+          "tests/core.test.ts",
+          "tests/e2e/flows.spec.ts",
+          "docs/STATUS.md"
+        ],
+        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "docs/evidence/verification.json",
+            "tests/core.test.ts",
+            "tests/e2e/flows.spec.ts",
+            "docs/STATUS.md"
+          ],
+          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        }
+      ]
     },
     {
       "id": "FR-027",
       "type": "functional",
       "title": "Pin/unpin quotas and eviction/TTL",
       "statement": "Pin/unpin quotas and eviction/TTL",
-      "status": "in_progress",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -437,15 +904,35 @@
       "implementation": {
         "milestone": "P1"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/evidence/verification.json",
+          "tests/core.test.ts",
+          "tests/e2e/flows.spec.ts",
+          "docs/STATUS.md"
+        ],
+        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "docs/evidence/verification.json",
+            "tests/core.test.ts",
+            "tests/e2e/flows.spec.ts",
+            "docs/STATUS.md"
+          ],
+          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        }
+      ]
     },
     {
       "id": "FR-028",
       "type": "functional",
       "title": "Bandwidth/battery policy",
       "statement": "Bandwidth/battery policy",
-      "status": "in_progress",
+      "status": "partial",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -453,15 +940,31 @@
       "implementation": {
         "milestone": "P2"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "tests/transport-hardening.test.ts",
+          "docs/TRANSPORT.md"
+        ],
+        "limits": "Modo baixo consumo e limites de bytes; consumo f\u00edsico/bateria n\u00e3o medido."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "partial",
+          "paths": [
+            "tests/transport-hardening.test.ts",
+            "docs/TRANSPORT.md"
+          ],
+          "notes": "Modo baixo consumo e limites de bytes; consumo f\u00edsico/bateria n\u00e3o medido."
+        }
+      ]
     },
     {
       "id": "FR-029",
       "type": "functional",
       "title": "Honest replicated availability/deletion semantics",
       "statement": "Honest replicated availability/deletion semantics",
-      "status": "todo",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -469,15 +972,35 @@
       "implementation": {
         "milestone": "P7"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/evidence/verification.json",
+          "tests/core.test.ts",
+          "tests/e2e/flows.spec.ts",
+          "docs/STATUS.md"
+        ],
+        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "docs/evidence/verification.json",
+            "tests/core.test.ts",
+            "tests/e2e/flows.spec.ts",
+            "docs/STATUS.md"
+          ],
+          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        }
+      ]
     },
     {
       "id": "FR-030",
       "type": "functional",
       "title": "Transport adapter abstraction and real sockets",
       "statement": "Transport adapter abstraction and real sockets",
-      "status": "in_progress",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -485,15 +1008,35 @@
       "implementation": {
         "milestone": "P2"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/evidence/verification.json",
+          "tests/core.test.ts",
+          "tests/e2e/flows.spec.ts",
+          "docs/STATUS.md"
+        ],
+        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "docs/evidence/verification.json",
+            "tests/core.test.ts",
+            "tests/e2e/flows.spec.ts",
+            "docs/STATUS.md"
+          ],
+          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        }
+      ]
     },
     {
       "id": "FR-031",
       "type": "functional",
       "title": "Genuinely different serial transport",
       "statement": "Genuinely different serial transport",
-      "status": "in_progress",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -501,15 +1044,35 @@
       "implementation": {
         "milestone": "P2"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/evidence/verification.json",
+          "tests/core.test.ts",
+          "tests/e2e/flows.spec.ts",
+          "docs/STATUS.md"
+        ],
+        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "docs/evidence/verification.json",
+            "tests/core.test.ts",
+            "tests/e2e/flows.spec.ts",
+            "docs/STATUS.md"
+          ],
+          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        }
+      ]
     },
     {
       "id": "FR-032",
       "type": "functional",
       "title": "Multiple-hop routes cross supported media",
       "statement": "Multiple-hop routes cross supported media",
-      "status": "in_progress",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -517,15 +1080,35 @@
       "implementation": {
         "milestone": "P2"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/evidence/verification.json",
+          "tests/core.test.ts",
+          "tests/e2e/flows.spec.ts",
+          "docs/STATUS.md"
+        ],
+        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "docs/evidence/verification.json",
+            "tests/core.test.ts",
+            "tests/e2e/flows.spec.ts",
+            "docs/STATUS.md"
+          ],
+          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        }
+      ]
     },
     {
       "id": "FR-033",
       "type": "functional",
       "title": "Priority and fair scheduling",
       "statement": "Priority and fair scheduling",
-      "status": "in_progress",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -533,15 +1116,35 @@
       "implementation": {
         "milestone": "P2"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/evidence/verification.json",
+          "tests/core.test.ts",
+          "tests/e2e/flows.spec.ts",
+          "docs/STATUS.md"
+        ],
+        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "docs/evidence/verification.json",
+            "tests/core.test.ts",
+            "tests/e2e/flows.spec.ts",
+            "docs/STATUS.md"
+          ],
+          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        }
+      ]
     },
     {
       "id": "FR-034",
       "type": "functional",
       "title": "MTU fragmentation and reassembly",
       "statement": "MTU fragmentation and reassembly",
-      "status": "in_progress",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -549,15 +1152,35 @@
       "implementation": {
         "milestone": "P2"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/evidence/verification.json",
+          "tests/core.test.ts",
+          "tests/e2e/flows.spec.ts",
+          "docs/STATUS.md"
+        ],
+        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "docs/evidence/verification.json",
+            "tests/core.test.ts",
+            "tests/e2e/flows.spec.ts",
+            "docs/STATUS.md"
+          ],
+          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        }
+      ]
     },
     {
       "id": "FR-035",
       "type": "functional",
       "title": "Retransmission, TTL/hop limits and duplicates",
       "statement": "Retransmission, TTL/hop limits and duplicates",
-      "status": "in_progress",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -565,15 +1188,35 @@
       "implementation": {
         "milestone": "P2"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/evidence/verification.json",
+          "tests/core.test.ts",
+          "tests/e2e/flows.spec.ts",
+          "docs/STATUS.md"
+        ],
+        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "docs/evidence/verification.json",
+            "tests/core.test.ts",
+            "tests/e2e/flows.spec.ts",
+            "docs/STATUS.md"
+          ],
+          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        }
+      ]
     },
     {
       "id": "FR-036",
       "type": "functional",
       "title": "Corruption, replay and abuse controls",
       "statement": "Corruption, replay and abuse controls",
-      "status": "todo",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -581,15 +1224,35 @@
       "implementation": {
         "milestone": "P4"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/evidence/verification.json",
+          "tests/core.test.ts",
+          "tests/e2e/flows.spec.ts",
+          "docs/STATUS.md"
+        ],
+        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "docs/evidence/verification.json",
+            "tests/core.test.ts",
+            "tests/e2e/flows.spec.ts",
+            "docs/STATUS.md"
+          ],
+          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        }
+      ]
     },
     {
       "id": "FR-037",
       "type": "functional",
       "title": "Bootstrap/discovery and NAT tradeoffs",
       "statement": "Bootstrap/discovery and NAT tradeoffs",
-      "status": "in_progress",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -597,15 +1260,35 @@
       "implementation": {
         "milestone": "P2"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/evidence/verification.json",
+          "tests/core.test.ts",
+          "tests/e2e/flows.spec.ts",
+          "docs/STATUS.md"
+        ],
+        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "docs/evidence/verification.json",
+            "tests/core.test.ts",
+            "tests/e2e/flows.spec.ts",
+            "docs/STATUS.md"
+          ],
+          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        }
+      ]
     },
     {
       "id": "FR-038",
       "type": "functional",
       "title": "Responsive drag/drop personal site builder",
       "statement": "Responsive drag/drop personal site builder",
-      "status": "in_progress",
+      "status": "partial",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -613,15 +1296,29 @@
       "implementation": {
         "milestone": "P3"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "tests/e2e/flows.spec.ts"
+        ],
+        "limits": "Drag/drop real, setas/teclado, paletas e quatro blocos; mais templates/media e toque f\u00edsico pendentes."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "partial",
+          "paths": [
+            "tests/e2e/flows.spec.ts"
+          ],
+          "notes": "Drag/drop real, setas/teclado, paletas e quatro blocos; mais templates/media e toque f\u00edsico pendentes."
+        }
+      ]
     },
     {
       "id": "FR-039",
       "type": "functional",
       "title": "Safe declarative block rendering and keyboard/touch alternatives",
       "statement": "Safe declarative block rendering and keyboard/touch alternatives",
-      "status": "in_progress",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -629,15 +1326,35 @@
       "implementation": {
         "milestone": "P3"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/evidence/verification.json",
+          "tests/core.test.ts",
+          "tests/e2e/flows.spec.ts",
+          "docs/STATUS.md"
+        ],
+        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "docs/evidence/verification.json",
+            "tests/core.test.ts",
+            "tests/e2e/flows.spec.ts",
+            "docs/STATUS.md"
+          ],
+          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        }
+      ]
     },
     {
       "id": "FR-040",
       "type": "functional",
       "title": "Signed site publication and offline cached foreign site",
       "statement": "Signed site publication and offline cached foreign site",
-      "status": "in_progress",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -645,15 +1362,35 @@
       "implementation": {
         "milestone": "P3"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/evidence/verification.json",
+          "tests/core.test.ts",
+          "tests/e2e/flows.spec.ts",
+          "docs/STATUS.md"
+        ],
+        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "docs/evidence/verification.json",
+            "tests/core.test.ts",
+            "tests/e2e/flows.spec.ts",
+            "docs/STATUS.md"
+          ],
+          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        }
+      ]
     },
     {
       "id": "FR-041",
       "type": "functional",
       "title": "Emergency health, peers and alert provenance",
       "statement": "Emergency health, peers and alert provenance",
-      "status": "in_progress",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -661,15 +1398,35 @@
       "implementation": {
         "milestone": "P3"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/evidence/verification.json",
+          "tests/core.test.ts",
+          "tests/e2e/flows.spec.ts",
+          "docs/STATUS.md"
+        ],
+        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "docs/evidence/verification.json",
+            "tests/core.test.ts",
+            "tests/e2e/flows.spec.ts",
+            "docs/STATUS.md"
+          ],
+          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        }
+      ]
     },
     {
       "id": "FR-042",
       "type": "functional",
       "title": "High contrast, large targets and low-power critical messaging",
       "statement": "High contrast, large targets and low-power critical messaging",
-      "status": "in_progress",
+      "status": "partial",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -677,15 +1434,31 @@
       "implementation": {
         "milestone": "P5"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/evidence/ui",
+          "docs/SIMULATION.md"
+        ],
+        "limits": "Contraste/texto maior/baixo consumo implementados; leitor de ecr\u00e3 f\u00edsico e emerg\u00eancia n\u00e3o validados."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "partial",
+          "paths": [
+            "docs/evidence/ui",
+            "docs/SIMULATION.md"
+          ],
+          "notes": "Contraste/texto maior/baixo consumo implementados; leitor de ecr\u00e3 f\u00edsico e emerg\u00eancia n\u00e3o validados."
+        }
+      ]
     },
     {
       "id": "UX-001",
       "type": "ux",
       "title": "Original cohesive typography and spacing",
       "statement": "Original cohesive typography and spacing",
-      "status": "in_progress",
+      "status": "partial",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -693,15 +1466,31 @@
       "implementation": {
         "milestone": "P5"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "tests/e2e/flows.spec.ts",
+          "docs/evidence/ui"
+        ],
+        "limits": "Capturas/axe e browser reais; revis\u00e3o em hardware e leitor de ecr\u00e3 pendentes."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "partial",
+          "paths": [
+            "tests/e2e/flows.spec.ts",
+            "docs/evidence/ui"
+          ],
+          "notes": "Capturas/axe e browser reais; revis\u00e3o em hardware e leitor de ecr\u00e3 pendentes."
+        }
+      ]
     },
     {
       "id": "UX-002",
       "type": "ux",
       "title": "Responsive light/dark states",
       "statement": "Responsive light/dark states",
-      "status": "in_progress",
+      "status": "partial",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -709,15 +1498,31 @@
       "implementation": {
         "milestone": "P5"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "tests/e2e/flows.spec.ts",
+          "docs/evidence/ui"
+        ],
+        "limits": "Capturas/axe e browser reais; revis\u00e3o em hardware e leitor de ecr\u00e3 pendentes."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "partial",
+          "paths": [
+            "tests/e2e/flows.spec.ts",
+            "docs/evidence/ui"
+          ],
+          "notes": "Capturas/axe e browser reais; revis\u00e3o em hardware e leitor de ecr\u00e3 pendentes."
+        }
+      ]
     },
     {
       "id": "UX-003",
       "type": "ux",
       "title": "Reduced motion and keyboard/screen reader checks",
       "statement": "Reduced motion and keyboard/screen reader checks",
-      "status": "in_progress",
+      "status": "partial",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -725,15 +1530,31 @@
       "implementation": {
         "milestone": "P5"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "tests/e2e/flows.spec.ts",
+          "docs/evidence/ui"
+        ],
+        "limits": "Capturas/axe e browser reais; revis\u00e3o em hardware e leitor de ecr\u00e3 pendentes."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "partial",
+          "paths": [
+            "tests/e2e/flows.spec.ts",
+            "docs/evidence/ui"
+          ],
+          "notes": "Capturas/axe e browser reais; revis\u00e3o em hardware e leitor de ecr\u00e3 pendentes."
+        }
+      ]
     },
     {
       "id": "UX-004",
       "type": "ux",
       "title": "Real empty/error/loading/offline states without fake controls",
       "statement": "Real empty/error/loading/offline states without fake controls",
-      "status": "in_progress",
+      "status": "partial",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -741,15 +1562,31 @@
       "implementation": {
         "milestone": "P5"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "tests/e2e/flows.spec.ts",
+          "docs/evidence/ui"
+        ],
+        "limits": "Capturas/axe e browser reais; revis\u00e3o em hardware e leitor de ecr\u00e3 pendentes."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "partial",
+          "paths": [
+            "tests/e2e/flows.spec.ts",
+            "docs/evidence/ui"
+          ],
+          "notes": "Capturas/axe e browser reais; revis\u00e3o em hardware e leitor de ecr\u00e3 pendentes."
+        }
+      ]
     },
     {
       "id": "UX-005",
       "type": "ux",
       "title": "Real screenshots and accessibility audit",
       "statement": "Real screenshots and accessibility audit",
-      "status": "in_progress",
+      "status": "partial",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -757,15 +1594,31 @@
       "implementation": {
         "milestone": "P5"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "tests/e2e/flows.spec.ts",
+          "docs/evidence/ui"
+        ],
+        "limits": "Capturas/axe e browser reais; revis\u00e3o em hardware e leitor de ecr\u00e3 pendentes."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "partial",
+          "paths": [
+            "tests/e2e/flows.spec.ts",
+            "docs/evidence/ui"
+          ],
+          "notes": "Capturas/axe e browser reais; revis\u00e3o em hardware e leitor de ecr\u00e3 pendentes."
+        }
+      ]
     },
     {
       "id": "INT-001",
       "type": "integration",
       "title": "Evaluate RNS interoperability and licensing",
       "statement": "Evaluate RNS interoperability and licensing",
-      "status": "todo",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -773,15 +1626,29 @@
       "implementation": {
         "milestone": "P4"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/TRANSPORT.md"
+        ],
+        "limits": "RNS/licen\u00e7a avaliados; sem compatibilidade implementada ou alegada."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "docs/TRANSPORT.md"
+          ],
+          "notes": "RNS/licen\u00e7a avaliados; sem compatibilidade implementada ou alegada."
+        }
+      ]
     },
     {
       "id": "INT-002",
       "type": "integration",
       "title": "Truth matrix for IP BLE Wi-Fi Direct LoRa serial simulation",
       "statement": "Truth matrix for IP BLE Wi-Fi Direct LoRa serial simulation",
-      "status": "todo",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -789,15 +1656,31 @@
       "implementation": {
         "milestone": "P7"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/TRANSPORT.md",
+          "docs/STATUS.md"
+        ],
+        "limits": "Matriz distingue TCP, s\u00e9rie PTY, r\u00e1dio f\u00edsico, BLE/Wi-Fi Direct e simula\u00e7\u00e3o."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "docs/TRANSPORT.md",
+            "docs/STATUS.md"
+          ],
+          "notes": "Matriz distingue TCP, s\u00e9rie PTY, r\u00e1dio f\u00edsico, BLE/Wi-Fi Direct e simula\u00e7\u00e3o."
+        }
+      ]
     },
     {
       "id": "INT-003",
       "type": "integration",
       "title": "Linux native build and execution",
       "statement": "Linux native build and execution",
-      "status": "todo",
+      "status": "partial",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -805,15 +1688,31 @@
       "implementation": {
         "milestone": "P6"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/evidence/desktop",
+          "docs/DESKTOP.md"
+        ],
+        "limits": "Electron e pacote Linux x64 executados; instalador/release assinada pendentes."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "partial",
+          "paths": [
+            "docs/evidence/desktop",
+            "docs/DESKTOP.md"
+          ],
+          "notes": "Electron e pacote Linux x64 executados; instalador/release assinada pendentes."
+        }
+      ]
     },
     {
       "id": "INT-004",
       "type": "integration",
       "title": "Windows build and native execution",
       "statement": "Windows build and native execution",
-      "status": "todo",
+      "status": "partial",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -821,15 +1720,29 @@
       "implementation": {
         "milestone": "P6"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/evidence/ci-919beec.json"
+        ],
+        "limits": "Node real no runner Windows; desktop package/GUI Windows pendentes."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "partial",
+          "paths": [
+            "docs/evidence/ci-919beec.json"
+          ],
+          "notes": "Node real no runner Windows; desktop package/GUI Windows pendentes."
+        }
+      ]
     },
     {
       "id": "INT-005",
       "type": "integration",
       "title": "macOS build and native execution",
       "statement": "macOS build and native execution",
-      "status": "todo",
+      "status": "partial",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -837,15 +1750,29 @@
       "implementation": {
         "milestone": "P6"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/evidence/ci-919beec.json"
+        ],
+        "limits": "Node/PTY real no runner macOS; desktop package/GUI/assinatura pendentes."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "partial",
+          "paths": [
+            "docs/evidence/ci-919beec.json"
+          ],
+          "notes": "Node/PTY real no runner macOS; desktop package/GUI/assinatura pendentes."
+        }
+      ]
     },
     {
       "id": "INT-006",
       "type": "integration",
       "title": "Android app build and device/emulator execution",
       "statement": "Android app build and device/emulator execution",
-      "status": "todo",
+      "status": "partial",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -853,15 +1780,29 @@
       "implementation": {
         "milestone": "P6"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/ANDROID.md"
+        ],
+        "limits": "APK Go real no emulador API36 x86_64; dispositivo f\u00edsico e ARM64 ainda n\u00e3o verificados."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "partial",
+          "paths": [
+            "docs/ANDROID.md"
+          ],
+          "notes": "APK Go real no emulador API36 x86_64; dispositivo f\u00edsico e ARM64 ainda n\u00e3o verificados."
+        }
+      ]
     },
     {
       "id": "INT-007",
       "type": "integration",
       "title": "iOS app build signing and device execution",
       "statement": "iOS app build signing and device execution",
-      "status": "todo",
+      "status": "partial",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -869,15 +1810,29 @@
       "implementation": {
         "milestone": "P6"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/IOS.md"
+        ],
+        "limits": "Shell iOS implementada; Swift/Xcode/simulador n\u00e3o executados ainda, hardware e assinatura bloqueados neste Linux."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "partial",
+          "paths": [
+            "docs/IOS.md"
+          ],
+          "notes": "Shell iOS implementada; Swift/Xcode/simulador n\u00e3o executados ainda, hardware e assinatura bloqueados neste Linux."
+        }
+      ]
     },
     {
       "id": "INT-008",
       "type": "integration",
       "title": "Document mobile background relaying restrictions",
       "statement": "Document mobile background relaying restrictions",
-      "status": "todo",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -885,15 +1840,31 @@
       "implementation": {
         "milestone": "P6"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/ANDROID.md",
+          "docs/IOS.md"
+        ],
+        "limits": "Relaying apenas em primeiro plano, Stop normal no background; restri\u00e7\u00f5es documentadas."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "docs/ANDROID.md",
+            "docs/IOS.md"
+          ],
+          "notes": "Relaying apenas em primeiro plano, Stop normal no background; restri\u00e7\u00f5es documentadas."
+        }
+      ]
     },
     {
       "id": "ACC-001",
       "type": "acceptance",
       "title": "Unit/property/fuzz bounds crypto ACL and addressing tests",
       "statement": "Unit/property/fuzz bounds crypto ACL and addressing tests",
-      "status": "todo",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -901,15 +1872,33 @@
       "implementation": {
         "milestone": "P4"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "tests/core.test.ts",
+          "tests/transport-hardening.test.ts",
+          "tests/snapshot.test.ts"
+        ],
+        "limits": "66 testes Node passados, incluindo limites/corrup\u00e7\u00e3o/ACL; Go11core+11transport+17app com race."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "tests/core.test.ts",
+            "tests/transport-hardening.test.ts",
+            "tests/snapshot.test.ts"
+          ],
+          "notes": "66 testes Node passados, incluindo limites/corrup\u00e7\u00e3o/ACL; Go11core+11transport+17app com race."
+        }
+      ]
     },
     {
       "id": "ACC-002",
       "type": "acceptance",
       "title": "Real multi-process A-B-C isolation with positive/negative controls",
       "statement": "Real multi-process A-B-C isolation with positive/negative controls",
-      "status": "in_progress",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -917,15 +1906,31 @@
       "implementation": {
         "milestone": "P2"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/evidence/heterogeneous.json",
+          "docs/evidence/native/mixed-tcp.json"
+        ],
+        "limits": "Isolamento de topologia com controlos positivos/negativos; n\u00e3o firewall f\u00edsico."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "docs/evidence/heterogeneous.json",
+            "docs/evidence/native/mixed-tcp.json"
+          ],
+          "notes": "Isolamento de topologia com controlos positivos/negativos; n\u00e3o firewall f\u00edsico."
+        }
+      ]
     },
     {
       "id": "ACC-003",
       "type": "acceptance",
       "title": "Heterogeneous multi-hop payload integrity and route evidence",
       "statement": "Heterogeneous multi-hop payload integrity and route evidence",
-      "status": "in_progress",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -933,15 +1938,31 @@
       "implementation": {
         "milestone": "P2"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/evidence/heterogeneous.json",
+          "docs/evidence/native/mixed-serial.json"
+        ],
+        "limits": "TCP\u2192serialport por PTYs reais; bytes/autor preservados."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "docs/evidence/heterogeneous.json",
+            "docs/evidence/native/mixed-serial.json"
+          ],
+          "notes": "TCP\u2192serialport por PTYs reais; bytes/autor preservados."
+        }
+      ]
     },
     {
       "id": "ACC-004",
       "type": "acceptance",
       "title": "Offline publisher seeder takeover",
       "statement": "Offline publisher seeder takeover",
-      "status": "in_progress",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -949,15 +1970,31 @@
       "implementation": {
         "milestone": "P2"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/evidence/native/mixed-tcp.json",
+          "docs/ANDROID.md"
+        ],
+        "limits": "Autor termina; outro n\u00f3 serve novo leitor sem reautoria."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "docs/evidence/native/mixed-tcp.json",
+            "docs/ANDROID.md"
+          ],
+          "notes": "Autor termina; outro n\u00f3 serve novo leitor sem reautoria."
+        }
+      ]
     },
     {
       "id": "ACC-005",
       "type": "acceptance",
       "title": "Unauthorized edit/decrypt tamper and replay rejection",
       "statement": "Unauthorized edit/decrypt tamper and replay rejection",
-      "status": "todo",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -965,15 +2002,33 @@
       "implementation": {
         "milestone": "P4"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "tests/core.test.ts",
+          "tests/security.test.ts",
+          "tests/native/mixed-network.test.ts"
+        ],
+        "limits": "Falhas de escrita/leitura indevidas, tamper e replay com controlos v\u00e1lidos."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "tests/core.test.ts",
+            "tests/security.test.ts",
+            "tests/native/mixed-network.test.ts"
+          ],
+          "notes": "Falhas de escrita/leitura indevidas, tamper e replay com controlos v\u00e1lidos."
+        }
+      ]
     },
     {
       "id": "ACC-006",
       "type": "acceptance",
       "title": "Persistence restart and duplicate flood/churn/partition/heal",
       "statement": "Persistence restart and duplicate flood/churn/partition/heal",
-      "status": "todo",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -981,15 +2036,31 @@
       "implementation": {
         "milestone": "P4"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "tests/transport-hardening.test.ts",
+          "tests/native/mixed-network.test.ts"
+        ],
+        "limits": "Restart, fragmenta\u00e7\u00e3o, duplicados, churn e parti\u00e7\u00e3o/heal reais."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "tests/transport-hardening.test.ts",
+            "tests/native/mixed-network.test.ts"
+          ],
+          "notes": "Restart, fragmenta\u00e7\u00e3o, duplicados, churn e parti\u00e7\u00e3o/heal reais."
+        }
+      ]
     },
     {
       "id": "ACC-007",
       "type": "acceptance",
       "title": "Deterministic bandwidth latency loss asymmetry MTU congestion simulation",
       "statement": "Deterministic bandwidth latency loss asymmetry MTU congestion simulation",
-      "status": "todo",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -997,15 +2068,31 @@
       "implementation": {
         "milestone": "P4"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "tests/simulation.test.ts",
+          "docs/SIMULATION.md"
+        ],
+        "limits": "Simula\u00e7\u00e3o determin\u00edstica separada; 9 testes e16 controlos de cen\u00e1rio."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "tests/simulation.test.ts",
+            "docs/SIMULATION.md"
+          ],
+          "notes": "Simula\u00e7\u00e3o determin\u00edstica separada; 9 testes e16 controlos de cen\u00e1rio."
+        }
+      ]
     },
     {
       "id": "ACC-008",
       "type": "acceptance",
       "title": "Storage exhaustion and low-power simulation",
       "statement": "Storage exhaustion and low-power simulation",
-      "status": "todo",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -1013,15 +2100,31 @@
       "implementation": {
         "milestone": "P4"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "tests/simulation.test.ts",
+          "docs/SIMULATION.md"
+        ],
+        "limits": "Quotas/low-power virtuais explicitamente separados de hardware."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "tests/simulation.test.ts",
+            "docs/SIMULATION.md"
+          ],
+          "notes": "Quotas/low-power virtuais explicitamente separados de hardware."
+        }
+      ]
     },
     {
       "id": "ACC-009",
       "type": "acceptance",
       "title": "Mutation controls fail if crypto/routing is broken",
       "statement": "Mutation controls fail if crypto/routing is broken",
-      "status": "todo",
+      "status": "done",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -1029,15 +2132,31 @@
       "implementation": {
         "milestone": "P4"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "tests/simulation.test.ts",
+          "docs/SIMULATION.md"
+        ],
+        "limits": "Controlos deliberadamente quebrados de routing e verifica\u00e7\u00e3o detectados."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "done",
+          "paths": [
+            "tests/simulation.test.ts",
+            "docs/SIMULATION.md"
+          ],
+          "notes": "Controlos deliberadamente quebrados de routing e verifica\u00e7\u00e3o detectados."
+        }
+      ]
     },
     {
       "id": "ACC-010",
       "type": "acceptance",
       "title": "Real-client UI end-to-end all critical workflows",
       "statement": "Real-client UI end-to-end all critical workflows",
-      "status": "in_progress",
+      "status": "partial",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -1045,15 +2164,31 @@
       "implementation": {
         "milestone": "P5"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/evidence/verification.json",
+          "tests/e2e"
+        ],
+        "limits": "10 percursos browser Node e10 Go passaram; workflows nativos m\u00f3veis completos pendentes."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "partial",
+          "paths": [
+            "docs/evidence/verification.json",
+            "tests/e2e"
+          ],
+          "notes": "10 percursos browser Node e10 Go passaram; workflows nativos m\u00f3veis completos pendentes."
+        }
+      ]
     },
     {
       "id": "ACC-011",
       "type": "acceptance",
       "title": "Platform CI build matrix without device-test overclaims",
       "statement": "Platform CI build matrix without device-test overclaims",
-      "status": "todo",
+      "status": "partial",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -1061,15 +2196,31 @@
       "implementation": {
         "milestone": "P6"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/evidence/ci-919beec.json",
+          ".github/workflows/ci.yml"
+        ],
+        "limits": "Node nos3OS passou; novos jobs Go/desktop/iOS ainda por observar ap\u00f3s push."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "partial",
+          "paths": [
+            "docs/evidence/ci-919beec.json",
+            ".github/workflows/ci.yml"
+          ],
+          "notes": "Node nos3OS passou; novos jobs Go/desktop/iOS ainda por observar ap\u00f3s push."
+        }
+      ]
     },
     {
       "id": "ACC-012",
       "type": "acceptance",
       "title": "Independent security reliability/design review and fix/rerun",
       "statement": "Independent security reliability/design review and fix/rerun",
-      "status": "todo",
+      "status": "partial",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -1077,15 +2228,35 @@
       "implementation": {
         "milestone": "P7"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/AGENTS.md",
+          "docs/NATIVE-REVIEW.md",
+          "docs/APPLICATION-REVIEW.md",
+          "docs/RELEASE-REVIEW.md"
+        ],
+        "limits": "Revis\u00f5es reais, correc\u00e7\u00f5es e repeti\u00e7\u00e3o; auditoria continua no \u00e2mbito completo."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "partial",
+          "paths": [
+            "docs/AGENTS.md",
+            "docs/NATIVE-REVIEW.md",
+            "docs/APPLICATION-REVIEW.md",
+            "docs/RELEASE-REVIEW.md"
+          ],
+          "notes": "Revis\u00f5es reais, correc\u00e7\u00f5es e repeti\u00e7\u00e3o; auditoria continua no \u00e2mbito completo."
+        }
+      ]
     },
     {
       "id": "ACC-013",
       "type": "acceptance",
       "title": "Acceptance evidence audit and precise README/STATUS",
       "statement": "Acceptance evidence audit and precise README/STATUS",
-      "status": "todo",
+      "status": "partial",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -1093,8 +2264,24 @@
       "implementation": {
         "milestone": "P7"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/STATUS.md",
+          ".codex-delivery/traceability.md"
+        ],
+        "limits": "Evid\u00eancia actualizada por requisito; contrato total ainda incompleto."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "partial",
+          "paths": [
+            "docs/STATUS.md",
+            ".codex-delivery/traceability.md"
+          ],
+          "notes": "Evid\u00eancia actualizada por requisito; contrato total ainda incompleto."
+        }
+      ]
     },
     {
       "id": "CON-001",
@@ -1109,8 +2296,24 @@
       "implementation": {
         "milestone": "P1"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/AGENTS.md",
+          "docs/STATUS.md"
+        ],
+        "limits": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "in_progress",
+          "paths": [
+            "docs/AGENTS.md",
+            "docs/STATUS.md"
+          ],
+          "notes": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+        }
+      ]
     },
     {
       "id": "CON-002",
@@ -1125,8 +2328,24 @@
       "implementation": {
         "milestone": "P3"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/AGENTS.md",
+          "docs/STATUS.md"
+        ],
+        "limits": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "in_progress",
+          "paths": [
+            "docs/AGENTS.md",
+            "docs/STATUS.md"
+          ],
+          "notes": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+        }
+      ]
     },
     {
       "id": "CON-003",
@@ -1141,8 +2360,24 @@
       "implementation": {
         "milestone": "P1"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/AGENTS.md",
+          "docs/STATUS.md"
+        ],
+        "limits": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "in_progress",
+          "paths": [
+            "docs/AGENTS.md",
+            "docs/STATUS.md"
+          ],
+          "notes": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+        }
+      ]
     },
     {
       "id": "CON-004",
@@ -1157,8 +2392,24 @@
       "implementation": {
         "milestone": "P0"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/AGENTS.md",
+          "docs/STATUS.md"
+        ],
+        "limits": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "in_progress",
+          "paths": [
+            "docs/AGENTS.md",
+            "docs/STATUS.md"
+          ],
+          "notes": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+        }
+      ]
     },
     {
       "id": "CON-005",
@@ -1173,8 +2424,24 @@
       "implementation": {
         "milestone": "P0"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/AGENTS.md",
+          "docs/STATUS.md"
+        ],
+        "limits": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "in_progress",
+          "paths": [
+            "docs/AGENTS.md",
+            "docs/STATUS.md"
+          ],
+          "notes": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+        }
+      ]
     },
     {
       "id": "CON-006",
@@ -1189,8 +2456,24 @@
       "implementation": {
         "milestone": "P0"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/AGENTS.md",
+          "docs/STATUS.md"
+        ],
+        "limits": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "in_progress",
+          "paths": [
+            "docs/AGENTS.md",
+            "docs/STATUS.md"
+          ],
+          "notes": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+        }
+      ]
     },
     {
       "id": "CON-007",
@@ -1205,8 +2488,24 @@
       "implementation": {
         "milestone": "P0"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/AGENTS.md",
+          "docs/STATUS.md"
+        ],
+        "limits": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "in_progress",
+          "paths": [
+            "docs/AGENTS.md",
+            "docs/STATUS.md"
+          ],
+          "notes": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+        }
+      ]
     },
     {
       "id": "CON-008",
@@ -1221,15 +2520,31 @@
       "implementation": {
         "milestone": "P0"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/AGENTS.md",
+          "docs/STATUS.md"
+        ],
+        "limits": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "in_progress",
+          "paths": [
+            "docs/AGENTS.md",
+            "docs/STATUS.md"
+          ],
+          "notes": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+        }
+      ]
     },
     {
       "id": "CON-009",
       "type": "constraint",
       "title": "Small coherent verified commits and authorized non-force pushes",
       "statement": "Small coherent verified commits and authorized non-force pushes",
-      "status": "todo",
+      "status": "in_progress",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -1237,15 +2552,31 @@
       "implementation": {
         "milestone": "P7"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/AGENTS.md",
+          "docs/STATUS.md"
+        ],
+        "limits": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "in_progress",
+          "paths": [
+            "docs/AGENTS.md",
+            "docs/STATUS.md"
+          ],
+          "notes": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+        }
+      ]
     },
     {
       "id": "CON-010",
       "type": "constraint",
       "title": "No disaster readiness or all-OS claim without evidence",
       "statement": "No disaster readiness or all-OS claim without evidence",
-      "status": "todo",
+      "status": "in_progress",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -1253,15 +2584,31 @@
       "implementation": {
         "milestone": "P7"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/AGENTS.md",
+          "docs/STATUS.md"
+        ],
+        "limits": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "in_progress",
+          "paths": [
+            "docs/AGENTS.md",
+            "docs/STATUS.md"
+          ],
+          "notes": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+        }
+      ]
     },
     {
       "id": "CON-011",
       "type": "constraint",
       "title": "No unsafe mobile background policy evasion",
       "statement": "No unsafe mobile background policy evasion",
-      "status": "todo",
+      "status": "in_progress",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -1269,15 +2616,31 @@
       "implementation": {
         "milestone": "P6"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/AGENTS.md",
+          "docs/STATUS.md"
+        ],
+        "limits": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "in_progress",
+          "paths": [
+            "docs/AGENTS.md",
+            "docs/STATUS.md"
+          ],
+          "notes": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+        }
+      ]
     },
     {
       "id": "CON-012",
       "type": "constraint",
       "title": "No merge or secret publication",
       "statement": "No merge or secret publication",
-      "status": "todo",
+      "status": "in_progress",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -1285,8 +2648,24 @@
       "implementation": {
         "milestone": "P7"
       },
-      "validation": {},
-      "evidence": []
+      "validation": {
+        "evidence_paths": [
+          "docs/AGENTS.md",
+          "docs/STATUS.md"
+        ],
+        "limits": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+      },
+      "evidence": [
+        {
+          "kind": "test-and-source-review",
+          "result": "in_progress",
+          "paths": [
+            "docs/AGENTS.md",
+            "docs/STATUS.md"
+          ],
+          "notes": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+        }
+      ]
     }
   ]
 }

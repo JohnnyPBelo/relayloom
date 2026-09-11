@@ -45,6 +45,31 @@ A pasta `docs/evidence` guarda relatórios e imagens de execuções reais; os da
 - Apagar publica uma decisão assinada e conserva a decisão local autenticada. Não pode apagar cópias detidas por outros pares. Disponibilidade depende de cache, quotas, expiração e seeders ligados.
 - Grupos têm membros fixos por grupo neste marco; rotação/revogação e mudanças de membros não estão concluídas. Máximo 64 destinatários, 4 MiB por objecto, quatro anexos por mensagem e 2 MB por anexo na interface.
 - O editor usa apenas blocos declarativos; links externos são HTTPS e não são incorporados. Rascunhos podem ser guardados localmente com cifra.
-- Linux é o ambiente de execução observado. Windows/macOS têm código e jobs CI, ainda sem evidência de execução. Android/iOS nativos, keychains, assinatura Apple, notificações e rádios físicos permanecem por implementar ou verificar. Um browser móvel não é um nó móvel nativo em segundo plano.
+- Linux é o ambiente local executado. A shell Electron e um pacote Linux x64 foram executados; o núcleo Node tem testes reais nos runners Windows/macOS. O APK Android com Go integrado passou27 asserções de integração no único emulador x86_64, incluindo repetição após as últimas correcções nativas. A shell iOS tem código e verificações estáticas, sem compilação ou execução Apple ainda observada. Keychains, assinatura Apple e rádios físicos continuam por implementar ou verificar. Notificações têm lógica de adesão explícita testada com API substituída, sem prova de apresentação pelo OS.
 
 Arquitectura e ameaças: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). Tarefas reais e revisões: [docs/AGENTS.md](docs/AGENTS.md). Plano de continuidade: [.codex-delivery/implementation-plan.md](.codex-delivery/implementation-plan.md).
+
+## Desktop e próximos alvos
+
+O pacote desktop executa o nó no próprio processo de aplicação/utility process, sem exigir um serviço externo. Para este Linux, o backend X11 foi o que passou:
+
+```sh
+ELECTRON_CACHE="$PWD/.cache/electron" node node_modules/electron/install.js
+npm run build
+npm run desktop:build
+npm run desktop -- --x11
+```
+
+`npm run desktop:smoke` e `npm run desktop:package -- --linux --x64 --dir` estão documentados em [DESKTOP.md](docs/DESKTOP.md). O binário gerado fica em `dist/desktop-installers/linux-unpacked/relayloom`. Não há actualizador, publicação automática nem assinatura de release configurados.
+
+O núcleo Go executa armazenamento, cifra, TCP, aplicação e API dentro do APK Android. A interoperabilidade Node↔Go e as rotas Go→Node→Go e Go→Node→Node TCP/série foram testadas com processos reais. O único emulador Android já demonstrou encaminhamento, partição/recuperação e serviço de conteúdo quando o autor está desligado; o APK é reconstruído e os gates repetidos após alterações nativas. Isto não prova execução em hardware físico. A shell iOS aguarda compilação Apple. Ver [ANDROID.md](docs/ANDROID.md), [IOS.md](docs/IOS.md) e [NATIVE-INTEGRATION.md](docs/NATIVE-INTEGRATION.md).
+
+Para executar a interface com o nó Go no host (Go 1.26.8 instalado; caches no projecto):
+
+```sh
+npm run build
+npm run native:build
+.cache/native-app/relayloom --data .runtime/go-alice --http-port 4175 --assets dist/web
+```
+
+O CLI Go imprime `origin` e `token` num registo JSON de arranque. Abra `origin/#token=token`, substituindo os dois valores; esse endereço dá acesso ao nó local e não deve ser partilhado. O estado periódico usa resumos paginados, e os anexos são obtidos através da API autenticada quando necessários. A cache é limitada e continua dependente da verificação dos bytes em disco; disponibilidade e expiração nunca são garantidas por um contador da interface.
