@@ -500,33 +500,94 @@ test("relay pause cancels queued local seeding and prevents retained offline rep
   }
 });
 
-async function priorityControl(router: Router, peer: Socket | SerialPort) {
-  const observed: { id: string; index: number; count: number }[] = [];
+async function priorityControl(
+  router: Router,
+  peer: Socket | SerialPort,
+  options: {
+    payloadBytes?: number;
+    timeoutMs?: number;
+    minBulkTurns?: number;
+    fixtureErrors?: () => string;
+  } = {},
+) {
+  const payloadBytes = options.payloadBytes ?? 600_000,
+    timeoutMs = options.timeoutMs ?? 12_000;
+  const observed: { id: string; index: number; count: number; data: string }[] =
+    [];
+  const started = Date.now(),
+    ioErrors: string[] = [];
+  peer.on("error", (error) => ioErrors.push(error.message));
   let sos = "",
     bulk = "";
+  let sosEnqueuedAtTurn = 0;
   parse(peer, (frame) => {
     if (frame.t !== "part") return;
     observed.push(frame);
-    if (!sos)
+    if (!sos) {
+      sosEnqueuedAtTurn = [...router.links][0].turn;
       sos = router.broadcast(
-        { label: "emergency", data: "s".repeat(600_000) },
+        { label: "emergency", data: "s".repeat(payloadBytes) },
         "sos",
-        30_000,
+        timeoutMs + 15_000,
       );
+    }
     if (frame.index === frame.count - 1)
       peer.write(JSON.stringify({ t: "ack", id: frame.id }) + "\n");
   });
   bulk = router.broadcast(
-    { label: "bulk", data: "b".repeat(600_000) },
+    { label: "bulk", data: "b".repeat(payloadBytes) },
     "bulk",
-    30_000,
+    timeoutMs + 15_000,
   );
-  await until(
-    () =>
-      observed.some((f) => f.id === sos && f.index === f.count - 1) &&
-      observed.some((f) => f.id === bulk && f.index === f.count - 1),
-    12000,
-  );
+  try {
+    await until(
+      () =>
+        observed.some((f) => f.id === sos && f.index === f.count - 1) &&
+        observed.some((f) => f.id === bulk && f.index === f.count - 1),
+      timeoutMs,
+    );
+  } catch (error) {
+    const progress = (id: string) => {
+      const seen = observed.filter((frame) => frame.id === id),
+        indexes = new Set(seen.map((frame) => frame.index));
+      return {
+        frames: seen.length,
+        unique: indexes.size,
+        expected: seen[0]?.count ?? null,
+        first: seen[0]?.index ?? null,
+        last: seen.at(-1)?.index ?? null,
+      };
+    };
+    throw new Error(
+      "Priority transfer timed out: " +
+        JSON.stringify({
+          platform: process.platform,
+          elapsedMs: Date.now() - started,
+          payloadBytes,
+          sos: progress(sos),
+          bulk: progress(bulk),
+          ioErrors,
+          fixtureErrors: options.fixtureErrors?.(),
+          peers: router.peers,
+          counters: router.counters,
+          links: [...router.links].map((link) => ({
+            active: link.active,
+            writing: link.writing,
+            turn: link.turn,
+            writableLength: link.io.writableLength,
+            pendingBytes: link.pendingBytes,
+            pending: [...link.pending.values()].map((transfer) => ({
+              priority: transfer.packet.priority,
+              next: transfer.next,
+              count: Math.ceil(transfer.bytes / FRAGMENT),
+              attempts: transfer.attempts,
+              inFlight: transfer.inFlight,
+            })),
+          })),
+        }),
+      { cause: error },
+    );
+  }
   const firstSos = observed.findIndex((f) => f.id === sos),
     lastSos = observed.findIndex(
       (f) => f.id === sos && f.index === f.count - 1,
@@ -535,8 +596,8 @@ async function priorityControl(router: Router, peer: Socket | SerialPort) {
       (f) => f.id === bulk && f.index === f.count - 1,
     );
   assert.ok(
-    firstSos > 0 && firstSos <= 4,
-    "SOS starts within one scheduling round after the first bulk fragment",
+    firstSos > 0 && firstSos - sosEnqueuedAtTurn <= 4,
+    "SOS starts within one scheduling round of enqueue; bytes already written cannot be preempted",
   );
   assert.ok(
     lastSos < lastBulk,
@@ -547,7 +608,7 @@ async function priorityControl(router: Router, peer: Socket | SerialPort) {
       frame.id === bulk ? [index] : [],
     );
   assert.ok(
-    bulkPositions.length >= 50,
+    bulkPositions.length >= (options.minBulkTurns ?? 50),
     "bulk continues progressing while SOS is active",
   );
   for (let i = 1; i < bulkPositions.length; i++)
@@ -555,6 +616,34 @@ async function priorityControl(router: Router, peer: Socket | SerialPort) {
       bulkPositions[i] - bulkPositions[i - 1] <= 4,
       "bulk gets every fourth fragment while competing with SOS",
     );
+  for (const [id, label, letter] of [
+    [sos, "emergency", "s"],
+    [bulk, "bulk", "b"],
+  ]) {
+    const parts = new Map(
+      observed
+        .filter((frame) => frame.id === id)
+        .map((frame) => [frame.index, frame]),
+    );
+    assert.equal(parts.size, parts.get(0)!.count, "every fragment arrived");
+    const received = JSON.parse(
+      Buffer.concat(
+        [...parts.values()]
+          .sort((a, b) => a.index - b.index)
+          .map((frame) => Buffer.from(frame.data, "base64")),
+      ).toString(),
+    );
+    assert.deepEqual(received.payload, {
+      label,
+      data: letter.repeat(payloadBytes),
+    });
+    const { id: packetId, hops: _hops, ...body } = received;
+    assert.equal(
+      packetId,
+      hash(canonical(body)),
+      "assembled packet retains its exact content hash",
+    );
+  }
 }
 
 test("real TCP fragments preempt bulk for SOS while preserving bulk fairness", async () => {
@@ -601,7 +690,7 @@ test("many in-progress SOS transfers leave admission capacity for bulk fairness"
 
 test(
   "real serialport PTY fragments preempt bulk for SOS with the same fairness",
-  { skip: process.platform === "win32", timeout: 20000 },
+  { skip: process.platform === "win32", timeout: 60_000 },
   async () => {
     const bridge = spawn("python3", ["scripts/pty-bridge.py"], {
       stdio: ["ignore", "pipe", "pipe"],
@@ -619,6 +708,10 @@ test(
         );
       },
     );
+    let fixtureErrors = "";
+    bridge.stderr.on("data", (data) => {
+      fixtureErrors = (fixtureErrors + data.toString()).slice(-2000);
+    });
     const router = new Router(),
       peer = new SerialPort({ path: paths.right, baudRate: 115200 });
     peer.on("error", () => {});
@@ -626,7 +719,23 @@ test(
       if (!peer.isOpen) await once(peer, "open");
       router.connectSerial(paths.left);
       await until(() => router.peers.some((p) => p.medium === "serial"));
-      await priorityControl(router, peer);
+      // Two 64 KiB objects require about 16 seconds at 115200 baud, including
+      // base64 and 8N1 overhead. Keep 2.5x headroom for host scheduling and PTYs.
+      const payloadBytes = 64 * 1024;
+      const estimatedWireBytes =
+        2 *
+        (Math.ceil((payloadBytes + 1024) / FRAGMENT) * 160 +
+          Math.ceil(((payloadBytes + 1024) * 4) / 3));
+      const timeoutMs = Math.max(
+        30_000,
+        Math.ceil(((estimatedWireBytes * 10) / 115200) * 2500),
+      );
+      await priorityControl(router, peer, {
+        payloadBytes,
+        timeoutMs,
+        minBulkTurns: 8,
+        fixtureErrors: () => fixtureErrors,
+      });
     } finally {
       await closeSerial(peer);
       await router.stop();
