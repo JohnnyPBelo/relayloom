@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="org.relayloom.android.smoketests" android:versionCode="1" android:versionName="0.1-test">
+  <uses-sdk android:minSdkVersion="24" android:targetSdkVersion="36" />
+  <application android:label="RelayLoom native smoke tests" android:debuggable="true" />
+  <instrumentation android:name="org.relayloom.android.smoketests.NativeSmoke" android:targetPackage="org.relayloom.android" android:label="Isolated native-core instrumentation" android:functionalTest="true" />
+</manifest>

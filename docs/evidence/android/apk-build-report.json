@@ -1,0 +1,46 @@
+{
+  "kind": "ANDROID_NATIVE_BUILD",
+  "status": "APK_BUILT_NOT_DEVICE_TESTED",
+  "abi": "x86_64",
+  "minApi": 24,
+  "targetApi": 36,
+  "aar": ".cache/android/artifacts/relayloom-core.aar",
+  "aarSha256": "70fdc0ac2aee9c4710b7346f974222462ba8b2c50c0379d57b90c8e8313eaa1b",
+  "apk": ".cache/android/artifacts/relayloom-android-x86_64-debug.apk",
+  "apkSha256": "e1bdb0889e0328a962a0d43cfed04ee85c4b73b6a14471c7082eabe9d6d3d2a0",
+  "apkBytes": 11626176,
+  "elfLibraries": [
+    {
+      "name": "libgojni.so",
+      "sha256": "6c52e6bdf71dcce26c713a61d93b465baaa2ac8e910c686af900ed53afe56caf",
+      "loadAlignments": [
+        "0x4000",
+        "0x4000",
+        "0x4000",
+        "0x4000"
+      ]
+    }
+  ],
+  "apk16KiBZipAlignmentPassed": true,
+  "signatureVerification": "Verifies\nVerified using v1 scheme (JAR signing): false\nVerified using v2 scheme (APK Signature Scheme v2): true\nVerified using v3 scheme (APK Signature Scheme v3): true\nVerified using v3.1 scheme (APK Signature Scheme v3.1): false\nVerified using v4 scheme (APK Signature Scheme v4): false\nVerified for SourceStamp: false\nNumber of signers: 1\nSigner #1 certificate DN: CN=RelayLoom Debug, O=Development Only, C=PT\nSigner #1 certificate SHA-256 digest: 2228ad54be98becb1841c9f907e5e1117b89a7e4d5de2531c803081b478e8b2e\nSigner #1 certificate SHA-1 digest: 9a6200d944ab441573bfee4ed4244fedda05f730\nSigner #1 certificate MD5 digest: d29714da7c7bffb63938d0131cad5866\nSigner #1 key algorithm: RSA\nSigner #1 key size (bits): 2048\nSigner #1 public key SHA-256 digest: 83f5b1aec7fcb2d505f7b4e020129783590a4e5e505645b98296d7880c9915e6\nSigner #1 public key SHA-1 digest: cb3f2eae2a58d0a048074fbb50df123fef78ba23\nSigner #1 public key MD5 digest: c64f893738f7f0f733c6cf8336f8d2dd\nPicked up JAVA_TOOL_OPTIONS: -Djava.util.prefs.userRoot=/home/absint0o/projects/relayloom/.cache/android/java-prefs -Djava.util.prefs.systemRoot=/home/absint0o/projects/relayloom/.cache/android/java-system-prefs -Xmx1024m",
+  "manifestBadging": "package: name='org.relayloom.android' versionCode='1' versionName='0.1.0-experimental' platformBuildVersionName='16' platformBuildVersionCode='36' compileSdkVersion='36' compileSdkVersionCodename='16'\nminSdkVersion:'24'\ntargetSdkVersion:'36'\nuses-permission: name='android.permission.INTERNET'\nuses-permission: name='android.permission.ACCESS_NETWORK_STATE'\nuses-permission: name='android.permission.RECORD_AUDIO'\nuses-permission: name='android.permission.POST_NOTIFICATIONS'\napplication-label:'RelayLoom experimental'\napplication-icon-160:'res/drawable/ic_relayloom.xml'\napplication: label='RelayLoom experimental' icon='res/drawable/ic_relayloom.xml'\napplication-debuggable\nlaunchable-activity: name='org.relayloom.android.MainActivity'  label='' icon=''\nfeature-group: label=''\n  uses-feature-not-required: name='android.hardware.microphone'\n  uses-feature: name='android.hardware.faketouch'\n  uses-implied-feature: name='android.hardware.faketouch' reason='default feature for all apps'\nmain\nsupports-screens: 'small' 'normal' 'large' 'xlarge'\nsupports-any-density: 'true'\nlocales: '--_--'\ndensities: '160'\nnative-code: 'x86_64'",
+  "bundledAssetCount": 13,
+  "hostPolicyTest": "OriginPolicy: 21 boundary assertions passed (host JVM; not WebView/device testing)\nPicked up JAVA_TOOL_OPTIONS: -Djava.util.prefs.userRoot=/home/absint0o/projects/relayloom/.cache/android/java-prefs -Djava.util.prefs.systemRoot=/home/absint0o/projects/relayloom/.cache/android/java-system-prefs -Xmx1024m\nRuntimeLeaseCoordinator: 7 lifecycle assertions passed (host JVM fake backend; not Activity/device testing)\nPicked up JAVA_TOOL_OPTIONS: -Djava.util.prefs.userRoot=/home/absint0o/projects/relayloom/.cache/android/java-prefs -Djava.util.prefs.systemRoot=/home/absint0o/projects/relayloom/.cache/android/java-system-prefs -Xmx1024m",
+  "before": {
+    "freeBytes": 138536644608,
+    "androidAllocatedBytes": 11045715968,
+    "maxAndroidBytes": 26843545600,
+    "minimumFreeBytes": 16106127360
+  },
+  "after": {
+    "freeBytes": 138536239104,
+    "androidAllocatedBytes": 11046039552,
+    "maxAndroidBytes": 26843545600,
+    "minimumFreeBytes": 16106127360
+  },
+  "limitations": [
+    "Host cross-compilation and archive/signature/alignment checks only; no emulator or physical device run is implied.",
+    "Debug signing is local development only; no store upload or release signing.",
+    "16 KiB ELF/APK alignment does not establish physical ARM64 16 KiB device compatibility."
+  ]
+}

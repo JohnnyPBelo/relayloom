@@ -1,0 +1,50 @@
+{
+  "packages": [
+    {
+      "package": "platforms;android-36",
+      "sourceProperties": "Pkg.Desc=Android SDK Platform 16\nPkg.UserSrc=false\nPlatform.Version=16\nPlatform.CodeName=\nPkg.Revision=2\nAndroidVersion.ApiLevel=36\nAndroidVersion.ExtensionLevel=17\nAndroidVersion.IsBaseSdk=true\nLayoutlib.Api=15\nLayoutlib.Revision=1\nPlatform.MinToolsRev=22\n",
+      "archiveUrl": "https://dl.google.com/android/repository/platform-36_r02.zip",
+      "publishedChecksumAlgorithm": "sha1",
+      "publishedChecksum": "2c1a80dd4d9f7d0e6dd336ec603d9b5c55a6f576",
+      "archiveBytes": 65878410
+    },
+    {
+      "package": "ndk;28.2.13676358",
+      "sourceProperties": "Pkg.Desc = Android NDK\nPkg.Revision = 28.2.13676358\nPkg.BaseRevision = 28.2.13676358\nPkg.ReleaseName = r28c\n",
+      "archiveUrl": "https://dl.google.com/android/repository/android-ndk-r28c-linux.zip",
+      "publishedChecksumAlgorithm": "sha1",
+      "publishedChecksum": "a7b54a5de87fecd125a17d54f73c446199e72a64",
+      "archiveBytes": 722261334
+    },
+    {
+      "package": "build-tools;36.0.0",
+      "sourceProperties": "Pkg.UserSrc=false\nPkg.Revision=36.0.0\n#Pkg.Revision=36.0.0 rc5",
+      "archiveUrl": "https://dl.google.com/android/repository/build-tools_r36_linux.zip",
+      "publishedChecksumAlgorithm": "sha1",
+      "publishedChecksum": "b0b6376977657e8ad9b969bacf4093601da2c6fb",
+      "archiveBytes": 63737259
+    },
+    {
+      "package": "platform-tools",
+      "sourceProperties": "Pkg.UserSrc=false\nPkg.Revision=37.0.1\n",
+      "archiveUrl": "https://dl.google.com/android/repository/platform-tools_r37.0.1-linux.zip",
+      "publishedChecksumAlgorithm": "sha1",
+      "publishedChecksum": "477254aa5f903c15cf51001717bdf347fb6b53e0",
+      "archiveBytes": 9054187
+    }
+  ],
+  "versions": {
+    "aapt2": "Android Asset Packaging Tool (aapt) 2.20-13193326",
+    "d8": "D8 8.10.9-dev (build a7ad18a70460b799d0482e497c109a75bf7f91de from go/r8bot (luci-r8-custom-ci-archive-0-mt8s))\nPicked up JAVA_TOOL_OPTIONS: -Djava.util.prefs.userRoot=/home/absint0o/projects/relayloom/.cache/android/java-prefs -Djava.util.prefs.systemRoot=/home/absint0o/projects/relayloom/.cache/android/java-system-prefs",
+    "clang": "Android (13624864, +pgo, +bolt, +lto, +mlgo, based on r530567e) clang version 19.0.1 (https://android.googlesource.com/toolchain/llvm-project 97a699bf4812a18fb657c2779f5296a4ab2694d2)\nTarget: x86_64-unknown-linux-gnu\nThread model: posix\nInstalledDir: /home/absint0o/projects/relayloom/.cache/android/sdk/ndk/28.2.13676358/toolchains/llvm/prebuilt/linux-x86_64/bin"
+  },
+  "resources": {
+    "freeBytes": 146186461184,
+    "androidAllocatedBytes": 3770138624,
+    "maxAndroidBytes": 26843545600,
+    "minimumFreeBytes": 16106127360
+  },
+  "emulatorInstalled": false,
+  "systemImageInstalled": false,
+  "adbServerStartedByThisTask": false
+}

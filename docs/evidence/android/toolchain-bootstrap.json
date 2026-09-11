@@ -1,0 +1,38 @@
+{
+  "archives": [
+    {
+      "name": "OpenJDK17U-jdk_x64_linux_hotspot_17.0.20.1_1.tar.gz",
+      "url": "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.20.1%2B1/OpenJDK17U-jdk_x64_linux_hotspot_17.0.20.1_1.tar.gz",
+      "size": 193252603,
+      "algorithm": "sha256",
+      "digest": "3808d1d15e3ec6bd5b84057fb5d84c33d8a1536a258146bcea2e603fc726e08e",
+      "metadata": "https://api.github.com/repos/adoptium/temurin17-binaries/releases/latest",
+      "computedSha256": "3808d1d15e3ec6bd5b84057fb5d84c33d8a1536a258146bcea2e603fc726e08e"
+    },
+    {
+      "name": "commandlinetools-linux-16111833_latest.zip",
+      "url": "https://dl.google.com/android/repository/commandlinetools-linux-16111833_latest.zip",
+      "size": 181052239,
+      "algorithm": "sha1",
+      "digest": "e025545c62a8e64c7559119566a569fb1dec5f60",
+      "metadata": "https://dl.google.com/android/repository/repository2-3.xml",
+      "computedSha256": "0877a1d048fe4a24efe2eff536ca4223f7adeb58648bb81909d33c446918cfa8"
+    }
+  ],
+  "versions": {
+    "java": "openjdk version \"17.0.20.1\" 2026-08-18\nOpenJDK Runtime Environment Temurin-17.0.20.1+1 (build 17.0.20.1+1)\nOpenJDK 64-Bit Server VM Temurin-17.0.20.1+1 (build 17.0.20.1+1, mixed mode, sharing)",
+    "javac": "javac 17.0.20.1"
+  },
+  "before": {
+    "freeBytes": 150244368384,
+    "androidAllocatedBytes": 925696,
+    "maxAndroidBytes": 26843545600,
+    "minimumFreeBytes": 16106127360
+  },
+  "after": {
+    "freeBytes": 149354504192,
+    "androidAllocatedBytes": 889139200,
+    "maxAndroidBytes": 26843545600,
+    "minimumFreeBytes": 16106127360
+  }
+}

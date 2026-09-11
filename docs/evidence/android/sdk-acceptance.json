@@ -1,0 +1,16 @@
+{
+  "project": "relayloom",
+  "date": "2026-09-11T17:45:42.706563+00:00",
+  "scope": "Required Android SDK tooling to build this authorized native Android project; no store signup or purchase",
+  "sdkTermsUrl": "https://developer.android.com/studio/terms",
+  "sdkTermsTextSha256": "17070d78e3d086f1968b3102fc993f63ad8d404d3d1c3296374c3a70ab61edf4",
+  "acceptance": "Standard SDK terms accepted by using the official installer for the selected project-local packages; current terms clause 2.2 explicitly includes use",
+  "packages": [
+    "platform-tools",
+    "platforms;android-36",
+    "build-tools;36.0.0",
+    "ndk;28.2.13676358"
+  ],
+  "metrics": "The initial sdkmanager replacement advertised optional Android CLI metrics; that own install was interrupted and resumed using --no-metrics. Future calls explicitly opt out. No project code or secrets are included in the recorded tool command.",
+  "androidCliVersion": "1.0.16261425"
+}

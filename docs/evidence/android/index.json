@@ -1,0 +1,76 @@
+{
+  "kind": "PUBLIC_ANDROID_EVIDENCE_INDEX",
+  "sanitization": "No capabilities, passwords, private keys, public key material, identity proofs, vaults, app data, adb keys, debug keystore or raw logcat copied; test identity id/name retained for provenance.",
+  "files": [
+    {
+      "name": "aar-build-report.json",
+      "bytes": 2156,
+      "sha256": "4f277491f63651237dfd693ca669bf958fcebae8c6a14c2e4f31fa0dd9ad1259"
+    },
+    {
+      "name": "android-identity-messenger.png",
+      "bytes": 113583,
+      "sha256": "900139cc877317ba5fa913788079fbb9a273afa88184d9e5c9503bb748a4fac6"
+    },
+    {
+      "name": "android-offline-site.png",
+      "bytes": 288883,
+      "sha256": "18477e139527756a13a79e7f58160d7158e3de208b3fbdf82577e6e04dd98572"
+    },
+    {
+      "name": "android-onboarding-before.png",
+      "bytes": 180172,
+      "sha256": "81066becc1bb8e7cbcd4a71bb722706aa75b1a5537a7361749a610a7f118710f"
+    },
+    {
+      "name": "android-peer-messenger.png",
+      "bytes": 141852,
+      "sha256": "3ae88a284514ebdccbf58eb23c14aacf76f4dd6292e0ecfbbcf46814c1623cda"
+    },
+    {
+      "name": "apk-build-report.json",
+      "bytes": 4496,
+      "sha256": "97f3f80ebd49ed9f66171117473fede16e6a29ce9314bd7892c1429fb4113342"
+    },
+    {
+      "name": "installed-apk.json",
+      "bytes": 270,
+      "sha256": "2d0c463942ebef355b6409101791a75ab0bcbf198080a56fcf5a1ab6ae28cd94"
+    },
+    {
+      "name": "multihop-seed.json",
+      "bytes": 2082,
+      "sha256": "2737dffbddd5e00cb936ddd9ac15f2df40acfe86d4bfd71ce76f76fc06dd6acb"
+    },
+    {
+      "name": "native-peer-lifecycle.json",
+      "bytes": 1092,
+      "sha256": "44a3967033c2b625e1e3009ab44a210ed83fadc76886dfa3f54d4c7869f7a666"
+    },
+    {
+      "name": "resource-audit.json",
+      "bytes": 599,
+      "sha256": "2b26e69b0d5978ab6fc64dde54709ff9d7947908848f1c157dff5b36827bd893"
+    },
+    {
+      "name": "sdk-acceptance.json",
+      "bytes": 939,
+      "sha256": "4e5272e58f8ee0cc014ece3e5c53bee12482da272503622c848d75e2511d0e8d"
+    },
+    {
+      "name": "toolchain-bootstrap.json",
+      "bytes": 1619,
+      "sha256": "ca2e93b3c5a5c48096768bcba0eaeaf80fdd3601d7077a35d0212694a7d6c213"
+    },
+    {
+      "name": "toolchain-installed.json",
+      "bytes": 2853,
+      "sha256": "df64f670cf8f0cae44ad0c0bf9dd6d699a24c453a7282e614c67d45a3fdfe304"
+    },
+    {
+      "name": "uiautomator-identity.json",
+      "bytes": 426,
+      "sha256": "fdac5ace8698aef517eec4796f3697843ab5ab2e430b1d92a2cce5207b4bc878"
+    }
+  ]
+}
