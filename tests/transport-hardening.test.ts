@@ -6,6 +6,7 @@ import { spawn } from "node:child_process";
 import { setTimeout as delay } from "node:timers/promises";
 import { SerialPort } from "serialport";
 import { Router } from "../packages/transport/src/index.js";
+import { preserveSerialPollInterests } from "../packages/transport/src/serial.js";
 import { canonical, hash } from "../packages/core/src/index.js";
 
 const FRAGMENT = 2048,
@@ -65,7 +66,7 @@ function parse(io: Socket | SerialPort, receive: (frame: any) => void) {
     while ((at = buffer.indexOf("\n")) >= 0) {
       const line = buffer.slice(0, at);
       buffer = buffer.slice(at + 1);
-      receive(JSON.parse(line));
+      if (line.length) receive(JSON.parse(line));
     }
   });
 }
@@ -717,6 +718,7 @@ test(
     peer.on("error", () => {});
     try {
       if (!peer.isOpen) await once(peer, "open");
+      preserveSerialPollInterests(peer);
       router.connectSerial(paths.left);
       await until(() => router.peers.some((p) => p.medium === "serial"));
       // Two 64 KiB objects require about 16 seconds at 115200 baud, including
@@ -737,10 +739,19 @@ test(
         fixtureErrors: () => fixtureErrors,
       });
     } finally {
-      await closeSerial(peer);
-      await router.stop();
+      const exited =
+        bridge.exitCode !== null || bridge.signalCode !== null
+          ? Promise.resolve()
+          : new Promise<void>((resolve) =>
+              bridge.once("exit", () => resolve()),
+            );
+      const force = setTimeout(() => bridge.kill("SIGKILL"), 1000);
       bridge.kill("SIGTERM");
-      if (bridge.exitCode === null) await once(bridge, "exit");
+      try {
+        await Promise.all([closeSerial(peer), router.stop(), exited]);
+      } finally {
+        clearTimeout(force);
+      }
     }
   },
 );

@@ -8,6 +8,7 @@ import {
 import { SerialPort } from "serialport";
 import { randomBytes } from "node:crypto";
 import { canonical, hash } from "../../core/src/index.js";
+import { preserveSerialPollInterests, serialWriteDeadline } from "./serial.js";
 
 export type Priority = "sos" | "normal" | "bulk";
 interface Packet {
@@ -84,6 +85,7 @@ class Link {
   active = true;
   writing = false;
   turn = 0;
+  private resynchronize = false;
   // Control frames use the same writer as fragments. No receive path writes directly to the stream.
   readonly controls = new Set<string>();
   private acknowledged = new Map<string, number>();
@@ -103,6 +105,7 @@ class Link {
     medium: "tcp" | "serial",
     address: string,
   ) {
+    this.resynchronize = medium === "serial";
     this.state = {
       id: randomBytes(8).toString("hex"),
       medium,
@@ -185,6 +188,7 @@ class Link {
         this.destroy();
         return;
       }
+      if (!line.length) continue;
       try {
         if (line.length > MAX_FRAME) throw new Error("frame length");
         this.frame(JSON.parse(line));
@@ -302,7 +306,7 @@ class Link {
   private write(value: unknown): Promise<boolean> {
     if (!this.active) return Promise.resolve(false);
     return new Promise((resolve) => {
-      const bytes = JSON.stringify(value) + "\n";
+      const bytes = value === undefined ? "\n" : JSON.stringify(value) + "\n";
       let settled = false,
         callbackDone = false,
         drained = false,
@@ -322,13 +326,17 @@ class Link {
         drained = true;
         complete();
       };
-      // A blocked peer cannot retain a writer forever. Slow physical serial links get a larger bound.
+      // Bound a single frame against its configured wire duration. Reconnect will
+      // offer the retained packet again if a native serial write stops progressing.
       const timeout = setTimeout(
         () => {
           finish(false);
+          this.router.counters.dropped++;
           this.destroy();
         },
-        this.state.medium === "serial" ? 120_000 : 10_000,
+        this.io instanceof SerialPort
+          ? serialWriteDeadline(Buffer.byteLength(bytes), this.io.baudRate)
+          : 10_000,
       );
       timeout.unref();
       this.cancelWrite = () => finish(false);
@@ -446,6 +454,11 @@ class Link {
     let controlTurn = true;
     try {
       while (this.active) {
+        if (this.resynchronize) {
+          // Delimit an old partial line before replay on a reopened serial port.
+          this.resynchronize = false;
+          if (!(await this.write(undefined))) break;
+        }
         const now = Date.now();
         this.maintain(now);
         const transfer = this.select(now);
@@ -698,23 +711,57 @@ export class Router extends EventEmitter {
       baudRate > 1_000_000
     )
       throw new Error("Dispositivo série inválido");
-    let cancelled = false;
-    const port = new SerialPort({ path, baudRate, autoOpen: false });
+    let cancelled = false,
+      port: SerialPort | undefined,
+      retry: ReturnType<typeof setTimeout> | undefined;
     const cancel = () => {
       cancelled = true;
-      if (port.isOpen) port.close(() => {});
+      if (retry) {
+        clearTimeout(retry);
+        this.reconnects.delete(retry);
+        retry = undefined;
+      }
+      if (port?.isOpen) port.close(() => {});
       this.connections.delete(cancel);
     };
     this.connections.add(cancel);
-    port.on("error", () => {
-      if (!cancelled && !this.stopped)
-        this.emit("transportError", `Série indisponível: ${path}`);
-    });
-    port.open((error) => {
-      if (error) this.emit("transportError", `Série indisponível: ${path}`);
-      else if (cancelled || this.stopped) port.close(() => {});
-      else this.attach(port, "serial", path);
-    });
+    const schedule = () => {
+      if (cancelled || this.stopped || retry) return;
+      retry = setTimeout(() => {
+        this.reconnects.delete(retry!);
+        retry = undefined;
+        connect();
+      }, 1000);
+      this.reconnects.add(retry);
+    };
+    const connect = () => {
+      if (cancelled || this.stopped) return;
+      const current = (port = new SerialPort({
+        path,
+        baudRate,
+        autoOpen: false,
+      }));
+      current.on("close", () => {
+        if (port === current) schedule();
+      });
+      current.on("error", () => {
+        if (!cancelled && !this.stopped)
+          this.emit("transportError", `Série indisponível: ${path}`);
+        if (port === current && !current.isOpen && !current.opening) schedule();
+      });
+      current.open((error) => {
+        if (error) {
+          if (!cancelled && !this.stopped)
+            this.emit("transportError", `Série indisponível: ${path}`);
+          schedule();
+        } else if (cancelled || this.stopped) current.close(() => {});
+        else {
+          preserveSerialPollInterests(current);
+          this.attach(current, "serial", path);
+        }
+      });
+    };
+    connect();
     return cancel;
   }
   broadcast(
