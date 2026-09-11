@@ -1,0 +1,45 @@
+{
+  "result": "pass",
+  "started": "2026-09-11T22:35:47.524Z",
+  "finished": "2026-09-11T22:35:52.134Z",
+  "host": "linux",
+  "runtimes": [
+    "Go native application",
+    "Node application",
+    "Node application"
+  ],
+  "activeProcessCount": 3,
+  "transports": [
+    "real TCP socket",
+    "serialport over OS PTYs"
+  ],
+  "controls": [
+    "A Go has one TCP link to B Node; C Node disables TCP listening and has only its real serialport PTY. B alone spans both media.",
+    "The 32,768-byte attachment arrived byte-for-byte through two media with the Go author’s signature. A signed Node C read receipt traversed serial and TCP back to Go A.",
+    "With byte forwarding disabled, B received the new Go-signed object and C did not. Restoring the same PTY bridge delivered it with unchanged authorship."
+  ],
+  "finalCounters": {
+    "b": {
+      "received": 7,
+      "forwarded": 7,
+      "duplicates": 0,
+      "rejected": 0,
+      "dropped": 0,
+      "retransmits": 0,
+      "rateLimited": 0
+    },
+    "c": {
+      "received": 4,
+      "forwarded": 0,
+      "duplicates": 0,
+      "rejected": 0,
+      "dropped": 0,
+      "retransmits": 0,
+      "rateLimited": 0
+    }
+  },
+  "cleanupErrors": [],
+  "physicalRadio": "not tested",
+  "nativeGoSerialDriver": "not implemented",
+  "mobileOS": "not tested"
+}

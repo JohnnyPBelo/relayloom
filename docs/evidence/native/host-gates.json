@@ -1,0 +1,29 @@
+{
+  "platform": "linux",
+  "arch": "x64",
+  "go": "1.26.8",
+  "command": "node scripts/go.mjs test -race -p=2 ./core ./transport ./app",
+  "result": "pass",
+  "tests": {
+    "core": 11,
+    "transport": 11,
+    "app": 17
+  },
+  "mixedVectorCommand": "node --import tsx --test --test-concurrency=1 tests/native/*.test.ts",
+  "mixedAndVectorTests": 3,
+  "resultMixed": "pass",
+  "binarySha256": "a3dc0344e357d91d9a9a92da9ad65af0fee254e39ddb00678b133075283b03e8",
+  "android": "See docs/evidence/android; independent final APK emulator gates",
+  "ios": "not built/run",
+  "browserCommand": "RELAYLOOM_TEST_BACKEND=native node scripts/e2e.mjs --reporter=line --output=.cache/native-ui-e2e",
+  "browserCases": 10,
+  "browserResult": "pass",
+  "applicationCommands": [
+    "node scripts/go.mjs test -p=2 -v ./app",
+    "node scripts/go.mjs test -race -p=2 -v ./app"
+  ],
+  "applicationNormalSeconds": 7.94,
+  "applicationRaceSeconds": 74.63,
+  "mixedAndVectorSeconds": 14.994,
+  "notes": "Core/transport race result from prior unchanged-source gate; application17-test result reported by transport_hardening. Root reran all10 native browser cases and3 mixed/vector tests after rebuilding app."
+}

@@ -19,7 +19,10 @@
     "desktop:build": "node scripts/desktop-build.mjs",
     "desktop:package": "node scripts/desktop-package.mjs",
     "desktop:smoke": "node scripts/desktop-run.mjs --smoke --x11",
-    "desktop:packaged-smoke": "node scripts/desktop-packaged-smoke.mjs"
+    "desktop:packaged-smoke": "node scripts/desktop-packaged-smoke.mjs",
+    "native:build": "node scripts/native-build.mjs",
+    "test:native": "node scripts/go.mjs test -race -p=2 ./core ./transport ./app",
+    "test:interop": "tsx --test --test-concurrency=1 tests/native/*.test.ts"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",

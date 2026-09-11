@@ -1,0 +1,148 @@
+{
+  "result": "pass",
+  "started": "2026-09-11T22:35:38.175Z",
+  "finished": "2026-09-11T22:35:47.522Z",
+  "host": "linux",
+  "runtimes": [
+    "Go native application",
+    "Node application",
+    "Go native application"
+  ],
+  "activeProcessCount": 3,
+  "transports": [
+    "real TCP sockets"
+  ],
+  "topology": [
+    {
+      "initialized": true,
+      "locked": false,
+      "tcpPort": 41091,
+      "peers": [
+        {
+          "address": "127.0.0.1:38247",
+          "assemblies": 0,
+          "assemblyBytes": 0,
+          "connected": true,
+          "controls": 0,
+          "id": "f1e5f9e065b2bf0b",
+          "medium": "tcp",
+          "pendingBytes": 0,
+          "queued": 0,
+          "received": 0,
+          "sent": 0
+        }
+      ],
+      "counters": {
+        "dropped": 0,
+        "duplicates": 0,
+        "forwarded": 0,
+        "rateLimited": 0,
+        "received": 0,
+        "rejected": 0,
+        "retransmits": 0
+      },
+      "objects": [],
+      "transportError": ""
+    },
+    {
+      "initialized": true,
+      "locked": false,
+      "tcpPort": 38247,
+      "peers": [
+        {
+          "id": "fd6a673ba0d23b44",
+          "medium": "tcp",
+          "address": "127.0.0.1:47666",
+          "connected": true,
+          "sent": 0,
+          "received": 0,
+          "queued": 0
+        },
+        {
+          "id": "b8fe4de6fb66bcd3",
+          "medium": "tcp",
+          "address": "127.0.0.1:47682",
+          "connected": true,
+          "sent": 0,
+          "received": 0,
+          "queued": 0
+        }
+      ],
+      "counters": {
+        "received": 0,
+        "forwarded": 0,
+        "duplicates": 0,
+        "rejected": 0,
+        "dropped": 0,
+        "retransmits": 0,
+        "rateLimited": 0
+      },
+      "objects": [],
+      "transportError": ""
+    },
+    {
+      "initialized": true,
+      "locked": false,
+      "tcpPort": -1,
+      "peers": [
+        {
+          "address": "127.0.0.1:38247",
+          "assemblies": 0,
+          "assemblyBytes": 0,
+          "connected": true,
+          "controls": 0,
+          "id": "097aaa160f76e526",
+          "medium": "tcp",
+          "pendingBytes": 0,
+          "queued": 0,
+          "received": 0,
+          "sent": 0
+        }
+      ],
+      "counters": {
+        "dropped": 0,
+        "duplicates": 0,
+        "forwarded": 0,
+        "rateLimited": 0,
+        "received": 0,
+        "rejected": 0,
+        "retransmits": 0
+      },
+      "objects": [],
+      "transportError": ""
+    }
+  ],
+  "controls": [
+    "A and C each have exactly one TCP peer, B; C has no TCP listener. Three actual processes, no direct A-C connection. Both Go HTTP APIs reject missing capability tokens.",
+    "Go-authored encrypted message and 98,304 exact attachment bytes traversed Node B; C recorded two hops. All three disk bundles retain identical signed manifests/chunks.",
+    "Reading at Go C and Node B generated signed receipts from both runtimes, delivered back to Go A.",
+    "Both reader runtimes rejected unauthorized edit requests; the original Go author’s signed edit propagated and became the effective text.",
+    "Node B retained/relayed a private A-C bundle but both its view API and cryptographic decryption denied B; authorized Go C read it.",
+    "Stopping B removed every A-C path. A published during the partition; C remained empty for that object. B restarted on its saved peer port and exact pending content arrived; the old HTTP token was rejected.",
+    "Go C restarted locked, rejected a wrong password, recovered its same signing identity, cached attachment and effective edit, avoided a duplicate read receipt, and signed a new reply accepted by Go A and Node B.",
+    "Paused B stored A’s new public object while C could not obtain it. After Go A exited, resuming Node B served the exact signed object to Go C without changing authorship."
+  ],
+  "finalCounters": {
+    "b": {
+      "received": 14,
+      "forwarded": 9,
+      "duplicates": 97,
+      "rejected": 0,
+      "dropped": 0,
+      "retransmits": 0,
+      "rateLimited": 0
+    },
+    "c": {
+      "dropped": 0,
+      "duplicates": 0,
+      "forwarded": 0,
+      "rateLimited": 0,
+      "received": 10,
+      "rejected": 0,
+      "retransmits": 0
+    }
+  },
+  "cleanupErrors": [],
+  "physicalRadio": "not tested",
+  "mobileOS": "not tested"
+}
