@@ -483,7 +483,7 @@ export class ContentStore {
       const id = file.slice(0, -5);
       try {
         const fileState = this.fileState(id),
-          bundle: Bundle = JSON.parse(readFileSync(this.path(id), "utf8"));
+          bundle: Bundle = JSON.parse(fileState.bytes.toString("utf8"));
         if (bundle.manifest.id !== id)
           throw new Error("Endereço não corresponde");
         verifyBundle(bundle);
@@ -517,9 +517,14 @@ export class ContentStore {
     const s = statSync(this.path(id), { bigint: true });
     if (!s.isFile() || s.size < 1n || s.size > BigInt(MAX_STORED_BUNDLE))
       throw new Error("Objecto armazenado inválido");
+    const bytes = readFileSync(this.path(id));
+    if (bytes.length < 1 || bytes.length > MAX_STORED_BUNDLE) throw new Error("Objecto armazenado inválido");
+    // Timestamps can repeat on some filesystems (observed in Windows CI).
+    // Hash the actual bounded bytes before reusing verified metadata.
     return {
-      size: Number(s.size),
-      fingerprint: `${s.dev}:${s.ino}:${s.size}:${s.mtimeNs}:${s.ctimeNs}`,
+      size: bytes.length,
+      bytes,
+      fingerprint: hash(bytes),
     };
   }
   stats() {
@@ -571,7 +576,7 @@ export class ContentStore {
     const path = this.path(id);
     if (!this.index[id]) throw new Error("Conteúdo indisponível neste nó");
     const fileState = this.fileState(id),
-      b: Bundle = JSON.parse(readFileSync(path, "utf8"));
+      b: Bundle = JSON.parse(fileState.bytes.toString("utf8"));
     if (b.manifest.id !== id) throw new Error("Endereço não corresponde");
     verifyBundle(b);
     this.manifests.set(id, {

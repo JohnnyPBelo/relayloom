@@ -204,6 +204,7 @@ test("cached manifest metadata is isolated, invalidated by disk changes, and nev
       (corrupt.chunks[chunk][0] === "A" ? "B" : "A") +
       corrupt.chunks[chunk].slice(1);
     writeFileSync(path, canonical(corrupt));
+    assert.deepEqual(store.list(), [], "content changes invalidate metadata even when filesystem timestamps repeat");
     assert.throws(() => store.get(bundle.manifest.id), /corrompido/);
     assert.deepEqual(store.list(), []);
     writeFileSync(path, encoded);
