@@ -14,7 +14,12 @@
     "test:e2e": "node scripts/e2e.mjs",
     "check": "npm run build && npm test && npm run test:e2e",
     "simulate": "tsx scripts/simulate.ts",
-    "verify": "node scripts/verify.mjs"
+    "verify": "node scripts/verify.mjs",
+    "desktop": "node scripts/desktop-run.mjs",
+    "desktop:build": "node scripts/desktop-build.mjs",
+    "desktop:package": "node scripts/desktop-package.mjs",
+    "desktop:smoke": "node scripts/desktop-run.mjs --smoke --x11",
+    "desktop:packaged-smoke": "node scripts/desktop-packaged-smoke.mjs"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",
@@ -24,11 +29,15 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.2",
+    "@electron/fuses": "1.8.0",
     "@playwright/test": "^1.55.0",
     "@types/node": "^22.18.1",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
     "@vitejs/plugin-react": "^5.0.2",
+    "electron": "44.3.0",
+    "electron-builder": "26.15.3",
+    "esbuild": "0.28.2",
     "prettier": "^3.9.6",
     "tsx": "^4.20.5",
     "typescript": "^5.9.2",
