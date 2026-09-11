@@ -96,10 +96,25 @@ function publicBytes(p: Omit<PublicIdentity, "proof">): string {
     boxKey: p.boxKey,
   });
 }
+function exactShape(value: unknown, keys: readonly string[]): boolean {
+  if (
+    !value ||
+    typeof value !== "object" ||
+    Object.getPrototypeOf(value) !== Object.prototype
+  )
+    return false;
+  const descriptors = Object.getOwnPropertyDescriptors(value);
+  return (
+    Reflect.ownKeys(value).length === keys.length &&
+    keys.every(
+      (key) => Object.hasOwn(descriptors, key) && "value" in descriptors[key],
+    )
+  );
+}
 export function validateIdentity(p: PublicIdentity): boolean {
   try {
     if (
-      !p ||
+      !exactShape(p, ["id", "name", "signKey", "boxKey", "proof"]) ||
       typeof p.name !== "string" ||
       p.name.length < 1 ||
       p.name.length > 64 ||
@@ -197,6 +212,11 @@ export function importVault(vault: string, password: string): Identity {
   if (vault.length > 8192 || password.length > 1024)
     throw new Error("Cofre inválido");
   const v = JSON.parse(vault);
+  if (
+    !exactShape(v, ["version", "salt", "sealed"]) ||
+    !exactShape(v.sealed, ["nonce", "data", "tag"])
+  )
+    throw new Error("Campos do cofre inválidos");
   if (v.version !== 1) throw new Error("Versão do cofre inválida");
   const salt = un64(v.salt, 32);
   if (salt.length !== 16) throw new Error("Cofre inválido");
@@ -210,6 +230,7 @@ export function importVault(vault: string, password: string): Identity {
     open(v.sealed, key, "relayloom-vault-v1").toString(),
   );
   if (
+    !exactShape(i, ["public", "signSecret", "boxSecret"]) ||
     !validateIdentity(i.public) ||
     b64(
       createPublicKey(privateKey(i.signSecret)).export({
@@ -335,7 +356,24 @@ export function createBundle(
   return { manifest: { ...body, id, signature }, chunks };
 }
 export function verifyManifest(m: Manifest, now = Date.now()): void {
-  if (!m || canonical(m).length > 100_000)
+  if (
+    !exactShape(m, [
+      "version",
+      "author",
+      "kind",
+      "created",
+      "expires",
+      "nonce",
+      "tag",
+      "chunks",
+      "keys",
+      "publicKey",
+      "salt",
+      "id",
+      "signature",
+    ]) ||
+    canonical(m).length > 100_000
+  )
     throw new Error("Manifesto inválido");
   const { id, signature, ...body } = m;
   if (
@@ -356,6 +394,7 @@ export function verifyManifest(m: Manifest, now = Date.now()): void {
     m.chunks.length > Math.ceil(MAX_CONTENT / CHUNK_SIZE) ||
     m.chunks.some(
       (c) =>
+        !exactShape(c, ["hash", "size"]) ||
         !/^[a-f0-9]{64}$/.test(c.hash) ||
         !Number.isSafeInteger(c.size) ||
         c.size < 1 ||
@@ -376,6 +415,25 @@ export function verifyManifest(m: Manifest, now = Date.now()): void {
     un64(m.salt, 32).length !== 16
   )
     throw new Error("Cifra inválida");
+  for (const envelope of m.keys) {
+    if (
+      !exactShape(envelope, ["nonce", "data", "tag", "reader", "ephemeral"]) ||
+      !/^[a-f0-9]{64}$/.test(envelope.reader)
+    )
+      throw new Error("Envelope inválido");
+    const key = createPublicKey({
+      key: un64(envelope.ephemeral, 256),
+      format: "der",
+      type: "spki",
+    });
+    if (
+      key.asymmetricKeyType !== "x25519" ||
+      un64(envelope.nonce, 128).length !== 12 ||
+      un64(envelope.tag, 128).length !== 16 ||
+      un64(envelope.data, 128).length !== 32
+    )
+      throw new Error("Envelope inválido");
+  }
   const bytes = canonical(body);
   if (
     id !== hash(bytes) ||
@@ -393,6 +451,8 @@ export function verifyManifest(m: Manifest, now = Date.now()): void {
     throw new Error("Assinatura inválida");
 }
 export function verifyBundle(bundle: Bundle): void {
+  if (!exactShape(bundle, ["manifest", "chunks"]))
+    throw new Error("Campos do conteúdo inválidos");
   verifyManifest(bundle.manifest);
   if (
     !bundle.chunks ||
@@ -518,7 +578,8 @@ export class ContentStore {
     if (!s.isFile() || s.size < 1n || s.size > BigInt(MAX_STORED_BUNDLE))
       throw new Error("Objecto armazenado inválido");
     const bytes = readFileSync(this.path(id));
-    if (bytes.length < 1 || bytes.length > MAX_STORED_BUNDLE) throw new Error("Objecto armazenado inválido");
+    if (bytes.length < 1 || bytes.length > MAX_STORED_BUNDLE)
+      throw new Error("Objecto armazenado inválido");
     // Timestamps can repeat on some filesystems (observed in Windows CI).
     // Hash the actual bounded bytes before reusing verified metadata.
     return {

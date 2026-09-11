@@ -204,7 +204,11 @@ test("cached manifest metadata is isolated, invalidated by disk changes, and nev
       (corrupt.chunks[chunk][0] === "A" ? "B" : "A") +
       corrupt.chunks[chunk].slice(1);
     writeFileSync(path, canonical(corrupt));
-    assert.deepEqual(store.list(), [], "content changes invalidate metadata even when filesystem timestamps repeat");
+    assert.deepEqual(
+      store.list(),
+      [],
+      "content changes invalidate metadata even when filesystem timestamps repeat",
+    );
     assert.throws(() => store.get(bundle.manifest.id), /corrompido/);
     assert.deepEqual(store.list(), []);
     writeFileSync(path, encoded);
@@ -277,4 +281,40 @@ test("invalid persisted index fails safely without deleting verified objects", (
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
+});
+
+test("strict wire fields and every recipient envelope are validated before accepting signatures", async () => {
+  const { sign, createPrivateKey } = await import("node:crypto");
+  const { hash } = await import("../packages/core/src/index.js");
+  const original = createBundle(alice, "message", { text: "private" }, [
+    bob.public,
+  ]);
+  const resign = (bundle: typeof original) => {
+    const { id, signature, ...body } = bundle.manifest;
+    const data = canonical(body);
+    bundle.manifest.id = hash(data);
+    bundle.manifest.signature = sign(
+      null,
+      Buffer.from(data),
+      createPrivateKey({
+        key: Buffer.from(alice.signSecret, "base64"),
+        format: "der",
+        type: "pkcs8",
+      }),
+    ).toString("base64");
+    return bundle;
+  };
+  const extra = structuredClone(original);
+  (extra.manifest as any).unexpected = true;
+  assert.throws(() => verifyBundle(resign(extra)), /Manifesto/);
+  const badOtherReader = structuredClone(original);
+  badOtherReader.manifest.keys.find((k) => k.reader === bob.public.id)!.data =
+    Buffer.alloc(31).toString("base64");
+  assert.throws(() => decryptBundle(resign(badOtherReader), alice), /Envelope/);
+  const wrongKey = structuredClone(original);
+  wrongKey.manifest.keys[0].ephemeral = alice.public.signKey;
+  assert.throws(() => verifyBundle(resign(wrongKey)), /Envelope/);
+  const extraIdentity = { ...alice.public, unused: "not signed" };
+  assert.equal(validateIdentity(extraIdentity), false);
+  assert.deepEqual(decryptBundle(original, bob), { text: "private" });
 });

@@ -16,26 +16,34 @@ export async function launch(
   dir?: string,
   httpPort = 0,
   tcpPort = 0,
+  backend: "node" | "native" = process.env.RELAYLOOM_TEST_BACKEND === "native"
+    ? "native"
+    : "node",
 ): Promise<Client> {
   mkdirSync(".cache", { recursive: true });
   dir ??= mkdtempSync(join(process.cwd(), ".cache/node-"));
+  const nativeBinary = join(
+    process.cwd(),
+    ".cache/native-app",
+    process.platform === "win32" ? "relayloom.exe" : "relayloom",
+  );
+  const common = [
+    "--data",
+    dir,
+    "--http-port",
+    String(httpPort),
+    "--tcp-port",
+    String(tcpPort),
+  ];
   const child = spawn(
-    process.execPath,
-    [
-      "--import",
-      "tsx",
-      "apps/node/src/cli.ts",
-      "--data",
-      dir,
-      "--http-port",
-      String(httpPort),
-      "--tcp-port",
-      String(tcpPort),
-    ],
+    backend === "native" ? nativeBinary : process.execPath,
+    backend === "native"
+      ? ["--assets", join(process.cwd(), "dist/web"), ...common]
+      : ["--import", "tsx", "apps/node/src/cli.ts", ...common],
     { cwd: process.cwd(), stdio: ["ignore", "pipe", "pipe"] },
   );
-  const info: { url: string; tcpPort: number } = await new Promise(
-    (resolve, reject) => {
+  const info: { url: string; tcpPort: number; token?: string } =
+    await new Promise((resolve, reject) => {
       let out = "",
         errors = "";
       const timer = setTimeout(() => {
@@ -62,10 +70,9 @@ export async function launch(
           }
         }
       });
-    },
-  );
+    });
   const url = new URL(info.url),
-    token = new URLSearchParams(url.hash.slice(1)).get("token")!;
+    token = info.token ?? new URLSearchParams(url.hash.slice(1)).get("token")!;
   return {
     process: child,
     dir,

@@ -10,7 +10,9 @@ import {
   canonical,
   type Identity,
 } from "../../../packages/core/src/index.js";
+import type { Collection } from "./social.js";
 export interface PrivateState {
+  collections?: Collection[];
   siteDraft?: { blocks: unknown[]; theme: string; savedAt: number };
   mutations: Record<
     string,

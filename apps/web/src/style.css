@@ -2757,3 +2757,94 @@ dialog .site-block.hero h2 {
 .page-heading h1 .title-dot {
   display: none;
 }
+
+.composer .voice-panel {
+  right: -50px;
+}
+.collection-manager header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.collection-manager h3 {
+  margin: 0;
+}
+.collection-row {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+}
+.collection-choice {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-align: left;
+  font-size: 12px;
+  min-height: 44px;
+  flex: 1;
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  overflow-wrap: anywhere;
+}
+.collection-choice span {
+  margin-left: auto;
+  font-size: 10px;
+}
+.collection-choice.selected {
+  background: var(--soft);
+}
+.collection-row .icon {
+  min-width: 30px;
+  width: 30px;
+}
+.collection-manager > .muted {
+  font-size: 10px;
+  margin: 15px 0 0;
+}
+.collection-form-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.collection-form-actions button {
+  font-size: 11px;
+  flex: 1;
+}
+.social-tabs {
+  display: flex;
+  gap: 8px;
+}
+.social-tabs button {
+  min-height: 44px;
+}
+.import-content {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 11px;
+  min-height: 40px;
+}
+.social-toolbar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.collection-memberships {
+  display: grid;
+  gap: 7px;
+  padding-top: 15px;
+}
+.collection-memberships label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  margin: 0;
+  min-height: 42px;
+}
+:root[data-readability="large"] .bubble p{font-size:17px;line-height:1.7}:root[data-readability="large"] .composer textarea{font-size:16px}:root[data-readability="large"] .message-meta,:root[data-readability="large"] .privacy-note,:root[data-readability="large"] .composer-hint,:root[data-readability="large"] .connection-badge{font-size:12px}:root[data-readability="large"] .conversation-title strong,:root[data-readability="large"] .sidebar nav button,:root[data-readability="large"] .chat-header h2{font-size:15px}:root[data-readability="large"] .conversation p,:root[data-readability="large"] .chat-header span:not(.avatar),:root[data-readability="large"] .toggle-row span{font-size:12px}:root[data-readability="large"] .icon,:root[data-readability="large"] .send,:root[data-readability="large"] .message-actions button{min-width:44px;min-height:44px}:root[data-readability="large"] .post-text{font-size:18px}:root[data-contrast="high"]{--muted:#33452c;--line:#627357}:root[data-theme="dark"][data-contrast="high"]{--muted:#dde5d4;--line:#a4b397}:root[data-contrast="high"] .message-meta,:root[data-contrast="high"] .composer-hint{color:var(--ink)}
+.history-control{display:flex;align-items:center;gap:15px;margin-bottom:15px}.history-control>span{font-size:11px;color:var(--muted)}.history-control button{font-size:11px}.attachment-loading{display:flex;align-items:center;gap:9px;min-height:45px;font-size:11px;border:1px solid var(--line);border-radius:7px;padding:10px}.attachment-loading>span:first-of-type{flex:1;overflow-wrap:anywhere}.attachment-loading [role=status]{font-size:9px;color:var(--muted)}@media(max-width:680px){.history-control{flex-wrap:wrap;gap:5px}}

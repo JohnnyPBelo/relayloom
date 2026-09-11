@@ -113,13 +113,11 @@ test("two live clients: identities, connection, message, attachment, reaction, g
         .locator(".bubble")
         .getByText("Recebido. Vamos manter-nos em contacto.", { exact: true }),
     ).toBeVisible();
-    await pa
-      .locator("input[type=file]")
-      .setInputFiles({
-        name: "ponto-encontro.txt",
-        mimeType: "text/plain",
-        buffer: Buffer.from("Ponto de encontro: biblioteca."),
-      });
+    await pa.locator("input[type=file]").setInputFiles({
+      name: "ponto-encontro.txt",
+      mimeType: "text/plain",
+      buffer: Buffer.from("Ponto de encontro: biblioteca."),
+    });
     await pa.getByLabel("Escrever mensagem").fill("Deixo aqui as indicações.");
     await pa.getByRole("button", { name: "Enviar mensagem" }).click();
     await expect(
@@ -206,6 +204,12 @@ test("two live clients: identities, connection, message, attachment, reaction, g
     await pa
       .getByLabel("Texto do bloco 2", { exact: true })
       .fill("Gosto de aproximar pessoas e cuidar dos lugares.");
+    const editableBlocks = pa.locator('.site-block.editable');
+    await expect(editableBlocks).toHaveCount(2);
+    await editableBlocks.nth(0).dragTo(editableBlocks.nth(1));
+    await expect(pa.getByLabel('Título do bloco 1', { exact: true })).toHaveValue('Sobre mim');
+    await editableBlocks.nth(0).dragTo(editableBlocks.nth(1));
+    await expect(pa.getByLabel('Título do bloco 1', { exact: true })).toHaveValue('Olá, sou a Alice.');
     await pa.getByRole("button", { name: "Mover bloco 2 para cima" }).focus();
     await pa.keyboard.press("Enter");
     await expect(

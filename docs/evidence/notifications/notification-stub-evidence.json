@@ -1,0 +1,32 @@
+{
+  "mode": "NOTIFICATION API STUB — no native OS toast or permission request",
+  "realLocalPeerNodes": 2,
+  "explicitPermissionCalls": 1,
+  "genericNotices": [
+    {
+      "title": "RelayLoom",
+      "options": {
+        "body": "Tens novas mensagens privadas. Abre o RelayLoom para as ler.",
+        "tag": "relayloom-private-message",
+        "silent": true
+      },
+      "closed": true
+    },
+    {
+      "title": "RelayLoom",
+      "options": {
+        "body": "Tens novas mensagens privadas. Abre o RelayLoom para as ler.",
+        "tag": "relayloom-private-message",
+        "silent": true
+      },
+      "closed": false
+    }
+  ],
+  "burstItemsCoalesced": 4,
+  "cooldownMs": 10000,
+  "permissionPreferenceReloaded": true,
+  "existingHistorySilent": true,
+  "outgoingAndPublicSilent": true,
+  "disableClosesNotices": true,
+  "scopedAxeViolations": []
+}

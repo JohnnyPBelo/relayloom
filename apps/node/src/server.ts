@@ -109,6 +109,14 @@ export async function serve(
             case "/api/site-draft":
               node.saveDraft(body.blocks, body.theme);
               break;
+            case "/api/collection":
+              return json(200, node.collection(body));
+            case "/api/retrieve":
+              return json(200, node.retrieve(body.id));
+            case "/api/history":
+              return json(200, node.history(body.before));
+            case "/api/attachment":
+              return json(200, node.attachment(body.id, body.index));
             case "/api/publish":
               return json(
                 200,

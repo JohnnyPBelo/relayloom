@@ -123,7 +123,7 @@ test(
       );
       const m = received.objects.find((o: any) => o.id === msg.id);
       assert.equal(
-        Buffer.from(m.content.attachments[0].data, "base64").toString(),
+        Buffer.from((await c.call("attachment", { id: msg.id, index: 0 })).data, "base64").toString(),
         "abc123".repeat(18000),
       );
       assert.equal(m.author.id, alice.id);

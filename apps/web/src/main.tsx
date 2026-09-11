@@ -51,8 +51,16 @@ import type {
   Attachment,
 } from "../../node/src/node";
 import "./style.css";
+import { VoiceRecorder } from "./media";
+import { CollectionManager } from "./collections";
+import {
+  usePrivateMessageNotifications,
+  NotificationSettings,
+} from "./notifications";
+import type { Collection } from "../../node/src/social";
 
 type State = {
+  nativeRuntime?: string;
   initialized: boolean;
   locked: boolean;
   identity: PublicIdentity | null;
@@ -74,8 +82,16 @@ type State = {
   following: string[];
   saved: string[];
   reports: unknown[];
+  collections: Collection[];
+  followedPostIds: string[];
   siteDraft: { blocks: SiteBlock[]; theme: string; savedAt: number } | null;
   objects: DisplayObject[];
+  history: {
+    hasMore: boolean;
+    nextBefore: string | null;
+    total: number;
+    availableIds: string[];
+  };
   transportError: string;
   now: number;
 };
@@ -89,20 +105,40 @@ function takeLaunchToken() {
 }
 takeLaunchToken();
 window.addEventListener("hashchange", takeLaunchToken);
-async function api(path: string, body?: unknown) {
-  const res = await fetch("/api/" + path, {
-    method: body === undefined ? "GET" : "POST",
-    headers: {
-      Authorization:
-        "Bearer " + (sessionStorage.getItem("relayloom-token") ?? ""),
-      ...(body === undefined ? {} : { "Content-Type": "application/json" }),
-    },
-    body: body === undefined ? undefined : JSON.stringify(body),
-  });
-  const value = await res.json();
-  if (!res.ok) throw new Error(value.error ?? "Não foi possível concluir");
-  return value;
+async function api(path: string, body?: unknown, signal?: AbortSignal) {
+  const controller = new AbortController();
+  let timedOut = false;
+  const cancelled = () => controller.abort();
+  if (signal?.aborted) controller.abort();
+  else signal?.addEventListener("abort", cancelled, { once: true });
+  const timer = setTimeout(() => {
+    timedOut = true;
+    controller.abort();
+  }, 20_000);
+  try {
+    const res = await fetch("/api/" + path, {
+      signal: controller.signal,
+      method: body === undefined ? "GET" : "POST",
+      headers: {
+        Authorization:
+          "Bearer " + (sessionStorage.getItem("relayloom-token") ?? ""),
+        ...(body === undefined ? {} : { "Content-Type": "application/json" }),
+      },
+      body: body === undefined ? undefined : JSON.stringify(body),
+    });
+    const value = await res.json();
+    if (!res.ok) throw new Error(value.error ?? "Não foi possível concluir");
+    return value;
+  } catch (error) {
+    if (timedOut)
+      throw new Error("O nó demorou demasiado a responder. Tenta novamente.");
+    throw error;
+  } finally {
+    clearTimeout(timer);
+    signal?.removeEventListener("abort", cancelled);
+  }
 }
+
 const short = (s: string) => s.slice(0, 8) + "…" + s.slice(-4);
 const bytes = (n: number) =>
   n < 1024
@@ -244,7 +280,28 @@ function App() {
     messageScroll = useRef<HTMLDivElement>(null),
     nearBottom = useRef(true);
   const [newMessages, setNewMessages] = useState(false);
+  const [largeText, setLargeText] = useState(
+      localStorage.getItem("relayloom-large-text") === "true",
+    ),
+    [highContrast, setHighContrast] = useState(
+      localStorage.getItem("relayloom-high-contrast") === "true",
+    );
+  useEffect(() => {
+    document.documentElement.dataset.readability = largeText
+      ? "large"
+      : "normal";
+    document.documentElement.dataset.contrast = highContrast
+      ? "high"
+      : "normal";
+    localStorage.setItem("relayloom-large-text", String(largeText));
+    localStorage.setItem("relayloom-high-contrast", String(highContrast));
+  }, [largeText, highContrast]);
+  const [feedMode, setFeedMode] = useState("all"),
+    [selectedCollection, setSelectedCollection] = useState("");
+  const activeSelection = useRef(selection);
+  activeSelection.current = selection;
   function chooseConversation(id: string) {
+    activeSelection.current = id;
     drafts.current[selection] = { text, attachments, reply };
     const draft = drafts.current[id];
     setText(draft?.text ?? "");
@@ -254,19 +311,130 @@ function App() {
     setNewMessages(false);
     setSelection(id);
   }
+  const refreshInFlight = useRef(0);
+  const requestSequence = useRef(0),
+    privacyGeneration = useRef(0),
+    historyOwner = useRef<string | null>(null),
+    loadedHistory = useRef(new Map<string, DisplayObject>()),
+    olderCursor = useRef<
+      { hasMore: boolean; nextBefore: string | null } | undefined
+    >(undefined);
   async function refresh() {
+    refreshInFlight.current++;
+    const sequence = ++requestSequence.current,
+      generation = privacyGeneration.current;
     try {
-      setState(await api("state"));
+      const snapshot: State = await api("state");
+      if (
+        sequence !== requestSequence.current ||
+        generation !== privacyGeneration.current
+      )
+        return;
+      const owner = snapshot.identity?.id ?? null;
+      if (snapshot.locked || owner !== historyOwner.current) {
+        loadedHistory.current.clear();
+        olderCursor.current = undefined;
+        historyOwner.current = owner;
+      }
+      const available = new Set(
+        snapshot.history?.availableIds ?? snapshot.objects.map((o) => o.id),
+      );
+      for (const id of loadedHistory.current.keys())
+        if (!available.has(id)) loadedHistory.current.delete(id);
+      for (const object of snapshot.objects)
+        loadedHistory.current.set(object.id, object);
+      // Preserve already observed author mutations in older loaded history between pages.
+      for (const event of snapshot.objects)
+        if (["delete", "edit"].includes(event.kind)) {
+          const original = loadedHistory.current.get(
+            event.content.target ?? "",
+          );
+          if (original?.author.id === event.author.id)
+            loadedHistory.current.set(original.id, {
+              ...original,
+              ...(event.kind === "delete"
+                ? { deleted: true }
+                : { editedText: event.content.text }),
+            });
+        }
+      setState({
+        ...snapshot,
+        objects: [...loadedHistory.current.values()].sort(
+          (a, b) => a.created - b.created || a.id.localeCompare(b.id),
+        ),
+        history: { ...snapshot.history, ...(olderCursor.current ?? {}) },
+      });
       setOffline(false);
     } catch (e) {
+      if (
+        sequence !== requestSequence.current ||
+        generation !== privacyGeneration.current
+      )
+        return;
       setOffline(true);
-      if (!state) setError((e as Error).message);
+      setError((e as Error).message);
+    } finally {
+      refreshInFlight.current--;
     }
+  }
+  async function loadHistory() {
+    if (!state?.history.nextBefore) return;
+    const generation = privacyGeneration.current;
+    await run(async () => {
+      const page = await api("history", { before: state.history.nextBefore });
+      if (generation !== privacyGeneration.current) return;
+      for (const object of page.objects)
+        loadedHistory.current.set(object.id, object);
+      olderCursor.current = {
+        hasMore: page.history.hasMore,
+        nextBefore: page.history.nextBefore,
+      };
+    });
+  }
+  async function lockIdentity() {
+    privacyGeneration.current++;
+    requestSequence.current++;
+    loadedHistory.current.clear();
+    olderCursor.current = undefined;
+    historyOwner.current = null;
+    drafts.current = {};
+    viewed.current.clear();
+    setText("");
+    setAttachments([]);
+    setReply(undefined);
+    setViewSite(undefined);
+    setModal("");
+    setSelection("");
+    setState((current) =>
+      current
+        ? {
+            ...current,
+            locked: true,
+            identity: null,
+            objects: [],
+            contacts: [],
+            collections: [],
+            reports: [],
+          }
+        : current,
+    );
+    await run(() => api("lock", {}));
   }
   useEffect(() => {
     void refresh();
-    const timer = setInterval(refresh, 2000);
-    return () => clearInterval(timer);
+    const timer = setInterval(() => {
+      if (!refreshInFlight.current) void refresh();
+    }, 2000);
+    const changed = () => {
+      privacyGeneration.current++;
+      requestSequence.current++;
+      void refresh();
+    };
+    window.addEventListener("hashchange", changed);
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener("hashchange", changed);
+    };
   }, []);
   useEffect(() => {
     document.documentElement.dataset.theme = dark ? "dark" : "light";
@@ -279,6 +447,7 @@ function App() {
     }
   }, [notice]);
   async function run<T>(action: () => Promise<T>, success = "") {
+    requestSequence.current++;
     setBusy(true);
     setError("");
     try {
@@ -295,6 +464,12 @@ function App() {
   const me = state?.identity,
     objects = state?.objects ?? [],
     contacts = state?.contacts ?? [];
+  const notifications = usePrivateMessageNotifications({
+    identityId: me?.id ?? null,
+    messages: objects,
+    knownIds: state?.history?.availableIds,
+    locked: !state || state.locked,
+  });
   const eventsFor = (id: string, kind: string) =>
     objects.filter((o) => o.kind === kind && o.content.target === id);
   const deleted = (id: string) =>
@@ -385,7 +560,7 @@ function App() {
         top: messageScroll.current.scrollHeight,
       });
     } else setNewMessages(true);
-  }, [selection, activeMessages.length]);
+  }, [selection, page, activeMessages.length]);
   async function publish(content: Content, recipients: string[] | "public") {
     return api("publish", { content, recipients });
   }
@@ -394,7 +569,50 @@ function App() {
   async function copy(value: string, message: string) {
     await run(() => navigator.clipboard.writeText(value), message);
   }
+  async function toggleCollection(
+    id: string,
+    objectId: string,
+    checked: boolean,
+  ) {
+    const previous = state!.collections
+      .find((c) => c.id === id)!
+      .objectIds.includes(objectId);
+    const update = (value: boolean) =>
+      setState((current) =>
+        current
+          ? {
+              ...current,
+              collections: current.collections.map((c) =>
+                c.id === id
+                  ? {
+                      ...c,
+                      objectIds: [
+                        ...c.objectIds.filter((item) => item !== objectId),
+                        ...(value ? [objectId] : []),
+                      ],
+                    }
+                  : c,
+              ),
+            }
+          : current,
+      );
+    update(checked);
+    const result = await run(() =>
+      api("collection", { action: checked ? "add" : "remove", id, objectId }),
+    );
+    if (!result) update(previous);
+  }
+  const selectedCollectionItems = state?.collections.find(
+    (c) => c.id === selectedCollection,
+  )?.objectIds;
+  const visiblePost = (o: DisplayObject) =>
+    ["post", "alert"].includes(o.kind) &&
+    !deleted(o.id) &&
+    (page === "saved"
+      ? (selectedCollectionItems ?? state!.saved).includes(o.id)
+      : feedMode === "all" || state!.followedPostIds.includes(o.id));
   const changePage = (p: Page) => {
+    if (p === "messages") nearBottom.current = true;
     setPage(p);
     setMobileMenu(false);
     setSearch("");
@@ -451,11 +669,13 @@ function App() {
   }
   async function addFiles(files: FileList | null) {
     if (!files) return;
+    const selectedFiles = Array.from(files),
+      target = activeSelection.current;
     await run(async () => {
-      if (files.length + attachments.length > 4)
+      if (selectedFiles.length + attachments.length > 4)
         throw new Error("Máximo de quatro anexos");
       const next: Attachment[] = [];
-      for (const f of files) {
+      for (const f of selectedFiles) {
         if (f.size > 2_000_000)
           throw new Error("Neste marco, cada anexo pode ter até 2 MB");
         const data = await new Promise<string>((resolve, reject) => {
@@ -470,7 +690,17 @@ function App() {
           data,
         });
       }
-      setAttachments([...attachments, ...next]);
+      if (activeSelection.current !== target)
+        throw new Error(
+          "A conversa mudou. Seleccione novamente os anexos para este destinatário.",
+        );
+      setAttachments((current) => {
+        if (current.length + next.length > 4) {
+          queueMicrotask(() => setError("Máximo de quatro anexos"));
+          return current;
+        }
+        return [...current, ...next];
+      });
     });
   }
   function reorder(from: number, to: number) {
@@ -704,7 +934,7 @@ function App() {
             <button
               className="icon"
               aria-label="Bloquear identidade"
-              onClick={() => run(() => api("lock", {}))}
+              onClick={() => void lockIdentity()}
             >
               <LogOut size={17} />
             </button>
@@ -810,6 +1040,22 @@ function App() {
               </button>
             )}
           </div>
+          {["messages", "feed", "saved"].includes(page) &&
+            state.history?.hasMore && (
+              <div className="history-control">
+                <button
+                  className="secondary"
+                  disabled={busy}
+                  onClick={loadHistory}
+                >
+                  <ArrowUp size={16} /> Carregar histórico anterior
+                </button>
+                <span>
+                  {objects.length} de {state.history.total} objectos autorizados
+                  disponíveis
+                </span>
+              </div>
+            )}
           {page === "messages" && (
             <div
               className={
@@ -978,7 +1224,12 @@ function App() {
                             </p>
                             {!deleted(o.id) &&
                               o.content.attachments?.map((a, i) => (
-                                <AttachmentView key={i} attachment={a} />
+                                <AttachmentView
+                                  key={i}
+                                  attachment={a}
+                                  contentId={o.id}
+                                  index={i}
+                                />
                               ))}
                             <div className="message-meta">
                               {eventsFor(o.id, "edit").length > 0 && (
@@ -1123,6 +1374,19 @@ function App() {
                           maxLength={12000}
                           rows={1}
                         />
+                        <VoiceRecorder
+                          key={selection}
+                          disabled={busy || offline || attachments.length >= 4}
+                          onAttachment={(attachment) => {
+                            setAttachments((current) => {
+                              if (current.length >= 4) {
+                                setError("Máximo de quatro anexos");
+                                return current;
+                              }
+                              return [...current, attachment];
+                            });
+                          }}
+                        />
                         <button
                           className="send"
                           aria-label="Enviar mensagem"
@@ -1172,9 +1436,30 @@ function App() {
             <div className="social-layout">
               <section>
                 <div className="section-tabs">
-                  <span className="active">
-                    {page === "saved" ? "A minha colecção" : "Na minha rede"}
-                  </span>
+                  {page === "feed" ? (
+                    <div className="social-tabs">
+                      <button
+                        className={feedMode === "all" ? "active" : ""}
+                        aria-pressed={feedMode === "all"}
+                        onClick={() => setFeedMode("all")}
+                      >
+                        Na minha rede
+                      </button>
+                      <button
+                        className={feedMode === "following" ? "active" : ""}
+                        aria-pressed={feedMode === "following"}
+                        onClick={() => setFeedMode("following")}
+                      >
+                        A seguir
+                      </button>
+                    </div>
+                  ) : (
+                    <span className="active">
+                      {state.collections.find(
+                        (c) => c.id === selectedCollection,
+                      )?.title ?? "Todos os guardados"}
+                    </span>
+                  )}
                   {page === "feed" && (
                     <span>
                       {objects.filter((o) => o.kind === "post").length}{" "}
@@ -1182,13 +1467,16 @@ function App() {
                     </span>
                   )}
                 </div>
+                <div className="social-toolbar">
+                  <button
+                    className="import-content"
+                    onClick={() => setModal("retrieve")}
+                  >
+                    <Download size={15} /> Obter conteúdo por endereço
+                  </button>
+                </div>
                 {objects
-                  .filter(
-                    (o) =>
-                      ["post", "alert"].includes(o.kind) &&
-                      !deleted(o.id) &&
-                      (page !== "saved" || state.saved.includes(o.id)),
-                  )
+                  .filter(visiblePost)
                   .reverse()
                   .map((o) => (
                     <article className="post" key={o.id}>
@@ -1214,7 +1502,12 @@ function App() {
                       )}
                       <p className="post-text">{renderedText(o)}</p>
                       {o.content.attachments?.map((a, i) => (
-                        <AttachmentView key={i} attachment={a} />
+                        <AttachmentView
+                          key={i}
+                          attachment={a}
+                          contentId={o.id}
+                          index={i}
+                        />
                       ))}
                       <div className="post-actions">
                         <button
@@ -1259,12 +1552,7 @@ function App() {
                       ))}
                     </article>
                   ))}
-                {!objects.some(
-                  (o) =>
-                    ["post", "alert"].includes(o.kind) &&
-                    !deleted(o.id) &&
-                    (page !== "saved" || state.saved.includes(o.id)),
-                ) && (
+                {!objects.some(visiblePost) && (
                   <div className="card">
                     <Empty
                       icon={page === "saved" ? Bookmark : Globe2}
@@ -1297,6 +1585,21 @@ function App() {
                 )}
               </section>
               <aside className="social-aside">
+                {page === "saved" && (
+                  <div className="card compact">
+                    <CollectionManager
+                      collections={state.collections}
+                      selected={selectedCollection}
+                      onSelect={setSelectedCollection}
+                      onCommand={(command) =>
+                        run(
+                          () => api("collection", command),
+                          "Colecção privada actualizada",
+                        )
+                      }
+                    />
+                  </div>
+                )}
                 <div className="editorial-card">
                   <div className="eyebrow">UMA REDE COM RAÍZES</div>
                   <h2>
@@ -1841,6 +2144,32 @@ function App() {
                   Conteúdos não fixados podem ser removidos quando a quota é
                   atingida. Eliminar não apaga cópias noutros pares.
                 </p>
+                <NotificationSettings controller={notifications} />
+                <h3>Leitura e acessibilidade</h3>
+                <label className="toggle-row">
+                  <div>
+                    <strong>Texto maior</strong>
+                    <span>
+                      Aumentar mensagens, controlos e informação importante.
+                    </span>
+                  </div>
+                  <input
+                    type="checkbox"
+                    checked={largeText}
+                    onChange={(e) => setLargeText(e.target.checked)}
+                  />
+                </label>
+                <label className="toggle-row">
+                  <div>
+                    <strong>Alto contraste</strong>
+                    <span>Reforçar texto, contornos e estados de ligação.</span>
+                  </div>
+                  <input
+                    type="checkbox"
+                    checked={highContrast}
+                    onChange={(e) => setHighContrast(e.target.checked)}
+                  />
+                </label>
                 <h3>Contactos</h3>
                 {contacts.map((c) => (
                   <div className="person" key={c.id}>
@@ -1897,25 +2226,27 @@ function App() {
           title={
             modal === "contact"
               ? "Adicionar uma pessoa"
-              : modal === "conversation"
-                ? "Começar uma conversa"
-                : modal === "group"
-                  ? "Criar um grupo privado"
-                  : modal === "peer"
-                    ? "Ligar um par"
-                    : modal === "export"
-                      ? "Guardar a tua identidade"
-                      : modal === "participants"
-                        ? "Quem está nesta conversa"
-                        : modal === "alert"
-                          ? "Criar alerta prioritário"
-                          : modal.startsWith("edit:")
-                            ? "Editar o teu conteúdo"
-                            : modal.startsWith("comment:")
-                              ? "Juntar à conversa"
-                              : modal.startsWith("post-options:")
-                                ? "Opções da publicação"
-                                : "Uma história para partilhar"
+              : modal === "retrieve"
+                ? "Obter conteúdo da rede"
+                : modal === "conversation"
+                  ? "Começar uma conversa"
+                  : modal === "group"
+                    ? "Criar um grupo privado"
+                    : modal === "peer"
+                      ? "Ligar um par"
+                      : modal === "export"
+                        ? "Guardar a tua identidade"
+                        : modal === "participants"
+                          ? "Quem está nesta conversa"
+                          : modal === "alert"
+                            ? "Criar alerta prioritário"
+                            : modal.startsWith("edit:")
+                              ? "Editar o teu conteúdo"
+                              : modal.startsWith("comment:")
+                                ? "Juntar à conversa"
+                                : modal.startsWith("post-options:")
+                                  ? "Opções da publicação"
+                                  : "Uma história para partilhar"
           }
           close={() => {
             setModal("");
@@ -1926,6 +2257,42 @@ function App() {
             <div className="error" role="alert">
               {error}
             </div>
+          )}
+          {modal === "retrieve" && (
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                const data = new FormData(e.currentTarget);
+                void run(async () => {
+                  const result = await api("retrieve", { id: data.get("id") });
+                  if (result.status === "unreadable")
+                    throw new Error(
+                      "Conteúdo disponível, mas esta identidade não tem autorização para o ler.",
+                    );
+                  setModal("");
+                  return result;
+                }, "Pedido efectuado. O conteúdo aparece quando um seeder o entregar e a leitura for autorizada.");
+              }}
+            >
+              <p>
+                Um endereço identifica o conteúdo. Não concede uma chave de
+                leitura nem transfere a autoria.
+              </p>
+              <label>
+                Endereço do conteúdo
+                <input
+                  name="id"
+                  required
+                  pattern="[a-f0-9]{64}"
+                  minLength={64}
+                  maxLength={64}
+                  placeholder="64 caracteres hexadecimais"
+                />
+              </label>
+              <button className="primary full" disabled={busy}>
+                Pedir aos pares
+              </button>
+            </form>
           )}
           {modal === "contact" && (
             <form
@@ -1971,6 +2338,7 @@ function App() {
                       const existing = conversations.find(
                         (g) =>
                           !g.group &&
+                          g.id.startsWith("dm:") &&
                           g.members.length === 2 &&
                           g.members.some((m) => m.id === c.id),
                       );
@@ -2119,42 +2487,49 @@ function App() {
                   <Link size={17} /> Ligar por TCP
                 </button>
               </form>
-              <details>
-                <summary>Dispositivo série</summary>
+              {state.nativeRuntime === "Go" ? (
                 <p className="muted">
-                  Um dispositivo série compatível ou PTY de teste. Isto não
-                  configura nem valida um rádio físico.
+                  O adaptador série ainda não está disponível neste núcleo
+                  nativo. Podes ligar pares por TCP.
                 </p>
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    const d = new FormData(e.currentTarget);
-                    void run(async () => {
-                      await api("serial", {
-                        path: String(d.get("path")),
-                        baud: Number(d.get("baud")),
-                      });
-                      setModal("");
-                    }, "A abrir dispositivo série");
-                  }}
-                >
-                  <label>
-                    Caminho do dispositivo
-                    <input name="path" required placeholder="/dev/ttyUSB0" />
-                  </label>
-                  <label>
-                    Velocidade
-                    <select name="baud" defaultValue="115200">
-                      <option>9600</option>
-                      <option>57600</option>
-                      <option>115200</option>
-                    </select>
-                  </label>
-                  <button className="secondary full" disabled={busy}>
-                    Ligar por série
-                  </button>
-                </form>
-              </details>
+              ) : (
+                <details>
+                  <summary>Dispositivo série</summary>
+                  <p className="muted">
+                    Um dispositivo série compatível ou PTY de teste. Isto não
+                    configura nem valida um rádio físico.
+                  </p>
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      const d = new FormData(e.currentTarget);
+                      void run(async () => {
+                        await api("serial", {
+                          path: String(d.get("path")),
+                          baud: Number(d.get("baud")),
+                        });
+                        setModal("");
+                      }, "A abrir dispositivo série");
+                    }}
+                  >
+                    <label>
+                      Caminho do dispositivo
+                      <input name="path" required placeholder="/dev/ttyUSB0" />
+                    </label>
+                    <label>
+                      Velocidade
+                      <select name="baud" defaultValue="115200">
+                        <option>9600</option>
+                        <option>57600</option>
+                        <option>115200</option>
+                      </select>
+                    </label>
+                    <button className="secondary full" disabled={busy}>
+                      Ligar por série
+                    </button>
+                  </form>
+                </details>
+              )}
             </>
           )}
           {["post", "alert"].includes(modal) && (
@@ -2285,6 +2660,38 @@ function App() {
                       ? "Desafixar do armazenamento"
                       : "Fixar no armazenamento"}
                   </button>
+                  <div className="collection-memberships">
+                    <strong>Guardar numa colecção</strong>
+                    {state.collections.length ? (
+                      state.collections.map((c) => (
+                        <label key={c.id}>
+                          <input
+                            type="checkbox"
+                            checked={c.objectIds.includes(o.id)}
+                            disabled={busy}
+                            onChange={(e) =>
+                              void toggleCollection(
+                                c.id,
+                                o.id,
+                                e.target.checked,
+                              )
+                            }
+                          />
+                          {c.title}
+                        </label>
+                      ))
+                    ) : (
+                      <button
+                        className="text-button"
+                        onClick={() => {
+                          setModal("");
+                          changePage("saved");
+                        }}
+                      >
+                        Criar uma colecção em Guardados
+                      </button>
+                    )}
+                  </div>
                   <button
                     onClick={() => copy(o.id, "Endereço do conteúdo copiado")}
                   >
@@ -2423,32 +2830,118 @@ function App() {
     </div>
   );
 }
-function AttachmentView({ attachment: a }: { attachment: Attachment }) {
-  const [url, setUrl] = useState("");
+const attachmentJobs: Array<() => void> = [];
+let activeAttachmentJobs = 0;
+function limitedAttachment<T>(action: () => Promise<T>): Promise<T> {
+  return new Promise((resolve, reject) => {
+    const start = () => {
+      activeAttachmentJobs++;
+      action()
+        .then(resolve, reject)
+        .finally(() => {
+          activeAttachmentJobs--;
+          attachmentJobs.shift()?.();
+        });
+    };
+    if (activeAttachmentJobs < 3) start();
+    else attachmentJobs.push(start);
+  });
+}
+function AttachmentView({
+  attachment: a,
+  contentId,
+  index,
+}: {
+  attachment: Attachment;
+  contentId: string;
+  index: number;
+}) {
+  const [url, setUrl] = useState(""),
+    [error, setError] = useState(""),
+    [visible, setVisible] = useState(false),
+    [retry, setRetry] = useState(0);
+  const element = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const raw = atob(a.data),
-      buffer = new Uint8Array(raw.length);
-    for (let i = 0; i < raw.length; i++) buffer[i] = raw.charCodeAt(i);
-    const u = URL.createObjectURL(new Blob([buffer], { type: a.mime }));
-    setUrl(u);
-    return () => URL.revokeObjectURL(u);
-  }, [a.data, a.mime]);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "100px" },
+    );
+    if (element.current) observer.observe(element.current);
+    return () => observer.disconnect();
+  }, []);
+  useEffect(() => {
+    if (!visible) return;
+    const controller = new AbortController();
+    let cancelled = false,
+      objectUrl = "";
+    setError("");
+    void limitedAttachment(async () => {
+      if (cancelled) return;
+      const attachment: Attachment = a.data
+        ? a
+        : await api("attachment", { id: contentId, index }, controller.signal);
+      if (cancelled) return;
+      const raw = atob(attachment.data),
+        bytes = new Uint8Array(raw.length);
+      for (let i = 0; i < raw.length; i++) bytes[i] = raw.charCodeAt(i);
+      objectUrl = URL.createObjectURL(
+        new Blob([bytes], { type: attachment.mime }),
+      );
+      setUrl(objectUrl);
+    }).catch((e) => {
+      if (!cancelled) setError(e.message);
+    });
+    return () => {
+      cancelled = true;
+      controller.abort();
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    };
+  }, [visible, retry, contentId, index, a.data, a.mime]);
   return (
-    <div className="attachment">
-      {/^image\/(png|jpeg|webp|gif)$/.test(a.mime) && (
-        <img src={url} alt={a.name} loading="lazy" />
+    <div className="attachment" ref={element}>
+      {url ? (
+        <>
+          {/^image\/(png|jpeg|webp|gif)$/.test(a.mime) && (
+            <img src={url} alt={a.name} loading="lazy" />
+          )}
+          {/^audio\/(ogg|mpeg|webm|wav|mp4)$/.test(a.mime) && (
+            <audio src={url} controls aria-label={a.name} />
+          )}{" "}
+          {/^video\/(mp4|webm|ogg)$/.test(a.mime) && (
+            <video src={url} controls preload="metadata" aria-label={a.name} />
+          )}
+          <a href={url} download={a.name}>
+            <FileText size={17} />
+            <span>{a.name}</span>
+            <Download size={16} />
+          </a>
+        </>
+      ) : (
+        <div className="attachment-loading">
+          <FileText size={17} />
+          <span>
+            {a.name}
+            {a.size !== undefined ? ` · ${bytes(a.size)}` : ""}
+          </span>
+          {error ? (
+            <button className="text-button" onClick={() => setRetry(retry + 1)}>
+              Voltar a carregar
+            </button>
+          ) : (
+            <span role="status">A carregar…</span>
+          )}
+        </div>
       )}
-      {/^audio\/(ogg|mpeg|webm|wav|mp4)$/.test(a.mime) && (
-        <audio src={url} controls aria-label={a.name} />
-      )}{" "}
-      {/^video\/(mp4|webm|ogg)$/.test(a.mime) && (
-        <video src={url} controls preload="metadata" aria-label={a.name} />
+      {error && (
+        <p className="error" role="alert">
+          {error}
+        </p>
       )}
-      <a href={url} download={a.name}>
-        <FileText size={17} />
-        <span>{a.name}</span>
-        <Download size={16} />
-      </a>
     </div>
   );
 }

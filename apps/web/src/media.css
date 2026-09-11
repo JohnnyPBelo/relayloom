@@ -1,0 +1,135 @@
+.voice-recorder {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+}
+.voice-record-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 8px;
+  padding: 8px;
+  color: var(--muted);
+  background: transparent;
+}
+.voice-record-button:hover:not(:disabled) {
+  background: var(--soft);
+  color: var(--ink);
+}
+.voice-panel {
+  position: absolute;
+  bottom: calc(100% + 14px);
+  right: 0;
+  z-index: 15;
+  width: min(350px, calc(100vw - 56px));
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 8px 30px #17271f25;
+  text-align: left;
+}
+.voice-panel-heading {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 14px;
+}
+.voice-panel-heading strong {
+  flex: 1;
+}
+.voice-panel p {
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 12px 0 0;
+  color: var(--muted);
+}
+.voice-panel p:empty {
+  display: none;
+}
+.voice-panel .voice-error {
+  color: var(--error);
+}
+.voice-duration {
+  display: block;
+  font-size: 25px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 1px;
+  margin: 14px 0 0;
+}
+.voice-duration span {
+  font-size: 14px;
+  color: var(--muted);
+  letter-spacing: 0;
+}
+.voice-panel .voice-limit {
+  font-size: 11px;
+  margin-top: 5px;
+}
+.voice-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+.voice-actions button {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 12px;
+  border-radius: 7px;
+  font-size: 12px;
+}
+.voice-stop {
+  background: var(--green);
+  color: #fffdf2;
+  font-weight: 600;
+}
+.voice-cancel {
+  border: 1px solid var(--line);
+  color: var(--ink);
+  background: var(--bg);
+}
+.voice-dismiss {
+  display: grid;
+  place-items: center;
+  min-width: 36px;
+  min-height: 36px;
+  border-radius: 6px;
+  color: var(--muted);
+}
+.voice-dismiss:hover {
+  background: var(--soft);
+}
+.voice-unavailable {
+  position: absolute;
+  bottom: calc(100% + 14px);
+  right: 0;
+  width: min(320px, calc(100vw - 56px));
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--muted);
+  background: var(--surface);
+  font-size: 12px;
+  line-height: 1.6;
+  z-index: 15;
+}
+@media (max-width: 680px) {
+  .voice-panel {
+    right: -44px;
+    padding: 16px;
+  }
+  .voice-unavailable {
+    right: -44px;
+  }
+  .voice-actions button {
+    flex: 1;
+  }
+}

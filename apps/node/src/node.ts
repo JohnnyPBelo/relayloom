@@ -28,7 +28,17 @@ import {
   type Priority,
 } from "../../../packages/transport/src/index.js";
 
+import {
+  applyCollectionCommand,
+  validateCollections,
+  validateFollowing,
+  followedFeed,
+  requireContentId,
+  type CollectionCommand,
+} from "./social.js";
+
 export interface Attachment {
+  size?: number;
   name: string;
   mime: string;
   data: string;
@@ -84,6 +94,11 @@ interface Config {
 export class LoomNode extends EventEmitter {
   identity?: Identity;
   private privateState: PrivateState = { mutations: {} };
+  private summaryCache = new Map<
+    string,
+    { object: DisplayObject; bytes: number }
+  >();
+  private summaryCacheBytes = 0;
   readonly store: ContentStore;
   readonly router: Router;
   config: Config;
@@ -148,6 +163,8 @@ export class LoomNode extends EventEmitter {
       ? importVault(recovery, password)
       : createIdentity(name);
     atomic(join(this.dir, "identity.vault"), exportVault(identity, password));
+    this.summaryCache.clear();
+    this.summaryCacheBytes = 0;
     this.identity = identity;
     this.privateState = readPrivateState(
       join(this.dir, "private-state.json"),
@@ -164,11 +181,15 @@ export class LoomNode extends EventEmitter {
       join(this.dir, "private-state.json"),
       identity,
     );
+    this.summaryCache.clear();
+    this.summaryCacheBytes = 0;
     this.identity = identity;
     this.privateState = local;
     return identity.public;
   }
   lock() {
+    this.summaryCache.clear();
+    this.summaryCacheBytes = 0;
     this.identity = undefined;
     this.privateState = { mutations: {} };
   }
@@ -192,6 +213,35 @@ export class LoomNode extends EventEmitter {
       this.requireIdentity(),
     );
     this.privateState = next;
+  }
+  collection(command: CollectionCommand) {
+    const identity = this.requireIdentity();
+    if (
+      command.action === "add" &&
+      !this.objects().some((o) => o.id === command.objectId)
+    )
+      throw new Error("Só pode guardar conteúdo disponível e autorizado");
+    const collections = applyCollectionCommand(
+      this.privateState.collections ?? [],
+      identity.public.id,
+      command,
+      Date.now(),
+    );
+    this.persistPrivate({ ...this.privateState, collections });
+    return collections;
+  }
+  retrieve(value: unknown) {
+    this.requireIdentity();
+    const id = requireContentId(value);
+    if (this.store.has(id)) {
+      const object = this.objects().find((o) => o.id === id);
+      return { status: object ? "available" : "unreadable", id };
+    }
+    if (Date.now() - (this.requests.get("user:" + id) ?? 0) > 1500) {
+      this.markRequest("user:" + id);
+      this.router.broadcast({ type: "request", ids: [id] });
+    }
+    return { status: "requested", id };
   }
   export(password: string) {
     return exportVault(this.requireIdentity(), password);
@@ -245,6 +295,7 @@ export class LoomNode extends EventEmitter {
   }
   localAction(action: string, target: string, value: boolean, reason = "") {
     this.requireIdentity();
+    if (typeof value !== "boolean") throw new Error("Valor da acção inválido");
     if (!/^[a-f0-9]{64}$/.test(target)) throw new Error("Endereço inválido");
     if (action === "pin") this.store.pin(target, value);
     else if (action === "block" || action === "follow" || action === "save") {
@@ -254,10 +305,12 @@ export class LoomNode extends EventEmitter {
           : action === "follow"
             ? "following"
             : "saved";
-      this.config[key] = [
+      const next = [
         ...this.config[key].filter((id) => id !== target),
         ...(value ? [target] : []),
       ];
+      if (next.length > 2048) throw new Error("Limite de preferências locais");
+      this.config[key] = key === "following" ? validateFollowing(next) : next;
     } else if (action === "report") {
       if (!reason.trim() || reason.length > 500)
         throw new Error("Indique um motivo até 500 caracteres");
@@ -299,6 +352,15 @@ export class LoomNode extends EventEmitter {
           String(content[key]).length > (key === "text" ? 12000 : 256))
       )
         throw new Error("Texto demasiado longo ou inválido");
+    if (content.value !== undefined && typeof content.value !== "boolean")
+      throw new Error("Valor de reacção inválido");
+    if (
+      content.priority !== undefined &&
+      !["sos", "normal", "bulk"].includes(content.priority)
+    )
+      throw new Error("Prioridade inválida");
+    if (content.theme !== undefined && typeof content.theme !== "string")
+      throw new Error("Tema inválido");
     if (
       content.members &&
       (!Array.isArray(content.members) ||
@@ -504,11 +566,27 @@ export class LoomNode extends EventEmitter {
     )
       throw new Error("Inventário inválido");
   }
+  private markRequest(id: string) {
+    if (!this.requests.has(id) && this.requests.size >= 2048)
+      this.requests.clear();
+    this.requests.set(id, Date.now());
+  }
   private receive(payload: any, route: unknown) {
     try {
       if (payload.type === "bundle") {
         if (this.config.blocked.includes(payload.bundle.manifest.author.id))
           return;
+        if (
+          this.identity &&
+          ["edit", "delete"].includes(payload.bundle.manifest.kind)
+        ) {
+          const event = this.display(payload.bundle, true);
+          if (event) {
+            const known = this.objects();
+            if (this.authorized(event, [...known, event]))
+              this.materializeMutations([...known, event]);
+          }
+        }
         if (this.store.put(payload.bundle)) {
           this.routes.set(payload.bundle.manifest.id, route);
           if (this.routes.size > 1000)
@@ -524,7 +602,7 @@ export class LoomNode extends EventEmitter {
           )
           .slice(0, 8);
         if (missing.length) {
-          for (const id of missing) this.requests.set(id, Date.now());
+          for (const id of missing) this.markRequest(id);
           this.router.broadcast(
             { type: "request", ids: missing },
             "normal",
@@ -539,7 +617,7 @@ export class LoomNode extends EventEmitter {
             this.store.has(id) &&
             Date.now() - (this.requests.get("serve:" + id) ?? 0) > 1000
           ) {
-            this.requests.set("serve:" + id, Date.now());
+            this.markRequest("serve:" + id);
             const bundle = this.store.get(id, false);
             this.router.broadcast(
               { type: "bundle", bundle },
@@ -570,7 +648,7 @@ export class LoomNode extends EventEmitter {
       );
     }
   }
-  private display(bundle: Bundle): DisplayObject | undefined {
+  private display(bundle: Bundle, summary = false): DisplayObject | undefined {
     try {
       const content = decryptBundle(bundle, this.identity) as Content;
       this.validateContent(content);
@@ -581,7 +659,7 @@ export class LoomNode extends EventEmitter {
         author: bundle.manifest.author,
         created: bundle.manifest.created,
         expires: bundle.manifest.expires,
-        content,
+        content: summary ? this.summarizeContent(content) : content,
         pinned: this.store.isPinned(bundle.manifest.id),
         readers: bundle.manifest.keys.map((k) => k.reader),
         public: !!bundle.manifest.publicKey,
@@ -591,20 +669,105 @@ export class LoomNode extends EventEmitter {
       return;
     }
   }
+  private summarizeContent(content: Content): Content {
+    const out: Content = { type: content.type };
+    const fields = ["text", "title", "priority"];
+    if (["message", "group"].includes(content.type))
+      fields.push("conversation", "members");
+    if (content.type === "message") fields.push("replyTo");
+    if (
+      ["comment", "reaction", "edit", "delete", "receipt"].includes(
+        content.type,
+      )
+    )
+      fields.push("target");
+    if (content.type === "reaction") fields.push("emoji", "value");
+    for (const field of fields)
+      if (content[field] !== undefined) out[field] = content[field];
+    if (content.type === "site") {
+      if (content.theme !== undefined) out.theme = content.theme;
+      out.blocks = content.blocks!.map((b) => ({
+        id: b.id,
+        type: b.type,
+        title: b.title,
+        body: b.body,
+        ...(b.url ? { url: b.url } : {}),
+      }));
+    }
+    if (
+      content.attachments &&
+      ["message", "post", "alert"].includes(content.type)
+    )
+      out.attachments = content.attachments.map((a) => ({
+        name: a.name,
+        mime: a.mime,
+        data: "",
+        size: Buffer.from(a.data, "base64").length,
+      }));
+    return out;
+  }
   objects(): DisplayObject[] {
     if (!this.identity) return [];
-    const all = this.store
+    const manifests = this.store
       .list()
-      .filter((m) => !this.config.blocked.includes(m.author.id))
-      .flatMap((m) => {
-        try {
-          const o = this.display(this.store.get(m.id, false));
-          return o ? [o] : [];
-        } catch {
-          return [];
+      .filter((m) => !this.config.blocked.includes(m.author.id));
+    const present = new Set(manifests.map((m) => m.id));
+    for (const [id, entry] of this.summaryCache)
+      if (!present.has(id)) {
+        this.summaryCache.delete(id);
+        this.summaryCacheBytes -= entry.bytes;
+      }
+    const all = manifests.flatMap((m) => {
+      try {
+        // List validates the current bounded file-byte fingerprint; immutable IDs
+        // may reuse metadata already decrypted by this unlocked identity.
+        const cached = this.summaryCache.get(m.id);
+        let object = cached
+          ? structuredClone(cached.object)
+          : this.display(this.store.get(m.id, false), true);
+        if (!object) return [];
+        if (!cached) {
+          const bytes = Buffer.byteLength(JSON.stringify(object));
+          while (
+            this.summaryCache.size &&
+            (this.summaryCacheBytes + bytes > 16 * 1024 * 1024 ||
+              this.summaryCache.size >= 1024)
+          ) {
+            const oldest = this.summaryCache.keys().next().value!;
+            this.summaryCacheBytes -= this.summaryCache.get(oldest)!.bytes;
+            this.summaryCache.delete(oldest);
+          }
+          if (bytes <= 16 * 1024 * 1024) {
+            this.summaryCache.set(m.id, {
+              object: structuredClone(object),
+              bytes,
+            });
+            this.summaryCacheBytes += bytes;
+          }
         }
-      });
+        object.pinned = this.store.isPinned(m.id);
+        object.route = this.routes.get(m.id);
+        return [object];
+      } catch {
+        return [];
+      }
+    });
     const accepted = all.filter((o) => this.authorized(o, all));
+    this.materializeMutations(accepted);
+    return accepted.map((o) => {
+      const mutation = this.privateState.mutations[o.id];
+      return mutation?.author === o.author.id
+        ? {
+            ...o,
+            deleted: mutation.deleted ?? false,
+            ...(mutation.text !== undefined
+              ? { editedText: mutation.text }
+              : {}),
+          }
+        : o;
+    });
+  }
+  private materializeMutations(accepted: DisplayObject[]) {
     let changed = false;
     const nextPrivate = structuredClone(this.privateState);
     for (const event of accepted)
@@ -636,18 +799,6 @@ export class LoomNode extends EventEmitter {
         changed = true;
       }
     if (changed) this.persistPrivate(nextPrivate);
-    return accepted.map((o) => {
-      const mutation = this.privateState.mutations[o.id];
-      return mutation?.author === o.author.id
-        ? {
-            ...o,
-            deleted: mutation.deleted ?? false,
-            ...(mutation.text !== undefined
-              ? { editedText: mutation.text }
-              : {}),
-          }
-        : o;
-    });
   }
   private authorized(o: DisplayObject, all: DisplayObject[]): boolean {
     const readers = [...o.readers].sort();
@@ -740,9 +891,57 @@ export class LoomNode extends EventEmitter {
           this.store.get(id).manifest.keys.map((k) => k.reader),
         );
     }
-    return object;
+    const full = this.display(this.store.get(id));
+    if (!full) throw new Error("Sem autorização de leitura");
+    return { ...object, content: full.content };
+  }
+  attachment(id: string, index: number): Attachment {
+    this.requireIdentity();
+    if (!Number.isInteger(index) || index < 0 || index > 3)
+      throw new Error("Anexo inválido");
+    const object = this.view(id);
+    if (object.deleted) throw new Error("Conteúdo eliminado pelo autor");
+    const attachment = object.content.attachments?.[index];
+    if (!attachment) throw new Error("Anexo indisponível");
+    return attachment;
+  }
+  history(before?: string) {
+    this.requireIdentity();
+    return this.pageObjects(this.objects(), before);
+  }
+  private pageObjects(objects: DisplayObject[], before?: string) {
+    let end = objects.length;
+    if (before !== undefined) {
+      if (!/^[a-f0-9]{64}$/.test(before))
+        throw new Error("Cursor de histórico inválido");
+      end = objects.findIndex((o) => o.id === before);
+      if (end < 0) throw new Error("Cursor de histórico indisponível");
+    }
+    const selected: DisplayObject[] = [];
+    let bytes = 0,
+      at = end - 1;
+    while (at >= 0 && selected.length < 100) {
+      const value = objects[at],
+        size = Buffer.byteLength(JSON.stringify(value));
+      if (bytes + size > 4 * 1024 * 1024 && selected.length) break;
+      if (size > 4 * 1024 * 1024)
+        throw new Error("Resumo de conteúdo excede o limite");
+      selected.unshift(value);
+      bytes += size;
+      at--;
+    }
+    return {
+      objects: selected,
+      history: {
+        hasMore: at >= 0,
+        nextBefore: at >= 0 ? selected[0].id : null,
+        total: objects.length,
+        availableIds: objects.map((o) => o.id),
+      },
+    };
   }
   state() {
+    const objects = this.objects();
     return {
       initialized: this.initialized,
       locked: !this.identity,
@@ -757,7 +956,16 @@ export class LoomNode extends EventEmitter {
       following: this.identity ? this.config.following : [],
       saved: this.identity ? this.config.saved : [],
       reports: this.identity ? this.config.reports : [],
-      objects: this.objects(),
+      ...this.pageObjects(objects),
+      followedPostIds: this.identity
+        ? followedFeed(objects, this.config.following).map((o) => o.id)
+        : [],
+      collections: this.identity
+        ? validateCollections(
+            this.privateState.collections ?? [],
+            this.identity.public.id,
+          )
+        : [],
       siteDraft: this.identity ? (this.privateState.siteDraft ?? null) : null,
       transportError: this.lastTransportError,
       now: Date.now(),

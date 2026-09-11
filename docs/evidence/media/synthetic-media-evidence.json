@@ -1,0 +1,14 @@
+{
+  "input": "SYNTHETIC BROWSER INPUT — controlled getUserMedia stub returning generated Web Audio; real MediaRecorder encoding; generated canvas PNG/WebM and PCM WAV; no physical microphone/camera",
+  "nativeFakeMicrophone": "Separate attempt rejected NotSupportedError: Not supported; not claimed as passed",
+  "realPeerNodes": 2,
+  "attachmentTypes": [
+    "image/png",
+    "audio/wav",
+    "video/webm",
+    "audio/webm"
+  ],
+  "voiceBytes": 16781,
+  "componentAxeViolations": [],
+  "cancellationAndUnmountTracksEnded": true
+}
