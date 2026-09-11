@@ -86,7 +86,7 @@ export async function launch(
       return data;
     },
     async stop() {
-      if (child.exitCode !== null) return;
+      if (child.exitCode !== null || child.signalCode !== null) return;
       child.kill("SIGTERM");
       await new Promise<void>((resolve, reject) => {
         const t = setTimeout(() => {

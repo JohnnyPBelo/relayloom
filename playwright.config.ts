@@ -10,6 +10,7 @@ export default defineConfig({
   reporter: [["list"], ["json", { outputFile: "test-results/e2e.json" }]],
   use: {
     headless: true,
+    channel: process.env.RELAYLOOM_BROWSER_CHANNEL,
     actionTimeout: 12000,
     navigationTimeout: 12000,
     launchOptions: { chromiumSandbox: true },

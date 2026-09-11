@@ -7,6 +7,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   native-node:
+    timeout-minutes: 15
     strategy:
       max-parallel: 2
       fail-fast: false
@@ -22,13 +23,13 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: npm run build
       - run: npm test
-      - name: Install project browser
+      - name: Inspect runner-provided Chrome
         if: runner.os == 'Linux'
-        run: npx playwright install chromium
-        env:
-          PLAYWRIGHT_BROWSERS_PATH: .cache/playwright
+        run: google-chrome --version
       - run: npm run test:e2e
         if: runner.os == 'Linux'
+        env:
+          RELAYLOOM_BROWSER_CHANNEL: chrome
       - uses: actions/upload-artifact@v4
         if: always()
         with:
