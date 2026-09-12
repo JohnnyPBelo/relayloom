@@ -1,0 +1,114 @@
+TAP version 13
+# (node:179596) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: select only compatible installed iOS runtimes, never unavailable or other platforms
+ok 1 - select only compatible installed iOS runtimes, never unavailable or other platforms
+  ---
+  duration_ms: 1.995893
+  type: 'test'
+  ...
+# Subtest: runtime advertised compatibility is honored instead of guessing a device
+ok 2 - runtime advertised compatibility is honored instead of guessing a device
+  ---
+  duration_ms: 0.351399
+  type: 'test'
+  ...
+# Subtest: logs remove launch capabilities, authorization headers and standalone secret tokens
+ok 3 - logs remove launch capabilities, authorization headers and standalone secret tokens
+  ---
+  duration_ms: 5.152622
+  type: 'test'
+  ...
+# Subtest: container reads are limited to the created simulator application container
+ok 4 - container reads are limited to the created simulator application container
+  ---
+  duration_ms: 8.868309
+  type: 'test'
+  ...
+# Subtest: empty, skipped or partially failed XCTest output cannot pass the execution gate
+ok 5 - empty, skipped or partially failed XCTest output cannot pass the execution gate
+  ---
+  duration_ms: 0.619382
+  type: 'test'
+  ...
+# Subtest: refusing concurrent cleanup preserves the active owner record and fixture namespace
+ok 6 - refusing concurrent cleanup preserves the active owner record and fixture namespace
+  ---
+  duration_ms: 5.235527
+  type: 'test'
+  ...
+# Subtest: owned group escalation continues when a TERM-resistant descendant outlives its leader
+ok 7 - owned group escalation continues when a TERM-resistant descendant outlives its leader
+  ---
+  duration_ms: 15.747758
+  type: 'test'
+  ...
+# Subtest: owned group supervision stops without KILL once the whole group disappears
+ok 8 - owned group supervision stops without KILL once the whole group disappears
+  ---
+  duration_ms: 1.86162
+  type: 'test'
+  ...
+# Subtest: photo failure diagnostics read only bounded logs from the recorded simulator
+ok 9 - photo failure diagnostics read only bounded logs from the recorded simulator
+  ---
+  duration_ms: 0.848671
+  type: 'test'
+  ...
+# Subtest: diagnostic timeout preserves the primary photo failure and sanitizes its own error
+ok 10 - diagnostic timeout preserves the primary photo failure and sanitizes its own error
+  ---
+  duration_ms: 0.466334
+  type: 'test'
+  ...
+# Subtest: host fixture verification authenticates encrypted vault/journal and signed private bundle
+ok 11 - host fixture verification authenticates encrypted vault/journal and signed private bundle
+  ---
+  duration_ms: 348.190891
+  type: 'test'
+  ...
+# Subtest: host fixture rejects a mismatched real-peer identity and changed encrypted bytes
+ok 12 - host fixture rejects a mismatched real-peer identity and changed encrypted bytes
+  ---
+  duration_ms: 460.214844
+  type: 'test'
+  ...
+# Subtest: host fixture compares exact attachment bytes across the encrypted store and peer proof
+ok 13 - host fixture compares exact attachment bytes across the encrypted store and peer proof
+  ---
+  duration_ms: 495.126675
+  type: 'test'
+  ...
+# Subtest: host fixture refuses missing initialized SQLite even when valid legacy data remains
+ok 14 - host fixture refuses missing initialized SQLite even when valid legacy data remains
+  ---
+  duration_ms: 326.953109
+  type: 'test'
+  ...
+# Subtest: host fixture rejects a tampered encrypted private row with an otherwise valid legacy copy
+ok 15 - host fixture rejects a tampered encrypted private row with an otherwise valid legacy copy
+  ---
+  duration_ms: 340.029888
+  type: 'test'
+  ...
+# Subtest: an exact installed-runtime probe never falls back to another version or platform
+ok 16 - an exact installed-runtime probe never falls back to another version or platform
+  ---
+  duration_ms: 0.676228
+  type: 'test'
+  ...
+# Subtest: runtime option is explicit, bounded and unambiguous
+ok 17 - runtime option is explicit, bounded and unambiguous
+  ---
+  duration_ms: 0.236844
+  type: 'test'
+  ...
+1..17
+# tests 17
+# suites 0
+# pass 17
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2158.25526

@@ -1,0 +1,38 @@
+{
+  "status": "HOST_ONLY_PASSED_APPLE_PENDING",
+  "commands": [
+    {
+      "argv": [
+        "node",
+        "--test",
+        "apps/ios/Tests/SimulatorRunnerTests.mjs"
+      ],
+      "exitCode": 0,
+      "tests": 17,
+      "durationMs": 2158.25526
+    },
+    {
+      "argv": [
+        "node",
+        "scripts/ios-simulator.mjs",
+        "--runtime=26.4.1",
+        "--check"
+      ],
+      "exitCode": 0,
+      "scope": "static references only; no Swift or iOS execution"
+    }
+  ],
+  "inputSHA256": {
+    "scripts/ios-simulator.mjs": "dcae45faf30c6f3d9edc9f51fb5f26ea4a23137638af85b07ba5f43157120140",
+    "apps/ios/Tests/SimulatorRunnerTests.mjs": "37f2397681b4d2cd59c7e54da36698a701da7bfea117f5ff5aea3bf5006909ba",
+    ".github/workflows/ci.yml": "a2b89340844915d35235d5a87fbbd47d4b36a43b41b8db0df6800908bd37347f"
+  },
+  "observedInstalledRuntimesSource": "docs/evidence/ios/90cb649; archive source .cache/ci-90cb649/ios-evidence.zip",
+  "requestedVersion": "26.4.1",
+  "rationale": "bounded compatibility probe after26.5 addmedia timeout; retains full photo/XCTest gate and original deadlines",
+  "limitations": [
+    "26.5 remains blocked; no cause or fix has been proved",
+    "only exact requested already-installed version; no fallback or download",
+    "no services, permissions, provider or bridge changes"
+  ]
+}

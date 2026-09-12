@@ -6,7 +6,7 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync, readFileSync } from 'nod
 import { DatabaseSync } from 'node:sqlite';
 import { join, resolve } from 'node:path';
 import { tsImport } from 'tsx/esm/api';
-import { sanitize, selectSimulator, validateOwnedContainer, assertTestSummary, verifySyntheticContainer, removeMatchingRunRecord, requireInactiveCleanupOwner, stopOwnedProcessGroup, annotatePhotoFailure } from '../../../scripts/ios-simulator.mjs';
+import { sanitize, selectSimulator, requestedSimulatorVersion, validateOwnedContainer, assertTestSummary, verifySyntheticContainer, removeMatchingRunRecord, requireInactiveCleanupOwner, stopOwnedProcessGroup, annotatePhotoFailure } from '../../../scripts/ios-simulator.mjs';
 
 test('select only compatible installed iOS runtimes, never unavailable or other platforms', () => {
   const runtime = (identifier, version, available) => ({ identifier: 'com.apple.CoreSimulator.SimRuntime.' + identifier, version, isAvailable: available });
@@ -175,4 +175,22 @@ test('host fixture rejects a tampered encrypted private row with an otherwise va
   const before = readFileSync(path);
   await assert.rejects(verifySyntheticContainer(f.container, f.device, f.fixtures, f.peer, core));
   assert.deepEqual(readFileSync(path), before);
+});
+
+
+test('an exact installed-runtime probe never falls back to another version or platform', () => {
+  const phone = { identifier: 'com.apple.CoreSimulator.SimDeviceType.iPhone-17', name: 'iPhone 17' };
+  const runtime = version => ({ identifier: 'com.apple.CoreSimulator.SimRuntime.iOS-' + version.replaceAll('.', '-'), version, isAvailable: true, supportedDeviceTypes: [phone] });
+  const runtimes = { runtimes: [runtime('26.5'), runtime('26.4.1')] }, types = { devicetypes: [phone] };
+  assert.equal(selectSimulator(runtimes, types).runtime.version, '26.5');
+  assert.equal(selectSimulator(runtimes, types, '26.4.1').runtime.version, '26.4.1');
+  assert.throws(() => selectSimulator(runtimes, types, '26.2'), /already-installed/);
+  assert.throws(() => selectSimulator({ runtimes: [{ ...runtime('26.4.1'), isAvailable: false }, runtime('26.5')] }, types, '26.4.1'), /already-installed/);
+  assert.throws(() => selectSimulator(runtimes, types, '../26.4.1'), /Invalid/);
+});
+
+test('runtime option is explicit, bounded and unambiguous', () => {
+  assert.equal(requestedSimulatorVersion([]), undefined);
+  assert.equal(requestedSimulatorVersion(['--runtime=26.4.1']), '26.4.1');
+  for (const argv of [['--runtime='], ['--runtime=26.4.1', '--runtime=26.5'], ['--runtime=../../private'], ['--runtime=26.4.1;command'], ['--runtime=26666']]) assert.throws(() => requestedSimulatorVersion(argv));
 });

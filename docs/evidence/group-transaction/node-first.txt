@@ -28,9 +28,9 @@ not ok 4 - even swallowing the entire authority scope error cannot commit the ou
   failureType: 'testCodeFailure'
   error: |-
     The input did not match the regular expression /cancel scope/. Input:
-    
+
     'Error: Inicialização protegida do perfil ilegível'
-    
+
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
   expected:

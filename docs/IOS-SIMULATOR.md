@@ -199,3 +199,10 @@ only when they do not conflict; zero/skipped/failed test results remain failures
 The reviewer independently repeated syntax/source checks, with no Apple execution
 claim. Later exclusive cleanup-lock and pipe-drain refinements passed the same
 host-only checks; Apple SDK compatibility and UI selectors await the real CI run.
+
+
+## Bounded installed-runtime compatibility probe after90cb649
+
+The actual90cb649 inventory contained available iOS26.4.1 and26.5.26.5 repeatedly blocked at synthetic-photo import before XCTest. The next CI explicitly requests `node scripts/ios-simulator.mjs --runtime=26.4.1` once as a compatibility probe. This preserves photo selection, the full XCTest, original tool/global deadlines and created-device cleanup. Missing requested runtime fails; there is no fallback, runtime download, service restart or permission change. The default local invocation still selects the newest compatible installed runtime.
+
+17 host runner tests passed in2.158s, including exact selection, missing/unavailable-version refusal and ambiguous/malformed arguments. Static references passed. These checks do not execute Apple code or establish the cause of the26.5 timeout. Evidence: `evidence/ios/runtime-26-4-1-host`; actual CI execution remains to be observed by commit.26.5 stays explicitly blocked even if another version later passes.

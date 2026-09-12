@@ -138,7 +138,9 @@ jobs:
       - name: Unsigned iOS simulator app and native framework build
         run: node scripts/ios-build.mjs --simulator
       - name: Execute native iOS UI and real Node peer on one installed simulator
-        run: node scripts/ios-simulator.mjs
+        # Bounded compatibility probe after addmedia stalled on installed26.5.
+        # Keep the full photo/XCTest gate; missing26.4.1 is a failure, not fallback.
+        run: node scripts/ios-simulator.mjs --runtime=26.4.1
       - name: Clean only the simulator recorded by this gate
         if: always()
         run: node scripts/ios-simulator.mjs --cleanup-owned

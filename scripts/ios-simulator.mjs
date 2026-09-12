@@ -23,8 +23,16 @@ function version(value) {
   const [major, minor = 0, patch = 0] = String(value).split('.').map(Number);
   return major * 65536 + minor * 256 + patch;
 }
-export function selectSimulator(runtimeInventory, typeInventory) {
-  const runtimes = (runtimeInventory.runtimes ?? []).filter(r => r.isAvailable === true && /^com\.apple\.CoreSimulator\.SimRuntime\.iOS-/.test(r.identifier) && version(r.version) >= version('15.0')).sort((a, b) => version(b.version) - version(a.version));
+export function requestedSimulatorVersion(argv) {
+  const values = argv.filter(arg => arg.startsWith('--runtime='));
+  if (values.length > 1) throw new Error('Request exactly one installed iOS runtime');
+  const value = values[0]?.slice('--runtime='.length);
+  if (value !== undefined && !/^\d{1,2}(?:\.\d{1,2}){0,2}$/.test(value)) throw new Error('Invalid installed iOS runtime version');
+  return value;
+}
+export function selectSimulator(runtimeInventory, typeInventory, requestedVersion) {
+  if (requestedVersion !== undefined && (typeof requestedVersion !== 'string' || !/^\d{1,2}(?:\.\d{1,2}){0,2}$/.test(requestedVersion))) throw new Error('Invalid installed iOS runtime version');
+  const runtimes = (runtimeInventory.runtimes ?? []).filter(r => r.isAvailable === true && /^com\.apple\.CoreSimulator\.SimRuntime\.iOS-/.test(r.identifier) && version(r.version) >= version('15.0') && (requestedVersion === undefined || r.version === requestedVersion)).sort((a, b) => version(b.version) - version(a.version));
   for (const runtime of runtimes) {
     const phones = (typeInventory.devicetypes ?? []).filter(t => /^com\.apple\.CoreSimulator\.SimDeviceType\.iPhone-/.test(t.identifier) &&
       (t.minRuntimeVersion === undefined || version(runtime.version) >= t.minRuntimeVersion) &&
@@ -187,8 +195,8 @@ export async function verifySyntheticContainer(container, deviceID, fixtures, pe
 }
 
 async function main(argv) {
-  const options = new Set(argv);
-  for (const arg of options) if (!['--check', '--without-photo', '--cleanup-owned'].includes(arg)) throw new Error('Options: --check, --without-photo, --cleanup-owned');
+  const options = new Set(argv), requestedVersion = requestedSimulatorVersion(argv);
+  for (const arg of options) if (!['--check', '--without-photo', '--cleanup-owned'].includes(arg) && !arg.startsWith('--runtime=')) throw new Error('Options: --check, --without-photo, --cleanup-owned, --runtime=VERSION');
   if (options.has('--check')) { console.log(JSON.stringify(staticCheck())); return; }
   if (process.platform !== 'darwin') throw new Error('Real simulator execution requires macOS with an installed Xcode runtime. This Linux/other host did not execute Swift, iOS or a simulator. Use --check for source checks only.');
   const xcodeArch = process.arch === 'arm64' ? 'arm64' : process.arch === 'x64' ? 'x86_64' : null;
@@ -204,7 +212,7 @@ async function main(argv) {
   mkdirSync(raw, { recursive: true, mode: 0o700 });
   const deadline = Date.now() + 20 * 60_000;
   const context = { abort: null, tools: [], logBytes: 0, owned: null, peer: null, watchStop: false, watch: null };
-  const report = { kind: 'IOS_REAL_SIMULATOR_GATE', runID, status: 'NOT_EXECUTED', simulatorExecuted: false, physicalDeviceExecuted: false, photoAttachmentRequested: !options.has('--without-photo'), signing: 'disabled; no accounts, identities or profiles requested', webViewDebugging: false, extraAppControlPort: false, cleanup: {}, commands: context.tools };
+  const report = { kind: 'IOS_REAL_SIMULATOR_GATE', runID, requestedRuntimeVersion: requestedVersion ?? 'newest-installed', status: 'NOT_EXECUTED', simulatorExecuted: false, physicalDeviceExecuted: false, photoAttachmentRequested: !options.has('--without-photo'), signing: 'disabled; no accounts, identities or profiles requested', webViewDebugging: false, extraAppControlPort: false, cleanup: {}, commands: context.tools };
   const stopSignal = signal => { context.abort = new Error('Simulator gate interrupted by ' + signal); };
   const onTerm = () => stopSignal('SIGTERM'), onInt = () => stopSignal('SIGINT');
   process.on('SIGTERM', onTerm); process.on('SIGINT', onInt);
@@ -309,7 +317,7 @@ async function main(argv) {
     report.workingTreeDirty = (await tool('source-cleanliness', 'git', ['diff', '--quiet', '--', 'apps/ios', 'apps/web', 'apps/node', 'native', 'packages'], 30_000, { allowFailure: true })).code !== 0;
     const runtimes = JSON.parse((await tool('installed-runtimes', 'xcrun', ['simctl', 'list', 'runtimes', '--json'])).output);
     const types = JSON.parse((await tool('installed-device-types', 'xcrun', ['simctl', 'list', 'devicetypes', '--json'])).output);
-    const selected = selectSimulator(runtimes, types);
+    const selected = selectSimulator(runtimes, types, requestedVersion);
     report.runtime = { identifier: selected.runtime.identifier, version: selected.runtime.version, buildVersion: selected.runtime.buildversion, deviceType: selected.deviceType.identifier, downloaded: false };
     const name = 'RelayLoom-CI-' + runID;
     const created = await tool('create-owned', 'xcrun', ['simctl', 'create', name, selected.deviceType.identifier, selected.runtime.identifier], 60_000, { allowFailure: true });
