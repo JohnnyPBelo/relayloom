@@ -1,0 +1,56 @@
+{
+  "run": 34675214610,
+  "commit": "0289ec7be3c23519f4592bb5c7cd21a479cdd3b3",
+  "files": [
+    {
+      "file": "simulator-report.json",
+      "originalSHA256": "855e8c590f72aa445498138f93f872801da24a9e10b1dc2c0cab4abad9e6771b",
+      "publishedSHA256": "855e8c590f72aa445498138f93f872801da24a9e10b1dc2c0cab4abad9e6771b",
+      "normalization": "none",
+      "publishedFile": "simulator-report.json"
+    },
+    {
+      "file": "artifact-hashes.json",
+      "originalSHA256": "396e4f39c88d780e827c2f6ebe4c193c924cf111b4a769ed65378754664980f9",
+      "publishedSHA256": "396e4f39c88d780e827c2f6ebe4c193c924cf111b4a769ed65378754664980f9",
+      "normalization": "none",
+      "publishedFile": "artifact-hashes.json"
+    },
+    {
+      "file": "08-wait-owned-boot.log",
+      "originalSHA256": "c8b647ffca06b35df9916e2c9ec8e2be2637eebab391dc4ec662d65b092ae81b",
+      "publishedSHA256": "c1d07e36fa7e671a8ec0d23b7a2196e0d3e0919554c8c81b989af182cd578733",
+      "normalization": "trailing whitespace and final newline only",
+      "publishedFile": "08-wait-owned-boot-output.txt"
+    },
+    {
+      "file": "11-seed-synthetic-photo.log",
+      "originalSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "publishedSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalization": "none",
+      "publishedFile": "11-seed-synthetic-photo-output.txt"
+    },
+    {
+      "file": "12-photo-fixture-diagnostics.log",
+      "originalSHA256": "55fcd887322237f84102574632c4562a0fec18f9ac21182b3093b1da73199478",
+      "publishedSHA256": "55fcd887322237f84102574632c4562a0fec18f9ac21182b3093b1da73199478",
+      "normalization": "none",
+      "publishedFile": "12-photo-fixture-diagnostics-output.txt"
+    },
+    {
+      "file": "14-shutdown-owned.log",
+      "originalSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "publishedSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalization": "none",
+      "publishedFile": "14-shutdown-owned-output.txt"
+    },
+    {
+      "file": "15-delete-owned.log",
+      "originalSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "publishedSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalization": "none",
+      "publishedFile": "15-delete-owned-output.txt"
+    }
+  ],
+  "note": "artifact-hashes.json is the original full CI artifact manifest. This directory publishes the selected files mapped by publishedFile; original .log names remain provenance identifiers."
+}

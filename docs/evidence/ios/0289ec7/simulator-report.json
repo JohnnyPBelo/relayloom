@@ -1,0 +1,140 @@
+{
+  "kind": "IOS_REAL_SIMULATOR_GATE",
+  "runID": "166a44d3-04fe-4dc4-84f9-63027386f705",
+  "status": "FAILED",
+  "simulatorExecuted": false,
+  "physicalDeviceExecuted": false,
+  "photoAttachmentRequested": true,
+  "signing": "disabled; no accounts, identities or profiles requested",
+  "webViewDebugging": false,
+  "extraAppControlPort": false,
+  "cleanup": {
+    "udid": "E8466047-8599-4A30-AEF8-BF433481E57B",
+    "deleted": true,
+    "onlyCreatedDeviceTouched": true
+  },
+  "commands": [
+    {
+      "label": "xcode-version",
+      "exitCode": 0,
+      "elapsedMs": 427,
+      "log": "01-xcode-version.log"
+    },
+    {
+      "label": "source-commit",
+      "exitCode": 0,
+      "elapsedMs": 29,
+      "log": "02-source-commit.log"
+    },
+    {
+      "label": "source-cleanliness",
+      "exitCode": 0,
+      "elapsedMs": 79,
+      "log": "03-source-cleanliness.log"
+    },
+    {
+      "label": "installed-runtimes",
+      "exitCode": 0,
+      "elapsedMs": 1909,
+      "log": "04-installed-runtimes.log"
+    },
+    {
+      "label": "installed-device-types",
+      "exitCode": 0,
+      "elapsedMs": 144,
+      "log": "05-installed-device-types.log"
+    },
+    {
+      "label": "create-owned",
+      "exitCode": 0,
+      "elapsedMs": 312,
+      "log": "06-create-owned.log"
+    },
+    {
+      "label": "boot-owned",
+      "exitCode": 0,
+      "elapsedMs": 2862,
+      "log": "07-boot-owned.log"
+    },
+    {
+      "label": "wait-owned-boot",
+      "exitCode": 0,
+      "elapsedMs": 305371,
+      "log": "08-wait-owned-boot.log"
+    },
+    {
+      "label": "build-for-testing",
+      "exitCode": 0,
+      "elapsedMs": 81201,
+      "log": "09-build-for-testing.log"
+    },
+    {
+      "label": "install-owned-app",
+      "exitCode": 0,
+      "elapsedMs": 22229,
+      "log": "10-install-owned-app.log"
+    },
+    {
+      "label": "seed-synthetic-photo",
+      "exitCode": null,
+      "elapsedMs": 61431,
+      "log": "11-seed-synthetic-photo.log"
+    },
+    {
+      "label": "photo-fixture-diagnostics",
+      "exitCode": 0,
+      "elapsedMs": 7198,
+      "log": "12-photo-fixture-diagnostics.log"
+    },
+    {
+      "label": "cleanup-inventory",
+      "exitCode": 0,
+      "elapsedMs": 915
+    },
+    {
+      "label": "shutdown-owned",
+      "exitCode": 0,
+      "elapsedMs": 7811,
+      "log": "14-shutdown-owned.log"
+    },
+    {
+      "label": "delete-owned",
+      "exitCode": 0,
+      "elapsedMs": 390,
+      "log": "15-delete-owned.log"
+    }
+  ],
+  "xcode": "Xcode 26.6\nBuild version 17F113",
+  "sourceHashes": {
+    "runner": "a1dd0087643cf49c7569e153f465c715f2e855b6b3d467832eee2fb92814b59b",
+    "peerFixture": "0f936c3855fe60f073431283b5fba245fbe74171c74837149da167f0f74286b8",
+    "uiTest": "07e8590d5b8d1c84c82b47b2dde1a47f0bd6a5e7a50cee297f0a258c9cac6b35",
+    "project": "1aaa005e511243a81709153cd7d290b5cb72d73782fa498da2437eeafd884e1e",
+    "scheme": "c105ce198c4a20b9deefe4d3bdb4ecda777108e4abd886440e0c41261e0f4e63"
+  },
+  "sourceCommit": "0289ec7be3c23519f4592bb5c7cd21a479cdd3b3",
+  "workingTreeDirty": false,
+  "runtime": {
+    "identifier": "com.apple.CoreSimulator.SimRuntime.iOS-26-5",
+    "version": "26.5",
+    "buildVersion": "23F77",
+    "deviceType": "com.apple.CoreSimulator.SimDeviceType.iPhone-SE-3rd-generation",
+    "downloaded": false
+  },
+  "udid": "E8466047-8599-4A30-AEF8-BF433481E57B",
+  "firstBootBudgetMs": 600000,
+  "simulatorBooted": true,
+  "app": {
+    "executableSHA256": "d80c4295d5fafa9304d104d4bce354f10b32ca5248d75026f1f4f8cc5306ae38",
+    "webIndexSHA256": "12efe5412b2fe9927769085d45ee59991bed1e650e4bfc027287f9ca04e27857",
+    "uiTestSourceSHA256": "07e8590d5b8d1c84c82b47b2dde1a47f0bd6a5e7a50cee297f0a258c9cac6b35",
+    "bindingReportSHA256": "48529016f9e64d3df769557f28dbb611b543b6bd8203ef96a50e71451aed36ef"
+  },
+  "error": "Owned command timed out: seed-synthetic-photo",
+  "photoDiagnostics": {
+    "captured": true,
+    "exitCode": 0
+  },
+  "completedAt": "2026-09-12T05:39:45.747Z",
+  "diskFreeBytesAtEnd": 99433431040
+}
