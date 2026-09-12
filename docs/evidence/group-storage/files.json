@@ -1,5 +1,50 @@
 [
   {
+    "file": "integrated/build-command.json",
+    "bytes": 1776,
+    "sha256": "97b7f0818a76c56542d46f5f01ec9741dc5e70d21019805c214eabd386dbd50b"
+  },
+  {
+    "file": "integrated/build.log",
+    "bytes": 434,
+    "sha256": "d406579d50a4b15efb25fbcb08e6d0529ee00bc123f6531a38123f8e7e9e7b20"
+  },
+  {
+    "file": "integrated/go-all-command.json",
+    "bytes": 1862,
+    "sha256": "334e9b9494e03e9b41c926ea6eaa03ffd65abbaffade42ae81be20b622364549"
+  },
+  {
+    "file": "integrated/go-all.log",
+    "bytes": 80938,
+    "sha256": "233c74749d0bca547324c1b414fbe4909eb580a406f6135cfb412b3ec8c1e422"
+  },
+  {
+    "file": "integrated/interop-command.json",
+    "bytes": 1785,
+    "sha256": "d47d63ad8d510da127d61363d1bb877ef14605447a5326939a4a075b8f39476c"
+  },
+  {
+    "file": "integrated/interop.log",
+    "bytes": 2466,
+    "sha256": "2dd716d2d928893e8775d2234c2bb691451610160a1122fb2ee7a278e0fa80f5"
+  },
+  {
+    "file": "integrated/interoperability.json",
+    "bytes": 893,
+    "sha256": "e7f9d40cf52f721ebc6fc98104ce75d0a18f9e353aa017fe797d2e3fa0e54eb4"
+  },
+  {
+    "file": "integrated/node-all-command.json",
+    "bytes": 1772,
+    "sha256": "43b92651cfffbcea979d2f74486b8434d76e4a2a9f197379d98fa04b9ad2c29a"
+  },
+  {
+    "file": "integrated/node-all.log",
+    "bytes": 25651,
+    "sha256": "80a34f3478f54f949bebc842fa4a3d31b3aab21e402e5f4d3cf9f7261391a0a2"
+  },
+  {
     "file": "node/build-command.json",
     "bytes": 614,
     "sha256": "17f651a801c152adc10b994c9654637c72fdfae20c3611af96839710374b3423"
@@ -88,5 +133,70 @@
     "file": "probe/sqlite-BSD3-LICENSE.txt",
     "bytes": 1489,
     "sha256": "c6fe05491a60ae13bcd223088d2705e36dede24e5587226231d2459ada5c4822"
+  },
+  {
+    "file": "schema-correction/build-after-command.json",
+    "bytes": 1716,
+    "sha256": "abce1d09bd866a57f614b5b54ae72981f3f8f52a1c07cfcfb79aa90a90548b00"
+  },
+  {
+    "file": "schema-correction/build-after.log",
+    "bytes": 434,
+    "sha256": "0cff2e19a25df04e9e24a5c80ac1e8c10f6429263a46f8402476b592e0f26273"
+  },
+  {
+    "file": "schema-correction/go-after-command.json",
+    "bytes": 1851,
+    "sha256": "e12c6b5847b4f49c090a2c339e4dee18ce46bce687d3ca2f05d4c5384ac87886"
+  },
+  {
+    "file": "schema-correction/go-after.log",
+    "bytes": 10619,
+    "sha256": "0bdbb646fad6d144aa5a00ab759e765002953c4af6f058cf63a8af8900a14bb2"
+  },
+  {
+    "file": "schema-correction/go-before-command.json",
+    "bytes": 940,
+    "sha256": "60f14d3ca16ad03c3310ed449f607bad3e8b1551bce373f50884784c991bab2c"
+  },
+  {
+    "file": "schema-correction/go-before.log",
+    "bytes": 214,
+    "sha256": "e27ce59bb2e05a759468658cdebb9b602fb174955a76d107d1d04ab0483f4b52"
+  },
+  {
+    "file": "schema-correction/interop-after-command.json",
+    "bytes": 1822,
+    "sha256": "ec55715f2816893780ea817766be792acccd76d36bd96d6f59557b5fd0f0ef8f"
+  },
+  {
+    "file": "schema-correction/interop-after.log",
+    "bytes": 589,
+    "sha256": "27b8b6dd95d7e9cd581add69adeb9f6ffa58867270b9e0ac3ace76164c320bcb"
+  },
+  {
+    "file": "schema-correction/interoperability.json",
+    "bytes": 893,
+    "sha256": "a782baa0b22dda167078e9edf0f500a369ad2056a484fb832af3fa2022495efd"
+  },
+  {
+    "file": "schema-correction/node-after-command.json",
+    "bytes": 1808,
+    "sha256": "433f719f35a38f64872a878367b721c1776b0e1db707a0e0df306a5eab76935b"
+  },
+  {
+    "file": "schema-correction/node-after.log",
+    "bytes": 3223,
+    "sha256": "dafeb18f80cbc3264a5b3e8643c2584d42454d7d1b6ca675de1a9c0d00b61a0c"
+  },
+  {
+    "file": "schema-correction/node-before-command.json",
+    "bytes": 906,
+    "sha256": "4ffee478d69cb2344e7c5f33bcd40d9e67b287611fd2df8732dba7e95ebf4ae8"
+  },
+  {
+    "file": "schema-correction/node-before.log",
+    "bytes": 1066,
+    "sha256": "6717318abdd87ce156131b3e52e7e94450d244f6b0dc9349e7e2a65563c24090"
   }
 ]

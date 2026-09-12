@@ -2,6 +2,8 @@
 
 Generated from package-lock.json; exact versions are locked. Electron includes Chromium/Node and their own notices; desktop packages retain runtime dependency licences. Go and x/crypto/x/text carry separate BSD-style notices. No Reticulum/RNS source is incorporated.
 
+The protected group-storage library now uses `modernc.org/sqlite v1.58.0` (BSD3) with its required exact `modernc.org/libc v1.75.6`; module versions are in `native/go.mod`/`go.sum`. Root licence/copyright notices for the added SQLite modules are retained in [native-sqlite](licenses/native-sqlite/manifest.json). The library is not yet linked by the app/mobile entry points. Carry these notices, plus the existing Go/runtime notices, into packages when it is integrated; this source-level notice inventory is not a claim that new native binaries were shipped or audited. Node uses the SQLite library already supplied by its runtime.
+
 ## (MIT OR CC0-1.0)
 
 - type-fest 0.13.1

@@ -210,7 +210,7 @@ export class ProtectedGroupStore {
       }
       const schema = this.db
         .prepare(
-          "SELECT name, sql FROM sqlite_schema WHERE name NOT LIKE 'sqlite_%' ORDER BY name",
+          "SELECT name, sql FROM sqlite_schema WHERE substr(name,1,7) != 'sqlite_' ORDER BY name",
         )
         .all();
       insist(
@@ -559,7 +559,11 @@ export class ProtectedGroupStore {
       }
       return result;
     } catch (error) {
-      if (error instanceof RegistryIntegrityError) this.poisoned = true;
+      if (
+        error instanceof RegistryIntegrityError ||
+        operationFailure instanceof RegistryIntegrityError
+      )
+        this.poisoned = true;
       if (begun) {
         try {
           this.db.exec("ROLLBACK");

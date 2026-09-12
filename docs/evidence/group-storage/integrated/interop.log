@@ -1,0 +1,58 @@
+
+> relayloom@0.1.0 test:interop
+> tsx --test --test-concurrency=1 tests/native/*.test.ts
+
+TAP version 13
+# Subtest: Node and Go verify each other's signed group epochs, consent, reader scope and exact Unicode bytes
+ok 1 - Node and Go verify each other's signed group epochs, consent, reader scope and exact Unicode bytes
+  ---
+  duration_ms: 420.352372
+  type: 'test'
+  ...
+# (node:1425913) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Node and Go share encrypted SQLite files, serialize real writers and recover each other's crashed transactions
+ok 2 - Node and Go share encrypted SQLite files, serialize real writers and recover each other's crashed transactions
+  ---
+  duration_ms: 1350.757775
+  type: 'test'
+  ...
+# Subtest: Go A → Node B → Go C: isolated real sockets, encrypted messages/receipts, partition, restart and publisher-offline seeding
+ok 3 - Go A → Node B → Go C: isolated real sockets, encrypted messages/receipts, partition, restart and publisher-offline seeding
+  ---
+  duration_ms: 9613.82911
+  type: 'test'
+  ...
+# Subtest: Go A → Node B → Node C over TCP and serial PTYs preserves bytes, receipts and partition recovery
+ok 4 - Go A → Node B → Node C over TCP and serial PTYs preserves bytes, receipts and partition recovery
+  ---
+  duration_ms: 4613.489938
+  type: 'test'
+  ...
+# Subtest: Node ↔ Go generated vectors preserve canonical bytes, identities, vaults, reader authority, chunks and disk seeds
+ok 5 - Node ↔ Go generated vectors preserve canonical bytes, identities, vaults, reader authority, chunks and disk seeds
+  ---
+  duration_ms: 939.087798
+  type: 'test'
+  ...
+# Subtest: node outbox → go relay → go recipient: durable restart, real ACK control, signed group confirmations and expiry
+ok 6 - node outbox → go relay → go recipient: durable restart, real ACK control, signed group confirmations and expiry
+  ---
+  duration_ms: 40796.894691
+  type: 'test'
+  ...
+# Subtest: go outbox → node relay → node recipient: durable restart, real ACK control, signed group confirmations and expiry
+ok 7 - go outbox → node relay → node recipient: durable restart, real ACK control, signed group confirmations and expiry
+  ---
+  duration_ms: 47090.140039
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 106345.634295

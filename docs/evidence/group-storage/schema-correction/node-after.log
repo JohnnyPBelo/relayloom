@@ -1,0 +1,84 @@
+TAP version 13
+# (node:1441205) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: encrypted metadata survives close/reopen; uncommitted work and transaction handles cannot escape
+ok 1 - encrypted metadata survives close/reopen; uncommitted work and transaction handles cannot escape
+  ---
+  duration_ms: 39.937031
+  type: 'test'
+  ...
+# Subtest: absence, truncation, wrong identity, wrong signing authority and extra SQL schema fail closed
+ok 2 - absence, truncation, wrong identity, wrong signing authority and extra SQL schema fail closed
+  ---
+  duration_ms: 18.475799
+  type: 'test'
+  ...
+# Subtest: unknown schema cannot hide behind a similar SQLite prefix
+ok 3 - unknown schema cannot hide behind a similar SQLite prefix
+  ---
+  duration_ms: 14.277235
+  type: 'test'
+  ...
+# Subtest: valid encryption with only the reading key cannot forge a locally signed fence
+ok 4 - valid encryption with only the reading key cannot forge a locally signed fence
+  ---
+  duration_ms: 24.032478
+  type: 'test'
+  ...
+# Subtest: checkpoint corruption, deletion, wrong SQL type and oversize are rejected before trusting state
+ok 5 - checkpoint corruption, deletion, wrong SQL type and oversize are rejected before trusting state
+  ---
+  duration_ms: 36.881026
+  type: 'test'
+  ...
+# Subtest: complete valid backup rollback is an explicit limitation; a pinned different registry is rejected
+ok 6 - complete valid backup rollback is an explicit limitation; a pinned different registry is rejected
+  ---
+  duration_ms: 25.296315
+  type: 'test'
+  ...
+# Subtest: ciphertext substitution, swallowed integrity errors and stale index replay cannot change a committed record
+ok 7 - ciphertext substitution, swallowed integrity errors and stale index replay cannot change a committed record
+  ---
+  duration_ms: 26.63885
+  type: 'test'
+  ...
+# Subtest: a replacement callback error cannot erase an observed integrity failure
+ok 8 - a replacement callback error cannot erase an observed integrity failure
+  ---
+  duration_ms: 15.793725
+  type: 'test'
+  ...
+# Subtest: record AAD binds logical key and revision even beneath a freshly signed index
+ok 9 - record AAD binds logical key and revision even beneath a freshly signed index
+  ---
+  duration_ms: 21.83396
+  type: 'test'
+  ...
+# Subtest: ordinary metadata cannot consume the checkpoint reserve; capacity failure is atomic
+ok 10 - ordinary metadata cannot consume the checkpoint reserve; capacity failure is atomic
+  ---
+  duration_ms: 26.105882
+  type: 'test'
+  ...
+# Subtest: abrupt writer process death rolls back staged SQL and preserves the last authenticated checkpoint
+ok 11 - abrupt writer process death rolls back staged SQL and preserves the last authenticated checkpoint
+  ---
+  duration_ms: 294.036194
+  type: 'test'
+  ...
+# Subtest: two actual writer processes serialize read-modify-write without losing updates
+ok 12 - two actual writer processes serialize read-modify-write without losing updates
+  ---
+  duration_ms: 441.862375
+  type: 'test'
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 12
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1310.723803

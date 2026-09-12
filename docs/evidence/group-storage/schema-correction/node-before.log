@@ -1,0 +1,31 @@
+TAP version 13
+# (node:1435382) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: unknown schema cannot hide behind a similar SQLite prefix
+not ok 1 - unknown schema cannot hide behind a similar SQLite prefix
+  ---
+  duration_ms: 37.521757
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/tests/group-storage.test.ts:1:6340'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (/home/absint0o/projects/relayloom/tests/group-storage.test.ts:294:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 490.421096

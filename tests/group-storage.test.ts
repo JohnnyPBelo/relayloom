@@ -288,6 +288,14 @@ test("absence, truncation, wrong identity, wrong signing authority and extra SQL
   assert.equal(readFileSync(f.path).length, 0);
 });
 
+test("unknown schema cannot hide behind a similar SQLite prefix", (t) => {
+  const f = fixture(t),
+    store = f.open({ create: true });
+  store.close();
+  withDB(f.path, (db) => db.exec("CREATE TABLE sqliteXconcealed (value TEXT)"));
+  assert.throws(() => f.open(), /Esquema/);
+});
+
 test("valid encryption with only the reading key cannot forge a locally signed fence", (t) => {
   const f = fixture(t),
     store = f.open({ create: true });
@@ -420,6 +428,33 @@ test("ciphertext substitution, swallowed integrity errors and stale index replay
   );
   const replayed = f.open();
   assert.throws(() => replayed.view((tx) => tx.get("head:a")), /ausente/);
+});
+
+test("a replacement callback error cannot erase an observed integrity failure", (t) => {
+  const f = fixture(t),
+    store = f.open({ create: true });
+  store.transaction((tx) =>
+    tx.put("left:group", Buffer.from("left"), "checkpoint"),
+  );
+  withDB(f.path, (db) => {
+    const bytes = Buffer.from(
+      db.prepare("SELECT payload FROM records").get()!.payload as Uint8Array,
+    );
+    bytes[bytes.length - 1] ^= 1;
+    db.prepare("UPDATE records SET payload=?").run(bytes);
+  });
+  assert.throws(
+    () =>
+      store.transaction((tx) => {
+        try {
+          tx.get("left:group");
+        } catch {
+          throw new Error("replacement callback error");
+        }
+      }),
+    /replacement callback/,
+  );
+  assert.throws(() => store.view(() => {}), /incerto/);
 });
 
 test("record AAD binds logical key and revision even beneath a freshly signed index", (t) => {

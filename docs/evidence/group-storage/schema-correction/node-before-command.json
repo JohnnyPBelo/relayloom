@@ -1,0 +1,22 @@
+{
+  "command": "node --import tsx --test '--test-name-pattern=similar SQLite prefix' tests/group-storage.test.ts",
+  "startedAt": "2026-09-12T04:52:34.086001+00:00",
+  "elapsedSeconds": 0.663,
+  "exitCode": 1,
+  "expectedExitCode": 1,
+  "purpose": "reproduce extra-schema filter defect before correction",
+  "argv": [
+    "node",
+    "--import",
+    "tsx",
+    "--test",
+    "--test-name-pattern=similar SQLite prefix",
+    "tests/group-storage.test.ts"
+  ],
+  "sourceSHA256": {
+    "packages/groups/src/storage.ts": "f826dab498b4f55c67d7219c75591938a0290741ae5b87cb0503eec719a31cb8",
+    "native/groupstore/store.go": "efa715bf95503fefae8191ce8268d8a6c4c9473a8f692bdf81ce7b0a3ba13b64",
+    "tests/group-storage.test.ts": "b7c6be7de227811c9036d179f73ee20a9d26c1bee1580f32f6bc4c504e253022",
+    "native/groupstore/integrity_test.go": "cb4b90023fdbe68fa637519131499169ce1f2b3ad7e78a65aa4fd1f97def45fc"
+  }
+}

@@ -1,6 +1,6 @@
 # Protected group persistence iteration
 
-Status: Node storage foundation implemented and tested; no group application capability claimed. Root owns all files in this sequential phase. No new/resumed agents, provider or harness configuration changes.
+Status: Node/Go storage foundation implemented and tested; no group application capability claimed. Root owns all files in this sequential phase. No new/resumed agents, provider or harness configuration changes.
 
 Use an embedded SQLite transaction boundary rather than ad-hoc file locks. Node has built-in SQLite in the tested Node/Electron processes. Evaluate the BSD3 modernc driver in a project-local probe before adding it to Go/mobile. No server, shared service or remote database is involved.
 
@@ -15,3 +15,5 @@ Latest external gate remains blocked at iOS photo seeding after successful boot,
 Completed Node implementation: `packages/groups/src/storage.ts`,10 storage tests plus an owned process fixture. Build6.187s and all103 Node tests58.653s passed. Failed quota is now checked before SQL mutation, permitting a checkpoint fallback in the same transaction; swallowed integrity errors still abort. Full-valid-backup rollback is exercised as a known limitation. The new store remains unimported by the runtime. Details: `docs/GROUP-STORAGE.md`.
 
 modernc.org/sqlite v1.58.0 was evaluated in `.cache/sqlite-probe/go`: BSD3, real Linux query/transaction passed, Android and iOS arm64 pure-Go package builds passed. That does not establish mobile runtime/locking correctness. Next: adopt exact driver/libc versions only alongside real Go storage tests and interoperability. Do not count the probe's in-memory transaction as persistence evidence.
+
+Go storage is now implemented and tested in `native/groupstore`, using the same format, driver1.58.0/libc1.75.6. Real Node↔Go file sharing, concurrent writers, bidirectional crash recovery and corruption controls pass. Integrated build/104 Node/76 Go race/7 interop passed; later fixed-schema prefix regressions failed in both engines before a literal-prefix fix. Final corrective build/12 Node storage/10 Go storage race/1 storage interop passed. Exact versions/evidence and the intentional unit-mode fixture skips are in `docs/GROUP-STORAGE.md`. Current source is still not imported by either application; next is actual authority registry enrollment, head/fork/left/capacity fences and proof retention, then admission/outbox/API/UI.

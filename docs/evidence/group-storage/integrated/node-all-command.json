@@ -1,0 +1,25 @@
+{
+  "command": "npm test",
+  "startedAt": "2026-09-12T04:45:32.009502+00:00",
+  "completedAt": "2026-09-12T04:46:26.767132+00:00",
+  "elapsedSeconds": 54.758,
+  "exitCode": 0,
+  "sourceSHA256": {
+    "tests/group-storage.test.ts": "c7337601c274f234dad9e942aaa85dd421333dc4c58ec416e7de31bb2d5f532c",
+    "tests/native/group-storage.test.ts": "c4e09cacea9b71c15adca558a680f2701858cda731db47c0ae1690c7e129cb60",
+    "tests/fixtures/group-storage-worker.ts": "042ce5f02aee5fe3579e3cae2c28d5060347ae2b50c77c2fdbc2440494765647",
+    "native/go.mod": "05c1ec0c9d6983862f5ed4b08591ece10eb99809686b25593999eda7fd7ce7c6",
+    "native/go.sum": "9eb140c7da48c6f03157d0de2413aa12429a03751fae6413694c411780caec8a",
+    "scripts/ios-simulator.mjs": "93de910a72f110b4d176fd1a0f30624b04db00c71fd1e6ba5ea72cc60a2a4123",
+    "scripts/ios-simulator.d.mts": "de421e3a9a725d48378b2a31b8cbda14885780995eb11f988f8c2faa90580e79",
+    "packages/groups/src/certificates.ts": "fe4c7fa73d5a654208a5c1460ea969258e63bf3caa55b2439dd2e7d866b6391a",
+    "packages/groups/src/storage.ts": "f826dab498b4f55c67d7219c75591938a0290741ae5b87cb0503eec719a31cb8",
+    "native/groupstore/format.go": "ba3e8dfec2fb52e17c8adfc30e13737e5211b63d7b60509c9e9c4d4a803d904b",
+    "native/groupstore/integrity_test.go": "8a7f40600733384cc6f87169d6f68a6dbb39b7be601444e3de1af82831256302",
+    "native/groupstore/store.go": "efa715bf95503fefae8191ce8268d8a6c4c9473a8f692bdf81ce7b0a3ba13b64",
+    "native/groupstore/store_test.go": "a201dc413157a1d03884b0b15a96b3e769cdf90c647be68c7e5a15fd31a1fc0c",
+    "native/groupstore/worker_test.go": "97312eeb6c0262dd25c412e34e89190cc14537a14313f968574c5f36231d48c9"
+  },
+  "sourcesUnchanged": true,
+  "outputSHA256": "80a34f3478f54f949bebc842fa4a3d31b3aab21e402e5f4d3cf9f7261391a0a2"
+}

@@ -1,0 +1,34 @@
+{
+  "command": "node scripts/go.mjs test -json -race -count=1 -p=2 ./groupstore",
+  "argv": [
+    "node",
+    "scripts/go.mjs",
+    "test",
+    "-json",
+    "-race",
+    "-count=1",
+    "-p=2",
+    "./groupstore"
+  ],
+  "startedAt": "2026-09-12T04:55:17.452653+00:00",
+  "completedAt": "2026-09-12T04:55:19.698082+00:00",
+  "elapsedSeconds": 2.245,
+  "exitCode": 0,
+  "sourceSHA256": {
+    "packages/groups/src/storage.ts": "61e589ffc70f23616c1cac54856380e692c5a06335d6f2485e40143c7330dde7",
+    "tests/group-storage.test.ts": "8b4b39722f9c5c6d39727cfd2ff5041ea0181feb41e2f5d246b79682e7c66c94",
+    "tests/native/group-storage.test.ts": "864aad838fb0667bb4059866143e91b8bb41a65964dca937235900888185919f",
+    "tests/fixtures/group-storage-worker.ts": "042ce5f02aee5fe3579e3cae2c28d5060347ae2b50c77c2fdbc2440494765647",
+    "native/go.mod": "05c1ec0c9d6983862f5ed4b08591ece10eb99809686b25593999eda7fd7ce7c6",
+    "native/go.sum": "9eb140c7da48c6f03157d0de2413aa12429a03751fae6413694c411780caec8a",
+    "scripts/ios-simulator.mjs": "93de910a72f110b4d176fd1a0f30624b04db00c71fd1e6ba5ea72cc60a2a4123",
+    "scripts/ios-simulator.d.mts": "de421e3a9a725d48378b2a31b8cbda14885780995eb11f988f8c2faa90580e79",
+    "native/groupstore/format.go": "ba3e8dfec2fb52e17c8adfc30e13737e5211b63d7b60509c9e9c4d4a803d904b",
+    "native/groupstore/integrity_test.go": "245e11b6fa1a8c326994c454ab6c237e6501971f9b33aa379a8429ec306dc93f",
+    "native/groupstore/store.go": "9ef79471f1b2a07b8e1fa0730ddc8ef4baeb3431628ae7bff473b6d84bc43e25",
+    "native/groupstore/store_test.go": "a201dc413157a1d03884b0b15a96b3e769cdf90c647be68c7e5a15fd31a1fc0c",
+    "native/groupstore/worker_test.go": "97312eeb6c0262dd25c412e34e89190cc14537a14313f968574c5f36231d48c9"
+  },
+  "sourcesUnchanged": true,
+  "outputSHA256": "0bdbb646fad6d144aa5a00ab759e765002953c4af6f058cf63a8af8900a14bb2"
+}

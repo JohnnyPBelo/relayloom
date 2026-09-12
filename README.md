@@ -39,6 +39,8 @@ A pasta `docs/evidence` guarda relatórios e imagens de execuções reais; os da
 
 No checkpoint `b09f7f5` passaram os jobs Node/Go e os pacotes desktop dos três OS, incluindo execução Linux com Xvfb. O simulador iOS arrancou e recebeu a app, mas o gate falhou ao importar a fotografia de teste, antes do XCUITest. Compilação/instalação não são execução da aplicação; ver [STATUS](docs/STATUS.md) e [evidência iOS](docs/evidence/ios/b09f7f5/simulator-report.json).
 
+A fundação de armazenamento de grupos tem agora versões Node/Go com ficheiros cifrados interoperáveis, transacções e testes reais de concorrência/corrupção/recuperação. A integração de grupos dinâmicos na aplicação e UI está pendente; [GROUP-STORAGE](docs/GROUP-STORAGE.md) separa os gates executados e as limitações.
+
 ## Segurança e limites actuais
 
 - Ed25519 assina identidades e manifestos; X25519/HKDF/AES-256-GCM embrulha chaves de leitura por destinatário. O leitor pode semear o objecto exacto, mas não mudar a autoria. Cofres usam scrypt + AES-GCM.

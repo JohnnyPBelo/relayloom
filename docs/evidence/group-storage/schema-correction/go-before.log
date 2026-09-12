@@ -1,0 +1,5 @@
+--- FAIL: TestUnknownSchemaCannotHideBehindSQLitePrefix (0.02s)
+    integrity_test.go:12: unknown table with SQLite-like prefix was accepted
+FAIL
+FAIL	github.com/JohnnyPBelo/relayloom/native/groupstore	0.027s
+FAIL
