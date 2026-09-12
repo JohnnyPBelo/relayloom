@@ -1,0 +1,48 @@
+{
+  "run": 34671406360,
+  "commit": "b09f7f5f968f98292e4ccd73f8e11fdbff9adbff",
+  "files": [
+    {
+      "file": "simulator-report.json",
+      "originalSHA256": "cd73b72847eed5c679415631021da92742c9dcc1506f55204d6bb90ed1422737",
+      "publishedSHA256": "cd73b72847eed5c679415631021da92742c9dcc1506f55204d6bb90ed1422737",
+      "normalization": "none"
+    },
+    {
+      "file": "artifact-hashes.json",
+      "originalSHA256": "7956647ccd480ceef39deef70b842720f62bf29097a182180c6274a97a549b40",
+      "publishedSHA256": "7956647ccd480ceef39deef70b842720f62bf29097a182180c6274a97a549b40",
+      "normalization": "none"
+    },
+    {
+      "file": "08-wait-owned-boot.log",
+      "originalSHA256": "e1807371f714d840308c7985ec661a24595fbaa8920863258b61755e510f861d",
+      "publishedSHA256": "fdbeeb189e1595ac5903f7089ec5190d41211c4cf4da68b3d86fc05d42820993",
+      "normalization": "final newline only"
+    },
+    {
+      "file": "09-build-for-testing.log",
+      "originalSHA256": "2f7df218e1c54b06bfb85220c12e2aed692055e146e09d41ae3165b8b76f11fe",
+      "publishedSHA256": "9a4e15f6349d68eaafd63d77472fb7d52b87a682b53fde81dd2e5b568f1aa69e",
+      "normalization": "trailing whitespace per line and final newline only; diagnostic content retained"
+    },
+    {
+      "file": "11-seed-synthetic-photo.log",
+      "originalSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "publishedSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalization": "none"
+    },
+    {
+      "file": "13-shutdown-owned.log",
+      "originalSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "publishedSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalization": "none"
+    },
+    {
+      "file": "14-delete-owned.log",
+      "originalSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "publishedSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalization": "none"
+    }
+  ]
+}

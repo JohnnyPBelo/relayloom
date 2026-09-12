@@ -1,0 +1,13 @@
+{
+  "command": "node --test apps/ios/Tests/SimulatorRunnerTests.mjs",
+  "startedAt": "2026-09-12T04:15:24.856594+00:00",
+  "completedAt": "2026-09-12T04:15:26.043287+00:00",
+  "elapsedSeconds": 1.187,
+  "exitCode": 0,
+  "classification": "Linux host-only checks; no Apple runtime execution",
+  "sourceSHA256": {
+    "scripts/ios-simulator.mjs": "93de910a72f110b4d176fd1a0f30624b04db00c71fd1e6ba5ea72cc60a2a4123",
+    "apps/ios/Tests/SimulatorRunnerTests.mjs": "059e57861b370fbe607721d6bb0147c9794aa754116fb2bf355d47739da60954"
+  },
+  "outputSHA256": "b5eaf13166948f9c4b5b665c67adcd76d04b613791351af0678c1b43bc555603"
+}
