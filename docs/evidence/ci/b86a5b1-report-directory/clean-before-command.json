@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "/home/absint0o/projects/relayloom/node_modules/.bin/tsx",
+    "--test",
+    "--test-concurrency=1",
+    "tests/native/group-authority.test.ts",
+    "tests/native/group-index-reserve.test.ts"
+  ],
+  "sourceCommit": "b86a5b1bd5023fad52cabb4f1c15172507dbc370",
+  "startedAt": "2026-09-12T10:00:12.817825+00:00",
+  "isolatedCwd": "/home/absint0o/projects/relayloom/.cache/ci-b86a5b1/clean-before",
+  "evidenceDirectoryAbsentBefore": true,
+  "status": "failed",
+  "childPID": 2265880,
+  "exitCode": 1,
+  "elapsedSeconds": 75.241
+}

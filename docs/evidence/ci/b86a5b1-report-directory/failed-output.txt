@@ -1,0 +1,119 @@
+native-go	Run npm run test:interop	﻿2026-09-12T09:42:12.3861652Z ##[group]Run npm run test:interop
+native-go	Run npm run test:interop	2026-09-12T09:42:12.3863037Z [36;1mnpm run test:interop[0m
+native-go	Run npm run test:interop	2026-09-12T09:42:12.3899720Z shell: /usr/bin/bash -e {0}
+native-go	Run npm run test:interop	2026-09-12T09:42:12.3899983Z ##[endgroup]
+native-go	Run npm run test:interop	2026-09-12T09:42:12.4910841Z
+native-go	Run npm run test:interop	2026-09-12T09:42:12.4911251Z > relayloom@0.1.0 test:interop
+native-go	Run npm run test:interop	2026-09-12T09:42:12.4912116Z > tsx --test --test-concurrency=1 tests/native/*.test.ts
+native-go	Run npm run test:interop	2026-09-12T09:42:12.4912472Z
+native-go	Run npm run test:interop	2026-09-12T09:42:12.6080277Z TAP version 13
+native-go	Run npm run test:interop	2026-09-12T09:42:12.8576472Z # (node:7839) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+native-go	Run npm run test:interop	2026-09-12T09:42:12.8578280Z # (Use `node --trace-warnings ...` to show where the warning was created)
+native-go	Run npm run test:interop	2026-09-12T09:42:35.4814612Z # Subtest: real Node/Go authority files preserve heads, cursors, fences, CAS and crash idempotence
+native-go	Run npm run test:interop	2026-09-12T09:42:35.4820980Z not ok 1 - real Node/Go authority files preserve heads, cursors, fences, CAS and crash idempotence
+native-go	Run npm run test:interop	2026-09-12T09:42:35.4823643Z   ---
+native-go	Run npm run test:interop	2026-09-12T09:42:35.4824290Z   duration_ms: 22627.283146
+native-go	Run npm run test:interop	2026-09-12T09:42:35.4826115Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-12T09:42:35.4827032Z   location: '/home/runner/work/relayloom/relayloom/tests/native/group-authority.test.ts:29:1'
+native-go	Run npm run test:interop	2026-09-12T09:42:35.4827919Z   failureType: 'testCodeFailure'
+native-go	Run npm run test:interop	2026-09-12T09:42:35.4829232Z   error: "ENOENT: no such file or directory, open '/home/runner/work/relayloom/relayloom/.cache/group-registry-evidence/interoperability.json'"
+native-go	Run npm run test:interop	2026-09-12T09:42:35.4830366Z   code: 'ENOENT'
+native-go	Run npm run test:interop	2026-09-12T09:42:35.4830725Z   stack: |-
+native-go	Run npm run test:interop	2026-09-12T09:42:35.4831155Z     writeFileSync (node:fs:2430:20)
+native-go	Run npm run test:interop	2026-09-12T09:42:35.4832749Z     TestContext.<anonymous> (/home/runner/work/relayloom/relayloom/tests/native/group-authority.test.ts:512:7)
+native-go	Run npm run test:interop	2026-09-12T09:42:35.4834246Z     process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+native-go	Run npm run test:interop	2026-09-12T09:42:35.4835261Z     async Test.run (node:internal/test_runner/test:1054:7)
+native-go	Run npm run test:interop	2026-09-12T09:42:35.4836312Z     async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+native-go	Run npm run test:interop	2026-09-12T09:42:35.4837038Z   ...
+native-go	Run npm run test:interop	2026-09-12T09:42:38.8053220Z # Subtest: Node and Go verify each other's signed group epochs, consent, reader scope and exact Unicode bytes
+native-go	Run npm run test:interop	2026-09-12T09:42:38.8055588Z ok 2 - Node and Go verify each other's signed group epochs, consent, reader scope and exact Unicode bytes
+native-go	Run npm run test:interop	2026-09-12T09:42:38.8056938Z   ---
+native-go	Run npm run test:interop	2026-09-12T09:42:38.8057454Z   duration_ms: 3146.845975
+native-go	Run npm run test:interop	2026-09-12T09:42:38.8057957Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-12T09:42:38.8058336Z   ...
+native-go	Run npm run test:interop	2026-09-12T09:42:40.5418429Z # (node:9045) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+native-go	Run npm run test:interop	2026-09-12T09:42:40.5420074Z # (Use `node --trace-warnings ...` to show where the warning was created)
+native-go	Run npm run test:interop	2026-09-12T09:42:54.8674315Z # Subtest: real Node/Go near-limit index preserves stop headroom and the disabled-guard control fails
+native-go	Run npm run test:interop	2026-09-12T09:42:54.8677625Z not ok 3 - real Node/Go near-limit index preserves stop headroom and the disabled-guard control fails
+native-go	Run npm run test:interop	2026-09-12T09:42:54.8678559Z   ---
+native-go	Run npm run test:interop	2026-09-12T09:42:54.8678939Z   duration_ms: 15856.574844
+native-go	Run npm run test:interop	2026-09-12T09:42:54.8679496Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-12T09:42:54.8680877Z   location: '/home/runner/work/relayloom/relayloom/tests/native/group-index-reserve.test.ts:16:1'
+native-go	Run npm run test:interop	2026-09-12T09:42:54.8682432Z   failureType: 'testCodeFailure'
+native-go	Run npm run test:interop	2026-09-12T09:42:54.8683962Z   error: "ENOENT: no such file or directory, open '/home/runner/work/relayloom/relayloom/.cache/group-registry-evidence/index-interoperability.json'"
+native-go	Run npm run test:interop	2026-09-12T09:42:54.8685149Z   code: 'ENOENT'
+native-go	Run npm run test:interop	2026-09-12T09:42:54.8685488Z   stack: |-
+native-go	Run npm run test:interop	2026-09-12T09:42:54.8685938Z     writeFileSync (node:fs:2430:20)
+native-go	Run npm run test:interop	2026-09-12T09:42:54.8687133Z     TestContext.<anonymous> (/home/runner/work/relayloom/relayloom/tests/native/group-index-reserve.test.ts:151:7)
+native-go	Run npm run test:interop	2026-09-12T09:42:54.8688494Z     process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+native-go	Run npm run test:interop	2026-09-12T09:42:54.8689546Z     async Test.run (node:internal/test_runner/test:1054:7)
+native-go	Run npm run test:interop	2026-09-12T09:42:54.8690599Z     async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+native-go	Run npm run test:interop	2026-09-12T09:42:54.8691745Z   ...
+native-go	Run npm run test:interop	2026-09-12T09:42:55.0863188Z # (node:9287) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+native-go	Run npm run test:interop	2026-09-12T09:42:55.0865528Z # (Use `node --trace-warnings ...` to show where the warning was created)
+native-go	Run npm run test:interop	2026-09-12T09:42:56.0535086Z # Subtest: Node and Go share encrypted SQLite files, serialize real writers and recover each other's crashed transactions
+native-go	Run npm run test:interop	2026-09-12T09:42:56.0537660Z ok 4 - Node and Go share encrypted SQLite files, serialize real writers and recover each other's crashed transactions
+native-go	Run npm run test:interop	2026-09-12T09:42:56.0539321Z   ---
+native-go	Run npm run test:interop	2026-09-12T09:42:56.0540255Z   duration_ms: 975.320403
+native-go	Run npm run test:interop	2026-09-12T09:42:56.0541139Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-12T09:42:56.0541742Z   ...
+native-go	Run npm run test:interop	2026-09-12T09:43:03.3005884Z # Subtest: Go A → Node B → Go C: isolated real sockets, encrypted messages/receipts, partition, restart and publisher-offline seeding
+native-go	Run npm run test:interop	2026-09-12T09:43:03.3007571Z ok 5 - Go A → Node B → Go C: isolated real sockets, encrypted messages/receipts, partition, restart and publisher-offline seeding
+native-go	Run npm run test:interop	2026-09-12T09:43:03.3008434Z   ---
+native-go	Run npm run test:interop	2026-09-12T09:43:03.3008942Z   duration_ms: 7058.205326
+native-go	Run npm run test:interop	2026-09-12T09:43:03.3009440Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-12T09:43:03.3009885Z   ...
+native-go	Run npm run test:interop	2026-09-12T09:43:07.7965418Z # Subtest: Go A → Node B → Node C over TCP and serial PTYs preserves bytes, receipts and partition recovery
+native-go	Run npm run test:interop	2026-09-12T09:43:07.7969408Z ok 6 - Go A → Node B → Node C over TCP and serial PTYs preserves bytes, receipts and partition recovery
+native-go	Run npm run test:interop	2026-09-12T09:43:07.7970351Z   ---
+native-go	Run npm run test:interop	2026-09-12T09:43:07.7970797Z   duration_ms: 4499.057134
+native-go	Run npm run test:interop	2026-09-12T09:43:07.7971273Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-12T09:43:07.7971638Z   ...
+native-go	Run npm run test:interop	2026-09-12T09:43:08.7765049Z # Subtest: Node ↔ Go generated vectors preserve canonical bytes, identities, vaults, reader authority, chunks and disk seeds
+native-go	Run npm run test:interop	2026-09-12T09:43:08.7768457Z ok 7 - Node ↔ Go generated vectors preserve canonical bytes, identities, vaults, reader authority, chunks and disk seeds
+native-go	Run npm run test:interop	2026-09-12T09:43:08.7770031Z   ---
+native-go	Run npm run test:interop	2026-09-12T09:43:08.7770555Z   duration_ms: 803.663543
+native-go	Run npm run test:interop	2026-09-12T09:43:08.7771202Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-12T09:43:08.7771719Z   ...
+native-go	Run npm run test:interop	2026-09-12T09:43:43.3435360Z # Subtest: node outbox → go relay → go recipient: durable restart, real ACK control, signed group confirmations and expiry
+native-go	Run npm run test:interop	2026-09-12T09:43:43.3443645Z ok 8 - node outbox → go relay → go recipient: durable restart, real ACK control, signed group confirmations and expiry
+native-go	Run npm run test:interop	2026-09-12T09:43:43.3445290Z   ---
+native-go	Run npm run test:interop	2026-09-12T09:43:43.3446084Z   duration_ms: 34289.610906
+native-go	Run npm run test:interop	2026-09-12T09:43:43.3446573Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-12T09:43:43.3446934Z   ...
+native-go	Run npm run test:interop	2026-09-12T09:44:26.3465467Z # Subtest: go outbox → node relay → node recipient: durable restart, real ACK control, signed group confirmations and expiry
+native-go	Run npm run test:interop	2026-09-12T09:44:26.3468792Z ok 9 - go outbox → node relay → node recipient: durable restart, real ACK control, signed group confirmations and expiry
+native-go	Run npm run test:interop	2026-09-12T09:44:26.3469896Z   ---
+native-go	Run npm run test:interop	2026-09-12T09:44:26.3470486Z   duration_ms: 43027.378489
+native-go	Run npm run test:interop	2026-09-12T09:44:26.3471009Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-12T09:44:26.3471460Z   ...
+native-go	Run npm run test:interop	2026-09-12T09:44:27.2503901Z # Subtest: node application owns its profile until close; another engine recovers its pending outbox
+native-go	Run npm run test:interop	2026-09-12T09:44:27.2507421Z ok 10 - node application owns its profile until close; another engine recovers its pending outbox
+native-go	Run npm run test:interop	2026-09-12T09:44:27.2508462Z   ---
+native-go	Run npm run test:interop	2026-09-12T09:44:27.2508892Z   duration_ms: 729.66187
+native-go	Run npm run test:interop	2026-09-12T09:44:27.2509730Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-12T09:44:27.2510110Z   ...
+native-go	Run npm run test:interop	2026-09-12T09:44:28.0976882Z # Subtest: go application owns its profile until close; another engine recovers its pending outbox
+native-go	Run npm run test:interop	2026-09-12T09:44:28.0978815Z ok 11 - go application owns its profile until close; another engine recovers its pending outbox
+native-go	Run npm run test:interop	2026-09-12T09:44:28.0979684Z   ---
+native-go	Run npm run test:interop	2026-09-12T09:44:28.0980078Z   duration_ms: 853.581696
+native-go	Run npm run test:interop	2026-09-12T09:44:28.0980511Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-12T09:44:28.0980746Z   ...
+native-go	Run npm run test:interop	2026-09-12T09:44:28.2991601Z # (node:9846) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+native-go	Run npm run test:interop	2026-09-12T09:44:28.2993572Z # (Use `node --trace-warnings ...` to show where the warning was created)
+native-go	Run npm run test:interop	2026-09-12T09:44:32.3891383Z # Subtest: real Node and Go processes exclude the same profile and recover after owner death
+native-go	Run npm run test:interop	2026-09-12T09:44:32.3893210Z ok 12 - real Node and Go processes exclude the same profile and recover after owner death
+native-go	Run npm run test:interop	2026-09-12T09:44:32.3894088Z   ---
+native-go	Run npm run test:interop	2026-09-12T09:44:32.3894537Z   duration_ms: 4094.390899
+native-go	Run npm run test:interop	2026-09-12T09:44:32.3895018Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-12T09:44:32.3895387Z   ...
+native-go	Run npm run test:interop	2026-09-12T09:44:32.4019676Z 1..12
+native-go	Run npm run test:interop	2026-09-12T09:44:32.4023532Z # tests 12
+native-go	Run npm run test:interop	2026-09-12T09:44:32.4023913Z # suites 0
+native-go	Run npm run test:interop	2026-09-12T09:44:32.4024265Z # pass 10
+native-go	Run npm run test:interop	2026-09-12T09:44:32.4024611Z # fail 2
+native-go	Run npm run test:interop	2026-09-12T09:44:32.4024957Z # cancelled 0
+native-go	Run npm run test:interop	2026-09-12T09:44:32.4025342Z # skipped 0
+native-go	Run npm run test:interop	2026-09-12T09:44:32.4025687Z # todo 0
+native-go	Run npm run test:interop	2026-09-12T09:44:32.4026083Z # duration_ms 139810.565081
+native-go	Run npm run test:interop	2026-09-12T09:44:32.4201095Z ##[error]Process completed with exit code 1.

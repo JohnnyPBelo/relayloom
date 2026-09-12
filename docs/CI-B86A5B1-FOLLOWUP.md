@@ -1,0 +1,7 @@
+# Fresh-runner report directory correction
+
+Run34686129024 for b86a5b1 passed the Node jobs on Linux, macOS and Windows. The Go job passed build, native CLI compilation and native unit/race tests, then failed two interoperability cases while writing their final reports. Both attempted to write under `.cache/group-registry-evidence` without creating that directory. The local supervisor had created it earlier, masking the dependency. Native UI, desktop packages and iOS were skipped by dependency; they did not execute in this run.
+
+Root reproduced both ENOENT failures from the exact published sources in an isolated project-local copy, sharing only the existing dependency/toolchain caches. The evidence directory was absent initially. The correction adds mkdir before the report write in each test; production code, assertions, deadlines and settings are unchanged.
+
+Both complete cases then passed independently with that output directory absent before each invocation: authority/CAS/crash/control23.228s; near-limit index and intentionally disabled-guard control10.563s. Each test created its own report successfully. Exact argv, source override hashes, output hashes and original CI output are in `evidence/ci/b86a5b1-report-directory`. This is an actual reproducibility correction, not a retry of unchanged failed jobs or removal of coverage. The subsequent CI result still needs observation.

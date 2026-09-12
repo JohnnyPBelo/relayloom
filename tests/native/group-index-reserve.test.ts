@@ -148,6 +148,7 @@ test(
         source,
         "production guard was never changed",
       );
+      mkdirSync(resolve(".cache/group-registry-evidence"), { recursive: true });
       writeFileSync(
         resolve(".cache/group-registry-evidence/index-interoperability.json"),
         JSON.stringify(

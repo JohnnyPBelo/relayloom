@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "/home/absint0o/projects/relayloom/node_modules/.bin/tsx",
+    "--test",
+    "tests/native/group-index-reserve.test.ts"
+  ],
+  "baseCommit": "b86a5b1bd5023fad52cabb4f1c15172507dbc370",
+  "isolatedCwd": "/home/absint0o/projects/relayloom/.cache/ci-b86a5b1/clean-before",
+  "evidenceDirectoryAbsentBefore": true,
+  "startedAt": "2026-09-12T10:02:43.494494+00:00",
+  "status": "passed",
+  "overridesSHA256": {
+    "tests/native/group-authority.test.ts": "061da7884ab344ba4d0eadc951b14a24d1315960bd12f97772d7c77a9129f6d2",
+    "tests/native/group-index-reserve.test.ts": "ffaf512a923d8589738ba03af2876425ebee8c23a898c3be224e252cf3963758"
+  },
+  "childPID": 2310752,
+  "exitCode": 0,
+  "elapsedSeconds": 10.563,
+  "outputSHA256": "7bb1848ee33afb21eff53b88ba4382ca76e41c58c4fd959e40bfb1d2fc5952b4"
+}

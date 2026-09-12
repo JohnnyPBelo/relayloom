@@ -509,6 +509,7 @@ test(
         sourceSHA256,
         "tested sources changed during execution",
       );
+      mkdirSync(resolve(".cache/group-registry-evidence"), { recursive: true });
       writeFileSync(
         resolve(".cache/group-registry-evidence/interoperability.json"),
         JSON.stringify(
