@@ -1,0 +1,27 @@
+{
+  "kind": "REAL_NODE_GO_SQLITE_STORAGE",
+  "status": "PASSED",
+  "startedAt": "2026-09-12T05:14:04.726Z",
+  "completedAt": "2026-09-12T05:14:06.918Z",
+  "sourceSHA256": "50119f88e389affa223207ad925dcc3d49960117e2ecfefbc4c48cbb91b3a6d5",
+  "binarySHA256": "d4657ead70b9645c41b150691cef6fda4d823f32ef9bfd2a1ac2d92666c472cd",
+  "goReadsNodeEncryptedBytes": true,
+  "nodeReadsGoEncryptedBytes": true,
+  "simultaneousWritersPreserve24Updates": true,
+  "committedRevision": 27,
+  "nodeRecoversGoAbruptExit": true,
+  "goRecoversNodeAbruptExit": true,
+  "bothRejectTamperedCommittedRow": true,
+  "accounting": {
+    "reserveBytes": 4194304,
+    "totalBytes": 67108864,
+    "serializedBytes": 1615,
+    "ordinaryBytes": 343,
+    "revision": 27,
+    "records": 3,
+    "sqliteBytes": 12288,
+    "sqliteMaximumBytes": 100663296
+  },
+  "applicationIntegration": false,
+  "mobileRuntimeExecuted": false
+}

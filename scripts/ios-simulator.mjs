@@ -74,6 +74,22 @@ export async function stopOwnedProcessGroup(pid, controls = {}) {
   for (let i = 0; i < 20; i++) { if (!alive()) return; await wait(100); }
   if (alive()) throw new Error('Owned process group did not stop after escalation');
 }
+export async function annotatePhotoFailure(report, owned, tool) {
+  // This is the in-memory record returned by this gate's simctl create. Never
+  // inspect the host's Photos library, another simulator, or change services.
+  if (!owned || !uuid.test(owned.udid) || !uuid.test(owned.runID) || owned.name !== 'RelayLoom-CI-' + owned.runID) throw new Error('Invalid owned simulator diagnostics record');
+  try {
+    const result = await tool('photo-fixture-diagnostics', 'xcrun', [
+      'simctl', 'spawn', owned.udid, 'log', 'show', '--last', '2m', '--style', 'compact',
+      '--predicate', 'process == "photolibraryd" OR process == "assetsd" OR process == "mstreamd"',
+    ], 15_000, { allowFailure: true });
+    report.photoDiagnostics = { captured: result.code === 0 && !result.failure, exitCode: result.code,
+      ...(result.failure ? { error: sanitize(result.failure.message) } : {}) };
+  } catch (error) {
+    // Diagnostics must not replace the original failed stage or skip cleanup.
+    report.photoDiagnostics = { captured: false, error: sanitize(error.message) };
+  }
+}
 function hashBuffer(bytes) { return createHash('sha256').update(bytes).digest('hex'); }
 function boundedRead(path, maximum) {
   const stat = lstatSync(path);
@@ -382,6 +398,13 @@ async function main(argv) {
     report.status = 'PASSED';
   } catch (error) {
     failure = error; report.status = 'FAILED'; report.error = sanitize(error.message);
+    if (context.owned && report.simulatorBooted && report.error.includes('seed-synthetic-photo')) {
+      // Keep this diagnostic inside the original global deadline and reserve;
+      // no restart, timeout inflation, permission grant or service mutation.
+      if (Date.now() + 20_000 < deadline && diskFree() >= reserveBytes + 4 * 1024 ** 2) {
+        await annotatePhotoFailure(report, context.owned, tool);
+      } else report.photoDiagnostics = { captured: false, reason: 'original deadline or disk reserve' };
+    }
   } finally {
     context.watchStop = true;
     if (context.watch) await context.watch;

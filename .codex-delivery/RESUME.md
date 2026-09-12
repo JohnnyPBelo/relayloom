@@ -4,9 +4,9 @@ Project only `/home/absint0o/projects/relayloom`; full `PROJECT-BRIEF.md` remain
 
 ## Git and active processes
 
-Local milestones `aec662d` (iOS failure evidence) and `13fbf49` (Node storage) follow remote `b09f7f5`. They have not been pushed, to avoid another unchanged iOS addmedia attempt. The Go/corrective storage milestone is ready for final documentation/commit. Recheck actual Git state before acting; no reset/clean.
+Local milestones `aec662d` (iOS failure evidence), `13fbf49` (Node storage) and `f891680` (Go storage and corrections) follow remote `b09f7f5`. A subsequent read-only, bounded photo-library diagnostic was added to the iOS runner before the next push;13 host tests1.714s, static check/typecheck and storage interop passed. Evidence `docs/evidence/ios/photo-diagnostics-host`. The diagnostic reads only the owned simulator's logs, preserves the primary failure, original20-minute deadline/15GiB reserve and all photo/UI coverage. No timeout/service/permission change. Recheck actual Git/push/CI state before acting; no reset/clean.
 
-All root test sessions are terminal, including7162 (integrated gates) and69460 (corrective gates). Do not restart them on an unavailable handle. Raw working outputs remain under `.cache/group-storage-evidence`; retained artifacts are already copied to docs. The tests also refreshed `docs/evidence/heterogeneous.json` and group-certificate interop evidence; these are real new results from the command window. No active app/emulator/build is known from this phase.
+All local root test sessions are terminal, including7162 (integrated gates),69460 (corrective gates),2620 and89952 (photo-diagnostic host checks). Do not restart them on an unavailable handle. Raw working outputs remain under `.cache/group-storage-evidence`; retained artifacts are already copied to docs. The tests also refreshed `docs/evidence/heterogeneous.json` and group-certificate interop evidence; these are real new results from the command window. No active local app/emulator/build is known from this phase. The next public push is expected to start a new remote CI run; inspect its exact commit/run instead of assuming an older result applies.
 
 ## Group foundations: implemented, not yet part of the applications
 
@@ -41,7 +41,7 @@ No physical Apple/Android/radios, distribution signing, real microphone/screen-r
 
 ## Next implementation work
 
-1. Finish/commit the verified Go storage milestone and status/notices without losing current changes. Decide the next concrete Apple diagnostic before a push triggers its unchanged CI stage; never remove coverage to obtain green CI.
+1. Commit/publish the bounded iOS diagnostic alongside the verified storage milestones and observe the exact new CI run. Apple photo setup remains unproven; collect the new diagnostic if it fails again. Never remove coverage or retry/inflate timeouts in a loop to obtain green CI.
 2. Implement actual group authority registry on the storage foundation:64 enrolled groups, retained anchors/ancestry, exact heads, durable fork/left/capacity fences, nonce-bound pending requests and closed state. Group certificates outlive content TTL. Reserve4MiB of64MiB protected metadata for stops/checkpoints; no head/fence LRU eviction.
 3. Add bounded proof sync/carriers and private snapshots, then serialized admission/accepted-ID records, quarantine after restrictive epochs, target-reader events and immutable/superseded outbox intents in both engines. Preserve fixed groups and never silently distribute history keys/new audiences. Once libraries are imported by runtime, extend mixed-test production digests to include `packages/groups/src`, `native/groups`, `native/groupstore`.
 4. Real UI create/invite/accept/remove/leave/fork/quarantine/republication flows and adversarial process/partition/restart/expiry/quota controls. Independent review is still required and has not occurred during the no-agent phase.

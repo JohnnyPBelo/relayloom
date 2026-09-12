@@ -6,6 +6,8 @@
 
 **Implementação local posterior:** armazenamento transaccional cifrado e índice assinado para metadados de grupos em Node e Go, ainda sem importação na aplicação. O gate integrado passou104 Node,76 Go de topo com race e7 casos de interoperabilidade. Uma correcção posterior do filtro de esquema SQLite foi reproduzida antes e validada depois: build,12 testes de armazenamento Node,10 Go com race e interoperabilidade real passaram. Os motores partilham ficheiros cifrados, preservam24 incrementos concorrentes e recuperam a transacção interrompida pelo outro processo. Não é execução móvel. Limites, versões, comandos e evidência em `GROUP-STORAGE.md`; as contagens da suite completa precedem a última correcção, que tem gates próprios. Grupos dinâmicos, sincronização de provas e a sua UI continuam pendentes.
 
+Antes do próximo CI, o runner iOS passou a recolher, em até15s e dentro do prazo global/reserva originais, os registos da fototeca do simulador criado caso a preparação da fotografia falhe. Não reinicia serviços nem altera permissões/prazos; conserva a falha original e a limpeza.13 testes host, verificação estática, typecheck e a interoperabilidade de armazenamento passaram depois desta mudança. É instrumentação para diagnóstico, sem evidência adicional de execução Apple. Ver `docs/evidence/ios/photo-diagnostics-host`.
+
 ## Evidência executada neste Linux
 
 | Comando / artefacto | Resultado observado | Alcance |

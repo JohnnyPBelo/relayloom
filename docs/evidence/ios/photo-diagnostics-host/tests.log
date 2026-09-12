@@ -1,0 +1,88 @@
+TAP version 13
+# Subtest: select only compatible installed iOS runtimes, never unavailable or other platforms
+ok 1 - select only compatible installed iOS runtimes, never unavailable or other platforms
+  ---
+  duration_ms: 5.746875
+  type: 'test'
+  ...
+# Subtest: runtime advertised compatibility is honored instead of guessing a device
+ok 2 - runtime advertised compatibility is honored instead of guessing a device
+  ---
+  duration_ms: 1.951435
+  type: 'test'
+  ...
+# Subtest: logs remove launch capabilities, authorization headers and standalone secret tokens
+ok 3 - logs remove launch capabilities, authorization headers and standalone secret tokens
+  ---
+  duration_ms: 1.182155
+  type: 'test'
+  ...
+# Subtest: container reads are limited to the created simulator application container
+ok 4 - container reads are limited to the created simulator application container
+  ---
+  duration_ms: 0.638295
+  type: 'test'
+  ...
+# Subtest: empty, skipped or partially failed XCTest output cannot pass the execution gate
+ok 5 - empty, skipped or partially failed XCTest output cannot pass the execution gate
+  ---
+  duration_ms: 0.681055
+  type: 'test'
+  ...
+# Subtest: refusing concurrent cleanup preserves the active owner record and fixture namespace
+ok 6 - refusing concurrent cleanup preserves the active owner record and fixture namespace
+  ---
+  duration_ms: 4.122572
+  type: 'test'
+  ...
+# Subtest: owned group escalation continues when a TERM-resistant descendant outlives its leader
+ok 7 - owned group escalation continues when a TERM-resistant descendant outlives its leader
+  ---
+  duration_ms: 2.527525
+  type: 'test'
+  ...
+# Subtest: owned group supervision stops without KILL once the whole group disappears
+ok 8 - owned group supervision stops without KILL once the whole group disappears
+  ---
+  duration_ms: 0.424776
+  type: 'test'
+  ...
+# Subtest: photo failure diagnostics read only bounded logs from the recorded simulator
+ok 9 - photo failure diagnostics read only bounded logs from the recorded simulator
+  ---
+  duration_ms: 0.916457
+  type: 'test'
+  ...
+# Subtest: diagnostic timeout preserves the primary photo failure and sanitizes its own error
+ok 10 - diagnostic timeout preserves the primary photo failure and sanitizes its own error
+  ---
+  duration_ms: 0.540793
+  type: 'test'
+  ...
+# Subtest: host fixture verification authenticates encrypted vault/journal and signed private bundle
+ok 11 - host fixture verification authenticates encrypted vault/journal and signed private bundle
+  ---
+  duration_ms: 277.882284
+  type: 'test'
+  ...
+# Subtest: host fixture rejects a mismatched real-peer identity and changed encrypted bytes
+ok 12 - host fixture rejects a mismatched real-peer identity and changed encrypted bytes
+  ---
+  duration_ms: 423.641924
+  type: 'test'
+  ...
+# Subtest: host fixture compares exact attachment bytes across the encrypted store and peer proof
+ok 13 - host fixture compares exact attachment bytes across the encrypted store and peer proof
+  ---
+  duration_ms: 389.717516
+  type: 'test'
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 13
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1549.018882

@@ -1,0 +1,26 @@
+{
+  "observedAt": "2026-09-12T05:17:33.076847+00:00",
+  "commands": [
+    {
+      "command": "node scripts/ios-simulator.mjs --check",
+      "exitCode": 0,
+      "result": "STATIC_ONLY_PASSED;58 project objects; no Swift compilation or Apple execution"
+    },
+    {
+      "command": "npm run typecheck",
+      "exitCode": 0
+    },
+    {
+      "command": "node --import tsx --test tests/native/group-storage.test.ts",
+      "exitCode": 0,
+      "passed": 1,
+      "skipped": 0,
+      "testDurationMs": 2198.322109
+    }
+  ],
+  "sourceSHA256": {
+    "scripts/ios-simulator.mjs": "a1dd0087643cf49c7569e153f465c715f2e855b6b3d467832eee2fb92814b59b",
+    "scripts/ios-simulator.d.mts": "de421e3a9a725d48378b2a31b8cbda14885780995eb11f988f8c2faa90580e79",
+    "tests/native/group-storage.test.ts": "864aad838fb0667bb4059866143e91b8bb41a65964dca937235900888185919f"
+  }
+}

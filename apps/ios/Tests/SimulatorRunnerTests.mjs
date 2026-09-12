@@ -5,7 +5,7 @@ import { randomUUID } from 'node:crypto';
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { tsImport } from 'tsx/esm/api';
-import { sanitize, selectSimulator, validateOwnedContainer, assertTestSummary, verifySyntheticContainer, removeMatchingRunRecord, requireInactiveCleanupOwner, stopOwnedProcessGroup } from '../../../scripts/ios-simulator.mjs';
+import { sanitize, selectSimulator, validateOwnedContainer, assertTestSummary, verifySyntheticContainer, removeMatchingRunRecord, requireInactiveCleanupOwner, stopOwnedProcessGroup, annotatePhotoFailure } from '../../../scripts/ios-simulator.mjs';
 
 test('select only compatible installed iOS runtimes, never unavailable or other platforms', () => {
   const runtime = (identifier, version, available) => ({ identifier: 'com.apple.CoreSimulator.SimRuntime.' + identifier, version, isAvailable: available });
@@ -70,6 +70,29 @@ test('owned group supervision stops without KILL once the whole group disappears
   let checks = 0; const signals = [];
   await stopOwnedProcessGroup(12345, { alive: () => checks++ < 3, signal: value => signals.push(value), wait: async () => {} });
   assert.deepEqual(signals, ['SIGTERM']);
+});
+
+test('photo failure diagnostics read only bounded logs from the recorded simulator', async () => {
+  const runID = randomUUID(), udid = randomUUID(), owned = { runID, udid, name: 'RelayLoom-CI-' + runID };
+  const report = { status: 'FAILED', error: 'Owned command timed out: seed-synthetic-photo' }, calls = [];
+  await annotatePhotoFailure(report, owned, async (...args) => { calls.push(args); return { code: 0 }; });
+  assert.equal(calls.length, 1);
+  const [label, command, args, timeout, options] = calls[0];
+  assert.equal(label, 'photo-fixture-diagnostics'); assert.equal(command, 'xcrun');
+  assert.deepEqual(args.slice(0, 9), ['simctl', 'spawn', udid, 'log', 'show', '--last', '2m', '--style', 'compact']);
+  assert.equal(timeout, 15000); assert.deepEqual(options, { allowFailure: true });
+  assert.equal(report.photoDiagnostics.captured, true); assert.equal(report.status, 'FAILED');
+  assert.equal(report.error, 'Owned command timed out: seed-synthetic-photo');
+  await assert.rejects(annotatePhotoFailure(report, { ...owned, name: 'not-owned' }, async () => { throw new Error('must not execute'); }), /Invalid owned/);
+});
+
+test('diagnostic timeout preserves the primary photo failure and sanitizes its own error', async () => {
+  const runID = randomUUID(), owned = { runID, udid: randomUUID(), name: 'RelayLoom-CI-' + runID };
+  const original = 'Owned command timed out: seed-synthetic-photo', report = { status: 'FAILED', error: original };
+  const secret = 'ab'.repeat(32);
+  await annotatePhotoFailure(report, owned, async () => { throw new Error('diagnostic unavailable Bearer ' + secret); });
+  assert.equal(report.error, original); assert.equal(report.status, 'FAILED');
+  assert.equal(report.photoDiagnostics.captured, false); assert.equal(report.photoDiagnostics.error.includes(secret), false);
 });
 
 const core = await tsImport('../../../packages/core/src/index.ts', import.meta.url);
