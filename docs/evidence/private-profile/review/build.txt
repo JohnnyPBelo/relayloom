@@ -1,0 +1,5 @@
+
+> relayloom@0.1.0 build
+> tsc --noEmit && vite build
+
+tests/private-migration.test.ts(47,7): error TS2345: Argument of type 'undefined' is not assignable to parameter of type 'AssertPredicate'.

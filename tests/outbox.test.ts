@@ -67,7 +67,7 @@ test("offline send is encrypted, pinned, idempotent and recovers the same operat
   );
   assert.equal(node.store.stats().count, 1);
   assert.throws(() => node.localAction("pin", sent.id, false), /reservado/);
-  const local = readFileSync(join(dir, "private-state.json"), "utf8");
+  const local = readFileSync(join(dir, "profile-state.sqlite"), "utf8");
   assert.equal(local.includes(content.text), false);
   assert.equal(local.includes(operationId), false);
   node.lock();
@@ -412,7 +412,7 @@ test("pending count/byte reservations and restored metadata ownership are bounde
 });
 
 test(
-  "an error after journal rename reads back the operation instead of signing a replacement",
+  "a content-file directory flush error preserves the recorded operation instead of signing a replacement",
   {
     skip:
       process.platform === "win32"
@@ -621,3 +621,28 @@ for (const responseKind of ["state", "send", "retry"] as const) {
     assert.equal(current.outbox[0].receivedCount, 0);
   });
 }
+
+for (const failureAt of [1, 2])
+  test(`an uncertain SQL completion at write ${failureAt} recovers the same outbox operation`, async (t) => {
+    const { node, b } = fixture(t),
+      operationId = randomUUID(),
+      content = { type: "message", text: "Uncertain SQL acceptance" };
+    const database = (node as any).privateDatabase,
+      original = database.write.bind(database);
+    let writes = 0;
+    t.mock.method(database, "write", (bytes: Buffer, expected: string) => {
+      const result = original(bytes, expected);
+      if (++writes === failureAt) throw new Error("injected after SQL commit");
+      return result;
+    });
+    assert.throws(
+      () => node.send(operationId, content, [b.public.id]),
+      /after SQL commit/,
+    );
+    const record = (node as any).privateState.outbox[operationId];
+    assert.ok(record);
+    const retried = node.send(operationId, content, [b.public.id]);
+    assert.equal(retried.id, record.id);
+    assert.equal(retried.accepted, failureAt === 2);
+    assert.equal(retried.outbox.attempts, 0);
+  });

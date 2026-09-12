@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"github.com/JohnnyPBelo/relayloom/native/core"
+	"github.com/JohnnyPBelo/relayloom/native/profiledb"
 	"github.com/JohnnyPBelo/relayloom/native/profilelock"
 	"github.com/JohnnyPBelo/relayloom/native/transport"
 )
@@ -28,7 +29,9 @@ type Node struct {
 	config   Config
 	private  PrivateState
 	// Per-node persistence seam for exercising uncertain completion boundaries.
-	writePrivateFile   func(string, PrivateState, core.Identity) error
+	writePrivateState  func([]byte, string) (string, error)
+	privateDatabase    *profiledb.Database
+	privateDigest      string
 	routes             map[string]transport.Route
 	requests           map[string]int64
 	receipts           map[string]bool
@@ -178,7 +181,13 @@ func (n *Node) Close() error {
 	}
 	err := n.Router.Close()
 	n.wg.Wait()
-	n.closeErr = errors.Join(err, n.ownership.Close())
+	var privateErr error
+	if n.privateDatabase != nil {
+		privateErr = n.privateDatabase.Close()
+		n.privateDatabase = nil
+		n.privateDigest = ""
+	}
+	n.closeErr = errors.Join(err, privateErr, n.ownership.Close())
 	close(n.closeDone)
 	return n.closeErr
 }
@@ -186,33 +195,47 @@ func (n *Node) initialized() bool {
 	_, err := os.Stat(filepath.Join(n.Dir, "identity.vault"))
 	return err == nil
 }
+func (n *Node) lockPrivateLocked() error {
+	n.identity = nil
+	n.private = emptyPrivate()
+	n.privateDigest = ""
+	n.clearSummariesLocked()
+	if n.privateDatabase != nil {
+		err := n.privateDatabase.Close()
+		n.privateDatabase = nil
+		return err
+	}
+	return nil
+}
 func (n *Node) persistPrivateLocked(next PrivateState) error {
-	if n.identity == nil {
+	if n.identity == nil || n.privateDatabase == nil {
 		return errors.New("desbloqueie a identidade")
 	}
-	path := filepath.Join(n.Dir, "private-state.json")
-	writer := n.writePrivateFile
-	if writer == nil {
-		writer = writePrivate
+	data, err := core.Canonical(next)
+	if err != nil {
+		return err
 	}
-	if err := writer(path, next, *n.identity); err != nil {
-		// A rename may have committed even when its directory sync reports an
-		// error. Re-read authenticated disk state before another operation can
-		// reuse an ID. If the outcome is unreadable, stop all plaintext writes.
-		var recovered PrivateState
-		_, readErr := os.Stat(path)
+	writer := n.writePrivateState
+	if writer == nil {
+		writer = n.privateDatabase.Write
+	}
+	digest, err := writer(data, n.privateDigest)
+	if err != nil {
+		// The SQL commit may have completed. Reopen only through the signed binding;
+		// a legacy JSON snapshot must never replace initialized protected state.
+		identity := *n.identity
+		_ = n.privateDatabase.Close()
+		database, recovered, currentDigest, readErr := openPrivateProfile(n.Dir, identity)
 		if readErr == nil {
-			recovered, readErr = readPrivate(path, *n.identity)
-		}
-		if readErr == nil {
+			n.privateDatabase = database
 			n.private = recovered
+			n.privateDigest = currentDigest
 		} else {
-			n.identity = nil
-			n.private = emptyPrivate()
-			n.clearSummariesLocked()
+			_ = n.lockPrivateLocked()
 		}
 		return err
 	}
+	n.privateDigest = digest
 	n.private = next
 	return nil
 }
@@ -922,19 +945,20 @@ func (n *Node) Handle(operation string, body map[string]any) (any, error) {
 		if err != nil {
 			return nil, err
 		}
-		local, err := readPrivate(filepath.Join(n.Dir, "private-state.json"), identity)
-		if err != nil {
+		if err = core.AtomicWrite(filepath.Join(n.Dir, "identity.vault"), []byte(vault)); err != nil {
 			return nil, err
 		}
-		if err = core.AtomicWrite(filepath.Join(n.Dir, "identity.vault"), []byte(vault)); err != nil {
+		database, local, digest, err := openPrivateProfile(n.Dir, identity)
+		if err != nil {
 			return nil, err
 		}
 		n.identity = &identity
 		n.private = local
+		n.privateDatabase = database
+		n.privateDigest = digest
 		n.clearSummariesLocked()
 		if err = n.recoverOutboxLocked(time.Now().UnixMilli()); err != nil {
-			n.identity = nil
-			n.private = emptyPrivate()
+			_ = n.lockPrivateLocked()
 			return nil, err
 		}
 		return identity.Public, nil
@@ -951,24 +975,26 @@ func (n *Node) Handle(operation string, body map[string]any) (any, error) {
 		if err != nil {
 			return nil, err
 		}
-		local, err := readPrivate(filepath.Join(n.Dir, "private-state.json"), identity)
+		database, local, digest, err := openPrivateProfile(n.Dir, identity)
 		if err != nil {
 			return nil, err
 		}
+		if n.privateDatabase != nil {
+			_ = n.privateDatabase.Close()
+		}
 		n.identity = &identity
 		n.private = local
+		n.privateDatabase = database
+		n.privateDigest = digest
 		n.clearSummariesLocked()
 		if err = n.recoverOutboxLocked(time.Now().UnixMilli()); err != nil {
-			n.identity = nil
-			n.private = emptyPrivate()
+			_ = n.lockPrivateLocked()
 			return nil, err
 		}
 		return identity.Public, nil
 	case "lock":
-		n.identity = nil
-		n.private = emptyPrivate()
-		n.clearSummariesLocked()
-		return map[string]bool{"ok": true}, nil
+		err := n.lockPrivateLocked()
+		return map[string]bool{"ok": true}, err
 	}
 	if n.identity == nil {
 		return nil, errors.New("desbloqueie a identidade")

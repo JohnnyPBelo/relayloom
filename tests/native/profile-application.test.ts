@@ -47,13 +47,13 @@ for (const runtime of ["node", "go"] as const) {
           recipients: [reader.public.id],
         };
         const accepted = await first.call("send", request),
-          before = readFileSync(join(first.dir, "private-state.json"));
+          before = readFileSync(join(first.dir, "profile-state.sqlite"));
         await assert.rejects(
           startClient(other, "competing same-profile engine", first.dir),
           /perfil.*aberto/,
         );
         assert.deepEqual(
-          readFileSync(join(first.dir, "private-state.json")),
+          readFileSync(join(first.dir, "profile-state.sqlite")),
           before,
         );
         const independent = await startClient(

@@ -76,7 +76,7 @@ test("runtime owns the profile through transport shutdown and rejects stale writ
     ).id,
     original.id,
   );
-  const privateBefore = readFileSync(join(f.dir, "private-state.json"));
+  const privateBefore = readFileSync(join(f.dir, "profile-state.sqlite"));
   assert.throws(() => first.unlock(password), /encerrado/);
   assert.throws(() => first.setup("Stale", password), /encerrado/);
   assert.throws(() => first.settings({ relay: false }), /encerrado/);
@@ -84,7 +84,7 @@ test("runtime owns the profile through transport shutdown and rejects stale writ
   await assert.rejects(first.start(), /encerrado/);
   first.sync();
   assert.deepEqual(
-    readFileSync(join(f.dir, "private-state.json")),
+    readFileSync(join(f.dir, "profile-state.sqlite")),
     privateBefore,
   );
 });

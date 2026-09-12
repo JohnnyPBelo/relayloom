@@ -49,10 +49,15 @@ function productionDigest() {
     "packages/core/src",
     "packages/transport/src",
     "packages/profile/src",
+    "packages/groups/src",
     "native/app",
     "native/core",
     "native/transport",
     "native/profilelock",
+    "native/profilebinding",
+    "native/profiledb",
+    "native/profilestate",
+    "native/groupstore",
     "native/cmd/relayloom",
   ])
     collect(directory);
@@ -285,7 +290,7 @@ for (const senderRuntime of ["node", "go"] as const) {
           400,
         );
         const encrypted = readFileSync(
-          join(a.dir, "private-state.json"),
+          join(a.dir, "profile-state.sqlite"),
           "utf8",
         );
         assert.equal(encrypted.includes(operationId), false);

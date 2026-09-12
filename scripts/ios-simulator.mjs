@@ -132,16 +132,26 @@ function staticCheck() {
   return { kind: 'IOS_SIMULATOR_STATIC_CHECK', status: 'STATIC_ONLY_PASSED', projectObjects: definitions.length, swiftCompiled: false, simulatorExecuted: false, physicalDeviceExecuted: false };
 }
 
-export async function verifySyntheticContainer(container, deviceID, fixtures, peerEvidence, core, readPrivateState) {
+export async function verifySyntheticContainer(container, deviceID, fixtures, peerEvidence, core) {
   validateOwnedContainer(realpathSync(container), deviceID);
   const directory = join(container, 'Library/Application Support/RelayLoom/core');
   const vaultBytes = boundedRead(join(directory, 'identity.vault'), 8192);
   const identity = core.importVault(vaultBytes.toString('utf8'), fixtures.passphrase);
   if (identity.public.name !== fixtures.senderName || identity.public.id !== peerEvidence.senderID) throw new Error('UI-created vault does not recover the identity observed by the real peer');
-  const privatePath = join(directory, 'private-state.json');
-  const privateBytes = boundedRead(privatePath, 24 * 1024 ** 2);
+  const privatePath = join(directory, 'profile-state.sqlite');
+  // Verification must never create a migration that the tested app did not do.
+  const bindingBytes = boundedRead(join(directory, 'profile-binding.json'), 2048);
+  if (JSON.parse(bindingBytes).body?.phase !== 'committed') throw new Error('Native profile migration was not committed');
+  const { tsImport } = await import('tsx/esm/api');
+  const { ProfileOwnership } = await tsImport('../packages/profile/src/ownership.ts', import.meta.url);
+  const { openPrivateProfile } = await tsImport('../apps/node/src/protected-private.ts', import.meta.url);
+  const lease = new ProfileOwnership(directory);
+  let loaded;
+  try { loaded = openPrivateProfile(directory, identity); }
+  finally { try { loaded?.database.close(); } finally { lease.close(); } }
+  const privateState = loaded.state;
+  const privateBytes = boundedRead(privatePath, 96 * 1024 ** 2);
   if (privateBytes.includes(Buffer.from(fixtures.message)) || privateBytes.includes(Buffer.from(fixtures.attachmentMessage))) throw new Error('Private message leaked in the journal envelope');
-  const privateState = readPrivateState(privatePath, identity);
   const objectsPath = join(directory, 'store/objects');
   const paths = regularFiles(objectsPath, 64);
   const verified = [], outgoing = new Map();
@@ -173,7 +183,7 @@ export async function verifySyntheticContainer(container, deviceID, fixtures, pe
     const record = entries.find(entry => entry.id === id);
     if (!record || record.phase !== 'ready' || !record.confirmations[peerEvidence.recipientID]?.receivedAt) throw new Error('Native encrypted outbox lacks the real recipient confirmation');
   }
-  return { identityVaultSHA256: hashBuffer(vaultBytes), privateJournalSHA256: hashBuffer(privateBytes), identityRecoveredFromEncryptedVault: true, privateJournalAuthenticated: true, privateMessagePlaintextAbsentFromEnvelopes: true, nativeOutboxRecipientConfirmed: true, signedBundlesVerified: verified, postRecovered: foundPost, nodeReplyRecovered: foundReply, attachmentExactAcrossIOSAndNode: fixtures.photoAttachment ? true : 'not requested' };
+  return { identityVaultSHA256: hashBuffer(vaultBytes), privateJournalSHA256: hashBuffer(privateBytes), privateBindingSHA256: hashBuffer(bindingBytes), privateJournalFormat: 'protected-sqlite-v1', identityRecoveredFromEncryptedVault: true, privateJournalAuthenticated: true, privateMessagePlaintextAbsentFromEnvelopes: true, nativeOutboxRecipientConfirmed: true, signedBundlesVerified: verified, postRecovered: foundPost, nodeReplyRecovered: foundReply, attachmentExactAcrossIOSAndNode: fixtures.photoAttachment ? true : 'not requested' };
 }
 
 async function main(argv) {
@@ -326,7 +336,6 @@ async function main(argv) {
 
     const { tsImport } = await import('tsx/esm/api');
     const core = await tsImport('../packages/core/src/index.ts', import.meta.url);
-    const { readPrivateState } = await tsImport('../apps/node/src/local-state.ts', import.meta.url);
     const peer = fork(join(root, 'apps/ios/Tests/SimulatorPeer.mjs'), [join(raw, 'peer')], { cwd: root, env: process.env, stdio: ['ignore', 'ignore', 'pipe', 'ipc'] });
     context.peer = peer;
     let peerErrors = '';
@@ -393,7 +402,7 @@ async function main(argv) {
     if (context.abort || !peerEvidence.replyReadConfirmed) throw context.abort ?? new Error('Real Node peer did not receive iOS signed read confirmation for its reply');
     await tool('stop-owned-app', 'xcrun', ['simctl', 'terminate', udid, bundleID], 30_000, { allowFailure: true });
     const container = (await tool('owned-app-container', 'xcrun', ['simctl', 'get_app_container', udid, bundleID, 'data'], 30_000, { logOutput: false })).output.trim();
-    report.storage = await verifySyntheticContainer(container, udid, fixtures, peerEvidence, core, readPrivateState);
+    report.storage = await verifySyntheticContainer(container, udid, fixtures, peerEvidence, core);
     report.peer = peerEvidence;
     report.status = 'PASSED';
   } catch (error) {

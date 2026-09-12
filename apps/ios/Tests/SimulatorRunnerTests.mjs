@@ -3,6 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync, readFileSync } from 'node:fs';
+import { DatabaseSync } from 'node:sqlite';
 import { join, resolve } from 'node:path';
 import { tsImport } from 'tsx/esm/api';
 import { sanitize, selectSimulator, validateOwnedContainer, assertTestSummary, verifySyntheticContainer, removeMatchingRunRecord, requireInactiveCleanupOwner, stopOwnedProcessGroup, annotatePhotoFailure } from '../../../scripts/ios-simulator.mjs';
@@ -97,6 +98,8 @@ test('diagnostic timeout preserves the primary photo failure and sanitizes its o
 
 const core = await tsImport('../../../packages/core/src/index.ts', import.meta.url);
 const local = await tsImport('../../node/src/local-state.ts', import.meta.url);
+const protectedPrivate = await tsImport('../../node/src/protected-private.ts', import.meta.url);
+const { ProfileOwnership } = await tsImport('../../../packages/profile/src/ownership.ts', import.meta.url);
 function fixture(t, withPhoto = false) {
   const cache = resolve('.cache/ios-runner-contracts'); mkdirSync(cache, { recursive: true });
   const temp = mkdtempSync(join(cache, 'fixture-')); t.after(() => rmSync(temp, { recursive: true, force: true }));
@@ -125,28 +128,51 @@ function fixture(t, withPhoto = false) {
     outbox[operationId] = { operationId, fingerprint: core.hash(operationId), id: bundle.manifest.id, author: sender.public.id, conversation, preview: core.decryptBundle(bundle, sender).text, created: bundle.manifest.created, expires: bundle.manifest.expires, priority: 'normal', bytes: Buffer.byteLength(core.canonical(bundle)), phase: 'ready', attempts: 1, lastAttemptAt: now, nextAttemptAt: now + 2200, lastError: '', manualPin: false, confirmations: { [recipient.public.id]: { receivedAt: now } } };
   }
   local.writePrivateState(join(directory, 'private-state.json'), { mutations: {}, outbox }, sender);
+  const lease = new ProfileOwnership(directory);
+  try { protectedPrivate.openPrivateProfile(directory, sender).database.close(); } finally { lease.close(); }
   return { device, container, directory, fixtures, peer, message, sender };
 }
 
 test('host fixture verification authenticates encrypted vault/journal and signed private bundle', async t => {
   const f = fixture(t);
-  const proof = await verifySyntheticContainer(f.container, f.device, f.fixtures, f.peer, core, local.readPrivateState);
+  const proof = await verifySyntheticContainer(f.container, f.device, f.fixtures, f.peer, core);
   assert.equal(proof.identityRecoveredFromEncryptedVault, true); assert.equal(proof.postRecovered, true); assert.equal(proof.nodeReplyRecovered, true); assert.equal(proof.signedBundlesVerified.length, 3);
   assert.equal('simulatorExecuted' in proof, false); // Host fixture is not Apple execution evidence.
 });
 
 test('host fixture rejects a mismatched real-peer identity and changed encrypted bytes', async t => {
   const f = fixture(t);
-  await assert.rejects(verifySyntheticContainer(f.container, f.device, f.fixtures, { ...f.peer, senderID: '0'.repeat(64) }, core, local.readPrivateState), /identity observed/);
+  await assert.rejects(verifySyntheticContainer(f.container, f.device, f.fixtures, { ...f.peer, senderID: '0'.repeat(64) }, core), /identity observed/);
   const path = join(f.directory, 'store/objects', f.message.manifest.id + '.json');
   const tampered = JSON.parse(readFileSync(path)); tampered.manifest.signature = 'A'.repeat(88); writeFileSync(path, JSON.stringify(tampered));
-  await assert.rejects(verifySyntheticContainer(f.container, f.device, f.fixtures, f.peer, core, local.readPrivateState));
+  await assert.rejects(verifySyntheticContainer(f.container, f.device, f.fixtures, f.peer, core));
 });
 
 test('host fixture compares exact attachment bytes across the encrypted store and peer proof', async t => {
   const f = fixture(t, true);
-  const proof = await verifySyntheticContainer(f.container, f.device, f.fixtures, f.peer, core, local.readPrivateState);
+  const proof = await verifySyntheticContainer(f.container, f.device, f.fixtures, f.peer, core);
   assert.equal(proof.attachmentExactAcrossIOSAndNode, true);
   f.peer.messages[1].attachmentSha256 = '0'.repeat(64);
-  await assert.rejects(verifySyntheticContainer(f.container, f.device, f.fixtures, f.peer, core, local.readPrivateState), /differs from/);
+  await assert.rejects(verifySyntheticContainer(f.container, f.device, f.fixtures, f.peer, core), /differs from/);
+});
+
+
+test('host fixture refuses missing initialized SQLite even when valid legacy data remains', async t => {
+  const f = fixture(t);
+  rmSync(join(f.directory, 'profile-state.sqlite'));
+  await assert.rejects(verifySyntheticContainer(f.container, f.device, f.fixtures, f.peer, core), /ausente/);
+  assert.equal(readFileSync(join(f.directory, 'profile-binding.json'), 'utf8').includes('committed'), true);
+});
+
+test('host fixture rejects a tampered encrypted private row with an otherwise valid legacy copy', async t => {
+  const f = fixture(t), path = join(f.directory, 'profile-state.sqlite');
+  const db = new DatabaseSync(path);
+  try {
+    const row = db.prepare('SELECT slot,payload FROM records LIMIT 1').get();
+    const payload = Buffer.from(row.payload); payload[payload.length - 1] ^= 1;
+    db.prepare('UPDATE records SET payload=? WHERE slot=?').run(payload, row.slot);
+  } finally { db.close(); }
+  const before = readFileSync(path);
+  await assert.rejects(verifySyntheticContainer(f.container, f.device, f.fixtures, f.peer, core));
+  assert.deepEqual(readFileSync(path), before);
 });

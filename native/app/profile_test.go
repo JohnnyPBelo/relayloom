@@ -1,6 +1,7 @@
 package app
 
 import (
+	"database/sql"
 	"os"
 	"path/filepath"
 	"sync"
@@ -65,6 +66,24 @@ func TestProfileConstructorFailureReleasesOwnership(t *testing.T) {
 		t.Fatal(err)
 	}
 	if err = node.Close(); err != nil {
+		t.Fatal(err)
+	}
+}
+
+func corruptPrivateRow(t *testing.T, directory string) {
+	t.Helper()
+	db, err := sql.Open("sqlite", filepath.Join(directory, "profile-state.sqlite"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer db.Close()
+	var slot string
+	var payload []byte
+	if err = db.QueryRow("SELECT slot,payload FROM records LIMIT 1").Scan(&slot, &payload); err != nil {
+		t.Fatal(err)
+	}
+	payload[len(payload)-1] ^= 1
+	if _, err = db.Exec("UPDATE records SET payload=? WHERE slot=?", payload, slot); err != nil {
 		t.Fatal(err)
 	}
 }

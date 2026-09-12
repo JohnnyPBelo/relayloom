@@ -274,7 +274,7 @@ func TestJournalEditTieOrderDraftEncryptionAndTamperRejection(t *testing.T) {
 		t.Fatal("edit tie ordering differs by arrival")
 	}
 	apply(t, n, "site-draft", map[string]any{"theme": "forest", "blocks": []any{map[string]any{"id": "hero", "type": "hero", "title": "Private draft phrase", "body": "Offline local idea"}}})
-	data, err := os.ReadFile(filepath.Join(n.Dir, "private-state.json"))
+	data, err := os.ReadFile(filepath.Join(n.Dir, "profile-state.sqlite"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -290,17 +290,8 @@ func TestJournalEditTieOrderDraftEncryptionAndTamperRejection(t *testing.T) {
 	if state["siteDraft"] == nil {
 		t.Fatal("draft lost on unlock")
 	}
-	value, err := core.DecodeJSON(data, privateLimit*3/2)
-	if err != nil {
-		t.Fatal(err)
-	}
-	m := value.(map[string]any)
-	m["data"] = "AAAA"
-	bad, _ := core.Canonical(m)
-	if err = os.WriteFile(filepath.Join(n.Dir, "private-state.json"), bad, 0600); err != nil {
-		t.Fatal(err)
-	}
 	apply(t, n, "lock", map[string]any{})
+	corruptPrivateRow(t, n.Dir)
 	if _, err = n.Handle("unlock", map[string]any{"password": password}); err == nil || n.identity != nil {
 		t.Fatal("tampered private state unlocked")
 	}
@@ -322,7 +313,7 @@ func TestCollectionsFollowingRetrievalAndPrivateMetadata(t *testing.T) {
 	if len(collections) != 1 || len(collections[0].ObjectIDs) != 1 || !contains(state["followedPostIds"].([]string), post.ID) {
 		t.Fatal("social state missing")
 	}
-	stored, _ := os.ReadFile(filepath.Join(n.Dir, "private-state.json"))
+	stored, _ := os.ReadFile(filepath.Join(n.Dir, "profile-state.sqlite"))
 	if bytes.Contains(stored, []byte("Private collection phrase")) {
 		t.Fatal("collection metadata plaintext")
 	}

@@ -170,7 +170,7 @@ test("private site draft and local deletion survive cache removal/restart withou
     node.store.remove(deletion.id); // Explicit cache-loss fault: authenticated local decision must survive.
     assert.ok(node.objects().find((o) => o.id === post.id)?.deleted);
     assert.ok(
-      !readFileSync(join(node.dir, "private-state.json"), "utf8").includes(
+      !readFileSync(join(node.dir, "profile-state.sqlite"), "utf8").includes(
         "Unpublished private idea",
       ),
     );
@@ -183,11 +183,19 @@ test("private site draft and local deletion survive cache removal/restart withou
         (restored.state().siteDraft!.blocks[0] as any).title,
       "Unpublished private idea",
     );
-    const file = join(node.dir, "private-state.json");
-    const json = JSON.parse(readFileSync(file, "utf8"));
-    json.data = "AAAA";
-    (await import("node:fs")).writeFileSync(file, JSON.stringify(json));
+    const file = join(node.dir, "profile-state.sqlite");
     restored.lock();
+    const { DatabaseSync } = await import("node:sqlite");
+    const database = new DatabaseSync(file);
+    const row = database
+      .prepare("SELECT slot,payload FROM records LIMIT 1")
+      .get()!;
+    const damaged = Buffer.from(row.payload as Uint8Array);
+    damaged[damaged.length - 1] ^= 1;
+    database
+      .prepare("UPDATE records SET payload=? WHERE slot=?")
+      .run(damaged, row.slot);
+    database.close();
     assert.throws(() => restored!.unlock(password));
     assert.equal(restored.identity, undefined);
   } finally {

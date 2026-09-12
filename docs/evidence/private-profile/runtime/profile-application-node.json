@@ -1,0 +1,15 @@
+{
+  "runtime": "node",
+  "recoveredBy": "go",
+  "binarySHA256": "6db23c778ceaaf5ddb7580dcef2acbc50a27688d681fc2231b6e7614a051f55a",
+  "checks": [
+    "same-profile second engine refused before mutable state changes",
+    "independent profile remains available",
+    "graceful owner close permits another engine",
+    "same identity and pending operation/content ID recover",
+    "new owner excludes stale competing engine"
+  ],
+  "limitations": [
+    "local processes; no mobile lifecycle execution or dynamic-group app integration"
+  ]
+}

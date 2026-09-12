@@ -12,7 +12,11 @@ Full owner contract: PROJECT-BRIEF.md. Work continues through these phases; a ph
 - [ ] P6: Platform builds/CI/packaging; record exact physical radio, mobile background and Apple hardware/signing blockers. No cross-compile-to-device claim.
 - [ ] P7: Contract-by-contract audit, docs/STATUS and README, fixes/reruns, clean coherent pushes.
 
-## Current checkpoint — 2026-09-12
+## Active integration checkpoint — 2026-09-12
+
+Latest published HEAD90cb649; actual CI Node on threeOS, full Go and desktop packages passed, iOS photo preparation failed before XCUITest. Current private-state SQLite migration is integrated in both engines and under directed/full validation. See `RESUME.md` and `PROFILE-STATE-IMPLEMENTATION.md` for commands/processes/evidence. Next: transactional group authority/admission/outbox, then runtime sync and UI. All other phases remain open; no new/resumed agents in sequential recovery. Historical entries below retain their original version scope.
+
+## Previous checkpoint — 2026-09-12
 
 - Public main and origin remain at c3f5b42; its eight CI jobs passed, including three Node platforms, Go, desktop packages and actual Apple compilation. Later source is committed as outbox10bdf48, iOS runner4913ef4, Androidf3e747a and design-only groupse1d17d0; new CI results must still be observed after push.
 - Node/Go outbox: encrypted durable intents, finite idempotency, per-recipient delivery/read facts, expiry and restart retry with relay-for-others disabled are implemented. Latest broad results: 79 Node tests, 36 Go application tests normal/race, 11 core + 11 transport race, two independent mixed-process outbox cases, 14 browser cases on each backend. Later modal-feedback correction passed four outbox cases on each backend. These are prior runs, not newly launched sequential checks.

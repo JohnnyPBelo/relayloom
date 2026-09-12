@@ -58,7 +58,7 @@ test(
         title: "Updated private title",
       });
       assert.ok(
-        !readFileSync(join(b.dir, "private-state.json"), "utf8").includes(
+        !readFileSync(join(b.dir, "profile-state.sqlite"), "utf8").includes(
           "Updated private title",
         ),
       );

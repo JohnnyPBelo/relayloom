@@ -1,0 +1,77 @@
+{
+  "topLevelPassed": 105,
+  "topLevelSkipped": [
+    {
+      "package": "github.com/JohnnyPBelo/relayloom/native/groups",
+      "test": "TestGroupCertificateInteropFixture"
+    },
+    {
+      "package": "github.com/JohnnyPBelo/relayloom/native/groupstore",
+      "test": "TestStoreProcessWorker"
+    },
+    {
+      "package": "github.com/JohnnyPBelo/relayloom/native/groupauthority",
+      "test": "TestGroupAuthorityInteropFixture"
+    },
+    {
+      "package": "github.com/JohnnyPBelo/relayloom/native/profilelock",
+      "test": "TestProfileOwnershipInteropFixture"
+    },
+    {
+      "package": "github.com/JohnnyPBelo/relayloom/native/profiledb",
+      "test": "TestProfileDatabaseInteropFixture"
+    }
+  ],
+  "packages": [
+    {
+      "package": "github.com/JohnnyPBelo/relayloom/native/core",
+      "result": "pass",
+      "seconds": 5.28
+    },
+    {
+      "package": "github.com/JohnnyPBelo/relayloom/native/transport",
+      "result": "pass",
+      "seconds": 8.973
+    },
+    {
+      "package": "github.com/JohnnyPBelo/relayloom/native/app",
+      "result": "pass",
+      "seconds": 187.889
+    },
+    {
+      "package": "github.com/JohnnyPBelo/relayloom/native/groups",
+      "result": "pass",
+      "seconds": 3.783
+    },
+    {
+      "package": "github.com/JohnnyPBelo/relayloom/native/groupstore",
+      "result": "pass",
+      "seconds": 1.434
+    },
+    {
+      "package": "github.com/JohnnyPBelo/relayloom/native/groupauthority",
+      "result": "pass",
+      "seconds": 156.409
+    },
+    {
+      "package": "github.com/JohnnyPBelo/relayloom/native/profilelock",
+      "result": "pass",
+      "seconds": 1.052
+    },
+    {
+      "package": "github.com/JohnnyPBelo/relayloom/native/profilestate",
+      "result": "pass",
+      "seconds": 7.473
+    },
+    {
+      "package": "github.com/JohnnyPBelo/relayloom/native/profilebinding",
+      "result": "pass",
+      "seconds": 1.062
+    },
+    {
+      "package": "github.com/JohnnyPBelo/relayloom/native/profiledb",
+      "result": "pass",
+      "seconds": 1.5590000000000002
+    }
+  ]
+}

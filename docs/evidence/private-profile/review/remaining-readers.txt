@@ -1,0 +1,108 @@
+TAP version 13
+# (node:78795) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: select only compatible installed iOS runtimes, never unavailable or other platforms
+ok 1 - select only compatible installed iOS runtimes, never unavailable or other platforms
+  ---
+  duration_ms: 2.406321
+  type: 'test'
+  ...
+# Subtest: runtime advertised compatibility is honored instead of guessing a device
+ok 2 - runtime advertised compatibility is honored instead of guessing a device
+  ---
+  duration_ms: 1.547321
+  type: 'test'
+  ...
+# Subtest: logs remove launch capabilities, authorization headers and standalone secret tokens
+ok 3 - logs remove launch capabilities, authorization headers and standalone secret tokens
+  ---
+  duration_ms: 5.343628
+  type: 'test'
+  ...
+# Subtest: container reads are limited to the created simulator application container
+ok 4 - container reads are limited to the created simulator application container
+  ---
+  duration_ms: 7.456781
+  type: 'test'
+  ...
+# Subtest: empty, skipped or partially failed XCTest output cannot pass the execution gate
+ok 5 - empty, skipped or partially failed XCTest output cannot pass the execution gate
+  ---
+  duration_ms: 0.488436
+  type: 'test'
+  ...
+# Subtest: refusing concurrent cleanup preserves the active owner record and fixture namespace
+ok 6 - refusing concurrent cleanup preserves the active owner record and fixture namespace
+  ---
+  duration_ms: 4.904044
+  type: 'test'
+  ...
+# Subtest: owned group escalation continues when a TERM-resistant descendant outlives its leader
+ok 7 - owned group escalation continues when a TERM-resistant descendant outlives its leader
+  ---
+  duration_ms: 13.884532
+  type: 'test'
+  ...
+# Subtest: owned group supervision stops without KILL once the whole group disappears
+ok 8 - owned group supervision stops without KILL once the whole group disappears
+  ---
+  duration_ms: 2.165339
+  type: 'test'
+  ...
+# Subtest: photo failure diagnostics read only bounded logs from the recorded simulator
+ok 9 - photo failure diagnostics read only bounded logs from the recorded simulator
+  ---
+  duration_ms: 0.828674
+  type: 'test'
+  ...
+# Subtest: diagnostic timeout preserves the primary photo failure and sanitizes its own error
+ok 10 - diagnostic timeout preserves the primary photo failure and sanitizes its own error
+  ---
+  duration_ms: 0.490129
+  type: 'test'
+  ...
+# Subtest: host fixture verification authenticates encrypted vault/journal and signed private bundle
+ok 11 - host fixture verification authenticates encrypted vault/journal and signed private bundle
+  ---
+  duration_ms: 358.348821
+  type: 'test'
+  ...
+# Subtest: host fixture rejects a mismatched real-peer identity and changed encrypted bytes
+ok 12 - host fixture rejects a mismatched real-peer identity and changed encrypted bytes
+  ---
+  duration_ms: 456.215532
+  type: 'test'
+  ...
+# Subtest: host fixture compares exact attachment bytes across the encrypted store and peer proof
+ok 13 - host fixture compares exact attachment bytes across the encrypted store and peer proof
+  ---
+  duration_ms: 496.009833
+  type: 'test'
+  ...
+# Subtest: host fixture refuses missing initialized SQLite even when valid legacy data remains
+ok 14 - host fixture refuses missing initialized SQLite even when valid legacy data remains
+  ---
+  duration_ms: 328.144471
+  type: 'test'
+  ...
+# Subtest: host fixture rejects a tampered encrypted private row with an otherwise valid legacy copy
+ok 15 - host fixture rejects a tampered encrypted private row with an otherwise valid legacy copy
+  ---
+  duration_ms: 353.688924
+  type: 'test'
+  ...
+# Subtest: collections and following integrate with encrypted persistence and hashed peer retrieval respects read ACL
+ok 16 - collections and following integrate with encrypted persistence and hashed peer retrieval respects read ACL
+  ---
+  duration_ms: 2190.479898
+  type: 'test'
+  ...
+1..16
+# tests 16
+# suites 0
+# pass 16
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4626.838537

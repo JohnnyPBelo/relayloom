@@ -26,3 +26,17 @@ No implementation of this runtime boundary is claimed by the authority-library o
 ## First runtime integration verified locally
 
 Profile ownership now guards both `LoomNode` and `native/app.Node`. Stale closed instances cannot reopen or mutate a profile held by a successor. Constructor failures release ownership without altering the rejected configuration; concurrent close callers wait for completion. The targeted runtime/outbox Node18 and Go profile2 cases passed, plus two real CLI/API cross-runtime cases preserving the exact pending message/operation ID. Full source-frozen Node133 passed; the complete Go/interop/UI/desktop sequence is still running in session82452. Store-ID binding/private-state migration and authority/admission/outbox unification remain unimplemented.
+
+## Next authority facade after private-state migration (2026-09-12)
+
+The private document is now imported by both engines into the protected SQLite substrate; app/interop/UI gates are in progress. The earlier statement that the app still writes a separate JSON journal is historical. Dynamic authority is still NOT imported by the apps.
+
+Concrete facade requirements from root review:
+
+1. A scope borrows the caller's `RegistryTransaction` / `groupstore.Tx`; no nested BEGIN, independent COMMIT or global cached transaction. Validate owner/reserve through that same transaction. Escaped registry handles reject access after the scope, including read methods. The underlying transaction already rejects use after completion.
+2. Standalone methods retain existing transactional behavior. Scoped methods use one borrowed executor; an error inside an operation makes the entire scope fail even if the application callback catches it, so half-applied group mutations cannot accidentally commit. Internal handled quota transitions still save their minimal stop checkpoint.
+3. Incoming proof validation has a distinct deferred-rejection result. A valid restrictive prefix updates the group; an invalid trailing proof is reported as data to the runtime coordinator, which reconciles outbox/admission and commits the restriction before exposing the rejection. Storage/integrity failures always abort. Returning the old throwing standalone `observeHeaders` unchanged inside the outer transaction would undo the valid restriction.
+4. Tests must show group operation and private outbox marker commit at one index revision, rollback of both on callback/operation error, stale-scope refusal, removal/closure plus malformed trailing proof, quota fence persistence, and wrong owner/store rejection. Real process exits before/after commit must preserve both fields together across engines. These library/factory controls must not be labelled as network or dynamic-group API tests.
+5. Runtime integration still needs signed content admission, accepted-ID tracking and immutable superseded intents. Only the caller of the completed outer commit may transmit, display or issue a receipt. Ambiguous commit uses signed-binding authenticated readback; it must not call the old legacy loader.
+
+This section is a reviewed implementation boundary, not completed facade code or an independent security review. Do not reduce the remaining application/network/UI gates to these lower-level tests.

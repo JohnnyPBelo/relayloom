@@ -177,6 +177,9 @@ func readPrivate(path string, identity core.Identity) (PrivateState, error) {
 	if err != nil {
 		return PrivateState{}, err
 	}
+	return decodePrivate(data, identity)
+}
+func decodePrivate(data []byte, identity core.Identity) (PrivateState, error) {
 	value, err := core.DecodeJSON(data, privateLimit*3/2)
 	if err != nil {
 		return PrivateState{}, err

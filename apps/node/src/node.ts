@@ -19,11 +19,10 @@ import {
   canonical,
   hash,
 } from "../../../packages/core/src/index.js";
-import {
-  readPrivateState,
-  writePrivateState,
-  type PrivateState,
-} from "./local-state.js";
+import { validateContent } from "./content-validation.js";
+import { type PrivateState } from "./local-state.js";
+import { openPrivateProfile } from "./protected-private.js";
+import type { ProfileDatabase } from "../../../packages/profile/src/database.js";
 import {
   Router,
   type Priority,
@@ -106,6 +105,8 @@ interface Config {
 export class LoomNode extends EventEmitter {
   identity?: Identity;
   private privateState: PrivateState = { mutations: {} };
+  private privateDatabase?: ProfileDatabase;
+  private privateDigest?: string;
   private summaryCache = new Map<
     string,
     { object: DisplayObject; bytes: number }
@@ -183,6 +184,9 @@ export class LoomNode extends EventEmitter {
         clearInterval(this.syncTimer);
         for (const cancel of this.cancellations) cancel();
         await this.router.stop();
+        this.privateDatabase?.close();
+        this.privateDatabase = undefined;
+        this.privateDigest = undefined;
         this.ownership.close();
       } finally {
         this.identity = undefined;
@@ -203,13 +207,13 @@ export class LoomNode extends EventEmitter {
       ? importVault(recovery, password)
       : createIdentity(name);
     atomic(join(this.dir, "identity.vault"), exportVault(identity, password));
+    const loaded = openPrivateProfile(this.dir, identity);
     this.summaryCache.clear();
     this.summaryCacheBytes = 0;
     this.identity = identity;
-    this.privateState = readPrivateState(
-      join(this.dir, "private-state.json"),
-      identity,
-    );
+    this.privateState = loaded.state;
+    this.privateDatabase = loaded.database;
+    this.privateDigest = loaded.digest;
     return identity.public;
   }
   unlock(password: string) {
@@ -218,14 +222,14 @@ export class LoomNode extends EventEmitter {
       readFileSync(join(this.dir, "identity.vault"), "utf8"),
       password,
     );
-    const local = readPrivateState(
-      join(this.dir, "private-state.json"),
-      identity,
-    );
+    const loaded = openPrivateProfile(this.dir, identity);
+    this.privateDatabase?.close();
     this.summaryCache.clear();
     this.summaryCacheBytes = 0;
     this.identity = identity;
-    this.privateState = local;
+    this.privateState = loaded.state;
+    this.privateDatabase = loaded.database;
+    this.privateDigest = loaded.digest;
     return identity.public;
   }
   lock() {
@@ -233,6 +237,9 @@ export class LoomNode extends EventEmitter {
     this.summaryCacheBytes = 0;
     this.identity = undefined;
     this.privateState = { mutations: {} };
+    this.privateDatabase?.close();
+    this.privateDatabase = undefined;
+    this.privateDigest = undefined;
   }
   private requireIdentity() {
     this.requireRunning();
@@ -241,7 +248,7 @@ export class LoomNode extends EventEmitter {
   }
   saveDraft(blocks: SiteBlock[], theme: string) {
     this.requireIdentity();
-    this.validateContent({ type: "site", blocks, theme });
+    validateContent({ type: "site", blocks, theme });
     const next = {
       ...this.privateState,
       siteDraft: { blocks, theme, savedAt: Date.now() },
@@ -249,15 +256,23 @@ export class LoomNode extends EventEmitter {
     this.persistPrivate(next);
   }
   private persistPrivate(next = this.privateState) {
-    const identity = this.requireIdentity(),
-      path = join(this.dir, "private-state.json");
+    const identity = this.requireIdentity();
+    if (!this.privateDatabase || !this.privateDigest)
+      throw new Error("Estado privado indisponível");
     try {
-      writePrivateState(path, next, identity);
+      this.privateDigest = this.privateDatabase.write(
+        Buffer.from(canonical(next)),
+        this.privateDigest,
+      );
     } catch (error) {
-      // A directory-flush error can occur after rename succeeded. Recover the
-      // authenticated on-disk truth before allowing another operation ID.
+      // Reopen with the signed installation binding after any uncertain SQL
+      // completion. Never fall back to an older legacy JSON snapshot.
       try {
-        this.privateState = readPrivateState(path, identity);
+        this.privateDatabase.close();
+        const recovered = openPrivateProfile(this.dir, identity);
+        this.privateDatabase = recovered.database;
+        this.privateDigest = recovered.digest;
+        this.privateState = recovered.state;
       } catch {
         this.lock();
       }
@@ -663,96 +678,6 @@ export class LoomNode extends EventEmitter {
     } else throw new Error("Acção desconhecida");
     this.saveConfig();
   }
-  private validateContent(content: Content) {
-    if (
-      !content ||
-      ![
-        "message",
-        "post",
-        "group",
-        "site",
-        "comment",
-        "reaction",
-        "edit",
-        "delete",
-        "receipt",
-        "delivery",
-        "alert",
-      ].includes(content.type)
-    )
-      throw new Error("Tipo de conteúdo inválido");
-    for (const key of [
-      "text",
-      "title",
-      "conversation",
-      "target",
-      "replyTo",
-      "emoji",
-    ])
-      if (
-        content[key] !== undefined &&
-        (typeof content[key] !== "string" ||
-          String(content[key]).length > (key === "text" ? 12000 : 256))
-      )
-        throw new Error("Texto demasiado longo ou inválido");
-    if (content.value !== undefined && typeof content.value !== "boolean")
-      throw new Error("Valor de reacção inválido");
-    if (
-      content.priority !== undefined &&
-      !["sos", "normal", "bulk"].includes(content.priority)
-    )
-      throw new Error("Prioridade inválida");
-    if (content.theme !== undefined && typeof content.theme !== "string")
-      throw new Error("Tema inválido");
-    if (
-      content.members &&
-      (!Array.isArray(content.members) ||
-        content.members.length > 64 ||
-        content.members.some((m) => !validateIdentity(m)))
-    )
-      throw new Error("Membros inválidos");
-    if (content.attachments) {
-      if (!Array.isArray(content.attachments) || content.attachments.length > 4)
-        throw new Error("Máximo de quatro anexos");
-      for (const a of content.attachments)
-        if (
-          !a ||
-          typeof a.name !== "string" ||
-          a.name.length > 150 ||
-          typeof a.mime !== "string" ||
-          a.mime.length > 100 ||
-          typeof a.data !== "string" ||
-          a.data.length > 3_500_000 ||
-          !/^[A-Za-z0-9+/]*={0,2}$/.test(a.data)
-        )
-          throw new Error("Anexo inválido ou demasiado grande");
-    }
-    if (content.type === "site") {
-      if (
-        !Array.isArray(content.blocks) ||
-        content.blocks.length > 24 ||
-        !["sand", "forest", "ink"].includes(content.theme ?? "sand")
-      )
-        throw new Error("Página inválida");
-      for (const b of content.blocks)
-        if (
-          !b ||
-          typeof b.id !== "string" ||
-          b.id.length > 64 ||
-          !["hero", "text", "links", "callout"].includes(b.type) ||
-          typeof b.title !== "string" ||
-          b.title.length > 120 ||
-          typeof b.body !== "string" ||
-          b.body.length > 4000 ||
-          (b.url &&
-            (typeof b.url !== "string" ||
-              b.url.length > 2000 ||
-              !/^https:\/\//.test(b.url)))
-        )
-          throw new Error("Bloco declarativo inválido");
-    }
-    canonical(content);
-  }
   private preparePublication(
     content: Content,
     recipients: string[] | "public",
@@ -760,7 +685,7 @@ export class LoomNode extends EventEmitter {
     confirmedCards: PublicIdentity[] = [],
   ): { bundle: Bundle; content: Content; mutationTarget?: Manifest } {
     const identity = this.requireIdentity();
-    this.validateContent(content);
+    validateContent(content);
     let mutationTarget: Manifest | undefined;
     const cards = [identity.public, ...confirmedCards, ...this.config.contacts];
     const readers =
@@ -1034,7 +959,7 @@ export class LoomNode extends EventEmitter {
   private display(bundle: Bundle, summary = false): DisplayObject | undefined {
     try {
       const content = decryptBundle(bundle, this.identity) as Content;
-      this.validateContent(content);
+      validateContent(content);
       if (content.type !== bundle.manifest.kind) return;
       return {
         id: bundle.manifest.id,

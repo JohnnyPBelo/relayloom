@@ -99,7 +99,7 @@ func TestOutboxOfflineRestartRelayDisabledAndRecipientTCP(t *testing.T) {
 		t.Fatal(err)
 	}
 	original, _ := core.Canonical(stored)
-	privateBytes, err := os.ReadFile(filepath.Join(a.Dir, "private-state.json"))
+	privateBytes, err := os.ReadFile(filepath.Join(a.Dir, "profile-state.sqlite"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -279,12 +279,18 @@ func TestOutboxStorageAndJournalFailureBoundaries(t *testing.T) {
 	if again["accepted"] != false || again["id"] != item["id"] {
 		t.Fatal("failed operation was not idempotent")
 	}
-	path := filepath.Join(a.Dir, "private-state.json")
-	if err := os.Rename(path, path+".saved"); err != nil {
-		t.Fatal(err)
-	}
-	if err := os.Mkdir(path, 0700); err != nil {
-		t.Fatal(err)
+	path := filepath.Join(a.Dir, "profile-state.sqlite")
+	a.writePrivateState = func(data []byte, expected string) (string, error) {
+		if err := a.privateDatabase.Close(); err != nil {
+			return "", err
+		}
+		if err := os.Rename(path, path+".saved"); err != nil {
+			return "", err
+		}
+		if err := os.Mkdir(path, 0700); err != nil {
+			return "", err
+		}
+		return "", errors.New("private database path unavailable before write")
 	}
 	body = sendBody(6, Content{"type": "message", "text": "journal failure"}, []string{bob.Public.ID})
 	if _, err := a.Handle("send", body); err == nil {
@@ -299,6 +305,7 @@ func TestOutboxStorageAndJournalFailureBoundaries(t *testing.T) {
 	if err := os.Rename(path+".saved", path); err != nil {
 		t.Fatal(err)
 	}
+	a.writePrivateState = nil
 	apply(t, a, "unlock", map[string]any{"password": password})
 	if outboxFor(t, a, operationFor(5))["status"] != "unavailable" {
 		t.Fatal("recovering journal lost the earlier operation")
@@ -866,17 +873,18 @@ func TestOutboxAfterWriteErrorRetainsOperation(t *testing.T) {
 			bob, _ := core.CreateIdentity("Recipient")
 			apply(t, a, "contact", map[string]any{"contact": bob.Public})
 			writes := 0
-			injected := errors.New("injected error after persisted rename")
+			injected := errors.New("injected error after SQL commit")
 			a.mu.Lock()
-			a.writePrivateFile = func(path string, next PrivateState, identity core.Identity) error {
-				if err := writePrivate(path, next, identity); err != nil {
-					return err
+			a.writePrivateState = func(data []byte, expected string) (string, error) {
+				digest, err := a.privateDatabase.Write(data, expected)
+				if err != nil {
+					return "", err
 				}
 				writes++
 				if writes == failureAt {
-					return injected
+					return digest, injected
 				}
-				return nil
+				return digest, nil
 			}
 			a.mu.Unlock()
 			body := sendBody(13000, Content{"type": "message", "text": "uncertain completion"}, []string{bob.Public.ID})
@@ -885,7 +893,7 @@ func TestOutboxAfterWriteErrorRetainsOperation(t *testing.T) {
 			}
 			a.mu.Lock()
 			record, exists := a.private.Outbox[operationFor(13000)]
-			a.writePrivateFile = nil
+			a.writePrivateState = nil
 			unlocked := a.identity != nil
 			a.mu.Unlock()
 			if !exists || !unlocked {
@@ -915,20 +923,32 @@ func TestOutboxUnreadableUncertainWriteLocksUntilRecovery(t *testing.T) {
 	var operationID string
 	injected := errors.New("injected uncertain persistence")
 	a.mu.Lock()
-	a.writePrivateFile = func(path string, next PrivateState, identity core.Identity) error {
-		if err := writePrivate(path, next, identity); err != nil {
-			return err
+	a.writePrivateState = func(data []byte, expected string) (string, error) {
+		digest, err := a.privateDatabase.Write(data, expected)
+		if err != nil {
+			return "", err
 		}
-		var err error
+		path := filepath.Join(a.Dir, "profile-state.sqlite")
 		saved, err = os.ReadFile(path)
 		if err != nil {
-			return err
+			return "", err
+		}
+		value, err := core.DecodeJSON(data, privateLimit)
+		if err != nil {
+			return "", err
+		}
+		next, err := parsePrivate(value, a.identity.Public.ID)
+		if err != nil {
+			return "", err
 		}
 		operationID = next.Outbox[operationFor(14000)].ID
-		if err = os.WriteFile(path, []byte("unreadable encrypted state"), 0600); err != nil {
-			return err
+		if err = a.privateDatabase.Close(); err != nil {
+			return "", err
 		}
-		return injected
+		if err = os.WriteFile(path, []byte("unreadable encrypted state"), 0600); err != nil {
+			return "", err
+		}
+		return digest, injected
 	}
 	a.mu.Unlock()
 	body := sendBody(14000, Content{"type": "message", "text": "must not overwrite unknown state"}, []string{bob.Public.ID})
@@ -946,9 +966,9 @@ func TestOutboxUnreadableUncertainWriteLocksUntilRecovery(t *testing.T) {
 		t.Fatal("uncertain preparation admitted bytes")
 	}
 	a.mu.Lock()
-	a.writePrivateFile = nil
+	a.writePrivateState = nil
 	a.mu.Unlock()
-	if err := os.WriteFile(filepath.Join(a.Dir, "private-state.json"), saved, 0600); err != nil {
+	if err := os.WriteFile(filepath.Join(a.Dir, "profile-state.sqlite"), saved, 0600); err != nil {
 		t.Fatal(err)
 	}
 	apply(t, a, "unlock", map[string]any{"password": password})
@@ -1072,14 +1092,22 @@ func TestOutboxSnapshotExpiryDuringJournalWriteKeepsReservationConsistent(t *tes
 				t.Fatal("fixture expired before the snapshot boundary")
 			}
 			crossedDeadline := false
-			a.writePrivateFile = func(path string, state PrivateState, identity core.Identity) error {
+			a.writePrivateState = func(data []byte, expected string) (string, error) {
+				value, err := core.DecodeJSON(data, privateLimit)
+				if err != nil {
+					return "", err
+				}
+				state, err := parsePrivate(value, a.identity.Public.ID)
+				if err != nil {
+					return "", err
+				}
 				if state.Outbox[r.OperationID].Phase == "ready" && !crossedDeadline {
 					time.Sleep(time.Until(time.UnixMilli(r.Expires + 25)))
 					crossedDeadline = true
 				}
-				return writePrivate(path, state, identity)
+				return a.privateDatabase.Write(data, expected)
 			}
-			defer func() { a.writePrivateFile = nil }()
+			defer func() { a.writePrivateState = nil }()
 			var entry map[string]any
 			if responseKind == "state" {
 				state, stateErr := a.stateLocked()
@@ -1107,7 +1135,7 @@ func TestOutboxSnapshotExpiryDuringJournalWriteKeepsReservationConsistent(t *tes
 			if entry["status"] == "expired" && a.Store.IsPinned(id) {
 				t.Fatal("response advertises expiry before releasing the automatic reservation")
 			}
-			a.writePrivateFile = nil
+			a.writePrivateState = nil
 			state, err := a.stateLocked()
 			if err != nil {
 				t.Fatal(err)

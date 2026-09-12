@@ -41,6 +41,9 @@ No checkpoint `0289ec7` passaram os jobs Node/Go e os pacotes desktop dos três 
 
 A fundação de armazenamento de grupos tem agora versões Node/Go com ficheiros cifrados interoperáveis, transacções e testes reais de concorrência/corrupção/recuperação. A abertura exclusiva do perfil entre processos Node/Go está integrada e tem testes reais de recuperação. A integração de grupos dinâmicos na aplicação e UI está pendente; [GROUP-STORAGE](docs/GROUP-STORAGE.md) e [GROUP-AUTHORITY](docs/GROUP-AUTHORITY.md) separam os gates executados e as limitações.
 
+O estado privado da aplicação está agora integrado no SQLite cifrado com ligação assinada por instalação e migração recuperável do JSON anterior. Passaram os testes de troca Node↔Go, morte de processo e corrupção, o gate completo dos dois núcleos, os percursos de interface e o desktop Linux. [Persistência privada](docs/PROFILE-PERSISTENCE.md) descreve limites, recuperação e a integração de autoridade/outbox ainda pendente. Os artefactos móveis anteriores não herdam esta evidência.
+
+
 ## Segurança e limites actuais
 
 - Ed25519 assina identidades e manifestos; X25519/HKDF/AES-256-GCM embrulha chaves de leitura por destinatário. O leitor pode semear o objecto exacto, mas não mudar a autoria. Cofres usam scrypt + AES-GCM.

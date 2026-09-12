@@ -84,3 +84,8 @@ Owner contract: `PROJECT-BRIEF.md`. “done” applies to the stated behavior wi
 | CON-010 | No disaster readiness or all-OS claim without evidence | in_progress | `docs/AGENTS.md`, `docs/STATUS.md` — Restrição preservada durante a implementação; obrigação contínua. |
 | CON-011 | No unsafe mobile background policy evasion | in_progress | `docs/AGENTS.md`, `docs/STATUS.md` — Restrição preservada durante a implementação; obrigação contínua. |
 | CON-012 | No merge or secret publication | in_progress | `docs/AGENTS.md`, `docs/STATUS.md` — Restrição preservada durante a implementação; obrigação contínua. |
+
+
+## Private-state integration checkpoint — 2026-09-12
+
+FR-002/FR-012/ACC-006 now also link to `docs/PROFILE-PERSISTENCE.md` and actual Node↔Go CLI/API migration/profile tests:4 cases passed4.359s after rebuilding Go. Data preservation, real process death, exact pending ID, positive restoration and corruption/missing-DB refusal are tested. FR-007 remains partial: group authority and outbox admission have not yet been unified. Full host/UI/desktop regression passed (152 Node,105 top-level Go/race,15 interop,15 UI per engine, Linux desktop); evidence in `docs/evidence/private-profile`. Mobile artifacts and independent review remain outstanding. Complete valid earlier backups remain an explicit undetectable rollback limit.

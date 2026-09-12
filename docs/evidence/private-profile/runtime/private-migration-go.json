@@ -1,0 +1,18 @@
+{
+  "runtime": "go",
+  "recoveredBy": "node",
+  "binarySHA256": "6db23c778ceaaf5ddb7580dcef2acbc50a27688d681fc2231b6e7614a051f55a",
+  "checks": [
+    "actual API migration preserves identity/draft/collections and legacy ciphertext",
+    "binding hashes ciphertext and database contains no draft plaintext",
+    "durable acknowledged updates survive killed process and cross-engine recovery",
+    "committed database ignores unreadable legacy",
+    "missing database refused while locked; exact restoration works",
+    "tampered encrypted row refused without reset or fallback"
+  ],
+  "limitations": [
+    "synthetic local profiles and real host processes; no physical power loss or mobile execution",
+    "complete valid older backup replay still has no trusted monotonic witness",
+    "dynamic group authority is not yet integrated"
+  ]
+}
