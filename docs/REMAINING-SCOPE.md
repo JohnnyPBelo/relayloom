@@ -4,6 +4,8 @@ Mapa do código observado em 2026-09-11, preparado após a integração de hist�
 
 **Parcial** significa que existe comportamento real, mas não cobre o ciclo completo descrito. **Ausente** significa que não foi encontrado contrato/API/implementação para a capacidade indicada. **Verificação pendente** não significa código inexistente. As propostas de protocolo que ultrapassam a redação literal do briefing estão identificadas; não se introduzem chamadas de vídeo, recomendações globais ou outros produtos novos como critérios obrigatórios.
 
+**Actualização de integração, 2026-09-12:** as observações abaixo preservam a revisão de 2026-09-11. Desde então, outbox durável, idempotência limitada, recepção/leitura por destinatário, expiração e política de bloqueio receberam implementação e gates Node/Go/UI reais; ver [OUTBOX-PROTOCOL](OUTBOX-PROTOCOL.md), [OUTBOX-REVIEW](OUTBOX-REVIEW.md) e [STATUS](STATUS.md). O SAF Android passou no APK `4de67c3e…`; o checker/interface posteriores ainda precisam de novo APK e gates. [GROUP-EPOCHS](GROUP-EPOCHS.md) prepara alterações de membros, mas é apenas desenho. Este mapa histórico não deve ser interpretado como ausência dessas implementações posteriores, nem como dispensa das lacunas ainda abertas.
+
 ## Prioridades funcionais
 
 | Prioridade | Requisitos                  | Estado restante                                                                                 | Próxima entrega concreta                                                                                                                  |

@@ -6,7 +6,7 @@
     ],
     "generated_at": "2026-09-11T16:22:15.403613+00:00",
     "version": 1,
-    "updated_at": "2026-09-11T22:38:51.518Z"
+    "updated_at": "2026-09-12T01:00:31.098816+00:00"
   },
   "requirements": [
     {
@@ -89,9 +89,10 @@
       "validation": {
         "evidence_paths": [
           "tests/e2e/flows.spec.ts",
-          "tests/native/mixed-network.test.ts"
+          "tests/native/mixed-network.test.ts",
+          "docs/evidence/android/documents-27a71947"
         ],
-        "limits": "Exporta\u00e7\u00e3o/recupera\u00e7\u00e3o e identidade persistente no host; fluxos de ficheiros m\u00f3veis limitados."
+        "limits": "Exporta\u00e7\u00e3o/recupera\u00e7\u00e3o no host e via SAF no APK Android final 27a71947; exporta\u00e7\u00e3o iOS e restantes fluxos nativos ainda limitados."
       },
       "evidence": [
         {
@@ -102,6 +103,26 @@
             "tests/native/mixed-network.test.ts"
           ],
           "notes": "Exporta\u00e7\u00e3o/recupera\u00e7\u00e3o e identidade persistente no host; fluxos de ficheiros m\u00f3veis limitados."
+        },
+        {
+          "kind": "integration-checkpoint-2026-09-12",
+          "result": "done",
+          "paths": [
+            "tests/e2e/flows.spec.ts",
+            "tests/native/mixed-network.test.ts",
+            "docs/ANDROID.md"
+          ],
+          "notes": "Exporta\u00e7\u00e3o/recupera\u00e7\u00e3o no host e via SAF no APK Android 4de67c3e; exporta\u00e7\u00e3o iOS e restantes fluxos nativos ainda limitados."
+        },
+        {
+          "kind": "android-final-integration-2026-09-12",
+          "result": "done",
+          "paths": [
+            "tests/e2e/flows.spec.ts",
+            "tests/native/mixed-network.test.ts",
+            "docs/evidence/android/documents-27a71947"
+          ],
+          "notes": "Exporta\u00e7\u00e3o/recupera\u00e7\u00e3o no host e via SAF no APK Android final 27a71947; exporta\u00e7\u00e3o iOS e restantes fluxos nativos ainda limitados."
         }
       ]
     },
@@ -225,9 +246,10 @@
       "validation": {
         "evidence_paths": [
           "tests/e2e/flows.spec.ts",
-          "tests/security.test.ts"
+          "tests/security.test.ts",
+          "docs/GROUP-EPOCHS.md"
         ],
-        "limits": "Grupos e ACL com membros fixos; altera\u00e7\u00f5es de membros em falta."
+        "limits": "Grupos fixos e ACL reais; contrato de \u00e9pocas \u00e9 desenho, sem implementa\u00e7\u00e3o ou testes executados de mudan\u00e7as de membros."
       },
       "evidence": [
         {
@@ -238,6 +260,16 @@
             "tests/security.test.ts"
           ],
           "notes": "Grupos e ACL com membros fixos; altera\u00e7\u00f5es de membros em falta."
+        },
+        {
+          "kind": "integration-checkpoint-2026-09-12",
+          "result": "partial",
+          "paths": [
+            "tests/e2e/flows.spec.ts",
+            "tests/security.test.ts",
+            "docs/GROUP-EPOCHS.md"
+          ],
+          "notes": "Grupos fixos e ACL reais; contrato de \u00e9pocas \u00e9 desenho, sem implementa\u00e7\u00e3o ou testes executados de mudan\u00e7as de membros."
         }
       ]
     },
@@ -364,7 +396,7 @@
           "docs/ANDROID.md",
           "docs/IOS.md"
         ],
-        "limits": "Bytes e renderizadores reais; fluxos de escolha/guardar em hosts m\u00f3veis incompletos."
+        "limits": "Bytes/renderizadores reais e SAF Android no APK final 27a71947; fluxos iOS e hardware continuam pendentes."
       },
       "evidence": [
         {
@@ -376,6 +408,26 @@
             "docs/IOS.md"
           ],
           "notes": "Bytes e renderizadores reais; fluxos de escolha/guardar em hosts m\u00f3veis incompletos."
+        },
+        {
+          "kind": "integration-checkpoint-2026-09-12",
+          "result": "partial",
+          "paths": [
+            "tests/e2e/media.spec.ts",
+            "docs/ANDROID.md",
+            "docs/IOS.md"
+          ],
+          "notes": "Bytes/renderizadores reais e SAF Android no APK 4de67c3e; novo APK do checker/interface, fluxos iOS e hardware continuam pendentes."
+        },
+        {
+          "kind": "android-final-integration-2026-09-12",
+          "result": "partial",
+          "paths": [
+            "tests/e2e/media.spec.ts",
+            "docs/ANDROID.md",
+            "docs/IOS.md"
+          ],
+          "notes": "Bytes/renderizadores reais e SAF Android no APK final 27a71947; fluxos iOS e hardware continuam pendentes."
         }
       ]
     },
@@ -394,10 +446,12 @@
       },
       "validation": {
         "evidence_paths": [
-          "tests/native/mixed-network.test.ts",
-          "docs/REMAINING-SCOPE.md"
+          "tests/outbox.test.ts",
+          "native/app/outbox_test.go",
+          "tests/native/outbox-network.test.ts",
+          "docs/OUTBOX-PROTOCOL.md"
         ],
-        "limits": "Objectos cifrados persistem e s\u00e3o anunciados ap\u00f3s restart; falta outbox por destinat\u00e1rio."
+        "limits": "Outbox cifrada Node/Go com inten\u00e7\u00e3o/reserva limitadas, idempot\u00eancia enquanto retida e repeti\u00e7\u00e3o ap\u00f3s restart com relay pausado; gates host e APK Android final passaram. Execu\u00e7\u00e3o iOS e restantes plataformas nativas pendentes."
       },
       "evidence": [
         {
@@ -408,6 +462,28 @@
             "docs/REMAINING-SCOPE.md"
           ],
           "notes": "Objectos cifrados persistem e s\u00e3o anunciados ap\u00f3s restart; falta outbox por destinat\u00e1rio."
+        },
+        {
+          "kind": "integration-checkpoint-2026-09-12",
+          "result": "partial",
+          "paths": [
+            "tests/outbox.test.ts",
+            "native/app/outbox_test.go",
+            "tests/native/outbox-network.test.ts",
+            "docs/OUTBOX-PROTOCOL.md"
+          ],
+          "notes": "Outbox cifrada Node/Go com inten\u00e7\u00e3o/reserva limitadas, idempot\u00eancia enquanto retida e repeti\u00e7\u00e3o ap\u00f3s restart com relay pausado; gates host passaram, integra\u00e7\u00e3o final dos pacotes m\u00f3veis pendente."
+        },
+        {
+          "kind": "android-final-integration-2026-09-12",
+          "result": "partial",
+          "paths": [
+            "tests/outbox.test.ts",
+            "native/app/outbox_test.go",
+            "tests/native/outbox-network.test.ts",
+            "docs/OUTBOX-PROTOCOL.md"
+          ],
+          "notes": "Outbox cifrada Node/Go com inten\u00e7\u00e3o/reserva limitadas, idempot\u00eancia enquanto retida e repeti\u00e7\u00e3o ap\u00f3s restart com relay pausado; gates host e APK Android final passaram. Execu\u00e7\u00e3o iOS e restantes plataformas nativas pendentes."
         }
       ]
     },
@@ -426,10 +502,11 @@
       },
       "validation": {
         "evidence_paths": [
-          "tests/e2e/flows.spec.ts",
-          "docs/REMAINING-SCOPE.md"
+          "tests/e2e/outbox.spec.ts",
+          "docs/evidence/outbox",
+          "docs/evidence/android/documents-27a71947"
         ],
-        "limits": "Recibos assinados de leitura; falta quadro completo de entrega/expira\u00e7\u00e3o por membro."
+        "limits": "Recep\u00e7\u00e3o/leitura por destinat\u00e1rio, prazos e estado com dados ausentes implementados; 14 percursos UI Node/Go, depois 4 de outbox por n\u00facleo; APK Android final passou. Execu\u00e7\u00e3o iOS pendente."
       },
       "evidence": [
         {
@@ -440,6 +517,26 @@
             "docs/REMAINING-SCOPE.md"
           ],
           "notes": "Recibos assinados de leitura; falta quadro completo de entrega/expira\u00e7\u00e3o por membro."
+        },
+        {
+          "kind": "integration-checkpoint-2026-09-12",
+          "result": "partial",
+          "paths": [
+            "tests/e2e/outbox.spec.ts",
+            "docs/evidence/outbox",
+            "docs/OUTBOX-REVIEW.md"
+          ],
+          "notes": "Recep\u00e7\u00e3o/leitura por destinat\u00e1rio, prazos e estado com dados ausentes implementados; 14 percursos UI Node e Go passaram, depois 4 de outbox por n\u00facleo. APK/interface final e execu\u00e7\u00e3o iOS pendentes."
+        },
+        {
+          "kind": "android-final-integration-2026-09-12",
+          "result": "partial",
+          "paths": [
+            "tests/e2e/outbox.spec.ts",
+            "docs/evidence/outbox",
+            "docs/evidence/android/documents-27a71947"
+          ],
+          "notes": "Recep\u00e7\u00e3o/leitura por destinat\u00e1rio, prazos e estado com dados ausentes implementados; 14 percursos UI Node/Go, depois 4 de outbox por n\u00facleo; APK Android final passou. Execu\u00e7\u00e3o iOS pendente."
         }
       ]
     },
@@ -567,9 +664,10 @@
       "validation": {
         "evidence_paths": [
           "tests/security.test.ts",
-          "docs/ARCHITECTURE.md"
+          "tests/native/outbox-network.test.ts",
+          "docs/OUTBOX-PROTOCOL.md"
         ],
-        "limits": "Bloqueio/den\u00fancia locais; pol\u00edtica de grupo/cancelamento em falta."
+        "limits": "Bloqueio/den\u00fancia locais e regras de grupos/recibos/retry testadas; bloqueio pausa retry sem revogar c\u00f3pias. Gest\u00e3o de grupos din\u00e2micos e cancelamento expl\u00edcito pendentes."
       },
       "evidence": [
         {
@@ -580,6 +678,16 @@
             "docs/ARCHITECTURE.md"
           ],
           "notes": "Bloqueio/den\u00fancia locais; pol\u00edtica de grupo/cancelamento em falta."
+        },
+        {
+          "kind": "integration-checkpoint-2026-09-12",
+          "result": "partial",
+          "paths": [
+            "tests/security.test.ts",
+            "tests/native/outbox-network.test.ts",
+            "docs/OUTBOX-PROTOCOL.md"
+          ],
+          "notes": "Bloqueio/den\u00fancia locais e regras de grupos/recibos/retry testadas; bloqueio pausa retry sem revogar c\u00f3pias. Gest\u00e3o de grupos din\u00e2micos e cancelamento expl\u00edcito pendentes."
         }
       ]
     },
@@ -1782,9 +1890,10 @@
       },
       "validation": {
         "evidence_paths": [
-          "docs/ANDROID.md"
+          "docs/ANDROID.md",
+          "docs/evidence/android/documents-27a71947/index.json"
         ],
-        "limits": "APK Go real no emulador API36 x86_64; dispositivo f\u00edsico e ARM64 ainda n\u00e3o verificados."
+        "limits": "APK final 27a71947 com checker/interface actuais passou 80 asser\u00e7\u00f5es no emulador API36 x86_64; 28 document/session host e outras pol\u00edticas passaram. Dispositivo f\u00edsico/ARM64 n\u00e3o verificados."
       },
       "evidence": [
         {
@@ -1794,6 +1903,25 @@
             "docs/ANDROID.md"
           ],
           "notes": "APK Go real no emulador API36 x86_64; dispositivo f\u00edsico e ARM64 ainda n\u00e3o verificados."
+        },
+        {
+          "kind": "integration-checkpoint-2026-09-12",
+          "result": "partial",
+          "paths": [
+            "docs/ANDROID.md",
+            "docs/evidence/android/documents-4de67c3e/index.json",
+            "docs/evidence/android/documents-4de67c3e/post-apk-source-handoff.json"
+          ],
+          "notes": "APK 4de67c3e passou 80 asser\u00e7\u00f5es no emulador API36 x86_64; checker posterior tem 28 asser\u00e7\u00f5es host, novo APK/gates pendentes. Dispositivo f\u00edsico/ARM64 n\u00e3o verificados."
+        },
+        {
+          "kind": "android-final-integration-2026-09-12",
+          "result": "partial",
+          "paths": [
+            "docs/ANDROID.md",
+            "docs/evidence/android/documents-27a71947/index.json"
+          ],
+          "notes": "APK final 27a71947 com checker/interface actuais passou 80 asser\u00e7\u00f5es no emulador API36 x86_64; 28 document/session host e outras pol\u00edticas passaram. Dispositivo f\u00edsico/ARM64 n\u00e3o verificados."
         }
       ]
     },
@@ -1812,9 +1940,11 @@
       },
       "validation": {
         "evidence_paths": [
-          "docs/IOS.md"
+          "docs/IOS.md",
+          "docs/IOS-SIMULATOR.md",
+          "docs/evidence/ios/c3f5b42"
         ],
-        "limits": "Shell iOS implementada; Swift/Xcode/simulador n\u00e3o executados ainda, hardware e assinatura bloqueados neste Linux."
+        "limits": "XCFramework dispositivo/simulador e app unsigned compilaram no runner Xcode26.6; 25 asser\u00e7\u00f5es Foundation host passaram. Novo runner tem 11 checks host; aplica\u00e7\u00e3o iOS n\u00e3o executada, hardware/assinatura bloqueados neste Linux."
       },
       "evidence": [
         {
@@ -1824,6 +1954,16 @@
             "docs/IOS.md"
           ],
           "notes": "Shell iOS implementada; Swift/Xcode/simulador n\u00e3o executados ainda, hardware e assinatura bloqueados neste Linux."
+        },
+        {
+          "kind": "integration-checkpoint-2026-09-12",
+          "result": "partial",
+          "paths": [
+            "docs/IOS.md",
+            "docs/IOS-SIMULATOR.md",
+            "docs/evidence/ios/c3f5b42"
+          ],
+          "notes": "XCFramework dispositivo/simulador e app unsigned compilaram no runner Xcode26.6; 25 asser\u00e7\u00f5es Foundation host passaram. Novo runner tem 11 checks host; aplica\u00e7\u00e3o iOS n\u00e3o executada, hardware/assinatura bloqueados neste Linux."
         }
       ]
     },
@@ -2198,10 +2338,11 @@
       },
       "validation": {
         "evidence_paths": [
-          "docs/evidence/ci-919beec.json",
-          ".github/workflows/ci.yml"
+          "docs/evidence/ci-c3f5b42.json",
+          ".github/workflows/ci.yml",
+          "docs/STATUS.md"
         ],
-        "limits": "Node nos3OS passou; novos jobs Go/desktop/iOS ainda por observar ap\u00f3s push."
+        "limits": "Oito jobs c3f5b42 passaram: Node em tr\u00eas OS, Go/UI, tr\u00eas pacotes desktop e build iOS. Altera\u00e7\u00f5es locais posteriores ainda n\u00e3o publicadas; novo gate de execu\u00e7\u00e3o iOS n\u00e3o observado."
       },
       "evidence": [
         {
@@ -2212,6 +2353,16 @@
             ".github/workflows/ci.yml"
           ],
           "notes": "Node nos3OS passou; novos jobs Go/desktop/iOS ainda por observar ap\u00f3s push."
+        },
+        {
+          "kind": "integration-checkpoint-2026-09-12",
+          "result": "partial",
+          "paths": [
+            "docs/evidence/ci-c3f5b42.json",
+            ".github/workflows/ci.yml",
+            "docs/STATUS.md"
+          ],
+          "notes": "Oito jobs c3f5b42 passaram: Node em tr\u00eas OS, Go/UI, tr\u00eas pacotes desktop e build iOS. Altera\u00e7\u00f5es locais posteriores ainda n\u00e3o publicadas; novo gate de execu\u00e7\u00e3o iOS n\u00e3o observado."
         }
       ]
     },

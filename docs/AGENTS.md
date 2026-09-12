@@ -49,3 +49,14 @@ The owner reported the bridge correction and instructed resuming actual agent ta
 - Root reran66 Node tests, all10 Node browser cases, the later browser drag/drop input fixture, all10 Go browser cases, and3 mixed/vector tests. These are concrete returned/executed results; task dispatch was never used as completion evidence.
 
 All tasks used the existing harness without model/provider/authentication/bridge/security-setting changes. Source ownership remained disjoint; Android and heavy native builds shared one build slot.
+
+## Returned outbox/mobile work and temporary sequential check — 2026-09-12
+
+These are actual returned files/reports, not task-creation evidence. The owner temporarily prohibited new/resumed agents and requested one bounded sequential test. Root waited for the already running agents to finish without interrupting them; no new task or resumption was dispatched in this check.
+
+- `/root/transport_hardening` had already completed the native outbox/application work and reported 36 normal/race application tests. It subsequently returned the real iOS simulator runner, XCUITest target and eleven passing host-only runner tests. Root reviewed and integrated the runner into the local CI workflow. It has not yet been executed on Apple; `docs/IOS-SIMULATOR.md` defines that outstanding gate.
+- `/root/design_review` returned the actual SAF Android implementation, exact APK `4de67c3e1540556bbbcab98e7053112bfce2625cdf994c4de67c2d15403b77bb`, and 38 SAF + 15 deadline/lifecycle + 16 message/recovery + 11 relay/seed assertions from the single emulator. Its later deadline checker has 28 local policy/session assertions and an independent source review, but no new APK/device gate. The agent's final response confirms its emulator/isolated adb stopped, the same AVD/identity retained, and the pending exact-artifact work recorded in `docs/evidence/android/documents-4de67c3e/post-apk-source-handoff.json`.
+- `/root/security_review` returned `docs/GROUP-EPOCHS.md` and 33 declarative cases in `tests/fixtures/group-epochs.json`. They specify creator authority, immutable epochs, original-reader quarantine, historical facts and finite storage. They explicitly say `DESIGN_ONLY_NOT_EXECUTED`: no production code or group-epoch tests were executed by this delivery.
+- `/root/security_review/group_epoch_adversary` was already complete before root's single test. Its final source-only Android deadline review found no remaining concrete defect and ran no Android/device tests. Earlier protocol/design findings are attributed in the relevant reports, separately from root's test execution.
+
+Root updated README, STATUS, the durable plan and acceptance traceability to reflect these version boundaries. `.codex-delivery/SEQUENTIAL-CHECK.md` records the one subsequent test and its exact outcome. No bridge/provider/authentication/safety settings were changed.

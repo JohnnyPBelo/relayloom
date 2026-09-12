@@ -44,3 +44,25 @@ The single Android API36x86_64 emulator required recovery of interrupted encrypt
 The final APK was rebuilt after native cache/history changes and its installed SHA-256 was independently matched.16 simple and11 multi-hop/seed/lifecycle assertions passed. A screen capture initially lagged the DOM because a test predicate matched both the old conversation list and the new feed. The fixture now waits for the exact feed, author button, modal and native-visible state; root inspected the actual offline-site screenshot. Capture/DOM alone is not substituted for network bytes and signature controls.
 
 Independent desktop review found that fetching a .invalid host makes a negative test pass even without app network restrictions. The new smoke reaches a harmless loopback server from the main process and a separate sandboxed control renderer; the protected renderer rejects without reaching it. Observed request counters1/1/0 passed, as did rebuilt Linux packaged execution. Never use unreachable hosts as the only evidence of a network boundary.
+
+## Outbox integration, supervision and review — 2026-09-12
+
+The published c3f5b42 CI completed8 jobs including actual Apple compilation and Windows/macOS desktop packaging. Later source-under-edit supervision caught a group reply failing contact lookup; this was not attributed to the earlier green commit. Native owner restored best-effort contact learning and exact signed-roster confirmation resolution, preserved ACLs, and reran the focused test plus stable full gates. Final results remain pending until the source is frozen for each gate.
+
+Independent outbox review required durable acceptance to flush files and parent directory entries on POSIX, read back authenticated metadata after uncertain post-rename failures, journal incoming confirmations before admission can evict their target, keep historical counters after payload/receipt loss, and distinguish retained bytes from pending pin ownership. Raw idempotency is bounded by256 retained operation records; pending records are protected, and the UI requires fresh unlocked state plus an explicit new-send choice for an absent uncertain operation. A locked snapshot's empty outbox never proves pruning.
+
+Tests found nondeterministic recipient order after canonical encrypted-state recovery; snapshots now sort recipient IDs rather than depending on map insertion order. Browser review found a transient contrast failure while a secondary button's background animated between light/dark with an already changed foreground. Secondary surfaces now switch colour coherently. Modal tests must scope controls/text to the dialog because the same message can also occur in the underlying conversation.
+
+## Temporary sequential stability measurement — 2026-09-12
+
+The owner distinguished an approximately 61-second Copilot upstream timeout from the local bridge timeout, with concurrency still only a hypothesis. Root did not change providers, authentication, bridge or safety settings and did not create/resume/interrupt agents. Already active Android and protocol agents finished and returned actual files/results; their pending device/design-only limitations were integrated before testing.
+
+Exactly one selected outbox browser case ran once on Node: `node scripts/e2e.mjs tests/e2e/outbox.spec.ts --grep 'durable composer retries a lost response once' --reporter=line --output=.cache/sequential-stability/outbox`. Result: one passed in 11.7 s, exit 0, zero retries, unchanged production/input hashes. It covered lost-response idempotency, restart, own retry with relay paused, actual received/read transitions, dialog feedback and four captured accessibility states. The output/evidence is retained in `docs/evidence/sequential-stability/2026-09-12`.
+
+No new upstream 408 was observed in this stage. One successful local test is not a causal concurrency experiment or a provider reliability guarantee. Preserve exact attempt counts, separate wait deadlines from upstream failures, and never silently restart an uncertain run. Android's later source checks must not inherit the earlier APK's 80 emulator assertions; the group fixtures remain design-only. No additional test/build/push was initiated during this measurement.
+
+## Final Android artifact integration after the measurement
+
+Root continued in a separate sequential phase with no new/resumed agents. The final checker/UI APK 27a71947 passed all four emulator gates once: 38 SAF, 15 deadline/lifecycle, 16 message/recovery and 11 relay/seed assertions. Installed hashes matched before/after and recorded Android/web/AAR inputs did not change. The actual listener cutoff was observed at 121264 ms including fixture overhead; do not translate that into a hard scheduling guarantee during physical sleep. The same AVD/identity was retained and owned emulator/adb/test provider were cleaned up.
+
+Verified outbox, iOS runner and Android source were committed as separate milestones. Apple simulator execution remains pending CI; the existing build-only Apple result is not substituted. Source/code checks and physical-device results remain separate evidence classes.

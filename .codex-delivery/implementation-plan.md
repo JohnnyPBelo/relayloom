@@ -12,20 +12,21 @@ Full owner contract: PROJECT-BRIEF.md. Work continues through these phases; a ph
 - [ ] P6: Platform builds/CI/packaging; record exact physical radio, mobile background and Apple hardware/signing blockers. No cross-compile-to-device claim.
 - [ ] P7: Contract-by-contract audit, docs/STATUS and README, fixes/reruns, clean coherent pushes.
 
-## Current checkpoint — 2026-09-11
+## Current checkpoint — 2026-09-12
 
-- Node application: media/voice, collections, notifications opt-in, paginated verified summaries, lazy attachments and stale-response privacy guard are implemented. Latest full gate:66 tests,10 browser cases and deterministic simulation pass. A later drag/drop regression and all10 browser cases against the Go runtime also passed.
-- Native Go:11 core +11 transport +17 application tests passed with race detection;3 vector/mixed-process tests passed after rebuilding the CLI. The real TCP and serial segments remain explicitly distinguished.
-- Desktop: Linux Electron and unpacked executable run with sandbox. A weak external-request smoke control is being replaced with a reachable loopback positive/negative fixture, then rebuilt/retested before committing.
-- Android: final native APK `e1bdb088…d2a0` passed16 simple and11 multi-hop/seed/lifecycle assertions in the single API36 x86_64 emulator. No physical-device, microphone or OS-notification claim follows.
-- iOS: shell/project and build scripts implemented; local syntax/project checks only. New macOS workflow has not run yet. Device signing/hardware remain blocked on external capabilities.
+- Public main and origin remain at c3f5b42; its eight CI jobs passed, including three Node platforms, Go, desktop packages and actual Apple compilation. Later source is committed as outbox10bdf48, iOS runner4913ef4, Androidf3e747a and design-only groupse1d17d0; new CI results must still be observed after push.
+- Node/Go outbox: encrypted durable intents, finite idempotency, per-recipient delivery/read facts, expiry and restart retry with relay-for-others disabled are implemented. Latest broad results: 79 Node tests, 36 Go application tests normal/race, 11 core + 11 transport race, two independent mixed-process outbox cases, 14 browser cases on each backend. Later modal-feedback correction passed four outbox cases on each backend. These are prior runs, not newly launched sequential checks.
+- Desktop: Linux sandboxed dev and unpacked executable passed with reachable loopback positive/negative network controls. Latest small shared-UI changes still require packaging again before claiming that package contains them.
+- Android: final APK `27a71947…` includes the elapsed-deadline checker and final shared UI. All 80 assertions passed once across SAF, deadline, message and relay gates; installed hashes matched before/after. Host policy/session assertions also passed. The AVD and isolated adb were stopped and retained. No physical-device, microphone or OS-notification claim follows.
+- iOS: c3f5b42 built device/simulator frameworks and an unsigned simulator app on Xcode26.6; 25 Foundation host assertions passed. A real simulator runner/XCUITest was delivered and integrated into the local workflow, with 11 host-only runner checks. Its Apple execution has not happened. Device signing/hardware remain blocked on external capabilities.
+- Dynamic groups: `docs/GROUP-EPOCHS.md` and declarative fixtures are a proposed contract, not implementation or executed cryptographic/network tests.
 
 ## Immediate execution sequence
 
-1. Commit coherent verified Node/desktop, Go core/transport, Go application and mobile-host milestones; push normally and observe actual new CI jobs.
-2. Add durable per-publication/per-recipient outbox and delivery/expiry UI, including broadcast failure, pinned retention, restart, short TTL, forged receipt and multi-member controls.
-3. Add authenticated group membership epochs with explicit future-only semantics; no promise to revoke already delivered keys or erase peer copies.
-4. Complete mobile document picker/export and actual generic notifications; reuse the same Android AVD. Add ARM64 builds without downloading another image. Attempt iOS compilation/execution only through genuine Apple runners/tooling.
+1. Temporary sequential check completed: all active agents returned, no new/resumed tasks, exactly one selected browser case passed in 11.7 s without retries. See `SEQUENTIAL-CHECK.md` and its retained result/output/screenshots. No further gates or push/CI belong to this measurement. The result does not establish the cause of upstream 408s.
+2. After the completed measurement, coherent outbox/mobile/runner commits and final Android package/gates are complete. Push normally and observe actual Apple simulator execution; rebuild desktop for the final UI. Preserve each earlier version's evidence boundaries.
+3. Implement authenticated group membership epochs with explicit future-only semantics, signed cross-runtime vectors and adversarial real network/UI gates; no promise to revoke delivered keys or erase peer copies.
+4. Complete remaining mobile document/export and actual generic notifications; reuse the same Android AVD. Add ARM64 builds without downloading another image. Attempt iOS compilation/execution only through genuine Apple runners/tooling.
 5. Extend profile/social templates and moderation controls, review key recovery/rotation, and continue full contract audit. Keep unsupported physical radios, Apple signing and hardware tests explicit.
 
 `docs/REMAINING-SCOPE.md` maps concrete gaps from source. This sequence advances the complete contract; it does not redefine completion as the current baseline. Each agent keeps explicit ownership and must return actual results.

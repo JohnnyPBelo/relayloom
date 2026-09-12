@@ -1,51 +1,49 @@
-# Authoritative resumption checkpoint
+# Authoritative resumption checkpoint — 2026-09-12
 
-Project only: /home/absint0o/projects/relayloom. Owner acceptance contract PROJECT-BRIEF.md remains intact. Never touch Contab/other workspaces, providers/auth/bridge/security; owner repaired bridge externally. Maintain15GiBfree, project caches, atmostone Android/native compile and one modest JS build, no purchases/root. Replies PT-PT.
+Only project: `/home/absint0o/projects/relayloom`. Full acceptance contract: `PROJECT-BRIEF.md`. The RelayLoom goal remains active and incomplete. Respond in PT-PT. Preserve Astra/Copilot Ultra, providers/authentication/bridge/safety; no unrelated files, services or projects. Maintain at least 15 GiB free, project caches and one heavy build at a time; no purchases/root, force-push or PR merge. Ordinary coherent verified commits/pushes are authorized.
 
-## Completed milestones
+## Newer integrated milestone checkpoint
 
-- Public main85793be: actual Node22 encrypted messenger/social/sitebuilder with TCP/serialPTY, signed author/read/seed separation, storagequota/TTL, multiprocess positive/negative controls, real UIE2E, simulationdistinct. Follow-up CI fixes4c9e1af,4a15363,a8ae32b,919beec. Latest completed observed CI919beec succeeded Linux+Windows+macOS (native Node on runners, WindowsPTYskips). Evidence docs/evidence/ci-919beec.json.
-- Later uncommitted Node/UI/desktop extensions: voice/media, named encryptedcollections+followfilter/hashretrieve, explicitgenericnotifications, largeText/highcontrast. Root verify passed60 tests+8E2E plus simulation; rerunning current tree before nextcommit.
-- Electron44.3.0, esbuild0.28.2, builder26.15.3, fuses1.8.0 installed scoped. LinuxX11 sandboxed dev+packaged smoke passed. Dist/desktop-installers/linux-unpacked/relayloom. Nativewindowdialog/hardwarepermissions not verified. Appremote navigationblocked, downloadedblobusesnativedialog, noNodeinrenderer. Native docs/evidence tracked separately.
-- NativeGo port currentcore10tests+1bidirectionalNodeInterop1500floatvectors, transport9racetests, app7tests+race, fullbrowserflowsagainstGoCLIpassed19.3s, mixedGo→Node→Go andGo→Node→Nodeserial2tests passed14.96s. These are Linuxhost results, notmobile. CLI .cache/native-app/relayloom, build node scripts/native-build.mjs. JS tests/native explicitlyseparate fromnpmtest. Native scripts/go.mjsusesprojectpatchedGo1.26.8 and GOTOOLCHAINlocal/cachepaths. OfficialGoarchiveSHAverified. x/crypto0.57.0,x/text0.42.0,x/mobile20260908204917-8b95e45f8d3e pinned.
+The continuation after the completed measurement performed the final Android integration sequentially without new/resumed agents. APK `27a71947f73e3a2622da6efbcb402d04260e53293cb6156e27f43ea3b3f8e5a2` contains the final checker and UI and passed 38 SAF + 15 deadline + 16 message + 11 relay/seed assertions once. Installed hashes matched before/after; inputs stayed unchanged. The AVD/isolated adb were stopped and test instrumentation removed; identity retained, 127.54 GiB free. See `ANDROID-FINAL-INTEGRATION.md` and `docs/evidence/android/documents-27a71947`. The old handoff below is historical and its pending checker gate is now closed.
 
-## Active ownership (revalidate collaboration statuses)
+Feature commits: outbox `10bdf48`, iOS runner `4913ef4`, Android `f3e747a`, design-only groups `e1d17d0`. Next action: normal push and observe the new CI/Apple simulator execution, then continue full-contract implementation. No new agent is needed or authorized by the temporary restriction. The exact future CI run must be inspected; do not reuse the old green result.
 
-- /root/design_review: apps/android/**, scripts/android*, docs/ANDROID.md, .cache/android+JDK. Actual TemurinJDK17.0.20.1, AndroidSDK36/buildtools36/NDK28.2 installed(~3.5GiB). Noemulatorimageyet. gomobile/gobind nowavailable.cache/go/bin. Native.Start(dataDir,assetsPath)JSON{origin,token,tcpPort}, Stop. Agent had408timeouttwice; resumed fromexistingfiles. Fix process-global ownershiplease lifecycle race, then AAR/APK, onlythenoneAPI36x86_64emulator image. Doesnotalterbridge.
-- /root/transport_hardening: now native/transport/** correction duplicate retained byte accounting +regression. Must coordinatecompile slotwithAndroid. EarlierNodepollerbugfixcommitted919beec; noNodechangesneeded. RepeatGoCLIbuild/mixedtestsafterfix.
-- /root/security_review: read-only independentreviewAndroid+transportfixes, self-reviewnative/coreclearlylabelled; onlydocs/NATIVE-REVIEW.md. Authorednative/core/app, cannotclaimindependentreviewofowncode.
-- Root: integration, sharedpackage/go.mod/statusdocs, UI/API/tests, commits/push. Do notformat/editagentownedWIPuntilcomplete.
+## Latest owner instruction and completed measurement
 
-## Critical open facts
+The owner temporarily prohibited creating/resuming agents, required active agents to finish undisturbed, and requested exactly one bounded sequential test. That step is now **complete**. Do not repeat the test or launch more tests/builds/agents as part of the same measurement. No settings were changed and no push/CI was started. No new upstream Copilot 408 was observed; this does not prove why earlier timeouts occurred.
 
-- Go native serial returns501; UI nowlabelsunsupported using nativeRuntimeGo. Android must run embeddedAARcore, neverhostdaemon-onlyWebView.
-- Native transportduplicateIDaccounting bug reviewfound: retain[id] replacementaddsbyteswithoutsubtractingold whenseenforgets. Agentfixpending; do notmarknativecompleteuntiltest/rerun.
-- Android Activityinstancestop race: globalsingletoncore+perActivityexecutor; ownershiplease/processcoordinatorfixpending. NoAPK/emulatorclaimyet.
-- Native andAndroid sources largelyuntracked; keep separatecoherentverifiedmilestonecommits. FullpublicrepositorycanincludeWIP onlyexplicitbranchifneeded; noforcepush/secrets/PRmerge.
-- Node/media/e2e fixtures use synthetic identities. Voiceinput controlledWebAudio/getUserMediastub afternativefakeinputNotSupportedError; encoding+transferreal. NotificationAPIstubonly; noOSnotificationclaim. Preserve labels.
-- Originalcontractremaining: mobilehardware/Apple signing/platformapps, keychain+rotation/revocation, groupmembershipchanges, completeoutboxdelivery/expiryUI, richerprofiletemplates/socialcontrols, allaccessibilitystates/screenreaderphysical, completeaudit. Never shrinkgoaltoverticalslice.
+Exact command:
 
-## Gate commands
+```sh
+node scripts/e2e.mjs tests/e2e/outbox.spec.ts --grep 'durable composer retries a lost response once' --reporter=line --output=.cache/sequential-stability/outbox
+```
 
-npm run verify (build,60+unit/integration,8+browser,simevidence)
-node scripts/desktop-build.mjs; node scripts/desktop-run.mjs --smoke --x11
-node scripts/desktop-package.mjs --linux --x64 --dir; node scripts/desktop-packaged-smoke.mjs
-node scripts/go.mjs test -race -p=2 ./core ./transport ./app
-node scripts/native-build.mjs
-node --import tsx --test tests/native/native-interop.test.ts
-node --import tsx --test --test-concurrency=1 tests/native/mixed-network.test.ts
-RELAYLOOM_TEST_BACKEND=native node scripts/e2e.mjs tests/e2e/flows.spec.ts --reporter=line --output=.cache/native-ui-e2e
+Result: **1 passed (11.7s)**, one test, one worker, one attempt, zero retries, exit 0; 12.108 s supervised wall time. Sources/assets unchanged. Four Axe captures reported zero violations. See `SEQUENTIAL-CHECK.md` and `docs/evidence/sequential-stability/2026-09-12/{result.json,output.txt}`. Local `.cache/sequential-stability/attempt.json` is completed; never relaunch an uncertain run blindly. Last free space: 128.63 GiB.
 
-Toolprocesshandles revalidate rather thanrestart. Duringcheckpointrootstartednpmverify; pollactualsession. In-appbrowserbackendwasunavailable; projectPlaywrightChromiumwithsandboxenabledworks. CIusesrunnerChrome sandboxretained. Allbrowsertemps .cache/tmp. No unrelatedfilesreadexceptstandardtool/runtimepaths.
+## Repository and implemented local work
 
-## Current pagination/review integration (newer than paragraphs above)
+At the start of the completed measurement, HEAD/origin main were `c3f5b42ff80923981befecec1f82e3ff017bd6a3`. Its GitHub run 34655608855 passed all eight jobs: Node Linux/Windows/macOS, Go, three desktop packages and iOS build. See `docs/evidence/ci-c3f5b42.json`. The later feature work is now committed as listed above; normal publication/CI observation follows this integration checkpoint. Do not reset/clean ongoing work.
 
-The independent application review found A1 request-map error-path growth, A2 large snapshots, A3 old state restoring UI after lock, and A4 received tombstone loss before cache eviction. Root implements Node/UI changes and transport_hardening now exclusively owns native/app fixes plus mixed test updates. Agreed API: state/history pages of100 objects/4MiB, summaries with attachment data empty + size; POST history{before} returns chronological older page and history{hasMore,nextBefore,total,availableIds}; POST attachment{id,index} verifies ACL and returns full Attachment, denies deleted; view returns full object. UI has explicit older-history control, lazy3-concurrent attachment loading, generation/sequence lock protection and nonoverlapping polling. Tests are being rerun; earlier61/8 passes do not cover unfinished current pagination integration.
+Node/Go outbox has encrypted preparing/ready recovery, finite operation idempotency, pending quota/pins, automatic own retry separate from relay-for-others, delivery versus read per recipient, historical authenticated confirmations and safe state after uncertain writes. Bounds: 128 pending/32 MiB reserve/256 total retained records. UI requires fresh unlocked state and explicit new-send choice if an uncertain operation disappeared. POSIX file/directory synchronization is not physical power-loss testing or a Windows directory-flush guarantee.
 
-Root Node snapshot tests passed three cases (large cache>24MiB, remote tombstone evicting original, failed-broadcast request limits); fourth unknown-extension projection test added. UI history/lock tests found and fixed duplicate history controls and returning-to-chat scroll/lazy-load issue; current targeted run is pending, read its process handle rather than assume pass.
+Main files: `apps/node/src/outbox.ts`, `node.ts`, `local-state.ts`, `server.ts`; `native/app/outbox.go`, `confirmations.go`, other application files; `packages/core/src/index.ts`, `native/core/store.go`; `apps/web/src/outbox.tsx`, `outbox.css`, `main.tsx`, `style.css`. Group creator blocking retains only the verified ACL dependency; signed-roster receipt resolution and contact learning fixed the supervised Go failure without weakening authorization. Retry feedback is now inside the dialog; legacy group read counts use unique original recipients; focus ring is inset.
 
-Android preliminary AAR/APK built/signature/alignment verified, one API36x86_64 AVD provisioned under project with adb server5047 and ports5580/5581; actual boot became operational after recovering only empty test userdata and explicit ports. No physical mic/camera. Agent must report actual install/UI/network before emulator pass. Native app pagination fixes require another final AAR/APK rebind. Current Android source includes global ownership leases and narrow audio permission guards.
+Prior gates, not new runs in the sequential stage: 79 Node tests; 36 Go application normal and race; 11 core + 11 transport race; two independent three-process mixed outbox scenarios; 14 browser cases Node and 14 Go; later modal change passed four outbox browser cases per backend. Production source hash: `66a18d61cc0a63b0bf30195462c2515912b333614d95dd69f1d503db409f830e`. CLI hash: `4e18b8b15d0da0883586a4d3e51e1ecbec351afd1ce1545bcb773d8f8aca422d`. Latest web assets: `index-Ct0M5tYK.js` and `index-BcajBo5I.css`.
 
-security_review now owns apps/ios/**, scripts/ios*, docs/IOS.md: actual Swift/WKWebView wrapper/Xcodeproject prepared, locally only syntax/staticchecks. Root must add macOS CI job and observe actual xcodebuild; no Apple result exists yet. transport_hardening independently reviewed and corrected stale microphone completion. No Apple signing/device claims.
+## Actual agent handoffs — all returned
 
-Latest root native core: strict schema aligned Node envelope validation, Go disk fingerprint uses bounded actual bytes, password lone-surrogate conversion aligns Node, parser100knode budget. Go11core+11transport+7app race and three vector/mixed tests passed before pagination app changes. Rebuild CLI/AAR and rerun after new app changes.
+- `design_review`: SAF picker/export implemented. APK `4de67c3e1540556bbbcab98e7053112bfce2625cdf994c4de67c2d15403b77bb` passed 38 SAF + 15 deadline/lifecycle + 16 message/recovery + 11 relay/seed assertions in the one API36 x86_64 emulator. AAR `7c9f60fe036b85d08bc584f3c469ee31e3537a3f22de9d7fdfd514ef820503b5`. Later immutable elapsed-deadline checker has 28 local policy/session assertions and independent source review, but **no new APK or device gates**. It needs packaging with final web assets and exact-hash reruns. Agent stopped its AVD/isolated adb and preserved identity/data; exactly 16 synthetic fixture endpoints were removed with audit. See `docs/ANDROID.md` and `docs/evidence/android/documents-4de67c3e/post-apk-source-handoff.json`. Retain the same `relayloom-api36` AVD, adb5047/emulator5580/5581; no second image.
+- `security_review`: completed `docs/GROUP-EPOCHS.md` and `tests/fixtures/group-epochs.json`, 33 symbolic cases explicitly `DESIGN_ONLY_NOT_EXECUTED`. Creator-owned permanent anchor, chain/card binding, join consent, restrictive-transition quarantine, historical minimal events, explicit original-author republication, bounded registry and rollback/fork limits. **No production dynamic groups or executed epoch tests.** Its existing child also finished without new device tests.
+- `transport_hardening`: previously returned native outbox plus `scripts/ios-simulator.mjs`, XCUITest target/scheme, `apps/ios/Tests/SimulatorPeer.mjs`, runner tests/fixtures and `docs/IOS-SIMULATOR.md`. Root integrated simulator execution/owned cleanup/sanitized upload into the local workflow. Eleven host-only runner tests passed before this measurement. c3f5b42 built device/simulator arm64 frameworks and unsigned app on Xcode26.6, plus 25 Foundation host assertions. **The iOS app has not yet been executed in a simulator.**
+
+Actual tasks/results are recorded in `docs/AGENTS.md`. No active root test process remains; sequential session 96822 exited 0. Do not create/resume agents under the latest temporary restriction.
+
+## Outstanding full-contract work after this checkpoint
+
+1. Android final artifact gates and coherent feature commits are complete as recorded above. Rebuild desktop after latest UI before claiming that package contains it.
+2. Push normal coherent milestones when continuing beyond the completed measurement and observe the new Apple simulator job; a workflow declaration is not execution evidence.
+3. Implement/review/test dynamic group epochs in Node/Go/UI with actual signed vectors and positive/negative partition controls; the design alone closes no feature gate.
+4. Native key storage/recovery/rotation, full-history search/context, richer profile templates/media/social controls, real native notifications and remaining accessibility/device gates.
+5. Physical Android/Apple/radios, Apple signing and unsupported BLE/Wi-Fi Direct/LoRa remain blocked/unverified as appropriate. Never infer disaster readiness or all-OS execution from builds.
+
+`implementation-plan.md`, `requirements-normalized.json`, `traceability.md`, README and STATUS have been refreshed with current evidence. Earlier checkpoint text is preserved in `history/RESUME-before-sequential-check-2026-09-12.md` as history, not current instructions.

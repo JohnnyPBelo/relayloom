@@ -1,14 +1,14 @@
 # RelayLoom — estado verificável
 
-**Em implementação. Experimental. O contrato completo não está concluído.** Não é infraestrutura validada para catástrofes; não substitui serviços de emergência. Actualização: 2026-09-11.
+**Em implementação. Experimental. O contrato completo não está concluído.** Não é infraestrutura validada para catástrofes; não substitui serviços de emergência. Actualização: 2026-09-12. O CI verde de c3f5b42 e os gates posteriores de outbox/SAF têm evidência e versões distintas; os novos marcos não herdam automaticamente os passes CI anteriores.
 
 ## Evidência executada neste Linux
 
 | Comando / artefacto | Resultado observado | Alcance |
 | --- | --- | --- |
 | `npm run build` | Passou | TypeScript + interface de produção Vite |
-| `npm test` | 66 testes passaram, 0 omitidos, 35,6 s | Cofres/assinaturas/ACL, armazenamento, API, processos, TCP/série PTY, consentimento, colecções, snapshots limitados, políticas desktop e simulação identificada como tal |
-| `npm run test:e2e` | 10 percursos passaram, 81,5 s | Dois browsers/daemons reais: identidades, contactos, TCP, mensagens, anexo descarregável, reacção, grupo, social, pesquisa, isolamento de rascunhos, bloqueio com resposta atrasada, paginação, editor/rascunho cifrado, página remota com autor desligado e recuperação do nó |
+| `npm test` | 79 testes passaram, 0 omitidos, 45,4 s | Cofres/assinaturas/ACL, armazenamento, API, processos, TCP/série PTY, consentimento, colecções, snapshots limitados, políticas desktop e simulação identificada como tal |
+| `npm run test:e2e` | 14 percursos passaram após a revisão da outbox | Dois browsers/daemons reais: identidades, contactos, TCP, mensagens, anexo descarregável, reacção, grupo, social, pesquisa, isolamento de rascunhos, bloqueio com resposta atrasada, paginação, editor/rascunho cifrado, página remota com autor desligado e recuperação do nó |
 | `node scripts/e2e.mjs tests/e2e/flows.spec.ts --reporter=line --output=.cache/drag-ui-e2e` | Passou, 18,4 s | Repetição posterior com dois movimentos drag/drop reais, além das alternativas de teclado/setas e do fluxo P2P completo |
 | `docs/evidence/heterogeneous.json` | Passou | 3 processos; A→B TCP, B→C série PTY; C sem ouvinte TCP; partição, recuperação, pausa e substituição do autor desligado pelo seeder |
 | `docs/evidence/ui/*-axe.json` | Zero violações nos estados capturados | Onboarding, conversa clara/escura, social, editor e social a 390 px; tags WCAG 2 A/AA e 2.1 AA. Não é certificação de acessibilidade |
@@ -22,9 +22,9 @@ Algumas primeiras execuções falharam; as causas/correcções estão em `.codex
 | Pedido | Implementado/testado | Parcial, por implementar ou verificar |
 | --- | --- | --- |
 | Identidades e chaves | Ed25519, X25519/HKDF/AES-GCM, prova do cartão, cofre scrypt/AES-GCM, exportação/recuperação | Keychain nativa, rotação/revogação completa, ratchet/forward secrecy, auditoria criptográfica externa |
-| Mensagens 1:1 e grupos | Texto, destinatários explícitos, grupos fixos, respostas, reacções, pesquisa, edição/eliminação pelo autor | Mudanças de membros, estado de entrega completo/expiração explícita no UI, recibos por todos os membros |
+| Mensagens 1:1 e grupos | Texto, destinatários explícitos, grupos fixos, respostas, reacções, pesquisa, edição/eliminação pelo autor | Mudanças de membros ainda em desenho; nova outbox distingue recepção/leitura por destinatário e expiração, com os limites documentados abaixo |
 | Anexos | Bytes cifrados, ficheiros, renderizadores imagem/áudio/vídeo; imagem/áudio/vídeo/ficheiro verificados por UI e bytes entre pares; 108 kB na rota heterogénea | Gravação de voz implementada/testada com entrada Web Audio sintética e MediaRecorder real; microfone físico/câmara não testados. UI até 2 MB/anexo, objecto até 4 MiB |
-| Persistência | Outbox/conteúdo cifrado, recuperação, metadados autenticados locais, rascunho de página cifrado | Rascunhos de mensagens por conversa ficam em memória; disponibilidade depende de quota/TTL |
+| Persistência | Intenção de envio cifrada/idempotente enquanto retida, reserva limitada, repetição própria após restart mesmo com relay pausado, estados por destinatário/expiração, metadados autenticados locais e rascunho de página cifrado | Rascunhos de mensagens por conversa ficam em memória; disponibilidade depende de quota/TTL |
 | Social: perfil, feed, posts | Página pessoal assinada, posts públicos/privados, feed local verificado | Sem descoberta global, recomendações ou sincronização nativa em segundo plano |
 | Social: seguir | Preferência local persistente e filtro A seguir verificado | Relação pública assinada/followers ainda ausente |
 | Social: comentários/reacções | Publicação e verificação; fluxo real entre clientes | Ricos controlos de gestão/edição de comentários incompletos |
@@ -42,10 +42,10 @@ Algumas primeiras execuções falharam; as causas/correcções estão em `.codex
 | Alvo | Estado honesto |
 | --- | --- |
 | Linux | Node 22.22.3 e Chromium executados nativamente; artefactos/testes acima. Shell Electron e pacote Linux x64 descompactado executados; fluxo de instalador ainda não testado |
-| Windows | Compilação e testes Node reais no runner Windows em 919beec passaram; testes PTY omitidos. Shell/instalador Windows e dispositivo físico não testados |
-| macOS | Compilação e testes Node, incluindo PTY, no runner macOS em 919beec passaram. Shell/instalador macOS, assinatura e hardware Apple local não testados |
-| Android | APK final `e1bdb088…d2a0` com Go integrado executado num único emulador API36 x86_64:16 asserções de identidade/mensagens/API/lifecycle e11 de Node→Android→Node, partição e seed takeover. Hash instalado coincide e página offline confirmada visualmente. Não é dispositivo físico, ARM64 nem rádio |
-| iOS | Shell UIKit/WKWebView, binding Go, lifecycle/permissões e projecto Xcode implementados; sintaxe/referências locais verificadas. Compilação Swift/framework/simulador ainda não executada. Xcode, dispositivos e assinatura indisponíveis neste Linux |
+| Windows | Node e pacote desktop Windows x64 passaram no runner Windows em c3f5b42. Testes PTY omitidos. GUI, instalador e hardware físico não executados |
+| macOS | Node, PTY e pacote desktop macOS arm64 passaram no runner Apple em c3f5b42. GUI/instalador desktop, assinatura de distribuição e hardware Apple local não testados |
+| Android | APK `27a71947…` com Go integrado, checker de prazo e interface final: 38 asserções SAF, 15 de prazo/lifecycle, 16 de mensagens/recuperação e 11 de relay/seed no único emulador API36 x86_64. Hash instalado confirmado antes/depois; 80 asserções passaram. Não é dispositivo físico, ARM64 nem rádio |
+| iOS | c3f5b42 compilou o XCFramework arm64 para dispositivo/simulador e a aplicação de simulador unsigned no runner Xcode26.6;25 asserções Swift/Foundation do host passaram. Aplicação/simulador/WKWebView ainda não executados. Dispositivo físico e assinatura não verificados |
 | TCP | Sockets/processos reais locais; LAN/Internet/NAT ainda não verificados |
 | Série | Adaptador real + PTYs do sistema; nenhum rádio físico validado |
 | BLE/Wi-Fi Direct/LoRa | Não implementados/testados |
@@ -54,9 +54,9 @@ Algumas primeiras execuções falharam; as causas/correcções estão em `.codex
 
 ## Próximos marcos
 
-1. Consolidar os marcos de desktop, multimédia/colecções/histórico e núcleo Go; observar os novos jobs CI após o push. CI 919beec passou nos três runners do núcleo Node.
-2. Executar compilação iOS unsigned e políticas Swift no runner macOS quando o workflow for enviado; completar workflows móveis de ficheiros/notificações e repetir o APK quando for alterado.
-3. Completar estados de entrega/expiração/outbox, mudanças de membros, recuperação/revogação e extensões do perfil/social, com testes negativos e positivos.
+1. A medição sequencial temporária terminou com um teste passado. Na continuação, a outbox foi consolidada em `10bdf48`, o runner iOS em `4913ef4` e o SAF Android em `f3e747a`. Observar os novos jobs CI depois do push; c3f5b42 continua a referência CI efectivamente verde até existirem novos resultados.
+2. Observar o novo gate de execução iOS no simulador Apple e completar os restantes fluxos nativos. A compilação unsigned e 25 asserções Swift do host já passaram em c3f5b42; execução da aplicação continua pendente. O APK final `27a71947…` já passou os quatro gates no emulador; novas alterações futuras exigem o artefacto correspondente.
+3. Implementar mudanças de membros conforme `GROUP-EPOCHS.md`, recuperação/revogação e extensões do perfil/social, com testes negativos e positivos. O contrato e as fixtures de épocas são apenas desenho; não há grupos dinâmicos implementados.
 4. Continuar a revisão de recursos, fluxos nativos de ficheiros/notificações, acessibilidade e auditoria de todos os requisitos; manter hardware Apple/rádios/assinaturas como lacunas explícitas.
 
 Continuidade e 80+ critérios normalizados: `.codex-delivery/implementation-plan.md`, `requirements-normalized.json`, `traceability.md`. Não reduzir o objectivo ao marco já implementado.
@@ -68,3 +68,23 @@ Continuidade e 80+ critérios normalizados: `.codex-delivery/implementation-plan
 O núcleo Go passou 11 testes e o transporte 11 testes com detector de corridas; a aplicação passou 17 testes normais e 17 com detector de corridas após a revisão de cache/paginação/tombstones. O gate Node↔Go compara 1.500 vectores numéricos, Unicode/UTF-16, cofres/chaves/ACL/cifra e armazenamento nos dois sentidos. As duas integrações mistas passaram após recompilar o CLI final (`a3dc0344…`): Go→Node→Go TCP e Go→Node→Node TCP+série PTY. A aplicação Go não implementa driver série nativo. Estes testes estão separados dos 66 testes Node acima.
 
 A resposta periódica de um store Go cifrado de 37,6 MB ficou em 68 KB e o endpoint de anexo devolveu 2 MiB exactos. O primeiro processamento completo sob race detector levou 22,54 s; o seguinte, com cache verificada, 254 ms. São medições deste host instrumentado, não uma promessa de latência móvel. Ver `APPLICATION-REVIEW.md` para os controlos e limites, incluindo eventos privados recebidos enquanto bloqueado.
+
+## CI publicado e integração local posterior
+
+O run GitHub `34655608855`, commit `c3f5b42ff80923981befecec1f82e3ff017bd6a3`, terminou com sucesso nos8 jobs: Node em Linux/Windows/macOS, núcleo/aplicação Go e UI, três pacotes desktop e compilação iOS. `docs/evidence/ci-c3f5b42.json` contém os jobs efectivamente observados. O artefacto iOS foi descarregado e inspeccionado em `docs/evidence/ios/c3f5b42`: Xcode26.6(17F113), Go1.26.8, framework de dispositivo+simulador arm64, app de simulador SHA-256 `9a8cf91304108fe70259053104dd9fd3752a99ad656b1c0f5eea728f39337904`. É compilação real, não execução da aplicação no simulador. Linux CI também executou o desktop e o pacote descompactado com sandbox/Xvfb.
+
+A supervisão do proprietário observou uma falha local de contactos/resposta de grupo durante alterações concorrentes (`TestApplicationMessagesGroupsReceiptsAndPrivacy`, app_test.go117). Isto não é uma regressão demonstrada do commit remoto verde. A aprendizagem de cartões foi corrigida sem reduzir ACL/cobertura; o teste focado e os gates locais estabilizados passaram, como documentado abaixo. Os resultados posteriores têm hashes próprios e não substituem silenciosamente os anteriores.
+
+## Outbox: evidência local posterior a c3f5b42
+
+As alterações Node/Go da outbox passaram79 testes Node (incluindo13 regressões novas),36 testes Go de aplicação normais e com race detector, e2 cenários de3 processos mistos em82,890s. O hash das fontes de produção foi verificado inalterado durante os testes e novamente na integração: `66a18d61cc0a63b0bf30195462c2515912b333614d95dd69f1d503db409f830e`. CLI Go: `4e18b8b15d0da0883586a4d3e51e1ecbec351afd1ce1545bcb773d8f8aca422d`. O teste de grupos/contactos indicado pela supervisão foi corrigido e está incluído nos36, sem redução de ACL/cobertura. Os11 testes core e11 transport Go foram repetidos com `-race -count=1 -p=2`, passando em5,902s e9,136s.
+
+A interface passou14 percursos Node e14 Go; a revisão posterior do aviso de repetição dentro do diálogo passou os4 percursos de outbox em cada núcleo. Esses últimos processos já tinham sido iniciados antes da instrução de verificação sequencial do proprietário. Foco de teclado, leitura parcial de grupos antigos, expiração e repetição após resposta perdida têm testes/screen captures reais. A última cópia da interface usa `index-Ct0M5tYK.js`/`index-BcajBo5I.css`.
+
+A outbox conserva128 envios pendentes/32MiB e até256 registos totais. A idempotência é limitada aos registos retidos; a interface não repete silenciosamente uma operação incerta que já não esteja no estado fresco e desbloqueado. Confirmações assinadas são independentes de ACKs do relay; recibos antigos, dados evictos e grupos com criador bloqueado são cobertos. Atomicidade sincroniza ficheiro/directório emPOSIX; não é ensaio de corte físico de energia e não promete flush de directório noWindows. Ver `OUTBOX-PROTOCOL.md`, `OUTBOX-REVIEW.md`, `NATIVE-OUTBOX.md` e `docs/evidence/outbox`.
+
+Verificação operacional sequencial pedida pelo proprietário em 2026-09-12: os agentes activos terminaram com entregas reais, sem novas tasks/retomas/interrupções. Foi executado apenas `node scripts/e2e.mjs tests/e2e/outbox.spec.ts --grep 'durable composer retries a lost response once' --reporter=line --output=.cache/sequential-stability/outbox`: **1 teste passou em 11,7 s**, uma execução, um worker, zero repetições, saída 0 e fontes/assets inalterados. As quatro auditorias Axe desse percurso tiveram zero violações. Resultado, saída e capturas: `docs/evidence/sequential-stability/2026-09-12`; contexto e limites: `.codex-delivery/SEQUENTIAL-CHECK.md`. Não foi observado novo 408 nesta etapa; isso não determina a causa dos anteriores. Não houve outro teste/build/push nesta medição; o contrato e o harness mantêm-se.
+
+## Integração Android posterior à medição
+
+Em fase posterior, mantendo execução sequencial e sem novos agentes, root compilou o APK `27a71947f73e3a2622da6efbcb402d04260e53293cb6156e27f43ea3b3f8e5a2` com o checker/interface finais. O hash instalado coincidiu antes/depois; SAF38, prazo15, mensagens16 e relay11 passaram, uma execução de cada gate e fontes/assets/AAR inalterados. Prazo observado121.264ms, HOME1.254ms; bytes exactos e recuperação da identidade confirmados. Os controlos de ausência de rota, pausa/heal e seeder com autor desligado passaram. Três capturas foram revistas. Evidência: `docs/evidence/android/documents-27a71947`, comandos completos em `ANDROID.md` e `.codex-delivery/ANDROID-FINAL-INTEGRATION.md`. AVD/adb próprios parados, instrumentação de teste removida, identidade preservada,127,54GiB livres. Isto fecha o gate do checker que estava pendente no APK4de, sem alegar hardware físico, rádio ou suspensão real.
