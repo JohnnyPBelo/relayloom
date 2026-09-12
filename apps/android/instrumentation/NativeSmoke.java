@@ -96,6 +96,27 @@ public final class NativeSmoke extends Instrumentation {
         if (!painted.await(10, TimeUnit.SECONDS)) throw new IllegalStateException("WebView visual state was not ready for screenshot");
         Thread.sleep(500); return getUiAutomation().takeScreenshot();
     }
+    private android.graphics.Bitmap renderedSiteScreenshot(JSONObject geometry) throws Exception {
+        if (!Boolean.TRUE.equals(js("(()=>{const c=getComputedStyle(document.querySelector('dialog[open]')).backgroundColor.match(/\\d+/g);return c&&Number(c[0])>220&&Number(c[1])>220&&Number(c[2])>220})()"))) throw new IllegalStateException("Screenshot control requires this fixture's light dialog surface");
+        final int[] bounds = new int[4];
+        runOnMainSync(() -> { int[] at = new int[2]; web.getLocationOnScreen(at); bounds[0]=at[0]; bounds[1]=at[1]; bounds[2]=web.getWidth(); bounds[3]=web.getHeight(); });
+        double scale = bounds[2] / geometry.getDouble("innerWidth");
+        int x = bounds[0] + bounds[2]/2;
+        int y = bounds[1] + (int)Math.round((geometry.getJSONObject("rect").getDouble("y") + 10) * scale);
+        android.graphics.Bitmap image = null;
+        boolean painted = false;
+        for (int attempt=0; attempt<4; attempt++) {
+            image = renderedScreenshot();
+            if (image == null || x>=image.getWidth() || y>=image.getHeight()) continue;
+            int inside = image.getPixel(x,y), outside = image.getPixel(bounds[0]+bounds[2]-8,bounds[1]+8);
+            painted = android.graphics.Color.red(inside)>215 && android.graphics.Color.green(inside)>215 && android.graphics.Color.blue(inside)>215
+                && android.graphics.Color.red(outside)<190 && android.graphics.Color.green(outside)<190 && android.graphics.Color.blue(outside)<190;
+            if (painted) break;
+            try (FileOutputStream output = new FileOutputStream(new File(getTargetContext().getFilesDir(), "android-offline-site-unpainted.png"))) { image.compress(android.graphics.Bitmap.CompressFormat.PNG,100,output); }
+        }
+        require(painted, "Actual native screenshot contains the dialog surface and dimmed backdrop");
+        return image;
+    }
     private void captureWebView(String name) throws Exception {
         final Exception[] failed = {null};
         runOnMainSync(() -> {
@@ -153,11 +174,15 @@ public final class NativeSmoke extends Instrumentation {
         js(siteButton + ".scrollIntoView({block:'center'})"); Thread.sleep(200); js(siteButton + ".click()");
         awaitCondition("Boolean(document.querySelector('dialog[open]')?.innerText.includes(" + JSONObject.quote("Native offline page " + nonce) + "))", "published cached site dialog title");
         require(Boolean.TRUE.equals(js("Boolean(document.querySelector('dialog[open]'))")), "Cached site has an open dialog in the live DOM");
+        Object geometry = js("(()=>{const d=document.querySelector('dialog[open]'),r=d.getBoundingClientRect(),v=window.visualViewport;return {modal:d.matches(':modal'),position:getComputedStyle(d).position,rect:{x:r.x,y:r.y,width:r.width,height:r.height},scrollX,scrollY,innerWidth,innerHeight,visualViewport:v?{x:v.offsetLeft,y:v.offsetTop,width:v.width,height:v.height,scale:v.scale}:null,hit:!!document.elementFromPoint(Math.max(0,Math.min(innerWidth-1,r.x+r.width/2)),Math.max(0,Math.min(innerHeight-1,r.y+r.height/2)))?.closest('dialog')}})()");
+        try (FileOutputStream output = new FileOutputStream(new File(getTargetContext().getFilesDir(), "android-dialog-geometry.json"))) { output.write(String.valueOf(geometry).getBytes(StandardCharsets.UTF_8)); }
+        require(Boolean.TRUE.equals(js("(()=>{const d=document.querySelector('dialog[open]'),r=d.getBoundingClientRect(),v=window.visualViewport;return d.matches(':modal')&&r.width>0&&r.height>0&&r.left>=-1&&r.top>=-1&&r.right<=innerWidth+1&&r.bottom<=innerHeight+1&&!!document.elementFromPoint(r.left+r.width/2,r.top+r.height/2)?.closest('dialog')})()")), "Cached site dialog is modal, within the viewport and receives hit testing");
         final JSONObject visibility = new JSONObject();
         runOnMainSync(() -> { try { visibility.put("windowFocus", activity.hasWindowFocus()).put("webViewShown", web.isShown()).put("windowVisibility", web.getWindowVisibility()).put("taskId", activity.getTaskId()); web.invalidate(); activity.getWindow().getDecorView().invalidate(); } catch (Exception ignored) {} });
+        android.graphics.Bitmap image = renderedSiteScreenshot((JSONObject)geometry);
         JSONObject report = new JSONObject().put("kind", "ANDROID_EMULATOR_RELAY_INSTRUMENTATION").put("runtime", "Go inside actual APK process").put("identity", identity).put("negativeControlReceivedAtB", true).put("relayPauseThenHealExecuted", true).put("privateAttachmentReadAtB", true).put("cachedPostId", seed.getString("id")).put("cachedSiteId", site.getString("id")).put("cachedAuthorOfflineSiteRendered", true).put("nativeVisibility", visibility).put("renderedDialogText", js("document.querySelector('dialog[open]').innerText")).put("assertions", assertions).put("physicalDeviceTested", false).put("microphoneCameraAccessed", false);
         try (FileOutputStream output = new FileOutputStream(new File(getTargetContext().getFilesDir(), "android-relay-report.json"))) { output.write(report.toString(2).getBytes(StandardCharsets.UTF_8)); }
-        android.graphics.Bitmap image = renderedScreenshot(); if (image != null) try (FileOutputStream output = new FileOutputStream(new File(getTargetContext().getFilesDir(), "android-offline-site.png"))) { image.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, output); }
+        if (image != null) try (FileOutputStream output = new FileOutputStream(new File(getTargetContext().getFilesDir(), "android-offline-site.png"))) { image.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, output); }
         captureWebView("android-offline-site-webview.png");
         phase("author-offline-site-rendered", new JSONObject());
     }
