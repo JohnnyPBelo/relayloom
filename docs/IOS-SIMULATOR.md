@@ -117,6 +117,12 @@ the 420-second maximum UI-test allowance. It requires 17 GiB free at entry and
 checks the 15 GiB reserve while owned commands run. A reserve or timeout failure
 terminates the owned command group and enters cleanup.
 
+The first execution on f93e741 reached the initial OS data migration but did not
+finish boot within180seconds; no application test ran. The same-device cold-boot
+allowance is now600seconds, inside the existing global deadline and disk guard.
+The original logs, exact cleanup and pending CI recovery are documented in
+`CI-F93E741-FOLLOWUP.md`; no OS services or permissions were changed.
+
 Cleanup shuts down/deletes only the recorded UDID after confirming the exact
 unique name. It never runs `shutdown all`, deletes an installed runtime, changes
 another device or kills a shared simulator service. The `--cleanup-owned` CI

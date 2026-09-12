@@ -1,0 +1,66 @@
+{
+  "sourceRun": 34669716466,
+  "normalization": "Sanitized CI log text retains content and normalizes trailing blank lines to one newline.",
+  "logs": [
+    {
+      "sourceName": "01-xcode-version.log",
+      "publishedName": "01-xcode-version.txt",
+      "sourceSha256": "18730ed2ae28a2c9cf0c2d5db549033a4f07089331391a7133b7b32187454fa9",
+      "publishedSha256": "18730ed2ae28a2c9cf0c2d5db549033a4f07089331391a7133b7b32187454fa9"
+    },
+    {
+      "sourceName": "02-source-commit.log",
+      "publishedName": "02-source-commit.txt",
+      "sourceSha256": "e97694e2aebbe2b5b029ff154db5818f02b6035e1131c98f3d1e2b609fa64b54",
+      "publishedSha256": "e97694e2aebbe2b5b029ff154db5818f02b6035e1131c98f3d1e2b609fa64b54"
+    },
+    {
+      "sourceName": "03-source-cleanliness.log",
+      "publishedName": "03-source-cleanliness.txt",
+      "sourceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "publishedSha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    },
+    {
+      "sourceName": "04-installed-runtimes.log",
+      "publishedName": "04-installed-runtimes.txt",
+      "sourceSha256": "ddb5945f45cf4a753202b9b94f6f7c2f22e7be764c8a1ad8ceaa2ce154d5c597",
+      "publishedSha256": "ddb5945f45cf4a753202b9b94f6f7c2f22e7be764c8a1ad8ceaa2ce154d5c597"
+    },
+    {
+      "sourceName": "05-installed-device-types.log",
+      "publishedName": "05-installed-device-types.txt",
+      "sourceSha256": "70376c78091566520db3fa3b1b868e122223a65056b552f1db9ae50753d7dd20",
+      "publishedSha256": "70376c78091566520db3fa3b1b868e122223a65056b552f1db9ae50753d7dd20"
+    },
+    {
+      "sourceName": "06-create-owned.log",
+      "publishedName": "06-create-owned.txt",
+      "sourceSha256": "613dc953a92adc287dd9b2016d8eb5e8b42731470d89b30fee400b07d38f7a03",
+      "publishedSha256": "613dc953a92adc287dd9b2016d8eb5e8b42731470d89b30fee400b07d38f7a03"
+    },
+    {
+      "sourceName": "07-boot-owned.log",
+      "publishedName": "07-boot-owned.txt",
+      "sourceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "publishedSha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    },
+    {
+      "sourceName": "08-wait-owned-boot.log",
+      "publishedName": "08-wait-owned-boot.txt",
+      "sourceSha256": "99ae115455180d6d6d3a72819cc97f608929775366adadaf54ecdab0a46ad7de",
+      "publishedSha256": "032498746cbecd5c003a1918fe7e32cd7c5dabee55ab118b5f97759d46c19b69"
+    },
+    {
+      "sourceName": "10-shutdown-owned.log",
+      "publishedName": "10-shutdown-owned.txt",
+      "sourceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "publishedSha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    },
+    {
+      "sourceName": "11-delete-owned.log",
+      "publishedName": "11-delete-owned.txt",
+      "sourceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "publishedSha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    }
+  ]
+}

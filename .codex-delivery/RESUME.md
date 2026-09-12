@@ -2,6 +2,16 @@
 
 Project only `/home/absint0o/projects/relayloom`. Full owner contract remains `PROJECT-BRIEF.md`; goal active and incomplete. PT-PT. Preserve Astra/Copilot Ultra, all providers/auth/bridge/permissions/safety settings; no unrelated files/projects/services, no root/purchases. Project caches, one heavy build at a time, at least15GiB free. Normal coherent verified commits/pushes authorized; never force-push or merge PRs. No new/resumed agents in the current sequential recovery workflow.
 
+## Current CI follow-up and group foundation
+
+Remote f93e741 was tested by CI34669716466. Node on three OS, native Go and Windows/macOS desktop packages passed. Linux dev smoke failed with UnknownVizError while capturing a hidden compositor surface; iOS26.5/Xcode26.6 built but bootstatus timed out after180seconds during initial LaunchServices/CoreLocation migration. The owned simulator was deleted; no app/XCUITest executed. See `docs/CI-F93E741-FOLLOWUP.md` and sanitized `docs/evidence/ios/f93e741`.
+
+The local desktop dev smoke now captures a nonempty actual presentation frame from its mapped test window without focus/security/GPU changes; native dev smoke and rebuilt packaged smoke passed. The iOS first-boot budget is600seconds within the same20-minute global and15GiB guards; syntax and11 host runner tests passed. These two CI-environment fixes need their next actual CI run after push. All local exec handles for these checks are completed; revalidate new handles before waiting/restarting.
+
+The Go group foundation is committed ase673958, with8 Go tests passing under race and a real Node↔Go vector case passing. The native test command includes./groups and the vector test is in the interop suite. Node fixture input/private keys stay only in temporary project cache and are removed after the owned process exits; published evidence has no private keys. App/network/UI integration is still absent. `docs/GROUP-CERTIFICATES.md` and `.codex-delivery/GROUP-IMPLEMENTATION.md` supersede earlier draft-only notes below.
+
+Next: push CI capture/boot fixes normally and observe their run; while it runs, implement the protected group registry and then proof synchronization/admission/UI without touching the published runtime sources under CI. No new/resumed agents. Once group packages are imported by the runtime, extend the mixed-test production source digest to include `packages/groups/src` and `native/groups`.
+
 ## Latest verified work
 
 - Earlier five milestones were pushed as3d6641a. Its CI34663513261 passed Node Windows/macOS/Linux and Go unit/race, but failed the Go-sender mixed outbox expiry/pin assertion. Desktop/iOS jobs were skipped. This was a product snapshot inconsistency, distinct from the owner-reported Copilot408.

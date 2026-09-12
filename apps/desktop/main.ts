@@ -395,10 +395,43 @@ async function smokeCheck(view: BrowserWindow, ready: DaemonReady) {
   if (processMetrics?.sandboxed === false)
     throw new Error("O processo da interface não tem sandbox.");
   const evidence = join(repository, ".cache", "desktop");
-  writeFileSync(
-    join(evidence, "smoke.png"),
-    (await view.webContents.capturePage()).toPNG(),
-  );
+  // A loaded hidden DOM need not have a compositor surface on Xvfb. Capture
+  // an actual presented frame after mapping only this test window, without
+  // taking focus or changing GPU/sandbox/security preferences.
+  const frame = await new Promise<Buffer>((resolveFrame, rejectFrame) => {
+    let settled = false;
+    const finish = (error?: Error, bytes?: Buffer) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timeout);
+      if (!view.webContents.isDestroyed())
+        view.webContents.endFrameSubscription();
+      view.off("closed", closed);
+      if (error) rejectFrame(error);
+      else resolveFrame(bytes!);
+    };
+    const closed = () => finish(new Error("A janela fechou antes da captura."));
+    const timeout = setTimeout(
+      () =>
+        finish(
+          new Error("Nenhum frame apresentado dentro do prazo de captura."),
+        ),
+      15000,
+    );
+    view.once("closed", closed);
+    view.webContents.beginFrameSubscription(false, (image) => {
+      if (
+        image.isEmpty() ||
+        image.getSize().width < 1 ||
+        image.getSize().height < 1
+      )
+        return;
+      finish(undefined, image.toPNG());
+    });
+    view.showInactive();
+    view.webContents.invalidate();
+  });
+  writeFileSync(join(evidence, "smoke.png"), frame);
   const report = {
     result: "pass",
     at: new Date().toISOString(),
@@ -420,6 +453,7 @@ async function smokeCheck(view: BrowserWindow, ready: DaemonReady) {
     tcpListener: "127.0.0.1",
     physicalRadio: "not tested",
     screenshot: ".cache/desktop/smoke.png",
+    screenshotSource: "presented compositor frame from mapped test window",
   };
   quitting = true;
   await stopDaemon();

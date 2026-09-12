@@ -300,7 +300,12 @@ async function main(argv) {
     writeJSON(ownershipPath, context.owned); report.udid = udid;
     if (created.failure || created.code !== 0) throw created.failure ?? new Error('Simulator creation reported an uncertain failure');
     await tool('boot-owned', 'xcrun', ['simctl', 'boot', udid]);
-    await tool('wait-owned-boot', 'xcrun', ['simctl', 'bootstatus', udid, '-b'], 180_000);
+    // The observed first boot on the Apple runner was still migrating
+    // LaunchServices/CoreLocation data at 180 seconds. Wait for that same
+    // owned device, with a finite cold-boot budget and the existing global
+    // deadline/disk guards; never restart it or skip boot readiness.
+    report.firstBootBudgetMs = 600_000;
+    await tool('wait-owned-boot', 'xcrun', ['simctl', 'bootstatus', udid, '-b'], report.firstBootBudgetMs);
     report.simulatorBooted = true;
 
     const { tsImport } = await import('tsx/esm/api');

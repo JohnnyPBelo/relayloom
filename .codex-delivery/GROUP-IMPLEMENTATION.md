@@ -15,3 +15,5 @@ The application still has fixed groups; the Node module is not integrated into r
 ## Continuation after corrective gates
 
 The expiry/layout corrections and final Android gates passed and are consolidated. Node foundation committed asb541fb7. A separate Go draft now exists in `native/groups/{types,crypto,decode,verify,create}.go`, still uncompiled/untested and not imported by app/mobile. Add real Go tests and bidirectional vectors before registry/API/UI integration or feature claims. No new agents were created or resumed.
+
+The subsequent Go foundation is committed as `e673958`:8 Go unit tests passed with race, the separate Node-driven Go fixture passed bidirectionally with real signatures/ciphertext, and typecheck passed. Exact scope/commands/source hashes are in `docs/GROUP-CERTIFICATES.md` and `docs/evidence/group-certificates/interoperability.json`. The package is included in the native CI test command. No application imports it yet; next work is the protected registry and proof synchronization, followed by actual admission/outbox/UI integration. Do not equate library/vector success with dynamic-group support.
