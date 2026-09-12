@@ -1,0 +1,90 @@
+import { randomBytes } from "node:crypto";
+import { canonical, hash } from "../../packages/core/src/index.js";
+import { ProtectedGroupStore } from "../../packages/groups/src/storage.js";
+
+/** Build a genuinely encrypted, signed, near-limit index in one SQLite commit.
+ * Direct batch setup avoids O(n²) setup work. All subsequent checks use the
+ * public store API. Every filler row has the correct key/revision/AAD. */
+export function populateIndex(store: ProtectedGroupStore, targetBytes: number) {
+  if (
+    !Number.isInteger(targetBytes) ||
+    targetBytes < 3 * 1024 ** 2 ||
+    targetBytes >= 4 * 1024 ** 2
+  )
+    throw new Error("fixture index target out of bounds");
+  const internal = store as any,
+    body = store.view((tx) => tx.indexBody());
+  body.revision++;
+  const plain = Buffer.from("synthetic ordinary metadata");
+  const rows: { entry: any; envelope: Buffer }[] = [];
+  const row = (key: string, slot = randomBytes(32).toString("hex")) => {
+    const envelope: Buffer = internal.seal(
+      plain,
+      internal.aad(body.storeId, key, body.revision),
+    );
+    return {
+      entry: {
+        key,
+        slot,
+        revision: body.revision,
+        digest: hash(envelope),
+        bytes: envelope.length,
+        storageClass: "data" as const,
+      },
+      envelope,
+    };
+  };
+  let size =
+    Buffer.byteLength(canonical({ body, signature: "A".repeat(88) })) + 61;
+  for (let n = 0; n < 20000; n++) {
+    const next = row("fill:" + String(n).padStart(5, "0")),
+      addition =
+        Buffer.byteLength(canonical(next.entry)) +
+        (body.entries.length ? 1 : 0);
+    if (size + addition > targetBytes) break;
+    body.entries.push(next.entry);
+    rows.push(next);
+    size += addition;
+  }
+  let remaining = targetBytes - size;
+  for (let i = rows.length - 1; remaining > 0 && i >= 0; i--) {
+    const old = rows[i],
+      padding = Math.min(remaining, 160 - old.entry.key.length);
+    const replacement = row(
+      old.entry.key + "x".repeat(padding),
+      old.entry.slot,
+    );
+    const position = body.entries.indexOf(old.entry);
+    body.entries[position] = replacement.entry;
+    rows[i] = replacement;
+    remaining -= padding;
+  }
+  if (
+    remaining ||
+    Buffer.byteLength(canonical({ body, signature: "A".repeat(88) })) + 61 !==
+      targetBytes
+  )
+    throw new Error("fixture did not reach the exact index size");
+  internal.db.exec("BEGIN IMMEDIATE");
+  try {
+    const insert = internal.db.prepare(
+      "INSERT INTO records(slot,payload) VALUES(?,?)",
+    );
+    for (const r of rows) insert.run(r.entry.slot, r.envelope);
+    internal.saveIndex(body);
+    internal.db.exec("COMMIT");
+  } catch (error) {
+    internal.db.exec("ROLLBACK");
+    throw error;
+  }
+  return {
+    count: rows.length,
+    sampleKeys: [
+      rows[0].entry.key,
+      rows[Math.floor(rows.length / 2)].entry.key,
+      rows.at(-1)!.entry.key,
+    ],
+    plain,
+    indexBytes: targetBytes,
+  };
+}

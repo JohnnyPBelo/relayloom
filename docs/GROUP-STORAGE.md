@@ -41,3 +41,16 @@ Subsequent source review found `LIKE 'sqlite_%'` treated `_` as a wildcard, allo
 The full index is decrypted/verified once per transaction; individual records are read on demand. Near-capacity throughput and the eventual application's group-history rendering cost remain unmeasured. The quota checks are not a throughput claim.
 
 Next: the authority registry and proof sync, serialized message/outbox admission, UI and complete integration gates. Group certificates and these storage tests do not complete dynamic-group acceptance.
+
+
+## Reserva do índice — correcção posterior de capacidade
+
+A revisão da autoridade reproduziu uma falha com um índice SQLite real, cifrado e assinado quase no limite de4MiB: um novo checkpoint de paragem era recusado apesar de ainda existir reserva no orçamento global de metadados. O controlo de crescimento normal também falhou antes da correcção. A evidência original está em `evidence/group-authority/index-reserve/before.log` e o teste exacto anterior foi preservado.
+
+Os dois motores reservam agora `min(128KiB, reserveBytes/4)` dentro do limite do índice para as entradas de checkpoints/recibos. A contribuição canónica das entradas normais não pode consumir essa margem. `indexBytes`, `ordinaryIndexBytes` e `indexReserveBytes` são expostos na contagem de espaço. A reserva total de4MiB e os limites de52KiB por checkpoint/2KiB por operação comportam64 grupos e256 recibos, incluindo o respectivo índice. Não há alteração de primitivas criptográficas nem de serviços/permissões.
+
+Um índice anterior que exceda a nova margem é recusado sem ser apagado ou reposto; não há migração destrutiva implícita. A biblioteca de autoridade ainda não está em utilização pela aplicação, pelo que não se anuncia migração de grupos de utilizadores. O teste de construção inválida confirma rollback e preservação de dados existentes.
+
+Passaram14 testes Node de armazenamento/índice (8.196s),11 Go de armazenamento com race (2.439s), e dois testes de ficheiros/processos Node↔Go (12.660s). O novo caso partilha18 717 registos válidos: o executável Go corrigido guarda a paragem; uma variante de teste criada com overlay temporário e apenas a condição de reserva retirada falha o mesmo controlo e reverte a transacção. Essa fixture grande foi compilada sem race; o gate unitário Go usa race. A fonte de produção não é modificada pelo controlo negativo. Uma anotação literal TypeScript na fixture foi corrigida depois e o build/typecheck voltou a passar, sem alteração de comportamento.
+
+Estes gates são posteriores ao conjunto alargado133 Node/95 Go/11 interop/15 UI por núcleo/desktop Linux, que precede esta última correcção exclusiva das bibliotecas de grupos. As verificações posteriores da autoridade com o novo limite passaram25 Node (23 de autoridade e2 do índice),12 Go com race e a interoperabilidade real de autoridade; os comandos/hashes próprios estão em `evidence/group-authority/final`. Não substituir silenciosamente as versões dos relatórios anteriores.

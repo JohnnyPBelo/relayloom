@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "node_modules/.bin/tsx",
+    "--test",
+    "--test-concurrency=1",
+    "tests/group-index-reserve.test.ts"
+  ],
+  "exitCode": 1,
+  "testsFailed": 2,
+  "sourceSHA256": {
+    "packages/groups/src/storage.ts": "61e589ffc70f23616c1cac54856380e692c5a06335d6f2485e40143c7330dde7",
+    "native/groupstore/format.go": "ba3e8dfec2fb52e17c8adfc30e13737e5211b63d7b60509c9e9c4d4a803d904b",
+    "tests/group-index-reserve.test.ts": "68d1afc8b1dacb59cd913650f0c1a3db8e5fe5d836182d7bdd3b203fb67cd656",
+    "tests/fixtures/group-index-fixture.ts": "de644762eda5886266b5c48dd2b807168607d82644204a089bb0bb04a841f6cb"
+  },
+  "outputSHA256": "3f0615b6871a7dca14326164f3beb6a39491bb84f081978796a801b254188b32"
+}

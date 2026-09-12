@@ -1,0 +1,22 @@
+{
+  "command": "node_modules/.bin/tsx --test --test-concurrency=1 tests/group-storage.test.ts tests/group-index-reserve.test.ts",
+  "startedAt": "2026-09-12T09:15:17.119116+00:00",
+  "status": "passed",
+  "sourceSHA256": {
+    "packages/groups/src/storage.ts": "9eaaf44411bfa4accdea8f82b7d5f5c4cc5b2bedf9296e1b1d2c46d3fe4ac21b",
+    "native/groupstore/store_test.go": "56826b7f3d72ffc5e394762f1fe604528b85d31f9c7b2acb7af20a50f278c23e",
+    "native/groupstore/format.go": "81b770aeb30bfa3e3fa5aed7194c07b35d2d1f5f59cd0533356e709fdcce938b",
+    "native/groupstore/store.go": "86ece015984ee768117068ebfc0cc99e3d1cd61b33f1607dd5dfb988590059d5",
+    "native/groupstore/worker_test.go": "a16d7da09fb34abacb9c60e6da60b67ed86b933fa8201d0917aac5e132aef75a",
+    "native/groupstore/integrity_test.go": "245e11b6fa1a8c326994c454ab6c237e6501971f9b33aa379a8429ec306dc93f",
+    "tests/group-index-reserve.test.ts": "95cf9417c113ec8f9696c8d40b47f6b4120d9f2352714f61f56f8eb1275d9fe1",
+    "tests/fixtures/group-index-fixture.ts": "de644762eda5886266b5c48dd2b807168607d82644204a089bb0bb04a841f6cb",
+    "tests/native/group-index-reserve.test.ts": "d37605b3706c9fc738e05e0f396e1cfc48ffad4150b20620620f72043a4828d7"
+  },
+  "supervisorPID": 2177837,
+  "childPID": 2177838,
+  "exitCode": 0,
+  "elapsedSeconds": 8.196,
+  "sourceUnchanged": true,
+  "outputSHA256": "94827c5f24abf22972b13d8b3afb7595ace5d2f38d1daf17690e6d57831a4897"
+}

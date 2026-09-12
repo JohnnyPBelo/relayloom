@@ -3,6 +3,7 @@ package groupstore
 import (
 	"bufio"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"strconv"
@@ -18,7 +19,7 @@ func TestStoreProcessWorker(t *testing.T) {
 	if config == "" {
 		t.Skip("executed by the Node cross-runtime process test")
 	}
-	var input struct{ Mode, Path, IdentityPath, Marker string }
+	var input struct{ Mode, Path, IdentityPath, Marker, StoreID string }
 	if err := json.Unmarshal([]byte(config), &input); err != nil {
 		t.Fatal(err)
 	}
@@ -30,7 +31,7 @@ func TestStoreProcessWorker(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	s, err := Open(input.Path, identity, Options{Create: input.Mode == "create"})
+	s, err := Open(input.Path, identity, Options{Create: input.Mode == "create", ExpectedStoreID: input.StoreID})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -93,6 +94,35 @@ func TestStoreProcessWorker(t *testing.T) {
 		})
 	case "read":
 		err = s.View(func(tx *Tx) error { _, _, e := tx.Get("head:go"); return e })
+	case "index-reserve":
+		err = s.Update(func(tx *Tx) error {
+			accepted := 0
+			for i := 0; i < 16; i++ {
+				e := tx.Put(fmt.Sprintf("growth:go:%d", i), []byte{}, Data)
+				if errors.Is(e, ErrCapacity) {
+					if accepted == 0 {
+						return fmt.Errorf("positive ordinary-index control failed")
+					}
+					return tx.Put("checkpoint:go-stop", []byte("left"), Checkpoint)
+				}
+				if e != nil {
+					return e
+				}
+				accepted++
+			}
+			return fmt.Errorf("ordinary index growth consumed protected index headroom")
+		})
+		if err == nil {
+			accounting, e := s.Accounting()
+			if e != nil {
+				t.Fatal(e)
+			}
+			data, e := json.Marshal(accounting)
+			if e != nil {
+				t.Fatal(e)
+			}
+			err = os.WriteFile(input.Marker, data, 0600)
+		}
 	case "recover":
 		err = s.View(func(tx *Tx) error {
 			data, ok, e := tx.Get("counter")

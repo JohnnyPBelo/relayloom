@@ -306,3 +306,40 @@ func TestPanicRollsBackAndReleasesTransaction(t *testing.T) {
 		return err
 	}))
 }
+
+func TestAuthenticatedMetadataReadAccessorsRespectTransactionLifetime(t *testing.T) {
+	path, id := fixture(t)
+	store := openFor(t, path, id, Options{Create: true})
+	var escaped *Tx
+	must(t, store.Update(func(tx *Tx) error { escaped = tx; return tx.Put("binding", []byte("value"), Data) }))
+	must(t, store.View(func(tx *Tx) error {
+		owner, err := tx.Owner()
+		if err != nil {
+			return err
+		}
+		if owner != id.Public.ID {
+			t.Fatal("wrong owner")
+		}
+		revision, exists, err := tx.RecordRevision("binding")
+		if err != nil {
+			return err
+		}
+		if !exists || revision != 1 {
+			t.Fatal("wrong record revision")
+		}
+		_, exists, err = tx.RecordRevision("absent")
+		if err != nil {
+			return err
+		}
+		if exists {
+			t.Fatal("absent revision invented")
+		}
+		return nil
+	}))
+	if _, err := escaped.Owner(); !errors.Is(err, ErrTransaction) {
+		t.Fatalf("escaped owner: %v", err)
+	}
+	if _, _, err := escaped.RecordRevision("binding"); !errors.Is(err, ErrTransaction) {
+		t.Fatalf("escaped revision: %v", err)
+	}
+}

@@ -57,6 +57,9 @@ export interface RegistryAccounting extends RegistryLimits {
   records: number;
   serializedBytes: number;
   ordinaryBytes: number;
+  indexBytes: number;
+  ordinaryIndexBytes: number;
+  indexReserveBytes: number;
   sqliteBytes: number;
   sqliteMaximumBytes: number;
 }
@@ -401,19 +404,30 @@ export class ProtectedGroupStore {
   private checkCapacity(b: IndexBody, indexBytes: number) {
     const rows = b.entries.reduce((sum, e) => sum + e.bytes + 64, 0);
     const ordinary = b.entries.filter((e) => e.storageClass === "data");
+    const ordinaryIndexBytes = Buffer.byteLength(canonical(ordinary));
+    const indexReserveBytes = Math.min(
+      128 * 1024,
+      Math.floor(b.limits.reserveBytes / 4),
+    );
     const ordinaryBytes =
-      ordinary.reduce((sum, e) => sum + e.bytes + 64, 0) +
-      Buffer.byteLength(canonical(ordinary));
+      ordinary.reduce((sum, e) => sum + e.bytes + 64, 0) + ordinaryIndexBytes;
     const serializedBytes = rows + indexBytes + 64;
     if (
       indexBytes > MAX_INDEX ||
+      ordinaryIndexBytes > MAX_INDEX - indexReserveBytes ||
       serializedBytes > b.limits.totalBytes ||
       ordinaryBytes > b.limits.totalBytes - b.limits.reserveBytes
     )
       throw new RegistryCapacityError(
         "Capacidade protegida do registo atingida",
       );
-    return { serializedBytes, ordinaryBytes };
+    return {
+      serializedBytes,
+      ordinaryBytes,
+      indexBytes,
+      ordinaryIndexBytes,
+      indexReserveBytes,
+    };
   }
   private saveIndex(b: IndexBody) {
     b.entries.sort((a, z) => (a.key < z.key ? -1 : a.key > z.key ? 1 : 0));

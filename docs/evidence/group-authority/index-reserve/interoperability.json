@@ -1,0 +1,23 @@
+{
+  "startedAt": "2026-09-12T09:15:28.354Z",
+  "completedAt": "2026-09-12T09:15:38.603Z",
+  "rows": 18717,
+  "initialIndexBytes": 4062232,
+  "sourceSHA256": "81b770aeb30bfa3e3fa5aed7194c07b35d2d1f5f59cd0533356e709fdcce938b",
+  "controls": {
+    "disabled": {
+      "exitCode": 1,
+      "binarySHA256": "699a3d509f81760c9d0bf9f2c9ad81ae0c6580b2e34e14b54ee6f2ee0b0be7e9",
+      "output": "=== RUN   TestStoreProcessWorker\n    worker_test.go:148: ordinary index growth consumed protected index headroom\n--- FAIL: TestStoreProcessWorker (3.46s)\nFAIL\n"
+    },
+    "guarded": {
+      "exitCode": 0,
+      "binarySHA256": "5e18107369f7eab84f84768d37a3f0a5387943ec0a42f5c529694dd269f9bd5c",
+      "output": "=== RUN   TestStoreProcessWorker\n--- PASS: TestStoreProcessWorker (2.85s)\nPASS\n"
+    }
+  },
+  "limitations": [
+    "Linux local storage processes; this fixture was compiled without race instrumentation",
+    "the negative binary uses a temporary Go overlay disabling only ordinary-index headroom; production source stays intact"
+  ]
+}

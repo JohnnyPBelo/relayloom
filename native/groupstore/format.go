@@ -61,6 +61,9 @@ type Accounting struct {
 	Records            int   `json:"records"`
 	SerializedBytes    int   `json:"serializedBytes"`
 	OrdinaryBytes      int   `json:"ordinaryBytes"`
+	IndexBytes         int   `json:"indexBytes"`
+	OrdinaryIndexBytes int   `json:"ordinaryIndexBytes"`
+	IndexReserveBytes  int   `json:"indexReserveBytes"`
 	SQLiteBytes        int64 `json:"sqliteBytes"`
 	SQLiteMaximumBytes int64 `json:"sqliteMaximumBytes"`
 }
@@ -262,7 +265,10 @@ func account(b indexBody, indexBytes int) (Accounting, error) {
 		return result, err
 	}
 	result.OrdinaryBytes += len(encoded)
-	if indexBytes > maxIndex || result.SerializedBytes > b.Limits.TotalBytes || result.OrdinaryBytes > b.Limits.TotalBytes-b.Limits.ReserveBytes {
+	result.IndexBytes = indexBytes
+	result.OrdinaryIndexBytes = len(encoded)
+	result.IndexReserveBytes = min(128*1024, b.Limits.ReserveBytes/4)
+	if indexBytes > maxIndex || result.OrdinaryIndexBytes > maxIndex-result.IndexReserveBytes || result.SerializedBytes > b.Limits.TotalBytes || result.OrdinaryBytes > b.Limits.TotalBytes-b.Limits.ReserveBytes {
 		return result, ErrCapacity
 	}
 	return result, nil

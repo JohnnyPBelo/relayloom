@@ -500,3 +500,22 @@ func (tx *Tx) Accounting() (Accounting, error) {
 	result.SQLiteBytes = pages * 4096
 	return result, nil
 }
+
+// Owner and RecordRevision expose authenticated binding without sharing the
+// mutable index. They obey the same transaction lifetime as Get and Accounting.
+func (tx *Tx) Owner() (string, error) {
+	if err := tx.check(false); err != nil {
+		return "", err
+	}
+	return tx.body.Owner, nil
+}
+func (tx *Tx) RecordRevision(key string) (int64, bool, error) {
+	if err := tx.check(false); err != nil {
+		return 0, false, err
+	}
+	if !keyPattern.MatchString(key) {
+		return 0, false, errors.New("chave de registo inválida")
+	}
+	e, i := tx.find(key)
+	return e.Revision, i >= 0, nil
+}
