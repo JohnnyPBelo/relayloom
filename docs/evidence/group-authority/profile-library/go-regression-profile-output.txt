@@ -1,0 +1,20 @@
+{"Time":"2026-09-12T09:42:59.697244647+01:00","Action":"start","Package":"github.com/JohnnyPBelo/relayloom/native/groupauthority"}
+{"Time":"2026-09-12T09:42:59.708631173+01:00","Action":"run","Package":"github.com/JohnnyPBelo/relayloom/native/groupauthority","Test":"TestRetirementStillChecksEachSignatureAfterCachingAGroup"}
+{"Time":"2026-09-12T09:42:59.70865592+01:00","Action":"output","Package":"github.com/JohnnyPBelo/relayloom/native/groupauthority","Test":"TestRetirementStillChecksEachSignatureAfterCachingAGroup","Output":"=== RUN   TestRetirementStillChecksEachSignatureAfterCachingAGroup\n"}
+{"Time":"2026-09-12T09:43:25.579674482+01:00","Action":"output","Package":"github.com/JohnnyPBelo/relayloom/native/groupauthority","Test":"TestRetirementStillChecksEachSignatureAfterCachingAGroup","Output":"--- PASS: TestRetirementStillChecksEachSignatureAfterCachingAGroup (25.87s)\n"}
+{"Time":"2026-09-12T09:43:25.579723334+01:00","Action":"pass","Package":"github.com/JohnnyPBelo/relayloom/native/groupauthority","Test":"TestRetirementStillChecksEachSignatureAfterCachingAGroup","Elapsed":25.87}
+{"Time":"2026-09-12T09:43:25.579904884+01:00","Action":"output","Package":"github.com/JohnnyPBelo/relayloom/native/groupauthority","Output":"PASS\n"}
+{"Time":"2026-09-12T09:43:26.585559451+01:00","Action":"output","Package":"github.com/JohnnyPBelo/relayloom/native/groupauthority","Output":"ok  \tgithub.com/JohnnyPBelo/relayloom/native/groupauthority\t26.888s\n"}
+{"Time":"2026-09-12T09:43:26.585614394+01:00","Action":"pass","Package":"github.com/JohnnyPBelo/relayloom/native/groupauthority","Elapsed":26.888}
+{"Time":"2026-09-12T09:43:27.039872339+01:00","Action":"start","Package":"github.com/JohnnyPBelo/relayloom/native/profilelock"}
+{"Time":"2026-09-12T09:43:27.048699943+01:00","Action":"run","Package":"github.com/JohnnyPBelo/relayloom/native/profilelock","Test":"TestExclusiveOwnershipIndependentProfilesAndRestart"}
+{"Time":"2026-09-12T09:43:27.048749175+01:00","Action":"output","Package":"github.com/JohnnyPBelo/relayloom/native/profilelock","Test":"TestExclusiveOwnershipIndependentProfilesAndRestart","Output":"=== RUN   TestExclusiveOwnershipIndependentProfilesAndRestart\n"}
+{"Time":"2026-09-12T09:43:27.081850092+01:00","Action":"output","Package":"github.com/JohnnyPBelo/relayloom/native/profilelock","Test":"TestExclusiveOwnershipIndependentProfilesAndRestart","Output":"--- PASS: TestExclusiveOwnershipIndependentProfilesAndRestart (0.03s)\n"}
+{"Time":"2026-09-12T09:43:27.081913471+01:00","Action":"pass","Package":"github.com/JohnnyPBelo/relayloom/native/profilelock","Test":"TestExclusiveOwnershipIndependentProfilesAndRestart","Elapsed":0.03}
+{"Time":"2026-09-12T09:43:27.082203113+01:00","Action":"run","Package":"github.com/JohnnyPBelo/relayloom/native/profilelock","Test":"TestEmptyInitializationAndForeignFile"}
+{"Time":"2026-09-12T09:43:27.082214975+01:00","Action":"output","Package":"github.com/JohnnyPBelo/relayloom/native/profilelock","Test":"TestEmptyInitializationAndForeignFile","Output":"=== RUN   TestEmptyInitializationAndForeignFile\n"}
+{"Time":"2026-09-12T09:43:27.097278909+01:00","Action":"output","Package":"github.com/JohnnyPBelo/relayloom/native/profilelock","Test":"TestEmptyInitializationAndForeignFile","Output":"--- PASS: TestEmptyInitializationAndForeignFile (0.02s)\n"}
+{"Time":"2026-09-12T09:43:27.097306902+01:00","Action":"pass","Package":"github.com/JohnnyPBelo/relayloom/native/profilelock","Test":"TestEmptyInitializationAndForeignFile","Elapsed":0.02}
+{"Time":"2026-09-12T09:43:27.097606713+01:00","Action":"output","Package":"github.com/JohnnyPBelo/relayloom/native/profilelock","Output":"PASS\n"}
+{"Time":"2026-09-12T09:43:28.100574418+01:00","Action":"output","Package":"github.com/JohnnyPBelo/relayloom/native/profilelock","Output":"ok  \tgithub.com/JohnnyPBelo/relayloom/native/profilelock\t1.061s\n"}
+{"Time":"2026-09-12T09:43:28.100635653+01:00","Action":"pass","Package":"github.com/JohnnyPBelo/relayloom/native/profilelock","Elapsed":1.061}

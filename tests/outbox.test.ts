@@ -30,20 +30,25 @@ function fixture(t: any, name = "Sender") {
   mkdirSync(".cache", { recursive: true });
   const dir = mkdtempSync(join(process.cwd(), ".cache/outbox-"));
   const node = new LoomNode(dir);
+  const owned = [node];
+  const track = (next: LoomNode) => {
+    owned.push(next);
+    return next;
+  };
   node.setup(name, password);
   t.after(async () => {
-    await node.stop();
+    for (const current of owned) await current.stop();
     rmSync(dir, { recursive: true, force: true });
   });
   const b = createIdentity("Recipient B"),
     c = createIdentity("Recipient C");
   node.addContact(b.public);
   node.addContact(c.public);
-  return { node, b, c, dir };
+  return { node, b, c, dir, track };
 }
 
 test("offline send is encrypted, pinned, idempotent and recovers the same operation after restart", async (t) => {
-  const { node, b, dir } = fixture(t),
+  const { node, b, dir, track } = fixture(t),
     operationId = randomUUID(),
     content = { type: "message", text: "Pending private message" };
   node.settings({ relay: false });
@@ -69,8 +74,7 @@ test("offline send is encrypted, pinned, idempotent and recovers the same operat
   assert.deepEqual(node.state().outbox, []);
   assert.throws(() => node.retryOutbox(operationId));
   await node.stop();
-  const resumed = new LoomNode(dir);
-  t.after(() => resumed.stop());
+  const resumed = track(new LoomNode(dir));
   assert.deepEqual(resumed.state().outbox, []);
   resumed.unlock(password);
   assert.equal(resumed.config.relay, false);
@@ -80,7 +84,7 @@ test("offline send is encrypted, pinned, idempotent and recovers the same operat
 });
 
 test("preparing journal reconciles surviving exact bytes and never regenerates missing content", async (t) => {
-  const { node, b, dir } = fixture(t),
+  const { node, b, dir, track } = fixture(t),
     content = { type: "message", text: "Atomic interval" };
   const persist = (node as any).persistPrivate.bind(node);
   let writes = 0;
@@ -137,7 +141,7 @@ test("transport rejection after local acceptance stays pending and cannot crash 
 });
 
 test("per-reader signed delivery/read confirmations survive paging, replay, eviction and restart", async (t) => {
-  const { node, b, c, dir } = fixture(t),
+  const { node, b, c, dir, track } = fixture(t),
     owner = node.identity!;
   const sent = node.send(
     randomUUID(),
@@ -193,8 +197,7 @@ test("per-reader signed delivery/read confirmations survive paging, replay, evic
     .filter((m) => ["receipt", "delivery"].includes(m.kind)))
     node.store.remove(manifest.id);
   await node.stop();
-  const resumed = new LoomNode(dir);
-  t.after(() => resumed.stop());
+  const resumed = track(new LoomNode(dir));
   resumed.unlock(password);
   assert.deepEqual(resumed.state().outbox[0], item);
 });
@@ -273,7 +276,7 @@ test("expiry remains visible after payload removal and explicit user pin is pres
 });
 
 test("corrupted reserved bytes become unavailable without a new signed publication", async (t) => {
-  const { node, b, dir } = fixture(t),
+  const { node, b, dir, track } = fixture(t),
     op = randomUUID(),
     content = { type: "message", text: "Original bytes" };
   const sent = node.send(op, content, [b.public.id]);

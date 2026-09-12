@@ -37,9 +37,9 @@ npm run test:e2e
 
 A pasta `docs/evidence` guarda relatórios e imagens de execuções reais; os dados de teste são fictícios, criados pelas fixtures. Uma configuração CI não prova que um job correu: resultados efectivamente observados constam de STATUS.
 
-No checkpoint `b09f7f5` passaram os jobs Node/Go e os pacotes desktop dos três OS, incluindo execução Linux com Xvfb. O simulador iOS arrancou e recebeu a app, mas o gate falhou ao importar a fotografia de teste, antes do XCUITest. Compilação/instalação não são execução da aplicação; ver [STATUS](docs/STATUS.md) e [evidência iOS](docs/evidence/ios/b09f7f5/simulator-report.json).
+No checkpoint `0289ec7` passaram os jobs Node/Go e os pacotes desktop dos três OS, incluindo execução Linux com Xvfb. O simulador iOS arrancou e recebeu a app, mas o gate falhou ao importar a fotografia de teste, antes do XCUITest. Compilação/instalação não são execução da aplicação; ver [STATUS](docs/STATUS.md) e [evidência iOS](docs/evidence/ios/0289ec7/simulator-report.json).
 
-A fundação de armazenamento de grupos tem agora versões Node/Go com ficheiros cifrados interoperáveis, transacções e testes reais de concorrência/corrupção/recuperação. A integração de grupos dinâmicos na aplicação e UI está pendente; [GROUP-STORAGE](docs/GROUP-STORAGE.md) separa os gates executados e as limitações.
+A fundação de armazenamento de grupos tem agora versões Node/Go com ficheiros cifrados interoperáveis, transacções e testes reais de concorrência/corrupção/recuperação. A abertura exclusiva do perfil entre processos Node/Go está integrada e tem testes reais de recuperação. A integração de grupos dinâmicos na aplicação e UI está pendente; [GROUP-STORAGE](docs/GROUP-STORAGE.md) e [GROUP-AUTHORITY](docs/GROUP-AUTHORITY.md) separam os gates executados e as limitações.
 
 ## Segurança e limites actuais
 

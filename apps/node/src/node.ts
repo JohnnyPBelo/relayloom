@@ -1,5 +1,6 @@
 import { mkdirSync, existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { ProfileOwnership } from "../../../packages/profile/src/ownership.js";
 import { EventEmitter } from "node:events";
 import {
   createIdentity,
@@ -119,55 +120,84 @@ export class LoomNode extends EventEmitter {
   private routes = new Map<string, unknown>();
   private requests = new Map<string, number>();
   private cancellations: (() => void)[] = [];
+  private readonly ownership: ProfileOwnership;
+  private stopped = false;
+  private stopping?: Promise<void>;
   constructor(readonly dir: string) {
     super();
     mkdirSync(dir, { recursive: true, mode: 0o700 });
-    this.config = existsSync(join(dir, "config.json"))
-      ? JSON.parse(readFileSync(join(dir, "config.json"), "utf8"))
-      : {
-          contacts: [],
-          blocked: [],
-          following: [],
-          saved: [],
-          reports: [],
-          relay: true,
-          lowPower: false,
-          quota: 128 * 1024 * 1024,
-          peers: [],
-        };
-    this.store = new ContentStore(join(dir, "store"), this.config.quota);
-    this.router = new Router({
-      relay: this.config.relay,
-      validate: (payload) => this.validateWire(payload),
-    });
-    this.router.lowPower = this.config.lowPower;
-    this.router.on("payload", (payload, route) => this.receive(payload, route));
-    this.router.on("transportError", (message) => {
-      this.lastTransportError = message;
-    });
-    this.syncTimer = setInterval(() => this.sync(), 2200);
-    this.syncTimer.unref();
+    this.ownership = new ProfileOwnership(dir);
+    try {
+      this.config = existsSync(join(dir, "config.json"))
+        ? JSON.parse(readFileSync(join(dir, "config.json"), "utf8"))
+        : {
+            contacts: [],
+            blocked: [],
+            following: [],
+            saved: [],
+            reports: [],
+            relay: true,
+            lowPower: false,
+            quota: 128 * 1024 * 1024,
+            peers: [],
+          };
+      this.store = new ContentStore(join(dir, "store"), this.config.quota);
+      this.router = new Router({
+        relay: this.config.relay,
+        validate: (payload) => this.validateWire(payload),
+      });
+      this.router.lowPower = this.config.lowPower;
+      this.router.on("payload", (payload, route) =>
+        this.receive(payload, route),
+      );
+      this.router.on("transportError", (message) => {
+        this.lastTransportError = message;
+      });
+      this.syncTimer = setInterval(() => this.sync(), 2200);
+      this.syncTimer.unref();
+    } catch (error) {
+      this.ownership.close();
+      throw error;
+    }
   }
   get initialized() {
     return existsSync(join(this.dir, "identity.vault"));
   }
   private saveConfig() {
+    this.requireRunning();
     atomic(join(this.dir, "config.json"), JSON.stringify(this.config));
   }
   async start(tcpPort = 0, host = "127.0.0.1") {
+    this.requireRunning();
     this.tcpPort =
       tcpPort === -1 ? -1 : await this.router.listen(tcpPort, host);
     for (const p of this.config.peers)
       this.cancellations.push(this.router.connectTcp(p.host, p.port));
     return this.tcpPort;
   }
-  async stop() {
-    clearInterval(this.syncTimer);
-    for (const cancel of this.cancellations) cancel();
-    await this.router.stop();
-    this.identity = undefined;
+  stop(): Promise<void> {
+    if (this.stopping) return this.stopping;
+    this.stopped = true;
+    this.stopping = (async () => {
+      try {
+        clearInterval(this.syncTimer);
+        for (const cancel of this.cancellations) cancel();
+        await this.router.stop();
+        this.ownership.close();
+      } finally {
+        this.identity = undefined;
+        this.privateState = { mutations: {} };
+        this.summaryCache.clear();
+        this.summaryCacheBytes = 0;
+      }
+    })();
+    return this.stopping;
+  }
+  private requireRunning() {
+    if (this.stopped) throw new Error("Nó encerrado");
   }
   setup(name: string, password: string, recovery?: string) {
+    this.requireRunning();
     if (this.initialized) throw new Error("Já existe uma identidade neste nó");
     const identity = recovery
       ? importVault(recovery, password)
@@ -183,6 +213,7 @@ export class LoomNode extends EventEmitter {
     return identity.public;
   }
   unlock(password: string) {
+    this.requireRunning();
     const identity = importVault(
       readFileSync(join(this.dir, "identity.vault"), "utf8"),
       password,
@@ -204,6 +235,7 @@ export class LoomNode extends EventEmitter {
     this.privateState = { mutations: {} };
   }
   private requireIdentity() {
+    this.requireRunning();
     if (!this.identity) throw new Error("Desbloqueie a identidade");
     return this.identity;
   }
@@ -906,6 +938,7 @@ export class LoomNode extends EventEmitter {
     this.requests.set(id, Date.now());
   }
   private receive(payload: any, route: unknown) {
+    if (this.stopped) return;
     try {
       if (payload.type === "bundle") {
         if (this.config.blocked.includes(payload.bundle.manifest.author.id))
@@ -972,6 +1005,7 @@ export class LoomNode extends EventEmitter {
     }
   }
   sync() {
+    if (this.stopped) return;
     try {
       if (this.identity) {
         const objects = this.objects();
@@ -1059,6 +1093,7 @@ export class LoomNode extends EventEmitter {
     return this.objectsSnapshot().objects;
   }
   private objectsSnapshot(): { objects: DisplayObject[]; outboxAt: number } {
+    this.requireRunning();
     if (!this.identity) return { objects: [], outboxAt: Date.now() };
     const manifests = this.store
       .list()

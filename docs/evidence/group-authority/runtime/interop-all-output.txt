@@ -1,0 +1,86 @@
+
+> relayloom@0.1.0 test:interop
+> tsx --test --test-concurrency=1 tests/native/*.test.ts
+
+TAP version 13
+# (node:2105780) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: real Node/Go authority files preserve heads, cursors, fences, CAS and crash idempotence
+ok 1 - real Node/Go authority files preserve heads, cursors, fences, CAS and crash idempotence
+  ---
+  duration_ms: 22255.886975
+  type: 'test'
+  ...
+# Subtest: Node and Go verify each other's signed group epochs, consent, reader scope and exact Unicode bytes
+ok 2 - Node and Go verify each other's signed group epochs, consent, reader scope and exact Unicode bytes
+  ---
+  duration_ms: 470.623858
+  type: 'test'
+  ...
+# (node:2106641) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Node and Go share encrypted SQLite files, serialize real writers and recover each other's crashed transactions
+ok 3 - Node and Go share encrypted SQLite files, serialize real writers and recover each other's crashed transactions
+  ---
+  duration_ms: 1461.710279
+  type: 'test'
+  ...
+# Subtest: Go A → Node B → Go C: isolated real sockets, encrypted messages/receipts, partition, restart and publisher-offline seeding
+ok 4 - Go A → Node B → Go C: isolated real sockets, encrypted messages/receipts, partition, restart and publisher-offline seeding
+  ---
+  duration_ms: 9640.309753
+  type: 'test'
+  ...
+# Subtest: Go A → Node B → Node C over TCP and serial PTYs preserves bytes, receipts and partition recovery
+ok 5 - Go A → Node B → Node C over TCP and serial PTYs preserves bytes, receipts and partition recovery
+  ---
+  duration_ms: 4617.566973
+  type: 'test'
+  ...
+# Subtest: Node ↔ Go generated vectors preserve canonical bytes, identities, vaults, reader authority, chunks and disk seeds
+ok 6 - Node ↔ Go generated vectors preserve canonical bytes, identities, vaults, reader authority, chunks and disk seeds
+  ---
+  duration_ms: 962.028468
+  type: 'test'
+  ...
+# Subtest: node outbox → go relay → go recipient: durable restart, real ACK control, signed group confirmations and expiry
+ok 7 - node outbox → go relay → go recipient: durable restart, real ACK control, signed group confirmations and expiry
+  ---
+  duration_ms: 40813.765398
+  type: 'test'
+  ...
+# Subtest: go outbox → node relay → node recipient: durable restart, real ACK control, signed group confirmations and expiry
+ok 8 - go outbox → node relay → node recipient: durable restart, real ACK control, signed group confirmations and expiry
+  ---
+  duration_ms: 44575.375222
+  type: 'test'
+  ...
+# Subtest: node application owns its profile until close; another engine recovers its pending outbox
+ok 9 - node application owns its profile until close; another engine recovers its pending outbox
+  ---
+  duration_ms: 1078.961268
+  type: 'test'
+  ...
+# Subtest: go application owns its profile until close; another engine recovers its pending outbox
+ok 10 - go application owns its profile until close; another engine recovers its pending outbox
+  ---
+  duration_ms: 1350.245171
+  type: 'test'
+  ...
+# (node:2146961) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: real Node and Go processes exclude the same profile and recover after owner death
+ok 11 - real Node and Go processes exclude the same profile and recover after owner death
+  ---
+  duration_ms: 4485.20263
+  type: 'test'
+  ...
+1..11
+# tests 11
+# suites 0
+# pass 11
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 134125.597232

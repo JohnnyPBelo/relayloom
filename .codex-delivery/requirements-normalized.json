@@ -254,10 +254,13 @@
       "validation": {
         "evidence_paths": [
           "docs/GROUP-EPOCHS.md",
-          "packages/groups/src/certificates.ts",
-          "tests/group-certificates.test.ts"
+          "packages/groups/src/registry.ts",
+          "native/groupauthority",
+          "tests/group-registry.test.ts",
+          "tests/native/group-authority.test.ts",
+          "docs/evidence/group-authority/node"
         ],
-        "limits": "Grupos fixos reais; biblioteca Node de certificados passou11 testes. Sem registry/API/UI din\u00e2mica; port Go em rascunho, por verificar."
+        "limits": "Grupos fixos reais; bibliotecas de autoridade Node/Go e ficheiros cifrados interoper\u00e1veis com processos reais. Integra\u00e7\u00e3o transaccional de aplica\u00e7\u00e3o/outbox, sincroniza\u00e7\u00e3o, API/UI de grupos din\u00e2micos e revis\u00e3o independente ainda pendentes."
       },
       "evidence": [
         {
@@ -288,6 +291,12 @@
             "tests/group-certificates.test.ts"
           ],
           "notes": "Grupos fixos reais; biblioteca Node de certificados passou11 testes. Sem registry/API/UI din\u00e2mica; port Go em rascunho, por verificar."
+        },
+        {
+          "kind": "post-maintenance-authority-foundation",
+          "result": "partial",
+          "command": "npm run build; npm test; node_modules/.bin/tsx --test tests/native/group-authority.test.ts",
+          "notes": "Build passou;128 testes Node passaram, incluindo22 do registo. Interoperabilidade real de autoridade Node/Go passou em23.119s com hashes inalterados. Gate Go alargado ainda em curso; n\u00e3o constitui suporte de grupos din\u00e2micos na aplica\u00e7\u00e3o."
         }
       ]
     },

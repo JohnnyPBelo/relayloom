@@ -1,0 +1,31 @@
+{
+  "command": "node_modules/.bin/tsx --test --test-concurrency=1 tests/group-registry.test.ts tests/profile-ownership.test.ts",
+  "startedAt": "2026-09-12T08:42:42.334730+00:00",
+  "status": "passed",
+  "sourceSHA256": {
+    "native/groupauthority/state.go": "9815bc13232c42b00051ae648a687fc60b2c5fb1e6867d2ab861c131bd0440d4",
+    "native/groupauthority/types.go": "cbc70dbd91056ced538da629581fb659dca271e2c5b5ca14a6db55c58a5f2ce6",
+    "native/groupauthority/registry_test.go": "3932904b7347799fee6f3d1b3eef61ce4146aaae7bf77f7c5be8edcd4df48420",
+    "native/groupauthority/operation.go": "32fda4f94cc02cb6122831a8aa6ea75c8a5746b340f80c085e3d29e6b089eaa0",
+    "native/groupauthority/observe.go": "ba8cdddde07232e5b6336b3dc688026178e05e0f8535a3ebc61e51d9f68bc29f",
+    "native/groupauthority/worker_test.go": "be0cec92d49a6c6c8ae79690985bcede88a4fc031fcae8650e9c48558426a02e",
+    "native/groupauthority/read.go": "7e542797a5a52cf4857c870077b2edd697c7a687d2935a2396efede1bfe5e261",
+    "native/groupauthority/manage.go": "d817034acf6ceaa8af1ca02628b90f3b6c60d056e62e06e702c5c2ca821ae796",
+    "native/profilelock/ownership_test.go": "a13597ef6447494f764c52e92a0a0fa40f2eeaa4505d7774f0ae0dad2ea64b48",
+    "native/profilelock/ownership.go": "21b5c6bb730992663c9a271fee600ca8e4cc83ddddc155514291220b830d8d06",
+    "native/profilelock/worker_test.go": "a1a4424e5479fa6917b267ee40084817bf2d23882cc458c246f3d4c9f414b2d0",
+    "packages/groups/src/registry.ts": "b0cc08aff9ca6f69676f45f638047638d029f3bc251c35e0e2c9b77608fc9d2a",
+    "packages/profile/src/ownership.ts": "dd812d422b797c34a32e5a6437fc948d1f3e54ff6e9b8f114025b05b6c06746b",
+    "tests/group-registry.test.ts": "59f6f14f0e51e40dcc242cedeaf753a526d811c26f2d978c5b92a03205836a70",
+    "tests/profile-ownership.test.ts": "a7e5a3c6c7d714e5c9e164cb8f81d895fd5f781bb2d499d06df3a6e080a8f75c",
+    "tests/native/profile-ownership.test.ts": "333e4749536ee3051da58d42dffa83b2c90ed0bdc65e7447cdb7a813433cc497",
+    "tests/native/group-authority.test.ts": "c83676795411a87632ff11f7f078cbb5a681db47ef5be8cbfe99daf76f0733f2",
+    "tests/native/process-helper.ts": "0c09c0e8bb60c626ef29ef1bb55196eee7a01d85d32c2a2f3d7ffad8c435dfa1"
+  },
+  "supervisorPID": 2060301,
+  "childPID": 2060303,
+  "exitCode": 0,
+  "elapsedSeconds": 16.4,
+  "sourceUnchanged": true,
+  "outputSHA256": "fdfd12aa0ce16b2bf5a2225cd769ab416538f7f9eb865fef507c1254638f621b"
+}

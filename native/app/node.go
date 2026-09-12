@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"github.com/JohnnyPBelo/relayloom/native/core"
+	"github.com/JohnnyPBelo/relayloom/native/profilelock"
 	"github.com/JohnnyPBelo/relayloom/native/transport"
 )
 
@@ -36,6 +37,9 @@ type Node struct {
 	cancel             context.CancelFunc
 	wg                 sync.WaitGroup
 	closed             bool
+	ownership          *profilelock.Lease
+	closeDone          chan struct{}
+	closeErr           error
 	rejected           uint64
 	lastTransportError string
 	summaries          map[string]summaryEntry
@@ -48,6 +52,16 @@ func NewNode(dir string) (*Node, error) {
 	if err := os.MkdirAll(dir, 0700); err != nil {
 		return nil, err
 	}
+	ownership, err := profilelock.Acquire(dir)
+	if err != nil {
+		return nil, err
+	}
+	retained := false
+	defer func() {
+		if !retained {
+			_ = ownership.Close()
+		}
+	}()
 	config := defaultConfig()
 	data, err := readFile(filepath.Join(dir, "config.json"), 1024*1024)
 	if err == nil {
@@ -72,7 +86,7 @@ func NewNode(dir string) (*Node, error) {
 	}
 	router.SetLowPower(config.LowPower)
 	ctx, cancel := context.WithCancel(context.Background())
-	n := &Node{Dir: dir, Store: store, Router: router, config: config, private: emptyPrivate(), routes: map[string]transport.Route{}, requests: map[string]int64{}, receipts: map[string]bool{}, ctx: ctx, cancel: cancel}
+	n := &Node{Dir: dir, Store: store, Router: router, config: config, private: emptyPrivate(), routes: map[string]transport.Route{}, requests: map[string]int64{}, receipts: map[string]bool{}, ctx: ctx, cancel: cancel, ownership: ownership, closeDone: make(chan struct{})}
 	n.clearSummariesLocked()
 	n.wg.Add(2)
 	go func() {
@@ -108,6 +122,7 @@ func NewNode(dir string) (*Node, error) {
 			}
 		}
 	}()
+	retained = true
 	return n, nil
 }
 func (n *Node) Start(tcpPort int, host string) error {
@@ -148,7 +163,8 @@ func (n *Node) Close() error {
 	n.mu.Lock()
 	if n.closed {
 		n.mu.Unlock()
-		return nil
+		<-n.closeDone
+		return n.closeErr
 	}
 	n.closed = true
 	n.cancel()
@@ -162,7 +178,9 @@ func (n *Node) Close() error {
 	}
 	err := n.Router.Close()
 	n.wg.Wait()
-	return err
+	n.closeErr = errors.Join(err, n.ownership.Close())
+	close(n.closeDone)
+	return n.closeErr
 }
 func (n *Node) initialized() bool {
 	_, err := os.Stat(filepath.Join(n.Dir, "identity.vault"))
@@ -641,6 +659,9 @@ func (n *Node) objectsSnapshotLocked() ([]DisplayObject, map[string]core.Manifes
 func (n *Node) State() (map[string]any, error) {
 	n.mu.Lock()
 	defer n.mu.Unlock()
+	if n.closed {
+		return nil, errors.New("nó encerrado")
+	}
 	return n.stateLocked()
 }
 func (n *Node) stateLocked() (map[string]any, error) {

@@ -48,12 +48,15 @@ function productionDigest() {
     "apps/node/src",
     "packages/core/src",
     "packages/transport/src",
+    "packages/profile/src",
     "native/app",
     "native/core",
     "native/transport",
+    "native/profilelock",
     "native/cmd/relayloom",
   ])
     collect(directory);
+  paths.push("package-lock.json", "native/go.mod", "native/go.sum");
   const hash = createHash("sha256");
   for (const path of paths.sort())
     hash.update(path).update("\0").update(readFileSync(path));
