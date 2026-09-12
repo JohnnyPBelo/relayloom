@@ -99,6 +99,15 @@ export async function annotatePhotoFailure(report, owned, tool) {
   }
 }
 function hashBuffer(bytes) { return createHash('sha256').update(bytes).digest('hex'); }
+export function recordPeerDiagnostics(report, directory, stderr) {
+  try {
+    const bytes = Buffer.from(sanitize(stderr)).subarray(-64 * 1024);
+    writeFileSync(join(directory, 'peer-stderr.txt'), bytes, { mode: 0o600 });
+    report.peerDiagnostics = { captured: true, bytes: bytes.length };
+  } catch (error) {
+    report.peerDiagnostics = { captured: false, error: sanitize(error.message) };
+  }
+}
 function boundedRead(path, maximum) {
   const stat = lstatSync(path);
   if (!stat.isFile() || stat.size > maximum) throw new Error('Evidence input is not a bounded regular file');
@@ -319,6 +328,34 @@ async function main(argv) {
     const types = JSON.parse((await tool('installed-device-types', 'xcrun', ['simctl', 'list', 'devicetypes', '--json'])).output);
     const selected = selectSimulator(runtimes, types, requestedVersion);
     report.runtime = { identifier: selected.runtime.identifier, version: selected.runtime.version, buildVersion: selected.runtime.buildversion, deviceType: selected.deviceType.identifier, downloaded: false };
+    // Verify the required host peer before booting a costly simulator. Keep the
+    // same startup deadline; record phases/stderr if the prerequisite fails.
+    const { tsImport } = await import('tsx/esm/api');
+    const core = await tsImport('../packages/core/src/index.ts', import.meta.url);
+    const peer = fork(join(root, 'apps/ios/Tests/SimulatorPeer.mjs'), [join(raw, 'peer')], { cwd: root, env: process.env, stdio: ['ignore', 'ignore', 'pipe', 'ipc'] });
+    context.peer = peer;
+    context.peerErrors = '';
+    peer.stderr.on('data', data => { context.peerErrors = (context.peerErrors + data.toString()).slice(-128 * 1024); });
+    const ready = await new Promise((resolveReady, reject) => {
+      const timer = setTimeout(() => reject(new Error('Owned Node peer startup timed out')), 20_000);
+      peer.once('error', () => { clearTimeout(timer); reject(new Error('Owned Node peer failed to launch')); });
+      peer.once('exit', () => { clearTimeout(timer); reject(new Error('Owned Node peer exited during startup')); });
+      peer.once('message', value => { clearTimeout(timer); resolveReady(value); });
+    });
+    const origin = new URL(ready.origin);
+    if (ready.kind !== 'ready' || origin.protocol !== 'http:' || origin.hostname !== '127.0.0.1' || !origin.port || !/^[a-f0-9]{64}$/.test(ready.token) || !Number.isInteger(ready.tcpPort) || ready.tcpPort < 1 || ready.tcpPort > 65535) throw new Error('Owned peer bootstrap is invalid');
+    async function call(operation, body) {
+      const response = await fetch(origin.origin + '/api/' + operation, { method: body === undefined ? 'GET' : 'POST', headers: { Authorization: 'Bearer ' + ready.token, 'Content-Type': 'application/json' }, body: body === undefined ? undefined : JSON.stringify(body), signal: AbortSignal.timeout(10_000) });
+      const value = await response.json(); if (!response.ok) throw new Error('Owned Node peer API failed: ' + operation); return value;
+    }
+    const passphrase = 'relayloom ios simulator synthetic passphrase';
+    await call('setup', { name: 'iOS Simulator Recipient', password: passphrase });
+    await call('settings', { relay: false });
+    const candidate = (await call('state')).identity;
+    const recipient = { id: candidate?.id, name: candidate?.name, signKey: candidate?.signKey, boxKey: candidate?.boxKey, proof: candidate?.proof };
+    if (!core.validateIdentity(recipient)) throw new Error('Node fixture did not provide a valid public identity card');
+    const fixtures = { runID, senderName: 'iOS Simulator Sender', passphrase, recipientName: recipient.name, recipientCard: JSON.stringify(recipient), peerTCPPort: ready.tcpPort, message: 'iOS simulator private message ' + runID, post: 'iOS simulator public post ' + runID, attachmentMessage: 'iOS simulator selected photo ' + runID, reply: 'Node peer reply to iOS ' + runID, photoAttachment: !options.has('--without-photo') };
+    writeJSON(join(base, 'run-fixtures.json'), fixtures);
     const name = 'RelayLoom-CI-' + runID;
     const created = await tool('create-owned', 'xcrun', ['simctl', 'create', name, selected.deviceType.identifier, selected.runtime.identifier], 60_000, { allowFailure: true });
     let udid = created.output.trim();
@@ -342,32 +379,7 @@ async function main(argv) {
     await tool('wait-owned-boot', 'xcrun', ['simctl', 'bootstatus', udid, '-b'], report.firstBootBudgetMs);
     report.simulatorBooted = true;
 
-    const { tsImport } = await import('tsx/esm/api');
-    const core = await tsImport('../packages/core/src/index.ts', import.meta.url);
-    const peer = fork(join(root, 'apps/ios/Tests/SimulatorPeer.mjs'), [join(raw, 'peer')], { cwd: root, env: process.env, stdio: ['ignore', 'ignore', 'pipe', 'ipc'] });
-    context.peer = peer;
-    let peerErrors = '';
-    peer.stderr.on('data', data => { peerErrors = (peerErrors + sanitize(data.toString())).slice(-64 * 1024); });
-    const ready = await new Promise((resolveReady, reject) => {
-      const timer = setTimeout(() => reject(new Error('Owned Node peer startup timed out')), 20_000);
-      peer.once('error', () => { clearTimeout(timer); reject(new Error('Owned Node peer failed to launch')); });
-      peer.once('exit', () => { clearTimeout(timer); reject(new Error('Owned Node peer exited during startup')); });
-      peer.once('message', value => { clearTimeout(timer); resolveReady(value); });
-    });
-    const origin = new URL(ready.origin);
-    if (ready.kind !== 'ready' || origin.protocol !== 'http:' || origin.hostname !== '127.0.0.1' || !origin.port || !/^[a-f0-9]{64}$/.test(ready.token) || !Number.isInteger(ready.tcpPort) || ready.tcpPort < 1 || ready.tcpPort > 65535) throw new Error('Owned peer bootstrap is invalid');
-    async function call(operation, body) {
-      const response = await fetch(origin.origin + '/api/' + operation, { method: body === undefined ? 'GET' : 'POST', headers: { Authorization: 'Bearer ' + ready.token, 'Content-Type': 'application/json' }, body: body === undefined ? undefined : JSON.stringify(body), signal: AbortSignal.timeout(10_000) });
-      const value = await response.json(); if (!response.ok) throw new Error('Owned Node peer API failed: ' + operation); return value;
-    }
-    const passphrase = 'relayloom ios simulator synthetic passphrase';
-    await call('setup', { name: 'iOS Simulator Recipient', password: passphrase });
-    await call('settings', { relay: false });
-    const candidate = (await call('state')).identity;
-    const recipient = { id: candidate?.id, name: candidate?.name, signKey: candidate?.signKey, boxKey: candidate?.boxKey, proof: candidate?.proof };
-    if (!core.validateIdentity(recipient)) throw new Error('Node fixture did not provide a valid public identity card');
-    const fixtures = { runID, senderName: 'iOS Simulator Sender', passphrase, recipientName: recipient.name, recipientCard: JSON.stringify(recipient), peerTCPPort: ready.tcpPort, message: 'iOS simulator private message ' + runID, post: 'iOS simulator public post ' + runID, attachmentMessage: 'iOS simulator selected photo ' + runID, reply: 'Node peer reply to iOS ' + runID, photoAttachment: !options.has('--without-photo') };
-    writeJSON(join(base, 'run-fixtures.json'), fixtures);
+
     const derived = join(root, '.cache/ios/DerivedData');
     const common = ['-project', 'apps/ios/RelayLoom.xcodeproj', '-scheme', 'RelayLoomSimulator', '-configuration', 'Debug', '-sdk', 'iphonesimulator', '-destination', 'id=' + udid, '-destination-timeout', '90', '-derivedDataPath', derived, '-jobs', '2', '-disableAutomaticPackageResolution', 'CODE_SIGNING_ALLOWED=NO', 'CODE_SIGNING_REQUIRED=NO', 'CODE_SIGN_IDENTITY=', 'ARCHS=' + xcodeArch];
     await tool('build-for-testing', 'xcodebuild', [...common, 'build-for-testing'], 8 * 60_000);
@@ -430,6 +442,7 @@ async function main(argv) {
       await Promise.race([new Promise(resolveExit => { if (context.peer.exitCode !== null) resolveExit(); else context.peer.once('exit', resolveExit); }), delay(5000)]);
       if (context.peer.exitCode === null) context.peer.kill('SIGKILL');
     }
+    if (context.peer) recordPeerDiagnostics(report, evidence, context.peerErrors ?? '');
     const result = join(raw, 'ui-results.xcresult');
     if (existsSync(result)) {
       const exportPath = join(raw, 'attachments');

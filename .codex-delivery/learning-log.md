@@ -135,3 +135,24 @@ A borrowed scope must latch its failure on the outer transaction: merely returni
 The first Node scope run passed3/4 but a cancelled transaction emerged as “Inicialização protegida do perfil ilegível”: the initialization parser caught transaction errors as data corruption. Moving the tx read outside the parsing catch preserves cancellation and allows the valid database to remain usable, while malformed marker bytes still fail closed. Corrected Node scope+factory12 passed; final controls include full-quota fence persistence and real cross-runtime process exits. No dynamic-group admission/API/UI claim follows.
 
 A facade transaccional Node/Go foi implementada e verificada:81 Node/36.565s,36 Go de topo com race/169.094s (quatro helpers executados pelos drivers),9 interoperabilidade/45.760s; build8.157s e CLI0.901s. Fontes registadas inalteradas durante o gate. Evidência em `docs/evidence/group-transaction`. A aplicação ainda não usa esta facade para grupos dinâmicos.
+
+
+## Actual Android syscall rejection after a successful build
+
+The first APK containing the SQLite profile substrate built/aligned/installed but crashed before SAF assertions. The owned emulator crash buffer reported SIGSYS, SYS_SECCOMP, syscall6 on x86_64. modernc/libc's Linux/amd64 Xlstat64 directly invokes SYS_LSTAT; Go's standard Lstat uses fstatat. Never relax Android seccomp or infer runtime support from cross-compilation. A maintained C SQLite backend via Bionic is being validated; other existing targets retain modernc. Its connections require external extension loading to be omitted at compile time, with a real negative build-option control.
+
+The first C host gate caught a meaningful portability difference: the held profile lock can be reported during db.Conn before BEGIN EXCLUSIVE. Typed SQLite busy/locked codes are now classified at both boundaries, retaining the same second-owner refusal and zero-wait policy. Both drivers passed the correction. Full C Go/race, cross-process interoperability and real UI then passed; the corrected APK must still pass the owned emulator gates before being called device-verified.
+
+The maintained gomobile wrapper manages platform tags itself, so pass the SQLite omission tag explicitly to gomobile as well as the build environment. After application maintenance, the unversioned python alias was also absent; using the installed python3 fixed the project build launcher without modifying global PATH/aliases.
+
+The iOS26.4.1 compatibility probe failed earlier than photo import: after a326s boot, the required Node peer missed its20s startup deadline. Collected stderr was never saved. The runner now checks that prerequisite before expensive simulator startup, records bounded sanitized stderr and explicit startup phases, and keeps the same deadline. The actual host-peer/bootstrap/auth test passed; this is still not Apple UI evidence or a proof of the underlying macOS timeout cause.
+
+
+## Native screenshot is a separate gate from DOM geometry
+
+The first corrected Android APK passed80 assertions and authenticated profile migration, but root's actual screenshot review found the contact list where the report claimed an offline site dialog. Its WebView.draw companion image was blank. Do not infer painted native output from dialog[open], innerText or WebView visibility.
+
+The same APK passed a directed repeat after stronger geometry/hit-test checks and produced the correct native image. The Chromium long-page control (45 contacts, deep scroll, cached author offline) also passed without changing app code. The fixture now validates a light dialog surface and dimmed backdrop in the actual UiAutomation screenshot, waiting a bounded number of frames; the preserved earlier image fails this check and the correctly painted one passes. These controlled pixels verify that the compositor caught up with the already verified dialog; WebView.draw is not treated as proof. All four emulator gates are being repeated with the strengthened capture check, without deleting their earlier mismatch or changing production UI.
+
+
+Final corrected emulator gate: APK136a5103c82c4c87f6865aa2b68daa5eb60796ac4d420aa8f09d5fea5fd4e2a5, com AAR9e2fb77f9938721c9df7ef82df19e357ab02ff0c417ec40061a82e0f27004585:82 asserções no mesmo emulador API36x86_64 (38 SAF36.693s,15 prazo134.729s,16 mensagens15.355s,13 relay18.913s) e inspecção cifrada0.768s passaram. Hash instalado e inputs inalterados; cofre/JSON legado preservados; SQLite Android e binding autenticados pelo Node. Root reviu a captura nativa final. Instrumentação removida, forwards vazios, AVD/adb próprios parados, identidade preservada. Evidência em `docs/evidence/android-sqlite/apk-136a5103`. The complete strengthened run is separate from the earlier80 assertions with a failed screenshot review.

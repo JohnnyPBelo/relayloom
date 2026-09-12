@@ -77,6 +77,13 @@
           "result": "pass",
           "timestamp": "2026-09-12",
           "notes": "4 actual host CLI/API cases,4.359s; SQLite private migration, cross-runtime process death/recovery, exact pending operation and absent/corrupt state refusal. Full host gate passed152 Node,105 top-level Go/race,15 interop,15 UI per engine and Linux desktop; new mobile artifacts still pending; docs/PROFILE-PERSISTENCE.md."
+        },
+        {
+          "kind": "emulator-test",
+          "command": "Android documents/deadline/smoke/relay + scripts/android-private-profile.mjs; exact invocations in docs/evidence/android-sqlite/apk-136a5103",
+          "result": "pass",
+          "timestamp": "2026-09-12",
+          "notes": "APK136a5103c82c4c87f6865aa2b68daa5eb60796ac4d420aa8f09d5fea5fd4e2a5, com AAR9e2fb77f9938721c9df7ef82df19e357ab02ff0c417ec40061a82e0f27004585:82 asser\u00e7\u00f5es no mesmo emulador API36x86_64 (38 SAF36.693s,15 prazo134.729s,16 mensagens15.355s,13 relay18.913s) e inspec\u00e7\u00e3o cifrada0.768s passaram. Hash instalado e inputs inalterados; cofre/JSON legado preservados; SQLite Android e binding autenticados pelo Node. Root reviu a captura nativa final. Instrumenta\u00e7\u00e3o removida, forwards vazios, AVD/adb pr\u00f3prios parados, identidade preservada. Evid\u00eancia em `docs/evidence/android-sqlite/apk-136a5103`. Physical device and dynamic groups are not covered."
         }
       ]
     },
@@ -544,6 +551,13 @@
           "result": "pass",
           "timestamp": "2026-09-12",
           "notes": "4 actual host CLI/API cases,4.359s; SQLite private migration, cross-runtime process death/recovery, exact pending operation and absent/corrupt state refusal. Full host gate passed152 Node,105 top-level Go/race,15 interop,15 UI per engine and Linux desktop; new mobile artifacts still pending; docs/PROFILE-PERSISTENCE.md."
+        },
+        {
+          "kind": "emulator-test",
+          "command": "Android documents/deadline/smoke/relay + scripts/android-private-profile.mjs; exact invocations in docs/evidence/android-sqlite/apk-136a5103",
+          "result": "pass",
+          "timestamp": "2026-09-12",
+          "notes": "APK136a5103c82c4c87f6865aa2b68daa5eb60796ac4d420aa8f09d5fea5fd4e2a5, com AAR9e2fb77f9938721c9df7ef82df19e357ab02ff0c417ec40061a82e0f27004585:82 asser\u00e7\u00f5es no mesmo emulador API36x86_64 (38 SAF36.693s,15 prazo134.729s,16 mensagens15.355s,13 relay18.913s) e inspec\u00e7\u00e3o cifrada0.768s passaram. Hash instalado e inputs inalterados; cofre/JSON legado preservados; SQLite Android e binding autenticados pelo Node. Root reviu a captura nativa final. Instrumenta\u00e7\u00e3o removida, forwards vazios, AVD/adb pr\u00f3prios parados, identidade preservada. Evid\u00eancia em `docs/evidence/android-sqlite/apk-136a5103`. Physical device and dynamic groups are not covered."
         }
       ]
     },
@@ -2278,6 +2292,13 @@
           "result": "pass",
           "timestamp": "2026-09-12",
           "notes": "4 actual host CLI/API cases,4.359s; SQLite private migration, cross-runtime process death/recovery, exact pending operation and absent/corrupt state refusal. Full host gate passed152 Node,105 top-level Go/race,15 interop,15 UI per engine and Linux desktop; new mobile artifacts still pending; docs/PROFILE-PERSISTENCE.md."
+        },
+        {
+          "kind": "emulator-test",
+          "command": "Android documents/deadline/smoke/relay + scripts/android-private-profile.mjs; exact invocations in docs/evidence/android-sqlite/apk-136a5103",
+          "result": "pass",
+          "timestamp": "2026-09-12",
+          "notes": "APK136a5103c82c4c87f6865aa2b68daa5eb60796ac4d420aa8f09d5fea5fd4e2a5, com AAR9e2fb77f9938721c9df7ef82df19e357ab02ff0c417ec40061a82e0f27004585:82 asser\u00e7\u00f5es no mesmo emulador API36x86_64 (38 SAF36.693s,15 prazo134.729s,16 mensagens15.355s,13 relay18.913s) e inspec\u00e7\u00e3o cifrada0.768s passaram. Hash instalado e inputs inalterados; cofre/JSON legado preservados; SQLite Android e binding autenticados pelo Node. Root reviu a captura nativa final. Instrumenta\u00e7\u00e3o removida, forwards vazios, AVD/adb pr\u00f3prios parados, identidade preservada. Evid\u00eancia em `docs/evidence/android-sqlite/apk-136a5103`. Physical device and dynamic groups are not covered."
         }
       ]
     },

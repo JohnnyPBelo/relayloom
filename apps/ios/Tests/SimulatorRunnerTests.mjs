@@ -1,12 +1,13 @@
 // Host-only runner/fixture checks. These do not run Swift, Xcode, WebKit or iOS.
 import test from 'node:test';
+import { fork } from 'node:child_process';
 import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync, readFileSync } from 'node:fs';
 import { DatabaseSync } from 'node:sqlite';
 import { join, resolve } from 'node:path';
 import { tsImport } from 'tsx/esm/api';
-import { sanitize, selectSimulator, requestedSimulatorVersion, validateOwnedContainer, assertTestSummary, verifySyntheticContainer, removeMatchingRunRecord, requireInactiveCleanupOwner, stopOwnedProcessGroup, annotatePhotoFailure } from '../../../scripts/ios-simulator.mjs';
+import { sanitize, selectSimulator, requestedSimulatorVersion, validateOwnedContainer, assertTestSummary, verifySyntheticContainer, removeMatchingRunRecord, requireInactiveCleanupOwner, stopOwnedProcessGroup, annotatePhotoFailure, recordPeerDiagnostics } from '../../../scripts/ios-simulator.mjs';
 
 test('select only compatible installed iOS runtimes, never unavailable or other platforms', () => {
   const runtime = (identifier, version, available) => ({ identifier: 'com.apple.CoreSimulator.SimRuntime.' + identifier, version, isAvailable: available });
@@ -193,4 +194,43 @@ test('runtime option is explicit, bounded and unambiguous', () => {
   assert.equal(requestedSimulatorVersion([]), undefined);
   assert.equal(requestedSimulatorVersion(['--runtime=26.4.1']), '26.4.1');
   for (const argv of [['--runtime='], ['--runtime=26.4.1', '--runtime=26.5'], ['--runtime=../../private'], ['--runtime=26.4.1;command'], ['--runtime=26666']]) assert.throws(() => requestedSimulatorVersion(argv));
+});
+
+
+test('failed peer diagnostics stay bounded/redacted and never replace the primary error', t => {
+  const cache = resolve('.cache/ios-runner-contracts'); mkdirSync(cache, { recursive: true });
+  const dir = mkdtempSync(join(cache, 'peer-diagnostic-')); t.after(() => rmSync(dir, { recursive: true, force: true }));
+  const token = 'ab'.repeat(32), report = { error: 'Owned Node peer startup timed out' };
+  recordPeerDiagnostics(report, dir, 'é'.repeat(80000) + '\nRELAYLOOM_PEER_PHASE engine-imported 40ms\nAuthorization: Bearer ' + token);
+  const bytes = readFileSync(join(dir, 'peer-stderr.txt'));
+  assert.ok(bytes.length <= 65536); assert.equal(bytes.includes(Buffer.from(token)), false); assert.match(bytes.toString(), /engine-imported/);
+  assert.equal(report.peerDiagnostics.captured, true); assert.equal(report.error, 'Owned Node peer startup timed out');
+  recordPeerDiagnostics(report, join(dir, 'absent'), token);
+  assert.equal(report.peerDiagnostics.captured, false); assert.equal(report.error, 'Owned Node peer startup timed out');
+});
+
+test('real simulator peer bootstraps through private IPC and enforces its authenticated API', { timeout: 30000 }, async t => {
+  const cache = resolve('.cache/ios/simulator/raw'); mkdirSync(cache, { recursive: true });
+  const dir = mkdtempSync(join(cache, 'host-peer-contract-'));
+  const child = fork(resolve('apps/ios/Tests/SimulatorPeer.mjs'), [join(dir, 'peer')], { cwd: resolve('.'), env: process.env, stdio: ['ignore', 'ignore', 'pipe', 'ipc'] });
+  let stderr = ''; child.stderr.on('data', data => { stderr = (stderr + data.toString()).slice(-65536); });
+  const ended = new Promise(resolveExit => child.once('close', resolveExit));
+  t.after(async () => {
+    if (child.exitCode === null && child.signalCode === null) {
+      const force = setTimeout(() => child.kill('SIGKILL'), 5000);
+      child.kill('SIGTERM'); await ended; clearTimeout(force);
+    }
+    rmSync(dir, { recursive: true, force: true });
+  });
+  const ready = await new Promise((resolveReady, reject) => {
+    const timer = setTimeout(() => reject(new Error('Peer contract startup timeout: ' + sanitize(stderr))), 20000);
+    child.once('message', value => { clearTimeout(timer); resolveReady(value); });
+    child.once('error', error => { clearTimeout(timer); reject(error); });
+    child.once('exit', () => { clearTimeout(timer); reject(new Error('Peer contract exited: ' + sanitize(stderr))); });
+  });
+  assert.equal(ready.kind, 'ready'); assert.equal(new URL(ready.origin).hostname, '127.0.0.1'); assert.ok(/^[a-f0-9]{64}$/.test(ready.token));
+  const denied = await fetch(ready.origin + '/api/state', { signal: AbortSignal.timeout(5000) }); assert.equal(denied.status, 401); await denied.arrayBuffer();
+  const allowed = await fetch(ready.origin + '/api/state', { headers: { Authorization: 'Bearer ' + ready.token }, signal: AbortSignal.timeout(5000) });
+  assert.equal(allowed.status, 200); assert.equal((await allowed.json()).locked, true);
+  assert.match(stderr, /RELAYLOOM_PEER_PHASE api-listening/); assert.equal(stderr.includes(ready.token), false);
 });
