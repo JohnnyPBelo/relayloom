@@ -359,11 +359,15 @@ func (n *Node) outboxItemsLocked(now int64, manifests map[string]core.Manifest) 
 	}
 	return items
 }
-func (n *Node) outboxResponseLocked(operation string, now int64) map[string]any {
-	record := n.private.Outbox[operation]
+func (n *Node) outboxResponseLocked(operation string) (map[string]any, error) {
 	manifests := n.outboxManifestsLocked()
+	now := time.Now().UnixMilli()
+	if err := n.reconcileOutboxManifestsLocked(now, false, manifests); err != nil {
+		return nil, err
+	}
+	record := n.private.Outbox[operation]
 	item := n.outboxItemLocked(record, now, outboxManifestMatches(record, manifests[record.ID]))
-	return map[string]any{"accepted": item["accepted"], "id": record.ID, "outbox": item}
+	return map[string]any{"accepted": item["accepted"], "id": record.ID, "outbox": item}, nil
 }
 
 func (n *Node) sendLocked(body map[string]any) (any, error) {
@@ -412,7 +416,7 @@ func (n *Node) sendLocked(body map[string]any) (any, error) {
 		if _, err = n.objectsLocked(); err != nil {
 			return nil, err
 		}
-		return n.outboxResponseLocked(operation, time.Now().UnixMilli()), nil
+		return n.outboxResponseLocked(operation)
 	}
 	if _, err = n.objectsLocked(); err != nil {
 		return nil, err
@@ -487,7 +491,7 @@ func (n *Node) sendLocked(body map[string]any) (any, error) {
 			return nil, attemptErr
 		}
 	}
-	return n.outboxResponseLocked(operation, time.Now().UnixMilli()), nil
+	return n.outboxResponseLocked(operation)
 }
 
 func retryDelay(attempt int64) int64 {
@@ -597,7 +601,7 @@ func (n *Node) retryOutboxLocked(operation string) (any, error) {
 			return nil, err
 		}
 	}
-	return n.outboxResponseLocked(operation, time.Now().UnixMilli()), nil
+	return n.outboxResponseLocked(operation)
 }
 
 func outboxPolicy() map[string]any {

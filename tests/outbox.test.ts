@@ -563,3 +563,58 @@ test("saved peer connection remains idempotent at capacity without opening anoth
   assert.throws(() => node.connect("127.0.0.1", 21000), /Limite/);
   assert.equal(node.config.peers.length, 16);
 });
+
+for (const responseKind of ["state", "send", "retry"] as const) {
+  test(`snapshot crossing expiry during journal persistence keeps ${responseKind} and reservation consistent`, (t) => {
+    const { node, b } = fixture(t);
+    const operationId = randomUUID();
+    const content = { type: "message", text: "Expiry at snapshot boundary" };
+    const sent = node.send(operationId, content, [b.public.id], 1500);
+    const persist = (node as any).persistPrivate.bind(node);
+    const preparing = structuredClone((node as any).privateState);
+    preparing.outbox[operationId].phase = "preparing";
+    persist(preparing);
+    const expires = preparing.outbox[operationId].expires;
+    assert.ok(
+      Date.now() < expires,
+      "fixture remains unexpired at snapshot entry",
+    );
+    let crossedDeadline = false;
+    (node as any).persistPrivate = (next: any) => {
+      if (next.outbox[operationId].phase === "ready" && !crossedDeadline) {
+        Atomics.wait(
+          new Int32Array(new SharedArrayBuffer(4)),
+          0,
+          0,
+          Math.max(0, expires - Date.now() + 25),
+        );
+        crossedDeadline = true;
+      }
+      persist(next);
+    };
+    try {
+      const entry =
+        responseKind === "state"
+          ? node.state().outbox[0]
+          : responseKind === "send"
+            ? node.send(operationId, content, [b.public.id], 1500).outbox
+            : node.retryOutbox(operationId).outbox;
+      assert.ok(
+        crossedDeadline && Date.now() > expires,
+        "real journal transition crossed the content expiry",
+      );
+      assert.equal(
+        entry.status === "expired" && node.store.isPinned(sent.id),
+        false,
+        "response must release automatic reservation before advertising expiry",
+      );
+    } finally {
+      (node as any).persistPrivate = persist;
+    }
+    const current = node.state();
+    assert.equal(current.outbox[0].status, "expired");
+    assert.equal(node.store.isPinned(sent.id), false);
+    assert.equal(current.outbox[0].id, sent.id);
+    assert.equal(current.outbox[0].receivedCount, 0);
+  });
+}

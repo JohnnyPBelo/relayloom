@@ -1045,3 +1045,80 @@ func TestOutboxManualRetryCooldownAndOfflineDueCheckpoint(t *testing.T) {
 		t.Fatal("manual retry did not shorten elapsed automatic backoff safely")
 	}
 }
+
+func TestOutboxSnapshotExpiryDuringJournalWriteKeepsReservationConsistent(t *testing.T) {
+	for _, responseKind := range []string{"state", "send", "retry"} {
+		t.Run(responseKind, func(t *testing.T) {
+			a, _ := nodeFor(t, "Snapshot sender")
+			bob, _ := core.CreateIdentity("Snapshot recipient")
+			apply(t, a, "contact", map[string]any{"contact": bob.Public})
+			body := sendBody(16000, Content{"type": "message", "text": "expires during snapshot persistence"}, []string{bob.Public.ID})
+			body["ttlMs"] = 3000
+			result := apply(t, a, "send", body).(map[string]any)
+			id := result["id"].(string)
+			a.mu.Lock()
+			defer a.mu.Unlock()
+			next, err := copyPrivate(a.private, a.identity.Public.ID)
+			if err != nil {
+				t.Fatal(err)
+			}
+			r := next.Outbox[operationFor(16000)]
+			r.Phase = "preparing"
+			next.Outbox[r.OperationID] = r
+			if err = a.persistPrivateLocked(next); err != nil {
+				t.Fatal(err)
+			}
+			if r.Expires <= time.Now().UnixMilli() {
+				t.Fatal("fixture expired before the snapshot boundary")
+			}
+			crossedDeadline := false
+			a.writePrivateFile = func(path string, state PrivateState, identity core.Identity) error {
+				if state.Outbox[r.OperationID].Phase == "ready" && !crossedDeadline {
+					time.Sleep(time.Until(time.UnixMilli(r.Expires + 25)))
+					crossedDeadline = true
+				}
+				return writePrivate(path, state, identity)
+			}
+			defer func() { a.writePrivateFile = nil }()
+			var entry map[string]any
+			if responseKind == "state" {
+				state, stateErr := a.stateLocked()
+				err = stateErr
+				if err == nil {
+					entry = state["outbox"].([]map[string]any)[0]
+				}
+			} else {
+				var response any
+				if responseKind == "send" {
+					response, err = a.sendLocked(body)
+				} else {
+					response, err = a.retryOutboxLocked(r.OperationID)
+				}
+				if err == nil {
+					entry = response.(map[string]any)["outbox"].(map[string]any)
+				}
+			}
+			if err != nil {
+				t.Fatal(err)
+			}
+			if !crossedDeadline || time.Now().UnixMilli() <= r.Expires {
+				t.Fatal("control did not cross expiry during the actual journal write")
+			}
+			if entry["status"] == "expired" && a.Store.IsPinned(id) {
+				t.Fatal("response advertises expiry before releasing the automatic reservation")
+			}
+			a.writePrivateFile = nil
+			state, err := a.stateLocked()
+			if err != nil {
+				t.Fatal(err)
+			}
+			entry = state["outbox"].([]map[string]any)[0]
+			if entry["status"] != "expired" || a.Store.IsPinned(id) {
+				t.Fatal("subsequent snapshot did not expire and release the original reservation")
+			}
+			if entry["id"] != id || numberFor(t, entry["receivedCount"]) != 0 {
+				t.Fatal("expiry changed the original id or fabricated delivery")
+			}
+		})
+	}
+}

@@ -1,0 +1,19 @@
+{
+  "status": "pass",
+  "nodeTests": 93,
+  "nodeApplicationAndExistingTests": 82,
+  "separateLocalGroupCertificateTests": 11,
+  "goAppTopLevelTests": 37,
+  "goCoreTests": 11,
+  "goTransportTests": 11,
+  "goRaceEnabled": true,
+  "interopCases": 5,
+  "nodeBrowserCases": 14,
+  "goBrowserCases": 14,
+  "productionSourceSha256": "19f8ea312219c6d8396cdc2f9357e9edd9614d2e648363c4e21e2acddedb62cd",
+  "nativeBinarySha256": "d820088629fafdfd5c7e937580d6e8e24f2a9fe148858ea5ee45967c0768a0b7",
+  "inputsUnchangedDuringAllGates": true,
+  "baselineFailedCI": "34663513261",
+  "physicalPowerLossOrRadioTested": false,
+  "reportsVerifiedAgainstCommandWindow": true
+}

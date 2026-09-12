@@ -518,14 +518,14 @@ func recordMutation(next *PrivateState, target core.Manifest, event core.Manifes
 	return true
 }
 func (n *Node) objectsLocked() ([]DisplayObject, error) {
-	objects, _, err := n.objectsSnapshotLocked()
+	objects, _, _, err := n.objectsSnapshotLocked()
 	return objects, err
 }
-func (n *Node) objectsSnapshotLocked() ([]DisplayObject, map[string]core.Manifest, error) {
+func (n *Node) objectsSnapshotLocked() ([]DisplayObject, map[string]core.Manifest, int64, error) {
 	all := make([]DisplayObject, 0)
 	if n.identity == nil {
 		n.clearSummariesLocked()
-		return all, map[string]core.Manifest{}, nil
+		return all, map[string]core.Manifest{}, time.Now().UnixMilli(), nil
 	}
 	if n.summaryIdentity != n.identity.Public.ID {
 		n.clearSummariesLocked()
@@ -576,7 +576,7 @@ func (n *Node) objectsSnapshotLocked() ([]DisplayObject, map[string]core.Manifes
 		if err == nil {
 			summary := summarizeObject(*o)
 			if err = n.cacheSummaryLocked(summary); err != nil {
-				return nil, nil, err
+				return nil, nil, 0, err
 			}
 			all = append(all, cloneSummary(summary))
 		}
@@ -589,7 +589,7 @@ func (n *Node) objectsSnapshotLocked() ([]DisplayObject, map[string]core.Manifes
 	}
 	next, err := copyPrivate(n.private, n.identity.Public.ID)
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, 0, err
 	}
 	changed := false
 	for _, event := range accepted {
@@ -614,7 +614,7 @@ func (n *Node) objectsSnapshotLocked() ([]DisplayObject, map[string]core.Manifes
 	}
 	if changed {
 		if err = n.persistPrivateLocked(next); err != nil {
-			return nil, nil, err
+			return nil, nil, 0, err
 		}
 	}
 	for i := range accepted {
@@ -628,12 +628,15 @@ func (n *Node) objectsSnapshotLocked() ([]DisplayObject, map[string]core.Manifes
 		}
 	}
 	if err = n.aggregateConfirmationsLocked(accepted, time.Now().UnixMilli()); err != nil {
-		return nil, nil, err
+		return nil, nil, 0, err
 	}
-	if err = n.reconcileOutboxManifestsLocked(time.Now().UnixMilli(), false, verified); err != nil {
-		return nil, nil, err
+	// Reserve changes and the displayed outbox use the same observation time.
+	// Disk persistence/projection may cross an expiry before State returns.
+	outboxAt := time.Now().UnixMilli()
+	if err = n.reconcileOutboxManifestsLocked(outboxAt, false, verified); err != nil {
+		return nil, nil, 0, err
 	}
-	return accepted, verified, nil
+	return accepted, verified, outboxAt, nil
 }
 func (n *Node) State() (map[string]any, error) {
 	n.mu.Lock()
@@ -641,7 +644,7 @@ func (n *Node) State() (map[string]any, error) {
 	return n.stateLocked()
 }
 func (n *Node) stateLocked() (map[string]any, error) {
-	objects, manifests, err := n.objectsSnapshotLocked()
+	objects, manifests, outboxAt, err := n.objectsSnapshotLocked()
 	if err != nil {
 		return nil, err
 	}
@@ -674,7 +677,7 @@ func (n *Node) stateLocked() (map[string]any, error) {
 	}
 	counters := n.Router.Counters()
 	counters.Rejected += n.rejected
-	return map[string]any{"initialized": n.initialized(), "locked": n.identity == nil, "identity": identity, "tcpPort": n.TCPPort, "peers": n.Router.Peers(), "counters": counters, "storage": n.Store.Stats(), "settings": map[string]any{"relay": n.config.Relay, "lowPower": n.config.LowPower}, "contacts": contacts, "blocked": blocked, "following": following, "saved": saved, "reports": reports, "objects": page.Objects, "outbox": n.outboxItemsLocked(time.Now().UnixMilli(), manifests), "outboxPolicy": outboxPolicy(), "history": page.History, "followedPostIds": followed, "collections": collections, "siteDraft": draft, "transportError": n.lastTransportError, "now": time.Now().UnixMilli(), "nativeRuntime": "Go"}, nil
+	return map[string]any{"initialized": n.initialized(), "locked": n.identity == nil, "identity": identity, "tcpPort": n.TCPPort, "peers": n.Router.Peers(), "counters": counters, "storage": n.Store.Stats(), "settings": map[string]any{"relay": n.config.Relay, "lowPower": n.config.LowPower}, "contacts": contacts, "blocked": blocked, "following": following, "saved": saved, "reports": reports, "objects": page.Objects, "outbox": n.outboxItemsLocked(outboxAt, manifests), "outboxPolicy": outboxPolicy(), "history": page.History, "followedPostIds": followed, "collections": collections, "siteDraft": draft, "transportError": n.lastTransportError, "now": outboxAt, "nativeRuntime": "Go"}, nil
 }
 
 func (n *Node) Publish(content Content, recipients any, ttlMS int64) (DisplayObject, error) {

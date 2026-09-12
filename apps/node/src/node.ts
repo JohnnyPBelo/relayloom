@@ -234,11 +234,13 @@ export class LoomNode extends EventEmitter {
     this.privateState = next;
   }
   private sendResult(entry: OutboxEntry) {
+    const { objects, outboxAt } = this.objectsSnapshot();
+    entry = this.privateState.outbox![entry.operationId];
     const outbox = outboxItem(
       entry,
-      Date.now(),
+      outboxAt,
       this.config.blocked,
-      this.store.list().some((m) => m.id === entry.id),
+      objects.some((object) => object.id === entry.id),
     );
     return { accepted: outbox.accepted, id: entry.id, outbox };
   }
@@ -341,10 +343,9 @@ export class LoomNode extends EventEmitter {
       throw new Error("Reserva não corresponde ao envio");
     return bundle;
   }
-  private reconcileOutbox(accepted: DisplayObject[]) {
+  private reconcileOutbox(accepted: DisplayObject[], now = Date.now()) {
     if (!this.identity || !this.privateState.outbox) return;
-    const now = Date.now(),
-      next = structuredClone(this.privateState);
+    const next = structuredClone(this.privateState);
     let changed = applyConfirmations(next.outbox!, accepted, now);
     const verified = new Map(accepted.map((object) => [object.id, object]));
     const pins: { id: string; value: boolean }[] = [];
@@ -1055,7 +1056,10 @@ export class LoomNode extends EventEmitter {
     return out;
   }
   objects(): DisplayObject[] {
-    if (!this.identity) return [];
+    return this.objectsSnapshot().objects;
+  }
+  private objectsSnapshot(): { objects: DisplayObject[]; outboxAt: number } {
+    if (!this.identity) return { objects: [], outboxAt: Date.now() };
     const manifests = this.store
       .list()
       .filter(
@@ -1107,8 +1111,11 @@ export class LoomNode extends EventEmitter {
         !this.config.blocked.includes(o.author.id) && this.authorized(o, all),
     );
     this.materializeMutations(accepted);
-    this.reconcileOutbox(accepted);
-    return accepted.map((o) => {
+    // Reserve changes and their displayed state share one observation time,
+    // even when persistence or later snapshot projection crosses an expiry.
+    const outboxAt = Date.now();
+    this.reconcileOutbox(accepted, outboxAt);
+    const objects = accepted.map((o) => {
       const mutation = this.privateState.mutations[o.id];
       return mutation?.author === o.author.id
         ? {
@@ -1120,6 +1127,7 @@ export class LoomNode extends EventEmitter {
           }
         : o;
     });
+    return { objects, outboxAt };
   }
   private materializeMutations(accepted: DisplayObject[]) {
     let changed = false;
@@ -1301,7 +1309,7 @@ export class LoomNode extends EventEmitter {
     };
   }
   state() {
-    const objects = this.objects();
+    const { objects, outboxAt } = this.objectsSnapshot();
     const availableIds = new Set(objects.map((o) => o.id));
     return {
       initialized: this.initialized,
@@ -1332,7 +1340,7 @@ export class LoomNode extends EventEmitter {
         ? Object.values(this.privateState.outbox ?? {}).map((e) =>
             outboxItem(
               e,
-              Date.now(),
+              outboxAt,
               this.config.blocked,
               availableIds.has(e.id),
             ),
@@ -1345,7 +1353,7 @@ export class LoomNode extends EventEmitter {
         idempotency: "retained-records",
       },
       transportError: this.lastTransportError,
-      now: Date.now(),
+      now: outboxAt,
     };
   }
 }
