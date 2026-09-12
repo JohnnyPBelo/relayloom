@@ -4,6 +4,8 @@ The iOS source is a UIKit application containing the actual `native/mobile` Go c
 
 At the initial handoff, source/project checks passed on Linux, but **Swift, the XCFramework and the iOS application had not been compiled or executed**. No Xcode/Apple SDK exists on this host. Subsequent macOS CI results must be recorded separately; a successful simulator build is not simulator execution, physical-device testing, signing or distribution readiness.
 
+**Observed CI update:** public commit `c3f5b42` passed the real macOS runner job `ios-simulator-build` in run `34655608855`. Xcode26.6 (17F113), Go1.26.8 darwin/arm64 and the pinned x/mobile revision built the device-arm64 + simulator-arm64 XCFramework and an unsigned simulator app. The host Swift/Foundation policy executable passed25 assertions with its fake lifecycle backend. The simulator app was **built, not executed**; WKWebView/device UI and signing remain unverified. Exact binary/header hashes and scope are preserved under `docs/evidence/ios/c3f5b42`, tied to that commit. Later local outbox/native changes are not covered by this CI result.
+
 ## Build on a real macOS runner
 
 Prerequisites:

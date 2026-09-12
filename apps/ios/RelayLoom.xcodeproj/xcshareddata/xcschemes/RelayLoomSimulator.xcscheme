@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scheme LastUpgradeVersion="1600" version="1.3">
+  <BuildAction parallelizeBuildables="NO" buildImplicitDependencies="YES">
+    <BuildActionEntries>
+      <BuildActionEntry buildForTesting="YES" buildForRunning="NO" buildForProfiling="NO" buildForArchiving="NO" buildForAnalyzing="NO"><BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="A50000000000000000000001" BuildableName="RelayLoom.app" BlueprintName="RelayLoom" ReferencedContainer="container:RelayLoom.xcodeproj"/></BuildActionEntry>
+      <BuildActionEntry buildForTesting="YES" buildForRunning="NO" buildForProfiling="NO" buildForArchiving="NO" buildForAnalyzing="NO"><BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="B50000000000000000000001" BuildableName="RelayLoomUITests.xctest" BlueprintName="RelayLoomUITests" ReferencedContainer="container:RelayLoom.xcodeproj"/></BuildActionEntry>
+    </BuildActionEntries>
+  </BuildAction>
+  <TestAction buildConfiguration="Debug" selectedDebuggerIdentifier="" selectedLauncherIdentifier="Xcode.IDEFoundation.Launcher.PosixSpawn" shouldUseLaunchSchemeArgsEnv="NO" codeCoverageEnabled="NO">
+    <Testables><TestableReference skipped="NO" parallelizable="NO"><BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="B50000000000000000000001" BuildableName="RelayLoomUITests.xctest" BlueprintName="RelayLoomUITests" ReferencedContainer="container:RelayLoom.xcodeproj"/></TestableReference></Testables>
+  </TestAction>
+</Scheme>

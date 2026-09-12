@@ -58,7 +58,7 @@ jobs:
       - run: npm run test:native
       - run: npm run test:interop
       - name: Real UI against the native Go application
-        run: node scripts/e2e.mjs tests/e2e/flows.spec.ts --output=.cache/native-ui-e2e
+        run: node scripts/e2e.mjs --output=.cache/native-ui-e2e
         env:
           RELAYLOOM_TEST_BACKEND: native
           RELAYLOOM_BROWSER_CHANNEL: chrome
@@ -121,7 +121,7 @@ jobs:
   ios-simulator-build:
     needs: native-go
     runs-on: macos-latest
-    timeout-minutes: 30
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -137,6 +137,18 @@ jobs:
         run: node scripts/ios-build.mjs --policy-test
       - name: Unsigned iOS simulator app and native framework build
         run: node scripts/ios-build.mjs --simulator
+      - name: Execute native iOS UI and real Node peer on one installed simulator
+        run: node scripts/ios-simulator.mjs
+      - name: Clean only the simulator recorded by this gate
+        if: always()
+        run: node scripts/ios-simulator.mjs --cleanup-owned
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ios-simulator-execution-evidence
+          path: .cache/ios/simulator/evidence
+          if-no-files-found: warn
+          retention-days: 7
       - uses: actions/upload-artifact@v4
         if: always()
         with:
