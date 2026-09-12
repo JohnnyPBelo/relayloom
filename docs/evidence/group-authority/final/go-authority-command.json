@@ -1,0 +1,32 @@
+{
+  "command": "node scripts/go.mjs test -json -race -count=1 -p=1 ./groupauthority",
+  "startedAt": "2026-09-12T09:18:43.400221+00:00",
+  "status": "passed",
+  "sourceSHA256": {
+    "packages/groups/src/registry.ts": "b0cc08aff9ca6f69676f45f638047638d029f3bc251c35e0e2c9b77608fc9d2a",
+    "packages/groups/src/storage.ts": "9eaaf44411bfa4accdea8f82b7d5f5c4cc5b2bedf9296e1b1d2c46d3fe4ac21b",
+    "packages/groups/src/certificates.ts": "9a2538d209aa8536a88d842794f444387467881b550597f61b0aad0845a1d1b2",
+    "native/groupstore/store_test.go": "56826b7f3d72ffc5e394762f1fe604528b85d31f9c7b2acb7af20a50f278c23e",
+    "native/groupstore/format.go": "81b770aeb30bfa3e3fa5aed7194c07b35d2d1f5f59cd0533356e709fdcce938b",
+    "native/groupstore/store.go": "86ece015984ee768117068ebfc0cc99e3d1cd61b33f1607dd5dfb988590059d5",
+    "native/groupstore/worker_test.go": "a16d7da09fb34abacb9c60e6da60b67ed86b933fa8201d0917aac5e132aef75a",
+    "native/groupstore/integrity_test.go": "245e11b6fa1a8c326994c454ab6c237e6501971f9b33aa379a8429ec306dc93f",
+    "native/groupauthority/state.go": "9815bc13232c42b00051ae648a687fc60b2c5fb1e6867d2ab861c131bd0440d4",
+    "native/groupauthority/types.go": "cbc70dbd91056ced538da629581fb659dca271e2c5b5ca14a6db55c58a5f2ce6",
+    "native/groupauthority/registry_test.go": "3932904b7347799fee6f3d1b3eef61ce4146aaae7bf77f7c5be8edcd4df48420",
+    "native/groupauthority/operation.go": "32fda4f94cc02cb6122831a8aa6ea75c8a5746b340f80c085e3d29e6b089eaa0",
+    "native/groupauthority/observe.go": "ba8cdddde07232e5b6336b3dc688026178e05e0f8535a3ebc61e51d9f68bc29f",
+    "native/groupauthority/worker_test.go": "be0cec92d49a6c6c8ae79690985bcede88a4fc031fcae8650e9c48558426a02e",
+    "native/groupauthority/read.go": "7e542797a5a52cf4857c870077b2edd697c7a687d2935a2396efede1bfe5e261",
+    "native/groupauthority/manage.go": "d817034acf6ceaa8af1ca02628b90f3b6c60d056e62e06e702c5c2ca821ae796",
+    "tests/group-registry.test.ts": "59f6f14f0e51e40dcc242cedeaf753a526d811c26f2d978c5b92a03205836a70",
+    "tests/group-index-reserve.test.ts": "95cf9417c113ec8f9696c8d40b47f6b4120d9f2352714f61f56f8eb1275d9fe1",
+    "tests/fixtures/group-index-fixture.ts": "28cd7f7dcf220a5f71450b89ddffbe3ee46a131ecf11a003cbdf9c403a07e62d"
+  },
+  "supervisorPID": 2185989,
+  "childPID": 2186551,
+  "exitCode": 0,
+  "elapsedSeconds": 168.326,
+  "sourceUnchanged": true,
+  "outputSHA256": "e989f753fc3b7c6ef66ae675d03a31f489cd494f4a07e6b637fc5664a004d4c5"
+}

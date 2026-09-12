@@ -1,0 +1,164 @@
+TAP version 13
+# (node:2186027) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: an index consuming stop headroom is refused without changing existing data
+ok 1 - an index consuming stop headroom is refused without changing existing data
+  ---
+  duration_ms: 907.211094
+  type: 'test'
+  ...
+# Subtest: ordinary index growth stops before the protected checkpoint allocation is consumed
+ok 2 - ordinary index growth stops before the protected checkpoint allocation is consumed
+  ---
+  duration_ms: 3418.530109
+  type: 'test'
+  ...
+# (node:2186149) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: creator state is encrypted, permanent and idempotent while its operation is retained
+ok 3 - creator state is encrypted, permanent and idempotent while its operation is retained
+  ---
+  duration_ms: 97.240699
+  type: 'test'
+  ...
+# Subtest: explicit invitation needs complete ancestry and fresh consent before local membership
+ok 4 - explicit invitation needs complete ancestry and fresh consent before local membership
+  ---
+  duration_ms: 409.616858
+  type: 'test'
+  ...
+# Subtest: unknown groups, invalid signer and signed orphan hints cannot allocate, advance or freeze authority
+ok 5 - unknown groups, invalid signer and signed orphan hints cannot allocate, advance or freeze authority
+  ---
+  duration_ms: 116.696315
+  type: 'test'
+  ...
+# Subtest: an incumbent cannot skip an invalid intermediate membership snapshot
+ok 6 - an incumbent cannot skip an invalid intermediate membership snapshot
+  ---
+  duration_ms: 230.857387
+  type: 'test'
+  ...
+# Subtest: creator equivocation freezes durably; stale hints do not choose or erase a branch
+ok 7 - creator equivocation freezes durably; stale hints do not choose or erase a branch
+  ---
+  duration_ms: 169.847657
+  type: 'test'
+  ...
+# Subtest: local leave survives restart and old consent replay; reentry requires a new committed nonce
+ok 8 - local leave survives restart and old consent replay; reentry requires a new committed nonce
+  ---
+  duration_ms: 810.697597
+  type: 'test'
+  ...
+# Subtest: a late join response cannot restore membership across a subsequent removal
+ok 9 - a late join response cannot restore membership across a subsequent removal
+  ---
+  duration_ms: 407.471898
+  type: 'test'
+  ...
+# Subtest: storage pressure persists a stop checkpoint instead of using an obsolete roster
+ok 10 - storage pressure persists a stop checkpoint instead of using an obsolete roster
+  ---
+  duration_ms: 122.910743
+  type: 'test'
+  ...
+# Subtest: closure and a stale expected parent cannot create a successor or bypass idempotency
+ok 11 - closure and a stale expected parent cannot create a successor or bypass idempotency
+  ---
+  duration_ms: 206.107809
+  type: 'test'
+  ...
+# Subtest: 64 remembered groups are retained; capacity is not reset by closing them
+ok 12 - 64 remembered groups are retained; capacity is not reset by closing them
+  ---
+  duration_ms: 2553.853329
+  type: 'test'
+  ...
+# Subtest: two real creator processes use compare-and-set and cannot commit siblings in one registry
+ok 13 - two real creator processes use compare-and-set and cannot commit siblings in one registry
+  ---
+  duration_ms: 608.158527
+  type: 'test'
+  ...
+# Subtest: real process crashes preserve atomic authority and the original operation after a lost response
+ok 14 - real process crashes preserve atomic authority and the original operation after a lost response
+  ---
+  duration_ms: 1021.324086
+  type: 'test'
+  ...
+# Subtest: later snapshots wait for a missing intermediate state and activate after its verified arrival
+ok 15 - later snapshots wait for a missing intermediate state and activate after its verified arrival
+  ---
+  duration_ms: 792.139333
+  type: 'test'
+  ...
+# Subtest: capacity recovery adopts the exact stopped header and still needs its private state
+ok 16 - capacity recovery adopts the exact stopped header and still needs its private state
+  ---
+  duration_ms: 223.886623
+  type: 'test'
+  ...
+# Subtest: snapshot capacity stops survive restart; freeing space alone cannot reactivate membership
+ok 17 - snapshot capacity stops survive restart; freeing space alone cannot reactivate membership
+  ---
+  duration_ms: 211.586278
+  type: 'test'
+  ...
+# Subtest: a real sibling proof during capacity suspension freezes permanently and is retrievable
+ok 18 - a real sibling proof during capacity suspension freezes permanently and is retrievable
+  ---
+  duration_ms: 167.591318
+  type: 'test'
+  ...
+# Subtest: finite operation retention follows authenticated revisions and leaves group proofs intact
+ok 19 - finite operation retention follows authenticated revisions and leaves group proofs intact
+  ---
+  duration_ms: 6956.956391
+  type: 'test'
+  ...
+# Subtest: authenticated but malformed authority records fail closed instead of trusting falsy fields or cursors
+ok 20 - authenticated but malformed authority records fail closed instead of trusting falsy fields or cursors
+  ---
+  duration_ms: 175.738378
+  type: 'test'
+  ...
+# Subtest: corrupt retained operation cannot fabricate a successful response
+ok 21 - corrupt retained operation cannot fabricate a successful response
+  ---
+  duration_ms: 46.578292
+  type: 'test'
+  ...
+# Subtest: local leave and creator closure remain durable under full ordinary metadata capacity
+ok 22 - local leave and creator closure remain durable under full ordinary metadata capacity
+  ---
+  duration_ms: 510.454459
+  type: 'test'
+  ...
+# Subtest: a malformed trailing proof cannot roll back an already verified removal in the same page
+ok 23 - a malformed trailing proof cannot roll back an already verified removal in the same page
+  ---
+  duration_ms: 489.153465
+  type: 'test'
+  ...
+# Subtest: the declared maximum checkpoints and stop receipts fit the reserved SQLite budget
+ok 24 - the declared maximum checkpoints and stop receipts fit the reserved SQLite budget
+  ---
+  duration_ms: 297.558837
+  type: 'test'
+  ...
+# Subtest: retirement rechecks every operation signature after caching a group in the same transaction
+ok 25 - retirement rechecks every operation signature after caching a group in the same transaction
+  ---
+  duration_ms: 6590.01999
+  type: 'test'
+  ...
+1..25
+# tests 25
+# suites 0
+# pass 25
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 28176.226819

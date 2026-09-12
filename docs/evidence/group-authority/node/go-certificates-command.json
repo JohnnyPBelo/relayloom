@@ -1,0 +1,12 @@
+{
+  "command": "node scripts/go.mjs test -json -race -count=1 -p=2 ./groups",
+  "startedAt": "2026-09-12T06:10:23.923062+00:00",
+  "completedAt": "2026-09-12T06:10:29.806166+00:00",
+  "elapsedSeconds": 5.883,
+  "exitCode": 0,
+  "sourceSHA256": {
+    "native/groups/verify.go": "7767d378eae0f8e2fcf6b42443796ef172ff895b13c6a28ad76195dc5ce95ef7",
+    "native/groups/groups_test.go": "7637c7d6e5a050dd08323f0fbc58d9b0c64ca8d4c357ae77a22ca69e748946a3"
+  },
+  "outputSHA256": "f4691f242827f61156eaa94eae9f609c76234b456fff3de8fee48c37d0dc7e04"
+}

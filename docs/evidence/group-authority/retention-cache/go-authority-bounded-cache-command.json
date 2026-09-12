@@ -1,0 +1,33 @@
+{
+  "command": "node scripts/go.mjs test -json -race -count=1 -p=1 ./groupstore ./groupauthority",
+  "startedAt": "2026-09-12T08:35:59.703837+00:00",
+  "status": "passed",
+  "sourceSHA256": {
+    "native/groupauthority/state.go": "9815bc13232c42b00051ae648a687fc60b2c5fb1e6867d2ab861c131bd0440d4",
+    "native/groupauthority/types.go": "cbc70dbd91056ced538da629581fb659dca271e2c5b5ca14a6db55c58a5f2ce6",
+    "native/groupauthority/registry_test.go": "63cb71a8afbf3a5007e7e5ed96bc6cac27e6cad0f9d5acbd6c06f044a0796b62",
+    "native/groupauthority/operation.go": "32fda4f94cc02cb6122831a8aa6ea75c8a5746b340f80c085e3d29e6b089eaa0",
+    "native/groupauthority/observe.go": "ba8cdddde07232e5b6336b3dc688026178e05e0f8535a3ebc61e51d9f68bc29f",
+    "native/groupauthority/worker_test.go": "be0cec92d49a6c6c8ae79690985bcede88a4fc031fcae8650e9c48558426a02e",
+    "native/groupauthority/read.go": "7e542797a5a52cf4857c870077b2edd697c7a687d2935a2396efede1bfe5e261",
+    "native/groupauthority/manage.go": "d817034acf6ceaa8af1ca02628b90f3b6c60d056e62e06e702c5c2ca821ae796",
+    "native/groupstore/store_test.go": "56826b7f3d72ffc5e394762f1fe604528b85d31f9c7b2acb7af20a50f278c23e",
+    "native/groupstore/format.go": "ba3e8dfec2fb52e17c8adfc30e13737e5211b63d7b60509c9e9c4d4a803d904b",
+    "native/groupstore/store.go": "86ece015984ee768117068ebfc0cc99e3d1cd61b33f1607dd5dfb988590059d5",
+    "native/groupstore/worker_test.go": "97312eeb6c0262dd25c412e34e89190cc14537a14313f968574c5f36231d48c9",
+    "native/groupstore/integrity_test.go": "245e11b6fa1a8c326994c454ab6c237e6501971f9b33aa379a8429ec306dc93f",
+    "native/groups/verify.go": "7767d378eae0f8e2fcf6b42443796ef172ff895b13c6a28ad76195dc5ce95ef7",
+    "native/groups/types.go": "f5f0a96929b6225eafd1d0262c57f8b3a4e7f2254a9b8762a610c77193ea5b53",
+    "native/groups/interop_test.go": "3b66f9aee45442ce7a941de50092168e8c2e3b0b9a6cae15297e1abb482f0a87",
+    "native/groups/decode.go": "6e49d4abf0c20d5594a0cb45a59d87117a01cb404f2e67f23871808745515bc6",
+    "native/groups/crypto.go": "789409fe364072af13bd8f731a6d0269f1951868b532c103f94c6504de87686f",
+    "native/groups/create.go": "6d054144b3e2045895bf6498f98f8e15a7f1129337d772cc160c6e7af981581c",
+    "native/groups/groups_test.go": "7637c7d6e5a050dd08323f0fbc58d9b0c64ca8d4c357ae77a22ca69e748946a3"
+  },
+  "supervisorPID": 2042087,
+  "childPID": 2042088,
+  "exitCode": 0,
+  "elapsedSeconds": 146.013,
+  "sourceUnchanged": true,
+  "outputSHA256": "a17f4997acbeb100affa72f8c718e02cf09cdb7842498ad8d0071c521f3a2009"
+}

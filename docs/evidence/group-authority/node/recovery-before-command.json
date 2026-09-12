@@ -1,0 +1,14 @@
+{
+  "command": "node_modules/.bin/tsx --test --test-concurrency=1 tests/group-registry.test.ts",
+  "startedAt": "2026-09-12T08:11:52.114700+00:00",
+  "elapsedSeconds": 13.895,
+  "exitCode": 1,
+  "sourceSHA256": {
+    "packages/groups/src/registry.ts": "1d05df272cc5e42d76d3348da4ff74ddbab63f46728a7d84ebac8bd17de40a32",
+    "packages/groups/src/certificates.ts": "9a2538d209aa8536a88d842794f444387467881b550597f61b0aad0845a1d1b2",
+    "tests/group-registry.test.ts": "b642ad913a4292626a1ee3eafd9459619d4d0819b8b0259eb5033381ecdd9ae5",
+    "tests/fixtures/group-registry-worker.ts": "9f7e8a87a008ae219afdfa6b65182d9c3a4b3c057554fb3495f012c7e6926610"
+  },
+  "sourceUnchanged": true,
+  "outputSHA256": "fe0bb0f08f1366d95c9e2b49441dd118910cde031d899f8cdb1e7ba03bad4b47"
+}

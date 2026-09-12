@@ -29,6 +29,7 @@ import {
   verifyGroupLeave,
   verifyGroupSnapshot,
   verifyGroupTransition,
+  verifyGroupSnapshotTransition,
   type Certificate,
   type GroupEpoch,
 } from "../packages/groups/src/certificates.js";
@@ -37,6 +38,75 @@ const alice = createIdentity("Alice criadora"),
   bob = createIdentity("Bruno membro"),
   clara = createIdentity("Clara futura"),
   outsider = createIdentity("Duarte relay");
+
+test("newcomer validates exact join consent from signed parent header without old snapshot keys", () => {
+  const before = withBob();
+  const invite = createGroupInvitation(
+    alice,
+    before.anchor,
+    before.epoch,
+    clara.public,
+  );
+  const consent = acceptGroupInvitation(
+    clara,
+    before.anchor,
+    before.epoch,
+    invite,
+  );
+  const next = createGroupSuccessor(
+    alice,
+    before.anchor,
+    before.epoch,
+    before.snapshot,
+    {
+      title: before.snapshot.title,
+      members: [...before.snapshot.members, clara.public],
+      joins: [consent],
+    },
+  );
+  const oldCarrier = createBundle(
+    alice,
+    "group-snapshot",
+    before.snapshot,
+    before.snapshot.members,
+  );
+  assert.throws(() => decryptBundle(oldCarrier, clara));
+  const newCarrier = createBundle(
+    alice,
+    "group-snapshot",
+    next.snapshot,
+    next.snapshot.members,
+  );
+  const read = decryptBundle(newCarrier, clara) as typeof next.snapshot;
+  assert.equal(
+    verifyGroupSnapshotTransition(
+      before.anchor,
+      before.epoch,
+      next.epoch,
+      read,
+    ),
+    "nonrestrictive",
+  );
+  const missingConsent = { ...next.snapshot, joins: [] };
+  const signedButInvalid = signed(alice, {
+    ...next.epoch.body,
+    snapshotHash: hash(canonical(missingConsent)),
+  });
+  assert.deepEqual(
+    verifyGroupSnapshot(missingConsent, before.anchor, signedButInvalid),
+    missingConsent,
+  );
+  assert.throws(
+    () =>
+      verifyGroupSnapshotTransition(
+        before.anchor,
+        before.epoch,
+        signedButInvalid,
+        missingConsent,
+      ),
+    /consentimentos/,
+  );
+});
 function signed<T>(identity: Identity, body: T): Certificate<T> {
   const data = canonical(body);
   return {

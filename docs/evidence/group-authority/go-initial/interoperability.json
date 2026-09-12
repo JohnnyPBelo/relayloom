@@ -1,0 +1,23 @@
+{
+  "startedAt": "2026-09-12T08:25:25.698Z",
+  "completedAt": "2026-09-12T08:25:48.178Z",
+  "command": "node_modules/.bin/tsx --test tests/native/group-authority.test.ts",
+  "sourceSHA256": "2c1f3b24c10f7dae53ee92be554d9b0350b37e09bcbfcff0bb39524ca4abc860",
+  "sourcesUnchanged": true,
+  "binarySHA256": "963918f68a93c8b949485c6ede2713095416fc48b9e5b0b1a16883a3ec8ad7ba",
+  "assertions": [
+    "both engines read identical persisted authority and retained operations, including lone UTF-16 surrogates",
+    "one Node and one Go process racing the same parent commit exactly one successor",
+    "Node recovers a Go pre-commit process death and deduplicates its committed lost response",
+    "Go recovers a Node pre-commit authority crash without advancing the head",
+    "Go persists a local-left fence; fresh Node consent is consumed by Go without restoring historical keys",
+    "cross-runtime cursor waits for the missing snapshot and signed equivocation preserves both branches",
+    "capacity evidence and exact recovery are shared; Go closure succeeds with ordinary space exhausted",
+    "both engines reject an authenticated but malformed checkpoint"
+  ],
+  "limitations": [
+    "local Linux process and SQLite behavior; no group transport/application/UI integration",
+    "no physical radios or mobile execution",
+    "full valid backup rollback remains undetectable"
+  ]
+}

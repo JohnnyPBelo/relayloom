@@ -1,0 +1,132 @@
+TAP version 13
+# (node:1978608) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: creator state is encrypted, permanent and idempotent while its operation is retained
+ok 1 - creator state is encrypted, permanent and idempotent while its operation is retained
+  ---
+  duration_ms: 115.984716
+  type: 'test'
+  ...
+# Subtest: explicit invitation needs complete ancestry and fresh consent before local membership
+ok 2 - explicit invitation needs complete ancestry and fresh consent before local membership
+  ---
+  duration_ms: 483.709622
+  type: 'test'
+  ...
+# Subtest: unknown groups, invalid signer and signed orphan hints cannot allocate, advance or freeze authority
+ok 3 - unknown groups, invalid signer and signed orphan hints cannot allocate, advance or freeze authority
+  ---
+  duration_ms: 127.568837
+  type: 'test'
+  ...
+# Subtest: an incumbent cannot skip an invalid intermediate membership snapshot
+ok 4 - an incumbent cannot skip an invalid intermediate membership snapshot
+  ---
+  duration_ms: 231.777391
+  type: 'test'
+  ...
+# Subtest: creator equivocation freezes durably; stale hints do not choose or erase a branch
+ok 5 - creator equivocation freezes durably; stale hints do not choose or erase a branch
+  ---
+  duration_ms: 194.201719
+  type: 'test'
+  ...
+# Subtest: local leave survives restart and old consent replay; reentry requires a new committed nonce
+ok 6 - local leave survives restart and old consent replay; reentry requires a new committed nonce
+  ---
+  duration_ms: 959.132818
+  type: 'test'
+  ...
+# Subtest: a late join response cannot restore membership across a subsequent removal
+ok 7 - a late join response cannot restore membership across a subsequent removal
+  ---
+  duration_ms: 371.795379
+  type: 'test'
+  ...
+# Subtest: storage pressure persists a stop checkpoint instead of using an obsolete roster
+ok 8 - storage pressure persists a stop checkpoint instead of using an obsolete roster
+  ---
+  duration_ms: 117.755622
+  type: 'test'
+  ...
+# Subtest: closure and a stale expected parent cannot create a successor or bypass idempotency
+ok 9 - closure and a stale expected parent cannot create a successor or bypass idempotency
+  ---
+  duration_ms: 205.725077
+  type: 'test'
+  ...
+# Subtest: 64 remembered groups are retained; capacity is not reset by closing them
+ok 10 - 64 remembered groups are retained; capacity is not reset by closing them
+  ---
+  duration_ms: 2274.532589
+  type: 'test'
+  ...
+# Subtest: two real creator processes use compare-and-set and cannot commit siblings in one registry
+ok 11 - two real creator processes use compare-and-set and cannot commit siblings in one registry
+  ---
+  duration_ms: 576.756135
+  type: 'test'
+  ...
+# Subtest: real process crashes preserve atomic authority and the original operation after a lost response
+ok 12 - real process crashes preserve atomic authority and the original operation after a lost response
+  ---
+  duration_ms: 1025.363357
+  type: 'test'
+  ...
+# Subtest: later snapshots wait for a missing intermediate state and activate after its verified arrival
+ok 13 - later snapshots wait for a missing intermediate state and activate after its verified arrival
+  ---
+  duration_ms: 760.735433
+  type: 'test'
+  ...
+# Subtest: capacity recovery adopts the exact stopped header and still needs its private state
+ok 14 - capacity recovery adopts the exact stopped header and still needs its private state
+  ---
+  duration_ms: 212.212235
+  type: 'test'
+  ...
+# Subtest: snapshot capacity stops survive restart; freeing space alone cannot reactivate membership
+ok 15 - snapshot capacity stops survive restart; freeing space alone cannot reactivate membership
+  ---
+  duration_ms: 198.364284
+  type: 'test'
+  ...
+# Subtest: a real sibling proof during capacity suspension freezes permanently and is retrievable
+ok 16 - a real sibling proof during capacity suspension freezes permanently and is retrievable
+  ---
+  duration_ms: 140.315886
+  type: 'test'
+  ...
+# Subtest: finite operation retention follows authenticated revisions and leaves group proofs intact
+ok 17 - finite operation retention follows authenticated revisions and leaves group proofs intact
+  ---
+  duration_ms: 8111.439572
+  type: 'test'
+  ...
+# Subtest: authenticated but malformed authority records fail closed instead of trusting falsy fields or cursors
+ok 18 - authenticated but malformed authority records fail closed instead of trusting falsy fields or cursors
+  ---
+  duration_ms: 101.160336
+  type: 'test'
+  ...
+# Subtest: corrupt retained operation cannot fabricate a successful response
+ok 19 - corrupt retained operation cannot fabricate a successful response
+  ---
+  duration_ms: 20.903763
+  type: 'test'
+  ...
+# Subtest: local leave and creator closure remain durable under full ordinary metadata capacity
+ok 20 - local leave and creator closure remain durable under full ordinary metadata capacity
+  ---
+  duration_ms: 349.002719
+  type: 'test'
+  ...
+1..20
+# tests 20
+# suites 0
+# pass 20
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 17046.345842

@@ -227,11 +227,16 @@ func ClassifyEpochPath(anchor GroupAnchor, path []GroupEpoch) (TransitionKind, e
 	return kind, nil
 }
 func VerifyTransition(anchor GroupAnchor, parent GroupEpoch, before GroupSnapshot, next GroupEpoch, after GroupSnapshot) (TransitionKind, error) {
-	kind, err := VerifyEpochLink(anchor, parent, next)
-	if err != nil {
+	if err := VerifySnapshot(before, anchor, parent); err != nil {
 		return "", err
 	}
-	if err = VerifySnapshot(before, anchor, parent); err != nil {
+	return VerifySnapshotTransition(anchor, parent, next, after)
+}
+
+// VerifySnapshotTransition needs an anchored parent header, not its old private snapshot or reading keys.
+func VerifySnapshotTransition(anchor GroupAnchor, parent GroupEpoch, next GroupEpoch, after GroupSnapshot) (TransitionKind, error) {
+	kind, err := VerifyEpochLink(anchor, parent, next)
+	if err != nil {
 		return "", err
 	}
 	if err = VerifySnapshot(after, anchor, next); err != nil {
@@ -240,9 +245,9 @@ func VerifyTransition(anchor GroupAnchor, parent GroupEpoch, before GroupSnapsho
 	if next.Body.State == "closed" {
 		return kind, nil
 	}
-	oldCards := make(map[string]string, len(before.Members))
-	for _, card := range before.Members {
-		oldCards[card.ID] = cardHashVerified(card)
+	oldCards := make(map[string]string, len(parent.Body.Members))
+	for _, member := range parent.Body.Members {
+		oldCards[member.ID] = member.CardHash
 	}
 	consents := make(map[string]GroupConsent, len(after.Joins))
 	for _, consent := range after.Joins {

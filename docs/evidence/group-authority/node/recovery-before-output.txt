@@ -1,0 +1,147 @@
+TAP version 13
+# (node:1974544) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: creator state is encrypted, permanent and idempotent while its operation is retained
+ok 1 - creator state is encrypted, permanent and idempotent while its operation is retained
+  ---
+  duration_ms: 85.574781
+  type: 'test'
+  ...
+# Subtest: explicit invitation needs complete ancestry and fresh consent before local membership
+ok 2 - explicit invitation needs complete ancestry and fresh consent before local membership
+  ---
+  duration_ms: 361.665821
+  type: 'test'
+  ...
+# Subtest: unknown groups, invalid signer and signed orphan hints cannot allocate, advance or freeze authority
+ok 3 - unknown groups, invalid signer and signed orphan hints cannot allocate, advance or freeze authority
+  ---
+  duration_ms: 96.341603
+  type: 'test'
+  ...
+# Subtest: an incumbent cannot skip an invalid intermediate membership snapshot
+ok 4 - an incumbent cannot skip an invalid intermediate membership snapshot
+  ---
+  duration_ms: 178.256071
+  type: 'test'
+  ...
+# Subtest: creator equivocation freezes durably; stale hints do not choose or erase a branch
+ok 5 - creator equivocation freezes durably; stale hints do not choose or erase a branch
+  ---
+  duration_ms: 146.4967
+  type: 'test'
+  ...
+# Subtest: local leave survives restart and old consent replay; reentry requires a new committed nonce
+ok 6 - local leave survives restart and old consent replay; reentry requires a new committed nonce
+  ---
+  duration_ms: 714.120735
+  type: 'test'
+  ...
+# Subtest: a late join response cannot restore membership across a subsequent removal
+ok 7 - a late join response cannot restore membership across a subsequent removal
+  ---
+  duration_ms: 281.269837
+  type: 'test'
+  ...
+# Subtest: storage pressure persists a stop checkpoint instead of using an obsolete roster
+ok 8 - storage pressure persists a stop checkpoint instead of using an obsolete roster
+  ---
+  duration_ms: 89.941088
+  type: 'test'
+  ...
+# Subtest: closure and a stale expected parent cannot create a successor or bypass idempotency
+ok 9 - closure and a stale expected parent cannot create a successor or bypass idempotency
+  ---
+  duration_ms: 155.597582
+  type: 'test'
+  ...
+# Subtest: 64 remembered groups are retained; capacity is not reset by closing them
+ok 10 - 64 remembered groups are retained; capacity is not reset by closing them
+  ---
+  duration_ms: 1752.835924
+  type: 'test'
+  ...
+# Subtest: two real creator processes use compare-and-set and cannot commit siblings in one registry
+ok 11 - two real creator processes use compare-and-set and cannot commit siblings in one registry
+  ---
+  duration_ms: 446.553517
+  type: 'test'
+  ...
+# Subtest: real process crashes preserve atomic authority and the original operation after a lost response
+ok 12 - real process crashes preserve atomic authority and the original operation after a lost response
+  ---
+  duration_ms: 756.671112
+  type: 'test'
+  ...
+# Subtest: later snapshots wait for a missing intermediate state and activate after its verified arrival
+ok 13 - later snapshots wait for a missing intermediate state and activate after its verified arrival
+  ---
+  duration_ms: 576.768238
+  type: 'test'
+  ...
+# Subtest: capacity recovery adopts the exact stopped header and still needs its private state
+ok 14 - capacity recovery adopts the exact stopped header and still needs its private state
+  ---
+  duration_ms: 159.209906
+  type: 'test'
+  ...
+# Subtest: snapshot capacity stops survive restart; freeing space alone cannot reactivate membership
+ok 15 - snapshot capacity stops survive restart; freeing space alone cannot reactivate membership
+  ---
+  duration_ms: 152.383523
+  type: 'test'
+  ...
+# Subtest: a real sibling proof during capacity suspension freezes permanently and is retrievable
+ok 16 - a real sibling proof during capacity suspension freezes permanently and is retrievable
+  ---
+  duration_ms: 110.897931
+  type: 'test'
+  ...
+# Subtest: finite operation retention follows authenticated revisions and leaves group proofs intact
+ok 17 - finite operation retention follows authenticated revisions and leaves group proofs intact
+  ---
+  duration_ms: 6751.220366
+  type: 'test'
+  ...
+# Subtest: authenticated but malformed authority records fail closed instead of trusting falsy fields or cursors
+ok 18 - authenticated but malformed authority records fail closed instead of trusting falsy fields or cursors
+  ---
+  duration_ms: 95.531206
+  type: 'test'
+  ...
+# Subtest: corrupt retained operation cannot fabricate a successful response
+ok 19 - corrupt retained operation cannot fabricate a successful response
+  ---
+  duration_ms: 21.50579
+  type: 'test'
+  ...
+# Subtest: local leave and creator closure remain durable under full ordinary metadata capacity
+not ok 20 - local leave and creator closure remain durable under full ordinary metadata capacity
+  ---
+  duration_ms: 273.385072
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/tests/group-registry.test.ts:923:1'
+  failureType: 'testCodeFailure'
+  error: 'Capacidade protegida do registo atingida'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    ProtectedGroupStore.checkCapacity (/home/absint0o/projects/relayloom/packages/groups/src/storage.ts:413:13)
+    RegistryTransaction.write (/home/absint0o/projects/relayloom/packages/groups/src/storage.ts:508:16)
+    RegistryTransaction.put (/home/absint0o/projects/relayloom/packages/groups/src/storage.ts:656:24)
+    GroupRegistry.operation (/home/absint0o/projects/relayloom/packages/groups/src/registry.ts:451:8)
+    <anonymous> (/home/absint0o/projects/relayloom/packages/groups/src/registry.ts:747:12)
+    ProtectedGroupStore.execute (/home/absint0o/projects/relayloom/packages/groups/src/storage.ts:543:22)
+    ProtectedGroupStore.transaction (/home/absint0o/projects/relayloom/packages/groups/src/storage.ts:581:17)
+    GroupRegistry.leave (/home/absint0o/projects/relayloom/packages/groups/src/registry.ts:746:23)
+    TestContext.<anonymous> (/home/absint0o/projects/relayloom/tests/group-registry.test.ts:940:28)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+  ...
+1..20
+# tests 20
+# suites 0
+# pass 19
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 13576.693222

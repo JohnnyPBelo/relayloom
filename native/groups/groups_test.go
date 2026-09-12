@@ -66,6 +66,27 @@ func joinFor(t *testing.T, a core.Identity, g AnchoredGroup, member core.Identit
 	t.Helper()
 	return updateFor(t, a, g, Update{Title: g.Snapshot.Title, Members: append(append([]core.PublicIdentity{}, g.Snapshot.Members...), member.Public), Joins: []GroupConsent{consentFor(t, a, g, member)}})
 }
+
+func TestNewcomerValidatesJoinWithoutPreviousPrivateSnapshot(t *testing.T) {
+	a, b, c := newIdentity(t, "Alice"), newIdentity(t, "Bruno"), newIdentity(t, "Clara")
+	parent := joinFor(t, a, newGroup(t, a), b)
+	next := joinFor(t, a, parent, c)
+	kind, err := VerifySnapshotTransition(parent.Anchor, parent.Epoch, next.Epoch, next.Snapshot)
+	if err != nil || kind != Nonrestrictive {
+		t.Fatalf("positive header/snapshot control: %v %v", kind, err)
+	}
+	missing := next.Snapshot
+	missing.Joins = []GroupConsent{}
+	body := next.Epoch.Body
+	body.SnapshotHash = core.Hash(encoded(t, missing))
+	bad := signedFor(t, a, body)
+	if err = VerifySnapshot(missing, parent.Anchor, bad); err != nil {
+		t.Fatalf("valid signed commitment control: %v", err)
+	}
+	if _, err = VerifySnapshotTransition(parent.Anchor, parent.Epoch, bad, missing); err == nil {
+		t.Fatal("missing consent was accepted")
+	}
+}
 func rekeyFor(t *testing.T, identity core.Identity) core.Identity {
 	t.Helper()
 	fresh := newIdentity(t, identity.Public.Name)

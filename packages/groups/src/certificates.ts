@@ -662,12 +662,21 @@ export function verifyGroupTransition(
   next: GroupEpoch,
   newState: GroupSnapshot,
 ): "nonrestrictive" | "restrictive" {
+  verifyGroupSnapshot(oldState, anchor, parent);
+  return verifyGroupSnapshotTransition(anchor, parent, next, newState);
+}
+/** A newcomer needs the anchored parent header, not the parent's private snapshot or keys. */
+export function verifyGroupSnapshotTransition(
+  anchor: GroupAnchor,
+  parent: GroupEpoch,
+  next: GroupEpoch,
+  newState: GroupSnapshot,
+): "nonrestrictive" | "restrictive" {
   const kind = verifyGroupEpochLink(anchor, parent, next);
-  const before = verifyGroupSnapshot(oldState, anchor, parent),
-    after = verifyGroupSnapshot(newState, anchor, next);
+  const after = verifyGroupSnapshot(newState, anchor, next);
   if (next.body.state === "closed") return kind;
   const oldCards = new Map(
-    before.members.map((card) => [card.id, hash(canonical(card))]),
+    parent.body.members.map((member) => [member.id, member.cardHash]),
   );
   const changed = after.members.filter(
     (card) => oldCards.get(card.id) !== hash(canonical(card)),

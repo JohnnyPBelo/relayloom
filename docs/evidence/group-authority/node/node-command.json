@@ -1,0 +1,23 @@
+{
+  "name": "node",
+  "command": "npm test",
+  "startedAt": "2026-09-12T08:15:11.676283+00:00",
+  "supervisorPID": 1986071,
+  "status": "passed",
+  "sourceSHA256": {
+    "packages/groups/src/registry.ts": "58b93f637b78143d2eb5407545215e84e817926ecd82523c6824eb06e5cc2d60",
+    "packages/groups/src/certificates.ts": "9a2538d209aa8536a88d842794f444387467881b550597f61b0aad0845a1d1b2",
+    "packages/groups/src/storage.ts": "61e589ffc70f23616c1cac54856380e692c5a06335d6f2485e40143c7330dde7",
+    "native/groups/verify.go": "7767d378eae0f8e2fcf6b42443796ef172ff895b13c6a28ad76195dc5ce95ef7",
+    "native/groups/groups_test.go": "7637c7d6e5a050dd08323f0fbc58d9b0c64ca8d4c357ae77a22ca69e748946a3",
+    "tests/group-registry.test.ts": "927c64ced5f5aedd655bbdcfb1734c1a00ac98d30116f7a40d22b6259cd816f5",
+    "tests/group-certificates.test.ts": "50f73137ce64cc75802843b7a9a5a0a4a31c9c3b470f81e9aa0c722997bb5517",
+    "tests/fixtures/group-registry-worker.ts": "9f7e8a87a008ae219afdfa6b65182d9c3a4b3c057554fb3495f012c7e6926610"
+  },
+  "childPID": 1986248,
+  "exitCode": 0,
+  "elapsedSeconds": 68.593,
+  "completedAt": "2026-09-12T08:16:20.268825+00:00",
+  "sourceUnchanged": true,
+  "outputSHA256": "73acefaec0d42516d5ec91c80c0d74f163e536f65961e57e01b28d641f6b03ad"
+}
