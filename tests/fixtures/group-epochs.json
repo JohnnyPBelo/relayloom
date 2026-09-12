@@ -1,0 +1,469 @@
+{
+  "schema": "relayloom-group-epochs-declarative-cases/1",
+  "status": "DESIGN_ONLY_NOT_EXECUTED",
+  "note": "Actor/object labels are symbolic aliases, not wire IDs, keys, signatures or generated crypto vectors. Future tests must instantiate real Node/Go identities and cryptographic objects. No production source is changed by these cases.",
+  "actors": {
+    "A": "creator and original member",
+    "B": "original member",
+    "C": "prospective/new member",
+    "D": "unrelated identity or relay"
+  },
+  "initial": {
+    "anchor": "G signed by A",
+    "epochs": {
+      "E0": {
+        "creator": "A",
+        "number": 0,
+        "members": [
+          "A"
+        ]
+      },
+      "E1": {
+        "creator": "A",
+        "number": 1,
+        "previous": "E0",
+        "members": [
+          "A",
+          "B"
+        ],
+        "joinConsent": "fresh B request against E0"
+      }
+    },
+    "ordinaryMessage": "M signed by B under E1, encrypted exactly to A and B"
+  },
+  "cases": [
+    {
+      "id": "authority_reader_cannot_update",
+      "steps": [
+        "B receives and decrypts M",
+        "B signs a purported roster successor to E1"
+      ],
+      "expect": {
+        "membership": "unchanged",
+        "result": "invalid-creator-signature",
+        "readerCanSeed": true,
+        "readerBecomesCreator": false
+      }
+    },
+    {
+      "id": "stable_anchor_after_carrier_expiry",
+      "steps": [
+        "All original group carrier bundles expire after ordinary 30-day TTL",
+        "A retained participant republishes identical anchor and epoch certificates in fresh carriers"
+      ],
+      "expect": {
+        "groupId": "G unchanged",
+        "carrierIds": "new transport handles",
+        "authority": "same A signature",
+        "oldMessagesResurrected": false
+      }
+    },
+    {
+      "id": "newcomer_proof_without_old_keys",
+      "steps": [
+        "C verifies G and complete header ancestry",
+        "C signs fresh invitation consent",
+        "A commits E2 adding C with C consent and new private snapshot",
+        "C decrypts an E2 message"
+      ],
+      "expect": {
+        "newContent": "readable",
+        "M": "not decryptable by C",
+        "pastPrivateKeysSupplied": false,
+        "creator": "A"
+      }
+    },
+    {
+      "id": "stale_invitation_replay",
+      "steps": [
+        "An old invite/request names parent E0",
+        "Current committed parent is E2",
+        "Replay the old B consent or invite"
+      ],
+      "expect": {
+        "rosterChanged": false,
+        "localLeftFenceCleared": false,
+        "result": "stale-parent"
+      }
+    },
+    {
+      "id": "addition_only_delayed_message",
+      "steps": [
+        "A and C learn E2 that only adds C to unchanged E1 cards",
+        "A first receives delayed M from E1"
+      ],
+      "expect": {
+        "A": "accept-original-audience-history",
+        "C": "cannot decrypt or accept M",
+        "MReaders": [
+          "A",
+          "B"
+        ],
+        "automaticAudienceExpansion": false
+      }
+    },
+    {
+      "id": "removed_member_future_envelopes",
+      "steps": [
+        "A commits E3 removing B",
+        "A durably adopts E3",
+        "A creates new current-epoch content"
+      ],
+      "expect": {
+        "envelopeReaders": [
+          "A",
+          "C"
+        ],
+        "BDecryption": "fails",
+        "oldCopiesRecalled": false
+      }
+    },
+    {
+      "id": "backdated_removed_author",
+      "steps": [
+        "A durably adopts E3 removing B",
+        "B creates a new signed E1 message claiming a pre-removal creation time",
+        "A first receives that object"
+      ],
+      "expect": {
+        "conversationAdmission": false,
+        "quarantine": "valid-old-epoch",
+        "originalReadersMayInspect": true,
+        "automaticDelivery": false,
+        "automaticRead": false
+      }
+    },
+    {
+      "id": "honest_delayed_removed_author",
+      "steps": [
+        "B really creates M before removal but it is partitioned away from A",
+        "A adopts E3 removing B",
+        "M first reaches A"
+      ],
+      "expect": {
+        "result": "same quarantine decision as a backdated unknown E1 object",
+        "trustedSenderClock": false,
+        "contentSilentlyDiscarded": false
+      }
+    },
+    {
+      "id": "accepted_before_cutoff",
+      "steps": [
+        "A durably accepts M under E1",
+        "A adopts removal E3",
+        "Exact M is replayed after restart"
+      ],
+      "expect": {
+        "history": "retained subject to content TTL/storage",
+        "duplicateEntry": false,
+        "receiptCountersIncrementedByReplay": false
+      }
+    },
+    {
+      "id": "locked_cache_not_acceptance",
+      "steps": [
+        "A is locked and caches ciphertext M without semantic acceptance",
+        "Removal E3 is also available locally",
+        "A unlocks and processes verified control before unaccepted cache"
+      ],
+      "expect": {
+        "M": "quarantine",
+        "cacheIsHistoricalAcceptance": false
+      }
+    },
+    {
+      "id": "remove_then_rejoin_not_add_only",
+      "steps": [
+        "B is removed in E3",
+        "B freshly rejoins in E4",
+        "Unknown M still references E1"
+      ],
+      "expect": {
+        "M": "quarantine",
+        "finalRosterInclusionDoesNotEraseInterveningRemoval": true
+      }
+    },
+    {
+      "id": "reading_card_substitution",
+      "steps": [
+        "Contact cache contains another valid B card with changed boxKey",
+        "Epoch E1 commits the original B card hash",
+        "Publisher prepares or receives E1 content using the substituted card"
+      ],
+      "expect": {
+        "silentSubstitution": false,
+        "result": "epoch-card-mismatch",
+        "currentCardReplacementNeedsNewEpochAndConsent": true
+      }
+    },
+    {
+      "id": "out_of_order_proof",
+      "steps": [
+        "E4 and an E4 message arrive before E2/E3 predecessors",
+        "Predecessors later arrive as valid unique A chain"
+      ],
+      "expect": {
+        "beforeProof": "awaiting-proof without delivery",
+        "missingParentIsFork": false,
+        "afterProof": "adopt contiguous head then evaluate message"
+      }
+    },
+    {
+      "id": "signed_creator_fork",
+      "steps": [
+        "A signs E2x and E2y with the same E1 parent and different bodies",
+        "One branch was already accepted before the second proof arrives"
+      ],
+      "expect": {
+        "state": "forked-frozen",
+        "hashTieBreak": false,
+        "newSends": false,
+        "priorHistory": "preserved with pre-detection qualifier",
+        "automaticHealingByAnotherASignature": false
+      }
+    },
+    {
+      "id": "invalid_fork_hint",
+      "steps": [
+        "D fabricates a high sequence or conflicting hash without valid A signature"
+      ],
+      "expect": {
+        "state": "unchanged",
+        "groupFrozen": false,
+        "unboundedProofAllocation": false
+      }
+    },
+    {
+      "id": "ordinary_restart_vs_backup_rollback",
+      "steps": [
+        "Commit E3 normally and restart",
+        "Separately restore a complete authentic old E1 backup while isolated"
+      ],
+      "expect": {
+        "ordinaryRestart": "retains E3 and fences",
+        "oldBackupRollback": "not cryptographically detectable offline",
+        "rollbackProofClaim": false
+      }
+    },
+    {
+      "id": "leave_with_creator_offline",
+      "steps": [
+        "B explicitly leaves locally while A is offline",
+        "B persists a local-left fence and sends a leave request"
+      ],
+      "expect": {
+        "BNewSends": false,
+        "BAutomaticReceipts": false,
+        "globalRoster": "unchanged until A successor",
+        "otherOldPublishersMayStillWrapToB": true
+      }
+    },
+    {
+      "id": "creator_exit",
+      "steps": [
+        "A wants to leave an open group"
+      ],
+      "expect": {
+        "supportedAction": "signed terminal close",
+        "openGroupWithoutCreator": false,
+        "ownershipTransfer": "outside v1",
+        "newOwnerGroupNeedsNewAnchor": true
+      }
+    },
+    {
+      "id": "historical_receipt_from_removed_reader",
+      "steps": [
+        "A has durably accepted its original E1 message H",
+        "B was an original non-author reader and is now removed",
+        "B signs a minimal private receipt for H with exact original readers"
+      ],
+      "expect": {
+        "historicalFact": "may advance once",
+        "BRejoined": false,
+        "newContentAdmitted": false,
+        "receiptMadePublic": false
+      }
+    },
+    {
+      "id": "receipt_cannot_promote_quarantine",
+      "steps": [
+        "Unknown M is quarantined after removal",
+        "A valid original reader signs a receipt for M"
+      ],
+      "expect": {
+        "conversationAdmission": false,
+        "receiptPromotesMessage": false
+      }
+    },
+    {
+      "id": "removed_original_author_delete",
+      "steps": [
+        "M signed by B is verified in history or quarantine",
+        "B is removed",
+        "B signs an exact content-free delete targeting M"
+      ],
+      "expect": {
+        "localTombstone": "allowed and monotonic",
+        "newMessage": false,
+        "peerCopiesRecalled": false,
+        "otherAuthorsContentDeleted": false
+      }
+    },
+    {
+      "id": "historical_exception_payload_smuggling",
+      "steps": [
+        "B adds text, attachment, emoji or membership fields to a purported historical receipt/delete"
+      ],
+      "expect": {
+        "result": "invalid-schema",
+        "newContentApplied": false
+      }
+    },
+    {
+      "id": "removed_author_edit_denied",
+      "steps": [
+        "B is removed",
+        "B signs a new edit body targeting B's old M"
+      ],
+      "expect": {
+        "newEditApplied": false,
+        "authorshipTransferredToCreator": false,
+        "deleteExceptionStillAvailable": true
+      }
+    },
+    {
+      "id": "current_author_historical_target_intersection",
+      "steps": [
+        "A authored H to E1 readers A/B",
+        "E2 added C",
+        "Current A edits H or replies with target audience"
+      ],
+      "expect": {
+        "audience": [
+          "A",
+          "B"
+        ],
+        "CReceivesHistoryKeyOrEditText": false,
+        "authorizationEpoch": "current",
+        "targetEpoch": "E1"
+      }
+    },
+    {
+      "id": "current_author_after_removal_intersection",
+      "steps": [
+        "A authored H to A/B/C",
+        "B is removed",
+        "Current A edits H under the new epoch"
+      ],
+      "expect": {
+        "audience": [
+          "A",
+          "C"
+        ],
+        "BReceivesNewEditEnvelope": false,
+        "arbitrarySubsetAllowed": false
+      }
+    },
+    {
+      "id": "creator_cannot_edit_others",
+      "steps": [
+        "A remains creator",
+        "A signs an edit/delete targeting M authored by B"
+      ],
+      "expect": {
+        "result": "wrong-original-author",
+        "creatorMembershipPowerIsContentAuthorship": false
+      }
+    },
+    {
+      "id": "restrictive_outbox_supersession",
+      "steps": [
+        "A has an incomplete accepted E1 send with operation O and content ID X",
+        "A adopts a restrictive successor"
+      ],
+      "expect": {
+        "status": "superseded",
+        "reason": "group-epoch-changed",
+        "operationId": "O unchanged",
+        "contentId": "X unchanged",
+        "futureAppRetry": false,
+        "automaticPin": "released unless manually pinned",
+        "existingFragmentsRecalled": false
+      }
+    },
+    {
+      "id": "explicit_republication",
+      "steps": [
+        "A remains a current member and owns superseded X",
+        "UI shows old/current audiences including newly added readers",
+        "A explicitly prepares and sends new publication"
+      ],
+      "expect": {
+        "operationId": "new UUID",
+        "contentId": "new ID",
+        "epoch": "current",
+        "oldRecord": "preserved",
+        "readersSilentlyChanged": false
+      }
+    },
+    {
+      "id": "add_only_outbox_retry",
+      "steps": [
+        "An accepted E1 send remains pending",
+        "E2 only adds C"
+      ],
+      "expect": {
+        "exactOldBundleRetry": true,
+        "CAddedToOldOperation": false,
+        "newEnvelopeForOldOperation": false
+      }
+    },
+    {
+      "id": "quarantine_bounds",
+      "steps": [
+        "A removed member floods otherwise valid old-epoch objects beyond 128 records or 16 MiB"
+      ],
+      "expect": {
+        "conversationAdmission": false,
+        "protectedPendingIntentEvicted": false,
+        "refusalOrExpiryVisible": true,
+        "unboundedRetention": false
+      }
+    },
+    {
+      "id": "authority_capacity_freeze",
+      "steps": [
+        "A valid restrictive direct successor is known but normal registry capacity is exhausted"
+      ],
+      "expect": {
+        "reservedCheckpoint": "capacity-frozen",
+        "continueUsingOldRoster": false,
+        "protectedHeadOrForkFenceEvicted": false
+      }
+    },
+    {
+      "id": "epoch_lifetime_bound",
+      "steps": [
+        "Creator reaches epoch number 1022",
+        "Another membership change is requested"
+      ],
+      "expect": {
+        "anotherOpenEpoch": false,
+        "reserved1023": "closure only",
+        "silentProofCompaction": false
+      }
+    },
+    {
+      "id": "blocked_creator_authority_dependency",
+      "steps": [
+        "B blocks A's conversation content",
+        "B receives a valid A membership removal certificate"
+      ],
+      "expect": {
+        "certificateUsableForAuthority": true,
+        "newCreatorTextMustBeDisplayed": false,
+        "ignoreRemovalDueToLocalBlock": false
+      }
+    }
+  ]
+}
