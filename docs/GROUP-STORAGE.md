@@ -45,7 +45,7 @@ Next: the authority registry and proof sync, serialized message/outbox admission
 
 ## Reserva do índice — correcção posterior de capacidade
 
-A revisão da autoridade reproduziu uma falha com um índice SQLite real, cifrado e assinado quase no limite de4MiB: um novo checkpoint de paragem era recusado apesar de ainda existir reserva no orçamento global de metadados. O controlo de crescimento normal também falhou antes da correcção. A evidência original está em `evidence/group-authority/index-reserve/before.log` e o teste exacto anterior foi preservado.
+A revisão da autoridade reproduziu uma falha com um índice SQLite real, cifrado e assinado quase no limite de4MiB: um novo checkpoint de paragem era recusado apesar de ainda existir reserva no orçamento global de metadados. O controlo de crescimento normal também falhou antes da correcção. A evidência original está em `evidence/group-authority/index-reserve/before-output.txt` e o teste exacto anterior foi preservado.
 
 Os dois motores reservam agora `min(128KiB, reserveBytes/4)` dentro do limite do índice para as entradas de checkpoints/recibos. A contribuição canónica das entradas normais não pode consumir essa margem. `indexBytes`, `ordinaryIndexBytes` e `indexReserveBytes` são expostos na contagem de espaço. A reserva total de4MiB e os limites de52KiB por checkpoint/2KiB por operação comportam64 grupos e256 recibos, incluindo o respectivo índice. Não há alteração de primitivas criptográficas nem de serviços/permissões.
 

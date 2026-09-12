@@ -1,0 +1,70 @@
+TAP version 13
+# (node:2166215) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: a full ordinary index still leaves space for a durable stop checkpoint
+not ok 1 - a full ordinary index still leaves space for a durable stop checkpoint
+  ---
+  duration_ms: 1853.703542
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/tests/group-index-reserve.test.ts:24:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Got unwanted exception.
+    Actual message: "Capacidade protegida do registo atingida"
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  actual:
+  error: 'Capacidade protegida do registo atingida'
+  stack: |-
+    ProtectedGroupStore.checkCapacity (/home/absint0o/projects/relayloom/packages/groups/src/storage.ts:413:13)
+    RegistryTransaction.write (/home/absint0o/projects/relayloom/packages/groups/src/storage.ts:508:16)
+    RegistryTransaction.put (/home/absint0o/projects/relayloom/packages/groups/src/storage.ts:656:24)
+    <anonymous> (/home/absint0o/projects/relayloom/tests/group-index-reserve.test.ts:34:10)
+    ProtectedGroupStore.execute (/home/absint0o/projects/relayloom/packages/groups/src/storage.ts:543:22)
+    ProtectedGroupStore.transaction (/home/absint0o/projects/relayloom/packages/groups/src/storage.ts:581:17)
+    <anonymous> (/home/absint0o/projects/relayloom/tests/group-index-reserve.test.ts:33:11)
+    getActual (node:assert:609:5)
+    Function.doesNotThrow (node:assert:777:32)
+    TestContext.<anonymous> (/home/absint0o/projects/relayloom/tests/group-index-reserve.test.ts:32:10)
+  operator: 'doesNotThrow'
+  stack: |-
+    TestContext.<anonymous> (/home/absint0o/projects/relayloom/tests/group-index-reserve.test.ts:32:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: ordinary index growth stops before the protected checkpoint allocation is consumed
+not ok 2 - ordinary index growth stops before the protected checkpoint allocation is consumed
+  ---
+  duration_ms: 2516.285044
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/tests/group-index-reserve.test.ts:38:1'
+  failureType: 'testCodeFailure'
+  error: 'ordinary index growth consumed protected index headroom'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    <anonymous> (/home/absint0o/projects/relayloom/tests/group-index-reserve.test.ts:55:12)
+    ProtectedGroupStore.execute (/home/absint0o/projects/relayloom/packages/groups/src/storage.ts:543:22)
+    ProtectedGroupStore.transaction (/home/absint0o/projects/relayloom/packages/groups/src/storage.ts:581:17)
+    TestContext.<anonymous> (/home/absint0o/projects/relayloom/tests/group-index-reserve.test.ts:43:9)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 0
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4704.155058
