@@ -1,0 +1,14 @@
+{
+  "command": "go test -p=2 -count=1 .",
+  "cwd": ".cache/sqlite-probe/go",
+  "startedAt": "2026-09-12T04:22:51.359781+00:00",
+  "elapsedSeconds": 15.792,
+  "exitCode": 0,
+  "platform": "Linux x64 runtime test",
+  "sourceSHA256": {
+    "go.mod": "b42688c4e5c166a6ceda65a4a1ad354514a2927c85fd6c793112a01b9fd2ac18",
+    "go.sum": "59d6f9f0590f841c826c0c2003f906b038b16397a886eaef7a562ac031b68d6b",
+    "probe.go": "c8b51545861386165ddbafc77d9e3944ce4966567289c3840f40b6fe99ebfdf2",
+    "probe_test.go": "6a1f51222123c010a2a19789524e073470901abd9f2cf33b2501752b873cc9dd"
+  }
+}

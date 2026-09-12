@@ -4,7 +4,7 @@ Conversas, comunidade e páginas pessoais numa rede entre pares. **Aplicação e
 
 O código executa um nó persistente por instalação, uma interface React servida por esse nó, TCP entre processos e um adaptador série. Não há serviço central obrigatório, telemetria, fontes remotas ou CDN de execução. A interface começa vazia: mensagens, pares e contadores vêm de operações reais.
 
-## Arrancar em Linux (Node.js 22.12+)
+## Arrancar em Linux (Node.js 22.13+)
 
 ```sh
 npm ci --ignore-scripts
@@ -36,6 +36,8 @@ npm run test:e2e
 `npm test` inclui criptografia/armazenamento, API, processos TCP e três processos TCP → série através de dois PTYs reais do sistema. Os testes PTY são omitidos no Windows. **PTY não equivale a rádio físico.** O teste de isolamento desactiva o ouvinte TCP de C, verifica as ligações configuradas e prova que C não recebe durante uma partição nem com B sem retransmissão. Ao recuperar, C recebe os bytes exactos; com A terminado, B serve um objecto que C ainda não tinha.
 
 A pasta `docs/evidence` guarda relatórios e imagens de execuções reais; os dados de teste são fictícios, criados pelas fixtures. Uma configuração CI não prova que um job correu: resultados efectivamente observados constam de STATUS.
+
+No checkpoint `b09f7f5` passaram os jobs Node/Go e os pacotes desktop dos três OS, incluindo execução Linux com Xvfb. O simulador iOS arrancou e recebeu a app, mas o gate falhou ao importar a fotografia de teste, antes do XCUITest. Compilação/instalação não são execução da aplicação; ver [STATUS](docs/STATUS.md) e [evidência iOS](docs/evidence/ios/b09f7f5/simulator-report.json).
 
 ## Segurança e limites actuais
 

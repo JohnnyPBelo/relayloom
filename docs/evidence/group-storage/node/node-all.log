@@ -1,0 +1,638 @@
+
+> relayloom@0.1.0 test
+> tsx --test --test-concurrency=1 tests/*.test.ts
+
+TAP version 13
+# (node:1359613) ExperimentalWarning: The MockTimers API is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: identity proof binds signing address, name and decryption key
+ok 1 - identity proof binds signing address, name and decryption key
+  ---
+  duration_ms: 3.160832
+  type: 'test'
+  ...
+# Subtest: vault encrypts private keys; recovery and wrong-password controls
+ok 2 - vault encrypts private keys; recovery and wrong-password controls
+  ---
+  duration_ms: 270.745205
+  type: 'test'
+  ...
+# Subtest: reader decrypts and seeds but cannot become author; unauthorized reader fails
+ok 3 - reader decrypts and seeds but cannot become author; unauthorized reader fails
+  ---
+  duration_ms: 6.505959
+  type: 'test'
+  ...
+# Subtest: ciphertext, manifest, expiry, depth and address negative controls
+ok 4 - ciphertext, manifest, expiry, depth and address negative controls
+  ---
+  duration_ms: 17.855224
+  type: 'test'
+  ...
+# Subtest: encrypted persistent seed takeover, deduplication, pin/quota, disk corruption
+ok 5 - encrypted persistent seed takeover, deduplication, pin/quota, disk corruption
+  ---
+  duration_ms: 44.950949
+  type: 'test'
+  ...
+# Subtest: object-count cap bounds small-object floods, survives restart and preserves pinned content
+ok 6 - object-count cap bounds small-object floods, survives restart and preserves pinned content
+  ---
+  duration_ms: 253.360223
+  type: 'test'
+  ...
+# Subtest: metadata listing does not replace real viewing order in LRU eviction
+ok 7 - metadata listing does not replace real viewing order in LRU eviction
+  ---
+  duration_ms: 57.12034
+  type: 'test'
+  ...
+# Subtest: cached manifest metadata is isolated, invalidated by disk changes, and never bypasses get verification
+ok 8 - cached manifest metadata is isolated, invalidated by disk changes, and never bypasses get verification
+  ---
+  duration_ms: 27.389427
+  type: 'test'
+  ...
+# Subtest: rejected quota decrease preserves existing files and policy; feasible decrease evicts only unpinned content
+ok 9 - rejected quota decrease preserves existing files and policy; feasible decrease evicts only unpinned content
+  ---
+  duration_ms: 170.408796
+  type: 'test'
+  ...
+# Subtest: invalid persisted index fails safely without deleting verified objects
+ok 10 - invalid persisted index fails safely without deleting verified objects
+  ---
+  duration_ms: 24.880926
+  type: 'test'
+  ...
+# Subtest: strict wire fields and every recipient envelope are validated before accepting signatures
+ok 11 - strict wire fields and every recipient envelope are validated before accepting signatures
+  ---
+  duration_ms: 11.125254
+  type: 'test'
+  ...
+# Subtest: desktop accepts only the owned daemon loopback bootstrap capability
+ok 12 - desktop accepts only the owned daemon loopback bootstrap capability
+  ---
+  duration_ms: 2.567731
+  type: 'test'
+  ...
+# Subtest: desktop request policy blocks other hosts, ports, schemes, subframes and WebSockets
+ok 13 - desktop request policy blocks other hosts, ports, schemes, subframes and WebSockets
+  ---
+  duration_ms: 0.371637
+  type: 'test'
+  ...
+# Subtest: desktop navigation stays on its exact local app and rejects insecure runtime overrides
+ok 14 - desktop navigation stays on its exact local app and rejects insecure runtime overrides
+  ---
+  duration_ms: 1.967707
+  type: 'test'
+  ...
+# Subtest: desktop microphone eligibility excludes cameras, remote documents and subframes
+ok 15 - desktop microphone eligibility excludes cameras, remote documents and subframes
+  ---
+  duration_ms: 0.222386
+  type: 'test'
+  ...
+# Subtest: desktop download defaults cannot contain paths, device names or control bytes
+ok 16 - desktop download defaults cannot contain paths, device names or control bytes
+  ---
+  duration_ms: 0.516277
+  type: 'test'
+  ...
+# Subtest: fixture stop is idempotent after process termination by signal
+ok 17 - fixture stop is idempotent after process termination by signal
+  ---
+  duration_ms: 354.735298
+  type: 'test'
+  ...
+# Subtest: permanent group anchor has real creator signature, exact schema and separate carrier identity
+ok 18 - permanent group anchor has real creator signature, exact schema and separate carrier identity
+  ---
+  duration_ms: 15.01948
+  type: 'test'
+  ...
+# Subtest: invitation and signed consent do not alter roster until the creator commits the exact parent
+ok 19 - invitation and signed consent do not alter roster until the creator commits the exact parent
+  ---
+  duration_ms: 32.208415
+  type: 'test'
+  ...
+# Subtest: newcomer reads real new ciphertext without obtaining historical keys; removed reader cannot read new content
+ok 20 - newcomer reads real new ciphertext without obtaining historical keys; removed reader cannot read new content
+  ---
+  duration_ms: 54.375517
+  type: 'test'
+  ...
+# Subtest: stale, substituted, missing or extra member consents cannot commit a roster
+ok 21 - stale, substituted, missing or extra member consents cannot commit a roster
+  ---
+  duration_ms: 59.071536
+  type: 'test'
+  ...
+# Subtest: removal and rejoin remain restrictive across the complete path even with identical final cards
+ok 22 - removal and rejoin remain restrictive across the complete path even with identical final cards
+  ---
+  duration_ms: 53.371586
+  type: 'test'
+  ...
+# Subtest: creator reading-card replacement preserves signing authority but requires fresh signed consent
+ok 23 - creator reading-card replacement preserves signing authority but requires fresh signed consent
+  ---
+  duration_ms: 38.74929
+  type: 'test'
+  ...
+# Subtest: signed schema tampering, roster duplication, invalid order and snapshot substitution fail
+ok 24 - signed schema tampering, roster duplication, invalid order and snapshot substitution fail
+  ---
+  duration_ms: 28.321223
+  type: 'test'
+  ...
+# Subtest: closure preserves the committed historical state and reserves the final epoch
+ok 25 - closure preserves the committed historical state and reserves the final epoch
+  ---
+  duration_ms: 42.696736
+  type: 'test'
+  ...
+# Subtest: a valid creator fork cannot masquerade as a contiguous successor or grant reader authority
+ok 26 - a valid creator fork cannot masquerade as a contiguous successor or grant reader authority
+  ---
+  duration_ms: 37.983105
+  type: 'test'
+  ...
+# Subtest: full 64-member roster is bounded; capacity and title failures do not mutate its parent
+ok 27 - full 64-member roster is bounded; capacity and title failures do not mutate its parent
+  ---
+  duration_ms: 524.834924
+  type: 'test'
+  ...
+# Subtest: member leave is a signed request with no direct roster effect and cannot replace creator closure
+ok 28 - member leave is a signed request with no direct roster effect and cannot replace creator closure
+  ---
+  duration_ms: 34.8741
+  type: 'test'
+  ...
+# (node:1359842) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: encrypted metadata survives close/reopen; uncommitted work and transaction handles cannot escape
+ok 29 - encrypted metadata survives close/reopen; uncommitted work and transaction handles cannot escape
+  ---
+  duration_ms: 49.113348
+  type: 'test'
+  ...
+# Subtest: absence, truncation, wrong identity, wrong signing authority and extra SQL schema fail closed
+ok 30 - absence, truncation, wrong identity, wrong signing authority and extra SQL schema fail closed
+  ---
+  duration_ms: 29.083621
+  type: 'test'
+  ...
+# Subtest: valid encryption with only the reading key cannot forge a locally signed fence
+ok 31 - valid encryption with only the reading key cannot forge a locally signed fence
+  ---
+  duration_ms: 42.645961
+  type: 'test'
+  ...
+# Subtest: checkpoint corruption, deletion, wrong SQL type and oversize are rejected before trusting state
+ok 32 - checkpoint corruption, deletion, wrong SQL type and oversize are rejected before trusting state
+  ---
+  duration_ms: 61.115395
+  type: 'test'
+  ...
+# Subtest: complete valid backup rollback is an explicit limitation; a pinned different registry is rejected
+ok 33 - complete valid backup rollback is an explicit limitation; a pinned different registry is rejected
+  ---
+  duration_ms: 43.927112
+  type: 'test'
+  ...
+# Subtest: ciphertext substitution, swallowed integrity errors and stale index replay cannot change a committed record
+ok 34 - ciphertext substitution, swallowed integrity errors and stale index replay cannot change a committed record
+  ---
+  duration_ms: 47.569455
+  type: 'test'
+  ...
+# Subtest: record AAD binds logical key and revision even beneath a freshly signed index
+ok 35 - record AAD binds logical key and revision even beneath a freshly signed index
+  ---
+  duration_ms: 43.341674
+  type: 'test'
+  ...
+# Subtest: ordinary metadata cannot consume the checkpoint reserve; capacity failure is atomic
+ok 36 - ordinary metadata cannot consume the checkpoint reserve; capacity failure is atomic
+  ---
+  duration_ms: 36.937145
+  type: 'test'
+  ...
+# Subtest: abrupt writer process death rolls back staged SQL and preserves the last authenticated checkpoint
+ok 37 - abrupt writer process death rolls back staged SQL and preserves the last authenticated checkpoint
+  ---
+  duration_ms: 310.120168
+  type: 'test'
+  ...
+# Subtest: two actual writer processes serialize read-modify-write without losing updates
+ok 38 - two actual writer processes serialize read-modify-write without losing updates
+  ---
+  duration_ms: 534.467943
+  type: 'test'
+  ...
+# Subtest: three processes TCP → serial PTY, partition/heal, relay control and publisher-offline seeder takeover
+ok 39 - three processes TCP → serial PTY, partition/heal, relay control and publisher-offline seeder takeover
+  ---
+  duration_ms: 9658.106717
+  type: 'test'
+  ...
+# Subtest: real processes: private conversation, receipt, unauthorized edit, social and restart recovery
+ok 40 - real processes: private conversation, receipt, unauthorized edit, social and restart recovery
+  ---
+  duration_ms: 2093.088486
+  type: 'test'
+  ...
+# (node:1360530) ExperimentalWarning: The MockTimers API is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: offline send is encrypted, pinned, idempotent and recovers the same operation after restart
+ok 41 - offline send is encrypted, pinned, idempotent and recovers the same operation after restart
+  ---
+  duration_ms: 293.088246
+  type: 'test'
+  ...
+# Subtest: preparing journal reconciles surviving exact bytes and never regenerates missing content
+ok 42 - preparing journal reconciles surviving exact bytes and never regenerates missing content
+  ---
+  duration_ms: 180.15156
+  type: 'test'
+  ...
+# Subtest: transport rejection after local acceptance stays pending and cannot crash periodic sync
+ok 43 - transport rejection after local acceptance stays pending and cannot crash periodic sync
+  ---
+  duration_ms: 173.754695
+  type: 'test'
+  ...
+# Subtest: per-reader signed delivery/read confirmations survive paging, replay, eviction and restart
+ok 44 - per-reader signed delivery/read confirmations survive paging, replay, eviction and restart
+  ---
+  duration_ms: 2430.067387
+  type: 'test'
+  ...
+# Subtest: public, foreign-author and wrong-reader confirmations cannot advance a durable send
+ok 45 - public, foreign-author and wrong-reader confirmations cannot advance a durable send
+  ---
+  duration_ms: 285.369876
+  type: 'test'
+  ...
+# Subtest: expiry remains visible after payload removal and explicit user pin is preserved
+ok 46 - expiry remains visible after payload removal and explicit user pin is preserved
+  ---
+  duration_ms: 323.56639
+  type: 'test'
+  ...
+# Subtest: corrupted reserved bytes become unavailable without a new signed publication
+ok 47 - corrupted reserved bytes become unavailable without a new signed publication
+  ---
+  duration_ms: 184.214002
+  type: 'test'
+  ...
+# Subtest: blocked incomplete sends retain bounded reservation; blocked group readers do not break viewing
+ok 48 - blocked incomplete sends retain bounded reservation; blocked group readers do not break viewing
+  ---
+  duration_ms: 427.024909
+  type: 'test'
+  ...
+# Subtest: pending count/byte reservations and restored metadata ownership are bounded
+ok 49 - pending count/byte reservations and restored metadata ownership are bounded
+  ---
+  duration_ms: 200.486349
+  type: 'test'
+  ...
+# Subtest: an error after journal rename reads back the operation instead of signing a replacement
+ok 50 - an error after journal rename reads back the operation instead of signing a replacement
+  ---
+  duration_ms: 140.583926
+  type: 'test'
+  ...
+# Subtest: incoming read confirmation is journalled before its admission evicts the original
+ok 51 - incoming read confirmation is journalled before its admission evicts the original
+  ---
+  duration_ms: 228.886078
+  type: 'test'
+  ...
+# Subtest: read confirmation uses the signed roster when contact learning fails and can be reissued after eviction
+ok 52 - read confirmation uses the signed roster when contact learning fails and can be reissued after eviction
+  ---
+  duration_ms: 206.587059
+  type: 'test'
+  ...
+# Subtest: saved peer connection remains idempotent at capacity without opening another connection
+ok 53 - saved peer connection remains idempotent at capacity without opening another connection
+  ---
+  duration_ms: 121.091405
+  type: 'test'
+  ...
+# Subtest: snapshot crossing expiry during journal persistence keeps state and reservation consistent
+ok 54 - snapshot crossing expiry during journal persistence keeps state and reservation consistent
+  ---
+  duration_ms: 1672.936565
+  type: 'test'
+  ...
+# Subtest: snapshot crossing expiry during journal persistence keeps send and reservation consistent
+ok 55 - snapshot crossing expiry during journal persistence keeps send and reservation consistent
+  ---
+  duration_ms: 1672.889505
+  type: 'test'
+  ...
+# Subtest: snapshot crossing expiry during journal persistence keeps retry and reservation consistent
+ok 56 - snapshot crossing expiry during journal persistence keeps retry and reservation consistent
+  ---
+  duration_ms: 1670.930029
+  type: 'test'
+  ...
+# Subtest: inbound semantic ACL: forged public receipt/message and private wrong-reader mutation are hidden
+ok 57 - inbound semantic ACL: forged public receipt/message and private wrong-reader mutation are hidden
+  ---
+  duration_ms: 292.704438
+  type: 'test'
+  ...
+# Subtest: malformed unauthenticated HTTP paths return 400; service survives and auth boundary holds
+ok 58 - malformed unauthenticated HTTP paths return 400; service survives and auth boundary holds
+  ---
+  duration_ms: 49.929347
+  type: 'test'
+  ...
+# Subtest: private site draft and local deletion survive cache removal/restart without plaintext on disk
+ok 59 - private site draft and local deletion survive cache removal/restart without plaintext on disk
+  ---
+  duration_ms: 372.072209
+  type: 'test'
+  ...
+# Subtest: relay consent: no application-level cached serving while paused, positive control after enabling
+ok 60 - relay consent: no application-level cached serving while paused, positive control after enabling
+  ---
+  duration_ms: 1009.946333
+  type: 'test'
+  ...
+# Subtest: deletion journal survives when publication itself evicts its unpinned original
+ok 61 - deletion journal survives when publication itself evicts its unpinned original
+  ---
+  duration_ms: 166.254903
+  type: 'test'
+  ...
+# Subtest: seeded virtual time is reproducible with independently generated secure fixtures
+ok 62 - seeded virtual time is reproducible with independently generated secure fixtures
+  ---
+  duration_ms: 52.286173
+  type: 'test'
+  ...
+# Subtest: loss, MTU fragmentation, partition/heal, low-power transition and SOS-before-bulk
+ok 63 - loss, MTU fragmentation, partition/heal, low-power transition and SOS-before-bulk
+  ---
+  duration_ms: 12.070946
+  type: 'test'
+  ...
+# Subtest: directed bandwidth, latency and MTU produce measurable asymmetric arrival times
+ok 64 - directed bandwidth, latency and MTU produce measurable asymmetric arrival times
+  ---
+  duration_ms: 5.570116
+  type: 'test'
+  ...
+# Subtest: congested bounded queues preserve SOS while bulk is deferred
+ok 65 - congested bounded queues preserve SOS while bulk is deferred
+  ---
+  duration_ms: 8.012883
+  type: 'test'
+  ...
+# Subtest: bounded cache distinguishes pinned exhaustion from unpinned eviction
+ok 66 - bounded cache distinguishes pinned exhaustion from unpinned eviction
+  ---
+  duration_ms: 9.012496
+  type: 'test'
+  ...
+# Subtest: TTL rejects in-flight expiration and retained replay respects the hop limit
+ok 67 - TTL rejects in-flight expiration and retained replay respects the hop limit
+  ---
+  duration_ms: 4.651134
+  type: 'test'
+  ...
+# Subtest: every-fourth-fragment fairness lets bulk advance during SOS pressure
+ok 68 - every-fourth-fragment fairness lets bulk advance during SOS pressure
+  ---
+  duration_ms: 13.234817
+  type: 'test'
+  ...
+# Subtest: real signature/chunk checks pass honest control and detect deliberately broken controls
+ok 69 - real signature/chunk checks pass honest control and detect deliberately broken controls
+  ---
+  duration_ms: 17.943048
+  type: 'test'
+  ...
+# Subtest: simulation rejects invalid transport bounds and complete report gates pass
+ok 70 - simulation rejects invalid transport bounds and complete report gates pass
+  ---
+  duration_ms: 46.701359
+  type: 'test'
+  ...
+# Subtest: large valid cache produces bounded pages and exact authorized attachments on demand
+ok 71 - large valid cache produces bounded pages and exact authorized attachments on demand
+  ---
+  duration_ms: 5488.184598
+  type: 'test'
+  ...
+# Subtest: received author deletion persists before evicting its original, and denied attachments stay unavailable
+ok 72 - received author deletion persists before evicting its original, and denied attachments stay unavailable
+  ---
+  duration_ms: 179.44699
+  type: 'test'
+  ...
+# Subtest: request tracking is bounded even when transport rejects every broadcast
+ok 73 - request tracking is bounded even when transport rejects every broadcast
+  ---
+  duration_ms: 135.321376
+  type: 'test'
+  ...
+# Subtest: unknown post extension data does not crash or inflate summaries
+ok 74 - unknown post extension data does not crash or inflate summaries
+  ---
+  duration_ms: 285.325633
+  type: 'test'
+  ...
+# Subtest: summary reuse remains bound to verified disk bytes and unlocked identity
+ok 75 - summary reuse remains bound to verified disk bytes and unlocked identity
+  ---
+  duration_ms: 129.926158
+  type: 'test'
+  ...
+# Subtest: collections and following integrate with encrypted persistence and hashed peer retrieval respects read ACL
+ok 76 - collections and following integrate with encrypted persistence and hashed peer retrieval respects read ACL
+  ---
+  duration_ms: 2316.859952
+  type: 'test'
+  ...
+# Subtest: collection create, rename, add, remove and delete are immutable local transitions
+ok 77 - collection create, rename, add, remove and delete are immutable local transitions
+  ---
+  duration_ms: 3.27172
+  type: 'test'
+  ...
+# Subtest: collection identity, title and timestamp rules reject ambiguous metadata
+ok 78 - collection identity, title and timestamp rules reject ambiguous metadata
+  ---
+  duration_ms: 2.506636
+  type: 'test'
+  ...
+# Subtest: prototype, accessor, unknown field and sparse-array inputs fail without executing metadata
+ok 79 - prototype, accessor, unknown field and sparse-array inputs fail without executing metadata
+  ---
+  duration_ms: 0.561632
+  type: 'test'
+  ...
+# Subtest: collection ownership cannot be transferred by a command or mixed across identity vaults
+ok 80 - collection ownership cannot be transferred by a command or mixed across identity vaults
+  ---
+  duration_ms: 0.538109
+  type: 'test'
+  ...
+# Subtest: collection and membership quotas reject atomically while allowing idempotent operations
+ok 81 - collection and membership quotas reject atomically while allowing idempotent operations
+  ---
+  duration_ms: 7.568881
+  type: 'test'
+  ...
+# Subtest: recovered collections reject duplicate identifiers, titles, members and excessive total memberships
+ok 82 - recovered collections reject duplicate identifiers, titles, members and excessive total memberships
+  ---
+  duration_ms: 3.042961
+  type: 'test'
+  ...
+# Subtest: content references remain canonical hashes and convey neither reader access nor authorship
+ok 83 - content references remain canonical hashes and convey neither reader access nor authorship
+  ---
+  duration_ms: 10.938774
+  type: 'test'
+  ...
+# Subtest: followed feed selects posts and alerts from followed authors without changing caller order or access
+ok 84 - followed feed selects posts and alerts from followed authors without changing caller order or access
+  ---
+  duration_ms: 0.553327
+  type: 'test'
+  ...
+# Subtest: TCP parser handles split/coalesced frames, rejects tamper and replays only once
+ok 85 - TCP parser handles split/coalesced frames, rejects tamper and replays only once
+  ---
+  duration_ms: 88.340133
+  type: 'test'
+  ...
+# Subtest: non-reading TCP duplicate flood coalesces and bounds control output
+ok 86 - non-reading TCP duplicate flood coalesces and bounds control output
+  ---
+  duration_ms: 45.921919
+  type: 'test'
+  ...
+# Subtest: TCP malformed frame and unfinished-line floods disconnect and release state
+ok 87 - TCP malformed frame and unfinished-line floods disconnect and release state
+  ---
+  duration_ms: 22.712744
+  type: 'test'
+  ...
+# Subtest: distinct TCP packets cannot grow the ACK queue or exceed its output rate
+ok 88 - distinct TCP packets cannot grow the ACK queue or exceed its output rate
+  ---
+  duration_ms: 162.976391
+  type: 'test'
+  ...
+# Subtest: TCP incomplete assemblies have count and aggregate memory bounds
+ok 89 - TCP incomplete assemblies have count and aggregate memory bounds
+  ---
+  duration_ms: 2326.241238
+  type: 'test'
+  ...
+# Subtest: expired packets, invalid TTLs and exhausted hop limits never relay
+ok 90 - expired packets, invalid TTLs and exhausted hop limits never relay
+  ---
+  duration_ms: 136.357148
+  type: 'test'
+  ...
+# Subtest: queued expiry and stopped sockets release bounded output under backpressure
+ok 91 - queued expiry and stopped sockets release bounded output under backpressure
+  ---
+  duration_ms: 490.576909
+  type: 'test'
+  ...
+# Subtest: partial TCP loss retries exact bytes and missing ACK retries without duplicate delivery
+ok 92 - partial TCP loss retries exact bytes and missing ACK retries without duplicate delivery
+  ---
+  duration_ms: 4413.475587
+  type: 'test'
+  ...
+# Subtest: TCP reconnect delivers a partial transfer and packets created during the partition
+ok 93 - TCP reconnect delivers a partial transfer and packets created during the partition
+  ---
+  duration_ms: 1095.037159
+  type: 'test'
+  ...
+# Subtest: turning relay off cancels queued forwarded fragments and keeps local SOS available
+ok 94 - turning relay off cancels queued forwarded fragments and keeps local SOS available
+  ---
+  duration_ms: 115.348195
+  type: 'test'
+  ...
+# Subtest: relay pause cancels queued local seeding and prevents retained offline replay
+ok 95 - relay pause cancels queued local seeding and prevents retained offline replay
+  ---
+  duration_ms: 131.449352
+  type: 'test'
+  ...
+# Subtest: real TCP fragments preempt bulk for SOS while preserving bulk fairness
+ok 96 - real TCP fragments preempt bulk for SOS while preserving bulk fairness
+  ---
+  duration_ms: 109.049865
+  type: 'test'
+  ...
+# Subtest: many in-progress SOS transfers leave admission capacity for bulk fairness
+ok 97 - many in-progress SOS transfers leave admission capacity for bulk fairness
+  ---
+  duration_ms: 72.793405
+  type: 'test'
+  ...
+# Subtest: real serialport PTY fragments preempt bulk for SOS with the same fairness
+ok 98 - real serialport PTY fragments preempt bulk for SOS with the same fairness
+  ---
+  duration_ms: 155.357736
+  type: 'test'
+  ...
+# Subtest: POSIX poller regression: read rearm must preserve an outstanding write watch
+ok 99 - POSIX poller regression: read rearm must preserve an outstanding write watch
+  ---
+  duration_ms: 1.343356
+  type: 'test'
+  ...
+# Subtest: serial write deadline covers one frame at configured baud while bounding a stalled writer
+ok 100 - serial write deadline covers one frame at configured baud while bounding a stalled writer
+  ---
+  duration_ms: 0.161292
+  type: 'test'
+  ...
+# Subtest: real serial PTY recovers an injected stuck write through bounded reconnect and exact replay
+ok 101 - real serial PTY recovers an injected stuck write through bounded reconnect and exact replay
+  ---
+  duration_ms: 6172.259172
+  type: 'test'
+  ...
+# Subtest: real TCP transfer, two-hop forwarding and relay-off negative control
+ok 102 - real TCP transfer, two-hop forwarding and relay-off negative control
+  ---
+  duration_ms: 916.516655
+  type: 'test'
+  ...
+# Subtest: validation rejection prevents display and relay; positive valid control
+ok 103 - validation rejection prevents display and relay; positive valid control
+  ---
+  duration_ms: 535.539491
+  type: 'test'
+  ...
+1..103
+# tests 103
+# suites 0
+# pass 103
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 58008.815186

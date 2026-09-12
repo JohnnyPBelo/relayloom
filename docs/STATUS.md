@@ -2,6 +2,10 @@
 
 **Em implementação. Experimental. O contrato completo não está concluído.** Não é infraestrutura validada para catástrofes; não substitui serviços de emergência. Actualização: 2026-09-12. O CI verde de c3f5b42 e os gates posteriores de outbox/SAF têm evidência e versões distintas; os novos marcos não herdam automaticamente os passes CI anteriores.
 
+**Checkpoint mais recente — b09f7f5, CI34671406360:** passaram Node nos três OS, o job Go completo e os três pacotes desktop; o desktop Linux também executou com Xvfb. iOS compilou e instalou a aplicação e arrancou o simulador em191,998s, mas a importação da fotografia sintética terminou por timeout em60,976s. O XCUITest não começou; a app não tem ainda evidência de execução iOS. Foi apagado apenas o simulador criado pelo gate. Não houve repetição automática deste job nem alteração de configurações. Relatório e hashes: `docs/evidence/ios/b09f7f5`. A verificação sequencial posterior `node --test apps/ios/Tests/SimulatorRunnerTests.mjs` passou11 testes em1,187s, saída0; são verificações no host Linux, não execução Apple. As secções seguintes preservam o histórico das versões anteriores.
+
+**Implementação local posterior:** armazenamento transaccional cifrado e índice assinado para metadados de grupos em Node; build6,187s e103 testes58,653s passaram, incluindo10 casos reais de persistência/corrupção/quota/múltiplos processos. Ainda não está integrado na aplicação nem portado para Go. O probe do driver Go passou em Linux e compilou para Android/iOS arm64; não é teste móvel. Limites, formato e evidência em `GROUP-STORAGE.md`. Grupos dinâmicos, sincronização de provas e a sua UI continuam pendentes.
+
 ## Evidência executada neste Linux
 
 | Comando / artefacto | Resultado observado | Alcance |

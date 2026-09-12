@@ -1,0 +1,8 @@
+{
+  "command": "CGO_ENABLED=0 GOOS=ios GOARCH=arm64 go build -p=2 -o ios-probe.a .",
+  "cwd": ".cache/sqlite-probe/go",
+  "startedAt": "2026-09-12T04:24:24.975739+00:00",
+  "elapsedSeconds": 16.752,
+  "exitCode": 0,
+  "classification": "cross-compilation only; no mobile runtime execution"
+}
