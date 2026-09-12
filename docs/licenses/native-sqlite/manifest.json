@@ -1,5 +1,5 @@
 {
-  "scope": "Root notices of newly added SQLite dependency modules; native packaging integration remains pending",
+  "scope": "Root notices for the native SQLite backends; pure Go on current desktop/iOS targets, C backend on Android with external extension loading omitted.",
   "files": [
     {
       "module": "modernc.org/sqlite",
@@ -63,6 +63,13 @@
       "sourceFile": "LICENSE",
       "retainedFile": "modernc.org_memory@v1.12.1-LICENSE",
       "sha256": "59895e669f48f168b6b858358f6005779cdf40a265f7828813061b56af67b496"
+    },
+    {
+      "module": "github.com/mattn/go-sqlite3",
+      "version": "v1.14.52",
+      "sourceFile": "LICENSE",
+      "retainedFile": "github.com_mattn_go-sqlite3@v1.14.52-LICENSE",
+      "sha256": "afa48e5e64dc610298d80b010ae7a3450f61a79500a9f1d1697ff6dcbbfa1f72"
     }
   ]
 }

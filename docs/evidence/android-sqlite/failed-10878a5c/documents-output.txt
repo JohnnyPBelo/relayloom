@@ -1,0 +1,10 @@
+file:///home/absint0o/projects/relayloom/scripts/android-documents.mjs:51
+  if (exitCode !== 0 || !output.includes('Android SAF instrumentation passed') || (!deadlineMode && !outgoing)) throw new Error('Real SAF or peer exchange failed: ' + output + stderr);
+                                                                                                                      ^
+
+Error: Real SAF or peer exchange failed: INSTRUMENTATION_RESULT: shortMsg=Process crashed.
+INSTRUMENTATION_CODE: 0
+
+    at file:///home/absint0o/projects/relayloom/scripts/android-documents.mjs:51:119
+
+Node.js v22.22.3

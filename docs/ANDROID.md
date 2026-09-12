@@ -2,7 +2,14 @@
 
 The Android application embeds the Go runtime in its own APK process through the generated `mobile.Mobile` gomobile binding. It starts a real app-local Go engine and authenticated HTTP server, then renders bundled web assets at that exact loopback origin. It does not use a Node daemon on the development host, a remote website, a PWA, or an unimplemented runtime placeholder.
 
-Latest device-verified level: **APK `fa1481d3…` executes in the same API36 emulator with the outbox snapshot-expiry correction, final responsive UI and elapsed-deadline checker, with document selection/export, encrypted peer exchange, pause/heal, seed takeover and lifecycle gates passing**. Physical Android, ARM64, Bluetooth, Wi-Fi Direct, USB/radio, background service and store-release behavior are not implied.
+## Current verified emulator artifact — protected profile migration
+
+APK136a5103c82c4c87f6865aa2b68daa5eb60796ac4d420aa8f09d5fea5fd4e2a5, com AAR9e2fb77f9938721c9df7ef82df19e357ab02ff0c417ec40061a82e0f27004585:82 asserções no mesmo emulador API36x86_64 (38 SAF36.693s,15 prazo134.729s,16 mensagens15.355s,13 relay18.913s) e inspecção cifrada0.768s passaram. Hash instalado e inputs inalterados; cofre/JSON legado preservados; SQLite Android e binding autenticados pelo Node. Root reviu a captura nativa final. Instrumentação removida, forwards vazios, AVD/adb próprios parados, identidade preservada. Evidência em `docs/evidence/android-sqlite/apk-136a5103`.
+
+The first SQLite APK10878a5c crashed on Android seccomp/SYS_LSTAT. The corrected build uses the maintained C SQLite driver through Bionic, with extension loading omitted; no Android protection was changed. `ANDROID-SQLITE.md` separates the failed build, host C tests, final emulator execution and screenshot control. Physical hardware/ARM64/radios and Apple execution are not implied. The earlier artifact records below retain their version scope.
+
+
+Earlier device-verified level: **APK `fa1481d3…` executes in the same API36 emulator with the outbox snapshot-expiry correction, final responsive UI and elapsed-deadline checker, with document selection/export, encrypted peer exchange, pause/heal, seed takeover and lifecycle gates passing**. Physical Android, ARM64, Bluetooth, Wi-Fi Direct, USB/radio, background service and store-release behavior are not implied.
 
 ## Latest expiry/layout correction artifact — September 12, 2026
 

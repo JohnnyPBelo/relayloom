@@ -15,7 +15,7 @@ import (
 	"sync"
 
 	"github.com/JohnnyPBelo/relayloom/native/core"
-	_ "modernc.org/sqlite"
+	_ "github.com/JohnnyPBelo/relayloom/native/sqlitedriver"
 )
 
 type Options struct {

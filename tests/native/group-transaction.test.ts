@@ -51,6 +51,7 @@ test(
         "native/groupauthority",
         "native/groups",
         "native/groupstore",
+        "native/sqlitedriver",
         "native/profiledb",
         "native/profilebinding",
         "native/profilestate",

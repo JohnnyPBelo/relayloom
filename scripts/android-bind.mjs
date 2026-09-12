@@ -21,7 +21,7 @@ const env = {
   JAVA_HOME: jdk, ANDROID_HOME: sdk, ANDROID_SDK_ROOT: sdk, ANDROID_NDK_HOME: resolve(sdk, 'ndk/28.2.13676358'),
   ANDROID_USER_HOME: resolve(cache, 'user'), ANDROID_AVD_HOME: resolve(cache, 'avd'),
   XDG_CACHE_HOME: resolve(cache, 'xdg-cache'), XDG_CONFIG_HOME: resolve(cache, 'xdg-config'), XDG_DATA_HOME: resolve(cache, 'xdg-data'),
-  GOTOOLCHAIN: 'local', GOROOT: goHome, GOPATH: resolve(root, '.cache/go'), GOCACHE: resolve(root, '.cache/go-build'), GOMODCACHE: resolve(root, '.cache/go-mod'), GOFLAGS: '-p=2',
+  GOTOOLCHAIN: 'local', GOROOT: goHome, GOPATH: resolve(root, '.cache/go'), GOCACHE: resolve(root, '.cache/go-build'), GOMODCACHE: resolve(root, '.cache/go-mod'), GOFLAGS: '-p=2 -tags=sqlite_omit_load_extension',
   JAVA_TOOL_OPTIONS: `-Djava.util.prefs.userRoot=${resolve(cache, 'java-prefs')} -Djava.util.prefs.systemRoot=${resolve(cache, 'java-system-prefs')} -Xmx1024m`,
   TMPDIR: resolve(cache, 'tmp'), TMP: resolve(cache, 'tmp'), TEMP: resolve(cache, 'tmp'),
 };
@@ -29,8 +29,8 @@ mkdirSync(dirname(output), { recursive: true }); mkdirSync(env.TMPDIR, { recursi
 for (const path of [go, gomobile, resolve(gobin, 'gobind'), resolve(jdk, 'bin/javac'), resolve(sdk, 'platforms/android-36/android.jar')]) {
   if (!existsSync(path)) throw new Error(`Required pinned tool is not installed: ${path}`);
 }
-const space = spawnSync('python', [resolve(root, 'scripts/android-toolchain.py'), 'status'], { cwd: root, encoding: 'utf8' });
-if (space.status !== 0) throw new Error('Android resource budget check failed');
+const space = spawnSync('python3', [resolve(root, 'scripts/android-toolchain.py'), 'status'], { cwd: root, encoding: 'utf8' });
+if (space.status !== 0) throw new Error('Android resource budget check failed: ' + (space.error?.message ?? space.stderr.trim().slice(0, 4096)));
 const before = JSON.parse(space.stdout);
 if (before.freeBytes < 17 * 1024 ** 3 || before.androidAllocatedBytes > 23 * 1024 ** 3) throw new Error('Insufficient reserved capacity for one Android binding');
 const versions = {};
@@ -41,7 +41,7 @@ for (const name of ['gomobile', 'gobind']) {
 }
 const descriptor = openSync(lock, 'wx', 0o600); writeFileSync(descriptor, String(process.pid));
 try {
-  const args = ['bind', '-target=android/amd64', '-androidapi=24', '-o', output, './mobile'];
+  const args = ['bind', '-tags=sqlite_omit_load_extension', '-target=android/amd64', '-androidapi=24', '-o', output, './mobile'];
   const status = await new Promise((resolveStatus, reject) => {
     const child = spawn(gomobile, args, { cwd: resolve(root, 'native'), env, stdio: 'inherit' });
     child.on('error', reject); child.on('exit', (code, signal) => resolveStatus({ code, signal }));

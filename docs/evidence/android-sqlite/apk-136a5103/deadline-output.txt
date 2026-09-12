@@ -1,0 +1,23 @@
+SAF phase: unlocked
+SAF phase: native-port-ready
+SAF phase: fixture-root-chosen
+SAF phase: bounded-handoff-waiting
+SAF phase: bounded-handoff-expired
+{
+  "kind": "ANDROID_REAL_SAF_DEADLINE_INSTRUMENTATION",
+  "assertions": 15,
+  "identityId": "ff8d4503c52d4835c0a11df559015eedbfd7f3517f6b5b87c6b9cc5f39e15018",
+  "nonce": "6d7a1359ec4c",
+  "actualSystemPickerTimeout": true,
+  "observedHandoffMs": 120772,
+  "normalHomeCloseMs": 1152,
+  "capabilityRotated": true,
+  "relayPreferenceUnchanged": true,
+  "physicalDeviceTested": false,
+  "microphoneCameraAccessed": false,
+  "apkSha256": "136a5103c82c4c87f6865aa2b68daa5eb60796ac4d420aa8f09d5fea5fd4e2a5",
+  "aarSha256": "9e2fb77f9938721c9df7ef82df19e357ab02ff0c417ec40061a82e0f27004585",
+  "preliminaryBuild": false,
+  "noCapabilityOrKeyMaterialInReport": true,
+  "evidence": ".cache/android/evidence/documents-6d7a1359ec4c"
+}

@@ -1,0 +1,16 @@
+{
+  "name": "profile",
+  "argv": [
+    "node",
+    "scripts/android-private-profile.mjs",
+    ".cache/android/evidence/private-profile-cgo-final"
+  ],
+  "startedAt": "2026-09-12T13:38:08.554417+00:00",
+  "status": "completed",
+  "attempts": 1,
+  "finishedAt": "2026-09-12T13:38:09.322737+00:00",
+  "durationSeconds": 0.768,
+  "exitCode": 0,
+  "supervisorTimeout": false,
+  "inputsUnchanged": true
+}

@@ -1,0 +1,11 @@
+{
+  "topLevelPassed": 78,
+  "helpersSkippedInUnitRun": [
+    "TestStoreProcessWorker",
+    "TestProfileOwnershipInteropFixture",
+    "TestProfileDatabaseInteropFixture",
+    "TestGroupProfileTransactionFixture",
+    "TestGroupAuthorityInteropFixture"
+  ],
+  "backend": "C SQLite on Linux via relayloom_sqlite_cgo,sqlite_omit_load_extension; Android execution is separate"
+}

@@ -71,6 +71,7 @@ def prepare_web(source, stage):
         'go-BSD.txt': ROOT / '.cache/toolchains/go1.26.8/LICENSE',
         'x-mobile-BSD.txt': ROOT / '.cache/go-mod/golang.org/x/mobile@v0.0.0-20260908204917-8b95e45f8d3e/LICENSE',
         'x-crypto-BSD.txt': ROOT / '.cache/go-mod/golang.org/x/crypto@v0.57.0/LICENSE',
+        'sqlite3-driver-MIT.txt': ROOT / 'docs/licenses/native-sqlite/github.com_mattn_go-sqlite3@v1.14.52-LICENSE',
         'react-MIT.txt': ROOT / 'node_modules/react/LICENSE',
         'react-dom-MIT.txt': ROOT / 'node_modules/react-dom/LICENSE',
         'scheduler-MIT.txt': ROOT / 'node_modules/scheduler/LICENSE',

@@ -1,0 +1,18 @@
+{
+  "name": "relay",
+  "argv": [
+    "node",
+    "scripts/android-relay.mjs",
+    "--final",
+    "--evidence-dir",
+    ".cache/android/evidence/private-profile-cgo-final"
+  ],
+  "startedAt": "2026-09-12T13:37:49.592928+00:00",
+  "status": "completed",
+  "attempts": 1,
+  "finishedAt": "2026-09-12T13:38:08.505910+00:00",
+  "durationSeconds": 18.913,
+  "exitCode": 0,
+  "supervisorTimeout": false,
+  "inputsUnchanged": true
+}

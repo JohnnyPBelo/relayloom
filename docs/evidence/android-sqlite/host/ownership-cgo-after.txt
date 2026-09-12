@@ -1,0 +1,17 @@
+{"Time":"2026-09-12T13:46:43.198522732+01:00","Action":"start","Package":"github.com/JohnnyPBelo/relayloom/native/profilelock"}
+{"Time":"2026-09-12T13:46:43.211759588+01:00","Action":"run","Package":"github.com/JohnnyPBelo/relayloom/native/profilelock","Test":"TestExclusiveOwnershipIndependentProfilesAndRestart"}
+{"Time":"2026-09-12T13:46:43.211868492+01:00","Action":"output","Package":"github.com/JohnnyPBelo/relayloom/native/profilelock","Test":"TestExclusiveOwnershipIndependentProfilesAndRestart","Output":"=== RUN   TestExclusiveOwnershipIndependentProfilesAndRestart\n"}
+{"Time":"2026-09-12T13:46:43.248525635+01:00","Action":"output","Package":"github.com/JohnnyPBelo/relayloom/native/profilelock","Test":"TestExclusiveOwnershipIndependentProfilesAndRestart","Output":"--- PASS: TestExclusiveOwnershipIndependentProfilesAndRestart (0.04s)\n"}
+{"Time":"2026-09-12T13:46:43.248559088+01:00","Action":"pass","Package":"github.com/JohnnyPBelo/relayloom/native/profilelock","Test":"TestExclusiveOwnershipIndependentProfilesAndRestart","Elapsed":0.04}
+{"Time":"2026-09-12T13:46:43.248574276+01:00","Action":"run","Package":"github.com/JohnnyPBelo/relayloom/native/profilelock","Test":"TestEmptyInitializationAndForeignFile"}
+{"Time":"2026-09-12T13:46:43.248578705+01:00","Action":"output","Package":"github.com/JohnnyPBelo/relayloom/native/profilelock","Test":"TestEmptyInitializationAndForeignFile","Output":"=== RUN   TestEmptyInitializationAndForeignFile\n"}
+{"Time":"2026-09-12T13:46:43.263264757+01:00","Action":"output","Package":"github.com/JohnnyPBelo/relayloom/native/profilelock","Test":"TestEmptyInitializationAndForeignFile","Output":"--- PASS: TestEmptyInitializationAndForeignFile (0.01s)\n"}
+{"Time":"2026-09-12T13:46:43.263278924+01:00","Action":"pass","Package":"github.com/JohnnyPBelo/relayloom/native/profilelock","Test":"TestEmptyInitializationAndForeignFile","Elapsed":0.01}
+{"Time":"2026-09-12T13:46:43.263287711+01:00","Action":"run","Package":"github.com/JohnnyPBelo/relayloom/native/profilelock","Test":"TestProfileOwnershipInteropFixture"}
+{"Time":"2026-09-12T13:46:43.263290235+01:00","Action":"output","Package":"github.com/JohnnyPBelo/relayloom/native/profilelock","Test":"TestProfileOwnershipInteropFixture","Output":"=== RUN   TestProfileOwnershipInteropFixture\n"}
+{"Time":"2026-09-12T13:46:43.263402586+01:00","Action":"output","Package":"github.com/JohnnyPBelo/relayloom/native/profilelock","Test":"TestProfileOwnershipInteropFixture","Output":"    worker_test.go:14: driven by real Node/Go profile ownership processes\n"}
+{"Time":"2026-09-12T13:46:43.263410771+01:00","Action":"output","Package":"github.com/JohnnyPBelo/relayloom/native/profilelock","Test":"TestProfileOwnershipInteropFixture","Output":"--- SKIP: TestProfileOwnershipInteropFixture (0.00s)\n"}
+{"Time":"2026-09-12T13:46:43.263437592+01:00","Action":"skip","Package":"github.com/JohnnyPBelo/relayloom/native/profilelock","Test":"TestProfileOwnershipInteropFixture","Elapsed":0}
+{"Time":"2026-09-12T13:46:43.263460214+01:00","Action":"output","Package":"github.com/JohnnyPBelo/relayloom/native/profilelock","Output":"PASS\n"}
+{"Time":"2026-09-12T13:46:44.26666837+01:00","Action":"output","Package":"github.com/JohnnyPBelo/relayloom/native/profilelock","Output":"ok  \tgithub.com/JohnnyPBelo/relayloom/native/profilelock\t1.067s\n"}
+{"Time":"2026-09-12T13:46:44.266759872+01:00","Action":"pass","Package":"github.com/JohnnyPBelo/relayloom/native/profilelock","Elapsed":1.068}

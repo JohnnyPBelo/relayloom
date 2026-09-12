@@ -1,0 +1,41 @@
+--------- beginning of crash
+09-12 13:31:53.698  3451  3513 F libc    : Fatal signal 31 (SIGSYS), code 1 (SYS_SECCOMP), syscall 6 in tid 3513 (pool-3-thread-1), pid 3451 (layloom.android)
+09-12 13:31:54.895  3527  3527 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+09-12 13:31:54.895  3527  3527 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+09-12 13:31:54.895  3527  3527 F DEBUG   : Revision: '0'
+09-12 13:31:54.895  3527  3527 F DEBUG   : ABI: 'x86_64'
+09-12 13:31:54.895  3527  3527 F DEBUG   : Timestamp: 2026-09-12 13:31:53.819605132+0100
+09-12 13:31:54.895  3527  3527 F DEBUG   : Process uptime: 2s
+09-12 13:31:54.895  3527  3527 F DEBUG   : Cmdline: org.relayloom.android
+09-12 13:31:54.895  3527  3527 F DEBUG   : pid: 3451, tid: 3513, name: pool-3-thread-1  >>> org.relayloom.android <<<
+09-12 13:31:54.895  3527  3527 F DEBUG   : uid: 10216
+09-12 13:31:54.895  3527  3527 F DEBUG   : signal 31 (SIGSYS), code 1 (SYS_SECCOMP), fault addr --------
+09-12 13:31:54.895  3527  3527 F DEBUG   : Cause: seccomp prevented call to disallowed x86_64 system call 6
+09-12 13:31:54.895  3527  3527 F DEBUG   :     rax 0000000000000006  rbx 0000764995720028  rcx 000076499cab5aae  rdx 0000000000000000
+09-12 13:31:54.895  3527  3527 F DEBUG   :     r8  0000000000000000  r9  0000000000000000  r10 0000000000000000  r11 0000000000000202
+09-12 13:31:54.895  3527  3527 F DEBUG   :     r12 000037a30889c880  r13 000000000000003f  r14 000037a3087da000  r15 000076499c69dafe
+09-12 13:31:54.895  3527  3527 F DEBUG   :     rdi 0000764995720028  rsi 0000764995760520
+09-12 13:31:54.895  3527  3527 F DEBUG   :     rbp 000037a30889c718  rsp 000037a30889c6d8  rip 000076499cab5aae
+09-12 13:31:54.895  3527  3527 F DEBUG   : 1 total frames
+09-12 13:31:54.895  3527  3527 F DEBUG   : backtrace:
+09-12 13:31:54.895  3527  3527 F DEBUG   :       #00 pc 000000000051baae  /data/app/~~0PI-UcgClO2CP0-46muxKg==/org.relayloom.android-55FiNLo0jX9zFHvlr9049A==/base.apk (offset 0x28000) (internal/runtime/syscall/linux.Syscall6+14) (BuildId: 275a433971bfc648b0436def35920bc0547f187d)
+09-12 13:34:26.294  3681  3707 F libc    : Fatal signal 31 (SIGSYS), code 1 (SYS_SECCOMP), syscall 6 in tid 3707 (pool-3-thread-1), pid 3681 (layloom.android)
+09-12 13:34:27.126  3715  3715 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+09-12 13:34:27.126  3715  3715 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+09-12 13:34:27.126  3715  3715 F DEBUG   : Revision: '0'
+09-12 13:34:27.126  3715  3715 F DEBUG   : ABI: 'x86_64'
+09-12 13:34:27.126  3715  3715 F DEBUG   : Timestamp: 2026-09-12 13:34:26.468812998+0100
+09-12 13:34:27.126  3715  3715 F DEBUG   : Process uptime: 3s
+09-12 13:34:27.127  3715  3715 F DEBUG   : Cmdline: org.relayloom.android
+09-12 13:34:27.127  3715  3715 F DEBUG   : pid: 3681, tid: 3707, name: pool-3-thread-1  >>> org.relayloom.android <<<
+09-12 13:34:27.127  3715  3715 F DEBUG   : uid: 10216
+09-12 13:34:27.127  3715  3715 F DEBUG   : signal 31 (SIGSYS), code 1 (SYS_SECCOMP), fault addr --------
+09-12 13:34:27.127  3715  3715 F DEBUG   : Cause: seccomp prevented call to disallowed x86_64 system call 6
+09-12 13:34:27.127  3715  3715 F DEBUG   :     rax 0000000000000006  rbx 000076499bee0028  rcx 00007649a3075aae  rdx 0000000000000000
+09-12 13:34:27.127  3715  3715 F DEBUG   :     r8  0000000000000000  r9  0000000000000000  r10 0000000000000000  r11 0000000000000202
+09-12 13:34:27.127  3715  3715 F DEBUG   :     r12 000037a308892880  r13 000000000000003f  r14 000037a3089025a0  r15 00007649a2c5dafe
+09-12 13:34:27.127  3715  3715 F DEBUG   :     rdi 000076499bee0028  rsi 000076499bf20520
+09-12 13:34:27.127  3715  3715 F DEBUG   :     rbp 000037a308892718  rsp 000037a3088926d8  rip 00007649a3075aae
+09-12 13:34:27.127  3715  3715 F DEBUG   : 1 total frames
+09-12 13:34:27.127  3715  3715 F DEBUG   : backtrace:
+09-12 13:34:27.127  3715  3715 F DEBUG   :       #00 pc 000000000051baae  /data/app/~~0PI-UcgClO2CP0-46muxKg==/org.relayloom.android-55FiNLo0jX9zFHvlr9049A==/base.apk (offset 0x28000) (internal/runtime/syscall/linux.Syscall6+14) (BuildId: 275a433971bfc648b0436def35920bc0547f187d)

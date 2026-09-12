@@ -56,6 +56,8 @@ jobs:
       - run: npm run build
       - run: npm run native:build
       - run: npm run test:native
+      - name: C SQLite storage contract on the host (not Android execution)
+        run: npm run test:native:cgo-storage
       - run: npm run test:interop
       - name: Real UI against the native Go application
         run: node scripts/e2e.mjs --output=.cache/native-ui-e2e
@@ -135,6 +137,8 @@ jobs:
       - run: npm run build
       - name: Actual Swift host policy tests
         run: node scripts/ios-build.mjs --policy-test
+      - name: Host simulator runner and real Node peer contracts (not iOS execution)
+        run: node --test apps/ios/Tests/SimulatorRunnerTests.mjs
       - name: Unsigned iOS simulator app and native framework build
         run: node scripts/ios-build.mjs --simulator
       - name: Execute native iOS UI and real Node peer on one installed simulator

@@ -1,0 +1,9 @@
+{"Time":"2026-09-12T13:51:30.506379431+01:00","Action":"start","Package":"github.com/JohnnyPBelo/relayloom/native/sqlitedriver"}
+{"Time":"2026-09-12T13:51:30.508556673+01:00","Action":"run","Package":"github.com/JohnnyPBelo/relayloom/native/sqlitedriver","Test":"TestSelectedDriverPreservesTransactionalBlobAndNoExtensionLoading"}
+{"Time":"2026-09-12T13:51:30.508596228+01:00","Action":"output","Package":"github.com/JohnnyPBelo/relayloom/native/sqlitedriver","Test":"TestSelectedDriverPreservesTransactionalBlobAndNoExtensionLoading","Output":"=== RUN   TestSelectedDriverPreservesTransactionalBlobAndNoExtensionLoading\n"}
+{"Time":"2026-09-12T13:51:30.509005034+01:00","Action":"output","Package":"github.com/JohnnyPBelo/relayloom/native/sqlitedriver","Test":"TestSelectedDriverPreservesTransactionalBlobAndNoExtensionLoading","Output":"    driver_test.go:26: SQLite C build requires sqlite_omit_load_extension\n"}
+{"Time":"2026-09-12T13:51:30.509102096+01:00","Action":"output","Package":"github.com/JohnnyPBelo/relayloom/native/sqlitedriver","Test":"TestSelectedDriverPreservesTransactionalBlobAndNoExtensionLoading","Output":"--- FAIL: TestSelectedDriverPreservesTransactionalBlobAndNoExtensionLoading (0.00s)\n"}
+{"Time":"2026-09-12T13:51:30.509105102+01:00","Action":"fail","Package":"github.com/JohnnyPBelo/relayloom/native/sqlitedriver","Test":"TestSelectedDriverPreservesTransactionalBlobAndNoExtensionLoading","Elapsed":0}
+{"Time":"2026-09-12T13:51:30.509110201+01:00","Action":"output","Package":"github.com/JohnnyPBelo/relayloom/native/sqlitedriver","Output":"FAIL\n"}
+{"Time":"2026-09-12T13:51:30.509253169+01:00","Action":"output","Package":"github.com/JohnnyPBelo/relayloom/native/sqlitedriver","Output":"FAIL\tgithub.com/JohnnyPBelo/relayloom/native/sqlitedriver\t0.003s\n"}
+{"Time":"2026-09-12T13:51:30.509273848+01:00","Action":"fail","Package":"github.com/JohnnyPBelo/relayloom/native/sqlitedriver","Elapsed":0.003}

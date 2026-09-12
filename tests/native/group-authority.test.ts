@@ -52,6 +52,7 @@ test(
         "native/core",
         "native/groups",
         "native/groupstore",
+        "native/sqlitedriver",
         "native/groupauthority",
         "packages/groups/src",
       ].flatMap((directory) =>

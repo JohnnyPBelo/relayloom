@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "node",
+    "scripts/go.mjs",
+    "test",
+    "-json",
+    "-count=1",
+    "-p=1",
+    "-tags",
+    "relayloom_sqlite_cgo",
+    "-run",
+    "^TestSelectedDriverPreservesTransactionalBlobAndNoExtensionLoading$",
+    "./sqlitedriver"
+  ],
+  "observedExitCode": 1,
+  "expectedFailureObserved": true,
+  "reason": "C driver must refuse a build that has not omitted external extension loading"
+}

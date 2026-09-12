@@ -48,6 +48,9 @@ test(
         ...readdirSync("native/groupstore")
           .filter((p) => p.endsWith(".go"))
           .map((p) => "native/groupstore/" + p),
+        ...readdirSync("native/sqlitedriver")
+          .filter((p) => p.endsWith(".go"))
+          .map((p) => "native/sqlitedriver/" + p),
       ];
       for (const file of files.sort())
         digest.update(file).update("\0").update(readFileSync(file));

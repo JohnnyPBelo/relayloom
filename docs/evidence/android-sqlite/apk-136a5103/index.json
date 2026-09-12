@@ -1,0 +1,15 @@
+{
+  "apkSha256": "136a5103c82c4c87f6865aa2b68daa5eb60796ac4d420aa8f09d5fea5fd4e2a5",
+  "gates": {
+    "documents": 38,
+    "deadline": 15,
+    "messages": 16,
+    "relay": 13
+  },
+  "totalAssertions": 82,
+  "privateProfileInspection": "PASSED",
+  "rootReviewedFinalNativeScreenshot": true,
+  "sameProfilePreserved": true,
+  "cleanup": "owned emulator/adb stopped; instrumentation uninstalled; no transport forwards",
+  "physicalDevice": false
+}

@@ -10,10 +10,9 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
-	"strings"
 	"sync"
 
-	_ "modernc.org/sqlite"
+	"github.com/JohnnyPBelo/relayloom/native/sqlitedriver"
 )
 
 const applicationID = 0x524c504c
@@ -54,12 +53,21 @@ func Acquire(directory string) (lease *Lease, err error) {
 		absolute = "/" + absolute
 	}
 	uri := url.URL{Scheme: "file", Path: absolute}
-	query := url.Values{"mode": {"rw"}, "_pragma": {"busy_timeout(0)"}}
+	// The maintained drivers use different DSN names for the same zero-wait
+	// policy. Both must refuse a second process without waiting for its exit.
+	query := url.Values{"mode": {"rw"}, "_pragma": {"busy_timeout(0)"}, "_busy_timeout": {"0"}}
 	uri.RawQuery = query.Encode()
 	db, err := sql.Open("sqlite", uri.String())
 	if err != nil {
 		return nil, err
 	}
+	// The C driver can encounter the held lock while opening the connection,
+	// before BEGIN EXCLUSIVE. Classify typed SQLite errors at both boundaries.
+	defer func() {
+		if sqlitedriver.IsBusy(err) {
+			err = fmt.Errorf("%w: %v", ErrInUse, err)
+		}
+	}()
 	db.SetMaxOpenConns(1)
 	db.SetMaxIdleConns(1)
 	conn, err := db.Conn(context.Background())
@@ -75,9 +83,6 @@ func Acquire(directory string) (lease *Lease, err error) {
 			}
 			_ = conn.Close()
 			_ = db.Close()
-			if strings.Contains(err.Error(), "database is locked") || strings.Contains(err.Error(), "SQLITE_BUSY") {
-				err = fmt.Errorf("%w: %v", ErrInUse, err)
-			}
 		}
 	}()
 	exec := func(query string) error { _, e := conn.ExecContext(context.Background(), query); return e }

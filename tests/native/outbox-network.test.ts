@@ -58,6 +58,7 @@ function productionDigest() {
     "native/profiledb",
     "native/profilestate",
     "native/groupstore",
+    "native/sqlitedriver",
     "native/cmd/relayloom",
   ])
     collect(directory);
