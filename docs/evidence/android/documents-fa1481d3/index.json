@@ -1,0 +1,77 @@
+{
+  "kind": "ANDROID_EXPIRY_AND_LAYOUT_CORRECTION_GATE",
+  "apkSha256": "fa1481d360e3bf28dc114352f3014369f55d2b1da36569bfb2bba0db035e18d1",
+  "aarSha256": "51dedfe084c9fea8da616a3f35c3d6aece57c0a77cf4441ced5bc7ecc44e8a0f",
+  "deviceAssertions": {
+    "saf": 38,
+    "deadline": 15,
+    "messages": 16,
+    "relay": 11
+  },
+  "installedHashBeforeAfterMatched": true,
+  "recordedInputsUnchanged": true,
+  "physicalDeviceOrRadio": false,
+  "sanitized": true,
+  "files": [
+    {
+      "path": "android-document-deadline.json",
+      "sha256": "3c9575052dbbd97a48ad101cdab8ef420d49cb035dcb5a49ef68031a32dc8442",
+      "bytes": 661
+    },
+    {
+      "path": "android-documents.json",
+      "sha256": "e2575d5e716f2f0960d608a11e4b79d90ab45032e7b7280301c330ca803080fe",
+      "bytes": 1161
+    },
+    {
+      "path": "android-documents.png",
+      "sha256": "7000c3e4169868d490f122ef62bdc85ae8a1d3ddea96d8c05d0e576d19f62ada",
+      "bytes": 167949
+    },
+    {
+      "path": "android-multihop-seed.json",
+      "sha256": "7e4e50c760e8721134e4d59ae4575be0be32a26a2178c83fb4a0fa53b0c836d0",
+      "bytes": 2082
+    },
+    {
+      "path": "android-native-peer-exchange.json",
+      "sha256": "e3290f145bb4091d16849735e4fb70372311e020e4a1eb1ccb87e41b16ba343c",
+      "bytes": 1092
+    },
+    {
+      "path": "android-offline-site.png",
+      "sha256": "35c5a50af383ea009e5c39d5060df4e72690d9cefb8b7d51efba2239fddf1202",
+      "bytes": 278119
+    },
+    {
+      "path": "android-peer-messenger.png",
+      "sha256": "8aa301176d0df0ac8c80df91f7f1801d8dfaf091d05c1694e960e398644734b3",
+      "bytes": 148571
+    },
+    {
+      "path": "build.json",
+      "sha256": "fba5e059a7a03f944f3008ba31b1dad4803606f97fe9e355571d3c92f5b20600",
+      "bytes": 1154
+    },
+    {
+      "path": "cleanup-resource-audit.json",
+      "sha256": "5ecfbb46f1026ff656b3bc4606a2d23de9b126b9696a13ef6bfe8f2d0b594b3f",
+      "bytes": 457
+    },
+    {
+      "path": "commands.json",
+      "sha256": "eb8160fe2ea26a6bd2cde59b30bfe1e0b01746216e958cc29c49db5046a6fbd8",
+      "bytes": 2372
+    },
+    {
+      "path": "input-hashes.json",
+      "sha256": "28b7ec3c648150405d9c40b2aa11baddddcad6fcba4061c9ba4162ff9bad78cc",
+      "bytes": 4496
+    },
+    {
+      "path": "installed-apk.json",
+      "sha256": "94efa615d035511c0f745ef5197ccf4fbfc5382881ae73690b577f14d191d657",
+      "bytes": 349
+    }
+  ]
+}

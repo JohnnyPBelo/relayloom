@@ -1,0 +1,17 @@
+# Group epochs implementation sequence
+
+Authority contract: `docs/GROUP-EPOCHS.md`; acceptance remains FR-007 and the full owner brief. Root owns this sequential phase. No new/resumed agents. Existing fixed groups must keep their semantics until the new anchored group path is integrated and verified.
+
+1. Implement exact-schema signed anchors, headers, invitations, consents, private snapshots and transition checks in Node and Go using existing canonical JSON, identity proofs and maintained Ed25519 APIs. Add actual positive/negative cryptographic tests and cross-runtime vectors. Do not count symbolic fixture labels as signatures.
+2. Implement protected authenticated group registry, atomic head/fork/leave fences, membership operation retention and bounded proof/carrier synchronization. Certificates outlive carrier TTL; ciphertext seeding does not confer authority.
+3. Integrate anchored-group message admission, original/current audiences, historical events, inspectable quarantine and superseded outbox semantics into both engines. Preserve fixed groups; no silent history-key migration.
+4. Add real UI create/invite/accept/remove/leave/closed/fork/quarantine/republication flows, accessible states and explicit audience review.
+5. Run signed cross-runtime vectors, adversarial real-process partition/head ordering/fork/expiry/quota/restart controls and real UI gates; review/fix/rerun. Rebuild affected native artifacts before claiming the new feature there.
+
+Status: `packages/groups/src/certificates.ts` implements Node anchors, epoch headers/links, invitations, consent, leave requests, private snapshot/transition checks, full-card replacement and closure. Eleven actual cryptographic tests in `tests/group-certificates.test.ts` passed in1.285s with typecheck, including a64-member roster, unchanged old reader keys, removed-reader failures, signed malformed inputs and creator reading-card replacement. The first test source had extra closing parentheses; syntax was corrected before any passing test claim. Signature checks use maintained Node Ed25519 APIs and existing identity/canonical helpers. Validation reuses hashes within a single verified snapshot to avoid quadratic identity-proof verification; it never trusts a retained cache across calls.
+
+The application still has fixed groups; the Node module is not integrated into registry/API/UI and the Go equivalent and cross-runtime vectors remain pending. No dynamic-group feature is claimed. Work on this module is paused while correcting a separate CI failure: run `34663513261` tested published `3d6641a`, passed Node on threeOS, but failed a Go-sender mixed outbox expiry/pin invariant; desktop/iOS were skipped. See `docs/OUTBOX-SNAPSHOT-EXPIRY.md`. The final Android APK27a71947 and Linux package gates passed before this expiry correction, so their binaries do not contain it.
+
+## Continuation after corrective gates
+
+The expiry/layout corrections and final Android gates passed and are consolidated. Node foundation committed asb541fb7. A separate Go draft now exists in `native/groups/{types,crypto,decode,verify,create}.go`, still uncompiled/untested and not imported by app/mobile. Add real Go tests and bidirectional vectors before registry/API/UI integration or feature claims. No new agents were created or resumed.

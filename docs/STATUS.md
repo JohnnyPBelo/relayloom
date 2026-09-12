@@ -44,7 +44,7 @@ Algumas primeiras execuções falharam; as causas/correcções estão em `.codex
 | Linux | Node 22.22.3 e Chromium executados nativamente; artefactos/testes acima. Shell Electron e pacote Linux x64 descompactado executados; fluxo de instalador ainda não testado |
 | Windows | Node e pacote desktop Windows x64 passaram no runner Windows em c3f5b42. Testes PTY omitidos. GUI, instalador e hardware físico não executados |
 | macOS | Node, PTY e pacote desktop macOS arm64 passaram no runner Apple em c3f5b42. GUI/instalador desktop, assinatura de distribuição e hardware Apple local não testados |
-| Android | APK `27a71947…` com Go integrado, checker de prazo e interface final: 38 asserções SAF, 15 de prazo/lifecycle, 16 de mensagens/recuperação e 11 de relay/seed no único emulador API36 x86_64. Hash instalado confirmado antes/depois; 80 asserções passaram. Não é dispositivo físico, ARM64 nem rádio |
+| Android | APK `fa1481d3…` com Go integrado, correcção da expiração e interface final: 38 asserções SAF, 15 de prazo/lifecycle, 16 de mensagens/recuperação e 11 de relay/seed no único emulador API36 x86_64. Hash instalado confirmado antes/depois; 80 asserções passaram. Não é dispositivo físico, ARM64 nem rádio |
 | iOS | c3f5b42 compilou o XCFramework arm64 para dispositivo/simulador e a aplicação de simulador unsigned no runner Xcode26.6;25 asserções Swift/Foundation do host passaram. Aplicação/simulador/WKWebView ainda não executados. Dispositivo físico e assinatura não verificados |
 | TCP | Sockets/processos reais locais; LAN/Internet/NAT ainda não verificados |
 | Série | Adaptador real + PTYs do sistema; nenhum rádio físico validado |
@@ -88,3 +88,15 @@ Verificação operacional sequencial pedida pelo proprietário em 2026-09-12: os
 ## Integração Android posterior à medição
 
 Em fase posterior, mantendo execução sequencial e sem novos agentes, root compilou o APK `27a71947f73e3a2622da6efbcb402d04260e53293cb6156e27f43ea3b3f8e5a2` com o checker/interface finais. O hash instalado coincidiu antes/depois; SAF38, prazo15, mensagens16 e relay11 passaram, uma execução de cada gate e fontes/assets/AAR inalterados. Prazo observado121.264ms, HOME1.254ms; bytes exactos e recuperação da identidade confirmados. Os controlos de ausência de rota, pausa/heal e seeder com autor desligado passaram. Três capturas foram revistas. Evidência: `docs/evidence/android/documents-27a71947`, comandos completos em `ANDROID.md` e `.codex-delivery/ANDROID-FINAL-INTEGRATION.md`. AVD/adb próprios parados, instrumentação de teste removida, identidade preservada,127,54GiB livres. Isto fecha o gate do checker que estava pendente no APK4de, sem alegar hardware físico, rádio ou suspensão real.
+
+## CI de 3d6641a e correcção em curso
+
+Os cinco marcos foram publicados normalmente até `3d6641a`. O run `34663513261` passou Node nos três OS e os testes unitários/race Go, mas falhou o quinto caso de interoperabilidade: a outbox Go podia mostrar expiração enquanto a reserva automática ainda estava fixada. Desktop e iOS foram omitidos por dependência, não executados com sucesso. Root reproduziu o problema também em Node e corrigiu a inconsistência de instantes entre reconciliação e resposta. Os controlos focados de estado/envio/repetição passaram; gates completos estão em curso antes de publicar a correcção. Ver `OUTBOX-SNAPSHOT-EXPIRY.md`. Os binários anteriores mantêm a sua evidência por hash e precisam de rebuild para incluir esta correcção.
+
+Há ainda uma biblioteca Node local de certificados de grupos, com11 testes criptográficos passados e typecheck, mas sem integração na aplicação nem port Go. Grupos dinâmicos continuam por implementar/testar de ponta a ponta; os casos declarativos originais não foram transformados automaticamente em resultados executados.
+
+## Marcos correctivos posteriores
+
+A correcção de expiração ficou em `7246340`: build,93 testes Node (82 da aplicação/existentes e11 da biblioteca de grupos),37 testes Go de aplicação com race,11 core/11 transport e5 casos de interoperabilidade passaram. O cenário que falhou no CI passou mantendo a asserção original. Hashes e comandos: `docs/evidence/outbox/snapshot-expiry`. O layout ficou em `c7f5488`:15 percursos UI por núcleo, oito larguras, teclado, contraste claro/escuro e execução real do desktop/pacote Linux passaram; o smoke passou a rejeitar overflow horizontal. Ver `ONBOARDING-LAYOUT-REVIEW.md`.
+
+O Android foi novamente ligado/compilado para incluir as correcções: AAR51dedfe0 e APKfa1481d3 passaram os quatro gates,80 asserções no mesmo emulador, com hashes/inputs preservados. Evidência: `docs/evidence/android/documents-fa1481d3`. O núcleo Apple ainda precisa de nova compilação/execução CI; não herda os passes locais. Existe um rascunho Go da biblioteca de grupos em desenvolvimento, ainda sem testes ou integração na aplicação; a funcionalidade de grupos dinâmicos permanece parcial.

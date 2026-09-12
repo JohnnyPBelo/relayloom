@@ -1,0 +1,99 @@
+[
+  {
+    "argv": [
+      "node",
+      "scripts/android-bind.mjs"
+    ],
+    "startedAt": "2026-09-12T02:55:47.072307+00:00",
+    "status": "completed",
+    "attempts": 1,
+    "finishedAt": "2026-09-12T02:55:51.401448+00:00",
+    "durationSeconds": 4.329,
+    "exitCode": 0,
+    "inputsUnchanged": true,
+    "timeout": false
+  },
+  {
+    "argv": [
+      "python3",
+      "scripts/android-build.py"
+    ],
+    "startedAt": "2026-09-12T02:55:51.401750+00:00",
+    "status": "completed",
+    "attempts": 1,
+    "finishedAt": "2026-09-12T02:55:55.226130+00:00",
+    "durationSeconds": 3.824,
+    "exitCode": 0,
+    "inputsUnchanged": true,
+    "timeout": false
+  },
+  {
+    "name": "documents",
+    "argv": [
+      "node",
+      "scripts/android-documents.mjs",
+      "--final"
+    ],
+    "startedAt": "2026-09-12T02:58:48.898098+00:00",
+    "status": "completed",
+    "attempts": 1,
+    "finishedAt": "2026-09-12T02:59:32.953045+00:00",
+    "durationSeconds": 44.055,
+    "exitCode": 0,
+    "supervisorTimeout": false,
+    "inputsUnchanged": true
+  },
+  {
+    "name": "deadline",
+    "argv": [
+      "node",
+      "scripts/android-documents.mjs",
+      "--final",
+      "--deadline"
+    ],
+    "startedAt": "2026-09-12T02:59:32.955902+00:00",
+    "status": "completed",
+    "attempts": 1,
+    "finishedAt": "2026-09-12T03:01:51.680301+00:00",
+    "durationSeconds": 138.724,
+    "exitCode": 0,
+    "supervisorTimeout": false,
+    "inputsUnchanged": true
+  },
+  {
+    "name": "messages",
+    "argv": [
+      "node",
+      "scripts/android-smoke.mjs",
+      "--final",
+      "--evidence-dir",
+      ".cache/android/evidence/expiry-layout-final"
+    ],
+    "startedAt": "2026-09-12T03:01:51.685715+00:00",
+    "status": "completed",
+    "attempts": 1,
+    "finishedAt": "2026-09-12T03:02:10.345552+00:00",
+    "durationSeconds": 18.66,
+    "exitCode": 0,
+    "supervisorTimeout": false,
+    "inputsUnchanged": true
+  },
+  {
+    "name": "relay",
+    "argv": [
+      "node",
+      "scripts/android-relay.mjs",
+      "--final",
+      "--evidence-dir",
+      ".cache/android/evidence/expiry-layout-final"
+    ],
+    "startedAt": "2026-09-12T03:02:10.348384+00:00",
+    "status": "completed",
+    "attempts": 1,
+    "finishedAt": "2026-09-12T03:02:29.249404+00:00",
+    "durationSeconds": 18.901,
+    "exitCode": 0,
+    "supervisorTimeout": false,
+    "inputsUnchanged": true
+  }
+]

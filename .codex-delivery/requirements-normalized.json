@@ -6,7 +6,7 @@
     ],
     "generated_at": "2026-09-11T16:22:15.403613+00:00",
     "version": 1,
-    "updated_at": "2026-09-12T01:00:31.098816+00:00"
+    "updated_at": "2026-09-12T03:11:55.903136+00:00"
   },
   "requirements": [
     {
@@ -89,10 +89,9 @@
       "validation": {
         "evidence_paths": [
           "tests/e2e/flows.spec.ts",
-          "tests/native/mixed-network.test.ts",
-          "docs/evidence/android/documents-27a71947"
+          "docs/evidence/android/documents-fa1481d3"
         ],
-        "limits": "Exporta\u00e7\u00e3o/recupera\u00e7\u00e3o no host e via SAF no APK Android final 27a71947; exporta\u00e7\u00e3o iOS e restantes fluxos nativos ainda limitados."
+        "limits": "Exporta\u00e7\u00e3o/recupera\u00e7\u00e3o no host e SAF Android finalfa1481d3; exporta\u00e7\u00e3o iOS e restantes fluxos nativos ainda limitados."
       },
       "evidence": [
         {
@@ -123,6 +122,15 @@
             "docs/evidence/android/documents-27a71947"
           ],
           "notes": "Exporta\u00e7\u00e3o/recupera\u00e7\u00e3o no host e via SAF no APK Android final 27a71947; exporta\u00e7\u00e3o iOS e restantes fluxos nativos ainda limitados."
+        },
+        {
+          "kind": "corrective-milestone-2026-09-12",
+          "result": "done",
+          "paths": [
+            "tests/e2e/flows.spec.ts",
+            "docs/evidence/android/documents-fa1481d3"
+          ],
+          "notes": "Exporta\u00e7\u00e3o/recupera\u00e7\u00e3o no host e SAF Android finalfa1481d3; exporta\u00e7\u00e3o iOS e restantes fluxos nativos ainda limitados."
         }
       ]
     },
@@ -245,11 +253,11 @@
       },
       "validation": {
         "evidence_paths": [
-          "tests/e2e/flows.spec.ts",
-          "tests/security.test.ts",
-          "docs/GROUP-EPOCHS.md"
+          "docs/GROUP-EPOCHS.md",
+          "packages/groups/src/certificates.ts",
+          "tests/group-certificates.test.ts"
         ],
-        "limits": "Grupos fixos e ACL reais; contrato de \u00e9pocas \u00e9 desenho, sem implementa\u00e7\u00e3o ou testes executados de mudan\u00e7as de membros."
+        "limits": "Grupos fixos reais; biblioteca Node de certificados passou11 testes. Sem registry/API/UI din\u00e2mica; port Go em rascunho, por verificar."
       },
       "evidence": [
         {
@@ -270,6 +278,16 @@
             "docs/GROUP-EPOCHS.md"
           ],
           "notes": "Grupos fixos e ACL reais; contrato de \u00e9pocas \u00e9 desenho, sem implementa\u00e7\u00e3o ou testes executados de mudan\u00e7as de membros."
+        },
+        {
+          "kind": "corrective-milestone-2026-09-12",
+          "result": "partial",
+          "paths": [
+            "docs/GROUP-EPOCHS.md",
+            "packages/groups/src/certificates.ts",
+            "tests/group-certificates.test.ts"
+          ],
+          "notes": "Grupos fixos reais; biblioteca Node de certificados passou11 testes. Sem registry/API/UI din\u00e2mica; port Go em rascunho, por verificar."
         }
       ]
     },
@@ -396,7 +414,7 @@
           "docs/ANDROID.md",
           "docs/IOS.md"
         ],
-        "limits": "Bytes/renderizadores reais e SAF Android no APK final 27a71947; fluxos iOS e hardware continuam pendentes."
+        "limits": "Bytes/renderizadores reais e SAF no APKfa1481d3; fluxos iOS/hardware pendentes."
       },
       "evidence": [
         {
@@ -428,6 +446,16 @@
             "docs/IOS.md"
           ],
           "notes": "Bytes/renderizadores reais e SAF Android no APK final 27a71947; fluxos iOS e hardware continuam pendentes."
+        },
+        {
+          "kind": "corrective-milestone-2026-09-12",
+          "result": "partial",
+          "paths": [
+            "tests/e2e/media.spec.ts",
+            "docs/ANDROID.md",
+            "docs/IOS.md"
+          ],
+          "notes": "Bytes/renderizadores reais e SAF no APKfa1481d3; fluxos iOS/hardware pendentes."
         }
       ]
     },
@@ -446,12 +474,11 @@
       },
       "validation": {
         "evidence_paths": [
-          "tests/outbox.test.ts",
-          "native/app/outbox_test.go",
-          "tests/native/outbox-network.test.ts",
-          "docs/OUTBOX-PROTOCOL.md"
+          "docs/OUTBOX-PROTOCOL.md",
+          "docs/OUTBOX-SNAPSHOT-EXPIRY.md",
+          "docs/evidence/outbox/snapshot-expiry"
         ],
-        "limits": "Outbox cifrada Node/Go com inten\u00e7\u00e3o/reserva limitadas, idempot\u00eancia enquanto retida e repeti\u00e7\u00e3o ap\u00f3s restart com relay pausado; gates host e APK Android final passaram. Execu\u00e7\u00e3o iOS e restantes plataformas nativas pendentes."
+        "limits": "Outbox dur\u00e1vel Node/Go, idempot\u00eancia limitada e estado/reserva coerentes na expira\u00e7\u00e3o;82 testes Node de aplica\u00e7\u00e3o/existentes,37 Go app race e5 interop passaram. APKfa1481d3 passou; execu\u00e7\u00e3o iOS pendente."
       },
       "evidence": [
         {
@@ -484,6 +511,16 @@
             "docs/OUTBOX-PROTOCOL.md"
           ],
           "notes": "Outbox cifrada Node/Go com inten\u00e7\u00e3o/reserva limitadas, idempot\u00eancia enquanto retida e repeti\u00e7\u00e3o ap\u00f3s restart com relay pausado; gates host e APK Android final passaram. Execu\u00e7\u00e3o iOS e restantes plataformas nativas pendentes."
+        },
+        {
+          "kind": "corrective-milestone-2026-09-12",
+          "result": "partial",
+          "paths": [
+            "docs/OUTBOX-PROTOCOL.md",
+            "docs/OUTBOX-SNAPSHOT-EXPIRY.md",
+            "docs/evidence/outbox/snapshot-expiry"
+          ],
+          "notes": "Outbox dur\u00e1vel Node/Go, idempot\u00eancia limitada e estado/reserva coerentes na expira\u00e7\u00e3o;82 testes Node de aplica\u00e7\u00e3o/existentes,37 Go app race e5 interop passaram. APKfa1481d3 passou; execu\u00e7\u00e3o iOS pendente."
         }
       ]
     },
@@ -503,10 +540,10 @@
       "validation": {
         "evidence_paths": [
           "tests/e2e/outbox.spec.ts",
-          "docs/evidence/outbox",
-          "docs/evidence/android/documents-27a71947"
+          "docs/evidence/desktop/layout-expiry-fix",
+          "docs/evidence/android/documents-fa1481d3"
         ],
-        "limits": "Recep\u00e7\u00e3o/leitura por destinat\u00e1rio, prazos e estado com dados ausentes implementados; 14 percursos UI Node/Go, depois 4 de outbox por n\u00facleo; APK Android final passou. Execu\u00e7\u00e3o iOS pendente."
+        "limits": "Recep\u00e7\u00e3o/leitura por destinat\u00e1rio, expira\u00e7\u00e3o e retry reais;15UI por n\u00facleo e APK final passaram. Execu\u00e7\u00e3o iOS pendente."
       },
       "evidence": [
         {
@@ -537,6 +574,16 @@
             "docs/evidence/android/documents-27a71947"
           ],
           "notes": "Recep\u00e7\u00e3o/leitura por destinat\u00e1rio, prazos e estado com dados ausentes implementados; 14 percursos UI Node/Go, depois 4 de outbox por n\u00facleo; APK Android final passou. Execu\u00e7\u00e3o iOS pendente."
+        },
+        {
+          "kind": "corrective-milestone-2026-09-12",
+          "result": "partial",
+          "paths": [
+            "tests/e2e/outbox.spec.ts",
+            "docs/evidence/desktop/layout-expiry-fix",
+            "docs/evidence/android/documents-fa1481d3"
+          ],
+          "notes": "Recep\u00e7\u00e3o/leitura por destinat\u00e1rio, expira\u00e7\u00e3o e retry reais;15UI por n\u00facleo e APK final passaram. Execu\u00e7\u00e3o iOS pendente."
         }
       ]
     },
@@ -1891,9 +1938,9 @@
       "validation": {
         "evidence_paths": [
           "docs/ANDROID.md",
-          "docs/evidence/android/documents-27a71947/index.json"
+          "docs/evidence/android/documents-fa1481d3/index.json"
         ],
-        "limits": "APK final 27a71947 com checker/interface actuais passou 80 asser\u00e7\u00f5es no emulador API36 x86_64; 28 document/session host e outras pol\u00edticas passaram. Dispositivo f\u00edsico/ARM64 n\u00e3o verificados."
+        "limits": "APKfa1481d3 com n\u00facleo corrigido e interface final passou80 asser\u00e7\u00f5es no mesmo emuladorAPI36x86_64; f\u00edsico/ARM64 n\u00e3o verificados."
       },
       "evidence": [
         {
@@ -1922,6 +1969,15 @@
             "docs/evidence/android/documents-27a71947/index.json"
           ],
           "notes": "APK final 27a71947 com checker/interface actuais passou 80 asser\u00e7\u00f5es no emulador API36 x86_64; 28 document/session host e outras pol\u00edticas passaram. Dispositivo f\u00edsico/ARM64 n\u00e3o verificados."
+        },
+        {
+          "kind": "corrective-milestone-2026-09-12",
+          "result": "partial",
+          "paths": [
+            "docs/ANDROID.md",
+            "docs/evidence/android/documents-fa1481d3/index.json"
+          ],
+          "notes": "APKfa1481d3 com n\u00facleo corrigido e interface final passou80 asser\u00e7\u00f5es no mesmo emuladorAPI36x86_64; f\u00edsico/ARM64 n\u00e3o verificados."
         }
       ]
     },

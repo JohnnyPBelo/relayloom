@@ -2,9 +2,17 @@
 
 The Android application embeds the Go runtime in its own APK process through the generated `mobile.Mobile` gomobile binding. It starts a real app-local Go engine and authenticated HTTP server, then renders bundled web assets at that exact loopback origin. It does not use a Node daemon on the development host, a remote website, a PWA, or an unimplemented runtime placeholder.
 
-Latest device-verified level: **APK `27a71947…` executes in the same API 36 emulator with the final elapsed-deadline checker, current outbox UI, real document selection/export, encrypted peer exchange, multi-hop pause/heal, seed takeover and lifecycle gates passing**. Physical Android, ARM64, Bluetooth, Wi-Fi Direct, USB/radio, background service and store-release behavior are not implied.
+Latest device-verified level: **APK `fa1481d3…` executes in the same API36 emulator with the outbox snapshot-expiry correction, final responsive UI and elapsed-deadline checker, with document selection/export, encrypted peer exchange, pause/heal, seed takeover and lifecycle gates passing**. Physical Android, ARM64, Bluetooth, Wi-Fi Direct, USB/radio, background service and store-release behavior are not implied.
 
-## Final checker and outbox integration — September 12, 2026
+## Latest expiry/layout correction artifact — September 12, 2026
+
+APK SHA-256 `fa1481d360e3bf28dc114352f3014369f55d2b1da36569bfb2bba0db035e18d1`,11,765,440 bytes; freshly bound AAR `51dedfe084c9fea8da616a3f35c3d6aece57c0a77cf4441ced5bc7ecc44e8a0f`,6,012,242 bytes. It includes engine-source19f8ea…62cd and assets `index-CFZzmFWN.js`/`index-DwCp7KCv.css`. This replaces the older binding for the expiry correction; the group-certificate library is not integrated into the application.
+
+The installed APK hash matched before and after all gates. One sequential run of each passed: SAF38 assertions/44.055s, deadline15/138.724s, messages16/18.660s and relay11/18.901s. The actual handoff closed listeners at120,841ms including fixture overhead, ordinary HOME at1,198ms. Exact attachment/vault recovery, missing-capability401, encrypted on-device storage, A→Android→C isolation/pause/heal and publisher-offline seeding passed. Sources/assets stayed unchanged; signatures and ELF/ZIP alignment passed. Root inspected the current save and offline-site images.
+
+Commands are the same documented gate scripts, with final evidence directed to `.cache/android/evidence/expiry-layout-final`. The prior instrumentation APK was reused with its verified unchanged hash `67a95726…4dbf0`; no test coverage was removed. Full command records, sanitized reports, input/artifact hashes and images are in [`documents-fa1481d3/index.json`](evidence/android/documents-fa1481d3/index.json). The owned emulator/adb were stopped, all transport forwards removed and test-only instrumentation uninstalled; the same AVD/identity remain. Free disk after cleanup:125.33GiB. Hardware, physical sleep, native OS notification presentation and radio limitations below remain.
+
+## Earlier checker and outbox integration — September 12, 2026
 
 The final APK is **11,765,440 bytes**, SHA-256 `27a71947f73e3a2622da6efbcb402d04260e53293cb6156e27f43ea3b3f8e5a2`, using unchanged AAR `7c9f60fe036b85d08bc584f3c469ee31e3537a3f22de9d7fdfd514ef820503b5` and web assets `index-Ct0M5tYK.js`/`index-BcajBo5I.css`. The installed `base.apk` matched before and after the gates. Java/assets/AAR input hashes remained unchanged. Archive signature and 16 KiB alignment checks passed; host policies passed 21 origin + 7 fake-backend lease + 28 document/session + 6 synthetic capture assertions.
 
