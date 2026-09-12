@@ -126,3 +126,12 @@ Root inspected the current real site-editor and mobile-social captures during th
 
 
 Gate completo concluído: build/typecheck,152 Node/77.381s,105 testes Go de topo com race/379.168s (cinco helpers omitidos em unitários e executados pelos drivers),15 interoperabilidade/145.127s,15 UI Node/107.327s e15 UI Go/101.522s. Desktop Linux: preparação0.239s, execução0.982s, pacote5.161s, execução empacotada0.766s.22 relatórios Axe actualizados, zero violações. As fontes registadas não mudaram durante o gate. Evidência pública em `docs/evidence/private-profile`; produto, grupos dinâmicos e plataformas móveis continuam incompletos.
+
+
+## Borrowed authority transaction and cancellation
+
+A borrowed scope must latch its failure on the outer transaction: merely returning an error lets an outer callback accidentally swallow it and commit partial changes. Both engines now expose an explicit abort that retains the first integrity error, and scope errors use it. The hostile-callback controls exercise errors swallowed both inside and outside the scope.
+
+The first Node scope run passed3/4 but a cancelled transaction emerged as “Inicialização protegida do perfil ilegível”: the initialization parser caught transaction errors as data corruption. Moving the tx read outside the parsing catch preserves cancellation and allows the valid database to remain usable, while malformed marker bytes still fail closed. Corrected Node scope+factory12 passed; final controls include full-quota fence persistence and real cross-runtime process exits. No dynamic-group admission/API/UI claim follows.
+
+A facade transaccional Node/Go foi implementada e verificada:81 Node/36.565s,36 Go de topo com race/169.094s (quatro helpers executados pelos drivers),9 interoperabilidade/45.760s; build8.157s e CLI0.901s. Fontes registadas inalteradas durante o gate. Evidência em `docs/evidence/group-transaction`. A aplicação ainda não usa esta facade para grupos dinâmicos.

@@ -40,3 +40,12 @@ Concrete facade requirements from root review:
 5. Runtime integration still needs signed content admission, accepted-ID tracking and immutable superseded intents. Only the caller of the completed outer commit may transmit, display or issue a receipt. Ambiguous commit uses signed-binding authenticated readback; it must not call the old legacy loader.
 
 This section is a reviewed implementation boundary, not completed facade code or an independent security review. Do not reduce the remaining application/network/UI gates to these lower-level tests.
+
+
+## Transaction scope implemented and verified
+
+`GroupRegistry.inTransaction` and `groupauthority.InTransaction` now borrow the outer SQLite transaction, reject stale scopes and latch operation/callback failures even if the coordinator swallows them. The new transaction abort primitive preserves an already observed integrity failure. Invalid trailing network proofs return a rejection record so the valid restrictive prefix and private decision can commit; standalone APIs keep their earlier error semantics. Normal cancellation is no longer misclassified as corrupted initialization in Node: transaction reads happen outside the marker-parsing catch.
+
+Five directed controls per engine cover atomic group/private commit, callback rollback, swallowed operation/scope errors, deferred proof rejection, and full ordinary quota. A real process gate exits both runtimes before/after commit, reads both fields through the other runtime and repeats the retained operation without duplicating a group. Private-document growth can fail at full quota; the runtime coordinator must persist its minimal authority fence without unnecessary document growth and consult that authority before retrying any original intent. The passing minimal-fence control does not claim that this policy is already applied by the app.
+
+A facade transaccional Node/Go foi implementada e verificada:81 Node/36.565s,36 Go de topo com race/169.094s (quatro helpers executados pelos drivers),9 interoperabilidade/45.760s; build8.157s e CLI0.901s. Fontes registadas inalteradas durante o gate. Evidência em `docs/evidence/group-transaction`. A aplicação ainda não usa esta facade para grupos dinâmicos.

@@ -145,12 +145,22 @@ function incomingProof<T>(verify: () => T): T {
   }
 }
 
+export interface GroupProofRejection {
+  groupId: string;
+  accepted: number;
+  message: string;
+}
+
 /** Local authority state only. Application content admission must use the same transaction boundary. */
 export class GroupRegistry {
   private readonly identity: Identity;
   private readonly cardHash: string;
+  private deferredRejections?: GroupProofRejection[];
   constructor(
-    private readonly store: ProtectedGroupStore,
+    private readonly store: Pick<
+      ProtectedGroupStore,
+      "transaction" | "view" | "accounting"
+    >,
     identity: Identity,
   ) {
     requireThat(validateIdentity(identity.public), "Identidade local inválida");
@@ -164,6 +174,57 @@ export class GroupRegistry {
     );
     this.identity = structuredClone(identity);
     this.cardHash = memberCardHash(identity.public);
+  }
+  /** Borrow one caller-owned transaction. No result authorizes transmission until
+   * the outer commit succeeds. Rejected proof tails are returned as data so a
+   * verified restrictive prefix and its outbox fence can commit together. */
+  static inTransaction<T>(
+    tx: RegistryTransaction,
+    identity: Identity,
+    callback: (registry: GroupRegistry) => T,
+  ): { value: T; rejections: GroupProofRejection[] } {
+    let active = true,
+      failed = false,
+      failure: unknown;
+    const execute = <R>(operation: (tx: RegistryTransaction) => R): R => {
+      if (!active) throw new Error("Âmbito de autoridade encerrado");
+      if (failed) throw failure;
+      try {
+        const value = operation(tx);
+        if (value && typeof (value as any).then === "function")
+          throw new Error("O âmbito de autoridade exige operações síncronas");
+        return value;
+      } catch (error) {
+        failed = true;
+        failure = error;
+        throw error;
+      }
+    };
+    try {
+      const registry = new GroupRegistry(
+        {
+          transaction: execute,
+          view: execute,
+          accounting: () => execute((current) => current.accounting()),
+        },
+        identity,
+      );
+      const rejections: GroupProofRejection[] = [];
+      registry.deferredRejections = rejections;
+      const value = callback(registry);
+      if (failed) throw failure;
+      if (value && typeof (value as any).then === "function")
+        throw new Error("O âmbito de autoridade exige uma função síncrona");
+      return { value, rejections: structuredClone(rejections) };
+    } catch (error) {
+      return tx.abort(
+        error instanceof Error
+          ? error
+          : new Error("Âmbito de autoridade interrompido"),
+      );
+    } finally {
+      active = false;
+    }
   }
   private record(tx: RegistryTransaction, id: string): GroupRecord {
     requireThat(address(id), "Identificador de grupo inválido");
@@ -885,7 +946,12 @@ export class GroupRegistry {
   observeHeaders(
     groupId: string,
     values: GroupEpoch[],
-  ): { status: GroupAuthorityView; accepted: number; missingProof: boolean } {
+  ): {
+    status: GroupAuthorityView;
+    accepted: number;
+    missingProof: boolean;
+    rejected?: string;
+  } {
     requireThat(
       Array.isArray(values) &&
         values.length >= 1 &&
@@ -923,7 +989,15 @@ export class GroupRegistry {
     });
     // Invalid trailing network input cannot undo a verified restrictive prefix.
     // SQL/integrity failures still abort/poison through the storage boundary.
-    if (rejected) throw rejected;
+    if (rejected) {
+      if (!this.deferredRejections) throw rejected;
+      this.deferredRejections.push({
+        groupId,
+        accepted: observed.accepted,
+        message: rejected.message,
+      });
+      return { ...observed, rejected: rejected.message };
+    }
     return observed;
   }
   private applyOwnConsent(

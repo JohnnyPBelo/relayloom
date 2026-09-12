@@ -374,6 +374,18 @@ func (tx *Tx) check(writable bool) error {
 	}
 	return nil
 }
+
+// Abort latches a high-level failure even when its caller swallows the error.
+// Preserve the first failure so an integrity error can never be downgraded.
+func (tx *Tx) Abort(err error) error {
+	if previous := tx.check(false); previous != nil {
+		return previous
+	}
+	if err == nil {
+		err = ErrTransaction
+	}
+	return tx.fail(err)
+}
 func (tx *Tx) fail(err error) error { tx.failed = err; return err }
 func (tx *Tx) find(key string) (entry, int) {
 	for i, e := range tx.body.Entries {

@@ -34,3 +34,6 @@ Latest published HEAD90cb649; actual CI Node on threeOS, full Go and desktop pac
 5. Extend profile/social templates and moderation controls, review key recovery/rotation, and continue full contract audit. Keep unsupported physical radios, Apple signing and hardware tests explicit.
 
 `docs/REMAINING-SCOPE.md` maps concrete gaps from source. This sequence advances the complete contract; it does not redefine completion as the current baseline. Each agent keeps explicit ownership and must return actual results.
+
+
+A facade transaccional Node/Go foi implementada e verificada:81 Node/36.565s,36 Go de topo com race/169.094s (quatro helpers executados pelos drivers),9 interoperabilidade/45.760s; build8.157s e CLI0.901s. Fontes registadas inalteradas durante o gate. Evidência em `docs/evidence/group-transaction`. A aplicação ainda não usa esta facade para grupos dinâmicos.

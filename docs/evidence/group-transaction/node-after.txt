@@ -1,0 +1,86 @@
+TAP version 13
+# (node:149313) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: group and private document share one commit; callback rollback and expired scopes cannot leak writes
+ok 1 - group and private document share one commit; callback rollback and expired scopes cannot leak writes
+  ---
+  duration_ms: 93.699979
+  type: 'test'
+  ...
+# Subtest: swallowing a scoped operation failure cannot commit earlier group or private writes
+ok 2 - swallowing a scoped operation failure cannot commit earlier group or private writes
+  ---
+  duration_ms: 42.477601
+  type: 'test'
+  ...
+# Subtest: a verified closure and private decision commit despite a rejected proof tail
+ok 3 - a verified closure and private decision commit despite a rejected proof tail
+  ---
+  duration_ms: 81.48618
+  type: 'test'
+  ...
+# Subtest: even swallowing the entire authority scope error cannot commit the outer transaction
+ok 4 - even swallowing the entire authority scope error cannot commit the outer transaction
+  ---
+  duration_ms: 39.663476
+  type: 'test'
+  ...
+# (node:149350) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: staged import binds the actual legacy ciphertext and committed reopen never falls back
+ok 5 - staged import binds the actual legacy ciphertext and committed reopen never falls back
+  ---
+  duration_ms: 55.104516
+  type: 'test'
+  ...
+# Subtest: existing unbound, missing initialized and wrong-store databases fail without reset
+ok 6 - existing unbound, missing initialized and wrong-store databases fail without reset
+  ---
+  duration_ms: 93.202457
+  type: 'test'
+  ...
+# Subtest: changed legacy source cannot complete a signed preparation
+ok 7 - changed legacy source cannot complete a signed preparation
+  ---
+  duration_ms: 19.886336
+  type: 'test'
+  ...
+# Subtest: transaction wrapper cannot erase initialization or the current private document
+ok 8 - transaction wrapper cannot erase initialization or the current private document
+  ---
+  duration_ms: 37.469763
+  type: 'test'
+  ...
+# Subtest: real process death after prepared initialization boundary preserves resumable private bytes
+ok 9 - real process death after prepared initialization boundary preserves resumable private bytes
+  ---
+  duration_ms: 177.46923
+  type: 'test'
+  ...
+# Subtest: real process death after imported initialization boundary preserves resumable private bytes
+ok 10 - real process death after imported initialization boundary preserves resumable private bytes
+  ---
+  duration_ms: 181.908543
+  type: 'test'
+  ...
+# Subtest: real process death after committed initialization boundary preserves resumable private bytes
+ok 11 - real process death after committed initialization boundary preserves resumable private bytes
+  ---
+  duration_ms: 190.873621
+  type: 'test'
+  ...
+# Subtest: replay of the complete earlier initialization state is an explicit rollback limitation
+ok 12 - replay of the complete earlier initialization state is an explicit rollback limitation
+  ---
+  duration_ms: 68.348558
+  type: 'test'
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 12
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1355.781844

@@ -11,9 +11,10 @@ import (
 
 type invalidProof struct{ error }
 type Observation struct {
-	Status       View `json:"status"`
-	Accepted     int  `json:"accepted"`
-	MissingProof bool `json:"missingProof"`
+	Rejected     string `json:"rejected,omitempty"`
+	Status       View   `json:"status"`
+	Accepted     int    `json:"accepted"`
+	MissingProof bool   `json:"missingProof"`
 }
 
 func (g *Registry) save(tx *groupstore.Tx, r *record) error {
@@ -156,6 +157,11 @@ func (g *Registry) ObserveHeaders(id string, epochs []groups.GroupEpoch) (Observ
 	})
 	if err != nil {
 		return Observation{}, err
+	}
+	if rejected != nil && g.rejections != nil {
+		result.Rejected = rejected.Error()
+		*g.rejections = append(*g.rejections, ProofRejection{GroupID: id, Accepted: result.Accepted, Message: result.Rejected})
+		return result, nil
 	}
 	return result, rejected
 }

@@ -560,6 +560,10 @@ export class ProtectedGroupStore {
             sqliteMaximumBytes: this.maximumDatabaseBytes(body.limits),
           };
         },
+        (cause) => {
+          operationFailure ??= cause;
+          throw operationFailure;
+        },
       );
       const result = callback(tx);
       if (operationFailure) throw operationFailure;
@@ -622,6 +626,7 @@ export class ProtectedGroupStore {
 
 export class RegistryTransaction {
   private valid = true;
+  private aborted?: Error;
   #changed = false;
   get changed() {
     return this.#changed;
@@ -638,10 +643,18 @@ export class RegistryTransaction {
     ) => Entry,
     private remove: (entry: Entry) => void,
     private measure: () => RegistryAccounting,
+    private cancel: (cause: Error) => never,
   ) {}
   private check(write = false) {
+    if (this.aborted) throw this.aborted;
     if (!this.valid || (write && !this.writable))
       throw new Error("Transacção terminada ou apenas de leitura");
+  }
+  /** Abort the caller-owned transaction even if higher-level code catches this error. */
+  abort(cause: Error): never {
+    this.check();
+    this.aborted = cause;
+    return this.cancel(cause);
   }
   /** Internal constructor inspection returns a copy, never the mutable index. */
   indexBody(): IndexBody {

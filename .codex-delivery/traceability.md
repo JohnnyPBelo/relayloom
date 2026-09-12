@@ -89,3 +89,6 @@ Owner contract: `PROJECT-BRIEF.md`. “done” applies to the stated behavior wi
 ## Private-state integration checkpoint — 2026-09-12
 
 FR-002/FR-012/ACC-006 now also link to `docs/PROFILE-PERSISTENCE.md` and actual Node↔Go CLI/API migration/profile tests:4 cases passed4.359s after rebuilding Go. Data preservation, real process death, exact pending ID, positive restoration and corruption/missing-DB refusal are tested. FR-007 remains partial: group authority and outbox admission have not yet been unified. Full host/UI/desktop regression passed (152 Node,105 top-level Go/race,15 interop,15 UI per engine, Linux desktop); evidence in `docs/evidence/private-profile`. Mobile artifacts and independent review remain outstanding. Complete valid earlier backups remain an explicit undetectable rollback limit.
+
+
+A facade transaccional Node/Go foi implementada e verificada:81 Node/36.565s,36 Go de topo com race/169.094s (quatro helpers executados pelos drivers),9 interoperabilidade/45.760s; build8.157s e CLI0.901s. Fontes registadas inalteradas durante o gate. Evidência em `docs/evidence/group-transaction`. A aplicação ainda não usa esta facade para grupos dinâmicos.

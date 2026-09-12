@@ -1,0 +1,42 @@
+TAP version 13
+# (node:163101) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: group and private document share one commit; callback rollback and expired scopes cannot leak writes
+ok 1 - group and private document share one commit; callback rollback and expired scopes cannot leak writes
+  ---
+  duration_ms: 124.108432
+  type: 'test'
+  ...
+# Subtest: swallowing a scoped operation failure cannot commit earlier group or private writes
+ok 2 - swallowing a scoped operation failure cannot commit earlier group or private writes
+  ---
+  duration_ms: 56.750262
+  type: 'test'
+  ...
+# Subtest: a verified closure and private decision commit despite a rejected proof tail
+ok 3 - a verified closure and private decision commit despite a rejected proof tail
+  ---
+  duration_ms: 105.779167
+  type: 'test'
+  ...
+# Subtest: even swallowing the entire authority scope error cannot commit the outer transaction
+ok 4 - even swallowing the entire authority scope error cannot commit the outer transaction
+  ---
+  duration_ms: 45.858772
+  type: 'test'
+  ...
+# Subtest: minimal authority fence commits at full ordinary quota without growing the private document
+ok 5 - minimal authority fence commits at full ordinary quota without growing the private document
+  ---
+  duration_ms: 114.573405
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 682.428935

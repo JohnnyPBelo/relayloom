@@ -69,9 +69,10 @@ type View struct {
 	StopEvidence   []EvidenceID        `json:"stopEvidence"`
 }
 type Registry struct {
-	store    authorityStore
-	identity core.Identity
-	cardHash string
+	rejections *[]ProofRejection
+	store      authorityStore
+	identity   core.Identity
+	cardHash   string
 }
 type authorityStore interface {
 	View(func(*groupstore.Tx) error) error
@@ -79,6 +80,9 @@ type authorityStore interface {
 }
 
 func New(store *groupstore.Store, identity core.Identity) (*Registry, error) {
+	return newRegistry(store, identity)
+}
+func newRegistry(store authorityStore, identity core.Identity) (*Registry, error) {
 	cardHash, err := groups.MemberCardHash(identity.Public)
 	if err != nil {
 		return nil, err
@@ -100,7 +104,7 @@ func New(store *groupstore.Store, identity core.Identity) (*Registry, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &Registry{store, identity, cardHash}, nil
+	return &Registry{store: store, identity: identity, cardHash: cardHash}, nil
 }
 func groupKey(id string) string              { return "group:" + id }
 func headerKey(id string, number int) string { return fmt.Sprintf("epoch:%s:%04d", id, number) }

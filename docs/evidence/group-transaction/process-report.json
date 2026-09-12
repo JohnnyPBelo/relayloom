@@ -1,0 +1,15 @@
+{
+  "status": "PASSED",
+  "sourceSHA256": "12aa3a042ca5d0037f8237e1cba8aa90f076edf6aa47bc34fc39609a90650795",
+  "binarySHA256": "6ab5f4a918d2e83a174f7bca4980306120bb02b240978085f366cb37a32f75a4",
+  "checks": [
+    "Node pre-commit process exit rolls back authority and private state, observed by Go",
+    "Node post-commit lost response preserves both, observed by Go",
+    "Go pre/post-commit process exits recover both fields in Node",
+    "idempotent operation retry creates no duplicate group"
+  ],
+  "limitations": [
+    "actual host processes, not physical power loss",
+    "transaction library/factory integration; dynamic-group API, transport admission and UI are still pending"
+  ]
+}

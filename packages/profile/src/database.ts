@@ -95,10 +95,9 @@ function validateLegacy(value: LegacyProfileState): LegacyProfileState {
   return value;
 }
 function checkedInitialization(
-  tx: RegistryTransaction,
+  bytes: Buffer | undefined,
   binding: ProfileBinding,
 ): Initialization {
-  const bytes = tx.get(INITIALIZATION);
   insist(
     bytes && bytes.length <= 1024,
     "Falta a inicialização protegida do perfil",
@@ -124,8 +123,11 @@ function initialization(
   tx: RegistryTransaction,
   binding: ProfileBinding,
 ): Initialization {
+  // Transaction cancellation is not malformed persisted data. Let storage
+  // failures propagate without replacing their type or poisoning a valid file.
+  const bytes = tx.get(INITIALIZATION);
   try {
-    return checkedInitialization(tx, binding);
+    return checkedInitialization(bytes, binding);
   } catch (error) {
     if (error instanceof RegistryIntegrityError) throw error;
     throw new RegistryIntegrityError(
