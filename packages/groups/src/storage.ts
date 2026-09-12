@@ -628,6 +628,11 @@ export class RegistryTransaction {
   private valid = true;
   private aborted?: Error;
   #changed = false;
+  private mutations = 0;
+  generation(): number {
+    this.check();
+    return this.mutations;
+  }
   get changed() {
     return this.#changed;
   }
@@ -691,6 +696,7 @@ export class RegistryTransaction {
     this.body.entries = this.body.entries.filter((e) => e.key !== key);
     this.body.entries.push(entry);
     this.#changed = true;
+    this.mutations++;
   }
   delete(key: string) {
     this.check(true);
@@ -700,6 +706,7 @@ export class RegistryTransaction {
       this.remove(entry);
       this.body.entries = this.body.entries.filter((e) => e !== entry);
       this.#changed = true;
+      this.mutations++;
     }
   }
   accounting(): RegistryAccounting {

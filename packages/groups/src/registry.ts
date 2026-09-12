@@ -156,6 +156,15 @@ export class GroupRegistry {
   private readonly identity: Identity;
   private readonly cardHash: string;
   private deferredRejections?: GroupProofRejection[];
+  private scopeCheck?: () => number;
+  /** Runtime admission caches may only live inside the borrowed transaction. */
+  assertScope() {
+    requireThat(
+      this.scopeCheck,
+      "A operação exige uma transacção de autoridade",
+    );
+    return this.scopeCheck();
+  }
   constructor(
     private readonly store: Pick<
       ProtectedGroupStore,
@@ -211,6 +220,10 @@ export class GroupRegistry {
       );
       const rejections: GroupProofRejection[] = [];
       registry.deferredRejections = rejections;
+      registry.scopeCheck = () => {
+        requireThat(active, "Âmbito de autoridade encerrado");
+        return tx.generation();
+      };
       const value = callback(registry);
       if (failed) throw failure;
       if (value && typeof (value as any).then === "function")
@@ -1203,7 +1216,7 @@ export class GroupRegistry {
   proofs(
     groupId: string,
     from: number,
-    count = AUTHORITY_LIMITS.page,
+    count: number = AUTHORITY_LIMITS.page,
   ): GroupEpoch[] {
     requireThat(
       Number.isInteger(from) &&

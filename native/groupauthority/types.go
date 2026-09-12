@@ -73,7 +73,16 @@ type Registry struct {
 	store      authorityStore
 	identity   core.Identity
 	cardHash   string
+	scopeCheck func() (uint64, error)
 }
+
+func (g *Registry) ScopeGeneration() (uint64, error) {
+	if g.scopeCheck == nil {
+		return 0, errors.New("a operação exige uma transacção de autoridade")
+	}
+	return g.scopeCheck()
+}
+
 type authorityStore interface {
 	View(func(*groupstore.Tx) error) error
 	Update(func(*groupstore.Tx) error) error

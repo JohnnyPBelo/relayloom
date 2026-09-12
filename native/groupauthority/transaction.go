@@ -65,6 +65,12 @@ func InTransaction(tx *groupstore.Tx, identity core.Identity, callback func(*Reg
 	}
 	rejections = []ProofRejection{}
 	registry.rejections = &rejections
+	registry.scopeCheck = func() (uint64, error) {
+		if !scope.active {
+			return 0, errors.New("âmbito de autoridade encerrado")
+		}
+		return tx.Generation()
+	}
 	if err := callback(registry); err != nil {
 		return nil, err
 	}

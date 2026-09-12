@@ -38,6 +38,14 @@ type Tx struct {
 	body                     indexBody
 	writable, valid, changed bool
 	failed                   error
+	generation               uint64
+}
+
+func (tx *Tx) Generation() (uint64, error) {
+	if err := tx.check(false); err != nil {
+		return 0, err
+	}
+	return tx.generation, nil
 }
 
 func Open(path string, identity core.Identity, options Options) (*Store, error) {
@@ -481,6 +489,7 @@ func (tx *Tx) Put(key string, plain []byte, class StorageClass) error {
 	}
 	tx.body.Entries = candidate.Entries
 	tx.changed = true
+	tx.generation++
 	return nil
 }
 func (tx *Tx) Delete(key string) error {
@@ -499,6 +508,7 @@ func (tx *Tx) Delete(key string) error {
 	}
 	tx.body.Entries = append(tx.body.Entries[:i], tx.body.Entries[i+1:]...)
 	tx.changed = true
+	tx.generation++
 	return nil
 }
 func (tx *Tx) Accounting() (Accounting, error) {
