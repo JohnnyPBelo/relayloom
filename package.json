@@ -21,7 +21,7 @@
     "desktop:smoke": "node scripts/desktop-run.mjs --smoke --x11",
     "desktop:packaged-smoke": "node scripts/desktop-packaged-smoke.mjs",
     "native:build": "node scripts/native-build.mjs",
-    "test:native": "node scripts/go.mjs test -race -p=2 ./core ./transport ./app",
+    "test:native": "node scripts/go.mjs test -race -p=2 ./core ./transport ./app ./groups",
     "test:interop": "tsx --test --test-concurrency=1 tests/native/*.test.ts"
   },
   "dependencies": {
