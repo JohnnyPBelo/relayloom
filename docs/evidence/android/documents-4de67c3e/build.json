@@ -1,0 +1,43 @@
+{
+  "kind": "ANDROID_FINAL_DOCUMENTS_BUILD",
+  "date": "2026-09-12",
+  "apkSha256": "4de67c3e1540556bbbcab98e7053112bfce2625cdf994c4de67c2d15403b77bb",
+  "apkBytes": 11765440,
+  "aarSha256": "7c9f60fe036b85d08bc584f3c469ee31e3537a3f22de9d7fdfd514ef820503b5",
+  "aarBytes": 6012736,
+  "abi": "x86_64",
+  "minApi": 24,
+  "targetApi": 36,
+  "webSource": "dist/web",
+  "bundledWebManifestSha256": "19f1bf0eaa672ce029e9a59ff43a8a21958dd6dde90dfb81a07e76809d9d2d65",
+  "apkSignatureVerified": true,
+  "apk16KiBZipAlignmentPassed": true,
+  "nativeElfLoadAlignments": [
+    "0x4000",
+    "0x4000",
+    "0x4000",
+    "0x4000"
+  ],
+  "hostTests": {
+    "originCapability": 21,
+    "leaseCoordinatorFakeBackend": 7,
+    "documentPolicySession": 23,
+    "syntheticCaptureAdapter": 6
+  },
+  "deviceAssertions": {
+    "documents": 38,
+    "absoluteDeadlineAndHome": 15,
+    "encryptedPeerAndResume": 16,
+    "multihopSeed": 11
+  },
+  "sourceReview": "Independent bounded SAF source review by security_review; device tests by implementing agent.",
+  "limitations": [
+    "Single API36 x86_64 emulator only; physical Android and ARM64 unverified.",
+    "Microphone/camera and OS notification display not exercised.",
+    "Actual OS process death, Activity recreation, and slow/failing remote document writers require further device tests; lease invalidation and cancellation have host/source coverage.",
+    "This preserved version used a single uptime-based Handler delay; subsequent source fixes add elapsed deadline checks at lifecycle entry and short nonrenewing timer checks. These reports establish awake-emulator behavior only."
+  ],
+  "testInstrumentationAndProviderExcludedFromAppDex": true,
+  "globalToastSuppressionRemoved": true,
+  "preservedBeforeFinalCheckerFix": true
+}

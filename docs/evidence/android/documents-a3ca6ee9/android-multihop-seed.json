@@ -1,0 +1,46 @@
+{
+  "kind": "ANDROID_EMULATOR_RELAY_INSTRUMENTATION",
+  "runtime": "Go inside actual APK process",
+  "identity": {
+    "id": "ff8d4503c52d4835c0a11df559015eedbfd7f3517f6b5b87c6b9cc5f39e15018",
+    "name": "AndroidEmulator"
+  },
+  "negativeControlReceivedAtB": true,
+  "relayPauseThenHealExecuted": true,
+  "privateAttachmentReadAtB": true,
+  "cachedPostId": "abd575436d5e4ea89c56b0887cb2fd6505454fc4e2161b56b2dc6212360fa2db",
+  "cachedSiteId": "30f3bb0d2dd80f63706947e77df73531598da42efc90b4b7bb7df454868f91d8",
+  "cachedAuthorOfflineSiteRendered": true,
+  "nativeVisibility": {
+    "windowFocus": true,
+    "webViewShown": true,
+    "windowVisibility": 0,
+    "taskId": 43
+  },
+  "renderedDialogText": "P\u00e1gina de AndroidPublisher-28bb8d941118\nAndroidPublisher-28bb8d941118\nNative offline page 28bb8d941118\n\nPublished by A, retained and served by actual Android B.\n\nAssinatura verificada. P\u00e1gina lida a partir do armazenamento local; pode ser servida por este n\u00f3 mesmo com o autor desligado.",
+  "assertions": 11,
+  "physicalDeviceTested": false,
+  "microphoneCameraAccessed": false,
+  "apkSha256": "a3ca6ee9c1f64114dbd487f76bca5acd742534102248b7317a19b3d0a4ba17f4",
+  "preliminaryBuild": false,
+  "topology": {
+    "aConnectedPeers": 1,
+    "cConnectedPeers": 1,
+    "cTransportListener": -1,
+    "onlyAdbForward": "Android TCP transport",
+    "noDirectACLink": true
+  },
+  "pausedNegativeWindowMs": 4000,
+  "negativeDeliveredToCWhilePaused": false,
+  "healedPositiveObjectId": "a8bb5dd109aad2e10fbebf27b6a40419bd555c71801147cccdd4827248962d5b",
+  "attachmentBytes": 12052,
+  "attachmentSha256": "7951dee26321fe517f7a44dafec39a32e34e1016d6ab14e9ca49db5f158ed993",
+  "exactAttachmentBytesAtC": true,
+  "originalPublisherStopped": true,
+  "readerDidNotPreviouslyHavePostOrSite": true,
+  "seededPostId": "abd575436d5e4ea89c56b0887cb2fd6505454fc4e2161b56b2dc6212360fa2db",
+  "seededSiteId": "30f3bb0d2dd80f63706947e77df73531598da42efc90b4b7bb7df454868f91d8",
+  "authorSignatureIdentityPreserved": true,
+  "deviceSerial": "emulator-5580",
+  "adbServerPort": 5047
+}

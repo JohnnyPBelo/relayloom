@@ -1,0 +1,35 @@
+{
+  "kind": "ANDROID_NATIVE_BUILD",
+  "abi": "x86_64",
+  "minApi": 24,
+  "targetApi": 36,
+  "aarSha256": "7c9f60fe036b85d08bc584f3c469ee31e3537a3f22de9d7fdfd514ef820503b5",
+  "apkSha256": "27a71947f73e3a2622da6efbcb402d04260e53293cb6156e27f43ea3b3f8e5a2",
+  "apkBytes": 11765440,
+  "elfLibraries": [
+    {
+      "name": "libgojni.so",
+      "sha256": "9b8f4e28e5394db7bdc2ab3582192d7ae1e04b371028863934d79b057b21dd29",
+      "loadAlignments": [
+        "0x4000",
+        "0x4000",
+        "0x4000",
+        "0x4000"
+      ]
+    }
+  ],
+  "apk16KiBZipAlignmentPassed": true,
+  "bundledWebManifestSha256": "144a0a97ca281b1af65d9f024d8fbe2a7f862fe0a7e72ac02ac7970d32dba403",
+  "bundledAssetCount": 13,
+  "limitations": [
+    "Host cross-compilation and archive/signature/alignment checks only; no emulator or physical device run is implied.",
+    "Debug signing is local development only; no store upload or release signing.",
+    "16 KiB ELF/APK alignment does not establish physical ARM64 16 KiB device compatibility."
+  ],
+  "hostPolicyAssertions": {
+    "origin": 21,
+    "leaseFakeBackend": 7,
+    "documentsSession": 28,
+    "captureSynthetic": 6
+  }
+}

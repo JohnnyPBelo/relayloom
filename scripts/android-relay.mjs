@@ -1,3 +1,4 @@
+import { sanitize, sanitizeEvents } from './android-evidence.mjs';
 import { spawn, spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync, rmSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
@@ -6,7 +7,10 @@ import { randomBytes, createHash } from 'node:crypto';
 import { setTimeout as delay } from 'node:timers/promises';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..'), cache = resolve(root, '.cache/android'), sdk = resolve(cache, 'sdk');
-const adb = resolve(sdk, 'platform-tools/adb'), evidence = resolve(cache, 'evidence'); mkdirSync(evidence, { recursive: true });
+const evidenceAt = process.argv.indexOf('--evidence-dir');
+const adb = resolve(sdk, 'platform-tools/adb'), evidence = evidenceAt >= 0 ? resolve(root, process.argv[evidenceAt + 1]) : resolve(cache, 'evidence');
+if (!evidence.startsWith(cache + '/evidence')) throw new Error('Evidence must remain in project Android evidence directory');
+mkdirSync(evidence, { recursive: true });
 const env = { ...process.env, ANDROID_HOME: sdk, ANDROID_SDK_ROOT: sdk, ANDROID_USER_HOME: resolve(cache, 'user'), ANDROID_EMULATOR_HOME: resolve(cache, 'emulator-home'), ANDROID_AVD_HOME: resolve(cache, 'avd'), ADB_VENDOR_KEYS: resolve(cache, 'emulator-home/adbkey'), ADB_SERVER_PORT: '5047', ANDROID_ADB_SERVER_PORT: '5047', ADB_SERVER_SOCKET: 'tcp:127.0.0.1:5047' };
 function command(args, binary = false) {
   const value = spawnSync(adb, ['-P', '5047', '-s', 'emulator-5580', ...args], { env, cwd: root, encoding: binary ? undefined : 'utf8', timeout: 120_000 });
@@ -47,6 +51,7 @@ try {
   await a.call('contact', { contact: android }); await a.call('contact', { contact: c.identity }); await c.call('contact', { contact: android }); await c.call('contact', { contact: a.identity });
   // Only the Android peer transport is forwarded. Its authenticated control API is not forwarded.
   forwardPort = command(['forward', 'tcp:0', 'tcp:' + paused.tcpPort]).trim(); require(/^\d+$/.test(forwardPort), 'Expected isolated transport forward port');
+  await a.call('connect', { host: '127.0.0.1', port: Number(forwardPort) });
   await c.call('connect', { host: '127.0.0.1', port: Number(forwardPort) });
   const cTopology = await until(() => c.call('state'), state => state.peers.filter(p => p.connected).length === 1, 'C only link to Android');
   const aTopology = await until(() => a.call('state'), state => state.peers.filter(p => p.connected).length === 1, 'A only link to Android');
@@ -79,12 +84,12 @@ try {
   await phase('author-offline-site-rendered'); await until(async () => finished, Boolean, 'Instrumentation completed', 10_000);
   require(stdout.includes('Android relay instrumentation passed'), 'Relay instrumentation did not pass');
   const device = JSON.parse(command(['exec-out', 'run-as', 'org.relayloom.android', 'cat', 'files/android-relay-report.json']));
-  const report = { ...device, apkSha256: JSON.parse(readFileSync(resolve(cache, 'build-report.json'))).apkSha256, preliminaryBuild: !process.argv.includes('--final'), topology: { aConnectedPeers: aTopology.peers.length, cConnectedPeers: cTopology.peers.length, cTransportListener: -1, onlyAdbForward: 'Android TCP transport', noDirectACLink: true }, pausedNegativeWindowMs: Date.now() - start >= 4000 ? 4000 : 0, negativeDeliveredToCWhilePaused: false, healedPositiveObjectId: positive.id, attachmentBytes: bytes.length, attachmentSha256: createHash('sha256').update(bytes).digest('hex'), exactAttachmentBytesAtC: true, originalPublisherStopped: true, readerDidNotPreviouslyHavePostOrSite: true, seededPostId: post.id, seededSiteId: site.id, authorSignatureIdentityPreserved: true, deviceSerial: 'emulator-5580', adbServerPort: 5047 };
+  const report = sanitize({ ...device, apkSha256: JSON.parse(readFileSync(resolve(cache, 'build-report.json'))).apkSha256, preliminaryBuild: !process.argv.includes('--final'), topology: { aConnectedPeers: aTopology.peers.length, cConnectedPeers: cTopology.peers.length, cTransportListener: -1, onlyAdbForward: 'Android TCP transport', noDirectACLink: true }, pausedNegativeWindowMs: Date.now() - start >= 4000 ? 4000 : 0, negativeDeliveredToCWhilePaused: false, healedPositiveObjectId: positive.id, attachmentBytes: bytes.length, attachmentSha256: createHash('sha256').update(bytes).digest('hex'), exactAttachmentBytesAtC: true, originalPublisherStopped: true, readerDidNotPreviouslyHavePostOrSite: true, seededPostId: post.id, seededSiteId: site.id, authorSignatureIdentityPreserved: true, deviceSerial: 'emulator-5580', adbServerPort: 5047 });
   writeFileSync(resolve(evidence, 'android-multihop-seed.json'), JSON.stringify(report, null, 2) + '\n');
   writeFileSync(resolve(evidence, 'android-offline-site.png'), command(['exec-out', 'run-as', 'org.relayloom.android', 'cat', 'files/android-offline-site.png'], true)); console.log(JSON.stringify(report, null, 2));
   writeFileSync(resolve(evidence, 'android-offline-site-webview.png'), command(['exec-out', 'run-as', 'org.relayloom.android', 'cat', 'files/android-offline-site-webview.png'], true));
 } finally {
-  writeFileSync(resolve(evidence, 'relay-instrumentation-output.txt'), stdout + stderr);
+  writeFileSync(resolve(evidence, 'relay-instrumentation-output.txt'), sanitizeEvents(stdout + stderr));
   if (instrumentation && instrumentation.exitCode === null) { instrumentation.kill('SIGTERM'); command(['shell', 'am', 'force-stop', 'org.relayloom.android']); }
   for (const peer of peers) await peer.stop().catch(() => {});
   if (forwardPort) command(['forward', '--remove', 'tcp:' + forwardPort]);

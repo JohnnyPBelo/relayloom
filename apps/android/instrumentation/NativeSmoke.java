@@ -52,7 +52,7 @@ public final class NativeSmoke extends Instrumentation {
         return async("fetch('/api/" + path + "',{method:'" + (body == null ? "GET" : "POST") + "',headers:{Authorization:'Bearer '+sessionStorage.getItem('relayloom-token'),'Content-Type':'application/json'}" + (body == null ? "" : ",body:" + JSONObject.quote(body.toString())) + "}).then(async r=>{const d=await r.json();if(!r.ok)throw new Error(d.error||r.status);return d})");
     }
     private void awaitText(String text) throws Exception {
-        for (int i = 0; i < 150; i++) { if (Boolean.TRUE.equals(js("document.body.innerText.includes(" + JSONObject.quote(text) + ")"))) return; Thread.sleep(100); }
+        for (int i = 0; i < 150; i++) { if (Boolean.TRUE.equals(js("document.body?.innerText.includes(" + JSONObject.quote(text) + ")"))) return; Thread.sleep(100); }
         throw new IllegalStateException("Rendered text missing: " + text);
     }
     private void awaitCondition(String expression, String label) throws Exception {
@@ -119,7 +119,6 @@ public final class NativeSmoke extends Instrumentation {
         String nonce = arguments.getString("nonce");
         api("contact", new JSONObject().put("contact", host)); api("contact", new JSONObject().put("contact", reader));
         api("settings", new JSONObject().put("relay", false));
-        api("connect", new JSONObject().put("host", "10.0.2.2").put("port", Integer.parseInt(arguments.getString("hostTcpPort"))));
         JSONObject state = (JSONObject) api("state", null);
         phase("relay-paused", new JSONObject().put("identity", identity).put("tcpPort", state.getInt("tcpPort")));
         JSONObject negative = awaitObject("paused-relay-control " + nonce); require(!negative.getBoolean("public"), "Negative-control packet privately reaches Android B");
@@ -183,7 +182,7 @@ public final class NativeSmoke extends Instrumentation {
                     relayFlow(identity, host, reader); result.putString("stream", "Android relay instrumentation passed " + assertions + " assertions\n"); finish(Activity.RESULT_OK, result); return;
                 }
                 api("contact", new JSONObject().put("contact", host));
-                api("connect", new JSONObject().put("host", "10.0.2.2").put("port", Integer.parseInt(arguments.getString("hostTcpPort"))));
+                phase("native-port-ready", new JSONObject().put("tcpPort", state.getInt("tcpPort")));
                 // Navigate and send using React's real conversation/composer UI.
                 js("Array.from(document.querySelectorAll('button')).find(b=>b.textContent.trim()==='Nova conversa').click()"); awaitText(host.getString("name"));
                 js("Array.from(document.querySelectorAll('button.contact-choice')).find(b=>b.textContent.includes(" + JSONObject.quote(host.getString("name")) + ")).click()");

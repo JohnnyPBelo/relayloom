@@ -1,0 +1,28 @@
+{
+  "kind": "ANDROID_POST_SAF_RESOURCE_AUDIT",
+  "allocatedBytesByProjectDirectory": {
+    ".cache/android": 10931265536,
+    ".cache/toolchains/jdk17": 332918784,
+    ".cache/toolchains/go1.26.8": 282202112,
+    ".cache/go": 20963328,
+    ".cache/go-build": 491749376,
+    ".cache/go-mod": 71507968
+  },
+  "totalAllocatedBytesIncludingGo": 12130607104,
+  "freeHostBytes": 138246946816,
+  "maxAllocatedBytes": 26843545600,
+  "minimumFreeHostBytes": 16106127360,
+  "withinBudget": true,
+  "projectEmulatorStopped": true,
+  "isolatedAdbStopped": true,
+  "taskPortsClosed": {
+    "5047": true,
+    "5580": true,
+    "5581": true
+  },
+  "isolatedForwardsBeforeStop": 0,
+  "testOnlyProviderPackageRemoved": true,
+  "sameAvdDataPreserved": true,
+  "singleApi36Image": true,
+  "noHostMicrophoneCameraUsed": true
+}

@@ -1,0 +1,30 @@
+{
+  "kind": "ANDROID_EMULATOR_INSTRUMENTATION",
+  "runtime": "Go inside actual APK process",
+  "nativeRuntime": "Go",
+  "identity": {
+    "id": "ff8d4503c52d4835c0a11df559015eedbfd7f3517f6b5b87c6b9cc5f39e15018",
+    "name": "AndroidEmulator"
+  },
+  "tcpPort": 34059,
+  "uiUnlockAndComposerExecuted": true,
+  "missingCapabilityStatus": 401,
+  "privatePeerExchange": true,
+  "encryptedDeviceBundleChecked": true,
+  "actualBackgroundListenersClosed": true,
+  "actualResumeIdentityAndMessageRecovered": true,
+  "assertions": 16,
+  "physicalDeviceTested": false,
+  "microphoneCameraAccessed": false,
+  "notificationDisplayTested": false,
+  "apkSha256": "4de67c3e1540556bbbcab98e7053112bfce2625cdf994c4de67c2d15403b77bb",
+  "hostPeerRuntime": "Node.js actual local TCP peer",
+  "outgoingAndroidAuthor": "ff8d4503c52d4835c0a11df559015eedbfd7f3517f6b5b87c6b9cc5f39e15018",
+  "hostDecryptedExactPayload": true,
+  "replySentToAndroid": true,
+  "nonce": "d44cf0230214",
+  "adbServerPort": 5047,
+  "deviceSerial": "emulator-5580",
+  "noHostControlCapabilityInReport": true,
+  "preliminaryBuild": false
+}

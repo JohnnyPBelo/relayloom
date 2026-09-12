@@ -11,7 +11,7 @@ CACHE, JDK, BT, JAR, run = M['CACHE'], M['JDK'], M['BUILD_TOOLS'], M['ANDROID_JA
 M['TOOLS']['check_space'](128 * 1024 ** 2)
 stage = CACHE / 'instrumentation-build'; M['fresh_directory'](stage)
 source = ROOT / 'apps/android/instrumentation'; classes = stage / 'classes'; classes.mkdir()
-run([JDK / 'bin/javac', '-proc:none', '--release', '8', '-classpath', JAR, '-d', classes, source / 'NativeSmoke.java'])
+run([JDK / 'bin/javac', '-proc:none', '--release', '8', '-classpath', JAR, '-d', classes, *sorted(source.glob('*.java'))])
 jar = stage / 'tests.jar'; run([JDK / 'bin/jar', 'cf', jar, '-C', classes, '.'])
 dex = stage / 'dex'; dex.mkdir(); run([BT / 'd8', '--release', '--min-api', '24', '--lib', JAR, '--output', dex, jar])
 unsigned = stage / 'unsigned.apk'; run([BT / 'aapt2', 'link', '-I', JAR, '--manifest', source / 'AndroidManifest.xml', '-o', unsigned])

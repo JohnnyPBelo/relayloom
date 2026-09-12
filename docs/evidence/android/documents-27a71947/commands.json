@@ -1,0 +1,78 @@
+[
+  {
+    "command": "python3 scripts/android-build.py",
+    "startedAt": "2026-09-12T00:52:06.611299+00:00",
+    "durationSeconds": 5.931,
+    "exitCode": 0,
+    "previousApkSha256": "4de67c3e1540556bbbcab98e7053112bfce2625cdf994c4de67c2d15403b77bb"
+  },
+  {
+    "name": "documents",
+    "argv": [
+      "node",
+      "scripts/android-documents.mjs",
+      "--final"
+    ],
+    "startedAt": "2026-09-12T00:53:46.831320+00:00",
+    "status": "completed",
+    "attempts": 1,
+    "finishedAt": "2026-09-12T00:54:27.133466+00:00",
+    "durationSeconds": 40.302,
+    "exitCode": 0,
+    "supervisorTimeout": false,
+    "inputsUnchanged": true
+  },
+  {
+    "name": "deadline",
+    "argv": [
+      "node",
+      "scripts/android-documents.mjs",
+      "--final",
+      "--deadline"
+    ],
+    "startedAt": "2026-09-12T00:54:27.146462+00:00",
+    "status": "completed",
+    "attempts": 1,
+    "finishedAt": "2026-09-12T00:56:42.691592+00:00",
+    "durationSeconds": 135.545,
+    "exitCode": 0,
+    "supervisorTimeout": false,
+    "inputsUnchanged": true
+  },
+  {
+    "name": "messages",
+    "argv": [
+      "node",
+      "scripts/android-smoke.mjs",
+      "--final",
+      "--evidence-dir",
+      ".cache/android/evidence/final-integration-20260912"
+    ],
+    "startedAt": "2026-09-12T00:56:42.703033+00:00",
+    "status": "completed",
+    "attempts": 1,
+    "finishedAt": "2026-09-12T00:56:59.409264+00:00",
+    "durationSeconds": 16.706,
+    "exitCode": 0,
+    "supervisorTimeout": false,
+    "inputsUnchanged": true
+  },
+  {
+    "name": "relay",
+    "argv": [
+      "node",
+      "scripts/android-relay.mjs",
+      "--final",
+      "--evidence-dir",
+      ".cache/android/evidence/final-integration-20260912"
+    ],
+    "startedAt": "2026-09-12T00:56:59.420436+00:00",
+    "status": "completed",
+    "attempts": 1,
+    "finishedAt": "2026-09-12T00:57:16.517683+00:00",
+    "durationSeconds": 17.097,
+    "exitCode": 0,
+    "supervisorTimeout": false,
+    "inputsUnchanged": true
+  }
+]

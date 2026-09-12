@@ -1,0 +1,31 @@
+{
+  "kind": "ANDROID_POST_APK_SOURCE_HANDOFF",
+  "lastDeviceTestedApkSha256": "4de67c3e1540556bbbcab98e7053112bfce2625cdf994c4de67c2d15403b77bb",
+  "aarSha256": "7c9f60fe036b85d08bc584f3c469ee31e3537a3f22de9d7fdfd514ef820503b5",
+  "lastApkDeviceAssertions": {
+    "saf": 38,
+    "deadline": 15,
+    "simple": 16,
+    "relay": 11
+  },
+  "changesAfterThatApk": [
+    "Immutable elapsed deadline rechecked by short nonrenewing main-thread scheduling and Activity lifecycle entry.",
+    "Exactly sixteen old synthetic fixture endpoints removed with app stopped; identity/vault and all non-config data preserved."
+  ],
+  "localHostAssertions": {
+    "originCapability": 21,
+    "fakeBackendLease": 7,
+    "documentPolicySession": 28,
+    "syntheticCaptureAdapter": 6
+  },
+  "independentCheckerSourceReviewPassed": true,
+  "checkerPackagedIntoNewApk": false,
+  "postCheckerDeviceGatesExecuted": false,
+  "remainingRequiredWork": [
+    "Freeze the final shared web bundle.",
+    "Build an APK with current Android checker source and final web bundle, using unchanged AAR.",
+    "Repeat SAF, deadline, simple and relay gates on that exact APK and refresh evidence."
+  ],
+  "physicalSleepTested": false,
+  "osSchedulingCaveat": "The one-second tick is scheduling intent once Android executes the process, not a hard real-time guarantee while the OS suspends it."
+}

@@ -1,3 +1,4 @@
+import { sanitize, sanitizeEvents } from './android-evidence.mjs';
 import { spawn, spawnSync } from 'node:child_process';
 import { readFileSync, writeFileSync, mkdirSync, mkdtempSync, rmSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
@@ -15,7 +16,7 @@ const command = (...args) => {
 const password = 'relayloom_android_test_passphrase', nonce = randomBytes(6).toString('hex');
 const directory = mkdtempSync(resolve(cache, 'host-peer-'));
 const peer = spawn(process.execPath, ['--import', 'tsx', 'apps/node/src/cli.ts', '--data', directory, '--http-port', '0', '--tcp-port', '0'], { cwd: root, stdio: ['ignore', 'pipe', 'pipe'] });
-let instrument;
+let instrument, forward;
 try {
   const ready = await new Promise((resolveReady, reject) => {
     let output = '', error = ''; const timer = setTimeout(() => reject(new Error('Host fixture startup timeout: ' + error)), 15_000);
@@ -35,6 +36,8 @@ try {
   instrument.stdout.on('data', data => { output += data; }); instrument.stderr.on('data', data => { stderr += data; }); instrument.on('exit', code => { ended = true; exitCode = code; });
   let outgoing, replySent = false; const deadline = Date.now() + 100_000;
   while (Date.now() < deadline && !ended) {
+    const portEvent=output.match(/"phase":"native-port-ready","details":\{"tcpPort":(\d+)/);
+    if (!forward && portEvent) { forward=command('forward','tcp:0','tcp:'+portEvent[1]).trim();await call('connect',{host:'127.0.0.1',port:Number(forward)}); }
     const state = await call('state');
     outgoing ??= state.objects.find(o => o.kind === 'message' && o.content.text === 'Android native encrypted packet ' + nonce);
     if (outgoing && !replySent) {
@@ -45,15 +48,18 @@ try {
     await delay(250);
   }
   if (!ended) { instrument.kill('SIGTERM'); throw new Error('Android instrumentation timed out: ' + output + stderr); }
-  const evidence = resolve(cache, 'evidence'); mkdirSync(evidence, { recursive: true }); writeFileSync(resolve(evidence, 'instrumentation-output.txt'), output + stderr);
+  const evidenceAt = process.argv.indexOf('--evidence-dir');
+  const evidence = evidenceAt >= 0 ? resolve(root, process.argv[evidenceAt + 1]) : resolve(cache, 'evidence');
+  if (!evidence.startsWith(cache + '/evidence')) throw new Error('Evidence must remain in project Android evidence directory'); mkdirSync(evidence, { recursive: true }); writeFileSync(resolve(evidence, 'instrumentation-output.txt'), sanitizeEvents(output + stderr));
   if (exitCode !== 0 || !output.includes('Android native instrumentation passed') || !replySent) throw new Error('Instrumentation or real peer exchange failed: ' + output + stderr);
   const device = JSON.parse(command('exec-out', 'run-as', 'org.relayloom.android', 'cat', 'files/android-instrumentation-report.json'));
   const image = spawnSync(adb, ['-P', '5047', '-s', 'emulator-5580', 'exec-out', 'run-as', 'org.relayloom.android', 'cat', 'files/android-instrumentation-messenger.png'], { env, cwd: root, timeout: 15_000 });
   if (image.status === 0) writeFileSync(resolve(evidence, 'android-peer-messenger.png'), image.stdout);
   const build = JSON.parse(readFileSync(resolve(cache, 'build-report.json')));
-  const report = { ...device, apkSha256: build.apkSha256, hostPeerRuntime: 'Node.js actual local TCP peer', outgoingAndroidAuthor: outgoing.author.id, hostDecryptedExactPayload: true, replySentToAndroid: true, nonce, adbServerPort: 5047, deviceSerial: 'emulator-5580', noHostControlCapabilityInReport: true, preliminaryBuild: !process.argv.includes('--final') };
+  const report = sanitize({ ...device, apkSha256: build.apkSha256, hostPeerRuntime: 'Node.js actual local TCP peer', outgoingAndroidAuthor: outgoing.author.id, hostDecryptedExactPayload: true, replySentToAndroid: true, nonce, adbServerPort: 5047, deviceSerial: 'emulator-5580', noHostControlCapabilityInReport: true, preliminaryBuild: !process.argv.includes('--final') });
   writeFileSync(resolve(evidence, 'android-native-peer-exchange.json'), JSON.stringify(report, null, 2) + '\n'); console.log(JSON.stringify(report, null, 2));
 } finally {
+  if(forward) command('forward','--remove','tcp:'+forward);
   if (instrument && instrument.exitCode === null) { instrument.kill('SIGTERM'); command('shell', 'am', 'force-stop', 'org.relayloom.android'); }
   if (peer.exitCode === null) { peer.kill('SIGTERM'); await new Promise(resolveExit => { peer.once('exit', resolveExit); setTimeout(resolveExit, 5000); }); }
   if (peer.exitCode === null) peer.kill('SIGKILL');

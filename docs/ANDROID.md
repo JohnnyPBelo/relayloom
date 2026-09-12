@@ -2,16 +2,81 @@
 
 The Android application embeds the Go runtime in its own APK process through the generated `mobile.Mobile` gomobile binding. It starts a real app-local Go engine and authenticated HTTP server, then renders bundled web assets at that exact loopback origin. It does not use a Node daemon on the development host, a remote website, a PWA, or an unimplemented runtime placeholder.
 
-Current verified level: **the final x86_64 native APK executes in the single API 36 emulator; UI identity, encrypted peer exchange, multi-hop pause/heal, seed takeover and foreground stop/resume gates passed**. The final APK contains the reviewed native API pagination, attachment, journal and resource fixes. Physical Android, ARM64, Bluetooth, Wi-Fi Direct, USB/radio, background service and store-release behavior are not implied.
+Latest device-verified level: **APK `27a71947…` executes in the same API 36 emulator with the final elapsed-deadline checker, current outbox UI, real document selection/export, encrypted peer exchange, multi-hop pause/heal, seed takeover and lifecycle gates passing**. Physical Android, ARM64, Bluetooth, Wi-Fi Direct, USB/radio, background service and store-release behavior are not implied.
 
-## Final verified artifacts
+## Final checker and outbox integration — September 12, 2026
+
+The final APK is **11,765,440 bytes**, SHA-256 `27a71947f73e3a2622da6efbcb402d04260e53293cb6156e27f43ea3b3f8e5a2`, using unchanged AAR `7c9f60fe036b85d08bc584f3c469ee31e3537a3f22de9d7fdfd514ef820503b5` and web assets `index-Ct0M5tYK.js`/`index-BcajBo5I.css`. The installed `base.apk` matched before and after the gates. Java/assets/AAR input hashes remained unchanged. Archive signature and 16 KiB alignment checks passed; host policies passed 21 origin + 7 fake-backend lease + 28 document/session + 6 synthetic capture assertions.
+
+After the owner's separate one-test stability measurement completed, root performed one sequential final Android integration, without new/resumed agents:
+
+| Command | Actual result |
+| --- | --- |
+| `python3 scripts/android-build.py` | Built and verified in 5.931 s, exit 0 |
+| `python3 scripts/android-emulator.py start` / `install` | Same AVD, update preserved existing data; installed hash matched |
+| `python3 scripts/android-instrumentation.py` | Separate test APK built and signature verified |
+| `node scripts/android-documents.mjs --final` | 38 real SAF assertions, 40.302 s, exit 0 |
+| `node scripts/android-documents.mjs --final --deadline` | 15 deadline/lifecycle assertions, 135.545 s, exit 0 |
+| `node scripts/android-smoke.mjs --final --evidence-dir .cache/android/evidence/final-integration-20260912` | 16 real message/recovery assertions, 16.706 s, exit 0 |
+| `node scripts/android-relay.mjs --final --evidence-dir .cache/android/evidence/final-integration-20260912` | 11 relay/seed assertions plus host controls, 17.097 s, exit 0 |
+
+All **80 emulator assertions** passed once on this exact hash. The immutable 120-second handoff closed real listeners at an observed 121,264 ms including fixture overhead; normal HOME closed them in 1,254 ms. Private capability rotation, unchanged relay preference and identity recovery passed. This is a scheduled Android execution observation, not physical deep-sleep or hard real-time evidence.
+
+The SAF fixture sent and exported the same 16,121 bytes, SHA-256 `f365daab81c352453f4c2b36725bdca8fdb19b4150f98bf57fc7d34a2cd56322`; the exported encrypted vault recovered the original identity. Relay controls proved C had no direct link/listener, received nothing during B's paused window, then received the exact 12,052-byte attachment. With publisher A stopped, Android B served a previously absent post/site to restarted C, preserving A's authorship. Root inspected the actual save, conversation and cached-site screenshots.
+
+Sanitized reports, command outcomes, input hashes and screenshots: [`documents-27a71947/index.json`](evidence/android/documents-27a71947/index.json). The test-only provider/instrumentation package was removed, transport forwards were empty, and the owned AVD/adb were stopped; the same AVD and identity remain. Final free disk was 127.54 GiB. No physical media, notification, ARM64 or radio gate was added. The earlier reports below retain their original APK boundaries.
+
+## Earlier document build — September 12, 2026
+
+| Artifact | Size | SHA-256 |
+| --- | ---: | --- |
+| `relayloom-core.aar` | 6,012,736 bytes | `7c9f60fe036b85d08bc584f3c469ee31e3537a3f22de9d7fdfd514ef820503b5` |
+| `relayloom-android-x86_64-debug.apk` | 11,765,440 bytes | `4de67c3e1540556bbbcab98e7053112bfce2625cdf994c4de67c2d15403b77bb` |
+
+The last tested artifacts live in `.cache/android/artifacts`. That APK combines the freshly bound Go engine with its recorded `dist/web` bundle; its installed Android `base.apk` independently hashes to the same value. Signatures and native ELF/APK 16 KiB alignment pass. The new, sanitized evidence index is [`documents-4de67c3e/index.json`](evidence/android/documents-4de67c3e/index.json); earlier baseline evidence remains unchanged.
+
+The same tested APK passed **38 real SAF assertions**, **15 actual deadline/HOME assertions**, **16 encrypted peer/resume assertions**, and **11 relay/seed assertions**, plus host topology and byte checks. The system picker selected a 16,121-byte attachment, which the existing composer sent privately to a real Node peer. Node decrypted exactly those bytes; the copy saved through `ACTION_CREATE_DOCUMENT` also matched SHA-256 `f365daab81c352453f4c2b36725bdca8fdb19b4150f98bf57fc7d34a2cd56322`. The existing recovery form exported an 812-byte encrypted vault through the real system picker, and Node's vault importer recovered the original identity. No vault or key material is included in evidence.
+
+Picker cancellation attached nothing. Providers advertising more than 2,000,000 bytes and advertising only seven bytes while delivering 2,000,001 bytes were rejected. Unknown size was accepted only after reading the bounded actual bytes. Cancelling a recovery export showed cancellation and no completed-save claim from the web UI. The attachment-save, encrypted conversation and publisher-offline page screenshots were visually reviewed.
+
+The deadline test left the system picker open. The 120-second deadline closed both real listeners at an observed **120,902 ms from starting the picker action**, including launch/polling overhead; returning rotated the private capability and recovered the same identity. Normal HOME without a pending document closed both listeners in **1,173 ms**. Relay preferences were unchanged by the handoff. At that APK build, the host tests separately passed **21 origin/capability**, **7 fake-backend lease**, **23 document-policy/session**, and **6 synthetic capture-race** assertions; those do not claim device media or arbitrary Activity/process-recreation coverage.
+
+Commands executed for that exact APK:
+
+```sh
+node scripts/android-bind.mjs
+python scripts/android-build.py
+python scripts/android-emulator.py install
+python scripts/android-instrumentation.py
+node scripts/android-documents.mjs --final
+node scripts/android-documents.mjs --final --deadline
+node scripts/android-smoke.mjs --final --evidence-dir .cache/android/evidence/documents-final-4de67c3e
+node scripts/android-relay.mjs --final --evidence-dir .cache/android/evidence/documents-final-4de67c3e
+python scripts/android-emulator.py stop
+```
+
+These test fixtures now initiate TCP toward the sole forwarded Android transport port, preserving the same message/relay topology without accumulating new persisted Android peer endpoints. No authenticated HTTP control API is forwarded. The test-only provider package was removed after the run; all transport forwards, the sole AVD process and isolated adb server were stopped. The same AVD and identity are preserved. Allocation after the handoff cleanup, including Android, JDK and all project Go caches, was **11.34 GiB**, with **128.66 GiB free**, within the 25 GiB allocation and 15 GiB free-space limits.
+
+Physical Android/ARM64, real microphone/notification permissions, arbitrary OS process death/Activity recreation, and slow or failing remote document writers remain unverified on device. Preliminary SAF runs were explicitly kept separate: an isolated web bundle from `c3f5b42` was used with the earlier AAR until the current native/web pair was ready. Those results are not substituted for the exact APK gates above. The earlier same-day `a3ca6ee9…` evidence is also preserved in its own directory.
+
+## Preserved source-only handoff after APK 4de67c3e
+
+The current Java source additionally revalidates the unchanged elapsed-time document deadline before foreground/resume, while retaining a handoff, and when receiving results. A main-thread check recalculates the remaining original deadline at intervals of at most one second of scheduled execution; it never creates a new deadline and uses no alarm, wake lock or OS exemption. Ownership is checked before expiration can restart a core, so an old Activity cannot replace a newer lease. Pending checks are cancelled when the operation finishes. This addresses the earlier single `Handler.postDelayed` wakeup using uptime, which excludes deep sleep. Android scheduling/suspension still prevents a hard real-time execution guarantee.
+
+At that handoff, this later source passed **28 document-policy/session host assertions**, including an elapsed-clock jump, no deadline renewal and old-lease ownership; the unchanged 21 origin, 7 fake-backend lease and 6 synthetic capture assertions also passed. Independent review of this bounded source delta found no concrete defect. **The checker was not yet compiled/device-tested at that checkpoint; the later 27a71947 integration above closes that specific pending gate.**
+
+With the synthetic app force-stopped, exactly 16 old `10.0.2.2` fixture endpoints were removed from its configuration. Its identity was validated against preserved evidence; the identity vault and all 100 other private core files had identical before/after hashes, and every other config field was preserved. A backup remains only inside app-private files. No private state or keys are copied into evidence. No post-cleanup application/device regression run was started during the requested sequential-verification pause.
+
+The handoff required freezing the final shared web bundle, building the current Android source with the unchanged AAR and repeating SAF, deadline, simple and relay gates on that hash. This was subsequently performed on 27a71947 as recorded above. The original checkpoint remains [`post-apk-source-handoff.json`](evidence/android/documents-4de67c3e/post-apk-source-handoff.json), preserving the earlier evidence limits.
+
+## Previously verified baseline artifacts
 
 | Artifact | Size | SHA-256 |
 | --- | ---: | --- |
 | `relayloom-core.aar` | 5,950,466 bytes | `70fdc0ac2aee9c4710b7346f974222462ba8b2c50c0379d57b90c8e8313eaa1b` |
 | `relayloom-android-x86_64-debug.apk` | 11,626,176 bytes | `e1bdb0889e0328a962a0d43cfed04ee85c4b73b6a14471c7082eabe9d6d3d2a0` |
 
-Both artifacts are in `.cache/android/artifacts`. APK signatures and native ELF/APK 16 KiB alignment passed. The installed emulator `/data/app/.../base.apk` was independently hashed and matches the final APK exactly. Distribution notices for RelayLoom, Go, x/mobile, x/crypto, React, React DOM, Scheduler and Lucide are bundled locally.
+These earlier hashes are retained in baseline evidence; the current files are the September 12 artifacts above. Baseline APK signatures and native ELF/APK 16 KiB alignment passed. The installed emulator `/data/app/.../base.apk` was independently hashed and matches the final APK exactly. Distribution notices for RelayLoom, Go, x/mobile, x/crypto, React, React DOM, Scheduler and Lucide are bundled locally.
 
 The final commands `node scripts/android-smoke.mjs --final` and `node scripts/android-relay.mjs --final` passed **16 and 11 on-device instrumentation assertions**, respectively, plus host topology, process-stop, missing-object and exact attachment-byte checks. Both reports carry the final APK hash and `preliminaryBuild: false`. The actual final full-screen screenshot of the author-offline cached site was visually reviewed and shows the correct open page dialog; it also records focused/visible native WebView state.
 
@@ -29,19 +94,29 @@ Java calls `go.Seq.setContext(applicationContext)` before `mobile.Mobile.start`.
 
 One process-scoped `RuntimeLeaseCoordinator` serializes all native starts/stops off the Android UI thread. Each Activity startup holds an ownership lease. A late stop from an older Activity cannot shut down a replacement core, and cancelled startup cannot publish its endpoint. Navigation, native notification calls, and asynchronous microphone permission completion also require the current lease. This fixes the independently reviewed per-Activity-executor/global-core race.
 
-The first implementation is **foreground-only**. When the Activity stops, it releases its core lease, closes its generic notice, and destroys the WebView to release renderer microphone tracks. Returning starts a fresh local server/capability and requires the application to recover/unlock persistent state. The final emulator test observed both actual listeners close while backgrounded and verified identity/message recovery after resuming and unlocking. No foreground service, persistent background relay, lifecycle exemption, wake lock or OS-security workaround is implemented. Device sleep, arbitrary process death and multi-Activity recreation still need additional device tests; the replacement-lease race has host-JVM regression coverage.
+Normal operation is **foreground-only**. When the Activity stops without a pending explicit document handoff, it releases its core lease, closes its generic notice, and destroys the WebView to release renderer microphone tracks. Returning starts a fresh local server/capability and requires the application to recover/unlock persistent state.
+
+The Storage Access Framework picker necessarily opens another Activity. One explicit user-initiated `ACTION_OPEN_DOCUMENT` or `ACTION_CREATE_DOCUMENT` may therefore retain the current core/lease/WebView for **one absolute, non-renewable 120-second handoff**. Both listeners may remain active during that bounded interval. Media capture is suspended before launch; late capture resolutions are stopped, then WebView timers pause while hidden. Cancellation, completion, expiry, destruction or a replaced lease consumes the ticket. Expiry while hidden closes the core normally. Relay preferences are never changed. Normal HOME without a pending document stops immediately. This exception is not a foreground service, OS exemption or persistent background mode. The final emulator test observed both actual listeners close while backgrounded and verified identity/message recovery after resuming and unlocking. No foreground service, persistent background relay, lifecycle exemption, wake lock or OS-security workaround is implemented. Device sleep, arbitrary process death and multi-Activity recreation still need additional device tests; the replacement-lease race has host-JVM regression coverage.
 
 ## WebView and native boundaries
 
 - The returned origin must be `http://127.0.0.1:<valid-port>` with no credentials, query or unexpected path. The capability must be a bounded URL-safe token. The token is never placed in logcat; logs record only native runtime, local port, and lifecycle state.
-- Main-frame navigation and network resource requests are restricted to the exact returned origin. Same-origin Blob media is supported. Other HTTP hosts/ports, file URLs, content URLs, JavaScript navigation, remote scripts/resources, popups and geolocation are blocked.
+- Main-frame navigation and network resource requests are restricted to the exact returned origin. Same-origin Blob media is supported. Other HTTP hosts/ports, file URLs, arbitrary content URLs, JavaScript navigation, remote scripts/resources, popups and geolocation are blocked. The only content resources allowed are this current controller’s registered immutable document snapshots; main-frame content navigation remains blocked.
 - File/universal URL access, cross-origin cleartext, third-party cookies and WebView remote debugging are disabled. The manifest permits cleartext only for 127.0.0.1; the renderer's exact-port policy adds the stricter runtime boundary.
 - The Go server independently verifies its capability/Host/Origin boundary; the WebView allowlist is not a replacement for API authentication.
 - Microphone access follows the web UI's explicit record action. Android grants only `RESOURCE_AUDIO_CAPTURE` from the current exact origin, following standard `RECORD_AUDIO` permission. Camera access is neither declared nor granted. Late permission results must still belong to the current core lease and origin.
-- The native JavaScript interface exposes only notification permission/request/show/close calls, each requiring the current private capability. There is no native shell, generic HTTP, filesystem or arbitrary method bridge.
+- The native JavaScript interface exposes notification permission/request/show/close plus one bounded Blob-export operation, all requiring the current private capability. Export also requires a recent, one-use native touch/key gesture and a foreground current lease. There is no native shell, generic HTTP, filesystem path/URI reader or arbitrary method bridge.
 - Native notification text is fixed in Java: title `RelayLoom`, body `Tens novas mensagens privadas. Abre o RelayLoom para as ler.` Caller-supplied names/content/options are ignored. The bundled adapter presents the normal Notification API to the already explicit, per-identity opt-in web hook. API33+ uses standard `POST_NOTIFICATIONS` permission; no automatic prompt occurs on startup.
 
-The wrapper currently has no generic Android document picker/export bridge. Existing text/voice/attachment rendering can be evaluated, but Android file selection/download semantics must be implemented and tested before claiming all web file flows work. Microphone and native notification display also remain unverified until executed; earlier web tests used synthetic media and Notification stubs.
+## Document picker and Blob export
+
+Attachments use standard `ACTION_OPEN_DOCUMENT` grants, with one to four selections and a maximum of 2,000,000 actual bytes per file. Missing provider size is supported; a small advertised size cannot bypass the streamed byte cap. The MIME allowlist includes PNG/JPEG/WebP/GIF, supported audio/video, plain text, JSON, PDF, ZIP and inert octet-stream. HTML, SVG and other unsupported formats are refused. Names are sanitized and bounded.
+
+The app copies each selected file into a bounded private cache snapshot before returning its URI to the WebView. Its nonexported, read-only provider serves immutable bytes and metadata; the renderer never receives the original provider URI. Snapshots belong to one controller, are replaced only after a valid completed selection, and are removed on owner shutdown. Stale workers and destroyed Activities cannot remove a replacement controller’s files. The provider cleans prior-process orphan snapshots on startup. No persistable grant or broad storage permission is requested.
+
+The bundled adapter accepts only a same-origin Blob from an `<a download>` action, including the existing detached recovery-export anchor. The adapter retains only Blob objects created by the current page until their normal revocation and reads them directly, preserving the strict server connection policy. Native code receives a bounded name, MIME and base64 payload, and opens standard `ACTION_CREATE_DOCUMENT`; the destination comes only from the system Activity result. Attachments are limited to 2,000,000 bytes; `.vault.json` plus JSON MIME uses the lower 8192-byte bound, which confers no extra authority. Export reports saved only after the actual write completes under the same lease. Cancellation/error/expiry has its own visible and accessible status; interrupted writes explicitly warn that the chosen destination may contain a partial file. The web UI reports that recovery export has started; the native status supplies the final save, cancellation or error result. Application toasts are not globally suppressed.
+
+The separate debug-only instrumentation APK includes a synthetic `DocumentsProvider` with normal, unknown-size, over-limit, deliberately misleading-size and unsupported-MIME fixtures. It is never packaged in the main application. Host policy tests are distinct from actual system-picker tests. Physical microphone capture and native notification display remain unverified; the adapter capture race test uses synthetic streams and does not exercise device media.
 
 ## Project-local verified prerequisites
 
@@ -135,4 +210,4 @@ The initial offline-site UI test had an ambiguous text wait: a publisher name co
 
 After verification, the sole project AVD and isolated adb server at port 5047 were stopped; no transport forwards or fixture peer processes remain. The same AVD is retained for future tests. Final measured allocation including Android, JDK and all project Go toolchain/build/module caches was **11.07 GiB**, below the 25 GiB budget, with **129.05 GiB free**, above the 15 GiB reserve. The exact byte counts are in the public resource audit.
 
-No physical microphone/camera or native OS notification display is exercised by these gates. Aligned x86_64 archives and an emulator do not validate ARM64 16 KiB hardware, radios, continuous background relay or emergency readiness. Native document picker/export and real notification/media permission UI tests remain future work.
+No physical microphone/camera or native OS notification display is exercised by these gates. Aligned x86_64 archives and an emulator do not validate ARM64 16 KiB hardware, radios, continuous background relay or emergency readiness. Real notification/media permission UI tests remain future work. Current document-picker evidence is recorded separately above so previous APK results retain their original hashes.

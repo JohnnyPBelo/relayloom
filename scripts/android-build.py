@@ -41,8 +41,12 @@ def fresh_directory(path):
 
 def policy_test():
     target = CACHE / 'policy-test'; target.mkdir(parents=True, exist_ok=True)
-    run([JDK / 'bin/javac', '--release', '17', '-d', target, SOURCE / 'java/org/relayloom/android/OriginPolicy.java', SOURCE / 'java/org/relayloom/android/RuntimeLeaseCoordinator.java', ROOT / 'apps/android/tests/OriginPolicyTest.java', ROOT / 'apps/android/tests/RuntimeLeaseCoordinatorTest.java'])
-    return '\n'.join(run([JDK / 'bin/java', '-cp', target, 'org.relayloom.android.' + name], capture=True) for name in ['OriginPolicyTest', 'RuntimeLeaseCoordinatorTest'])
+    names = ['OriginPolicy', 'RuntimeLeaseCoordinator', 'DocumentPolicy', 'DocumentSession']
+    tests = ['OriginPolicyTest', 'RuntimeLeaseCoordinatorTest', 'DocumentPolicyTest']
+    run([JDK / 'bin/javac', '--release', '17', '-d', target, *[SOURCE / ('java/org/relayloom/android/' + name + '.java') for name in names], *[ROOT / ('apps/android/tests/' + name + '.java') for name in tests]])
+    results = [run([JDK / 'bin/java', '-cp', target, 'org.relayloom.android.' + name], capture=True) for name in tests]
+    results.append(run(['node', ROOT / 'apps/android/tests/AndroidHostAdapterTest.mjs'], capture=True))
+    return '\n'.join(results)
 
 def prepare_web(source, stage):
     if not (source / 'index.html').is_file(): raise RuntimeError('The real built web index.html is required')
@@ -130,7 +134,7 @@ def build(aar, web):
     with zipfile.ZipFile(apk) as archive:
         names = archive.namelist()
         if 'lib/x86_64/libgojni.so' not in names or 'classes.dex' not in names or 'assets/web/index.html' not in names: raise RuntimeError('APK contents do not contain the native runtime and bundled app')
-    report = {'kind': 'ANDROID_NATIVE_BUILD', 'status': 'APK_BUILT_NOT_DEVICE_TESTED', 'abi': 'x86_64', 'minApi': 24, 'targetApi': 36, 'aar': str(aar.relative_to(ROOT)), 'aarSha256': sha(aar), 'apk': str(apk.relative_to(ROOT)), 'apkSha256': sha(apk), 'apkBytes': apk.stat().st_size, 'elfLibraries': alignments, 'apk16KiBZipAlignmentPassed': True, 'signatureVerification': signing, 'manifestBadging': manifest, 'bundledAssetCount': len(assets), 'hostPolicyTest': policy_test(), 'before': before, 'after': TOOLS['check_space'](), 'limitations': ['Host cross-compilation and archive/signature/alignment checks only; no emulator or physical device run is implied.', 'Debug signing is local development only; no store upload or release signing.', '16 KiB ELF/APK alignment does not establish physical ARM64 16 KiB device compatibility.']}
+    report = {'kind': 'ANDROID_NATIVE_BUILD', 'status': 'APK_BUILT_NOT_DEVICE_TESTED', 'abi': 'x86_64', 'minApi': 24, 'targetApi': 36, 'aar': str(aar.relative_to(ROOT)), 'aarSha256': sha(aar), 'apk': str(apk.relative_to(ROOT)), 'apkSha256': sha(apk), 'apkBytes': apk.stat().st_size, 'elfLibraries': alignments, 'apk16KiBZipAlignmentPassed': True, 'signatureVerification': signing, 'manifestBadging': manifest, 'webSource': str(web.relative_to(ROOT)), 'bundledWebManifestSha256': sha(stage / 'assets/web-manifest.json'), 'bundledAssetCount': len(assets), 'hostPolicyTest': policy_test(), 'before': before, 'after': TOOLS['check_space'](), 'limitations': ['Host cross-compilation and archive/signature/alignment checks only; no emulator or physical device run is implied.', 'Debug signing is local development only; no store upload or release signing.', '16 KiB ELF/APK alignment does not establish physical ARM64 16 KiB device compatibility.']}
     (CACHE / 'build-report.json').write_text(json.dumps(report, indent=2) + '\n')
     (CACHE / 'zipalign-report.txt').write_text(zip_alignment + '\n')
     print(json.dumps({k: report[k] for k in ['kind', 'status', 'apk', 'apkSha256', 'apkBytes', 'apk16KiBZipAlignmentPassed']}, indent=2))
