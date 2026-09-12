@@ -313,13 +313,16 @@ em {
 }
 .welcome-grid {
   display: grid;
-  grid-template-columns: 1fr 440px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 440px);
   gap: 10vw;
   align-items: center;
   max-width: 1120px;
   margin: 65px auto 60px;
   width: 100%;
   flex: 1;
+}
+.welcome-grid > section {
+  min-width: 0;
 }
 .welcome h1 {
   font-family: Georgia, "Times New Roman", serif;
@@ -404,6 +407,7 @@ em {
 .weave {
   position: relative;
   width: 310px;
+  max-width: 100%;
   height: 66px;
   overflow: hidden;
   margin-top: 30px;
@@ -2011,6 +2015,9 @@ dialog .site-block.hero h2 {
 :root[data-theme="dark"] .text-button {
   color: #c2d9a4;
 }
+:root[data-theme="dark"] summary {
+  color: var(--accent);
+}
 :root[data-theme="dark"] .pill {
   color: #c2d9a4;
 }
@@ -2098,7 +2105,7 @@ dialog .site-block.hero h2 {
 }
 @media (max-width: 900px) {
   .welcome-grid {
-    grid-template-columns: 1fr 390px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 390px);
     gap: 6vw;
     margin-top: 50px;
   }
@@ -2106,7 +2113,7 @@ dialog .site-block.hero h2 {
     padding: 25px 4vw;
   }
   .welcome h1 {
-    font-size: 70px;
+    font-size: clamp(50px, 7.5vw, 70px);
   }
   .onboarding {
     padding: 26px;

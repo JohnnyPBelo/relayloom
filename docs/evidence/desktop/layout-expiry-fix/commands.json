@@ -1,0 +1,103 @@
+[
+  {
+    "argv": [
+      "node",
+      "scripts/e2e.mjs",
+      "--reporter=line",
+      "--output=.cache/final-layout/ui-node"
+    ],
+    "environmentOverrides": {},
+    "startedAt": "2026-09-12T01:40:36.297027+00:00",
+    "attempts": 1,
+    "status": "completed",
+    "finishedAt": "2026-09-12T01:42:32.581717+00:00",
+    "durationSeconds": 116.285,
+    "exitCode": 0,
+    "supervisorTimeout": false,
+    "inputsUnchanged": true
+  },
+  {
+    "argv": [
+      "node",
+      "scripts/e2e.mjs",
+      "--reporter=line",
+      "--output=.cache/final-layout/ui-go"
+    ],
+    "environmentOverrides": {
+      "RELAYLOOM_TEST_BACKEND": "native"
+    },
+    "startedAt": "2026-09-12T01:42:32.582046+00:00",
+    "attempts": 1,
+    "status": "completed",
+    "finishedAt": "2026-09-12T01:44:19.915457+00:00",
+    "durationSeconds": 107.333,
+    "exitCode": 0,
+    "supervisorTimeout": false,
+    "inputsUnchanged": true
+  },
+  {
+    "argv": [
+      "node",
+      "scripts/desktop-build.mjs"
+    ],
+    "environmentOverrides": {},
+    "startedAt": "2026-09-12T01:44:19.915721+00:00",
+    "attempts": 1,
+    "status": "completed",
+    "finishedAt": "2026-09-12T01:44:20.132673+00:00",
+    "durationSeconds": 0.217,
+    "exitCode": 0,
+    "supervisorTimeout": false,
+    "inputsUnchanged": true
+  },
+  {
+    "argv": [
+      "node",
+      "scripts/desktop-run.mjs",
+      "--smoke",
+      "--x11"
+    ],
+    "environmentOverrides": {},
+    "startedAt": "2026-09-12T01:44:20.132915+00:00",
+    "attempts": 1,
+    "status": "completed",
+    "finishedAt": "2026-09-12T01:44:20.850988+00:00",
+    "durationSeconds": 0.718,
+    "exitCode": 0,
+    "supervisorTimeout": false,
+    "inputsUnchanged": true
+  },
+  {
+    "argv": [
+      "node",
+      "scripts/desktop-package.mjs",
+      "--linux",
+      "--x64",
+      "--dir"
+    ],
+    "environmentOverrides": {},
+    "startedAt": "2026-09-12T01:44:20.851283+00:00",
+    "attempts": 1,
+    "status": "completed",
+    "finishedAt": "2026-09-12T01:45:08.401709+00:00",
+    "durationSeconds": 47.55,
+    "exitCode": 0,
+    "supervisorTimeout": false,
+    "inputsUnchanged": true
+  },
+  {
+    "argv": [
+      "node",
+      "scripts/desktop-packaged-smoke.mjs"
+    ],
+    "environmentOverrides": {},
+    "startedAt": "2026-09-12T01:45:08.402282+00:00",
+    "attempts": 1,
+    "status": "completed",
+    "finishedAt": "2026-09-12T01:45:10.526999+00:00",
+    "durationSeconds": 2.124,
+    "exitCode": 0,
+    "supervisorTimeout": false,
+    "inputsUnchanged": true
+  }
+]

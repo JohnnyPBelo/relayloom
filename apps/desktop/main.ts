@@ -383,6 +383,12 @@ async function smokeCheck(view: BrowserWindow, ready: DaemonReady) {
   const externalRequestControl = await checkExternalRequestBlocking(
     view.webContents,
   );
+  const layout: { viewportWidth: number; documentWidth: number } =
+    await view.webContents.executeJavaScript(
+      `({ viewportWidth: innerWidth, documentWidth: document.documentElement.scrollWidth })`,
+    );
+  if (layout.documentWidth > layout.viewportWidth)
+    throw new Error("A interface inicial excede a largura real da janela.");
   const processMetrics = app
     .getAppMetrics()
     .find((metric) => metric.pid === view.webContents.getOSProcessId());
@@ -397,6 +403,7 @@ async function smokeCheck(view: BrowserWindow, ready: DaemonReady) {
     result: "pass",
     at: new Date().toISOString(),
     platform: process.platform,
+    onboardingLayout: { ...layout, noHorizontalOverflow: true },
     arch: process.arch,
     electron: process.versions.electron,
     chromium: process.versions.chrome,
