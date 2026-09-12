@@ -36,6 +36,17 @@ import {
   requireContentId,
   type CollectionCommand,
 } from "./social.js";
+import {
+  admitOutbox,
+  applyConfirmations,
+  isPending,
+  outboxItem,
+  requireOperationId,
+  sendFingerprint,
+  type OutboxEntry,
+  type OutboxItem,
+  OUTBOX_LIMITS,
+} from "./outbox.js";
 
 export interface Attachment {
   size?: number;
@@ -107,7 +118,6 @@ export class LoomNode extends EventEmitter {
   private syncTimer: ReturnType<typeof setInterval>;
   private routes = new Map<string, unknown>();
   private requests = new Map<string, number>();
-  private receipts = new Set<string>();
   private cancellations: (() => void)[] = [];
   constructor(readonly dir: string) {
     super();
@@ -207,12 +217,296 @@ export class LoomNode extends EventEmitter {
     this.persistPrivate(next);
   }
   private persistPrivate(next = this.privateState) {
-    writePrivateState(
-      join(this.dir, "private-state.json"),
-      next,
-      this.requireIdentity(),
-    );
+    const identity = this.requireIdentity(),
+      path = join(this.dir, "private-state.json");
+    try {
+      writePrivateState(path, next, identity);
+    } catch (error) {
+      // A directory-flush error can occur after rename succeeded. Recover the
+      // authenticated on-disk truth before allowing another operation ID.
+      try {
+        this.privateState = readPrivateState(path, identity);
+      } catch {
+        this.lock();
+      }
+      throw error;
+    }
     this.privateState = next;
+  }
+  private sendResult(entry: OutboxEntry) {
+    const outbox = outboxItem(
+      entry,
+      Date.now(),
+      this.config.blocked,
+      this.store.list().some((m) => m.id === entry.id),
+    );
+    return { accepted: outbox.accepted, id: entry.id, outbox };
+  }
+  send(
+    operationId: string,
+    content: Content,
+    recipients: string[],
+    ttlMs = 30 * 86400_000,
+  ) {
+    const identity = this.requireIdentity();
+    requireOperationId(operationId);
+    if (!content || content.type !== "message")
+      throw new Error("Esta operação aceita apenas mensagens privadas");
+    const fingerprint = sendFingerprint(content, recipients, ttlMs);
+    this.objects();
+    const previous = this.privateState.outbox?.[operationId];
+    if (previous) {
+      if (previous.fingerprint !== fingerprint)
+        throw new Error("Este identificador já pertence a outro envio");
+      return this.sendResult(previous);
+    }
+    const { bundle, content: prepared } = this.preparePublication(
+      content,
+      recipients,
+      ttlMs,
+    );
+    const readers = bundle.manifest.keys
+      .map((k) => k.reader)
+      .filter((id) => id !== identity.public.id);
+    if (!readers.length) throw new Error("Escolha pelo menos um destinatário");
+    const entry: OutboxEntry = {
+      operationId,
+      fingerprint,
+      id: bundle.manifest.id,
+      author: identity.public.id,
+      conversation: prepared.conversation!,
+      preview: (
+        prepared.text ||
+        prepared.attachments?.[0]?.name ||
+        "Mensagem"
+      ).slice(0, 160),
+      created: bundle.manifest.created,
+      expires: bundle.manifest.expires,
+      priority:
+        prepared.priority ?? (prepared.attachments?.length ? "bulk" : "normal"),
+      bytes: Buffer.byteLength(canonical(bundle)),
+      phase: "preparing",
+      attempts: 0,
+      lastAttemptAt: 0,
+      nextAttemptAt: 0,
+      lastError: "",
+      manualPin: false,
+      confirmations: Object.fromEntries(readers.map((id) => [id, {}])),
+    };
+    const next = {
+      ...this.privateState,
+      outbox: admitOutbox(this.privateState.outbox ?? {}, entry, Date.now()),
+    };
+    this.persistPrivate(next);
+    try {
+      this.store.put(bundle, true);
+      const ready = structuredClone(this.privateState);
+      ready.outbox![operationId].phase = "ready";
+      this.persistPrivate(ready);
+    } catch (error) {
+      // A surviving preparing record is reconciled from the exact signed ID.
+      // No broadcast occurred, and retry never signs a replacement silently.
+      throw error;
+    }
+    this.flushOutbox();
+    return this.sendResult(this.privateState.outbox![operationId]);
+  }
+  retryOutbox(operationId: string) {
+    this.requireIdentity();
+    requireOperationId(operationId);
+    this.objects();
+    const entry = this.privateState.outbox?.[operationId];
+    if (!entry) throw new Error("Envio desconhecido");
+    const item = outboxItem(entry, Date.now(), this.config.blocked);
+    if (item.status !== "pending") return this.sendResult(entry);
+    if (Date.now() < entry.lastAttemptAt + 2200)
+      throw new Error("Aguarde antes de repetir a tentativa");
+    const next = structuredClone(this.privateState);
+    next.outbox![operationId].nextAttemptAt = Date.now();
+    this.persistPrivate(next);
+    this.flushOutbox();
+    return this.sendResult(this.privateState.outbox![operationId]);
+  }
+  private checkReservedBundle(entry: OutboxEntry) {
+    const bundle = this.store.get(entry.id, false);
+    if (
+      bundle.manifest.author.id !== entry.author ||
+      bundle.manifest.kind !== "message" ||
+      bundle.manifest.created !== entry.created ||
+      bundle.manifest.expires !== entry.expires ||
+      Buffer.byteLength(canonical(bundle)) !== entry.bytes ||
+      canonical(bundle.manifest.keys.map((k) => k.reader).sort()) !==
+        canonical([entry.author, ...Object.keys(entry.confirmations)].sort())
+    )
+      throw new Error("Reserva não corresponde ao envio");
+    return bundle;
+  }
+  private reconcileOutbox(accepted: DisplayObject[]) {
+    if (!this.identity || !this.privateState.outbox) return;
+    const now = Date.now(),
+      next = structuredClone(this.privateState);
+    let changed = applyConfirmations(next.outbox!, accepted, now);
+    const verified = new Map(accepted.map((object) => [object.id, object]));
+    const pins: { id: string; value: boolean }[] = [];
+    for (const entry of Object.values(next.outbox!)) {
+      if (isPending(entry, now)) {
+        try {
+          if (entry.phase === "preparing") this.checkReservedBundle(entry);
+          else {
+            const current = verified.get(entry.id);
+            if (
+              !current ||
+              current.author.id !== entry.author ||
+              current.kind !== "message" ||
+              current.created !== entry.created ||
+              current.expires !== entry.expires ||
+              current.public ||
+              canonical([...current.readers].sort()) !==
+                canonical(
+                  [entry.author, ...Object.keys(entry.confirmations)].sort(),
+                )
+            )
+              throw new Error("Reserva não corresponde ao conteúdo verificado");
+          }
+          if (entry.phase === "preparing") {
+            entry.phase = "ready";
+            entry.lastError = "";
+            changed = true;
+          }
+          if (!this.store.isPinned(entry.id))
+            pins.push({ id: entry.id, value: true });
+        } catch {
+          entry.phase = "unavailable";
+          entry.lastError =
+            "Conteúdo local indisponível ou corrompido. Não foi criado outro envio.";
+          changed = true;
+        }
+      }
+      if (
+        !isPending(entry, now) &&
+        !entry.manualPin &&
+        this.store.isPinned(entry.id)
+      )
+        pins.push({ id: entry.id, value: false });
+    }
+    if (changed) this.persistPrivate(next);
+    for (const pin of pins) {
+      try {
+        this.store.pin(pin.id, pin.value);
+      } catch (error) {
+        if (pin.value) throw error;
+        // Expired/corrupt pending payload cannot pass pin() verification. Its
+        // automatic reservation may be removed; explicit user pins survive.
+        this.store.remove(pin.id);
+      }
+    }
+  }
+  private flushOutbox() {
+    if (!this.identity || !this.router.peers.some((p) => p.connected)) return;
+    const priorities = { sos: 0, normal: 1, bulk: 2 },
+      now = Date.now();
+    const due = Object.values(this.privateState.outbox ?? {})
+      .filter(
+        (e) =>
+          e.phase === "ready" &&
+          outboxItem(e, now, this.config.blocked).status === "pending" &&
+          e.nextAttemptAt <= now,
+      )
+      .sort(
+        (a, b) =>
+          priorities[a.priority] - priorities[b.priority] ||
+          a.created - b.created ||
+          a.id.localeCompare(b.id),
+      )
+      .slice(0, 2);
+    for (const entry of due) {
+      try {
+        const bundle = this.checkReservedBundle(entry),
+          next = structuredClone(this.privateState);
+        const attempt = next.outbox![entry.operationId];
+        attempt.attempts = Math.min(1_000_000, attempt.attempts + 1);
+        attempt.lastAttemptAt = now;
+        attempt.nextAttemptAt =
+          now + Math.min(60_000, 2200 * 2 ** Math.min(5, attempt.attempts - 1));
+        attempt.lastError = "";
+        this.persistPrivate(next);
+        this.router.broadcast({ type: "bundle", bundle }, entry.priority);
+      } catch {
+        if (!this.identity || !this.privateState.outbox?.[entry.operationId])
+          return;
+        const next = structuredClone(this.privateState);
+        next.outbox![entry.operationId].lastError =
+          "Tentativa adiada; a confirmação do destinatário continua pendente.";
+        try {
+          this.persistPrivate(next);
+        } catch {
+          /* No unjournalled new broadcast. */
+        }
+        this.lastTransportError =
+          "Envio pendente; nova tentativa quando possível.";
+      }
+    }
+  }
+  private receiptReaders(object: DisplayObject): string[] | undefined {
+    if (object.readers.some((id) => this.config.blocked.includes(id))) return;
+    const additions = (object.content.members ?? []).filter(
+      (card) =>
+        card.id !== this.identity?.public.id &&
+        validateIdentity(card) &&
+        !this.config.contacts.some((c) => c.id === card.id),
+    );
+    if (additions.length) {
+      const previous = this.config.contacts;
+      this.config.contacts = [
+        ...previous,
+        ...additions.slice(0, Math.max(0, 256 - previous.length)),
+      ];
+      try {
+        this.saveConfig();
+      } catch {
+        this.config.contacts = previous;
+      }
+    }
+    return object.readers;
+  }
+  private publishConfirmation(
+    message: DisplayObject,
+    kind: "receipt" | "delivery",
+  ) {
+    return this.commitPublication(
+      this.preparePublication(
+        { type: kind, target: message.id },
+        message.readers,
+        Math.max(1000, message.expires - Date.now()),
+        message.content.members ?? [],
+      ),
+    );
+  }
+  private issueDeliveries(objects: DisplayObject[]) {
+    let issued = 0;
+    for (const message of objects) {
+      if (issued >= 2) break;
+      if (
+        message.kind !== "message" ||
+        message.deleted ||
+        message.author.id === this.identity?.public.id ||
+        objects.some(
+          (e) =>
+            ["delivery", "receipt"].includes(e.kind) &&
+            e.content.target === message.id &&
+            e.author.id === this.identity?.public.id,
+        )
+      )
+        continue;
+      const readers = this.receiptReaders(message);
+      if (!readers) continue;
+      try {
+        this.publishConfirmation(message, "delivery");
+        issued++;
+      } catch {
+        /* Reading remains valid even when a confirmation cannot be sent. */
+      }
+    }
   }
   collection(command: CollectionCommand) {
     const identity = this.requireIdentity();
@@ -265,6 +559,8 @@ export class LoomNode extends EventEmitter {
   }
   connect(host: string, port: number) {
     this.requireIdentity();
+    if (this.config.peers.some((p) => p.host === host && p.port === port))
+      return;
     if (this.config.peers.length >= 16) throw new Error("Limite de ligações");
     if (!this.config.peers.some((p) => p.host === host && p.port === port)) {
       this.cancellations.push(this.router.connectTcp(host, port));
@@ -297,8 +593,21 @@ export class LoomNode extends EventEmitter {
     this.requireIdentity();
     if (typeof value !== "boolean") throw new Error("Valor da acção inválido");
     if (!/^[a-f0-9]{64}$/.test(target)) throw new Error("Endereço inválido");
-    if (action === "pin") this.store.pin(target, value);
-    else if (action === "block" || action === "follow" || action === "save") {
+    if (action === "pin") {
+      const entry = Object.values(this.privateState.outbox ?? {}).find(
+        (e) => e.id === target,
+      );
+      if (entry && !value && isPending(entry, Date.now()))
+        throw new Error(
+          "O conteúdo está reservado até à confirmação ou expiração do envio.",
+        );
+      if (entry) {
+        const next = structuredClone(this.privateState);
+        next.outbox![entry.operationId].manualPin = value;
+        this.persistPrivate(next);
+      }
+      this.store.pin(target, value);
+    } else if (action === "block" || action === "follow" || action === "save") {
       const key =
         action === "block"
           ? "blocked"
@@ -334,6 +643,7 @@ export class LoomNode extends EventEmitter {
         "edit",
         "delete",
         "receipt",
+        "delivery",
         "alert",
       ].includes(content.type)
     )
@@ -410,15 +720,16 @@ export class LoomNode extends EventEmitter {
     }
     canonical(content);
   }
-  publish(
+  private preparePublication(
     content: Content,
     recipients: string[] | "public",
     ttlMs?: number,
-  ): DisplayObject {
+    confirmedCards: PublicIdentity[] = [],
+  ): { bundle: Bundle; content: Content; mutationTarget?: Manifest } {
     const identity = this.requireIdentity();
     this.validateContent(content);
     let mutationTarget: Manifest | undefined;
-    const cards = [identity.public, ...this.config.contacts];
+    const cards = [identity.public, ...confirmedCards, ...this.config.contacts];
     const readers =
       recipients === "public"
         ? "public"
@@ -433,7 +744,7 @@ export class LoomNode extends EventEmitter {
     if (content.type === "group" && !content.title?.trim())
       throw new Error("Indique o nome do grupo");
     if (
-      ["message", "group", "receipt"].includes(content.type) &&
+      ["message", "group", "receipt", "delivery"].includes(content.type) &&
       readers === "public"
     )
       throw new Error("Conversas exigem destinatários privados");
@@ -479,7 +790,7 @@ export class LoomNode extends EventEmitter {
     if (content.type === "group")
       content = { ...content, members: readers as PublicIdentity[] };
     if (
-      ["edit", "delete", "reaction", "comment", "receipt"].includes(
+      ["edit", "delete", "reaction", "comment", "receipt", "delivery"].includes(
         content.type,
       )
     ) {
@@ -488,7 +799,7 @@ export class LoomNode extends EventEmitter {
       if (!this.objects().some((o) => o.id === content.target))
         throw new Error("Alvo sem autorização semântica");
       if (
-        content.type === "receipt" &&
+        ["receipt", "delivery"].includes(content.type) &&
         (original.manifest.kind !== "message" ||
           original.manifest.author.id === identity.public.id)
       )
@@ -503,9 +814,14 @@ export class LoomNode extends EventEmitter {
       )
         throw new Error("Só o autor pode alterar este conteúdo");
       if (
-        ["edit", "delete", "receipt", "reaction", "comment"].includes(
-          original.manifest.kind,
-        )
+        [
+          "edit",
+          "delete",
+          "receipt",
+          "delivery",
+          "reaction",
+          "comment",
+        ].includes(original.manifest.kind)
       )
         throw new Error("Alvo inválido");
       // Follow the original privacy boundary for all related events.
@@ -524,6 +840,23 @@ export class LoomNode extends EventEmitter {
       readers,
       ttlMs,
     );
+    return { bundle, content, mutationTarget };
+  }
+  publish(
+    content: Content,
+    recipients: string[] | "public",
+    ttlMs?: number,
+  ): DisplayObject {
+    return this.commitPublication(
+      this.preparePublication(content, recipients, ttlMs),
+    );
+  }
+  private commitPublication(prepared: {
+    bundle: Bundle;
+    content: Content;
+    mutationTarget?: Manifest;
+  }): DisplayObject {
+    const { bundle, mutationTarget, content } = prepared;
     this.store.put(bundle, ["site", "group"].includes(content.type));
     if (mutationTarget) {
       const next = structuredClone(this.privateState),
@@ -578,13 +911,18 @@ export class LoomNode extends EventEmitter {
           return;
         if (
           this.identity &&
-          ["edit", "delete"].includes(payload.bundle.manifest.kind)
+          ["edit", "delete", "receipt", "delivery"].includes(
+            payload.bundle.manifest.kind,
+          )
         ) {
           const event = this.display(payload.bundle, true);
           if (event) {
             const known = this.objects();
-            if (this.authorized(event, [...known, event]))
-              this.materializeMutations([...known, event]);
+            if (this.authorized(event, [...known, event])) {
+              if (["edit", "delete"].includes(event.kind))
+                this.materializeMutations([...known, event]);
+              else this.reconcileOutbox([...known, event]);
+            }
           }
         }
         if (this.store.put(payload.bundle)) {
@@ -633,19 +971,29 @@ export class LoomNode extends EventEmitter {
     }
   }
   sync() {
-    if (!this.router.peers.some((p) => p.connected) || !this.config.relay)
-      return;
-    const ids = this.store.list().map((m) => m.id);
-    if (ids.length) {
-      const start =
-        (Math.floor(Date.now() / 2200) * 64) %
-        Math.max(64, Math.ceil(ids.length / 64) * 64);
-      this.router.broadcast(
-        { type: "inventory", ids: ids.slice(start, start + 64) },
-        "normal",
-        120_000,
-        true,
-      );
+    try {
+      if (this.identity) {
+        const objects = this.objects();
+        this.issueDeliveries(objects);
+        this.flushOutbox();
+      }
+      if (!this.router.peers.some((p) => p.connected) || !this.config.relay)
+        return;
+      const ids = this.store.list().map((m) => m.id);
+      if (ids.length) {
+        const start =
+          (Math.floor(Date.now() / 2200) * 64) %
+          Math.max(64, Math.ceil(ids.length / 64) * 64);
+        this.router.broadcast(
+          { type: "inventory", ids: ids.slice(start, start + 64) },
+          "normal",
+          120_000,
+          true,
+        );
+      }
+    } catch {
+      this.lastTransportError =
+        "Sincronização adiada; o estado local será verificado na próxima tentativa.";
     }
   }
   private display(bundle: Bundle, summary = false): DisplayObject | undefined {
@@ -676,7 +1024,7 @@ export class LoomNode extends EventEmitter {
       fields.push("conversation", "members");
     if (content.type === "message") fields.push("replyTo");
     if (
-      ["comment", "reaction", "edit", "delete", "receipt"].includes(
+      ["comment", "reaction", "edit", "delete", "receipt", "delivery"].includes(
         content.type,
       )
     )
@@ -710,7 +1058,9 @@ export class LoomNode extends EventEmitter {
     if (!this.identity) return [];
     const manifests = this.store
       .list()
-      .filter((m) => !this.config.blocked.includes(m.author.id));
+      .filter(
+        (m) => !this.config.blocked.includes(m.author.id) || m.kind === "group",
+      );
     const present = new Set(manifests.map((m) => m.id));
     for (const [id, entry] of this.summaryCache)
       if (!present.has(id)) {
@@ -752,8 +1102,12 @@ export class LoomNode extends EventEmitter {
         return [];
       }
     });
-    const accepted = all.filter((o) => this.authorized(o, all));
+    const accepted = all.filter(
+      (o) =>
+        !this.config.blocked.includes(o.author.id) && this.authorized(o, all),
+    );
     this.materializeMutations(accepted);
+    this.reconcileOutbox(accepted);
     return accepted.map((o) => {
       const mutation = this.privateState.mutations[o.id];
       return mutation?.author === o.author.id
@@ -807,15 +1161,27 @@ export class LoomNode extends EventEmitter {
       (!o.public && !readers.includes(o.author.id))
     )
       return false;
-    if (["message", "group", "receipt"].includes(o.kind) && o.public)
+    if (
+      ["message", "group", "receipt", "delivery"].includes(o.kind) &&
+      o.public
+    )
       return false;
-    if (["edit", "delete", "reaction", "comment", "receipt"].includes(o.kind)) {
+    if (
+      ["edit", "delete", "reaction", "comment", "receipt", "delivery"].includes(
+        o.kind,
+      )
+    ) {
       const original = all.find((a) => a.id === o.content.target);
       if (
         !original ||
-        ["edit", "delete", "reaction", "comment", "receipt"].includes(
-          original.kind,
-        ) ||
+        [
+          "edit",
+          "delete",
+          "reaction",
+          "comment",
+          "receipt",
+          "delivery",
+        ].includes(original.kind) ||
         !this.authorized(original, all)
       )
         return false;
@@ -832,7 +1198,7 @@ export class LoomNode extends EventEmitter {
       if (!original.public && !original.readers.includes(o.author.id))
         return false;
       if (
-        o.kind === "receipt" &&
+        ["receipt", "delivery"].includes(o.kind) &&
         (original.kind !== "message" || o.author.id === original.author.id)
       )
         return false;
@@ -866,30 +1232,24 @@ export class LoomNode extends EventEmitter {
     if (!object) throw new Error("Sem autorização de leitura");
     if (
       object.kind === "message" &&
+      !object.deleted &&
       this.identity &&
-      object.author.id !== this.identity.public.id &&
-      !this.receipts.has(id)
+      object.author.id !== this.identity.public.id
     ) {
-      for (const card of object.content.members ?? [])
-        if (
-          card.id !== this.identity.public.id &&
-          validateIdentity(card) &&
-          !this.config.contacts.some((c) => c.id === card.id)
-        )
-          this.config.contacts.push(card);
-      this.saveConfig();
-      this.receipts.add(id);
+      const readers = this.receiptReaders(object);
       const existing = this.objects().some(
         (o) =>
           o.kind === "receipt" &&
           o.content.target === id &&
           o.author.id === this.identity!.public.id,
       );
-      if (!existing)
-        this.publish(
-          { type: "receipt", target: id },
-          this.store.get(id).manifest.keys.map((k) => k.reader),
-        );
+      if (!existing && readers) {
+        try {
+          this.publishConfirmation(object, "receipt");
+        } catch {
+          /* An unavailable receipt must not prevent authorized reading. */
+        }
+      }
     }
     const full = this.display(this.store.get(id));
     if (!full) throw new Error("Sem autorização de leitura");
@@ -942,6 +1302,7 @@ export class LoomNode extends EventEmitter {
   }
   state() {
     const objects = this.objects();
+    const availableIds = new Set(objects.map((o) => o.id));
     return {
       initialized: this.initialized,
       locked: !this.identity,
@@ -967,6 +1328,22 @@ export class LoomNode extends EventEmitter {
           )
         : [],
       siteDraft: this.identity ? (this.privateState.siteDraft ?? null) : null,
+      outbox: this.identity
+        ? Object.values(this.privateState.outbox ?? {}).map((e) =>
+            outboxItem(
+              e,
+              Date.now(),
+              this.config.blocked,
+              availableIds.has(e.id),
+            ),
+          )
+        : [],
+      outboxPolicy: {
+        maxRecords: OUTBOX_LIMITS.total,
+        maxPending: OUTBOX_LIMITS.pending,
+        maxPendingBytes: OUTBOX_LIMITS.bytes,
+        idempotency: "retained-records",
+      },
       transportError: this.lastTransportError,
       now: Date.now(),
     };

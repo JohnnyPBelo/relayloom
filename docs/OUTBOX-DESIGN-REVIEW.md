@@ -1,0 +1,42 @@
+# Independent outbox interface review — 2026-09-12
+
+The reviewer inspected the actual saved Node browser captures `pending-light.png`, `pending-dark.png`, `pending-mobile.png` and `expired.png` in `docs/evidence/outbox/node/`, plus `apps/web/src/outbox.tsx`, `outbox.css`, the messenger/composer/modal integration in `main.tsx` and relevant shared styles. This is an independent screenshot and source review. The reviewer did not launch another browser, use a physical touch device or screen reader, or rerun root's browser suite. The new mixed-process engine gate is separately documented in `OUTBOX-REVIEW.md`.
+
+## Original findings — corrected in follow-up
+
+**OD-1 — P2: the fallback can overstate group read status.** In `apps/web/src/main.tsx`, the message-metadata fallback used when no retained outbox item exists displays **“Lida”** whenever any read-receipt event targets that message. For a legacy group message, or one whose terminal outbox metadata has been pruned, a receipt from only one of several original recipients is enough. The hover title qualifies this as one recipient, but the visible/touch-facing label does not. Count unique authorized receipt authors against the original reader set and show a partial label such as “Lida por 1 de 2”, or explicitly show limited historical status. Do not infer every recipient from any one receipt. The new `DeliveryBadge` path already distinguishes partial and all-recipient states correctly.
+
+**OD-2 — P2: a collapsed row can lose its visible keyboard-focus indicator.** `outbox.css` gives `.outbox-card` `overflow: hidden` and its `.outbox-card-toggle` the full card width. The shared `button:focus-visible` outline sits 3 px outside the button. In a collapsed card, the toggle fills the card, so that external outline is clipped by its parent on every side; no alternative focus style is defined. Use an inset focus ring on the toggle or a ring on the card via `:focus-within`. This follows from the source geometry; the supplied captures do not show a keyboard-focused row, and a manual keyboard regression remains necessary.
+
+Both findings were sent to root without changing application sources during the active verification run.
+
+## Visual and state assessment
+
+- The light and dark desktop captures keep the heading, state, recipient detail and retry action readable. The 390 px mobile capture wraps the title and filter cleanly, preserves side margins and shows no horizontal clipping. Its primary card toggle is at least 74 px high; the filter and retry controls have 44 px minimum heights.
+- Pending is labelled “Em espera” with a clock and per-recipient “Sem confirmação”. The explanation explicitly distinguishes an intermediary's acknowledgement from recipient acceptance. The expanded light capture shows zero attempts for a disconnected sender; it does not invent delivery progress.
+- The expired capture keeps the intent visible, states that the content deadline ended, shows the absent content and unconfirmed recipient, and removes the retry button. No completed delivery is implied by expiry.
+- Source inspection of the retained-record path shows separate “Recebida” and “Lida” labels, partial group counts and “por todos” only for every recipient. Individual confirmation times remain inspectable. Expired or blocked status takes precedence in the summary while historical per-recipient confirmations remain visible in details.
+- Blocked details explain that new local attempts are suppressed and that existing copies/fragments cannot be recalled. The retry action is rendered only for pending items and respects the busy/cooldown state. The assigned screenshots do not include received, read or blocked captures; those branches were assessed in source, not claimed as visually executed here.
+- The footer explicitly limits retained metadata to 256 records and explains that repeat detection depends on the original record still existing. Before reusing an uncertain operation, the composer fetches fresh state and checks the same unlocked identity. A missing prior operation produces an explanation and an explicit “Preparar um novo envio” action, which only discards the old key; it does not itself send a message.
+- The modal uses a native `<dialog>` opened with `showModal()`, an accessible title, a labelled close button and an Escape handler. Cards are actual buttons with `aria-expanded`/`aria-controls`; the filter is a labelled native select. Source inspection supports these semantics, but does not prove a completed keyboard or screen-reader traversal.
+- Controls call the real send/retry APIs. Root's `durable-send.json` records actual lost-response retry, process restart, relay-disabled own retry and distinct received/read behavior. The reviewed code contains no hard-coded success counter or fabricated transport progress.
+
+## Small follow-ups and evidence limits
+
+The message-level `DeliveryBadge` inherits roughly 10 px metadata text, uses 15 px icons and only 2 px vertical padding, with no minimum hit height. Increase its effective touch target while retaining a compact visual label; the supplied screenshots show the modal rather than a directly measurable badge target, so this is a source-based touch-usability observation, not a measured WCAG failure.
+
+For an unexpired message whose local bytes are gone, the detail currently combines “Disponível até …” with “O conteúdo já não está disponível neste nó”. “Prazo do conteúdo: …” would separate the deadline from actual local availability more clearly. An offline retry can also return to the same zero-attempt state without explanatory feedback; an explicit waiting-for-a-path message would make that real API action easier to understand.
+
+Focus restoration currently calls `focus()` on the element that opened the dialog. If an expiring message badge disappears while the dialog is open, that element may be detached. A stable fallback, such as the main “Estado dos envios” button, should be considered when verifying the keyboard fix.
+
+The supplied Axe JSON files report no listed violations for these captures. That evidence is root-authored/run and does not replace checking focus visibility, touch targets, dynamic announcements or focus restoration. No visual blocker was found in the four captured pending/expired layouts. The observations above describe the initial reviewed revision; follow-up status is below.
+
+## Follow-up after root's corrections
+
+Root reported **14 browser cases passing on Node and 14 on Go**, including a three-process legacy group with only one of two readers confirmed, deduplicated reissued receipts, later all-recipient read, and Tab/Space/focus-visible checks. These remain root-executed results; the reviewer did not rerun them.
+
+The reviewer delegated a bounded independent source/image recheck to `/root/security_review/group_epoch_adversary` while designing the separate group protocol. That agent verified unique original-recipient receipt-author counts and the inset focus ring, and inspected `docs/evidence/outbox/node/keyboard-focus.png`, which shows a complete visible ring. **OD-1 and OD-2 are resolved by source/image follow-up.** The recheck also confirmed a 28 px badge minimum size, neutral content-deadline wording and a detached-opener focus fallback to “Estado dos envios” or the focusable main area. No new browser/device execution is claimed by this delegation.
+
+**OD-3 — P2, corrected by root after this review: retry feedback was rendered behind the modal.** The retry handler set a truthful global notice, but `main.tsx` rendered its `role="status"` toast as a sibling outside the native `showModal()` dialog. The background is inert and the toast remains behind the modal backdrop; its normal stacking order cannot put it above the browser's top layer. The delegated recheck identified this source finding and the reviewer confirmed it; neither reviewer changed application source.
+
+Root subsequently moved retry feedback into the dialog and added an assertion scoped to `getByRole("dialog").getByRole("status")` in `tests/e2e/outbox.spec.ts`. The four outbox browser cases passed on Node and on Go after that correction. Those runs were initiated before the owner's temporary sequential check; they are root-executed evidence, not an additional independent browser review. The single later stability run and its exact outcome are recorded separately in `.codex-delivery/SEQUENTIAL-CHECK.md`.

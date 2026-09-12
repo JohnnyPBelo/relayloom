@@ -21,6 +21,28 @@ import (
 
 const password = "native application regression phrase"
 
+func TestConnectSavedEndpointAtCapacityIsIdempotent(t *testing.T) {
+	n, _ := nodeFor(t, "Saved peers")
+	n.mu.Lock()
+	next := n.cloneConfig()
+	for i := 0; i < 16; i++ {
+		next.Peers = append(next.Peers, PeerAddress{Host: "127.0.0.1", Port: 30000 + i})
+	}
+	if err := n.saveConfigLocked(next); err != nil {
+		t.Fatal(err)
+	}
+	n.mu.Unlock()
+	apply(t, n, "connect", map[string]any{"host": "127.0.0.1", "port": 30000})
+	if _, err := n.Handle("connect", map[string]any{"host": "127.0.0.1", "port": 40000}); err == nil {
+		t.Fatal("seventeenth saved endpoint accepted")
+	}
+	n.mu.Lock()
+	defer n.mu.Unlock()
+	if len(n.config.Peers) != 16 || len(n.cancellations) != 0 || len(n.Router.Peers()) != 0 {
+		t.Fatal("duplicate/full saved-peer request opened a new connection")
+	}
+}
+
 func tempDir(t *testing.T) string {
 	t.Helper()
 	_, file, _, _ := runtime.Caller(0)

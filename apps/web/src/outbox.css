@@ -1,0 +1,236 @@
+.conversation-head-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.conversation-head-actions .count {
+  background: var(--soft);
+  color: var(--ink);
+}
+:root[data-theme="dark"] .secondary {
+  color: var(--ink);
+}
+.delivery-badge {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  padding: 2px 3px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: inherit;
+  border-radius: 4px;
+  cursor: pointer;
+  min-height: 28px;
+  min-width: 28px;
+}
+.delivery-badge:hover {
+  text-decoration: underline;
+}
+.delivery-badge.expired,
+.delivery-badge.unavailable,
+.delivery-badge.blocked {
+  color: var(--ink);
+}
+.outbox-panel {
+  min-width: 0;
+}
+.outbox-intro {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+}
+.outbox-intro > svg {
+  flex-shrink: 0;
+  color: var(--ink);
+}
+.outbox-intro strong {
+  font-size: 14px;
+  line-height: 1.5;
+}
+.outbox-intro p,
+.outbox-note,
+.outbox-details p {
+  font-size: 12px;
+  line-height: 1.65;
+  color: var(--muted);
+  margin: 8px 0 0;
+}
+.outbox-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0 14px;
+  font-size: 12px;
+}
+.outbox-toolbar label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.outbox-toolbar select {
+  min-height: 44px;
+  max-width: 200px;
+  font-size: 12px;
+}
+.outbox-list {
+  display: grid;
+  gap: 10px;
+}
+.outbox-card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--surface);
+}
+.outbox-card-toggle {
+  width: 100%;
+  min-height: 74px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border: 0;
+  text-align: left;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+}
+.outbox-card-toggle:focus-visible {
+  outline-offset: -4px;
+}
+.outbox-card-main {
+  min-width: 0;
+  display: grid;
+  gap: 7px;
+}
+.outbox-preview {
+  font-size: 13px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.outbox-time {
+  font-size: 11px;
+  color: var(--muted);
+}
+.outbox-status {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-shrink: 0;
+  max-width: 44%;
+  font-size: 11px;
+}
+.outbox-status > span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.outbox-status svg {
+  flex-shrink: 0;
+}
+.outbox-status .expanded {
+  transform: rotate(180deg);
+}
+.outbox-details {
+  border-top: 1px solid var(--line);
+  padding: 0 16px 16px;
+}
+.recipient-confirmations {
+  list-style: none;
+  padding: 0;
+  margin: 14px 0;
+}
+.recipient-confirmations li {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+}
+.recipient-confirmations li span:last-child {
+  text-align: right;
+  color: var(--muted);
+}
+.outbox-attempts {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 11px;
+}
+.outbox-attempts .secondary {
+  min-height: 44px;
+  font-size: 12px;
+}
+.outbox-note {
+  padding-top: 12px;
+}
+.outbox-feedback {
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.6;
+  padding: 12px;
+  border-left: 3px solid var(--green);
+  background: var(--soft);
+}
+.outbox-feedback:empty {
+  padding: 0;
+  border: 0;
+  margin: 0;
+}
+.outbox-empty {
+  padding: 24px 12px;
+  font-size: 14px;
+  line-height: 1.7;
+  text-align: center;
+  color: var(--muted);
+}
+.composer-hint .expiry-choice {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  font-size: inherit;
+  margin: 0;
+}
+.expiry-choice select {
+  min-height: 44px;
+  padding: 4px 7px;
+  width: auto;
+  font-size: 11px;
+  border: 0;
+  background: transparent;
+}
+@media (max-width: 680px) {
+  .conversation-head-actions {
+    flex-wrap: wrap;
+  }
+  .outbox-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .outbox-card-toggle {
+    padding: 14px 12px;
+  }
+  .outbox-status {
+    max-width: 40%;
+  }
+  .recipient-confirmations li {
+    flex-direction: column;
+    gap: 4px;
+  }
+  .recipient-confirmations li span:last-child {
+    text-align: left;
+  }
+  .composer-hint {
+    flex-wrap: wrap;
+  }
+}

@@ -61,16 +61,17 @@ type Mutation struct {
 	Text    *string `json:"text,omitempty"`
 }
 type PrivateState struct {
-	Mutations   map[string]Mutation `json:"mutations"`
-	Collections []Collection        `json:"collections,omitempty"`
-	SiteDraft   map[string]any      `json:"siteDraft,omitempty"`
+	Outbox      map[string]OutboxRecord `json:"outbox"`
+	Mutations   map[string]Mutation     `json:"mutations"`
+	Collections []Collection            `json:"collections,omitempty"`
+	SiteDraft   map[string]any          `json:"siteDraft,omitempty"`
 }
 
 func defaultConfig() Config {
 	return Config{Contacts: []core.PublicIdentity{}, Blocked: []string{}, Following: []string{}, Saved: []string{}, Reports: []Report{}, Relay: true, Quota: core.DefaultQuota, Peers: []PeerAddress{}}
 }
 func emptyPrivate() PrivateState {
-	return PrivateState{Mutations: map[string]Mutation{}, Collections: []Collection{}}
+	return PrivateState{Outbox: map[string]OutboxRecord{}, Mutations: map[string]Mutation{}, Collections: []Collection{}}
 }
 func object(v any) (map[string]any, error) {
 	m, ok := v.(map[string]any)
@@ -245,7 +246,7 @@ func decodeBundle(v any) (core.Bundle, error) {
 	return b, core.VerifyBundle(b)
 }
 func related(kind string) bool {
-	return contains([]string{"edit", "delete", "reaction", "comment", "receipt"}, kind)
+	return contains([]string{"edit", "delete", "reaction", "comment", "receipt", "delivery"}, kind)
 }
 func tcpAddress(host string, port int) (string, error) {
 	if host == "" || len(host) > 253 || port < 1 || port > 65535 {
@@ -258,7 +259,7 @@ var base64Pattern = regexp.MustCompile(`^[A-Za-z0-9+/]*={0,2}$`)
 
 func validateContent(c Content) error {
 	kind := text(c["type"])
-	if !contains([]string{"message", "post", "group", "site", "comment", "reaction", "edit", "delete", "receipt", "alert"}, kind) {
+	if !contains([]string{"message", "post", "group", "site", "comment", "reaction", "edit", "delete", "receipt", "delivery", "alert"}, kind) {
 		return errors.New("tipo de conteúdo inválido")
 	}
 	if value, exists := c["priority"]; exists {

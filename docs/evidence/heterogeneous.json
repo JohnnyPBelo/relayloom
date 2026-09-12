@@ -1,6 +1,6 @@
 {
-  "started": "2026-09-11T22:41:29.989Z",
-  "finished": "2026-09-11T22:41:38.709Z",
+  "started": "2026-09-11T23:31:38.535Z",
+  "finished": "2026-09-11T23:31:47.178Z",
   "result": "pass",
   "environment": "linux",
   "mediumAtoB": "real TCP socket",
@@ -17,8 +17,8 @@
   ],
   "routingCounters": {
     "b": {
-      "received": 12,
-      "forwarded": 7,
+      "received": 14,
+      "forwarded": 9,
       "duplicates": 0,
       "rejected": 0,
       "dropped": 0,
@@ -26,7 +26,7 @@
       "rateLimited": 0
     },
     "c": {
-      "received": 6,
+      "received": 9,
       "forwarded": 0,
       "duplicates": 0,
       "rejected": 0,

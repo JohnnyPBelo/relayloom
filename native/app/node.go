@@ -18,14 +18,16 @@ import (
 )
 
 type Node struct {
-	mu                 sync.Mutex
-	Dir                string
-	Store              *core.ContentStore
-	Router             *transport.Router
-	TCPPort            int
-	identity           *core.Identity
-	config             Config
-	private            PrivateState
+	mu       sync.Mutex
+	Dir      string
+	Store    *core.ContentStore
+	Router   *transport.Router
+	TCPPort  int
+	identity *core.Identity
+	config   Config
+	private  PrivateState
+	// Per-node persistence seam for exercising uncertain completion boundaries.
+	writePrivateFile   func(string, PrivateState, core.Identity) error
 	routes             map[string]transport.Route
 	requests           map[string]int64
 	receipts           map[string]bool
@@ -170,7 +172,27 @@ func (n *Node) persistPrivateLocked(next PrivateState) error {
 	if n.identity == nil {
 		return errors.New("desbloqueie a identidade")
 	}
-	if err := writePrivate(filepath.Join(n.Dir, "private-state.json"), next, *n.identity); err != nil {
+	path := filepath.Join(n.Dir, "private-state.json")
+	writer := n.writePrivateFile
+	if writer == nil {
+		writer = writePrivate
+	}
+	if err := writer(path, next, *n.identity); err != nil {
+		// A rename may have committed even when its directory sync reports an
+		// error. Re-read authenticated disk state before another operation can
+		// reuse an ID. If the outcome is unreadable, stop all plaintext writes.
+		var recovered PrivateState
+		_, readErr := os.Stat(path)
+		if readErr == nil {
+			recovered, readErr = readPrivate(path, *n.identity)
+		}
+		if readErr == nil {
+			n.private = recovered
+		} else {
+			n.identity = nil
+			n.private = emptyPrivate()
+			n.clearSummariesLocked()
+		}
 		return err
 	}
 	n.private = next
@@ -288,6 +310,9 @@ func (n *Node) receiveLocked(delivery transport.Delivery) error {
 		if err = n.journalReceivedMutationLocked(b); err != nil {
 			return err
 		}
+		if err = n.journalReceivedConfirmationLocked(b); err != nil {
+			return err
+		}
 		added, err := n.Store.Put(b, false)
 		if err != nil {
 			return err
@@ -352,6 +377,15 @@ func (n *Node) receiveLocked(delivery transport.Delivery) error {
 	return nil
 }
 func (n *Node) syncLocked() {
+	if n.identity != nil {
+		objects, err := n.objectsLocked()
+		if err != nil {
+			n.lastTransportError = "Não foi possível atualizar o envio persistente"
+			return
+		}
+		n.issueDeliveriesLocked(objects)
+		n.flushOutboxLocked(time.Now().UnixMilli())
+	}
 	if !n.config.Relay {
 		return
 	}
@@ -427,7 +461,7 @@ func authorized(o DisplayObject, all []DisplayObject) bool {
 	if !o.Public && !seen[o.Author.ID] {
 		return false
 	}
-	if contains([]string{"message", "group", "receipt"}, o.Kind) && o.Public {
+	if contains([]string{"message", "group", "receipt", "delivery"}, o.Kind) && o.Public {
 		return false
 	}
 	if related(o.Kind) {
@@ -444,7 +478,7 @@ func authorized(o DisplayObject, all []DisplayObject) bool {
 		if !original.Public && !contains(original.Readers, o.Author.ID) {
 			return false
 		}
-		if o.Kind == "receipt" && (original.Kind != "message" || o.Author.ID == original.Author.ID) {
+		if (o.Kind == "receipt" || o.Kind == "delivery") && (original.Kind != "message" || o.Author.ID == original.Author.ID) {
 			return false
 		}
 		return true
@@ -484,10 +518,14 @@ func recordMutation(next *PrivateState, target core.Manifest, event core.Manifes
 	return true
 }
 func (n *Node) objectsLocked() ([]DisplayObject, error) {
+	objects, _, err := n.objectsSnapshotLocked()
+	return objects, err
+}
+func (n *Node) objectsSnapshotLocked() ([]DisplayObject, map[string]core.Manifest, error) {
 	all := make([]DisplayObject, 0)
 	if n.identity == nil {
 		n.clearSummariesLocked()
-		return all, nil
+		return all, map[string]core.Manifest{}, nil
 	}
 	if n.summaryIdentity != n.identity.Public.ID {
 		n.clearSummariesLocked()
@@ -496,9 +534,13 @@ func (n *Node) objectsLocked() ([]DisplayObject, error) {
 	// List checks the bytes/fingerprint and verification cache of every object;
 	// summaries can only be reused for IDs still present in that verified list.
 	manifests := n.Store.List()
+	verified := make(map[string]core.Manifest, len(manifests))
+	for _, manifest := range manifests {
+		verified[manifest.ID] = manifest
+	}
 	present := make(map[string]bool, len(manifests))
 	for _, manifest := range manifests {
-		if !contains(n.config.Blocked, manifest.Author.ID) {
+		if manifest.Kind == "group" || !contains(n.config.Blocked, manifest.Author.ID) {
 			present[manifest.ID] = true
 		}
 	}
@@ -508,7 +550,9 @@ func (n *Node) objectsLocked() ([]DisplayObject, error) {
 		}
 	}
 	for _, manifest := range manifests {
-		if contains(n.config.Blocked, manifest.Author.ID) {
+		// An already retained signed group remains an ACL dependency for
+		// messages by other authors. The blocked author's object stays hidden.
+		if manifest.Kind != "group" && contains(n.config.Blocked, manifest.Author.ID) {
 			continue
 		}
 		if cached, exists := n.summaries[manifest.ID]; exists {
@@ -532,20 +576,20 @@ func (n *Node) objectsLocked() ([]DisplayObject, error) {
 		if err == nil {
 			summary := summarizeObject(*o)
 			if err = n.cacheSummaryLocked(summary); err != nil {
-				return nil, err
+				return nil, nil, err
 			}
 			all = append(all, cloneSummary(summary))
 		}
 	}
 	accepted := make([]DisplayObject, 0, len(all))
 	for _, o := range all {
-		if authorized(o, all) {
+		if !contains(n.config.Blocked, o.Author.ID) && authorized(o, all) {
 			accepted = append(accepted, o)
 		}
 	}
 	next, err := copyPrivate(n.private, n.identity.Public.ID)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	changed := false
 	for _, event := range accepted {
@@ -570,7 +614,7 @@ func (n *Node) objectsLocked() ([]DisplayObject, error) {
 	}
 	if changed {
 		if err = n.persistPrivateLocked(next); err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 	}
 	for i := range accepted {
@@ -583,7 +627,13 @@ func (n *Node) objectsLocked() ([]DisplayObject, error) {
 			}
 		}
 	}
-	return accepted, nil
+	if err = n.aggregateConfirmationsLocked(accepted, time.Now().UnixMilli()); err != nil {
+		return nil, nil, err
+	}
+	if err = n.reconcileOutboxManifestsLocked(time.Now().UnixMilli(), false, verified); err != nil {
+		return nil, nil, err
+	}
+	return accepted, verified, nil
 }
 func (n *Node) State() (map[string]any, error) {
 	n.mu.Lock()
@@ -591,7 +641,7 @@ func (n *Node) State() (map[string]any, error) {
 	return n.stateLocked()
 }
 func (n *Node) stateLocked() (map[string]any, error) {
-	objects, err := n.objectsLocked()
+	objects, manifests, err := n.objectsSnapshotLocked()
 	if err != nil {
 		return nil, err
 	}
@@ -624,7 +674,7 @@ func (n *Node) stateLocked() (map[string]any, error) {
 	}
 	counters := n.Router.Counters()
 	counters.Rejected += n.rejected
-	return map[string]any{"initialized": n.initialized(), "locked": n.identity == nil, "identity": identity, "tcpPort": n.TCPPort, "peers": n.Router.Peers(), "counters": counters, "storage": n.Store.Stats(), "settings": map[string]any{"relay": n.config.Relay, "lowPower": n.config.LowPower}, "contacts": contacts, "blocked": blocked, "following": following, "saved": saved, "reports": reports, "objects": page.Objects, "history": page.History, "followedPostIds": followed, "collections": collections, "siteDraft": draft, "transportError": n.lastTransportError, "now": time.Now().UnixMilli(), "nativeRuntime": "Go"}, nil
+	return map[string]any{"initialized": n.initialized(), "locked": n.identity == nil, "identity": identity, "tcpPort": n.TCPPort, "peers": n.Router.Peers(), "counters": counters, "storage": n.Store.Stats(), "settings": map[string]any{"relay": n.config.Relay, "lowPower": n.config.LowPower}, "contacts": contacts, "blocked": blocked, "following": following, "saved": saved, "reports": reports, "objects": page.Objects, "outbox": n.outboxItemsLocked(time.Now().UnixMilli(), manifests), "outboxPolicy": outboxPolicy(), "history": page.History, "followedPostIds": followed, "collections": collections, "siteDraft": draft, "transportError": n.lastTransportError, "now": time.Now().UnixMilli(), "nativeRuntime": "Go"}, nil
 }
 
 func (n *Node) Publish(content Content, recipients any, ttlMS int64) (DisplayObject, error) {
@@ -632,21 +682,29 @@ func (n *Node) Publish(content Content, recipients any, ttlMS int64) (DisplayObj
 	defer n.mu.Unlock()
 	return n.publishLocked(content, recipients, ttlMS)
 }
-func (n *Node) publishLocked(content Content, recipients any, ttlMS int64) (DisplayObject, error) {
+
+type preparedPublication struct {
+	bundle         core.Bundle
+	content        Content
+	mutationTarget *core.Manifest
+	priority       transport.Priority
+}
+
+func (n *Node) prepareLocked(content Content, recipients any, ttlMS int64) (*preparedPublication, error) {
 	if n.identity == nil {
-		return DisplayObject{}, errors.New("desbloqueie a identidade")
+		return nil, errors.New("desbloqueie a identidade")
 	}
 	value, err := cloneValue(content)
 	if err != nil {
-		return DisplayObject{}, err
+		return nil, err
 	}
 	m, err := object(value)
 	if err != nil {
-		return DisplayObject{}, err
+		return nil, err
 	}
 	content = Content(m)
 	if err = validateContent(content); err != nil {
-		return DisplayObject{}, err
+		return nil, err
 	}
 	kind := text(content["type"])
 	public := text(recipients) == "public"
@@ -654,7 +712,7 @@ func (n *Node) publishLocked(content Content, recipients any, ttlMS int64) (Disp
 	if !public {
 		ids, err := stringsList(recipients, 64, true)
 		if err != nil {
-			return DisplayObject{}, err
+			return nil, err
 		}
 		ids = append(ids, n.identity.Public.ID)
 		seen := map[string]bool{}
@@ -664,7 +722,7 @@ func (n *Node) publishLocked(content Content, recipients any, ttlMS int64) (Disp
 			}
 			seen[id] = true
 			if contains(n.config.Blocked, id) {
-				return DisplayObject{}, errors.New("contacto bloqueado")
+				return nil, errors.New("contacto bloqueado")
 			}
 			var card *core.PublicIdentity
 			if id == n.identity.Public.ID {
@@ -680,21 +738,21 @@ func (n *Node) publishLocked(content Content, recipients any, ttlMS int64) (Disp
 				}
 			}
 			if card == nil {
-				return DisplayObject{}, errors.New("adicione primeiro o cartão do destinatário")
+				return nil, errors.New("adicione primeiro o cartão do destinatário")
 			}
 			readers = append(readers, *card)
 		}
 	}
 	if kind == "group" && trimmed(text(content["title"])) == "" {
-		return DisplayObject{}, errors.New("indique o nome do grupo")
+		return nil, errors.New("indique o nome do grupo")
 	}
-	if contains([]string{"message", "group", "receipt"}, kind) && public {
-		return DisplayObject{}, errors.New("conversas exigem destinatários privados")
+	if contains([]string{"message", "group", "receipt", "delivery"}, kind) && public {
+		return nil, errors.New("conversas exigem destinatários privados")
 	}
 	if kind == "message" {
 		attachments, _ := content["attachments"].([]any)
 		if trimmed(text(content["text"])) == "" && len(attachments) == 0 {
-			return DisplayObject{}, errors.New("escreva uma mensagem ou junte um anexo")
+			return nil, errors.New("escreva uma mensagem ou junte um anexo")
 		}
 		ids := memberIDs(readers)
 		expected := "dm:" + core.Hash([]byte(strings.Join(sorted(ids), ":")))
@@ -705,16 +763,16 @@ func (n *Node) publishLocked(content Content, recipients any, ttlMS int64) (Disp
 		}
 		if strings.HasPrefix(conversation, "dm:") {
 			if conversation != expected {
-				return DisplayObject{}, errors.New("destinatários não correspondem à conversa")
+				return nil, errors.New("destinatários não correspondem à conversa")
 			}
 		} else {
 			objects, err := n.objectsLocked()
 			if err != nil {
-				return DisplayObject{}, err
+				return nil, err
 			}
 			group := findObject(objects, conversation)
 			if group == nil || group.Kind != "group" || !contains(group.Readers, n.identity.Public.ID) || !equalIDs(group.Readers, ids) {
-				return DisplayObject{}, errors.New("grupo ou autorização inválidos")
+				return nil, errors.New("grupo ou autorização inválidos")
 			}
 		}
 		content["members"] = readers
@@ -727,27 +785,27 @@ func (n *Node) publishLocked(content Content, recipients any, ttlMS int64) (Disp
 		id := text(content["target"])
 		original, err := n.Store.Get(id)
 		if err != nil {
-			return DisplayObject{}, err
+			return nil, err
 		}
 		if _, err = core.DecryptBundle(original, n.identity); err != nil {
-			return DisplayObject{}, err
+			return nil, err
 		}
 		objects, err := n.objectsLocked()
 		if err != nil {
-			return DisplayObject{}, err
+			return nil, err
 		}
 		if findObject(objects, id) == nil {
-			return DisplayObject{}, errors.New("alvo sem autorização semântica")
+			return nil, errors.New("alvo sem autorização semântica")
 		}
 		if related(original.Manifest.Kind) {
-			return DisplayObject{}, errors.New("alvo inválido")
+			return nil, errors.New("alvo inválido")
 		}
-		if kind == "receipt" && (original.Manifest.Kind != "message" || original.Manifest.Author.ID == n.identity.Public.ID) {
-			return DisplayObject{}, errors.New("confirmação de leitura inválida")
+		if (kind == "receipt" || kind == "delivery") && (original.Manifest.Kind != "message" || original.Manifest.Author.ID == n.identity.Public.ID) {
+			return nil, errors.New("confirmação de leitura inválida")
 		}
 		if kind == "edit" || kind == "delete" {
 			if original.Manifest.Author.ID != n.identity.Public.ID {
-				return DisplayObject{}, errors.New("só o autor pode alterar este conteúdo")
+				return nil, errors.New("só o autor pode alterar este conteúdo")
 			}
 			target := original.Manifest
 			mutationTarget = &target
@@ -759,7 +817,7 @@ func (n *Node) publishLocked(content Content, recipients any, ttlMS int64) (Disp
 			targetReaders = append(targetReaders, k.Reader)
 		}
 		if public != targetPublic || (!public && !equalIDs(targetReaders, memberIDs(readers))) {
-			return DisplayObject{}, errors.New("a privacidade deve corresponder ao conteúdo original")
+			return nil, errors.New("a privacidade deve corresponder ao conteúdo original")
 		}
 	}
 	if ttlMS == 0 {
@@ -767,8 +825,24 @@ func (n *Node) publishLocked(content Content, recipients any, ttlMS int64) (Disp
 	}
 	bundle, err := core.CreateBundle(*n.identity, kind, content, readers, public, ttlMS)
 	if err != nil {
+		return nil, err
+	}
+	priority := transport.Priority(text(content["priority"]))
+	if priority == "" {
+		priority = transport.Normal
+		if a, _ := content["attachments"].([]any); len(a) > 0 {
+			priority = transport.Bulk
+		}
+	}
+	return &preparedPublication{bundle, content, mutationTarget, priority}, nil
+}
+func (n *Node) publishLocked(content Content, recipients any, ttlMS int64) (DisplayObject, error) {
+	prepared, err := n.prepareLocked(content, recipients, ttlMS)
+	if err != nil {
 		return DisplayObject{}, err
 	}
+	bundle, content, mutationTarget, priority := prepared.bundle, prepared.content, prepared.mutationTarget, prepared.priority
+	kind := bundle.Manifest.Kind
 	if _, err = n.Store.Put(bundle, kind == "site" || kind == "group"); err != nil {
 		return DisplayObject{}, err
 	}
@@ -781,13 +855,6 @@ func (n *Node) publishLocked(content Content, recipients any, ttlMS int64) (Disp
 			if err = n.persistPrivateLocked(next); err != nil {
 				return DisplayObject{}, err
 			}
-		}
-	}
-	priority := transport.Priority(text(content["priority"]))
-	if priority == "" {
-		priority = transport.Normal
-		if a, _ := content["attachments"].([]any); len(a) > 0 {
-			priority = transport.Bulk
 		}
 	}
 	if _, err = n.Router.Broadcast(map[string]any{"type": "bundle", "bundle": bundle}, priority, 2*time.Minute, false); err != nil {
@@ -841,6 +908,11 @@ func (n *Node) Handle(operation string, body map[string]any) (any, error) {
 		n.identity = &identity
 		n.private = local
 		n.clearSummariesLocked()
+		if err = n.recoverOutboxLocked(time.Now().UnixMilli()); err != nil {
+			n.identity = nil
+			n.private = emptyPrivate()
+			return nil, err
+		}
 		return identity.Public, nil
 	case "unlock":
 		password, err := fieldString(body, "password")
@@ -862,6 +934,11 @@ func (n *Node) Handle(operation string, body map[string]any) (any, error) {
 		n.identity = &identity
 		n.private = local
 		n.clearSummariesLocked()
+		if err = n.recoverOutboxLocked(time.Now().UnixMilli()); err != nil {
+			n.identity = nil
+			n.private = emptyPrivate()
+			return nil, err
+		}
 		return identity.Public, nil
 	case "lock":
 		n.identity = nil
@@ -880,6 +957,10 @@ func (n *Node) Handle(operation string, body map[string]any) (any, error) {
 		}
 		vault, err := core.ExportVault(*n.identity, password)
 		return map[string]any{"vault": vault}, err
+	case "send":
+		return n.sendLocked(body)
+	case "outbox-retry":
+		return n.retryOutboxLocked(text(body["operationId"]))
 	case "publish":
 		m, err := object(body["content"])
 		if err != nil {
@@ -951,13 +1032,13 @@ func (n *Node) Handle(operation string, body map[string]any) (any, error) {
 		if err != nil {
 			return nil, err
 		}
-		if len(n.config.Peers) >= 16 {
-			return nil, errors.New("limite de ligações")
-		}
 		for _, p := range n.config.Peers {
 			if p.Host == host && p.Port == int(port) {
 				return map[string]bool{"ok": true}, nil
 			}
+		}
+		if len(n.config.Peers) >= 16 {
+			return nil, errors.New("limite de ligações")
 		}
 		cancel, err := n.Router.ConnectTCP(address)
 		if err != nil {
@@ -1067,7 +1148,7 @@ func (n *Node) actionLocked(body map[string]any) error {
 		return errors.New("endereço inválido")
 	}
 	if action == "pin" {
-		return n.Store.Pin(target, value)
+		return n.pinOutboxLocked(target, value)
 	}
 	next := n.cloneConfig()
 	if action == "block" || action == "follow" || action == "save" {
@@ -1114,54 +1195,9 @@ func (n *Node) viewLocked(id string) (DisplayObject, error) {
 	if err != nil {
 		return DisplayObject{}, err
 	}
-	if o.Kind == "message" && n.identity != nil && o.Author.ID != n.identity.Public.ID && !n.receipts[id] {
-		cards, err := members(o.Content["members"])
-		if err != nil {
-			return DisplayObject{}, err
-		}
-		next := n.cloneConfig()
-		for _, card := range cards {
-			known := card.ID == n.identity.Public.ID
-			for _, c := range next.Contacts {
-				if c.ID == card.ID {
-					known = true
-					break
-				}
-			}
-			if !known {
-				if len(next.Contacts) >= 256 {
-					return DisplayObject{}, errors.New("limite de contactos")
-				}
-				next.Contacts = append(next.Contacts, card)
-			}
-		}
-		if err = n.saveConfigLocked(next); err != nil {
-			return DisplayObject{}, err
-		}
-		existing := false
-		for _, manifest := range n.Store.List() {
-			if manifest.Kind != "receipt" || manifest.Author.ID != n.identity.Public.ID {
-				continue
-			}
-			bundle, err := n.Store.GetWithTouch(manifest.ID, false)
-			if err != nil {
-				continue
-			}
-			event, err := n.displayLocked(bundle)
-			if err == nil && text(event.Content["target"]) == id && event.Public == o.Public && equalIDs(event.Readers, o.Readers) {
-				existing = true
-				break
-			}
-		}
-		if !existing {
-			if _, err = n.publishLocked(Content{"type": "receipt", "target": id}, o.Readers, 0); err != nil {
-				return DisplayObject{}, err
-			}
-		}
-		if len(n.receipts) >= 2048 {
-			n.receipts = map[string]bool{}
-		}
-		n.receipts[id] = true
+	if o.Kind == "message" && n.identity != nil && o.Author.ID != n.identity.Public.ID {
+		n.rememberViewedMembersLocked(o)
+		_ = n.ensureConfirmationLocked(o, "receipt")
 	}
 	return *o, nil
 }

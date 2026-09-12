@@ -122,6 +122,18 @@ export async function serve(
                 200,
                 node.publish(body.content, body.recipients, body.ttlMs),
               );
+            case "/api/send":
+              return json(
+                200,
+                node.send(
+                  body.operationId,
+                  body.content,
+                  body.recipients,
+                  body.ttlMs,
+                ),
+              );
+            case "/api/outbox-retry":
+              return json(200, node.retryOutbox(body.operationId));
             case "/api/action":
               node.localAction(
                 body.action,

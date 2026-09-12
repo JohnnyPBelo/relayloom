@@ -58,6 +58,8 @@ import {
   NotificationSettings,
 } from "./notifications";
 import type { Collection } from "../../node/src/social";
+import type { OutboxItem } from "../../node/src/outbox";
+import { DeliveryBadge, OutboxPanel } from "./outbox";
 
 type State = {
   nativeRuntime?: string;
@@ -86,6 +88,7 @@ type State = {
   followedPostIds: string[];
   siteDraft: { blocks: SiteBlock[]; theme: string; savedAt: number } | null;
   objects: DisplayObject[];
+  outbox?: OutboxItem[];
   history: {
     hasMore: boolean;
     nextBefore: string | null;
@@ -212,7 +215,12 @@ function Modal({
     ref.current?.showModal();
     return () => {
       ref.current?.close();
-      before?.focus();
+      const target = before?.isConnected
+        ? before
+        : (document.querySelector<HTMLElement>(
+            'button[aria-label="Estado dos envios"]',
+          ) ?? document.querySelector<HTMLElement>("#main"));
+      target?.focus();
     };
   }, []);
   return (
@@ -252,6 +260,11 @@ function App() {
     [attachments, setAttachments] = useState<Attachment[]>([]),
     [viewSite, setViewSite] = useState<DisplayObject>(),
     [mobileMenu, setMobileMenu] = useState(false);
+  const [messageTTL, setMessageTTL] = useState(30 * 86400_000);
+  const [uncertainOperation, setUncertainOperation] = useState("");
+  const pendingSend = useRef<
+    Record<string, { signature: string; operationId: string }>
+  >({});
   const [blocks, setBlocks] = useState<SiteBlock[]>([
       {
         id: "hero",
@@ -398,6 +411,8 @@ function App() {
     olderCursor.current = undefined;
     historyOwner.current = null;
     drafts.current = {};
+    pendingSend.current = {};
+    setUncertainOperation("");
     viewed.current.clear();
     setText("");
     setAttachments([]);
@@ -415,6 +430,7 @@ function App() {
             contacts: [],
             collections: [],
             reports: [],
+            outbox: [],
           }
         : current,
     );
@@ -472,6 +488,27 @@ function App() {
   });
   const eventsFor = (id: string, kind: string) =>
     objects.filter((o) => o.kind === kind && o.content.target === id);
+  const legacyReadCount = (object: DisplayObject) =>
+    new Set(
+      eventsFor(object.id, "receipt")
+        .filter(
+          (event) =>
+            event.author.id !== object.author.id &&
+            object.readers.includes(event.author.id),
+        )
+        .map((event) => event.author.id),
+    ).size;
+  const legacyReadLabel = (object: DisplayObject) => {
+    const count = legacyReadCount(object),
+      total = object.readers.filter((id) => id !== object.author.id).length;
+    return !total
+      ? "Guardada localmente"
+      : count === total
+        ? "Lida"
+        : count
+          ? `Lida por ${count} de ${total}`
+          : "Em espera";
+  };
   const deleted = (id: string) =>
     objects.find((o) => o.id === id)?.deleted ||
     eventsFor(id, "delete").length > 0;
@@ -646,21 +683,67 @@ function App() {
     ].filter((r) => r.content.value).length;
   async function submitMessage(e: React.FormEvent) {
     e.preventDefault();
-    const r = await run(() =>
-      publish(
-        {
-          type: "message",
-          text,
-          ...(selected ? { conversation: selection } : {}),
-          ...(reply ? { replyTo: reply.id } : {}),
-          ...(attachments.length ? { attachments } : {}),
-        },
-        members.map((m) => m.id),
-      ),
+    const selectionAtSend = selection,
+      generation = privacyGeneration.current,
+      ownerAtSend = me?.id;
+    const content: Content = {
+        type: "message",
+        text,
+        ...(selected ? { conversation: selection } : {}),
+        ...(reply ? { replyTo: reply.id } : {}),
+        ...(attachments.length ? { attachments } : {}),
+      },
+      recipients = members.map((m) => m.id);
+    const encoded = new TextEncoder().encode(
+      JSON.stringify({ content, recipients, ttlMs: messageTTL }),
     );
-    if (r) {
-      delete drafts.current[selection];
-      setSelection(r.content.conversation);
+    const signature = [
+      ...new Uint8Array(await crypto.subtle.digest("SHA-256", encoded)),
+    ]
+      .map((n) => n.toString(16).padStart(2, "0"))
+      .join("");
+    if (generation !== privacyGeneration.current) return;
+    const operationId =
+      pendingSend.current[selectionAtSend]?.signature === signature
+        ? pendingSend.current[selectionAtSend].operationId
+        : crypto.randomUUID();
+    if (pendingSend.current[selectionAtSend]?.signature === signature) {
+      const latest = await run(() => api("state"));
+      if (!latest || generation !== privacyGeneration.current) return;
+      if (latest.locked || latest.identity?.id !== ownerAtSend) {
+        setError(
+          "Desbloqueia a mesma identidade para verificar o envio anterior.",
+        );
+        return;
+      }
+      if (
+        !(latest.outbox ?? []).some(
+          (entry: OutboxItem) => entry.operationId === operationId,
+        )
+      ) {
+        setUncertainOperation(operationId);
+        setError(
+          "A resposta anterior perdeu-se e este envio não está no registo conservado. Verifica a conversa antes de preparar um novo envio, para evitar duplicados.",
+        );
+        return;
+      }
+    }
+    pendingSend.current[selectionAtSend] = { signature, operationId };
+    const r = await run(() =>
+      api("send", { operationId, content, recipients, ttlMs: messageTTL }),
+    );
+    if (r && !r.accepted) {
+      setError(
+        "Este envio não está disponível. Consulta o estado antes de preparar uma nova mensagem.",
+      );
+      return;
+    }
+    if (r && generation === privacyGeneration.current) {
+      delete drafts.current[selectionAtSend];
+      delete pendingSend.current[selectionAtSend];
+      setUncertainOperation("");
+      if (activeSelection.current !== selectionAtSend) return;
+      setSelection(r.outbox.conversation);
       nearBottom.current = true;
       setText("");
       setAttachments([]);
@@ -972,7 +1055,7 @@ function App() {
             {dark ? <Sun size={19} /> : <Moon size={19} />}
           </button>
         </header>
-        <main id="main">
+        <main id="main" tabIndex={-1}>
           {error && (
             <div className="error banner" role="alert">
               {error}
@@ -1022,12 +1105,32 @@ function App() {
               </h1>
             </div>
             {page === "messages" && (
-              <button
-                className="primary"
-                onClick={() => setModal("conversation")}
-              >
-                <Plus size={18} /> Nova conversa
-              </button>
+              <div className="conversation-head-actions">
+                <button
+                  className="secondary"
+                  aria-label="Estado dos envios"
+                  onClick={() => setModal("outbox")}
+                >
+                  <Send size={16} /> Envios
+                  {(state.outbox ?? []).filter((o) =>
+                    ["pending", "blocked"].includes(o.status),
+                  ).length > 0 && (
+                    <span className="count">
+                      {
+                        (state.outbox ?? []).filter((o) =>
+                          ["pending", "blocked"].includes(o.status),
+                        ).length
+                      }
+                    </span>
+                  )}
+                </button>
+                <button
+                  className="primary"
+                  onClick={() => setModal("conversation")}
+                >
+                  <Plus size={18} /> Nova conversa
+                </button>
+              </div>
             )}
             {page === "feed" && (
               <button className="primary" onClick={() => setModal("post")}>
@@ -1236,24 +1339,36 @@ function App() {
                                 <span>editada</span>
                               )}
                               <time>{date(o.created)}</time>
-                              {o.author.id === me?.id && (
-                                <span
-                                  title={
-                                    eventsFor(o.id, "receipt").length
-                                      ? "Leitura confirmada por um destinatário"
-                                      : "Guardada localmente; confirmação pendente"
-                                  }
-                                >
-                                  {eventsFor(o.id, "receipt").length ? (
-                                    <>
-                                      <CheckCheck size={15} /> Lida
-                                    </>
-                                  ) : (
-                                    <>
-                                      <Check size={15} /> Em espera
-                                    </>
-                                  )}
-                                </span>
+                              {o.author.id === me?.id &&
+                              state.outbox?.some(
+                                (entry) => entry.id === o.id,
+                              ) ? (
+                                <DeliveryBadge
+                                  item={state.outbox.find(
+                                    (entry) => entry.id === o.id,
+                                  )!}
+                                  onOpen={() => setModal("outbox:" + o.id)}
+                                />
+                              ) : (
+                                o.author.id === me?.id && (
+                                  <span
+                                    title={
+                                      "Confirmações verificadas no histórico carregado: " +
+                                      legacyReadCount(o)
+                                    }
+                                  >
+                                    {legacyReadCount(o) ? (
+                                      <>
+                                        <CheckCheck size={15} />{" "}
+                                        {legacyReadLabel(o)}
+                                      </>
+                                    ) : (
+                                      <>
+                                        <Check size={15} /> {legacyReadLabel(o)}
+                                      </>
+                                    )}
+                                  </span>
+                                )
                               )}
                             </div>
                           </div>
@@ -1320,6 +1435,25 @@ function App() {
                       </button>
                     )}
                     <form className="composer" onSubmit={submitMessage}>
+                      {uncertainOperation &&
+                        pendingSend.current[selection]?.operationId ===
+                          uncertainOperation && (
+                          <div className="reply-preview">
+                            <AlertTriangle size={16} />
+                            <span>Envio anterior por confirmar.</span>
+                            <button
+                              type="button"
+                              className="secondary"
+                              onClick={() => {
+                                delete pendingSend.current[selection];
+                                setUncertainOperation("");
+                                setError("");
+                              }}
+                            >
+                              Preparar um novo envio
+                            </button>
+                          </div>
+                        )}
                       {reply && (
                         <div className="reply-preview">
                           <Reply size={16} />
@@ -1358,6 +1492,7 @@ function App() {
                           <Paperclip size={21} />
                           <input
                             type="file"
+                            disabled={busy}
                             multiple
                             aria-label="Anexar ficheiro"
                             onChange={(e) => {
@@ -1372,6 +1507,7 @@ function App() {
                           value={text}
                           onChange={(e) => setText(e.target.value)}
                           maxLength={12000}
+                          disabled={busy}
                           rows={1}
                         />
                         <VoiceRecorder
@@ -1404,7 +1540,22 @@ function App() {
                           <ShieldCheck size={12} /> Cifrada e assinada no teu
                           dispositivo
                         </span>
-                        <span>Até 2 MB por anexo neste marco</span>
+                        <label className="expiry-choice">
+                          Prazo
+                          <select
+                            aria-label="Prazo da mensagem"
+                            value={messageTTL}
+                            onChange={(e) =>
+                              setMessageTTL(Number(e.target.value))
+                            }
+                          >
+                            <option value={30 * 86400_000}>30 dias</option>
+                            <option value={7 * 86400_000}>7 dias</option>
+                            <option value={86400_000}>1 dia</option>
+                            <option value={3600_000}>1 hora</option>
+                            <option value={300_000}>5 minutos</option>
+                          </select>
+                        </label>
                       </div>
                     </form>
                   </>
@@ -2224,29 +2375,31 @@ function App() {
       {modal && (
         <Modal
           title={
-            modal === "contact"
-              ? "Adicionar uma pessoa"
-              : modal === "retrieve"
-                ? "Obter conteúdo da rede"
-                : modal === "conversation"
-                  ? "Começar uma conversa"
-                  : modal === "group"
-                    ? "Criar um grupo privado"
-                    : modal === "peer"
-                      ? "Ligar um par"
-                      : modal === "export"
-                        ? "Guardar a tua identidade"
-                        : modal === "participants"
-                          ? "Quem está nesta conversa"
-                          : modal === "alert"
-                            ? "Criar alerta prioritário"
-                            : modal.startsWith("edit:")
-                              ? "Editar o teu conteúdo"
-                              : modal.startsWith("comment:")
-                                ? "Juntar à conversa"
-                                : modal.startsWith("post-options:")
-                                  ? "Opções da publicação"
-                                  : "Uma história para partilhar"
+            modal === "outbox" || modal.startsWith("outbox:")
+              ? "O caminho dos teus envios"
+              : modal === "contact"
+                ? "Adicionar uma pessoa"
+                : modal === "retrieve"
+                  ? "Obter conteúdo da rede"
+                  : modal === "conversation"
+                    ? "Começar uma conversa"
+                    : modal === "group"
+                      ? "Criar um grupo privado"
+                      : modal === "peer"
+                        ? "Ligar um par"
+                        : modal === "export"
+                          ? "Guardar a tua identidade"
+                          : modal === "participants"
+                            ? "Quem está nesta conversa"
+                            : modal === "alert"
+                              ? "Criar alerta prioritário"
+                              : modal.startsWith("edit:")
+                                ? "Editar o teu conteúdo"
+                                : modal.startsWith("comment:")
+                                  ? "Juntar à conversa"
+                                  : modal.startsWith("post-options:")
+                                    ? "Opções da publicação"
+                                    : "Uma história para partilhar"
           }
           close={() => {
             setModal("");
@@ -2257,6 +2410,18 @@ function App() {
             <div className="error" role="alert">
               {error}
             </div>
+          )}
+          {(modal === "outbox" || modal.startsWith("outbox:")) && (
+            <OutboxPanel
+              entries={state.outbox ?? []}
+              contacts={state.contacts}
+              now={state.now}
+              busy={busy}
+              focusId={modal.startsWith("outbox:") ? modal.slice(7) : undefined}
+              onRetry={(operationId) =>
+                run(() => api("outbox-retry", { operationId }))
+              }
+            />
           )}
           {modal === "retrieve" && (
             <form
@@ -2774,7 +2939,7 @@ function App() {
                   link.click();
                   setTimeout(() => URL.revokeObjectURL(blob), 1000);
                   setModal("");
-                }, "Cofre cifrado exportado");
+                }, "Exportação do cofre iniciada.");
               }}
             >
               <p>

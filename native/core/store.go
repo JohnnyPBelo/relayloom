@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"runtime"
 	"sort"
 	"strings"
 	"sync"
@@ -43,6 +44,23 @@ func AtomicWrite(path string, data []byte) error {
 	}
 	if err = os.Rename(temp, path); err != nil {
 		return err
+	}
+	// Flush the replacement's directory entry on platforms that expose it.
+	// Windows directory flushing is not portable through this API; callers must
+	// not infer physical power-loss survival from a process-restart test.
+	if runtime.GOOS != "windows" {
+		directory, openErr := os.Open(filepath.Dir(path))
+		if openErr != nil {
+			return openErr
+		}
+		syncErr := directory.Sync()
+		closeErr := directory.Close()
+		if syncErr != nil {
+			return syncErr
+		}
+		if closeErr != nil {
+			return closeErr
+		}
 	}
 	ok = true
 	return nil

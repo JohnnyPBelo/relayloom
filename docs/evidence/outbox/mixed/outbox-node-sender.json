@@ -1,0 +1,31 @@
+{
+  "result": "pass",
+  "started": "2026-09-11T23:27:14.990Z",
+  "finished": "2026-09-11T23:27:55.654Z",
+  "host": "linux",
+  "nodeVersion": "22.22.3",
+  "productionSourceSha256": "66a18d61cc0a63b0bf30195462c2515912b333614d95dd69f1d503db409f830e",
+  "nativeBinarySha256": "4e18b8b15d0da0883586a4d3e51e1ecbec351afd1ce1545bcb773d8f8aca422d",
+  "runtimes": [
+    "node",
+    "go",
+    "go"
+  ],
+  "applicationProcessCount": 3,
+  "transport": "actual TCP sockets; transparent ACK observer and adversarial peer run in the test driver",
+  "controls": [
+    "Offline acceptance, encrypted metadata, exact idempotency/conflict rejection, automatic pin protection and pending bytes survived sender lock/restart with relay-for-others disabled.",
+    "Transparent TCP observation saw an actual ACK for the exact original bundle from B. B stored ciphertext but could not read it; isolated C had no path and A remained pending with zero confirmations.",
+    "A real TCP fixture first delivered a valid signed canary, then injected owner-authored, public, widened-reader, foreign-author, wrong-target and damaged-signature confirmations. None became authorized objects or advanced outbox state.",
+    "C later received the exact message through B and signed a private delivery event with the original reader set. Replayed bundles and a freshly signed reissue left counters/timestamps unchanged; an explicit view advanced read separately.",
+    "A fixed group required both original readers. C hid the blocked group creator B but still authorized A's message against the signed group ACL; automatic delivery/read stayed suppressed while attachment/view worked. Sender block suppressed retries without releasing its pin; unblocking allowed both members to reach received/read.",
+    "Confirmed metadata survived a sender restart and remained unchanged after 103 newer objects moved the original messages/events outside the default page.",
+    "Closing the real TCP path left A disconnected. A short-lived accepted intent expired with zero confirmations, released its automatic pin and remained expired/idempotent after restart. Locked snapshots hid all outbox metadata and message previews.",
+    "Deleting two owned fixture bundles while the sender was stopped made an incomplete intent unavailable and a historical read intent unretained. Both operation IDs stayed idempotent with accepted=false; previously observed confirmations did not regress.",
+    "After 256 additional short-lived sends, metadata stayed capped at 256 and an older incomplete intent remained pending and pinned. A raw API replay of an already-pruned UUID created a different bundle, demonstrating the documented finite idempotency scope; composer safeguards require a separate browser gate."
+  ],
+  "cleanupErrors": [],
+  "powerLoss": "not tested; process restart is a distinct evidence class",
+  "mobileOS": "not tested",
+  "physicalRadio": "not tested"
+}

@@ -153,7 +153,7 @@ func (n *Node) authorizedObjectLocked(id string, touch bool) (*DisplayObject, er
 		if err != nil {
 			return nil, err
 		}
-		if contains(n.config.Blocked, bundle.Manifest.Author.ID) {
+		if contains(n.config.Blocked, bundle.Manifest.Author.ID) && (current == id || bundle.Manifest.Kind != "group") {
 			return nil, errors.New("autor bloqueado")
 		}
 		object, err := n.displayLocked(bundle)

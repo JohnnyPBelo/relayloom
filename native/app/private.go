@@ -10,6 +10,7 @@ import (
 	"errors"
 	"io"
 	"os"
+	"time"
 
 	"github.com/JohnnyPBelo/relayloom/native/core"
 )
@@ -111,6 +112,12 @@ func parsePrivate(value any, owner string) (PrivateState, error) {
 			return p, err
 		}
 		p.SiteDraft = draft
+	}
+	if v, ok := m["outbox"]; ok {
+		p.Outbox, err = parseOutbox(v, owner, time.Now().UnixMilli())
+		if err != nil {
+			return p, err
+		}
 	}
 	return p, nil
 }

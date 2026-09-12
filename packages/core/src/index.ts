@@ -22,8 +22,11 @@ import {
   unlinkSync,
   statSync,
   readdirSync,
+  openSync,
+  closeSync,
+  fsyncSync,
 } from "node:fs";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
 
 export const MAX_CONTENT = 4 * 1024 * 1024;
 export const CHUNK_SIZE = 24 * 1024;
@@ -59,8 +62,27 @@ export function canonical(value: unknown, depth = 0): string {
 }
 export function atomic(path: string, data: string | Buffer): void {
   const temp = path + "." + randomBytes(6).toString("hex") + ".tmp";
-  writeFileSync(temp, data, { mode: 0o600 });
-  renameSync(temp, path);
+  let fd: number | undefined;
+  try {
+    fd = openSync(temp, "wx", 0o600);
+    writeFileSync(fd, data);
+    fsyncSync(fd);
+    closeSync(fd);
+    fd = undefined;
+    renameSync(temp, path);
+    // POSIX filesystems need the rename's directory entry flushed too. Node
+    // does not expose a portable directory flush on Windows; document that
+    // platform limitation instead of silently promising power-loss survival.
+    if (process.platform !== "win32") {
+      fd = openSync(dirname(path), "r");
+      fsyncSync(fd);
+      closeSync(fd);
+      fd = undefined;
+    }
+  } finally {
+    if (fd !== undefined) closeSync(fd);
+    if (existsSync(temp)) unlinkSync(temp);
+  }
 }
 function b64(b: Buffer | ArrayBuffer): string {
   return Buffer.from(b as Buffer).toString("base64");

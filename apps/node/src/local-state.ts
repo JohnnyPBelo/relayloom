@@ -11,7 +11,9 @@ import {
   type Identity,
 } from "../../../packages/core/src/index.js";
 import type { Collection } from "./social.js";
+import { validateOutbox, type Outbox } from "./outbox.js";
 export interface PrivateState {
+  outbox?: Outbox;
   collections?: Collection[];
   siteDraft?: { blocks: unknown[]; theme: string; savedAt: number };
   mutations: Record<
@@ -80,10 +82,13 @@ export function readPrivateState(
   const decipher = createDecipheriv("aes-256-gcm", key(identity, salt), nonce);
   decipher.setAAD(Buffer.from(identity.public.id));
   decipher.setAuthTag(tag);
-  return JSON.parse(
+  const state: PrivateState = JSON.parse(
     Buffer.concat([
       decipher.update(Buffer.from(value.data, "base64")),
       decipher.final(),
     ]).toString(),
   );
+  if (state.outbox !== undefined)
+    state.outbox = validateOutbox(state.outbox, identity.public.id);
+  return state;
 }
