@@ -238,7 +238,7 @@ func DecodeInvitation(data []byte, anchor GroupAnchor, parent GroupEpoch, member
 	return cert, nil
 }
 func DecodeConsent(data []byte, anchor GroupAnchor, parent GroupEpoch, member core.PublicIdentity) (GroupConsent, error) {
-	cert, err := decodeCertificate(data, CertificateBytes, parseConsent)
+	cert, err := ParseConsent(data)
 	if err == nil {
 		err = VerifyConsent(cert, anchor, parent, member)
 	}
@@ -258,11 +258,7 @@ func DecodeLeave(data []byte, anchor GroupAnchor, parent GroupEpoch, member core
 	return cert, nil
 }
 func DecodeSnapshot(data []byte, anchor GroupAnchor, epoch GroupEpoch) (GroupSnapshot, error) {
-	value, err := core.DecodeJSON(data, SnapshotBytes)
-	if err != nil {
-		return GroupSnapshot{}, err
-	}
-	state, err := parseSnapshot(value)
+	state, err := ParseSnapshot(data)
 	if err == nil {
 		err = VerifySnapshot(state, anchor, epoch)
 	}
@@ -270,4 +266,19 @@ func DecodeSnapshot(data []byte, anchor GroupAnchor, epoch GroupEpoch) (GroupSna
 		return GroupSnapshot{}, err
 	}
 	return state, nil
+}
+
+// ParseConsent and ParseSnapshot only enforce bounded exact schemas. Their
+// results are untrusted until verified against authority in Commit/ObserveSnapshot
+// or the corresponding Decode entry point. This permits idempotent command
+// replay without resolving a former parent against the current head first.
+func ParseConsent(data []byte) (GroupConsent, error) {
+	return decodeCertificate(data, CertificateBytes, parseConsent)
+}
+func ParseSnapshot(data []byte) (GroupSnapshot, error) {
+	value, err := core.DecodeJSON(data, SnapshotBytes)
+	if err != nil {
+		return GroupSnapshot{}, err
+	}
+	return parseSnapshot(value)
 }

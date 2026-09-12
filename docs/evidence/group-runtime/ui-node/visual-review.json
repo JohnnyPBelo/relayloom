@@ -1,0 +1,18 @@
+{
+  "reviewer": "root assistant; not independent review",
+  "backend": "Node",
+  "source": "Completed flows.spec.ts from current source-frozen UI run; captured before Go UI run",
+  "images": {
+    "site-editor.png": "a272c519e4edc5c9cdb6093aca7a5bb732a32b95151bf7cf10d9e6592640c271",
+    "mobile-social.png": "212f0b4ae7c0699f8386f3cb41af5f912b0a3923df6af3119fd4596f69d756e8"
+  },
+  "observations": [
+    "Desktop editor: title, palette, save/publish and keyboard reorder controls visible without overlap at 1440px",
+    "Mobile social: post, reaction/comment actions and cached-person section readable without horizontal clipping at 390px"
+  ],
+  "limits": [
+    "No physical touch or screen-reader validation",
+    "No new dynamic-group UI implemented",
+    "Visual inspection does not replace automated accessibility tests"
+  ]
+}

@@ -23,6 +23,7 @@ import { validateContent } from "./content-validation.js";
 import { type PrivateState } from "./local-state.js";
 import { openPrivateProfile } from "./protected-private.js";
 import type { ProfileDatabase } from "../../../packages/profile/src/database.js";
+import { executeGroupCommand, type GroupCommand } from "./group-commands.js";
 import {
   Router,
   type Priority,
@@ -245,6 +246,32 @@ export class LoomNode extends EventEmitter {
     this.requireRunning();
     if (!this.identity) throw new Error("Desbloqueie a identidade");
     return this.identity;
+  }
+  groupCommand(command: GroupCommand) {
+    const identity = this.requireIdentity();
+    if (!this.privateDatabase || !this.privateDigest)
+      throw new Error("Estado privado indisponível");
+    try {
+      return executeGroupCommand(
+        this.privateDatabase,
+        identity,
+        this.privateDigest,
+        command,
+      );
+    } catch (error) {
+      // Reopen authenticated state after any uncertain outer commit. Never
+      // replace it with the legacy JSON, or return success before verification.
+      try {
+        this.privateDatabase.close();
+        const loaded = openPrivateProfile(this.dir, identity);
+        this.privateDatabase = loaded.database;
+        this.privateDigest = loaded.digest;
+        this.privateState = loaded.state;
+      } catch {
+        this.lock();
+      }
+      throw error;
+    }
   }
   saveDraft(blocks: SiteBlock[], theme: string) {
     this.requireIdentity();

@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"github.com/JohnnyPBelo/relayloom/native/core"
+	"github.com/JohnnyPBelo/relayloom/native/groupstore"
 	"github.com/JohnnyPBelo/relayloom/native/profiledb"
 	"github.com/JohnnyPBelo/relayloom/native/profilelock"
 	"github.com/JohnnyPBelo/relayloom/native/transport"
@@ -30,6 +31,7 @@ type Node struct {
 	private  PrivateState
 	// Per-node persistence seam for exercising uncertain completion boundaries.
 	writePrivateState  func([]byte, string) (string, error)
+	updateGroupState   func(func(*groupstore.Tx) error) error
 	privateDatabase    *profiledb.Database
 	privateDigest      string
 	routes             map[string]transport.Route
@@ -1007,6 +1009,8 @@ func (n *Node) Handle(operation string, body map[string]any) (any, error) {
 		}
 		vault, err := core.ExportVault(*n.identity, password)
 		return map[string]any{"vault": vault}, err
+	case "group-command":
+		return n.groupCommandLocked(body)
 	case "send":
 		return n.sendLocked(body)
 	case "outbox-retry":

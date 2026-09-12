@@ -1,0 +1,10 @@
+{
+  "reviewer": "root assistant; not independent",
+  "inspectedImage": "messenger-dark.png",
+  "sha256": "4ace17b22021a2b933596436d3528857b97ce140336ecb6a43ee6eef366f6e99",
+  "observation": "Recipient, message text, attachment action, read status and composer visible in dark mode in the actual Go-backed browser flow. The chat is scrolled to its latest content.",
+  "limits": [
+    "This is the existing fixed-group/DM interface",
+    "No physical device or screen-reader result"
+  ]
+}

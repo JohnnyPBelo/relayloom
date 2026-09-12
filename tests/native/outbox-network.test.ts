@@ -58,6 +58,10 @@ function productionDigest() {
     "native/profiledb",
     "native/profilestate",
     "native/groupstore",
+    "native/groups",
+    "native/groupauthority",
+    "native/groupaccess",
+    "native/groupledger",
     "native/sqlitedriver",
     "native/cmd/relayloom",
   ])

@@ -1,0 +1,52 @@
+{
+  "commit": "bff00cc8cc4f9966498a8c0a1cccf76980544724",
+  "runId": 34697388472,
+  "url": "https://github.com/JohnnyPBelo/relayloom/actions/runs/34697388472",
+  "status": "completed",
+  "conclusion": "failure",
+  "jobs": [
+    {
+      "name": "native-node (macos-latest)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "native-node (windows-latest)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "native-node (ubuntu-latest)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "native-go",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "ios-simulator-build",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "name": "desktop-package (ubuntu-22.04, linux, x64)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "desktop-package (windows-latest, win, x64)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "desktop-package (macos-latest, mac, arm64)",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "iosFailure": "Owned command timed out: seed-synthetic-photo",
+  "xcuittestExecuted": false,
+  "source": "Previously retrieved run JSON and iOS job log retained in project cache; no new Apple execution during consolidation."
+}

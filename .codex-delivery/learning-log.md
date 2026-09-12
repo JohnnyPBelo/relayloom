@@ -156,3 +156,19 @@ The same APK passed a directed repeat after stronger geometry/hit-test checks an
 
 
 Final corrected emulator gate: APK136a5103c82c4c87f6865aa2b68daa5eb60796ac4d420aa8f09d5fea5fd4e2a5, com AAR9e2fb77f9938721c9df7ef82df19e357ab02ff0c417ec40061a82e0f27004585:82 asserções no mesmo emulador API36x86_64 (38 SAF36.693s,15 prazo134.729s,16 mensagens15.355s,13 relay18.913s) e inspecção cifrada0.768s passaram. Hash instalado e inputs inalterados; cofre/JSON legado preservados; SQLite Android e binding autenticados pelo Node. Root reviu a captura nativa final. Instrumentação removida, forwards vazios, AVD/adb próprios parados, identidade preservada. Evidência em `docs/evidence/android-sqlite/apk-136a5103`. The complete strengthened run is separate from the earlier80 assertions with a failed screenshot review.
+
+
+## Gestão de grupos pela API real — 2026-09-12
+
+Os testes Go dirigidos ao núcleo passaram, mas os dois percursos HTTP mistos falharam com operação desconhecida: o servidor Go ainda não encaminhava a acção nova. Acrescentado o encaminhamento autenticado, os quatro casos passaram. Prevenção: um método Handle testado não prova que a operação está acessível pela API de produção; conservar os percursos de processos reais nas duas direcções. Logs .cache/group-runtime-mixed-first.txt e group-runtime-mixed-after-route.txt.
+
+Ao ampliar para saída/reentrada, a fixture assumiu incorrectamente que resume era um no-op num grupo activo. O contrato existente exige suspensão por capacidade, pelo que a fixture passou a exigir recusa e conservação do estado, sem enfraquecer produção. Os quatro casos ampliados passaram5.684s; falha preservada em .cache/group-runtime-reentry.txt e correcção em group-runtime-reentry-corrected.txt.
+
+O parsing Go de cabeçalhos raw é incremental dentro da transacção: assinatura e esquema inválidos na cauda são rejeições de dados, enquanto o prefixo restritivo fica gravado. Parsing tipado de toda a página antes de abrir a transacção perderia essa propriedade. Cinco variantes de cauda e controlos de erro antes/depois do commit/digest desactualizado passaram com race. A regressão completa está em curso; não atribuir os resultados anteriores aos novos binários móveis.
+
+
+## Integração de grupos pela API — gate concluído, produto incompleto
+
+Gate completo: build5.497s;177 testes Node122.851s;118 testes Go de topo com race380.032s (oito helpers omitidos sem fixture e exercitados pelos drivers reais);20 casos de interoperabilidade199.504s; driver C dirigido8.039s;16 UI Node112.105s e16 UI Go106.110s. Desktop Linux: preparação0.239s, execução2.075s, pacote5.377s e execução empacotada0.795s.22 relatórios Axe actualizados sem violações. Fontes inalteradas em todas as fases. Evidência em `docs/evidence/group-runtime/final`. Capturas do editor/social Node e conversa escura Go revistas por root; isto não é revisão independente. Nenhuma nova execução móvel pertence a este gate.
+
+Gestão de épocas está ligada às APIs; admissão/outbox/retenção de conteúdo, carriers P2P automáticos e UI de grupos dinâmicos permanecem pendentes. O objectivo integral continua activo.

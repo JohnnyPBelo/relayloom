@@ -272,9 +272,12 @@
           "native/groupauthority",
           "tests/group-registry.test.ts",
           "tests/native/group-authority.test.ts",
-          "docs/evidence/group-authority/node"
+          "docs/evidence/group-authority/node",
+          "docs/GROUP-RUNTIME.md",
+          "tests/group-runtime.test.ts",
+          "tests/native/group-runtime.test.ts"
         ],
-        "limits": "Grupos fixos reais; bibliotecas de autoridade Node/Go e ficheiros cifrados interoper\u00e1veis com processos reais. Integra\u00e7\u00e3o transaccional de aplica\u00e7\u00e3o/outbox, sincroniza\u00e7\u00e3o, API/UI de grupos din\u00e2micos e revis\u00e3o independente ainda pendentes."
+        "limits": "Grupos fixos em rede/UI; gest\u00e3o din\u00e2mica pela API Node/Go verificada. Falta admiss\u00e3o/outbox, carriers P2P, mensagens/UI din\u00e2mica e revis\u00e3o independente desta integra\u00e7\u00e3o."
       },
       "evidence": [
         {
@@ -311,6 +314,21 @@
           "result": "partial",
           "command": "npm run build; npm test; node_modules/.bin/tsx --test tests/native/group-authority.test.ts",
           "notes": "Build passou;128 testes Node passaram, incluindo22 do registo. Interoperabilidade real de autoridade Node/Go passou em23.119s com hashes inalterados. Gate Go alargado ainda em curso; n\u00e3o constitui suporte de grupos din\u00e2micos na aplica\u00e7\u00e3o."
+        },
+        {
+          "kind": "test",
+          "command": "node_modules/.bin/tsx --test --test-concurrency=1 tests/group-runtime.test.ts tests/native/group-runtime.test.ts",
+          "result": "pass",
+          "notes": "4 casos/5.684s em Linux: gest\u00e3o API e troca de n\u00facleo no rein\u00edcio; certificados transferidos pela fixture autenticada, n\u00e3o por sync P2P autom\u00e1tico. Regress\u00e3o completa posterior em curso."
+        },
+        {
+          "kind": "regression-gate",
+          "result": "pass",
+          "paths": [
+            "docs/evidence/group-runtime/final/report.json",
+            "docs/evidence/group-runtime/final/desktop-report.json"
+          ],
+          "notes": "Gate completo: build5.497s;177 testes Node122.851s;118 testes Go de topo com race380.032s (oito helpers omitidos sem fixture e exercitados pelos drivers reais);20 casos de interoperabilidade199.504s; driver C dirigido8.039s;16 UI Node112.105s e16 UI Go106.110s. Desktop Linux: prepara\u00e7\u00e3o0.239s, execu\u00e7\u00e3o2.075s, pacote5.377s e execu\u00e7\u00e3o empacotada0.795s.22 relat\u00f3rios Axe actualizados sem viola\u00e7\u00f5es. Fontes inalteradas em todas as fases. Evid\u00eancia em `docs/evidence/group-runtime/final`. Capturas do editor/social Node e conversa escura Go revistas por root; isto n\u00e3o \u00e9 revis\u00e3o independente. Nenhuma nova execu\u00e7\u00e3o m\u00f3vel pertence a este gate."
         }
       ]
     },

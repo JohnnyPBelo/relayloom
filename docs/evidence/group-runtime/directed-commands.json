@@ -1,0 +1,42 @@
+{
+  "runtime": "Linux host; sequential execution; no new or resumed agents",
+  "checks": [
+    {
+      "command": "node scripts/go.mjs test -race -count=1 -p=1 -run 'TestGroupCommand|TestScopedRawProofTail|TestScopedRestrictivePrefix' ./app ./groupauthority",
+      "result": "pass",
+      "log": "group-runtime-go-boundary.txt"
+    },
+    {
+      "command": "npm run native:build && node_modules/.bin/tsx --test --test-concurrency=1 tests/group-runtime.test.ts tests/native/group-runtime.test.ts",
+      "result": "fail",
+      "reason": "Go HTTP route omitted group-command",
+      "log": "group-runtime-mixed-first.txt"
+    },
+    {
+      "command": "npm run native:build && node_modules/.bin/tsx --test --test-concurrency=1 tests/group-runtime.test.ts tests/native/group-runtime.test.ts",
+      "result": "pass",
+      "tests": 4,
+      "durationMs": 4359.184831,
+      "log": "group-runtime-mixed-after-route.txt"
+    },
+    {
+      "command": "node_modules/.bin/tsx --test --test-concurrency=1 tests/group-runtime.test.ts tests/native/group-runtime.test.ts",
+      "result": "fail",
+      "reason": "Fixture incorrectly expected resume without a capacity stop to succeed",
+      "log": "group-runtime-reentry.txt"
+    },
+    {
+      "command": "node_modules/.bin/tsx --test --test-concurrency=1 tests/group-runtime.test.ts tests/native/group-runtime.test.ts",
+      "result": "pass",
+      "tests": 4,
+      "durationMs": 5684.107415,
+      "log": "group-runtime-reentry-corrected.txt"
+    }
+  ],
+  "limits": [
+    "Certificates are moved between authenticated APIs by the fixture, not automatic control-carrier sync",
+    "Dynamic messaging and UI not implemented",
+    "Existing mobile builds do not contain this API",
+    "Lost-response tests inject persistence-boundary faults; not physical power failure"
+  ]
+}

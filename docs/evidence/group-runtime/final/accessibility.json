@@ -1,0 +1,115 @@
+{
+  "checks": [
+    {
+      "path": "docs/evidence/ui/messenger-light-axe.json",
+      "violations": 0,
+      "sha256": "7e93e089b7d9e81fc959be0ab2e259a32cf5821f4bcc74e4fd803046db5d5d71"
+    },
+    {
+      "path": "docs/evidence/ui/site-editor-axe.json",
+      "violations": 0,
+      "sha256": "54ab8e4406566fa23e67cf2e78bcc41fcc27917f18f883ada6b28a13b69f9f4d"
+    },
+    {
+      "path": "docs/evidence/ui/social-axe.json",
+      "violations": 0,
+      "sha256": "375943651002c9331a63cc8f4d0204221b11c67ae199d833eb78577a114e3aed"
+    },
+    {
+      "path": "docs/evidence/ui/messenger-dark-axe.json",
+      "violations": 0,
+      "sha256": "7133e37241f3571ca9e9c9c9b136662f0eda9de4880a275fb85d07246e1fddf7"
+    },
+    {
+      "path": "docs/evidence/ui/onboarding-axe.json",
+      "violations": 0,
+      "sha256": "772001742a2771385dc4ce6a53f7577dcf1da5a802aeecffc21ee51c757a03d4"
+    },
+    {
+      "path": "docs/evidence/ui/mobile-social-axe.json",
+      "violations": 0,
+      "sha256": "cea822ee9d1e314afc25b987e202f94762b317e31684ecd3c4671da260b674db"
+    },
+    {
+      "path": "docs/evidence/ui/onboarding-layout-go/dark-axe.json",
+      "violations": 0,
+      "sha256": "8a46f99c4b066a201b1bcf83ecb00964d128872e8559a97afd9eb5b52224b52f"
+    },
+    {
+      "path": "docs/evidence/ui/onboarding-layout-go/light-axe.json",
+      "violations": 0,
+      "sha256": "8a46f99c4b066a201b1bcf83ecb00964d128872e8559a97afd9eb5b52224b52f"
+    },
+    {
+      "path": "docs/evidence/ui/onboarding-layout-node/dark-axe.json",
+      "violations": 0,
+      "sha256": "8a46f99c4b066a201b1bcf83ecb00964d128872e8559a97afd9eb5b52224b52f"
+    },
+    {
+      "path": "docs/evidence/ui/onboarding-layout-node/light-axe.json",
+      "violations": 0,
+      "sha256": "8a46f99c4b066a201b1bcf83ecb00964d128872e8559a97afd9eb5b52224b52f"
+    },
+    {
+      "path": "docs/evidence/outbox/node/expired-axe.json",
+      "violations": 0,
+      "sha256": "791db9a1c2c836bac7118cd2594806a56df7ad97c581952111a62f4ea64e2ac4"
+    },
+    {
+      "path": "docs/evidence/outbox/node/pending-dark-axe.json",
+      "violations": 0,
+      "sha256": "257d96f02a55b4f1aeed9fc0dc03a134903f517cb9ccae2f12ae4558e7cfc5f4"
+    },
+    {
+      "path": "docs/evidence/outbox/node/pending-light-axe.json",
+      "violations": 0,
+      "sha256": "7cf3316eb6fbcfd4aa40af99b3d21688d42eaa4c3544cbce91942bd7fe5028c1"
+    },
+    {
+      "path": "docs/evidence/outbox/node/keyboard-focus-axe.json",
+      "violations": 0,
+      "sha256": "a11cff7aa6c38e437da18a48073e34cb5c879844fa9beacacab535e6e6aa2dec"
+    },
+    {
+      "path": "docs/evidence/outbox/node/pending-mobile-axe.json",
+      "violations": 0,
+      "sha256": "0a214d73027fe1390242ccafeea08e3d53e0b2217cefef887004ac3b011b2956"
+    },
+    {
+      "path": "docs/evidence/outbox/node/legacy-group-read-axe.json",
+      "violations": 0,
+      "sha256": "4e5ca72b67de2ff9ecad3574d5f6f1fbddd7f4ad073b17e0751e5b3f0bfad9a7"
+    },
+    {
+      "path": "docs/evidence/outbox/go/expired-axe.json",
+      "violations": 0,
+      "sha256": "9d02188177dfc1db20d1c23c15f398ae2742fd648628b95d1bd9e487c7aea9a4"
+    },
+    {
+      "path": "docs/evidence/outbox/go/pending-dark-axe.json",
+      "violations": 0,
+      "sha256": "dd5f04568a29d5d0f9871d39bd9c9167a9036916b3601d48ec0ea96b307560a0"
+    },
+    {
+      "path": "docs/evidence/outbox/go/pending-light-axe.json",
+      "violations": 0,
+      "sha256": "7a1e9e28b58fe93784f9174a344f013c4e5f87696de6dc5829718efa81c926cb"
+    },
+    {
+      "path": "docs/evidence/outbox/go/keyboard-focus-axe.json",
+      "violations": 0,
+      "sha256": "baf64e75664340b19c96ad14890d701fbe45e5b907d6b85039c2af0f69459f9a"
+    },
+    {
+      "path": "docs/evidence/outbox/go/pending-mobile-axe.json",
+      "violations": 0,
+      "sha256": "7470583dfecf2026a4b3f81300b9605096180ed1385fb4718ce25843d0d85363"
+    },
+    {
+      "path": "docs/evidence/outbox/go/legacy-group-read-axe.json",
+      "violations": 0,
+      "sha256": "a6aadd521926a971bce66dde653bccb053af642cd3ebc84a6d50a90a7ff1d893"
+    }
+  ],
+  "note": "10 UI reports plus12 outbox reports updated in this gate. Six shared flow reports describe the final Go run; layout and outbox reports remain separate per engine. Both full suites asserted no Axe violations. Not screen-reader or physical-touch certification."
+}

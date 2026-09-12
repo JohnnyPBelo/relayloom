@@ -112,8 +112,40 @@ func (g *Registry) ObserveHeaders(id string, epochs []groups.GroupEpoch) (Observ
 	if len(data) > PageBytes {
 		return result, errors.New("página de provas demasiado grande")
 	}
+	return g.observePage(id, len(epochs), func(_ groups.GroupAnchor, i int) (groups.GroupEpoch, error) {
+		return epochs[i], nil
+	})
+}
+
+// ObserveRawHeaders decodes each exact-schema certificate inside the same
+// transaction that adopts it. A malformed trailing item cannot erase an earlier
+// valid restriction. Container bounds are checked before any page is adopted.
+func (g *Registry) ObserveRawHeaders(id string, data []byte) (Observation, error) {
+	value, err := core.DecodeJSON(data, PageBytes)
+	if err != nil {
+		return Observation{}, err
+	}
+	items, ok := value.([]any)
+	if !ok || len(items) < 1 || len(items) > PageLimit {
+		return Observation{}, errors.New("página de provas fora dos limites")
+	}
+	return g.observePage(id, len(items), func(anchor groups.GroupAnchor, i int) (groups.GroupEpoch, error) {
+		raw, err := core.Canonical(items[i])
+		if err != nil {
+			return groups.GroupEpoch{}, invalidProof{err}
+		}
+		epoch, err := groups.DecodeEpoch(raw, anchor)
+		if err != nil {
+			return groups.GroupEpoch{}, invalidProof{err}
+		}
+		return epoch, nil
+	})
+}
+
+func (g *Registry) observePage(id string, count int, decode func(groups.GroupAnchor, int) (groups.GroupEpoch, error)) (Observation, error) {
+	var result Observation
 	var rejected error
-	err = g.store.Update(func(tx *groupstore.Tx) error {
+	err := g.store.Update(func(tx *groupstore.Tx) error {
 		r, err := g.record(tx, id)
 		if err != nil {
 			return err
@@ -122,8 +154,12 @@ func (g *Registry) ObserveHeaders(id string, epochs []groups.GroupEpoch) (Observ
 		if err != nil {
 			return err
 		}
-		for _, epoch := range epochs {
-			status, err := g.append(tx, r, epoch)
+		for i := 0; i < count; i++ {
+			epoch, err := decode(r.Anchor, i)
+			var status string
+			if err == nil {
+				status, err = g.append(tx, r, epoch)
+			}
 			if err != nil {
 				var invalid invalidProof
 				if !errors.As(err, &invalid) {

@@ -1,0 +1,36 @@
+TAP version 13
+# (node:1650515) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: authenticated Node group management persists membership and restrictive proofs
+ok 1 - authenticated Node group management persists membership and restrictive proofs
+  ---
+  duration_ms: 1543.939698
+  type: 'test'
+  ...
+# Subtest: group API recovers a committed command whose response was lost without creating a second group
+ok 2 - group API recovers a committed command whose response was lost without creating a second group
+  ---
+  duration_ms: 202.988941
+  type: 'test'
+  ...
+# Subtest: actual node creator and native member APIs preserve authority across engine takeover
+ok 3 - actual node creator and native member APIs preserve authority across engine takeover
+  ---
+  duration_ms: 1266.428643
+  type: 'test'
+  ...
+# Subtest: actual native creator and node member APIs preserve authority across engine takeover
+ok 4 - actual native creator and node member APIs preserve authority across engine takeover
+  ---
+  duration_ms: 1084.509997
+  type: 'test'
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 4
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4359.184831

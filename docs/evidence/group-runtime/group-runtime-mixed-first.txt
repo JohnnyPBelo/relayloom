@@ -1,0 +1,58 @@
+TAP version 13
+# (node:1648013) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: authenticated Node group management persists membership and restrictive proofs
+ok 1 - authenticated Node group management persists membership and restrictive proofs
+  ---
+  duration_ms: 1497.400389
+  type: 'test'
+  ...
+# Subtest: group API recovers a committed command whose response was lost without creating a second group
+ok 2 - group API recovers a committed command whose response was lost without creating a second group
+  ---
+  duration_ms: 195.849465
+  type: 'test'
+  ...
+# Subtest: actual node creator and native member APIs preserve authority across engine takeover
+not ok 3 - actual node creator and native member APIs preserve authority across engine takeover
+  ---
+  duration_ms: 556.818558
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/tests/native/group-runtime.test.ts:53:3'
+  failureType: 'testCodeFailure'
+  error: 'operação desconhecida'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    Object.call (/home/absint0o/projects/relayloom/tests/helpers.ts:92:26)
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async groupMembershipJourney (/home/absint0o/projects/relayloom/tests/fixtures/group-runtime.ts:67:8)
+    async TestContext.<anonymous> (/home/absint0o/projects/relayloom/tests/native/group-runtime.test.ts:66:7)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: actual native creator and node member APIs preserve authority across engine takeover
+not ok 4 - actual native creator and node member APIs preserve authority across engine takeover
+  ---
+  duration_ms: 437.619759
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/tests/native/group-runtime.test.ts:53:3'
+  failureType: 'testCodeFailure'
+  error: 'operação desconhecida'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    Object.call (/home/absint0o/projects/relayloom/tests/helpers.ts:92:26)
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async groupMembershipJourney (/home/absint0o/projects/relayloom/tests/fixtures/group-runtime.ts:29:17)
+    async TestContext.<anonymous> (/home/absint0o/projects/relayloom/tests/native/group-runtime.test.ts:66:7)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 2
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3041.043019

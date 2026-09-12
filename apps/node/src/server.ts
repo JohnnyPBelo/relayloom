@@ -111,6 +111,8 @@ export async function serve(
               break;
             case "/api/collection":
               return json(200, node.collection(body));
+            case "/api/group-command":
+              return json(200, node.groupCommand(body));
             case "/api/retrieve":
               return json(200, node.retrieve(body.id));
             case "/api/history":

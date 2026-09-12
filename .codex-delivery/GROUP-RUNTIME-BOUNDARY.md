@@ -1,6 +1,17 @@
-# Runtime integration boundary — next implementation phase
+# Runtime integration boundary — design and implementation history
 
-Owner contract remains complete and active. Sequential root execution, no new/resumed agents. This is a concrete integration design, not delivered runtime behavior. Current Node/Go authority libraries do not yet import into apps.
+Owner contract remains complete and active. Sequential root execution, no new/resumed agents. Current status: profile ownership/private SQLite migration and transaction facade are published; access policy, durable ledger and authenticated group-management APIs are implemented locally in both engines. Management is separate from dynamic messaging. See `RESUME.md` and `docs/GROUP-RUNTIME.md` for the current gate. The sections below retain the historical implementation sequence, not current pending process instructions.
+
+## Next admission integration: observed call sites
+
+- Node `display(..., true)`/`summarizeContent` and Go `summarizeObject` currently remove fields before legacy authorization. Validate the entire group payload, including exact minimal historical schema, before projection. Carry immutable validated binding metadata into bounded summary caches; never use a stripped summary to prove that prohibited extension fields were absent.
+- Node `receive` processes authoritative events before `store.put`; Go `journalReceivedMutationLocked` does the same. Preserve the existing target-before-eviction guarantee while routing dynamic events through exact-byte storage and transactional ledger admission. Neither a missing target nor an HTTP-provided accepted context can create historical authorization.
+- `objectsSnapshot`/`objectsLocked`, `view`/attachment retrieval, mutation materialization, receipt issuance and first/recovered outbox attempts must share the new decisions. Add/remove/close/leave/fork proof handling reconciles pending operations before returning or retrying; an invalid tail does not restore the old head. Persist minimal stop context even when ordinary private-state growth is refused.
+- ContentStore currently has a single pinned bit; outbox tracks manual pin separately. Introduce explicit held-content reservation semantics without losing user pins or pending-send reservation; restore from authenticated ledger after restart, cap real bytes, and release on expiry/refusal. Metadata counts alone are not physical retention evidence.
+- Both receive handlers currently hide blocked authors early. New control-carrier processing must still verify valid restrictive authority from a blocked creator before applying content visibility preferences.
+- Keep fixed groups and DMs on their exact existing reader rules. Group tags are recognized by presence. Newcomers receive current proofs/state only after explicit consent, never historical message keys by accident.
+
+These are root source-review findings, not an independent review or completed integration. The full control-carrier/network/UI gates remain mandatory.
 
 ## Observed runtime constraints
 

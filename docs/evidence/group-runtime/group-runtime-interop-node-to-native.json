@@ -1,0 +1,28 @@
+{
+  "result": "pass",
+  "sourceDigest": "6d331994c7674877feed06ba48499e99d6fe5018b5046175c6b7778c8bbfc918",
+  "binarySha256": "26a283a6ce3e5900b338bbfcc59f7954aff4d8f0fa798fb003ba23b0a3b33728",
+  "creator": "node",
+  "member": "native",
+  "restart": "node",
+  "elapsedMs": 1650,
+  "verified": [
+    "authenticated HTTP processes",
+    "explicit enrollment",
+    "signed invitation and consent",
+    "creator-only membership",
+    "changed-operation refusal",
+    "committed-operation replay",
+    "snapshot tamper and unknown fields",
+    "invalid first header blocks suffix",
+    "valid restrictive prefix survives invalid tail",
+    "encrypted SQLite",
+    "real process restart into opposite engine"
+  ],
+  "notTested": [
+    "automatic P2P control carriers",
+    "dynamic message delivery",
+    "mobile runtime",
+    "radio hardware"
+  ]
+}

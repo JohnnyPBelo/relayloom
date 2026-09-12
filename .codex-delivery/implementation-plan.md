@@ -14,7 +14,7 @@ Full owner contract: PROJECT-BRIEF.md. Work continues through these phases; a ph
 
 ## Active integration checkpoint — 2026-09-12
 
-Latest published HEAD90cb649; actual CI Node on threeOS, full Go and desktop packages passed, iOS photo preparation failed before XCUITest. Current private-state SQLite migration is integrated in both engines and under directed/full validation. See `RESUME.md` and `PROFILE-STATE-IMPLEMENTATION.md` for commands/processes/evidence. Next: transactional group authority/admission/outbox, then runtime sync and UI. All other phases remain open; no new/resumed agents in sequential recovery. Historical entries below retain their original version scope.
+Sequential recovery at bff00cc: access policy, durable ledger and authenticated group-management APIs are implemented locally in both engines. Directed mixed HTTP/restart/consent/reentry/rejection controls passed4 cases5.684s; the complete source-frozen host/interop/UI/desktop gate passed; exact results are in `docs/evidence/group-runtime/final`. No new/resumed agents. The next implementation is admission/outbox/retention, then control-carrier synchronization, dynamic-message UI and their full network/device gates. No platform or dynamic-message completion claim. See `RESUME.md` and `docs/GROUP-RUNTIME.md` for current state. The earlier private-state migration and facade gates are complete; historical counts retain their version scope.
 
 ## Previous checkpoint — 2026-09-12
 

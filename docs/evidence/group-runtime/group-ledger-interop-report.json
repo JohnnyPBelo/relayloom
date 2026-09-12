@@ -1,0 +1,16 @@
+{
+  "status": "PASSED",
+  "sourceSHA256": "5283cfdd2d9acc526be8744af52b2844cfcb24c478a2122ab521100a006ce68e",
+  "workerSHA256": "b4be2d55ef45ccc38473b7997c27fcd839774895551e35914fb0e4b2b7feabc9",
+  "checks": [
+    "Go reads Node admission and Node reads Go admission",
+    "Go persists quarantine readable in Node",
+    "Node retry stop and Go retirement preserve matching loss counters",
+    "both runtimes exit before commit without partial authority/admission/stop",
+    "both runtimes lose response after commit and recover all three together",
+    "retained replay preserves exact historical context and terminal stop"
+  ],
+  "limits": [
+    "actual host processes and signed/encrypted state; no application API or network integration claimed"
+  ]
+}

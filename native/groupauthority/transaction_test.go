@@ -146,6 +146,57 @@ func TestScopedRestrictivePrefixAndPrivateDecisionCommitBeforeRejection(t *testi
 	}))
 }
 
+func TestScopedRawProofTailRetainsExactRestrictivePrefix(t *testing.T) {
+	for _, tail := range []string{"null", "unknown-field", "missing-field", "wrong-type", "signature"} {
+		t.Run(tail, func(t *testing.T) {
+			a := newActor(t, "Raw", nil)
+			id := a.create("Before").GroupID
+			anchor, err := a.registry.Anchor(id)
+			check(t, err)
+			closed, err := groups.CloseGroup(a.identity, anchor, a.head(id))
+			check(t, err)
+			raw, err := core.Canonical(closed)
+			check(t, err)
+			invalid, err := core.DecodeJSON(raw, PageBytes)
+			check(t, err)
+			m := invalid.(map[string]any)
+			switch tail {
+			case "null":
+				invalid = nil
+			case "unknown-field":
+				m["ignored"] = true
+			case "missing-field":
+				delete(m, "signature")
+			case "wrong-type":
+				m["body"].(map[string]any)["number"] = "1"
+			case "signature":
+				m["signature"] = base64.StdEncoding.EncodeToString(make([]byte, 64))
+			}
+			page, err := core.Canonical([]any{closed, invalid})
+			check(t, err)
+			check(t, a.store.Update(func(tx *groupstore.Tx) error {
+				rejected, err := InTransaction(tx, a.identity, func(g *Registry) error {
+					observation, err := g.ObserveRawHeaders(id, page)
+					if err != nil {
+						return err
+					}
+					if observation.Status.Status != "closed" || observation.Accepted != 1 || observation.Rejected == "" {
+						t.Fatal("raw invalid tail lost restriction or was silently accepted")
+					}
+					return nil
+				})
+				if len(rejected) != 1 {
+					t.Fatal("missing deferred rejection")
+				}
+				return err
+			}))
+			if a.state(id).Status != "closed" {
+				t.Fatal("closure did not survive outer commit")
+			}
+		})
+	}
+}
+
 func TestSwallowedEntireScopeErrorStillAbortsOuterTransaction(t *testing.T) {
 	a := newActor(t, "Outer swallowed", nil)
 	err := a.store.Update(func(tx *groupstore.Tx) error {
