@@ -135,3 +135,10 @@ Uma correcção posterior resolveu a falta de reserva no limite próprio do índ
 
 
 A facade transaccional Node/Go foi implementada e verificada:81 Node/36.565s,36 Go de topo com race/169.094s (quatro helpers executados pelos drivers),9 interoperabilidade/45.760s; build8.157s e CLI0.901s. Fontes registadas inalteradas durante o gate. Evidência em `docs/evidence/group-transaction`. A aplicação ainda não usa esta facade para grupos dinâmicos.
+
+
+## Preparação Apple e polimento posterior
+
+A próxima CI pede explicitamente iOS26.4.1, que constava do inventário instalado de90cb649, como tentativa limitada de compatibilidade após o bloqueio de26.5.17 testes host e verificação estática passaram; a fotografia/XCUITest e os prazos continuam obrigatórios. Nenhuma execução Apple nova é inferida. Ver `IOS-SIMULATOR.md`.
+
+O JS da interface passou a `index-C9JlHp94.js` (CSS inalterado): singulares corrigidos, nomes dos blocos em PT e explicação do editor simplificada. Os dois percursos existentes de fluxos completos/layout passaram em Node19.582s e Go19.209s; o desktop Linux foi reconstruído/empacotado/executado em0.200/5.047/0.841s. Root reviu as capturas actuais de editor e feed móvel. Evidência em `evidence/ui/copy-polish`. Isto é posterior ao gate completo de15 UI por núcleo da migração; o APK anterior ainda não inclui estas alterações.

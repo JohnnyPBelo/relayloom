@@ -1044,7 +1044,7 @@ function App() {
             {offline
               ? "Nó desligado"
               : state.peers.some((p) => p.connected)
-                ? `${state.peers.filter((p) => p.connected).length} ligações activas`
+                ? `${state.peers.filter((p) => p.connected).length} ${state.peers.filter((p) => p.connected).length === 1 ? "ligação activa" : "ligações activas"}`
                 : "À espera de pares"}
           </div>
           <button
@@ -1614,7 +1614,9 @@ function App() {
                   {page === "feed" && (
                     <span>
                       {objects.filter((o) => o.kind === "post").length}{" "}
-                      publicações em cache
+                      {objects.filter((o) => o.kind === "post").length === 1
+                        ? "publicação em cache"
+                        : "publicações em cache"}
                     </span>
                   )}
                 </div>
@@ -1939,8 +1941,8 @@ function App() {
                     <div className="safe-note">
                       <ShieldCheck size={20} />
                       <span>
-                        Blocos declarativos seguros. Sem scripts, HTML livre ou
-                        recursos remotos embutidos.
+                        Constrói a tua página com texto, destaques e ligações.
+                        Escolhe os blocos e dá-lhes a tua voz.
                       </span>
                     </div>
                   </aside>
@@ -1971,7 +1973,14 @@ function App() {
                         <div className="block-controls">
                           <span>
                             <GripVertical size={15} />
-                            {block.type}
+                            {
+                              {
+                                hero: "Capa",
+                                text: "Texto",
+                                links: "Ligação",
+                                callout: "Destaque",
+                              }[block.type]
+                            }
                           </span>
                           <button
                             aria-label={`Mover bloco ${i + 1} para cima`}

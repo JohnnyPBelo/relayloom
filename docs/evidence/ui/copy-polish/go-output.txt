@@ -1,0 +1,10 @@
+
+Running 2 tests using 1 worker
+
+(node:183651) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/2] tests/e2e/flows.spec.ts:58:1 › two live clients: identities, connection, message, attachment, reaction, group, social, safe site and offline recovery
+[2/2] tests/e2e/onboarding-layout.spec.ts:8:1 › onboarding fits the native minimum window and intermediate widths with keyboard access
+  2 passed (18.8s)

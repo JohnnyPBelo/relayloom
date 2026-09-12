@@ -83,7 +83,7 @@ test("two live clients: identities, connection, message, attachment, reaction, g
     await pa.getByRole("button", { name: "Ligar um par", exact: true }).click();
     await pa.getByLabel("Porta TCP de transporte").fill(String(b.tcpPort));
     await pa.getByRole("button", { name: "Ligar por TCP" }).click();
-    await expect(pa.getByText("1 ligações activas")).toBeVisible();
+    await expect(pa.getByText("1 ligação activa")).toBeVisible();
     await pa.getByRole("button", { name: "Conversas", exact: true }).click();
     await pa
       .getByRole("button", { name: "Nova conversa", exact: true })

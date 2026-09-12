@@ -48,3 +48,15 @@ O polimento textual identificado nas capturas está preparado, não aplicado, em
 A facade transaccional Node/Go foi implementada e verificada:81 Node/36.565s,36 Go de topo com race/169.094s (quatro helpers executados pelos drivers),9 interoperabilidade/45.760s; build8.157s e CLI0.901s. Fontes registadas inalteradas durante o gate. Evidência em `docs/evidence/group-transaction`. A aplicação ainda não usa esta facade para grupos dinâmicos.
 
 A sessão43542 terminou com saída0. Não há testes desta fase em curso. Os resultados completos estão publicados no directório de evidência local acima, ainda por commit/push juntamente com o código da facade. Não voltar a correr o gate por existir um handle antigo. Próximo: commit coerente desta alteração, aplicar/verificar a tentativa iOS26.4.1 e o pequeno polimento UI preparado, reconstruir/verificar artefactos e enviar marcos normais; depois continuar admissão/outbox/sync/API/UI dinâmica e restante contrato. As fontes da cache de staging são anteriores a algumas correcções: nunca as copiar cegamente.
+
+
+## Plataforma/UI após facade
+
+Facade commit local `fffbc57`; continua não enviada. O código da tentativa iOS26.4.1 foi aplicado e passou17 testes host em2.158s e verificação estática; nenhuma execução Apple local. `.cache/ios-runtime-probe/evidence.json` contém comandos/hashes. A CI preserva fotografia, XCUITest, prazos, falha se versão pedida não instalada e não faz fallback/download.26.5 continua bloqueado sem causa conclusiva.
+
+Polimento aplicado em `apps/web/src/main.tsx`; a asserção existente de1 ligação foi corrigida em `tests/e2e/flows.spec.ts`. Build passou; novo JS `index-C9JlHp94.js`, CSS inalterado `index-DwCp7KCv.css`. Gate dos percursos existentes Node/Go e desktop empacotado em sessão84723, supervisor `.cache/ui-copy/final/run.py ui`. Consultar comandos/outputs antes de repetir. Não editar inputs enquanto correr. Depois preservar evidência, commit e push normal; observar CI pelo commit exacto. APK anterior ainda não inclui a migração; reconstruir AAR/APK e executar os quatro gates no mesmo AVD, preservando identidade e asserções.
+
+Normalização pendente de commit: duas linhas com espaços finais no output negativo `docs/evidence/group-transaction/node-first.txt` foram removidas na cópia legível; original exacto em `.original.b64` e hashes separados em `normalization.json`. Nenhuma evidência de execução foi alterada semanticamente; não confundir hashes raw e legíveis.
+
+
+A sessão84723 terminou com saída0:2 UI Node19.582s,2 UI Go19.209s, desktop build0.200s/pacote5.047s/execução0.841s. Capturas editor/feed móvel revistas por root confirmam as correcções de texto. Outputs/hashes em `docs/evidence/ui/copy-polish`; runner iOS17 host/static em `docs/evidence/ios/runtime-26-4-1-host`. Pronto para commits/push normais destas duas alterações e observação da CI exacta, antes de continuar o APK e restante integração. Não existem testes/desktop/emulador desta fase em curso.
