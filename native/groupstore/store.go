@@ -22,6 +22,8 @@ type Options struct {
 	Create          bool
 	Limits          *Limits
 	ExpectedStoreID string
+	// Preassigned random ID for a separately signed initialization intent.
+	NewStoreID string
 }
 type Store struct {
 	db                       *sql.DB
@@ -45,6 +47,9 @@ func Open(path string, identity core.Identity, options Options) (*Store, error) 
 	}
 	if options.ExpectedStoreID != "" && (!core.ValidAddress(options.ExpectedStoreID) || options.Create) {
 		return nil, integrity("registo esperado")
+	}
+	if options.NewStoreID != "" && (!core.ValidAddress(options.NewStoreID) || !options.Create) {
+		return nil, integrity("identificador do novo registo")
 	}
 	if options.Limits != nil && !options.Create {
 		return nil, integrity("limites existentes são autenticados")
@@ -90,7 +95,7 @@ func Open(path string, identity core.Identity, options Options) (*Store, error) 
 	db.SetMaxOpenConns(1)
 	db.SetMaxIdleConns(1)
 	s := &Store{db: db, keys: k, pinnedID: options.ExpectedStoreID}
-	if err = s.initialize(options.Create, l); err != nil {
+	if err = s.initialize(options.Create, l, options.NewStoreID); err != nil {
 		_ = db.Close()
 		clear(s.keys.box)
 		clear(s.keys.signer)
@@ -99,7 +104,7 @@ func Open(path string, identity core.Identity, options Options) (*Store, error) 
 	return s, nil
 }
 
-func (s *Store) initialize(create bool, l Limits) error {
+func (s *Store) initialize(create bool, l Limits, newStoreID string) error {
 	ctx := context.Background()
 	conn, err := s.db.Conn(ctx)
 	if err != nil {
@@ -122,9 +127,13 @@ func (s *Store) initialize(create bool, l Limits) error {
 		if _, err = conn.ExecContext(ctx, fmt.Sprintf("PRAGMA application_id=%d; PRAGMA user_version=1; %s; %s", applicationID, checkpointSQL, recordsSQL)); err != nil {
 			return err
 		}
-		id, e := randomID()
-		if e != nil {
-			return e
+		id := newStoreID
+		if id == "" {
+			var e error
+			id, e = randomID()
+			if e != nil {
+				return e
+			}
 		}
 		body := indexBody{domain, s.keys.owner, id, 0, l, make([]entry, 0)}
 		if err = s.saveIndex(conn, body); err != nil {

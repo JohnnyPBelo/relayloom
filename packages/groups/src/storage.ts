@@ -128,6 +128,8 @@ export class ProtectedGroupStore {
       create?: boolean;
       limits?: RegistryLimits;
       expectedStoreId?: string;
+      /** Preassigned random ID for a separately signed initialization intent. */
+      newStoreId?: string;
     } = {},
   ) {
     insist(validateIdentity(identity.public), "Identidade local inválida");
@@ -138,6 +140,11 @@ export class ProtectedGroupStore {
         "Identificador de registo esperado inválido",
       );
     this.pinnedStoreId = options.expectedStoreId;
+    if (options.newStoreId !== undefined)
+      insist(
+        address(options.newStoreId) && options.create === true,
+        "Identificador do novo registo inválido",
+      );
     this.signer = createPrivateKey({
       key: Buffer.from(identity.signSecret, "base64"),
       format: "der",
@@ -199,7 +206,7 @@ export class ProtectedGroupStore {
           const body: IndexBody = {
             domain: DOMAIN,
             owner: this.owner,
-            storeId: randomBytes(32).toString("hex"),
+            storeId: options.newStoreId ?? randomBytes(32).toString("hex"),
             revision: 0,
             limits: initialLimits,
             entries: [],
