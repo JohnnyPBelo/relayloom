@@ -527,6 +527,7 @@ export function decryptBundle(bundle: Bundle, identity?: Identity): unknown {
 interface Entry {
   size: number;
   pinned: boolean;
+  reserved?: boolean;
   accessed: number;
   expires: number;
 }
@@ -557,6 +558,14 @@ export class ContentStore {
       );
       if (!index || typeof index !== "object" || Array.isArray(index))
         throw new Error("Índice de armazenamento inválido");
+      for (const entry of Object.values(index))
+        if (
+          entry &&
+          typeof entry === "object" &&
+          Object.hasOwn(entry, "reserved") &&
+          typeof entry.reserved !== "boolean"
+        )
+          throw new Error("Reserva de armazenamento inválida");
       this.index = index as Record<string, Entry>;
     }
     // Reconcile crash leftovers from atomic object/index transactions; never trust stale accounting.
@@ -572,6 +581,7 @@ export class ContentStore {
         this.index[id] = {
           size: fileState.size,
           pinned: this.index[id]?.pinned === true,
+          ...(this.index[id]?.reserved === true ? { reserved: true } : {}),
           accessed: Number.isSafeInteger(this.index[id]?.accessed)
             ? this.index[id].accessed
             : Date.now(),
@@ -617,6 +627,11 @@ export class ContentStore {
       quota: this.quota,
       maxObjects: this.maxObjects,
       pinned: Object.values(this.index).filter((v) => v.pinned).length,
+      reserved: Object.values(this.index).filter((v) => v.reserved).length,
+      reservedBytes: Object.values(this.index).reduce(
+        (sum, v) => sum + (v.reserved ? v.size : 0),
+        0,
+      ),
     };
   }
   private evictionPlan(
@@ -637,7 +652,7 @@ export class ContentStore {
     };
     for (const entry of expired) select(entry);
     const candidates = entries
-      .filter(([id, e]) => !e.pinned && !expiredIds.has(id))
+      .filter(([id, e]) => !e.pinned && !e.reserved && !expiredIds.has(id))
       .sort((a, b) => a[1].accessed - b[1].accessed);
     for (const candidate of candidates) {
       if (bytes <= quota && count <= this.maxObjects) break;
@@ -645,7 +660,9 @@ export class ContentStore {
     }
     // Decide whether the complete request can succeed before deleting any existing object.
     if (bytes > quota || count > this.maxObjects)
-      throw new Error("Armazenamento cheio; liberte conteúdos fixados");
+      throw new Error(
+        "Armazenamento cheio; existem conteúdos fixados ou reservados",
+      );
     return removals;
   }
   private removeEntries(ids: string[]) {
@@ -670,9 +687,24 @@ export class ContentStore {
     return b;
   }
   put(bundle: Bundle, pin = false): boolean {
+    return this.insert(bundle, pin, false);
+  }
+  /** Availability reservation only; the caller still commits authenticated
+   * admission before display/receipts/transmission. Manual pins stay separate. */
+  putReserved(bundle: Bundle, pin = false): boolean {
+    return this.insert(bundle, pin, true);
+  }
+  private insert(bundle: Bundle, pin: boolean, reserved: boolean): boolean {
     verifyBundle(bundle);
     const id = bundle.manifest.id;
-    if (this.index[id]) return false;
+    if (this.index[id]) {
+      if (reserved) {
+        const ids = this.reservations();
+        if (!this.index[id].reserved) ids.push(id);
+        this.setReservations(ids);
+      }
+      return false;
+    }
     const bytes = canonical(bundle),
       size = Buffer.byteLength(bytes);
     if (size > this.quota || size > MAX_STORED_BUNDLE)
@@ -683,6 +715,7 @@ export class ContentStore {
     this.index[id] = {
       size,
       pinned: pin,
+      ...(reserved ? { reserved: true } : {}),
       accessed: Date.now(),
       expires: bundle.manifest.expires,
     };
@@ -727,6 +760,36 @@ export class ContentStore {
   }
   isPinned(id: string) {
     return this.index[id]?.pinned ?? false;
+  }
+  reservations(): string[] {
+    return Object.keys(this.index)
+      .filter((id) => this.index[id].reserved)
+      .sort();
+  }
+  /** Replace the bounded automatic reservation set after authenticating its
+   * source ledger. A failed/uncertain index write conservatively protects the
+   * union until reconciliation; it never grants content authorization. */
+  setReservations(ids: string[]) {
+    if (!Array.isArray(ids) || ids.length > this.maxObjects)
+      throw new Error("Reservas fora dos limites");
+    const wanted = new Set(ids);
+    for (const id of wanted) this.read(id, false);
+    if (canonical([...wanted].sort()) === canonical(this.reservations()))
+      return;
+    const previous = this.index;
+    this.index = Object.fromEntries(
+      Object.entries(previous).map(([id, entry]) => {
+        const { reserved: _reserved, ...rest } = entry;
+        return [id, { ...rest, ...(wanted.has(id) ? { reserved: true } : {}) }];
+      }),
+    );
+    try {
+      this.save();
+    } catch (error) {
+      for (const [id, entry] of Object.entries(previous))
+        if (entry.reserved) this.index[id].reserved = true;
+      throw error;
+    }
   }
   remove(id: string) {
     this.removeEntries([id]);

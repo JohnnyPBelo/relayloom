@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"reflect"
 	"runtime"
 	"sort"
 	"strings"
@@ -69,6 +70,7 @@ func AtomicWrite(path string, data []byte) error {
 type storeEntry struct {
 	Size     int64 `json:"size"`
 	Pinned   bool  `json:"pinned"`
+	Reserved bool  `json:"reserved,omitempty"`
 	Accessed int64 `json:"accessed"`
 	Expires  int64 `json:"expires"`
 }
@@ -77,11 +79,13 @@ type manifestCache struct {
 	Fingerprint string
 }
 type StoreStats struct {
-	Count      int   `json:"count"`
-	Bytes      int64 `json:"bytes"`
-	Quota      int64 `json:"quota"`
-	MaxObjects int   `json:"maxObjects"`
-	Pinned     int   `json:"pinned"`
+	Count         int   `json:"count"`
+	Bytes         int64 `json:"bytes"`
+	Quota         int64 `json:"quota"`
+	MaxObjects    int   `json:"maxObjects"`
+	Pinned        int   `json:"pinned"`
+	Reserved      int   `json:"reserved"`
+	ReservedBytes int64 `json:"reservedBytes"`
 }
 type ContentStore struct {
 	mu         sync.Mutex
@@ -106,7 +110,7 @@ func NewContentStore(dir string, quota int64, maxObjects int) (*ContentStore, er
 		if err != nil {
 			return nil, err
 		}
-		if err = decodeInto(data, MaxStoredObjects*512, &s.index); err != nil {
+		if s.index, err = decodeStoreIndex(data); err != nil {
 			return nil, fmt.Errorf("índice inválido: %w", err)
 		}
 	} else if !os.IsNotExist(err) {
@@ -151,7 +155,7 @@ func NewContentStore(dir string, quota int64, maxObjects int) (*ContentStore, er
 		if accessed == 0 {
 			accessed = time.Now().UnixMilli()
 		}
-		s.index[id] = storeEntry{Size: int64(len(data)), Pinned: previous.Pinned, Accessed: accessed, Expires: b.Manifest.Expires}
+		s.index[id] = storeEntry{Size: int64(len(data)), Pinned: previous.Pinned, Reserved: previous.Reserved, Accessed: accessed, Expires: b.Manifest.Expires}
 	}
 	for id := range s.index {
 		path, err := s.path(id)
@@ -177,6 +181,28 @@ func NewContentStore(dir string, quota int64, maxObjects int) (*ContentStore, er
 		return nil, err
 	}
 	return s, nil
+}
+
+// Old availability entries have no reservation field. Supply only that known
+// local default before using the strict shared decoder; do not relax schemas
+// for signed protocol messages or accept other missing/unknown entry fields.
+func decodeStoreIndex(data []byte) (map[string]storeEntry, error) {
+	value, err := DecodeJSON(data, MaxStoredObjects*512)
+	if err != nil {
+		return nil, err
+	}
+	if index, ok := value.(map[string]any); ok {
+		for _, item := range index {
+			if entry, ok := item.(map[string]any); ok {
+				if _, exists := entry["reserved"]; !exists {
+					entry["reserved"] = false
+				}
+			}
+		}
+	}
+	var result map[string]storeEntry
+	err = assignJSON(reflect.ValueOf(&result).Elem(), value)
+	return result, err
 }
 
 func (s *ContentStore) path(id string) (string, error) {
@@ -235,6 +261,10 @@ func (s *ContentStore) stats() StoreStats {
 		if e.Pinned {
 			r.Pinned++
 		}
+		if e.Reserved {
+			r.Reserved++
+			r.ReservedBytes += e.Size
+		}
 	}
 	return r
 }
@@ -253,7 +283,7 @@ func (s *ContentStore) plan(needed int64, added int, quota int64) ([]string, err
 		bytes += e.Size
 		if e.Expires <= now {
 			expired = append(expired, candidate{id, e})
-		} else if !e.Pinned {
+		} else if !e.Pinned && !e.Reserved {
 			eligible = append(eligible, candidate{id, e})
 		}
 	}
@@ -275,7 +305,7 @@ func (s *ContentStore) plan(needed int64, added int, quota int64) ([]string, err
 		selectEntry(e)
 	}
 	if bytes > quota || count > s.maxObjects {
-		return nil, errors.New("armazenamento cheio; liberte conteúdos fixados")
+		return nil, errors.New("armazenamento cheio; existem conteúdos fixados ou reservados")
 	}
 	return plan, nil
 }
@@ -304,6 +334,15 @@ func cloneManifest(m Manifest) Manifest {
 }
 
 func (s *ContentStore) Put(bundle Bundle, pinned bool) (bool, error) {
+	return s.insert(bundle, pinned, false)
+}
+
+// PutReserved protects availability before the separate authenticated admission
+// commit. It does not change the manual pin or confer authorization.
+func (s *ContentStore) PutReserved(bundle Bundle, pinned bool) (bool, error) {
+	return s.insert(bundle, pinned, true)
+}
+func (s *ContentStore) insert(bundle Bundle, pinned, reserved bool) (bool, error) {
 	data, err := Canonical(bundle)
 	if err != nil {
 		return false, err
@@ -322,6 +361,13 @@ func (s *ContentStore) Put(bundle Bundle, pinned bool) (bool, error) {
 	defer s.mu.Unlock()
 	id := snapshot.Manifest.ID
 	if _, found := s.index[id]; found {
+		if reserved {
+			ids := s.reservations()
+			if !s.index[id].Reserved {
+				ids = append(ids, id)
+			}
+			return false, s.setReservations(ids)
+		}
 		return false, nil
 	}
 	size := int64(len(data))
@@ -339,7 +385,7 @@ func (s *ContentStore) Put(bundle Bundle, pinned bool) (bool, error) {
 	if err = s.removeEntries(plan); err != nil {
 		return false, err
 	}
-	s.index[id] = storeEntry{Size: size, Pinned: pinned, Accessed: time.Now().UnixMilli(), Expires: snapshot.Manifest.Expires}
+	s.index[id] = storeEntry{Size: size, Pinned: pinned, Reserved: reserved, Accessed: time.Now().UnixMilli(), Expires: snapshot.Manifest.Expires}
 	f, err := fingerprint(path)
 	if err != nil {
 		return false, err
@@ -449,6 +495,64 @@ func (s *ContentStore) IsPinned(id string) bool {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	return s.index[id].Pinned
+}
+func (s *ContentStore) reservations() []string {
+	ids := []string{}
+	for id, entry := range s.index {
+		if entry.Reserved {
+			ids = append(ids, id)
+		}
+	}
+	sort.Strings(ids)
+	return ids
+}
+func (s *ContentStore) Reservations() []string {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	return s.reservations()
+}
+func (s *ContentStore) SetReservations(ids []string) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	return s.setReservations(ids)
+}
+
+// On an uncertain index write, retain the union in memory until the caller
+// reconciles against its authenticated ledger. Manual pins are never changed.
+func (s *ContentStore) setReservations(ids []string) error {
+	if len(ids) > s.maxObjects {
+		return errors.New("reservas fora dos limites")
+	}
+	wanted := make(map[string]bool, len(ids))
+	for _, id := range ids {
+		if _, err := s.read(id, false); err != nil {
+			return err
+		}
+		wanted[id] = true
+	}
+	changed := false
+	previous := s.index
+	next := make(map[string]storeEntry, len(previous))
+	for id, entry := range previous {
+		changed = changed || entry.Reserved != wanted[id]
+		entry.Reserved = wanted[id]
+		next[id] = entry
+	}
+	if !changed {
+		return nil
+	}
+	s.index = next
+	if err := s.save(); err != nil {
+		for id, entry := range previous {
+			if entry.Reserved {
+				kept := s.index[id]
+				kept.Reserved = true
+				s.index[id] = kept
+			}
+		}
+		return err
+	}
+	return nil
 }
 func (s *ContentStore) Remove(id string) error {
 	s.mu.Lock()
