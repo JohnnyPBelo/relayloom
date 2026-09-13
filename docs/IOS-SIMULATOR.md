@@ -231,3 +231,10 @@ O novo XCTest de pré-arranque falhou antes de importar a fotografia, mas export
 OriginPolicy usava(/|$), apesar de o parser WebKit exigir$ no fim da expressão. A correcção separa dois filtros equivalentes: origem exacta e prefixo com barra. O bloqueio geral e as excepções media existentes mantêm-se. PolicyTests acrescenta matriz de origens/portas/schemes/tipos de recurso e compilação real macOS WebKit com controlo positivo da política nova e negativo da expressão antiga. Usa cache sob .cache/ios com nome único e espera limitada; não abre WebView, não envia pedidos de rede, não altera serviços ou segurança.
 
 Localmente22 testes do runner e a verificação estática passaram. Não há Swift/WebKit neste Linux; compilação e execução desses novos controlos Apple só podem ser atribuídas após o CI. O teste de arranque, fotografia, teste funcional, isolamento, prazos e limpeza do dispositivo próprio continuam obrigatórios.
+
+
+## 1663cbe: publicação e teclado — teste seguinte em validação
+
+O compilador WebKit aceitou a política nova e recusou a antiga (WKErrorDomain:6);45 asserções passaram. O XCTest de arranque e a importação da fotografia passaram. A identidade foi criada pela UI, mas o teste funcional falhou em post form completed após tocar em Publicar. Os logs sanitizados estavam no artefacto; usar inventário sem .gitignore para os encontrar. As capturas iniciais não são imagens da falha.
+
+O teste seguinte procura Done no conjunto nativo de botões (não só toolbars), exige o desaparecimento real do teclado e captura o ecrã em caso de falha antes de terminar a app. Conserva todos os passos, prazos, entrada nativa, isolamento e gates de screenshots. Isto testa uma hipótese suportada pela ausência de toque no log de dismissKeyboard; não declara a causa resolvida.22 testes host/estática passaram; esta mudança Swift aguarda o próximo CI Apple.

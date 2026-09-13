@@ -1,0 +1,18 @@
+{
+  "status": "APPLE_UI_VALIDATION_PENDING",
+  "sourceChangesSinceConfirmationGate": [
+    "apps/ios/UITests/NativeSimulatorTests.swift"
+  ],
+  "swiftCompiledLocally": false,
+  "iosUIExecutedForThisChange": false,
+  "localChecks": [
+    "node --test apps/ios/Tests/SimulatorRunnerTests.mjs",
+    "node scripts/ios-simulator.mjs --check"
+  ],
+  "limits": [
+    "test requires real native Done or visible anchor then actual keyboard disappearance",
+    "failed functional flow captures before termination; success flow still requires all original screenshots/checkpoints",
+    "global and existing operation deadlines unchanged",
+    "published post failure cause remains unconfirmed until Apple rerun"
+  ]
+}

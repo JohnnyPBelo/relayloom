@@ -62,7 +62,14 @@ final class NativeSimulatorTests: XCTestCase {
         // Locale overrides apply only to this test application process. The
         // shared web UI remains Portuguese; Apple picker buttons use English.
         let app = launchOwnedApp()
-        defer { app.terminate() }
+        var completed = false
+        defer {
+            if !completed && app.state == .runningForeground {
+                capture(app, "relayloom-99-functional-failed")
+                print(app.keyboards.firstMatch.exists ? "IOS_SIMULATOR_PHASE failure-keyboard-visible" : "IOS_SIMULATOR_PHASE failure-keyboard-hidden")
+            }
+            app.terminate()
+        }
         try requireStartup(app)
         try require(app.webViews.buttons["Criar identidade"].firstMatch, "new identity form")
         capture(app, "relayloom-01-onboarding")
@@ -153,6 +160,7 @@ final class NativeSimulatorTests: XCTestCase {
         let data = try JSONSerialization.data(withJSONObject: report, options: [.sortedKeys])
         let attachment = XCTAttachment(data: data, uniformTypeIdentifier: "public.json")
         attachment.name = "relayloom-ui-checks"; attachment.lifetime = .keepAlways; add(attachment)
+        completed = true
         print("IOS_SIMULATOR_PHASE completed")
     }
 
@@ -196,10 +204,17 @@ final class NativeSimulatorTests: XCTestCase {
     }
     @MainActor private func dismissKeyboard(_ app: XCUIApplication, anchor: String) throws {
         guard app.keyboards.firstMatch.exists else { return }
-        let done = app.toolbars.buttons["Done"].firstMatch
-        if done.exists && done.isHittable { done.tap(); return }
-        let text = app.webViews.staticTexts[anchor].firstMatch
-        if text.exists && text.isHittable { text.tap() }
+        // WebKit's input accessory need not be exposed as an AX toolbar.
+        // Use its real native button, then verify the keyboard disappeared.
+        if let done = app.buttons.matching(identifier: "Done").allElementsBoundByIndex.first(where: { $0.isHittable }) {
+            done.tap()
+        } else {
+            let text = app.webViews.staticTexts[anchor].firstMatch
+            guard text.exists && text.isHittable else { throw SmokeFailure.missing("keyboard dismiss control for " + anchor) }
+            text.tap()
+        }
+        try vanished(app.keyboards.firstMatch, "keyboard dismissed for " + anchor)
+        print("IOS_SIMULATOR_PHASE keyboard-dismissed")
     }
     @MainActor private func attachPhoto(_ app: XCUIApplication) throws {
         let controls = app.webViews.descendants(matching: .any).matching(identifier: "Anexar ficheiro")

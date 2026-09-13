@@ -6,7 +6,7 @@ Continuar TODO o PROJECT-BRIEF.md, apenas em /home/absint0o/projects/relayloom. 
 
 ## Git e testes em curso
 
-HEAD e origin/main confirmados1663cbe8618f54ce973fced4ce2b2048240d0d32; push17874 terminou0. Commits publicados:1e027c8 (envio por API),c1d6f89 (logs completos),1663cbe (sintaxe de regras WebKit/controlos reais de compilador). CI34754740869 em curso, sem resultado Apple novo ainda. Preservar novas alterações de confirmações NÃO COMMITADAS.
+Marco de confirmações commitado localmente3d11e5f após gate43343 completo. Origin/main ainda1663cbe8618f54ce973fced4ce2b2048240d0d32 (push17874 terminou0); publicar com o reforço do teste iOS para não repetir o erro inalterado. Commits publicados:1e027c8 (envio por API),c1d6f89 (logs completos),1663cbe (sintaxe de regras WebKit/controlos reais de compilador). CI34754740869 em curso, sem resultado Apple novo ainda. Confirmações já guardadas em3d11e5f; preservar a alteração iOS local e documentação.
 
 Gate71338 terminou0 e está em docs/evidence/group-send/final. Build5.816s;219 Node194.189s;144 Go de topo/race507.918s (11 helpers pelos drivers);30 interoperabilidade270.997s; C SQLite115.655s;17 UI Node115.990s/17 Go110.472s;22 host iOS1.887s/estática0.030s;desktop build0.233s, execução1.041s,pacote5.812s,execução empacotada0.800s.26 Axe sem violações,277 fontes inalteradas. Este gate antecede as novas confirmações. Fontes iOS foram as duas únicas alteradas antes do commit seguinte;22 host/estática passaram, Swift/WebKit só CI Apple.
 
@@ -16,7 +16,7 @@ Gate71338 terminou0 e está em docs/evidence/group-send/final. Build5.816s;219 N
 
 CI34754740869/1663cbe: Node3OS, Go e três desktop passaram. Os novos testes Swift/WebKit passaram45 asserções: política nova aceite, antiga recusada WKErrorDomain:6. Build app/framework passou.1 XCTest de arranque passou33.838s; fotografia passou38.204s. Teste funcional chegou à captura de onboarding e saiu65/119.017s; o resumo estruturado não foi recolhido, mas o log sanitizado EXISTE no artefacto: identity-created e falha missing("post form completed") após Publicar. A primeira listagem rg --files omitiu *.log devido ao ignore, corrigido lendo o caminho do relatório. As duas capturas foram revistas por root; não mostram o momento da falha. Nenhum fluxo completo passou. docs/evidence/ios/1663cbe. Depois do gate congelado, reforçar dismissKeyboard (Done global/confirmar teclado fechado), captura de falha antes de terminar e resumo estruturado de XCTest mantendo entrada real, isolamento e prazos; não inferir causa de scroll só pela imagem. Esta CI não contém as confirmações locais não commitadas.
 
-## Confirmações históricas — gate completo concluído
+## Confirmações históricas — gate completo concluído e commit3d11e5f
 
 apps/node/src/group-confirmations.ts e native/app/group_confirmations.go verificam/decifram os bytes originais, exigem admissão local e cartões/leitores exactos, rejeitam bloqueios, assinam payload histórico mínimo e gravam admissão antes de Store/transporte. Node publishConfirmation e Go ensureConfirmationLocked estão ligados para delivery automático e receipt por view. Sem contactos globais nem campos de texto/anexo nos recibos. Histórico continua permitido após close; mensagens novas continuam sujeitas ao head actual. Node limita também tentativas falhadas por tick. Go passa a ignorar recibo próprio sem ligação histórica correcta ao suprimir novas emissões.
 
@@ -63,3 +63,8 @@ Android anterior APK136a5103/AAR9e2fb77f:82 asserções no único emulador API36
 5. Continuar todo o contrato: keystore/rotação, pesquisa integral, social/media/templates, notificações reais, plataformas e revisão independente. Não fechar o objectivo neste marco.
 
 Histórico integral anterior: history/RESUME-before-group-send-recovery.md. O goal apareceu blocked de interrupções antigas; utilizador retomou explicitamente e trabalho continua. Nenhum novo timeout upstream ocorreu nesta retoma até esta actualização.
+
+
+## Alteração iOS seguinte
+
+NativeSimulatorTests.swift procura Done global nativo/hittable, confirma que o teclado desapareceu e guarda screenshot de falha antes de terminate; não altera UI/produto/bridge/isolamento/prazos.22 testes host e estática passaram (sessão47093 terminou0); Swift/Apple ainda por executar. É a única fonte alterada face ao gate completo de confirmações. Evidência docs/evidence/ios/keyboard-dismiss-host. Commit/push normal e observar novo CI, sem atribuir passe funcional antes dos resultados.
