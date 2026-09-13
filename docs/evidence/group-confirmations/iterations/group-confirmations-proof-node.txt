@@ -1,0 +1,71 @@
+TAP version 13
+# (node:152859) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: group confirmation rollback cannot transmit before successful admission
+ok 1 - group confirmation rollback cannot transmit before successful admission
+  ---
+  duration_ms: 4219.735535
+  type: 'test'
+  ...
+# Subtest: group confirmation lost commit response cannot transmit before successful admission
+ok 2 - group confirmation lost commit response cannot transmit before successful admission
+  ---
+  duration_ms: 4229.283106
+  type: 'test'
+  ...
+# Subtest: blocked readers and missing original bytes cannot mint a group read fact
+ok 3 - blocked readers and missing original bytes cannot mint a group read fact
+  ---
+  duration_ms: 3886.8073
+  type: 'test'
+  ...
+# Subtest: missing historical group proof pauses confirmation until verified proof is restored
+not ok 4 - missing historical group proof pauses confirmation until verified proof is restored
+  ---
+  duration_ms: 3515.114773
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/tests/group-confirmation-failures.test.ts:1:3700'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /autoridade histórica/. Input:
+    
+    'Error: Checkpoint de autoridade inválido: Cursor sem estado privado verificado'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+  error: 'Checkpoint de autoridade inválido: Cursor sem estado privado verificado'
+  stack: |-
+    GroupRegistry.record (/home/absint0o/projects/relayloom/packages/groups/src/registry.ts:399:13)
+    <anonymous> (/home/absint0o/projects/relayloom/packages/groups/src/registry.ts:1213:55)
+    Array.map (<anonymous>)
+    <anonymous> (/home/absint0o/projects/relayloom/packages/groups/src/registry.ts:1213:25)
+    Object.execute (/home/absint0o/projects/relayloom/packages/groups/src/registry.ts:202:23)
+    GroupRegistry.list (/home/absint0o/projects/relayloom/packages/groups/src/registry.ts:1212:23)
+    GroupAccess.chain (/home/absint0o/projects/relayloom/packages/groups/src/access.ts:128:40)
+    GroupAccess.decide (/home/absint0o/projects/relayloom/packages/groups/src/access.ts:235:24)
+    GroupLedger.consider (/home/absint0o/projects/relayloom/packages/groups/src/ledger.ts:394:32)
+    <anonymous> (/home/absint0o/projects/relayloom/apps/node/src/group-confirmations.ts:85:29)
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (/home/absint0o/projects/relayloom/tests/group-confirmation-failures.test.ts:156:10)
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: real Node group automatic delivery and historical read after closure retain original audience
+ok 5 - real Node group automatic delivery and historical read after closure retain original audience
+  ---
+  duration_ms: 6864.507328
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 4
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 23029.17777

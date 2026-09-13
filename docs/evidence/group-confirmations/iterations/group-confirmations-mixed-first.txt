@@ -1,0 +1,28 @@
+TAP version 13
+# Subtest: real native/node automatic group confirmations preserve historical original readers
+ok 1 - real native/node automatic group confirmations preserve historical original readers
+  ---
+  duration_ms: 6733.329591
+  type: 'test'
+  ...
+# Subtest: real node/native automatic group confirmations preserve historical original readers
+ok 2 - real node/native automatic group confirmations preserve historical original readers
+  ---
+  duration_ms: 7375.354449
+  type: 'test'
+  ...
+# Subtest: real native/native automatic group confirmations preserve historical original readers
+ok 3 - real native/native automatic group confirmations preserve historical original readers
+  ---
+  duration_ms: 5634.456372
+  type: 'test'
+  ...
+1..3
+# tests 3
+# suites 0
+# pass 3
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 19948.18233

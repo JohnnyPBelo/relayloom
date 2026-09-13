@@ -1,0 +1,74 @@
+{
+  "kind": "IOS_XCFRAMEWORK_BUILD",
+  "status": "BUILT_NOT_DEVICE_TESTED",
+  "xcode": "Xcode 26.6\nBuild version 17F113",
+  "goVersion": "go version go1.26.8 darwin/arm64",
+  "xMobile": "v0.0.0-20260908204917-8b95e45f8d3e",
+  "targets": [
+    "ios/arm64",
+    "iossimulator/arm64"
+  ],
+  "framework": ".cache/ios/artifacts/Mobile.xcframework",
+  "files": [
+    {
+      "path": "Info.plist",
+      "sha256": "33d653d86c4210ea0fb380cbfd0af10b0b9ebab68734d9925b84b9452ed6a738"
+    },
+    {
+      "path": "ios-arm64/Mobile.framework/Headers/Mobile.h",
+      "sha256": "70529dc67893cbeea98ffd6908c2213c706962907ce058a8060bcfc1add5da8b"
+    },
+    {
+      "path": "ios-arm64/Mobile.framework/Headers/Mobile.objc.h",
+      "sha256": "c9bf1c196be244311be6abfdfd7318d1fa4c5a72bdcf5bfbca42298f545b3b99"
+    },
+    {
+      "path": "ios-arm64/Mobile.framework/Headers/Universe.objc.h",
+      "sha256": "61b1a0cd75801d2d8d1d82ef2accda4477966c691795473d696e45de05fcbc7b"
+    },
+    {
+      "path": "ios-arm64/Mobile.framework/Headers/ref.h",
+      "sha256": "d76b969941e61d61551ae1e6b7ddc674ac898d422f28cb5dbf8d640ba2ae8df6"
+    },
+    {
+      "path": "ios-arm64/Mobile.framework/Info.plist",
+      "sha256": "a8e2cb9420c61a03b4ae8c9cc9f31eed7779096120b4dacd45c5ee7e431c3a14"
+    },
+    {
+      "path": "ios-arm64/Mobile.framework/Mobile",
+      "sha256": "99cce566e569858b0d8e8931bd387a512a2ec2caa684aa2a77ca9f335527caf0"
+    },
+    {
+      "path": "ios-arm64/Mobile.framework/Modules/module.modulemap",
+      "sha256": "3a2095103a678929ff4027eed4d69fc51fef09f26b0af0bf2fc5c58da210933e"
+    },
+    {
+      "path": "ios-arm64-simulator/Mobile.framework/Headers/Mobile.h",
+      "sha256": "70529dc67893cbeea98ffd6908c2213c706962907ce058a8060bcfc1add5da8b"
+    },
+    {
+      "path": "ios-arm64-simulator/Mobile.framework/Headers/Mobile.objc.h",
+      "sha256": "c9bf1c196be244311be6abfdfd7318d1fa4c5a72bdcf5bfbca42298f545b3b99"
+    },
+    {
+      "path": "ios-arm64-simulator/Mobile.framework/Headers/Universe.objc.h",
+      "sha256": "61b1a0cd75801d2d8d1d82ef2accda4477966c691795473d696e45de05fcbc7b"
+    },
+    {
+      "path": "ios-arm64-simulator/Mobile.framework/Headers/ref.h",
+      "sha256": "d76b969941e61d61551ae1e6b7ddc674ac898d422f28cb5dbf8d640ba2ae8df6"
+    },
+    {
+      "path": "ios-arm64-simulator/Mobile.framework/Info.plist",
+      "sha256": "a8e2cb9420c61a03b4ae8c9cc9f31eed7779096120b4dacd45c5ee7e431c3a14"
+    },
+    {
+      "path": "ios-arm64-simulator/Mobile.framework/Mobile",
+      "sha256": "46d0a0421f4e905270788e7314d3f5ba181728d5347f496154d9b7acfb22780b"
+    },
+    {
+      "path": "ios-arm64-simulator/Mobile.framework/Modules/module.modulemap",
+      "sha256": "3a2095103a678929ff4027eed4d69fc51fef09f26b0af0bf2fc5c58da210933e"
+    }
+  ]
+}

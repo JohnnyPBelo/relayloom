@@ -1,0 +1,71 @@
+Command line invocation:
+    /Applications/Xcode_26.6.app/Contents/Developer/usr/bin/xcodebuild -project apps/ios/RelayLoom.xcodeproj -scheme RelayLoomSimulator -configuration Debug -sdk iphonesimulator -destination id=CB3617BC-2258-4A94-9EC1-B2364064816E -destination-timeout 90 -derivedDataPath /Users/runner/work/relayloom/relayloom/.cache/ios/DerivedData -jobs 2 -disableAutomaticPackageResolution CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= ARCHS=arm64 -resultBundlePath /Users/runner/work/relayloom/relayloom/.cache/ios/simulator/raw/fbf6ed7b-8f51-4ae0-891d-4b2531f4d359/startup-results.xcresult -parallel-testing-enabled NO -maximum-concurrent-test-simulator-destinations 1 -maximum-parallel-testing-workers 1 -test-timeouts-enabled YES -default-test-execution-time-allowance 360 -maximum-test-execution-time-allowance 420 "-only-testing:RelayLoomUITests/NativeSimulatorTests/testStartupBeforeMedia" test-without-building
+
+Build settings from command line:
+    ARCHS = arm64
+    CODE_SIGN_IDENTITY = 
+    CODE_SIGNING_ALLOWED = NO
+    CODE_SIGNING_REQUIRED = NO
+    SDKROOT = iphonesimulator26.5
+
+Writing result bundle at path:
+	/Users/runner/work/relayloom/relayloom/.cache/ios/simulator/raw/fbf6ed7b-8f51-4ae0-891d-4b2531f4d359/startup-results.xcresult
+
+2026-09-13 12:03:27.025499+0000 RelayLoomUITests-Runner[10705:38910] [Default] Running tests...
+objc[10705]: Class UIAccessibilityLoaderWebShared is implemented in both /Library/Developer/CoreSimulator/Volumes/iOS_23E254a/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.4.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebCore.axbundle/WebCore (0x1060ac310) and /Library/Developer/CoreSimulator/Volumes/iOS_23E254a/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.4.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebKit.axbundle/WebKit (0x106d90398). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+    t =      nans Interface orientation changed to Portrait
+Test Suite 'Selected tests' started at 2026-09-13 12:03:31.959.
+Test Suite 'RelayLoomUITests.xctest' started at 2026-09-13 12:03:31.960.
+Test Suite 'NativeSimulatorTests' started at 2026-09-13 12:03:31.960.
+Test Case '-[RelayLoomUITests.NativeSimulatorTests testStartupBeforeMedia]' started.
+    t =     0.00s Start Test at 2026-09-13 12:03:31.961
+    t =     0.72s Set Up
+    t =     0.72s Open org.relayloom.ios
+    t =     0.72s     Launch org.relayloom.ios
+    t =     3.17s         Setting up automation session
+    t =     4.60s         Wait for org.relayloom.ios to idle
+    t =     6.00s Waiting 45.0s for WebView (First Match) to exist
+    t =     7.10s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =     7.10s         Checking existence of `WebView (First Match)`
+    t =     7.65s Waiting 30.0s for "Criar identidade" Button to exist
+    t =     8.66s     Checking `Expect predicate `existsNoRetry == 1` for object "Criar identidade" Button`
+    t =     8.66s         Checking existence of `"Criar identidade" Button`
+    t =     8.74s         Capturing element debug description
+    t =     9.68s     Checking `Expect predicate `existsNoRetry == 1` for object "Criar identidade" Button`
+    t =     9.68s         Checking existence of `"Criar identidade" Button`
+    t =     9.72s         Capturing element debug description
+    t =    10.66s     Checking `Expect predicate `existsNoRetry == 1` for object "Criar identidade" Button`
+    t =    10.66s         Checking existence of `"Criar identidade" Button`
+    t =    10.68s         Capturing element debug description
+    t =    11.73s     Checking `Expect predicate `existsNoRetry == 1` for object "Criar identidade" Button`
+    t =    11.73s         Checking existence of `"Criar identidade" Button`
+    t =    11.85s         Capturing element debug description
+    t =    12.70s     Checking `Expect predicate `existsNoRetry == 1` for object "Criar identidade" Button`
+    t =    12.70s         Checking existence of `"Criar identidade" Button`
+    t =    12.78s Find the Target Application 'org.relayloom.ios'
+    t =    12.89s Added attachment named 'relayloom-00-startup-ready'
+IOS_SIMULATOR_PHASE app-startup-checked
+    t =    12.89s Terminate org.relayloom.ios:10802
+    t =    13.95s Tear Down
+Test Case '-[RelayLoomUITests.NativeSimulatorTests testStartupBeforeMedia]' passed (14.124 seconds).
+Test Suite 'NativeSimulatorTests' passed at 2026-09-13 12:03:46.085.
+	 Executed 1 test, with 0 failures (0 unexpected) in 14.124 (14.125) seconds
+Test Suite 'RelayLoomUITests.xctest' passed at 2026-09-13 12:03:46.086.
+	 Executed 1 test, with 0 failures (0 unexpected) in 14.124 (14.126) seconds
+Test Suite 'Selected tests' passed at 2026-09-13 12:03:46.086.
+	 Executed 1 test, with 0 failures (0 unexpected) in 14.124 (14.127) seconds
+
+Test session results, code coverage, and logs:
+	/Users/runner/work/relayloom/relayloom/.cache/ios/simulator/raw/fbf6ed7b-8f51-4ae0-891d-4b2531f4d359/startup-results.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started
+--- xcodebuild: WARNING: Using the first of multiple matching destinations:
+{ platform:iOS Simulator, arch:arm64, id:CB3617BC-2258-4A94-9EC1-B2364064816E, OS:26.4.1, name:RelayLoom-CI-fbf6ed7b-8f51-4ae0-891d-4b2531f4d359 }
+{ platform:iOS Simulator, arch:x86_64, id:CB3617BC-2258-4A94-9EC1-B2364064816E, OS:26.4.1, name:RelayLoom-CI-fbf6ed7b-8f51-4ae0-891d-4b2531f4d359 }
+2026-09-13 12:03:33.086 xcodebuild[10095:37137] [MT] IDELaunchParametersSnapshot: The operation couldn’t be completed. (DebuggerLLDB.DebuggerVersionStore.StoreError error 0.)
+2026-09-13 12:03:33.086 xcodebuild[10095:37137] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-09-13 12:03:46.575 xcodebuild[10095:37137] [MT] IDETestOperationsObserverDebug: 24.730 elapsed -- Testing started completed.
+2026-09-13 12:03:46.575 xcodebuild[10095:37137] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-09-13 12:03:46.575 xcodebuild[10095:37137] [MT] IDETestOperationsObserverDebug: 24.730 sec, +24.730 sec -- end

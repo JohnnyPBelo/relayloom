@@ -1,0 +1,19 @@
+# Confirmações históricas de grupo — integração local
+
+Uma confirmação é uma declaração assinada pelo destinatário, distinta do ACK do transporte. `delivery` indica admissão local dos bytes e `receipt` é emitido pelo percurso de leitura autorizado. Não é prova de que uma pessoa olhou para o ecrã.
+
+Node e Go derivam a confirmação dos bytes originais guardados e verificados, da admissão local autenticada e dos cartões originais. Não usam contactos globais nem aceitam do HTTP um contexto histórico. O autor da mensagem não pode confirmar a sua própria recepção; destinatários bloqueados, bytes ausentes, cartões incompatíveis ou prova histórica em falta impedem a emissão.
+
+O payload tem apenas `type`, `target`, `conversation`, `targetEpoch` e `groupAudience=historical`. Não transporta texto, anexos, membros ou uma nova época de publicação. Os leitores são exactamente os da mensagem original, mesmo quando o grupo foi encerrado depois de a mensagem ter sido aceite. Esta excepção histórica não autoriza mensagens/respostas/edições novas nem alarga chaves a novos membros.
+
+A admissão do evento local é gravada antes da escrita do ContentStore e da transmissão. Se o commit falhar, não há pacote antecipado; uma resposta perdida pode deixar uma admissão sem bytes, dentro dos limites normais do ledger. Um contexto aceite não equivale a disponibilidade física. A supressão de emissões repetidas usa eventos assinados retidos e com ligação histórica correcta, não um booleano de memória que sobreviva à sua remoção. Ao contrário dos envios explícitos da outbox, confirmações automáticas não têm promessa de UUID eterno nem de um ID preservado quando nenhum payload sobreviveu.
+
+Factos de recepção/leitura já completos conservam esse estado após encerramento. O teste misto cria separadamente um envio realmente incompleto durante uma partição para exigir `superseded`; não substitui esse controlo pelo caso já lido. As garantias de paragem/partilha de mensagens do próprio autor continuam em [GROUP-OUTBOX.md](GROUP-OUTBOX.md). Cópias e tramas já transmitidas não são recolhidas. Os recibos históricos mínimos não são conteúdo novo da época corrente.
+
+## Verificação e limites actuais
+
+Testes novos: `tests/group-confirmations.test.ts`, `tests/group-confirmation-failures.test.ts`, `tests/native/group-confirmations.test.ts`, `native/app/group_confirmations_test.go`. APIs/processos/TCP reais cobrem Node/Node, Go/Node, Node/Go e Go/Go, entrega automática, leitura após close, audiência original, zero contactos globais e recusa de decifração por outsider. Há rollback/perda de resposta, bloqueio, bytes ausentes, recibo com ligação errada e reposição de prova histórica, com testemunhas TCP positivas.
+
+A ausência de uma prova histórica é distinta de apagar o snapshot do cursor verificado: este último é corrupção e bloqueia o perfil. Fechar o grupo conserva o cursor privado anterior. A fixture confirma uma época/snapshot sucessora antes de retirar a prova antiga; nenhum controlo de integridade foi relaxado.
+
+O gate completo passou: Build5.598s;224 Node219.220s;148 testes Go de topo/race548.587s (11 helpers pelos drivers);33 interoperabilidade315.613s;SQLite C143.711s;17 UI Node118.995s e17 Go112.607s;22 host iOS2.319s/estática0.050s. Desktop Linux: build0.230s,execução1.011s,pacote5.055s,execução empacotada0.809s.26 Axe sem violações;284 fontes inalteradas. Evidência em docs/evidence/group-confirmations/final. O marco de envio anterior tem evidência separada em `evidence/group-send/final`. Não há resultado móvel desta alteração nem revisão independente nova. Eventos relacionados, carriers P2P de controlo, composição/gestão dinâmica na UI e o resto de PROJECT-BRIEF.md continuam obrigatórios. `outbound=false`/`messaging=false` conservam o limite de produto durante a integração.

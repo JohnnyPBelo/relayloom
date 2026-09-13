@@ -1,0 +1,14 @@
+=== RUN   TestGroupConfirmationCommitFailure
+=== RUN   TestGroupConfirmationCommitFailure/rollback
+=== RUN   TestGroupConfirmationCommitFailure/lost-response
+--- PASS: TestGroupConfirmationCommitFailure (11.31s)
+    --- PASS: TestGroupConfirmationCommitFailure/rollback (5.67s)
+    --- PASS: TestGroupConfirmationCommitFailure/lost-response (5.64s)
+=== RUN   TestGroupConfirmationBlockedAndMissingOriginal
+--- PASS: TestGroupConfirmationBlockedAndMissingOriginal (4.77s)
+=== RUN   TestGroupConfirmationWrongBindingCannotSuppressValidFact
+--- PASS: TestGroupConfirmationWrongBindingCannotSuppressValidFact (4.59s)
+=== RUN   TestGroupConfirmationMissingHistoricalProof
+--- PASS: TestGroupConfirmationMissingHistoricalProof (7.83s)
+PASS
+ok  	github.com/JohnnyPBelo/relayloom/native/app	29.530s

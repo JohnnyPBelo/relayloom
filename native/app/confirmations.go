@@ -86,9 +86,6 @@ func (n *Node) journalReceivedConfirmationLocked(bundle core.Bundle) error {
 }
 
 func (n *Node) confirmationAllowedLocked(original *DisplayObject) bool {
-	if groupaccess.HasBinding(original.Content) {
-		return false
-	}
 	if n.identity == nil || original.Kind != "message" || original.Public || original.Author.ID == n.identity.Public.ID || !contains(original.Readers, n.identity.Public.ID) {
 		return false
 	}
@@ -113,6 +110,9 @@ func (n *Node) retainedConfirmationLocked(original *DisplayObject, kind string) 
 		}
 		event, err := n.displayLocked(bundle)
 		if err == nil && !event.Public && text(event.Content["target"]) == original.ID && equalIDs(event.Readers, original.Readers) {
+			if groupaccess.HasBinding(original.Content) && (text(event.Content["groupAudience"]) != "historical" || text(event.Content["conversation"]) != text(original.Content["conversation"]) || text(event.Content["targetEpoch"]) != text(original.Content["groupEpoch"])) {
+				continue
+			}
 			return true
 		}
 	}
@@ -130,6 +130,17 @@ func (n *Node) ensureConfirmationLocked(original *DisplayObject, kind string) er
 	// a signature after its target/dependency disappeared from the store.
 	verified, err := n.authorizedObjectLocked(original.ID, false)
 	if err != nil || !n.confirmationAllowedLocked(verified) {
+		return err
+	}
+	if groupaccess.HasBinding(verified.Content) {
+		bundle, err := n.commitGroupConfirmationLocked(verified.ID, kind)
+		if err != nil {
+			return err
+		}
+		if _, err := n.Store.Put(bundle, false); err != nil {
+			return err
+		}
+		_, err = n.Router.Broadcast(map[string]any{"type": "bundle", "bundle": bundle}, transport.Normal, 2*time.Minute, false)
 		return err
 	}
 	cards, err := members(verified.Content["members"])

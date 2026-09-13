@@ -85,6 +85,24 @@ for (const [creator, member] of [
           response.objects.find((o: any) => o.id === reply.id).author.id,
           f.bob.id,
         );
+        await until(
+          () => f.a.call("state"),
+          (s) =>
+            s.outbox.some((e: any) => e.id === sent.id && e.status === "read"),
+        );
+        await f.b.stop();
+        await until(
+          () => f.a.call("state"),
+          (s) => !s.peers.some((peer: any) => peer.connected),
+        );
+        const pendingRequest = {
+          ...request,
+          operationId: randomUUID(),
+          content: { ...request.content, text: "Incomplete before closure" },
+        };
+        const pending = await f.a.call("send", pendingRequest);
+        assert.equal(pending.outbox.status, "pending");
+        assert.equal(pending.outbox.attempts, 0);
         await f.command(f.a, {
           action: "close",
           operationId: randomUUID(),
@@ -93,7 +111,10 @@ for (const [creator, member] of [
         });
         const stopped = await f.a.call("send", request);
         assert.equal(stopped.id, sent.id);
-        assert.equal(stopped.outbox.status, "superseded");
+        assert.equal(stopped.outbox.status, "read");
+        const incomplete = await f.a.call("send", pendingRequest);
+        assert.equal(incomplete.id, pending.id);
+        assert.equal(incomplete.outbox.status, "superseded");
         await assert.rejects(
           f.a.call("send", { ...request, operationId: randomUUID() }),
           /grupo mudou/,
@@ -124,10 +145,11 @@ for (const [creator, member] of [
                 "exact attachment bytes over TCP",
                 "member-authored reply",
                 "immutable retry result after closure",
+                "automatic received/read facts preserved",
+                "an actual incomplete offline send becomes superseded",
               ],
               limits: [
                 "control proofs transferred by fixture APIs",
-                "automatic group confirmations not yet enabled",
                 "not mobile or radio evidence",
               ],
             },

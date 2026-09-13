@@ -1,0 +1,46 @@
+TAP version 13
+# Subtest: real native/node automatic group confirmations preserve historical original readers
+ok 1 - real native/node automatic group confirmations preserve historical original readers
+  ---
+  duration_ms: 6278.203651
+  type: 'test'
+  ...
+# Subtest: real node/native automatic group confirmations preserve historical original readers
+ok 2 - real node/native automatic group confirmations preserve historical original readers
+  ---
+  duration_ms: 6622.92605
+  type: 'test'
+  ...
+# Subtest: real native/native automatic group confirmations preserve historical original readers
+ok 3 - real native/native automatic group confirmations preserve historical original readers
+  ---
+  duration_ms: 5632.862043
+  type: 'test'
+  ...
+# Subtest: actual native/node group send, file-only message and reply use authenticated epoch cards
+ok 4 - actual native/node group send, file-only message and reply use authenticated epoch cards
+  ---
+  duration_ms: 4764.223309
+  type: 'test'
+  ...
+# Subtest: actual node/native group send, file-only message and reply use authenticated epoch cards
+ok 5 - actual node/native group send, file-only message and reply use authenticated epoch cards
+  ---
+  duration_ms: 5303.857654
+  type: 'test'
+  ...
+# Subtest: actual native/native group send, file-only message and reply use authenticated epoch cards
+ok 6 - actual native/native group send, file-only message and reply use authenticated epoch cards
+  ---
+  duration_ms: 3959.86169
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 32808.214405

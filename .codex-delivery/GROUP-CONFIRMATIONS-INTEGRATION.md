@@ -1,6 +1,6 @@
 # Próxima integração — confirmações históricas de grupo
 
-Proposta de execução, AINDA NÃO IMPLEMENTADA. O marco em validação é GROUP-SEND.md; não modificar fontes durante o gate .cache/group-send-final.
+Integração local em curso, NÃO COMMITADA. GROUP-SEND.md tem gate concluído e foi publicado. Helpers Node/Go, emissão automática/leitura e testes dirigidos reais já existem; o estado/handles exactos estão em RESUME.md. O checklist seguinte continua obrigatório, com confirmação de cada ponto por teste; não é declaração de conclusão.
 
 1. Confirmar entrega/leitura só para mensagem privada localmente admitida, cuja assinatura/bytes/contexto original tenham sido revistos. Derivar os cartões dos leitores originais autenticados, nunca de contactos globais ou de um contexto vindo de HTTP.
 2. Payload histórico mínimo exacto: type=delivery/receipt, target, conversation, targetEpoch, groupAudience=historical. Nunca copiar texto/anexos/members nem acrescentar groupEpoch. Histórico não confere permissão para conteúdo novo. Leitor não autor, bloqueios e cartões continuam verificados.

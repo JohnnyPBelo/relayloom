@@ -213,3 +213,20 @@ APIs/falhas/mortes verificadas; confirmações automáticas, eventos, carriers, 
 ## O parser WebKit não é NSRegularExpression — 2026-09-13
 
 A captura real de1aaca64 isolou o ramo de erro de compileContentRuleList; os testes Foundation anteriores só contavam regras, por isso não detectavam a sintaxe específica do WebKit. A expressão(/|$) contraria a restrição documentada do marcador final. Foi substituída pela união de duas expressões com a mesma fronteira de origem, mantendo bloqueio/excepções. A política tem agora controlos positivos/negativos de compilação WebKit e matriz de origens/tipos de recurso; estes ainda aguardam execução Apple, enquanto22 testes host do runner/estática passaram. Não assumir que um regex válido em Foundation/JavaScript é aceite pelo motor de isolamento de outra plataforma.
+
+
+## Confirmações — referência privada após encerramento
+
+O teste de prova histórica em falta removeu primeiro o snapshot ainda referido pelo cursor verificado. Encerrar o grupo NÃO desloca esse cursor privado: a aplicação recusou correctamente corrupção (“Cursor sem estado privado verificado”) e bloqueou a identidade. A fixture deve confirmar uma época/snapshot sucessora antes de encerrar e retirar a prova anterior. A correcção foi só nos testes Node/Go; não enfraquece validação nem transforma corrupção em pausa recuperável. Logs before/corrected em .cache/group-confirmations-proof-*.txt. Evitar assumir que head público e cursor privado coincidem.
+
+
+## Inventário de artefactos e logs ignorados
+
+rg --files respeita *.log de .gitignore mesmo ao listar o directório de artefactos descarregados. A primeira revisão inferiu incorrectamente ausência do detalhe iOS. Os caminhos explícitos no relatório existem, os hashes conferem e14-execute-ui-test.log identifica identity-created e missing("post form completed"). Usar rg --files --no-ignore para inventariar estes artefactos, ou ler os caminhos exactos do manifesto; não inferir ausência a partir de uma listagem filtrada. Os logs finais de grupo também exigem git add -f explícito, já feito no commitc1d6f89.
+
+
+## Confirmações históricas — gate concluído, produto incompleto
+
+Build5.598s;224 Node219.220s;148 testes Go de topo/race548.587s (11 helpers pelos drivers);33 interoperabilidade315.613s;SQLite C143.711s;17 UI Node118.995s e17 Go112.607s;22 host iOS2.319s/estática0.050s. Desktop Linux: build0.230s,execução1.011s,pacote5.055s,execução empacotada0.809s.26 Axe sem violações;284 fontes inalteradas. Evidência em docs/evidence/group-confirmations/final.
+
+Sem agentes novos/retomados. Eventos, carriers, UI dinâmica, artefactos móveis actuais e restantes requisitos continuam abertos. iOS1663cbe provou política/arranque e criação de identidade, mas o formulário de publicação não fechou; os logs estavam no artefacto e foram lidos pelo caminho explícito após a listagem ignorar *.log.

@@ -1,0 +1,187 @@
+{
+  "startedAt": "2026-09-13T12:01:11Z",
+  "baseCommit": "1663cbe8618f54ce973fced4ce2b2048240d0d32",
+  "workingTree": "uncommitted integration",
+  "sourceSha256": "48d63343d35ba03ee3b4b6b33f658377098112ca3de54e76a41f3691bc134a3e",
+  "checks": [
+    {
+      "name": "build",
+      "argv": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "environmentOverrides": {},
+      "status": "pass",
+      "startedAt": "2026-09-13T12:01:11Z",
+      "pid": 165451,
+      "exitCode": 0,
+      "elapsedSeconds": 5.598,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "ios-host",
+      "argv": [
+        "node",
+        "--test",
+        "apps/ios/Tests/SimulatorRunnerTests.mjs"
+      ],
+      "environmentOverrides": {},
+      "status": "pass",
+      "startedAt": "2026-09-13T12:01:17Z",
+      "pid": 165671,
+      "exitCode": 0,
+      "elapsedSeconds": 2.319,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "ios-static",
+      "argv": [
+        "node",
+        "scripts/ios-simulator.mjs",
+        "--check"
+      ],
+      "environmentOverrides": {},
+      "status": "pass",
+      "startedAt": "2026-09-13T12:01:19Z",
+      "pid": 165770,
+      "exitCode": 0,
+      "elapsedSeconds": 0.05,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "node",
+      "argv": [
+        "npm",
+        "test"
+      ],
+      "environmentOverrides": {},
+      "status": "pass",
+      "startedAt": "2026-09-13T12:01:19Z",
+      "pid": 165807,
+      "exitCode": 0,
+      "elapsedSeconds": 219.22,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "go",
+      "argv": [
+        "node",
+        "scripts/go.mjs",
+        "test",
+        "-json",
+        "-race",
+        "-count=1",
+        "-p=1",
+        "./core",
+        "./transport",
+        "./app",
+        "./groups",
+        "./groupstore",
+        "./groupauthority",
+        "./groupaccess",
+        "./groupledger",
+        "./profilelock",
+        "./profilestate",
+        "./profilebinding",
+        "./profiledb",
+        "./sqlitedriver"
+      ],
+      "environmentOverrides": {},
+      "status": "pass",
+      "startedAt": "2026-09-13T12:04:59Z",
+      "pid": 177581,
+      "exitCode": 0,
+      "elapsedSeconds": 548.587,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "native-build",
+      "argv": [
+        "npm",
+        "run",
+        "native:build"
+      ],
+      "environmentOverrides": {},
+      "status": "pass",
+      "startedAt": "2026-09-13T12:14:07Z",
+      "pid": 228413,
+      "exitCode": 0,
+      "elapsedSeconds": 0.22,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "interop",
+      "argv": [
+        "npm",
+        "run",
+        "test:interop"
+      ],
+      "environmentOverrides": {},
+      "status": "pass",
+      "startedAt": "2026-09-13T12:14:07Z",
+      "pid": 228531,
+      "exitCode": 0,
+      "elapsedSeconds": 315.613,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "cgo-boundary",
+      "argv": [
+        "node",
+        "scripts/go.mjs",
+        "test",
+        "-json",
+        "-race",
+        "-count=1",
+        "-p=1",
+        "-tags",
+        "relayloom_sqlite_cgo,sqlite_omit_load_extension",
+        "-run",
+        "TestGroupCommand|TestScopedRawProofTail|TestScopedRestrictivePrefix|TestGroupAdmission|TestGroupHistoricalDelete|TestGroupQuarantineReservation|TestGroupCorruptQuarantine|TestGroupHistoryExpiry|TestGroupOutbox|TestGroupSend|TestGroupConfirmation|TestStopSnapshot",
+        "./app",
+        "./groupauthority",
+        "./groupledger"
+      ],
+      "environmentOverrides": {},
+      "status": "pass",
+      "startedAt": "2026-09-13T12:19:23Z",
+      "pid": 258279,
+      "exitCode": 0,
+      "elapsedSeconds": 143.711,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "ui-node",
+      "argv": [
+        "node",
+        "scripts/e2e.mjs"
+      ],
+      "environmentOverrides": {},
+      "status": "pass",
+      "startedAt": "2026-09-13T12:21:47Z",
+      "pid": 263390,
+      "exitCode": 0,
+      "elapsedSeconds": 118.995,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "ui-go",
+      "argv": [
+        "node",
+        "scripts/e2e.mjs"
+      ],
+      "environmentOverrides": {
+        "RELAYLOOM_TEST_BACKEND": "native"
+      },
+      "status": "pass",
+      "startedAt": "2026-09-13T12:23:46Z",
+      "pid": 269721,
+      "exitCode": 0,
+      "elapsedSeconds": 112.607,
+      "sourceUnchanged": true
+    }
+  ],
+  "status": "pass",
+  "finishedAt": "2026-09-13T12:25:38Z"
+}

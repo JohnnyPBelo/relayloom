@@ -278,9 +278,10 @@
           "tests/native/group-runtime.test.ts",
           "docs/GROUP-CONTENT.md",
           "docs/GROUP-OUTBOX.md",
-          "docs/GROUP-SEND.md"
+          "docs/GROUP-SEND.md",
+          "docs/GROUP-CONFIRMATIONS.md"
         ],
-        "limits": "Gestão, admissão, autoridade e criação/envio/reply por APIs Node/Go; audiências de snapshots sem contactos globais. Testes dirigidos de TCP/falhas/mortes passaram. Confirmações automáticas, eventos, carriers, composição/gestão dinâmica na UI, plataformas e revisão independente pendentes; gate completo de host/UI/desktop passou."
+        "limits": "Envio e confirmações históricas por épocas em Node/Go, audiência original e factos preservados; gate completo host/interoperabilidade/UI/desktop passou. Eventos, carriers, composição/gestão dinâmica, artefactos móveis actuais e revisão independente pendentes."
       },
       "evidence": [
         {
@@ -370,6 +371,16 @@
             "docs/evidence/group-send/final/scope.json"
           ],
           "notes": "Build5.816s;219 testes Node194.189s;144 testes Go de topo com race507.918s (11 helpers executados pelos drivers);30 casos de interoperabilidade270.997s; fronteira SQLite C115.655s;17 UI Node115.990s e17 UI Go110.472s.22 testes host iOS1.887s e estática0.030s. Desktop Linux: preparação0.233s, execução1.041s, pacote5.812s, execução empacotada0.800s.26 relatórios Axe actualizados, zero violações.277 ficheiros de fonte inalterados durante os gates. Evidência em docs/evidence/group-send/final. Produto/grupos dinâmicos completos e revisão independente pendentes."
+        },
+        {
+          "kind": "group-confirmations-regression-gate",
+          "result": "pass",
+          "paths": [
+            "docs/evidence/group-confirmations/final/report.json",
+            "docs/evidence/group-confirmations/final/desktop-report.json",
+            "docs/evidence/group-confirmations/final/scope.json"
+          ],
+          "notes": "Build5.598s;224 Node219.220s;148 testes Go de topo/race548.587s (11 helpers pelos drivers);33 interoperabilidade315.613s;SQLite C143.711s;17 UI Node118.995s e17 Go112.607s;22 host iOS2.319s/estática0.050s. Desktop Linux: build0.230s,execução1.011s,pacote5.055s,execução empacotada0.809s.26 Axe sem violações;284 fontes inalteradas. Evidência em docs/evidence/group-confirmations/final."
         }
       ]
     },
@@ -560,9 +571,10 @@
           "docs/OUTBOX-SNAPSHOT-EXPIRY.md",
           "docs/evidence/outbox/snapshot-expiry",
           "docs/evidence/group-outbox/final",
-          "docs/GROUP-SEND.md"
+          "docs/GROUP-SEND.md",
+          "docs/GROUP-CONFIRMATIONS.md"
         ],
-        "limits": "Outbox por épocas com admissão/intenção no mesmo commit, reserva física antes de ready/rede, UUID e bytes originais após falha. Oito mortes reais entre motores e Unicode/compatibilidade antiga passaram. Confirmações de grupo, binários móveis e validação móvel ainda pendentes."
+        "limits": "Envio e confirmações históricas por épocas em Node/Go, audiência original e factos preservados; gate completo host/interoperabilidade/UI/desktop passou. Eventos, carriers, composição/gestão dinâmica, artefactos móveis actuais e revisão independente pendentes."
       },
       "evidence": [
         {
@@ -648,6 +660,16 @@
             "docs/evidence/group-send/final/scope.json"
           ],
           "notes": "Build5.816s;219 testes Node194.189s;144 testes Go de topo com race507.918s (11 helpers executados pelos drivers);30 casos de interoperabilidade270.997s; fronteira SQLite C115.655s;17 UI Node115.990s e17 UI Go110.472s.22 testes host iOS1.887s e estática0.030s. Desktop Linux: preparação0.233s, execução1.041s, pacote5.812s, execução empacotada0.800s.26 relatórios Axe actualizados, zero violações.277 ficheiros de fonte inalterados durante os gates. Evidência em docs/evidence/group-send/final. Produto/grupos dinâmicos completos e revisão independente pendentes."
+        },
+        {
+          "kind": "group-confirmations-regression-gate",
+          "result": "pass",
+          "paths": [
+            "docs/evidence/group-confirmations/final/report.json",
+            "docs/evidence/group-confirmations/final/desktop-report.json",
+            "docs/evidence/group-confirmations/final/scope.json"
+          ],
+          "notes": "Build5.598s;224 Node219.220s;148 testes Go de topo/race548.587s (11 helpers pelos drivers);33 interoperabilidade315.613s;SQLite C143.711s;17 UI Node118.995s e17 Go112.607s;22 host iOS2.319s/estática0.050s. Desktop Linux: build0.230s,execução1.011s,pacote5.055s,execução empacotada0.809s.26 Axe sem violações;284 fontes inalteradas. Evidência em docs/evidence/group-confirmations/final."
         }
       ]
     },
@@ -669,9 +691,10 @@
           "tests/e2e/outbox.spec.ts",
           "docs/evidence/desktop/layout-expiry-fix",
           "docs/evidence/android/documents-fa1481d3",
-          "tests/e2e/group-outbox.spec.ts"
+          "tests/e2e/group-outbox.spec.ts",
+          "docs/GROUP-CONFIRMATIONS.md"
         ],
-        "limits": "Received/read históricos preservados; superseded e pausa por prova na API/UI real,17 percursos por núcleo e26 relatórios Axe sem violações. Composição dinâmica e gates móveis actuais pendentes."
+        "limits": "Envio e confirmações históricas por épocas em Node/Go, audiência original e factos preservados; gate completo host/interoperabilidade/UI/desktop passou. Eventos, carriers, composição/gestão dinâmica, artefactos móveis actuais e revisão independente pendentes."
       },
       "evidence": [
         {
@@ -720,6 +743,16 @@
             "tests/e2e/group-outbox.spec.ts"
           ],
           "notes": "Received/read históricos preservados; superseded e pausa por prova na API/UI real,17 percursos por núcleo e26 relatórios Axe sem violações. Composição dinâmica e gates móveis actuais pendentes."
+        },
+        {
+          "kind": "group-confirmations-regression-gate",
+          "result": "pass",
+          "paths": [
+            "docs/evidence/group-confirmations/final/report.json",
+            "docs/evidence/group-confirmations/final/desktop-report.json",
+            "docs/evidence/group-confirmations/final/scope.json"
+          ],
+          "notes": "Build5.598s;224 Node219.220s;148 testes Go de topo/race548.587s (11 helpers pelos drivers);33 interoperabilidade315.613s;SQLite C143.711s;17 UI Node118.995s e17 Go112.607s;22 host iOS2.319s/estática0.050s. Desktop Linux: build0.230s,execução1.011s,pacote5.055s,execução empacotada0.809s.26 Axe sem violações;284 fontes inalteradas. Evidência em docs/evidence/group-confirmations/final."
         }
       ]
     },

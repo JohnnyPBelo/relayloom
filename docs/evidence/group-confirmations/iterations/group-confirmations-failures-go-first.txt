@@ -1,0 +1,10 @@
+=== RUN   TestGroupConfirmationCommitFailure
+=== RUN   TestGroupConfirmationCommitFailure/rollback
+=== RUN   TestGroupConfirmationCommitFailure/lost-response
+--- PASS: TestGroupConfirmationCommitFailure (13.95s)
+    --- PASS: TestGroupConfirmationCommitFailure/rollback (6.96s)
+    --- PASS: TestGroupConfirmationCommitFailure/lost-response (6.99s)
+=== RUN   TestGroupConfirmationBlockedAndMissingOriginal
+--- PASS: TestGroupConfirmationBlockedAndMissingOriginal (5.82s)
+PASS
+ok  	github.com/JohnnyPBelo/relayloom/native/app	20.819s

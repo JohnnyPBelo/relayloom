@@ -32,6 +32,7 @@ import {
 import { validateContent } from "./content-validation.js";
 import { type PrivateState } from "./local-state.js";
 import { openPrivateProfile } from "./protected-private.js";
+import { commitGroupConfirmation } from "./group-confirmations.js";
 import type { ProfileDatabase } from "../../../packages/profile/src/database.js";
 import { executeGroupCommand, type GroupCommand } from "./group-commands.js";
 import {
@@ -631,9 +632,7 @@ export class LoomNode extends EventEmitter {
       author: identity.public.id,
       conversation: prepared.conversation!,
       preview: outboxPreview(
-        prepared.text ||
-        prepared.attachments?.[0]?.name ||
-        "Mensagem"
+        prepared.text || prepared.attachments?.[0]?.name || "Mensagem",
       ),
       created: bundle.manifest.created,
       expires: bundle.manifest.expires,
@@ -856,10 +855,35 @@ export class LoomNode extends EventEmitter {
     message: DisplayObject,
     kind: "receipt" | "delivery",
   ) {
-    if (hasGroupBinding(message.content))
-      throw new Error(
-        "As confirmações deste grupo ainda não estão disponíveis",
-      );
+    if (hasGroupBinding(message.content)) {
+      const identity = this.requireIdentity();
+      try {
+        const bundle = commitGroupConfirmation(
+          this.privateDatabase!,
+          identity,
+          this.privateDigest!,
+          this.store,
+          message.id,
+          kind,
+          this.config.blocked,
+        );
+        this.store.put(bundle);
+        this.router.broadcast({ type: "bundle", bundle }, "normal", 120_000);
+        return this.display(bundle)!;
+      } catch (error) {
+        try {
+          this.privateDatabase?.close();
+          const loaded = openPrivateProfile(this.dir, identity);
+          this.privateDatabase = loaded.database;
+          this.privateState = loaded.state;
+          this.privateDigest = loaded.digest;
+          this.restoreGroupHolds();
+        } catch {
+          this.lock();
+        }
+        throw error;
+      }
+    }
     return this.commitPublication(
       this.preparePublication(
         { type: kind, target: message.id },
@@ -887,9 +911,9 @@ export class LoomNode extends EventEmitter {
         continue;
       const readers = this.receiptReaders(message);
       if (!readers) continue;
+      issued++;
       try {
         this.publishConfirmation(message, "delivery");
-        issued++;
       } catch {
         /* Reading remains valid even when a confirmation cannot be sent. */
       }
