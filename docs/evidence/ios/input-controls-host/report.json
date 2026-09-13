@@ -1,0 +1,27 @@
+{
+  "checks": [
+    {
+      "name": "host",
+      "argv": [
+        "node",
+        "--test",
+        "apps/ios/Tests/SimulatorRunnerTests.mjs"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 1.833
+    },
+    {
+      "name": "static",
+      "argv": [
+        "node",
+        "scripts/ios-simulator.mjs",
+        "--check"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 0.03
+    }
+  ],
+  "swiftCompiled": false,
+  "simulatorExecuted": false,
+  "sourceSHA256": "8111ce05e54ef4a24b0236490378aef53ad90295643e715480dae3e6ae91b65f"
+}

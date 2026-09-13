@@ -10,7 +10,7 @@ Base publicada93f24f1 (Liquid Glass). Implementação Node/Go local de edit/reac
 
 Primeiro gate20449 terminou1:236Node passaram, mas Go detectou dupla leitura de anexos no snapshot (29.100.032 bytes vs14.485.480 baseline). Corrigido partilhando os manifestos acabados de verificar; o teste original passou sem aumentar margem. Novo controlo de corrupção sem outbox de mensagens passou. Falhas e resultados corrigidos em docs/evidence/group-events/failures; primeiro gate completo em .cache/group-events-first-gate. Os relatórios gerados antigos de docs/evidence foram copiados quando relevantes e restaurados; não se descartaram fontes do utilizador.
 
-Próximo passo: rever/stage/commitar o marco de eventos verificado. Confirmar gitstatus/HEAD para não repetir commit ou push se já terminou. Depois corrigir XCTest de teclado/layout com evidência abaixo, executar host/estática e publicar como alteração distinta; não repetir a suite completa por perda de handles ou atribuir passe Swift local. Observar CI do SHA completo publicado.
+Marco de eventos commitado5d24a16. Depois foi alterada apenas NativeSimulatorTests.swift para controlos de teclado/gestos limitados, marcador de shell e conversa compacta, preservando todas as asserções/fases.22 host e estática passaram1.833s/0.030s; Swift/simulador ainda por confirmar. Evidência docs/evidence/ios/input-controls-host. Confirmar gitstatus/HEAD/push na retoma, pois a publicação pode já ter terminado depois deste ficheiro. Observar CI do SHA completo antes de atribuir passe Apple; não repetir gates concluídos por perda de handles.
 
 ## iOS do Glass — falha explicada, ainda sem fluxo completo
 

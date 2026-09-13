@@ -80,7 +80,7 @@ final class NativeSimulatorTests: XCTestCase {
         try require(secret, "identity passphrase"); secret.tap(); secret.typeText(fixtures.passphrase)
         try dismissKeyboard(app, anchor: "Um novo fio na rede.")
         try tap(app, "Criar identidade")
-        try require(app.webViews.buttons["Nova conversa"].firstMatch, "identity created by UI", timeout: 45)
+        try require(app.webViews.buttons["Pesquisar e navegar"].firstMatch, "identity created by UI", timeout: 45)
         print("IOS_SIMULATOR_PHASE identity-created")
 
         try navigate(app, to: "A praça")
@@ -181,9 +181,18 @@ final class NativeSimulatorTests: XCTestCase {
         try require(destination, "navigation " + label); destination.tap()
     }
     @MainActor private func chooseRecipient(_ app: XCUIApplication, name: String) throws {
+        let composer = app.webViews.textViews["Escrever mensagem"].firstMatch
+        let heading = app.webViews.staticTexts[name].firstMatch
+        // A restored compact conversation hides the list. Verify its actual
+        // recipient instead of requiring an unrelated, hidden list control.
+        if composer.exists && composer.isHittable && heading.exists && heading.isHittable { return }
+        let back = app.webViews.buttons["Voltar às conversas"].firstMatch
+        if back.exists && back.isHittable { back.tap() }
         let recipient = app.webViews.buttons.matching(NSPredicate(format: "label CONTAINS %@", name)).firstMatch
         try require(recipient, "synthetic recipient conversation"); recipient.tap()
-        try require(app.webViews.textViews["Escrever mensagem"].firstMatch, "private message composer")
+        try require(composer, "private message composer")
+        try require(heading, "selected recipient heading")
+        XCTAssertTrue(heading.isHittable, "Expected recipient must be visible before composing")
     }
     @MainActor private func send(_ app: XCUIApplication, text: String) throws {
         let composer = app.webViews.textViews["Escrever mensagem"].firstMatch
@@ -200,21 +209,49 @@ final class NativeSimulatorTests: XCTestCase {
         try require(secret, "unlock passphrase"); secret.tap(); secret.typeText(fixtures.passphrase)
         try dismissKeyboard(app, anchor: "Bom ter-te de volta.")
         try tap(app, "Entrar na minha rede")
-        try require(app.webViews.buttons["Nova conversa"].firstMatch, "recovered native identity", timeout: 45)
+        try require(app.webViews.buttons["Pesquisar e navegar"].firstMatch, "recovered native identity", timeout: 45)
     }
     @MainActor private func dismissKeyboard(_ app: XCUIApplication, anchor: String) throws {
         guard app.keyboards.firstMatch.exists else { return }
-        // WebKit's input accessory need not be exposed as an AX toolbar.
-        // Use its real native button, then verify the keyboard disappeared.
-        if let done = app.buttons.matching(identifier: "Done").allElementsBoundByIndex.first(where: { $0.isHittable }) {
-            done.tap()
-        } else {
-            let text = app.webViews.staticTexts[anchor].firstMatch
-            guard text.exists && text.isHittable else { throw SmokeFailure.missing("keyboard dismiss control for " + anchor) }
-            text.tap()
+        do {
+            // The iOS input accessory can be a button or a key. These exact
+            // semantic labels never select Return or submit the form.
+            let labels = ["Done", "Hide keyboard", "Dismiss keyboard"] as NSArray
+            let predicate = NSPredicate(format: "identifier IN[c] %@ OR label IN[c] %@", labels, labels)
+            let candidates = app.buttons.matching(predicate).allElementsBoundByIndex + app.keys.matching(predicate).allElementsBoundByIndex
+            if let done = candidates.first(where: { $0.isHittable }) {
+                done.tap()
+            } else {
+                let text = app.webViews.staticTexts[anchor].firstMatch
+                // Keyboard focus scrolled the onboarding title offscreen in
+                // the observed CI capture. Use bounded native gestures to
+                // reveal the existing anchor; never inject app JavaScript.
+                for _ in 0..<3 {
+                    if !app.keyboards.firstMatch.exists || (text.exists && text.isHittable) { break }
+                    app.webViews.firstMatch.swipeDown()
+                }
+                if app.keyboards.firstMatch.exists {
+                    guard text.exists && text.isHittable else { throw SmokeFailure.missing("keyboard dismiss control for " + anchor) }
+                    text.tap()
+                }
+            }
+            try vanished(app.keyboards.firstMatch, "keyboard dismissed for " + anchor)
+            print("IOS_SIMULATOR_PHASE keyboard-dismissed")
+        } catch {
+            keyboardControlEvidence(app)
+            throw error
         }
-        try vanished(app.keyboards.firstMatch, "keyboard dismissed for " + anchor)
-        print("IOS_SIMULATOR_PHASE keyboard-dismissed")
+    }
+    @MainActor private func keyboardControlEvidence(_ app: XCUIApplication) {
+        // Owned synthetic fixture only. Record button/key metadata, never
+        // field values, the app URL/capability, or a full AX debug dump.
+        let controls = app.buttons.allElementsBoundByIndex + app.keys.allElementsBoundByIndex
+        let rows = controls.filter { $0.isHittable }.prefix(32).map { element in
+            ["type": String(describing: element.elementType), "identifier": String(element.identifier.prefix(160)), "label": String(element.label.prefix(160))]
+        }
+        if let data = try? JSONSerialization.data(withJSONObject: rows, options: [.sortedKeys]), let text = String(data: data, encoding: .utf8) {
+            print("IOS_SIMULATOR_KEYBOARD_CONTROLS " + text)
+        }
     }
     @MainActor private func attachPhoto(_ app: XCUIApplication) throws {
         let controls = app.webViews.descendants(matching: .any).matching(identifier: "Anexar ficheiro")
