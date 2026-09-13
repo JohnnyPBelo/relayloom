@@ -4,6 +4,14 @@
 
 Continuar todo o PROJECT-BRIEF.md, apenas em /home/absint0o/projects/relayloom. Responder PT-PT. Manter Astra/Copilot Ultra, sem alterar modelos/providers/auth/bridges/serviços/permissões. Recuperação sequencial: sem agentes novos/retomados. Preservar alterações, caches/dependências no projecto, uma compilação pesada de cada vez e pelo menos15GiB livres (92GiB observados). Commits/pushes normais autorizados, sem force-push nem merge de PR. Sem outros projectos/dados pessoais/root/compras. Produto incompleto; não marcar goal completo.
 
+## Estado mais recente após publicação
+
+C1 publicado em origin/main63ded7b (codecs91e90c8, runtime2b0ce51, diagnósticosCI63ded7b); push confirmado. CI34777466884 terminou: Linux e macOS Node passaram, Windows falhou na asserção exitCode da fixture de seeder; Go/desktop/iOS skipped. Correcção local337561c reforça o controlo offline com exitCode OU signalCode e porta TCP anteriormente acessível que passa a recusar ligações.6 testes Node/Go/serial afectados passaram41.055s; não houve alteração de runtime. Publicar esta correcção e observar o novo CI.
+
+**C2 NÃO COMMITADO:** packages/groups/src/notices.ts, native/groupnotice/{notice,journal,notice_test}.go e tests/group-notices.test.ts. Codecs de avisos invitation/consent/leave, binding ao convite original, emissor/destinatário exactos e journal cifrado transaccional (64in/64out,8por emissor,256retirados). Não importados nos runtimes; nenhum transporte/inbox/UI C2 entregue. Node5 casos passaram6.402s após corrigir a fixture que usava .value indevidamente; Go5/race27.074s passou. Novo teste Node de falha de retirada e typecheck estão na sessão71943, logs .cache/group-notices/typecheck-final-local.log e node-six.log; recolher antes de repetir. Retire agora aborta a transacção se uma escrita após delete falhar. Go primeiro comando foi só compilação, com no test files; não o contar como teste.
+
+Seguem vectores e ficheiros Node↔Go C2, restantes limites/falhas, integração atómica de intenções de convite na API, reconstrução de consentimento/saída sem reverter paragens, inbox sem auto-adesão, transporte e C3UI. Preservar tudo; sem novos agentes/configurações.
+
 ## C1 — gate final concluído
 
 Base publicada adfd52a21e1e6ff3c5c6b02ca5971c2280943b0c. Marco C1 verificado localmente, com fonteSHA256 b43741ef070d437b224b69b396e4ddddc9bc251c35dbab79f72ef68d70ffd017. Confirmar git status/log/origin antes de assumir publicação. A árvore tem código de carriers, testes, documentos e evidência gerada a preservar.
