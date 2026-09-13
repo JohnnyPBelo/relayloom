@@ -1,0 +1,60 @@
+
+Running 2 tests using 1 worker
+
+(node:381157) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/e2e/liquid-glass.spec.ts:40:1 › command search uses real authorised peer messages, preserves drafts and forgets private queries on lock (5.0s)
+(node:381535) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  2 tests/e2e/liquid-glass.spec.ts:170:1 › glass respects device effects, low power, contrast and keyboard access across responsive screens (9.3s)
+
+
+  1) tests/e2e/liquid-glass.spec.ts:40:1 › command search uses real authorised peer messages, preserves drafts and forgets private queries on lock 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 13
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "id": "color-contrast",
+    +     "nodes": Array [
+    +       Array [
+    +         ".command-copy > span",
+    +       ],
+    +       Array [
+    +         "span[role=\"status\"]",
+    +       ],
+    +     ],
+    +   },
+    + ]
+
+      29 |       nodes: v.nodes.map((n) => n.target),
+      30 |     })),
+    > 31 |   ).toEqual([]);
+         |     ^
+      32 | }
+      33 | async function command(page: Page, query: string) {
+      34 |   await page.keyboard.press("Control+k");
+        at audit (/home/absint0o/projects/relayloom/tests/e2e/liquid-glass.spec.ts:31:5)
+        at /home/absint0o/projects/relayloom/tests/e2e/liquid-glass.spec.ts:156:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/liquid-glass-command-searc-21b72-ets-private-queries-on-lock/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/liquid-glass-command-searc-21b72-ets-private-queries-on-lock/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/liquid-glass-command-searc-21b72-ets-private-queries-on-lock/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/liquid-glass-command-searc-21b72-ets-private-queries-on-lock/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/e2e/liquid-glass.spec.ts:40:1 › command search uses real authorised peer messages, preserves drafts and forgets private queries on lock 
+  1 passed (15.7s)

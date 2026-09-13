@@ -111,3 +111,10 @@ Gestão de épocas está ligada às APIs; admissão/outbox/retenção de conteú
 190 testes Node passaram137.762s;129 testes Go de topo/race396.073s (9 helpers executados pelos drivers de interoperabilidade);24 testes de interoperabilidade219.736s; fronteira SQLite C15.538s;16 UI Node112.941s e16 UI Go103.288s. Build6.072s e CLI0.221s passaram. Desktop Linux: preparação0.224s, execução1.028s, pacote5.347s e execução empacotada0.798s.22 relatórios Axe actualizados, zero violações. Fontes inalteradas em todas as fases. Evidência em docs/evidence/group-content/final.
 
 Reserva/admissão/histórico estão ligados aos dois núcleos. Envio/outbox/carriers/UI dinâmica, artefactos móveis correspondentes e revisão independente permanecem pendentes. O objectivo completo continua activo.
+
+
+## Liquid Glass — extensão de FR-015,FR-042,UX-001…005,ACC-010/012/013
+
+Fonte sobre f37067f: pesquisa/comandos locais autorizados, navegação real por teclado/toque, preferências/contraste/movimento/transparência reduzidos e UI responsiva.19 E2E Node+19 Go,62 auditorias Axe e desktop Linux passaram no gate final74981 com fontes congeladas; comandos/âmbito/capturas em `docs/evidence/liquid-glass/final` e `docs/LIQUID-GLASS.md`. Mensagem recebida real em320px,6 áreas×6 larguras (320–1440px), rascunho/lock/exclusão de eliminado/privado e preferências efectivas incluídos. Defeitos de contraste/alvos/acesso à outbox reproduzidos e corrigidos.
+
+Estes requisitos continuam **partial** no contrato integral: não há pesquisa integral do arquivo, Android/iOS actuais, teste de leitor de ecrã manual, teclado OS físico nem revisão independente desta alteração. Delegação permanece suspensa por instrução do proprietário. Simulação de media/notificações nos testes existentes não é apresentação/gravação real de cada OS.

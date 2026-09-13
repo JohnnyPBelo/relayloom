@@ -1,0 +1,50 @@
+
+Running 2 tests using 1 worker
+
+(node:377194) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/liquid-glass.spec.ts:40:1 › command search uses real authorised peer messages, preserves drafts and forgets private queries on lock (5.6s)
+  ✘  2 tests/e2e/liquid-glass.spec.ts:170:1 › glass respects device effects, low power, contrast and keyboard access across responsive screens (4.3s)
+
+
+  1) tests/e2e/liquid-glass.spec.ts:170:1 › glass respects device effects, low power, contrast and keyboard access across responsive screens 
+
+    Error: expect(locator).toBeFocused() failed
+
+    Locator: getByRole('combobox')
+    Expected: focused
+    Error: strict mode violation: getByRole('combobox') resolved to 2 elements:
+        1) <select aria-label="Paleta da página">…</select> aka getByLabel('Paleta da página')
+        2) <input type="text" value="rede" role="combobox" autocomplete="off" spellcheck="false" aria-expanded="true" aria-autocomplete="list" aria-controls="_r_16_-results" aria-describedby="_r_16_-scope" aria-activedescendant="_r_16_-0" aria-label="Pesquisar no teu espaço" placeholder="Uma conversa, uma mensagem, um destino…"/> aka getByRole('combobox', { name: 'Pesquisar no teu espaço' })
+
+    Call log:
+      - Expect "toBeFocused" getByRole('combobox') with timeout 15000ms
+      - waiting for getByRole('combobox')
+
+
+      248 |     await audit(page, "editor-mobile");
+      249 |     await command(page, "rede");
+    > 250 |     await expect(page.getByRole("combobox")).toBeFocused();
+          |                                              ^
+      251 |     await audit(page, "commands-mobile");
+      252 |     // Viewport resize is a geometry control, not a claim of a real OS software keyboard.
+      253 |     await page.setViewportSize({ width: 390, height: 420 });
+        at /home/absint0o/projects/relayloom/tests/e2e/liquid-glass.spec.ts:250:46
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/liquid-glass-glass-respect-6e8da-s-across-responsive-screens/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/liquid-glass-glass-respect-6e8da-s-across-responsive-screens/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/liquid-glass-glass-respect-6e8da-s-across-responsive-screens/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/liquid-glass-glass-respect-6e8da-s-across-responsive-screens/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/e2e/liquid-glass.spec.ts:170:1 › glass respects device effects, low power, contrast and keyboard access across responsive screens 
+  1 passed (10.9s)

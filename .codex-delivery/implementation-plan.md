@@ -65,3 +65,10 @@ APIs/falhas/mortes verificadas; confirmações automáticas, eventos, carriers, 
 Build5.598s;224 Node219.220s;148 testes Go de topo/race548.587s (11 helpers pelos drivers);33 interoperabilidade315.613s;SQLite C143.711s;17 UI Node118.995s e17 Go112.607s;22 host iOS2.319s/estática0.050s. Desktop Linux: build0.230s,execução1.011s,pacote5.055s,execução empacotada0.809s.26 Axe sem violações;284 fontes inalteradas. Evidência em docs/evidence/group-confirmations/final.
 
 Sem agentes novos/retomados. Eventos, carriers, UI dinâmica, artefactos móveis actuais e restantes requisitos continuam abertos. iOS1663cbe provou política/arranque e criação de identidade, mas o formulário de publicação não fechou; os logs estavam no artefacto e foram lidos pelo caminho explícito após a listagem ignorar *.log.
+
+
+## Liquid Glass funcional — marco de interface,2026-09-13
+
+Pedido do proprietário priorizou UI/UX sem cancelar o contrato. Implementados material CSS com fallback, preferências, pesquisa/comandos autorizados com teclado/lock, barra móvel, conversa compacta e controlos44px. Gate final74981 terminou0:19 Node142.211s/19 Go127.734s,62 Axe sem violações e desktop Linux compilado/executado/empacotado/executado,289 fontes inalteradas. `docs/LIQUID-GLASS.md` e `docs/evidence/liquid-glass/final` guardam comandos/fontes/âmbito/falhas corrigidas. Nenhum novo agente/modelo/provider/bridge alterado; recuperação sequencial mantida.
+
+P3/P5/P6/P7 permanecem abertos. Seguem eventos/carriers e composição/gestão dinâmica com audiências verificadas; pesquisa integral, keystore/rotação, social/media/templates/notificações e gates móveis/revisão independente. iOS f370 passou arranque mas excedeu60.306s na fotografia; não chegou ao fluxo funcional. Não fechar o objectivo por este marco.

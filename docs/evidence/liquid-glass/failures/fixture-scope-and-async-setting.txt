@@ -1,0 +1,93 @@
+
+Running 2 tests using 1 worker
+
+(node:374852) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/e2e/liquid-glass.spec.ts:40:1 › command search uses real authorised peer messages, preserves drafts and forgets private queries on lock (17.9s)
+(node:375846) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 tests/e2e/liquid-glass.spec.ts:158:1 › glass respects device effects, low power, contrast and keyboard access across responsive screens (1.1s)
+
+
+  1) tests/e2e/liquid-glass.spec.ts:40:1 › command search uses real authorised peer messages, preserves drafts and forgets private queries on lock 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('option')
+    Expected: 0
+    Received: 5
+    Timeout:  15000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('option') with timeout 15000ms
+      - waiting for getByRole('option')
+        34 × locator resolved to 5 elements
+           - unexpected value "5"
+
+
+      117 |     );
+      118 |     await command(page, "Segredo eliminado");
+    > 119 |     await expect(page.getByRole("option")).toHaveCount(0);
+          |                                            ^
+      120 |     await query.fill("Privado só no Bruno");
+      121 |     await expect(page.getByRole("option")).toHaveCount(0);
+      122 |     await query.fill("amanha biblioteca");
+        at /home/absint0o/projects/relayloom/tests/e2e/liquid-glass.spec.ts:119:44
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/liquid-glass-command-searc-21b72-ets-private-queries-on-lock/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/liquid-glass-command-searc-21b72-ets-private-queries-on-lock/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/liquid-glass-command-searc-21b72-ets-private-queries-on-lock/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/liquid-glass-command-searc-21b72-ets-private-queries-on-lock/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) tests/e2e/liquid-glass.spec.ts:158:1 › glass respects device effects, low power, contrast and keyboard access across responsive screens 
+
+    Error: locator.check: Clicking the checkbox did not change its state
+    Call log:
+      - waiting for getByRole('checkbox', { name: /^Modo de baixo consumo/ })
+        - locator resolved to <input type="checkbox"/>
+      - attempting click action
+        - waiting for element to be visible, enabled and stable
+        - element is visible, enabled and stable
+        - scrolling into view if needed
+        - done scrolling
+        - performing click action
+        - click action done
+        - waiting for scheduled navigations to finish
+        - navigations have finished
+
+
+      182 |       name: /^Modo de baixo consumo/,
+      183 |     });
+    > 184 |     await lowPower.check();
+          |                    ^
+      185 |     await expect(root).toHaveAttribute("data-effects", "reduced");
+      186 |     expect((await client.call("state")).settings.lowPower).toBe(true);
+      187 |     expect(await blur()).toBe("none");
+        at /home/absint0o/projects/relayloom/tests/e2e/liquid-glass.spec.ts:184:20
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/liquid-glass-glass-respect-6e8da-s-across-responsive-screens/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/liquid-glass-glass-respect-6e8da-s-across-responsive-screens/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/liquid-glass-glass-respect-6e8da-s-across-responsive-screens/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/liquid-glass-glass-respect-6e8da-s-across-responsive-screens/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    tests/e2e/liquid-glass.spec.ts:40:1 › command search uses real authorised peer messages, preserves drafts and forgets private queries on lock 
+    tests/e2e/liquid-glass.spec.ts:158:1 › glass respects device effects, low power, contrast and keyboard access across responsive screens 

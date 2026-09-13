@@ -60,6 +60,9 @@ import {
 import type { Collection } from "../../node/src/social";
 import type { OutboxItem } from "../../node/src/outbox";
 import { DeliveryBadge, OutboxPanel } from "./outbox";
+import { CommandPalette, type Command } from "./commands";
+import { useAppearance } from "./appearance";
+import "./liquid-glass.css";
 
 type State = {
   nativeRuntime?: string;
@@ -299,6 +302,44 @@ function App() {
     [highContrast, setHighContrast] = useState(
       localStorage.getItem("relayloom-high-contrast") === "true",
     );
+  const { glass, setGlass } = useAppearance(
+    state?.settings.lowPower ?? false,
+    highContrast,
+  );
+  const [commandsOpen, setCommandsOpen] = useState(false);
+  const [messageToFocus, setMessageToFocus] = useState("");
+  useEffect(() => {
+    setCommandsOpen(false);
+    setMessageToFocus("");
+  }, [state?.locked, state?.identity?.id]);
+  useEffect(() => {
+    const shortcut = (event: KeyboardEvent) => {
+      if (
+        (event.metaKey || event.ctrlKey) &&
+        !event.altKey &&
+        event.key.toLowerCase() === "k" &&
+        state &&
+        !state.locked &&
+        !modal &&
+        !viewSite
+      ) {
+        event.preventDefault();
+        setCommandsOpen((open) => !open);
+      }
+    };
+    window.addEventListener("keydown", shortcut);
+    return () => window.removeEventListener("keydown", shortcut);
+  }, [state?.locked, state?.identity?.id, modal, viewSite]);
+  useEffect(() => {
+    if (!messageToFocus || state?.locked) return;
+    const frame = requestAnimationFrame(() => {
+      const element = document.getElementById(`message-${messageToFocus}`);
+      element?.focus({ preventScroll: true });
+      element?.scrollIntoView({ block: "center" });
+      setMessageToFocus("");
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [messageToFocus, selection, page, state?.locked]);
   useEffect(() => {
     document.documentElement.dataset.readability = largeText
       ? "large"
@@ -419,6 +460,8 @@ function App() {
     setReply(undefined);
     setViewSite(undefined);
     setModal("");
+    setCommandsOpen(false);
+    setMessageToFocus("");
     setSelection("");
     setState((current) =>
       current
@@ -801,6 +844,94 @@ function App() {
     { id: "saved", label: "Guardados", icon: Bookmark },
     { id: "network", label: "A rede", icon: Radio },
   ] as const;
+  const commands: Command[] = commandsOpen
+    ? [
+        ...nav.map((item) => ({
+          id: `page-${item.id}`,
+          label: item.label,
+          detail: "Ir para esta área",
+          icon: item.icon,
+          run: () => changePage(item.id),
+        })),
+        {
+          id: "settings",
+          label: "Definições",
+          detail: "Aparência, privacidade e recursos",
+          icon: Settings2,
+          run: () => changePage("settings"),
+        },
+        {
+          id: "new",
+          label: "Nova conversa",
+          detail: "Escolher uma pessoa",
+          icon: Plus,
+          run: () => setModal("conversation"),
+        },
+        {
+          id: "post",
+          label: "Partilhar algo",
+          detail: "Escrever uma publicação na praça",
+          icon: Pencil,
+          run: () => setModal("post"),
+        },
+        {
+          id: "peer",
+          label: "Ligar um par",
+          detail: "Adicionar uma ligação à rede",
+          icon: Radio,
+          run: () => setModal("peer"),
+        },
+        {
+          id: "outbox",
+          label: "Estado dos envios",
+          detail: "Entrega, tentativas e prazo de validade",
+          icon: Send,
+          run: () => setModal("outbox"),
+        },
+        {
+          id: "theme",
+          label: dark ? "Usar tema claro" : "Usar tema escuro",
+          detail: "Aparência deste dispositivo",
+          icon: dark ? Sun : Moon,
+          run: () => setDark(!dark),
+        },
+        {
+          id: "lock",
+          label: "Bloquear identidade",
+          detail: "Fechar o acesso ao teu espaço privado",
+          icon: LockKeyhole,
+          run: () => {
+            void lockIdentity();
+          },
+        },
+        ...allConversations.map((c) => ({
+          id: `conversation-${c.id}`,
+          label: c.name || "Conversa",
+          detail: "Abrir conversa",
+          icon: MessageCircle,
+          run: () => {
+            changePage("messages");
+            chooseConversation(c.id);
+          },
+        })),
+        ...messages
+          .filter((m) => !deleted(m.id) && renderedText(m))
+          .slice()
+          .reverse()
+          .map((m) => ({
+            id: m.id,
+            label: renderedText(m)!,
+            icon: MessageCircle,
+            detail: `${allConversations.find((c) => c.id === m.content.conversation)?.name || "Conversa"} · ${m.author.name}`,
+            run: () => {
+              changePage("messages");
+              chooseConversation(m.content.conversation!);
+              nearBottom.current = false;
+              setMessageToFocus(m.id);
+            },
+          })),
+      ]
+    : [];
   if (!state || state.locked)
     return (
       <div className="welcome">
@@ -951,11 +1082,16 @@ function App() {
       </div>
     );
   return (
-    <div className="shell">
+    <div
+      className={`shell ${page !== "messages" || !selection ? "has-mobile-dock" : ""}`}
+    >
       <a className="skip" href="#main">
         Saltar para o conteúdo
       </a>
-      <aside className={"sidebar " + (mobileMenu ? "mobile-open" : "")}>
+      <aside
+        id="primary-sidebar"
+        className={"sidebar " + (mobileMenu ? "mobile-open" : "")}
+      >
         <Logo />
         <div className="workspace">
           <span className="workspace-icon">L</span>
@@ -1029,6 +1165,8 @@ function App() {
           <button
             className="icon mobile-only"
             aria-label="Abrir navegação"
+            aria-controls="primary-sidebar"
+            aria-expanded={mobileMenu}
             onClick={() => setMobileMenu(!mobileMenu)}
           >
             <Menu />
@@ -1039,6 +1177,25 @@ function App() {
               {nav.find((n) => n.id === page)?.label ?? "Definições"}
             </strong>
           </div>
+          <button
+            className="command-trigger"
+            onClick={() => setCommandsOpen(true)}
+            aria-label="Pesquisar e navegar"
+            aria-keyshortcuts="Control+k Meta+k"
+          >
+            <Search size={17} />
+            <span>Pesquisar</span>
+            <kbd>⌘ / Ctrl K</kbd>
+          </button>
+          {page === "messages" && selection && (
+            <button
+              className="icon compact-outbox"
+              aria-label="Estado dos envios"
+              onClick={() => setModal("outbox")}
+            >
+              <Send size={18} />
+            </button>
+          )}
           <div className={"connection-badge " + (offline ? "warning" : "")}>
             <span className="live-dot" />
             {offline
@@ -1299,6 +1456,8 @@ function App() {
                       {activeMessages.map((o) => (
                         <article
                           key={o.id}
+                          id={`message-${o.id}`}
+                          tabIndex={-1}
                           className={
                             "message " + (o.author.id === me?.id ? "own" : "")
                           }
@@ -2308,6 +2467,20 @@ function App() {
                 <h3>Leitura e acessibilidade</h3>
                 <label className="toggle-row">
                   <div>
+                    <strong>Liquid Glass</strong>
+                    <span>
+                      Transparência e profundidade. Efeitos reduzidos em baixo
+                      consumo, alto contraste ou por preferência do sistema.
+                    </span>
+                  </div>
+                  <input
+                    type="checkbox"
+                    checked={glass}
+                    onChange={(e) => setGlass(e.target.checked)}
+                  />
+                </label>
+                <label className="toggle-row">
+                  <div>
                     <strong>Texto maior</strong>
                     <span>
                       Aumentar mensagens, controlos e informação importante.
@@ -2375,11 +2548,42 @@ function App() {
           </footer>
         </main>
       </div>
+      {(page !== "messages" || !selection) && !mobileMenu && (
+        <nav className="mobile-dock" aria-label="Navegação rápida">
+          {nav.map((item) => (
+            <button
+              key={item.id}
+              aria-label={`Ir para ${item.label}`}
+              aria-current={page === item.id ? "page" : undefined}
+              onClick={() => changePage(item.id)}
+            >
+              <item.icon size={21} />
+              <span>
+                {item.id === "site"
+                  ? "Página"
+                  : item.id === "messages"
+                    ? "Conversas"
+                    : item.id === "feed"
+                      ? "Praça"
+                      : item.id === "network"
+                        ? "Rede"
+                        : "Guardados"}
+              </span>
+            </button>
+          ))}
+        </nav>
+      )}
       {notice && (
         <div className="toast" role="status">
           <Check size={17} />
           {notice}
         </div>
+      )}
+      {commandsOpen && (
+        <CommandPalette
+          commands={commands}
+          close={() => setCommandsOpen(false)}
+        />
       )}
       {modal && (
         <Modal

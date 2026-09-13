@@ -1,0 +1,39 @@
+{
+  "result": "pass",
+  "at": "2026-09-13T13:30:50.620Z",
+  "platform": "linux",
+  "onboardingLayout": {
+    "viewportWidth": 1440,
+    "documentWidth": 1440,
+    "noHorizontalOverflow": true
+  },
+  "arch": "x64",
+  "electron": "44.3.0",
+  "chromium": "152.0.7977.78",
+  "node": "24.20.0",
+  "rendererSandboxRequested": true,
+  "rendererSandboxReported": "unavailable",
+  "rendererNodeAccess": false,
+  "isolatedSession": true,
+  "unauthorizedApiStatus": 401,
+  "authorizedApiStatus": 200,
+  "externalRequestBlocked": true,
+  "externalRequestControl": {
+    "mainProcessReachable": true,
+    "controlRendererReachable": true,
+    "protectedRendererRejected": true,
+    "controlRendererSandboxRequested": true,
+    "controlRendererWebSecurity": true,
+    "requests": {
+      "main": 1,
+      "control": 1,
+      "protected": 0
+    }
+  },
+  "daemonSeparateProcess": true,
+  "tcpListener": "127.0.0.1",
+  "physicalRadio": "not tested",
+  "screenshot": ".cache/desktop/smoke.png",
+  "screenshotSource": "presented compositor frame from mapped test window",
+  "daemonStopped": true
+}
