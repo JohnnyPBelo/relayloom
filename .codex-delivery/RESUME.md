@@ -20,7 +20,7 @@ Nenhum teste local desta fase está em curso. Não repetir por perder handles. F
 
 ## Apple e restante âmbito
 
-CI34721962376/274004e terminou: Node3OS, Go e3 desktop passaram. iOS26.4.1 importou fotografia10.038s; XCUITest lançou app PID17625 e executou1 teste, falhado57.965s por missing("WKWebView startup") após45s. Nenhum fluxo funcional passou. O flag simulatorExecuted=false do runner refere o gate completo, não apaga o lançamento/teste real. docs/evidence/ios/274004e. A próxima alteração de diagnóstico deve capturar a tela de falha antes de terminar a app; não mexer em bridge/configuração, não aumentar prazos nem repetir cegamente addmedia, que já passou.
+CI34721962376/274004e terminou: Node3OS, Go e3 desktop passaram. iOS26.4.1 importou fotografia10.038s; XCUITest lançou app PID17625 e executou1 teste, falhado57.965s por missing("WKWebView startup") após45s. Nenhum fluxo funcional passou. O flag simulatorExecuted=false do runner refere o gate completo, não apaga o lançamento/teste real. docs/evidence/ios/274004e. A alteração de diagnóstico captura a tela de falha antes de terminar a app;19 testes host e verificação estática passaram (sem compilação Swift/execução Apple), evidência em docs/evidence/ios/startup-capture-host; não mexer em bridge/configuração, não aumentar prazos nem repetir cegamente addmedia, que já passou.
 
 Android: APK136a5103/AAR9e2fb77f passaram82 asserções no único emulador API36x86_64 e leitura Node do SQLite. Usa C SQLite/Bionic após SIGSYS comprovado; modernc mantém-se nos restantes alvos. AVD/adb próprios parados; identidade preservada. Novas fontes exigem novos artefactos/gates; não há hardware/ARM64 físico/radios/assinatura validados.
 

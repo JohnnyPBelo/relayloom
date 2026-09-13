@@ -39,7 +39,14 @@ final class NativeSimulatorTests: XCTestCase {
         app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
         defer { app.terminate() }
-        try require(app.webViews.firstMatch, "WKWebView startup", timeout: 45)
+        do {
+            try require(app.webViews.firstMatch, "WKWebView startup", timeout: 45)
+        } catch {
+            // Preserve the owned app's native startup status before teardown.
+            // The previous failure terminated it before any capture was kept.
+            if app.state == .runningForeground { capture(app, "relayloom-00-startup-failed") }
+            throw error
+        }
         try require(app.webViews.buttons["Criar identidade"].firstMatch, "new identity form")
         capture(app, "relayloom-01-onboarding")
 
