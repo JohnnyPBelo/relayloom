@@ -42,7 +42,9 @@ jobs:
   native-go:
     needs: native-node
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # Run34750795247 completed its checks but hit15m during final teardown.
+    # Keep the full serial test/interop/UI gate and bounded cleanup headroom.
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

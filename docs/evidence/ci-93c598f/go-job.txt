@@ -1,0 +1,563 @@
+native-go	Set up job	﻿2026-09-13T10:09:20.2731960Z Current runner version: '2.337.0'
+native-go	Set up job	2026-09-13T10:09:20.2757377Z ##[group]Runner Image Provisioner
+native-go	Set up job	2026-09-13T10:09:20.2758369Z Hosted Compute Agent
+native-go	Set up job	2026-09-13T10:09:20.2758971Z Version: 20260828.587
+native-go	Set up job	2026-09-13T10:09:20.2759607Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+native-go	Set up job	2026-09-13T10:09:20.2760448Z Build Date: 2026-08-28T16:44:25Z
+native-go	Set up job	2026-09-13T10:09:20.2761192Z Worker ID: {b4d4fc93-b00e-4481-bc1c-32dcc9f59ee8}
+native-go	Set up job	2026-09-13T10:09:20.2761927Z Azure Region: westus
+native-go	Set up job	2026-09-13T10:09:20.2762501Z ##[endgroup]
+native-go	Set up job	2026-09-13T10:09:20.2764105Z ##[group]Operating System
+native-go	Set up job	2026-09-13T10:09:20.2764872Z Ubuntu
+native-go	Set up job	2026-09-13T10:09:20.2765423Z 24.04.5
+native-go	Set up job	2026-09-13T10:09:20.2766262Z LTS
+native-go	Set up job	2026-09-13T10:09:20.2767219Z ##[endgroup]
+native-go	Set up job	2026-09-13T10:09:20.2767787Z ##[group]Runner Image
+native-go	Set up job	2026-09-13T10:09:20.2768465Z Image: ubuntu-24.04
+native-go	Set up job	2026-09-13T10:09:20.2769056Z Version: 20260907.300.1
+native-go	Set up job	2026-09-13T10:09:20.2770096Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260907.300/images/ubuntu/Ubuntu2404-Readme.md
+native-go	Set up job	2026-09-13T10:09:20.2771953Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260907.300
+native-go	Set up job	2026-09-13T10:09:20.2772983Z ##[endgroup]
+native-go	Set up job	2026-09-13T10:09:20.2774089Z ##[group]GITHUB_TOKEN Permissions
+native-go	Set up job	2026-09-13T10:09:20.2776569Z Contents: read
+native-go	Set up job	2026-09-13T10:09:20.2777230Z Metadata: read
+native-go	Set up job	2026-09-13T10:09:20.2777786Z ##[endgroup]
+native-go	Set up job	2026-09-13T10:09:20.2779937Z Secret source: Actions
+native-go	Set up job	2026-09-13T10:09:20.2780892Z Cache mode: write
+native-go	Set up job	2026-09-13T10:09:20.2781908Z Prepare workflow directory
+native-go	Set up job	2026-09-13T10:09:20.3118997Z Prepare all required actions
+native-go	Set up job	2026-09-13T10:09:20.3168922Z Getting action download info
+native-go	Set up job	2026-09-13T10:09:20.6859223Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+native-go	Set up job	2026-09-13T10:09:20.8053519Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+native-go	Set up job	2026-09-13T10:09:20.8957874Z Download action repository 'actions/setup-go@v5' (SHA:40f1582b2485089dde7abd97c1529aa768e1baff)
+native-go	Set up job	2026-09-13T10:09:21.3121260Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+native-go	Set up job	2026-09-13T10:09:21.5379847Z Complete job name: native-go
+native-go	Run actions/checkout@v4	﻿2026-09-13T10:09:21.6197369Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.6206574Z ##[group]Run actions/checkout@v4
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.6207468Z with:
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.6208032Z   repository: JohnnyPBelo/relayloom
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.6212151Z   token: ***
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.6212628Z   ssh-strict: true
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.6213102Z   ssh-user: git
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.6213594Z   persist-credentials: true
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.6214122Z   clean: true
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.6214739Z   sparse-checkout-cone-mode: true
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.6215501Z   fetch-depth: 1
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.6216009Z   fetch-tags: false
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.6216674Z   show-progress: true
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.6217196Z   lfs: false
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.6217650Z   submodules: false
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.6218185Z   set-safe-directory: true
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.6218733Z   allow-unsafe-pr-checkout: false
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.6219604Z ##[endgroup]
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.7255349Z Syncing repository: JohnnyPBelo/relayloom
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.7258389Z ##[group]Getting Git version info
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.7259359Z Working directory is '/home/runner/work/relayloom/relayloom'
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.7260760Z [command]/usr/bin/git version
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.7345316Z git version 2.55.0
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.7372046Z ##[endgroup]
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.7389369Z Temporarily overriding HOME='/home/runner/work/_temp/c2f331fa-be15-4f82-b59e-9f9240e56d75' before making global git config changes
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.7392361Z Adding repository directory to the temporary git global config as a safe directory
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.7396595Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/relayloom/relayloom
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.7453240Z Deleting the contents of '/home/runner/work/relayloom/relayloom'
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.7459900Z ##[group]Initializing the repository
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.7464276Z [command]/usr/bin/git init /home/runner/work/relayloom/relayloom
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.7591703Z hint: Using 'master' as the name for the initial branch. This default branch name
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.7594264Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.7596889Z hint: to use in all of your new repositories, which will suppress this warning,
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.7598997Z hint: call:
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.7600216Z hint:
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.7601400Z hint: 	git config --global init.defaultBranch <name>
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.7602691Z hint:
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.7603851Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.7605659Z hint: 'development'. The just-created branch can be renamed via this command:
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.7607570Z hint:
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.7608158Z hint: 	git branch -m <name>
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.7608691Z hint:
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.7609806Z hint: Disable this message with "git config set advice.defaultBranchName false"
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.7612377Z Initialized empty Git repository in /home/runner/work/relayloom/relayloom/.git/
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.7615656Z [command]/usr/bin/git remote add origin https://github.com/JohnnyPBelo/relayloom
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.7667559Z ##[endgroup]
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.7669168Z ##[group]Disabling automatic garbage collection
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.7671444Z [command]/usr/bin/git config --local gc.auto 0
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.7708138Z ##[endgroup]
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.7710138Z ##[group]Setting up auth
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.7719006Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.7760104Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.8238651Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.8276822Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.8501605Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.8542138Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.8767941Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.8808967Z ##[endgroup]
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.8810672Z ##[group]Fetching the repository
+native-go	Run actions/checkout@v4	2026-09-13T10:09:21.8821517Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +93c598f459f3152fafb53341be0eca1287f02d06:refs/remotes/origin/main
+native-go	Run actions/checkout@v4	2026-09-13T10:09:23.1787848Z From https://github.com/JohnnyPBelo/relayloom
+native-go	Run actions/checkout@v4	2026-09-13T10:09:23.1789904Z  * [new ref]         93c598f459f3152fafb53341be0eca1287f02d06 -> origin/main
+native-go	Run actions/checkout@v4	2026-09-13T10:09:23.1793696Z ##[endgroup]
+native-go	Run actions/checkout@v4	2026-09-13T10:09:23.1795301Z ##[group]Determining the checkout info
+native-go	Run actions/checkout@v4	2026-09-13T10:09:23.1797117Z ##[endgroup]
+native-go	Run actions/checkout@v4	2026-09-13T10:09:23.1800570Z [command]/usr/bin/git sparse-checkout disable
+native-go	Run actions/checkout@v4	2026-09-13T10:09:23.1853347Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+native-go	Run actions/checkout@v4	2026-09-13T10:09:23.1888345Z ##[group]Checking out the ref
+native-go	Run actions/checkout@v4	2026-09-13T10:09:23.1893161Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+native-go	Run actions/checkout@v4	2026-09-13T10:09:23.2998391Z Switched to a new branch 'main'
+native-go	Run actions/checkout@v4	2026-09-13T10:09:23.3003074Z branch 'main' set up to track 'origin/main'.
+native-go	Run actions/checkout@v4	2026-09-13T10:09:23.3083873Z ##[endgroup]
+native-go	Run actions/checkout@v4	2026-09-13T10:09:23.3088442Z [command]/usr/bin/git log -1 --format=%H
+native-go	Run actions/checkout@v4	2026-09-13T10:09:23.3092245Z 93c598f459f3152fafb53341be0eca1287f02d06
+native-go	Run actions/setup-node@v4	﻿2026-09-13T10:09:23.3487170Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+native-go	Run actions/setup-node@v4	2026-09-13T10:09:23.3493497Z ##[group]Run actions/setup-node@v4
+native-go	Run actions/setup-node@v4	2026-09-13T10:09:23.3494714Z with:
+native-go	Run actions/setup-node@v4	2026-09-13T10:09:23.3495645Z   node-version: 22
+native-go	Run actions/setup-node@v4	2026-09-13T10:09:23.3496887Z   always-auth: false
+native-go	Run actions/setup-node@v4	2026-09-13T10:09:23.3497862Z   check-latest: false
+native-go	Run actions/setup-node@v4	2026-09-13T10:09:23.3508435Z   token: ***
+native-go	Run actions/setup-node@v4	2026-09-13T10:09:23.3509326Z ##[endgroup]
+native-go	Run actions/setup-node@v4	2026-09-13T10:09:23.4953415Z Found in cache @ /opt/hostedtoolcache/node/22.23.2/x64
+native-go	Run actions/setup-node@v4	2026-09-13T10:09:23.4957337Z (node:2224) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+native-go	Run actions/setup-node@v4	2026-09-13T10:09:23.4960389Z (Use `node --trace-deprecation ...` to show where the warning was created)
+native-go	Run actions/setup-node@v4	2026-09-13T10:09:23.4962784Z ##[group]Environment details
+native-go	Run actions/setup-node@v4	2026-09-13T10:09:23.9091767Z node: v22.23.2
+native-go	Run actions/setup-node@v4	2026-09-13T10:09:23.9093229Z npm: 10.9.8
+native-go	Run actions/setup-node@v4	2026-09-13T10:09:23.9094682Z yarn: 1.22.22
+native-go	Run actions/setup-node@v4	2026-09-13T10:09:23.9097627Z ##[endgroup]
+native-go	Run actions/setup-go@v5	﻿2026-09-13T10:09:23.9378133Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:23.9383029Z ##[group]Run actions/setup-go@v5
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:23.9384076Z with:
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:23.9384886Z   go-version: 1.26.8
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:23.9385793Z   cache: false
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:23.9386889Z   check-latest: false
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:23.9396161Z   token: ***
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:23.9397156Z ##[endgroup]
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.0749238Z Setup go version spec 1.26.8
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.0890687Z Found in cache @ /opt/hostedtoolcache/go/1.26.8/x64
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.0895961Z (node:2255) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.0900344Z (Use `node --trace-deprecation ...` to show where the warning was created)
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.0902456Z Added go to the path
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.0904301Z Successfully set up Go version 1.26.8
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.7956824Z go version go1.26.8 linux/amd64
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.7957551Z 
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.7958213Z ##[group]go env
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9594035Z AR='ar'
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9594624Z CC='gcc'
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9594984Z CGO_CFLAGS='-O2 -g'
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9595333Z CGO_CPPFLAGS=''
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9595700Z CGO_CXXFLAGS='-O2 -g'
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9596016Z CGO_ENABLED='1'
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9596763Z CGO_FFLAGS='-O2 -g'
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9597174Z CGO_LDFLAGS='-O2 -g'
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9597552Z CXX='g++'
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9597835Z GCCGO='gccgo'
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9598148Z GO111MODULE=''
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9598467Z GOAMD64='v1'
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9598782Z GOARCH='amd64'
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9599060Z GOAUTH='netrc'
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9599361Z GOBIN=''
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9599779Z GOCACHE='/home/runner/.cache/go-build'
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9600214Z GOCACHEPROG=''
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9600513Z GODEBUG=''
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9600881Z GOENV='/home/runner/.config/go/env'
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9601283Z GOEXE=''
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9601586Z GOEXPERIMENT=''
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9601939Z GOFIPS140='off'
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9602304Z GOFLAGS=''
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9603385Z GOGCCFLAGS='-fPIC -m64 -pthread -Wl,--no-gc-sections -fmessage-length=0 -ffile-prefix-map=/tmp/go-build924225878=/tmp/go-build -gno-record-gcc-switches'
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9604289Z GOHOSTARCH='amd64'
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9604592Z GOHOSTOS='linux'
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9604918Z GOINSECURE=''
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9605273Z GOMOD='/dev/null'
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9606147Z GOMODCACHE='/home/runner/go/pkg/mod'
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9606967Z GONOPROXY=''
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9607533Z GONOSUMDB=''
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9608029Z GOOS='linux'
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9608431Z GOPATH='/home/runner/go'
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9608763Z GOPRIVATE=''
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9609208Z GOPROXY='https://proxy.golang.org,direct'
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9609763Z GOROOT='/opt/hostedtoolcache/go/1.26.8/x64'
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9610179Z GOSUMDB='sum.golang.org'
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9610577Z GOTELEMETRY='local'
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9611051Z GOTELEMETRYDIR='/home/runner/.config/go/telemetry'
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9611470Z GOTMPDIR=''
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9611776Z GOTOOLCHAIN='auto'
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9612312Z GOTOOLDIR='/opt/hostedtoolcache/go/1.26.8/x64/pkg/tool/linux_amd64'
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9612783Z GOVCS=''
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9613101Z GOVERSION='go1.26.8'
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9613411Z GOWORK=''
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9613725Z PKG_CONFIG='pkg-config'
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9613945Z 
+native-go	Run actions/setup-go@v5	2026-09-13T10:09:24.9614451Z ##[endgroup]
+native-go	Run npm ci --ignore-scripts	﻿2026-09-13T10:09:24.9725989Z ##[group]Run npm ci --ignore-scripts
+native-go	Run npm ci --ignore-scripts	2026-09-13T10:09:24.9726867Z [36;1mnpm ci --ignore-scripts[0m
+native-go	Run npm ci --ignore-scripts	2026-09-13T10:09:24.9774789Z shell: /usr/bin/bash -e {0}
+native-go	Run npm ci --ignore-scripts	2026-09-13T10:09:24.9775151Z ##[endgroup]
+native-go	Run npm ci --ignore-scripts	2026-09-13T10:09:26.7986689Z npm warn deprecated rimraf@2.6.3: Rimraf versions prior to v4 are no longer supported
+native-go	Run npm ci --ignore-scripts	2026-09-13T10:09:27.1801362Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+native-go	Run npm ci --ignore-scripts	2026-09-13T10:09:27.2024137Z npm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+native-go	Run npm ci --ignore-scripts	2026-09-13T10:09:28.0991701Z npm warn deprecated boolean@3.2.0: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+native-go	Run npm ci --ignore-scripts	2026-09-13T10:09:31.8952025Z 
+native-go	Run npm ci --ignore-scripts	2026-09-13T10:09:31.8952744Z added 383 packages in 7s
+native-go	Run npm run build	﻿2026-09-13T10:09:31.9502334Z ##[group]Run npm run build
+native-go	Run npm run build	2026-09-13T10:09:31.9502657Z [36;1mnpm run build[0m
+native-go	Run npm run build	2026-09-13T10:09:31.9539278Z shell: /usr/bin/bash -e {0}
+native-go	Run npm run build	2026-09-13T10:09:31.9539549Z ##[endgroup]
+native-go	Run npm run build	2026-09-13T10:09:32.0530439Z 
+native-go	Run npm run build	2026-09-13T10:09:32.0531125Z > relayloom@0.1.0 build
+native-go	Run npm run build	2026-09-13T10:09:32.0531636Z > tsc --noEmit && vite build
+native-go	Run npm run build	2026-09-13T10:09:32.0531834Z 
+native-go	Run npm run build	2026-09-13T10:09:38.1036833Z [36mvite v7.3.6 [32mbuilding client environment for production...[36m[39m
+native-go	Run npm run build	2026-09-13T10:09:38.1940598Z transforming...
+native-go	Run npm run build	2026-09-13T10:09:40.1302778Z [32m✓[39m 1585 modules transformed.
+native-go	Run npm run build	2026-09-13T10:09:40.2950985Z rendering chunks...
+native-go	Run npm run build	2026-09-13T10:09:40.3023500Z computing gzip size...
+native-go	Run npm run build	2026-09-13T10:09:40.3131068Z [2m../../dist/web/[22m[32mindex.html                 [39m[1m[2m  0.58 kB[22m[1m[22m[2m │ gzip:  0.35 kB[22m
+native-go	Run npm run build	2026-09-13T10:09:40.3132913Z [2m../../dist/web/[22m[2massets/[22m[35mindex-BHPv8Sxp.css  [39m[1m[2m 46.65 kB[22m[1m[22m[2m │ gzip:  9.90 kB[22m
+native-go	Run npm run build	2026-09-13T10:09:40.3134686Z [2m../../dist/web/[22m[2massets/[22m[36mindex-BykfOJHU.js   [39m[1m[2m311.42 kB[22m[1m[22m[2m │ gzip: 96.20 kB[22m
+native-go	Run npm run build	2026-09-13T10:09:40.3135838Z [32m✓ built in 2.17s[39m
+native-go	Run npm run native:build	﻿2026-09-13T10:09:40.3578740Z ##[group]Run npm run native:build
+native-go	Run npm run native:build	2026-09-13T10:09:40.3579078Z [36;1mnpm run native:build[0m
+native-go	Run npm run native:build	2026-09-13T10:09:40.3615103Z shell: /usr/bin/bash -e {0}
+native-go	Run npm run native:build	2026-09-13T10:09:40.3615373Z ##[endgroup]
+native-go	Run npm run native:build	2026-09-13T10:09:40.4633739Z 
+native-go	Run npm run native:build	2026-09-13T10:09:40.8025101Z go: downloading golang.org/x/text v0.42.0
+native-go	Run npm run native:build	2026-09-13T10:09:40.8025972Z > relayloom@0.1.0 native:build
+native-go	Run npm run native:build	2026-09-13T10:09:40.8026863Z > node scripts/native-build.mjs
+native-go	Run npm run native:build	2026-09-13T10:09:40.8027183Z 
+native-go	Run npm run native:build	2026-09-13T10:09:41.9659134Z go: downloading golang.org/x/crypto v0.57.0
+native-go	Run npm run native:build	2026-09-13T10:09:43.2442911Z go: downloading modernc.org/sqlite v1.58.0
+native-go	Run npm run native:build	2026-09-13T10:09:44.6778067Z go: downloading modernc.org/libc v1.75.6
+native-go	Run npm run native:build	2026-09-13T10:09:44.6778727Z go: downloading golang.org/x/sys v0.48.0
+native-go	Run npm run native:build	2026-09-13T10:09:46.1297995Z go: downloading modernc.org/mathutil v1.7.1
+native-go	Run npm run native:build	2026-09-13T10:09:46.1298873Z go: downloading github.com/dustin/go-humanize v1.0.1
+native-go	Run npm run native:build	2026-09-13T10:09:46.1299663Z go: downloading github.com/google/uuid v1.6.0
+native-go	Run npm run native:build	2026-09-13T10:09:46.1300373Z go: downloading modernc.org/memory v1.12.1
+native-go	Run npm run native:build	2026-09-13T10:09:46.1505617Z go: downloading github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec
+native-go	Run npm run native:build	2026-09-13T10:10:12.6413811Z Native app CLI built in project cache.
+native-go	Run npm run test:native	﻿2026-09-13T10:10:12.6537405Z ##[group]Run npm run test:native
+native-go	Run npm run test:native	2026-09-13T10:10:12.6537926Z [36;1mnpm run test:native[0m
+native-go	Run npm run test:native	2026-09-13T10:10:12.6575642Z shell: /usr/bin/bash -e {0}
+native-go	Run npm run test:native	2026-09-13T10:10:12.6575916Z ##[endgroup]
+native-go	Run npm run test:native	2026-09-13T10:10:12.7596657Z 
+native-go	Run npm run test:native	2026-09-13T10:10:12.7597448Z > relayloom@0.1.0 test:native
+native-go	Run npm run test:native	2026-09-13T10:10:12.7598816Z > node scripts/go.mjs test -race -p=2 ./core ./transport ./app ./groups ./groupstore ./groupauthority ./groupaccess ./groupledger ./profilelock ./profilestate ./profilebinding ./profiledb ./sqlitedriver
+native-go	Run npm run test:native	2026-09-13T10:10:12.7599724Z 
+native-go	Run npm run test:native	2026-09-13T10:10:38.5336063Z ok  	github.com/JohnnyPBelo/relayloom/native/core	8.624s
+native-go	Run npm run test:native	2026-09-13T10:10:43.4233155Z ok  	github.com/JohnnyPBelo/relayloom/native/transport	13.238s
+native-go	Run npm run test:native	2026-09-13T10:16:36.8011609Z ok  	github.com/JohnnyPBelo/relayloom/native/app	331.422s
+native-go	Run npm run test:native	2026-09-13T10:16:36.8012812Z ok  	github.com/JohnnyPBelo/relayloom/native/groups	4.722s
+native-go	Run npm run test:native	2026-09-13T10:16:36.8013730Z ok  	github.com/JohnnyPBelo/relayloom/native/groupstore	1.360s
+native-go	Run npm run test:native	2026-09-13T10:16:36.8015024Z ok  	github.com/JohnnyPBelo/relayloom/native/groupauthority	188.066s
+native-go	Run npm run test:native	2026-09-13T10:16:36.8016071Z ok  	github.com/JohnnyPBelo/relayloom/native/groupaccess	1.390s
+native-go	Run npm run test:native	2026-09-13T10:16:36.8017267Z ok  	github.com/JohnnyPBelo/relayloom/native/groupledger	1.803s
+native-go	Run npm run test:native	2026-09-13T10:16:36.8018214Z ok  	github.com/JohnnyPBelo/relayloom/native/profilelock	1.041s
+native-go	Run npm run test:native	2026-09-13T10:16:36.8019113Z ok  	github.com/JohnnyPBelo/relayloom/native/profilestate	9.269s
+native-go	Run npm run test:native	2026-09-13T10:16:36.8020057Z ok  	github.com/JohnnyPBelo/relayloom/native/profilebinding	1.060s
+native-go	Run npm run test:native	2026-09-13T10:16:36.8020943Z ok  	github.com/JohnnyPBelo/relayloom/native/profiledb	1.454s
+native-go	Run npm run test:native	2026-09-13T10:16:36.8021828Z ok  	github.com/JohnnyPBelo/relayloom/native/sqlitedriver	1.017s
+native-go	C SQLite storage contract on the host (not Android execution)	﻿2026-09-13T10:16:36.8865639Z ##[group]Run npm run test:native:cgo-storage
+native-go	C SQLite storage contract on the host (not Android execution)	2026-09-13T10:16:36.8866023Z [36;1mnpm run test:native:cgo-storage[0m
+native-go	C SQLite storage contract on the host (not Android execution)	2026-09-13T10:16:36.8903177Z shell: /usr/bin/bash -e {0}
+native-go	C SQLite storage contract on the host (not Android execution)	2026-09-13T10:16:36.8903442Z ##[endgroup]
+native-go	C SQLite storage contract on the host (not Android execution)	2026-09-13T10:16:36.9910661Z 
+native-go	C SQLite storage contract on the host (not Android execution)	2026-09-13T10:16:36.9911396Z > relayloom@0.1.0 test:native:cgo-storage
+native-go	C SQLite storage contract on the host (not Android execution)	2026-09-13T10:16:36.9913244Z > node scripts/go.mjs test -race -p=1 -tags relayloom_sqlite_cgo,sqlite_omit_load_extension ./sqlitedriver ./groupstore ./profilelock ./profiledb ./profilestate
+native-go	C SQLite storage contract on the host (not Android execution)	2026-09-13T10:16:36.9914421Z 
+native-go	C SQLite storage contract on the host (not Android execution)	2026-09-13T10:16:37.0336559Z go: downloading github.com/mattn/go-sqlite3 v1.14.52
+native-go	C SQLite storage contract on the host (not Android execution)	2026-09-13T10:17:11.6748787Z ok  	github.com/JohnnyPBelo/relayloom/native/sqlitedriver	1.012s
+native-go	C SQLite storage contract on the host (not Android execution)	2026-09-13T10:17:13.6114132Z ok  	github.com/JohnnyPBelo/relayloom/native/groupstore	1.170s
+native-go	C SQLite storage contract on the host (not Android execution)	2026-09-13T10:17:15.0258439Z ok  	github.com/JohnnyPBelo/relayloom/native/profilelock	1.018s
+native-go	C SQLite storage contract on the host (not Android execution)	2026-09-13T10:17:16.8644341Z ok  	github.com/JohnnyPBelo/relayloom/native/profiledb	1.217s
+native-go	C SQLite storage contract on the host (not Android execution)	2026-09-13T10:17:24.8939384Z ok  	github.com/JohnnyPBelo/relayloom/native/profilestate	7.600s
+native-go	Run npm run test:interop	﻿2026-09-13T10:17:24.9203307Z ##[group]Run npm run test:interop
+native-go	Run npm run test:interop	2026-09-13T10:17:24.9203639Z [36;1mnpm run test:interop[0m
+native-go	Run npm run test:interop	2026-09-13T10:17:24.9239622Z shell: /usr/bin/bash -e {0}
+native-go	Run npm run test:interop	2026-09-13T10:17:24.9239880Z ##[endgroup]
+native-go	Run npm run test:interop	2026-09-13T10:17:25.0236300Z 
+native-go	Run npm run test:interop	2026-09-13T10:17:25.0237355Z > relayloom@0.1.0 test:interop
+native-go	Run npm run test:interop	2026-09-13T10:17:25.0240621Z > tsx --test --test-concurrency=1 tests/native/*.test.ts
+native-go	Run npm run test:interop	2026-09-13T10:17:25.0241126Z 
+native-go	Run npm run test:interop	2026-09-13T10:17:25.1401669Z TAP version 13
+native-go	Run npm run test:interop	2026-09-13T10:17:30.4489127Z # Subtest: real Node and Go processes preserve encrypted reservations after process exit, with an eviction negative control
+native-go	Run npm run test:interop	2026-09-13T10:17:30.4497710Z ok 1 - real Node and Go processes preserve encrypted reservations after process exit, with an eviction negative control
+native-go	Run npm run test:interop	2026-09-13T10:17:30.4504240Z   ---
+native-go	Run npm run test:interop	2026-09-13T10:17:30.4504882Z   duration_ms: 5115.33211
+native-go	Run npm run test:interop	2026-09-13T10:17:30.4505513Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-13T10:17:30.4506024Z   ...
+native-go	Run npm run test:interop	2026-09-13T10:17:30.7126214Z # (node:8744) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+native-go	Run npm run test:interop	2026-09-13T10:17:30.7128577Z # (Use `node --trace-warnings ...` to show where the warning was created)
+native-go	Run npm run test:interop	2026-09-13T10:17:45.7702862Z # Subtest: Node and Go derive identical authorization from signed bundles and the same protected authority files
+native-go	Run npm run test:interop	2026-09-13T10:17:45.7706069Z ok 2 - Node and Go derive identical authorization from signed bundles and the same protected authority files
+native-go	Run npm run test:interop	2026-09-13T10:17:45.7707907Z   ---
+native-go	Run npm run test:interop	2026-09-13T10:17:45.7708292Z   duration_ms: 15086.595013
+native-go	Run npm run test:interop	2026-09-13T10:17:45.7708714Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-13T10:17:45.7709097Z   ...
+native-go	Run npm run test:interop	2026-09-13T10:17:50.4325583Z # Subtest: actual node/native group admission preserves quarantine and history through node restart
+native-go	Run npm run test:interop	2026-09-13T10:17:50.4327650Z ok 3 - actual node/native group admission preserves quarantine and history through node restart
+native-go	Run npm run test:interop	2026-09-13T10:17:50.4328718Z   ---
+native-go	Run npm run test:interop	2026-09-13T10:17:50.4329143Z   duration_ms: 4415.931335
+native-go	Run npm run test:interop	2026-09-13T10:17:50.4329576Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-13T10:17:50.4329906Z   ...
+native-go	Run npm run test:interop	2026-09-13T10:17:54.1100312Z # Subtest: actual native/node group admission preserves quarantine and history through native restart
+native-go	Run npm run test:interop	2026-09-13T10:17:54.1101984Z ok 4 - actual native/node group admission preserves quarantine and history through native restart
+native-go	Run npm run test:interop	2026-09-13T10:17:54.1102822Z   ---
+native-go	Run npm run test:interop	2026-09-13T10:17:54.1103085Z   duration_ms: 3677.445429
+native-go	Run npm run test:interop	2026-09-13T10:17:54.1103355Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-13T10:17:54.1103700Z   ...
+native-go	Run npm run test:interop	2026-09-13T10:17:56.9223048Z # Subtest: actual native/native group admission preserves quarantine and history through native restart
+native-go	Run npm run test:interop	2026-09-13T10:17:56.9224755Z ok 5 - actual native/native group admission preserves quarantine and history through native restart
+native-go	Run npm run test:interop	2026-09-13T10:17:56.9225421Z   ---
+native-go	Run npm run test:interop	2026-09-13T10:17:56.9225674Z   duration_ms: 2817.251368
+native-go	Run npm run test:interop	2026-09-13T10:17:56.9225948Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-13T10:17:56.9226149Z   ...
+native-go	Run npm run test:interop	2026-09-13T10:17:57.1415278Z # (node:8986) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+native-go	Run npm run test:interop	2026-09-13T10:17:57.1416994Z # (Use `node --trace-warnings ...` to show where the warning was created)
+native-go	Run npm run test:interop	2026-09-13T10:18:19.6465598Z # Subtest: real Node/Go authority files preserve heads, cursors, fences, CAS and crash idempotence
+native-go	Run npm run test:interop	2026-09-13T10:18:19.6468240Z ok 6 - real Node/Go authority files preserve heads, cursors, fences, CAS and crash idempotence
+native-go	Run npm run test:interop	2026-09-13T10:18:19.6469051Z   ---
+native-go	Run npm run test:interop	2026-09-13T10:18:19.6469365Z   duration_ms: 22512.001247
+native-go	Run npm run test:interop	2026-09-13T10:18:19.6469762Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-13T10:18:19.6470014Z   ...
+native-go	Run npm run test:interop	2026-09-13T10:18:22.9777152Z # Subtest: Node and Go verify each other's signed group epochs, consent, reader scope and exact Unicode bytes
+native-go	Run npm run test:interop	2026-09-13T10:18:22.9780335Z ok 7 - Node and Go verify each other's signed group epochs, consent, reader scope and exact Unicode bytes
+native-go	Run npm run test:interop	2026-09-13T10:18:22.9781324Z   ---
+native-go	Run npm run test:interop	2026-09-13T10:18:22.9781707Z   duration_ms: 3160.892648
+native-go	Run npm run test:interop	2026-09-13T10:18:22.9782165Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-13T10:18:22.9782520Z   ...
+native-go	Run npm run test:interop	2026-09-13T10:18:24.7367371Z # (node:10195) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+native-go	Run npm run test:interop	2026-09-13T10:18:24.7369799Z # (Use `node --trace-warnings ...` to show where the warning was created)
+native-go	Run npm run test:interop	2026-09-13T10:18:40.1049016Z # Subtest: real Node/Go near-limit index preserves stop headroom and the disabled-guard control fails
+native-go	Run npm run test:interop	2026-09-13T10:18:40.1051187Z ok 8 - real Node/Go near-limit index preserves stop headroom and the disabled-guard control fails
+native-go	Run npm run test:interop	2026-09-13T10:18:40.1051893Z   ---
+native-go	Run npm run test:interop	2026-09-13T10:18:40.1052183Z   duration_ms: 16925.505375
+native-go	Run npm run test:interop	2026-09-13T10:18:40.1052536Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-13T10:18:40.1052787Z   ...
+native-go	Run npm run test:interop	2026-09-13T10:18:40.3542561Z # (node:10448) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+native-go	Run npm run test:interop	2026-09-13T10:18:40.3544889Z # (Use `node --trace-warnings ...` to show where the warning was created)
+native-go	Run npm run test:interop	2026-09-13T10:18:56.5608825Z # Subtest: Node and Go share durable admission, quarantine and stops across real commit-boundary process exits
+native-go	Run npm run test:interop	2026-09-13T10:18:56.5612539Z ok 9 - Node and Go share durable admission, quarantine and stops across real commit-boundary process exits
+native-go	Run npm run test:interop	2026-09-13T10:18:56.5613476Z   ---
+native-go	Run npm run test:interop	2026-09-13T10:18:56.5613870Z   duration_ms: 16231.630863
+native-go	Run npm run test:interop	2026-09-13T10:18:56.5614332Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-13T10:18:56.5614577Z   ...
+native-go	Run npm run test:interop	2026-09-13T10:18:56.8467668Z # (node:10689) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+native-go	Run npm run test:interop	2026-09-13T10:18:56.8468958Z # (Use `node --trace-warnings ...` to show where the warning was created)
+native-go	Run npm run test:interop	2026-09-13T10:19:21.9121461Z # {"phase":"node-install-first-128","elapsedMs":13752}
+native-go	Run npm run test:interop	2026-09-13T10:19:22.6037227Z # {"phase":"node-observe-first-128","elapsedMs":692}
+native-go	Run npm run test:interop	2026-09-13T10:19:28.7972909Z # {"phase":"node-stop-first-128","elapsedMs":6193}
+native-go	Run npm run test:interop	2026-09-13T10:19:29.0065761Z # {"phase":"node-observe-stops","elapsedMs":209}
+native-go	Run npm run test:interop	2026-09-13T10:19:29.3739604Z # {"phase":"node-create-next-group","elapsedMs":368}
+native-go	Run npm run test:interop	2026-09-13T10:19:45.1053543Z # {"phase":"node-install-next-128","elapsedMs":15731}
+native-go	Run npm run test:interop	2026-09-13T10:19:46.0008343Z # {"phase":"node-observe-256","elapsedMs":896}
+native-go	Run npm run test:interop	2026-09-13T10:19:46.0404780Z # Subtest: real Node/Go application deaths preserve an outbox stop at the same commit as group closure
+native-go	Run npm run test:interop	2026-09-13T10:19:46.0407028Z ok 10 - real Node/Go application deaths preserve an outbox stop at the same commit as group closure
+native-go	Run npm run test:interop	2026-09-13T10:19:46.0413428Z   ---
+native-go	Run npm run test:interop	2026-09-13T10:19:46.0414278Z   duration_ms: 10569.824829
+native-go	Run npm run test:interop	2026-09-13T10:19:46.0453579Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-13T10:19:46.0467014Z   ...
+native-go	Run npm run test:interop	2026-09-13T10:19:46.7411978Z # {"phase":"go-open-256","elapsedMs":740}
+native-go	Run npm run test:interop	2026-09-13T10:19:47.3957095Z # {"phase":"go-observe-256","elapsedMs":654}
+native-go	Run npm run test:interop	2026-09-13T10:19:52.2665158Z # {"phase":"go-stop-next-128","elapsedMs":4871}
+native-go	Run npm run test:interop	2026-09-13T10:19:53.1577899Z # {"phase":"go-observe-256-stops","elapsedMs":891}
+native-go	Run npm run test:interop	2026-09-13T10:19:55.1899616Z # Subtest: 128 real stopped intents and 128 pending reserved payloads reopen across Node and Go without reopening old retries
+native-go	Run npm run test:interop	2026-09-13T10:19:55.1901878Z ok 11 - 128 real stopped intents and 128 pending reserved payloads reopen across Node and Go without reopening old retries
+native-go	Run npm run test:interop	2026-09-13T10:19:55.1903098Z   ---
+native-go	Run npm run test:interop	2026-09-13T10:19:55.1903669Z   duration_ms: 47782.255967
+native-go	Run npm run test:interop	2026-09-13T10:19:55.1904132Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-13T10:19:55.1904474Z   ...
+native-go	Run npm run test:interop	2026-09-13T10:19:57.5185256Z # Subtest: actual node creator and native member APIs preserve authority across engine takeover
+native-go	Run npm run test:interop	2026-09-13T10:19:57.5217712Z ok 12 - actual node creator and native member APIs preserve authority across engine takeover
+native-go	Run npm run test:interop	2026-09-13T10:19:57.5218778Z   ---
+native-go	Run npm run test:interop	2026-09-13T10:19:57.5233987Z   duration_ms: 2120.393885
+native-go	Run npm run test:interop	2026-09-13T10:19:57.5234442Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-13T10:19:57.5234787Z   ...
+native-go	Run npm run test:interop	2026-09-13T10:19:59.2922819Z # Subtest: actual native creator and node member APIs preserve authority across engine takeover
+native-go	Run npm run test:interop	2026-09-13T10:19:59.2924223Z ok 13 - actual native creator and node member APIs preserve authority across engine takeover
+native-go	Run npm run test:interop	2026-09-13T10:19:59.2925094Z   ---
+native-go	Run npm run test:interop	2026-09-13T10:19:59.2925613Z   duration_ms: 1794.941002
+native-go	Run npm run test:interop	2026-09-13T10:19:59.2926162Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-13T10:19:59.2927091Z   ...
+native-go	Run npm run test:interop	2026-09-13T10:19:59.5062734Z # (node:11290) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+native-go	Run npm run test:interop	2026-09-13T10:19:59.5064996Z # (Use `node --trace-warnings ...` to show where the warning was created)
+native-go	Run npm run test:interop	2026-09-13T10:20:00.5077142Z # Subtest: Node and Go share encrypted SQLite files, serialize real writers and recover each other's crashed transactions
+native-go	Run npm run test:interop	2026-09-13T10:20:00.5079781Z ok 14 - Node and Go share encrypted SQLite files, serialize real writers and recover each other's crashed transactions
+native-go	Run npm run test:interop	2026-09-13T10:20:00.5080755Z   ---
+native-go	Run npm run test:interop	2026-09-13T10:20:00.5081139Z   duration_ms: 1009.584623
+native-go	Run npm run test:interop	2026-09-13T10:20:00.5081775Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-13T10:20:00.5082150Z   ...
+native-go	Run npm run test:interop	2026-09-13T10:20:00.7432511Z # (node:11428) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+native-go	Run npm run test:interop	2026-09-13T10:20:00.7434303Z # (Use `node --trace-warnings ...` to show where the warning was created)
+native-go	Run npm run test:interop	2026-09-13T10:20:05.9438324Z # Subtest: real Node/Go process exits preserve group authority and the private document at one commit boundary
+native-go	Run npm run test:interop	2026-09-13T10:20:05.9441340Z ok 15 - real Node/Go process exits preserve group authority and the private document at one commit boundary
+native-go	Run npm run test:interop	2026-09-13T10:20:05.9442625Z   ---
+native-go	Run npm run test:interop	2026-09-13T10:20:05.9443006Z   duration_ms: 5227.276791
+native-go	Run npm run test:interop	2026-09-13T10:20:05.9443561Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-13T10:20:05.9443969Z   ...
+native-go	Run npm run test:interop	2026-09-13T10:20:15.3614326Z # Subtest: Go A → Node B → Go C: isolated real sockets, encrypted messages/receipts, partition, restart and publisher-offline seeding
+native-go	Run npm run test:interop	2026-09-13T10:20:15.3616633Z ok 16 - Go A → Node B → Go C: isolated real sockets, encrypted messages/receipts, partition, restart and publisher-offline seeding
+native-go	Run npm run test:interop	2026-09-13T10:20:15.3628256Z   ---
+native-go	Run npm run test:interop	2026-09-13T10:20:15.3628694Z   duration_ms: 9221.604708
+native-go	Run npm run test:interop	2026-09-13T10:20:15.3629111Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-13T10:20:15.3629321Z   ...
+native-go	Run npm run test:interop	2026-09-13T10:20:19.9748015Z # Subtest: Go A → Node B → Node C over TCP and serial PTYs preserves bytes, receipts and partition recovery
+native-go	Run npm run test:interop	2026-09-13T10:20:19.9750048Z ok 17 - Go A → Node B → Node C over TCP and serial PTYs preserves bytes, receipts and partition recovery
+native-go	Run npm run test:interop	2026-09-13T10:20:19.9766819Z   ---
+native-go	Run npm run test:interop	2026-09-13T10:20:19.9767343Z   duration_ms: 4616.942069
+native-go	Run npm run test:interop	2026-09-13T10:20:19.9767884Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-13T10:20:19.9768293Z   ...
+native-go	Run npm run test:interop	2026-09-13T10:20:20.9735913Z # Subtest: Node ↔ Go generated vectors preserve canonical bytes, identities, vaults, reader authority, chunks and disk seeds
+native-go	Run npm run test:interop	2026-09-13T10:20:20.9738587Z ok 18 - Node ↔ Go generated vectors preserve canonical bytes, identities, vaults, reader authority, chunks and disk seeds
+native-go	Run npm run test:interop	2026-09-13T10:20:20.9739615Z   ---
+native-go	Run npm run test:interop	2026-09-13T10:20:20.9740073Z   duration_ms: 815.622154
+native-go	Run npm run test:interop	2026-09-13T10:20:20.9740524Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-13T10:20:20.9740886Z   ...
+native-go	Run npm run test:interop	2026-09-13T10:20:57.9316565Z # Subtest: node outbox → go relay → go recipient: durable restart, real ACK control, signed group confirmations and expiry
+native-go	Run npm run test:interop	2026-09-13T10:20:57.9318645Z ok 19 - node outbox → go relay → go recipient: durable restart, real ACK control, signed group confirmations and expiry
+native-go	Run npm run test:interop	2026-09-13T10:20:57.9319696Z   ---
+native-go	Run npm run test:interop	2026-09-13T10:20:57.9320153Z   duration_ms: 36673.824652
+native-go	Run npm run test:interop	2026-09-13T10:20:57.9320610Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-13T10:20:57.9320830Z   ...
+native-go	Run npm run test:interop	2026-09-13T10:21:44.4316001Z # Subtest: go outbox → node relay → node recipient: durable restart, real ACK control, signed group confirmations and expiry
+native-go	Run npm run test:interop	2026-09-13T10:21:44.4318820Z ok 20 - go outbox → node relay → node recipient: durable restart, real ACK control, signed group confirmations and expiry
+native-go	Run npm run test:interop	2026-09-13T10:21:44.4319653Z   ---
+native-go	Run npm run test:interop	2026-09-13T10:21:44.4320253Z   duration_ms: 46526.031511
+native-go	Run npm run test:interop	2026-09-13T10:21:44.4320777Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-13T10:21:44.4321206Z   ...
+native-go	Run npm run test:interop	2026-09-13T10:21:44.7039847Z # (node:11904) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+native-go	Run npm run test:interop	2026-09-13T10:21:44.7043660Z # (Use `node --trace-warnings ...` to show where the warning was created)
+native-go	Run npm run test:interop	2026-09-13T10:21:46.0654703Z # Subtest: node API migrates legacy private data and the other engine recovers after process death without fallback
+native-go	Run npm run test:interop	2026-09-13T10:21:46.0657779Z ok 21 - node API migrates legacy private data and the other engine recovers after process death without fallback
+native-go	Run npm run test:interop	2026-09-13T10:21:46.0658904Z   ---
+native-go	Run npm run test:interop	2026-09-13T10:21:46.0659945Z   duration_ms: 1366.687858
+native-go	Run npm run test:interop	2026-09-13T10:21:46.0660732Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-13T10:21:46.0661153Z   ...
+native-go	Run npm run test:interop	2026-09-13T10:21:47.0372675Z # Subtest: go API migrates legacy private data and the other engine recovers after process death without fallback
+native-go	Run npm run test:interop	2026-09-13T10:21:47.0374479Z ok 22 - go API migrates legacy private data and the other engine recovers after process death without fallback
+native-go	Run npm run test:interop	2026-09-13T10:21:47.0375784Z   ---
+native-go	Run npm run test:interop	2026-09-13T10:21:47.0376187Z   duration_ms: 1053.686059
+native-go	Run npm run test:interop	2026-09-13T10:21:47.0376847Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-13T10:21:47.0377198Z   ...
+native-go	Run npm run test:interop	2026-09-13T10:21:48.0168276Z # Subtest: node application owns its profile until close; another engine recovers its pending outbox
+native-go	Run npm run test:interop	2026-09-13T10:21:48.0169857Z ok 23 - node application owns its profile until close; another engine recovers its pending outbox
+native-go	Run npm run test:interop	2026-09-13T10:21:48.0177544Z   ---
+native-go	Run npm run test:interop	2026-09-13T10:21:48.0179354Z   duration_ms: 806.816883
+native-go	Run npm run test:interop	2026-09-13T10:21:48.0179833Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-13T10:21:48.0180168Z   ...
+native-go	Run npm run test:interop	2026-09-13T10:21:48.9793349Z # Subtest: go application owns its profile until close; another engine recovers its pending outbox
+native-go	Run npm run test:interop	2026-09-13T10:21:48.9794980Z ok 24 - go application owns its profile until close; another engine recovers its pending outbox
+native-go	Run npm run test:interop	2026-09-13T10:21:48.9795639Z   ---
+native-go	Run npm run test:interop	2026-09-13T10:21:48.9796155Z   duration_ms: 965.848467
+native-go	Run npm run test:interop	2026-09-13T10:21:48.9798377Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-13T10:21:48.9798610Z   ...
+native-go	Run npm run test:interop	2026-09-13T10:21:49.1952788Z # (node:12106) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+native-go	Run npm run test:interop	2026-09-13T10:21:49.1954568Z # (Use `node --trace-warnings ...` to show where the warning was created)
+native-go	Run npm run test:interop	2026-09-13T10:21:53.8314530Z # Subtest: Node and Go share initialized private state and recover staged and committed process deaths
+native-go	Run npm run test:interop	2026-09-13T10:21:53.8317189Z ok 25 - Node and Go share initialized private state and recover staged and committed process deaths
+native-go	Run npm run test:interop	2026-09-13T10:21:53.8318147Z   ---
+native-go	Run npm run test:interop	2026-09-13T10:21:53.8318717Z   duration_ms: 4646.173697
+native-go	Run npm run test:interop	2026-09-13T10:21:53.8319226Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-13T10:21:53.8319671Z   ...
+native-go	Run npm run test:interop	2026-09-13T10:21:54.0296986Z # (node:12231) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+native-go	Run npm run test:interop	2026-09-13T10:21:54.0298868Z # (Use `node --trace-warnings ...` to show where the warning was created)
+native-go	Run npm run test:interop	2026-09-13T10:21:58.1659208Z # Subtest: real Node and Go processes exclude the same profile and recover after owner death
+native-go	Run npm run test:interop	2026-09-13T10:21:58.1662476Z ok 26 - real Node and Go processes exclude the same profile and recover after owner death
+native-go	Run npm run test:interop	2026-09-13T10:21:58.1663342Z   ---
+native-go	Run npm run test:interop	2026-09-13T10:21:58.1663635Z   duration_ms: 4141.024021
+native-go	Run npm run test:interop	2026-09-13T10:21:58.1664070Z   type: 'test'
+native-go	Run npm run test:interop	2026-09-13T10:21:58.1664396Z   ...
+native-go	Run npm run test:interop	2026-09-13T10:21:58.1794479Z 1..26
+native-go	Run npm run test:interop	2026-09-13T10:21:58.1794872Z # tests 26
+native-go	Run npm run test:interop	2026-09-13T10:21:58.1795208Z # suites 0
+native-go	Run npm run test:interop	2026-09-13T10:21:58.1797574Z # pass 26
+native-go	Run npm run test:interop	2026-09-13T10:21:58.1797965Z # fail 0
+native-go	Run npm run test:interop	2026-09-13T10:21:58.1798287Z # cancelled 0
+native-go	Run npm run test:interop	2026-09-13T10:21:58.1798643Z # skipped 0
+native-go	Run npm run test:interop	2026-09-13T10:21:58.1798872Z # todo 0
+native-go	Run npm run test:interop	2026-09-13T10:21:58.1799117Z # duration_ms 273056.197883
+native-go	Real UI against the native Go application	﻿2026-09-13T10:21:58.1992548Z ##[group]Run node scripts/e2e.mjs --output=.cache/native-ui-e2e
+native-go	Real UI against the native Go application	2026-09-13T10:21:58.1993044Z [36;1mnode scripts/e2e.mjs --output=.cache/native-ui-e2e[0m
+native-go	Real UI against the native Go application	2026-09-13T10:21:58.2029287Z shell: /usr/bin/bash -e {0}
+native-go	Real UI against the native Go application	2026-09-13T10:21:58.2029541Z env:
+native-go	Real UI against the native Go application	2026-09-13T10:21:58.2029745Z   RELAYLOOM_TEST_BACKEND: native
+native-go	Real UI against the native Go application	2026-09-13T10:21:58.2030005Z   RELAYLOOM_BROWSER_CHANNEL: chrome
+native-go	Real UI against the native Go application	2026-09-13T10:21:58.2030277Z ##[endgroup]
+native-go	Real UI against the native Go application	2026-09-13T10:21:59.9241176Z (node:12369) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+native-go	Real UI against the native Go application	2026-09-13T10:21:59.9242555Z (Use `node --trace-warnings ...` to show where the warning was created)
+native-go	Real UI against the native Go application	2026-09-13T10:22:00.0980600Z 
+native-go	Real UI against the native Go application	2026-09-13T10:22:00.0981320Z Running 17 tests using 1 worker
+native-go	Real UI against the native Go application	2026-09-13T10:22:00.0981732Z 
+native-go	Real UI against the native Go application	2026-09-13T10:22:34.1476688Z   ✓   1 tests/e2e/flows.spec.ts:58:1 › two live clients: identities, connection, message, attachment, reaction, group, social, safe site and offline recovery (27.0s)
+native-go	Real UI against the native Go application	2026-09-13T10:22:34.2143724Z (node:12383) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+native-go	Real UI against the native Go application	2026-09-13T10:22:34.2145748Z (Use `node --trace-warnings ...` to show where the warning was created)
+native-go	Real UI against the native Go application	2026-09-13T10:22:41.8968893Z   ✓   2 tests/e2e/group-outbox.spec.ts:9:1 › real runtime group outbox shows proof pause and terminal stop with accessible recovery guidance (7.7s)
+native-go	Real UI against the native Go application	2026-09-13T10:22:43.7292907Z   ✓   3 tests/e2e/long-dialog.spec.ts:6:1 › a cached site dialog is visible and reachable after scrolling a long mobile contact list (1.8s)
+native-go	Real UI against the native Go application	2026-09-13T10:23:08.3434500Z   ✓   4 tests/e2e/notifications.spec.ts:166:1 › notification stubs verify explicit opt-in, private filtering, coalescing, privacy and persistence (24.6s)
+native-go	Real UI against the native Go application	2026-09-13T10:23:17.4802930Z   ✓   5 tests/e2e/notifications.spec.ts:303:1 › lock, identity switch and cancelled permission close notices and invalidate pending work (9.1s)
+native-go	Real UI against the native Go application	2026-09-13T10:23:20.3173263Z   ✓   6 tests/e2e/notifications.spec.ts:406:1 › denied, unavailable and failed notification APIs remain honest inactive states (2.8s)
+native-go	Real UI against the native Go application	2026-09-13T10:23:22.5179794Z   ✓   7 tests/e2e/onboarding-layout.spec.ts:8:1 › onboarding fits the native minimum window and intermediate widths with keyboard access (2.2s)
+native-go	Real UI against the native Go application	2026-09-13T10:23:35.4592677Z   ✓   8 tests/e2e/outbox.spec.ts:61:1 › durable composer retries a lost response once, survives restart, and shows distinct real received/read states (12.9s)
+native-go	Real UI against the native Go application	2026-09-13T10:23:41.1737207Z   ✓   9 tests/e2e/outbox.spec.ts:201:1 › expired pending sends remain visible without delivery, and locking clears the outbox UI (5.7s)
+native-go	Real UI against the native Go application	2026-09-13T10:23:42.3988810Z   ✓  10 tests/e2e/outbox.spec.ts:250:1 › an absent record after an uncertain response requires an explicit new-send choice (1.2s)
+native-go	Real UI against the native Go application	2026-09-13T10:23:46.1818729Z   ✓  11 tests/e2e/outbox.spec.ts:288:1 › legacy group read labels count unique recipients without retained outbox metadata (3.8s)
+native-go	Real UI against the native Go application	2026-09-13T10:23:50.7726708Z   ✓  12 tests/e2e/privacy-history.spec.ts:6:1 › an earlier delayed state cannot restore private UI after identity lock (4.6s)
+native-go	Real UI against the native Go application	2026-09-13T10:23:54.3864005Z   ✓  13 tests/e2e/privacy-history.spec.ts:70:1 › history page loads older verified posts without inflating the periodic snapshot (3.6s)
+native-go	Real UI against the native Go application	2026-09-13T10:23:57.4029369Z   ✓  14 tests/e2e/social.spec.ts:6:1 › named private collections, followed feed, sharing reference and UI persistence (3.0s)
+native-go	Real UI against the native Go application	2026-09-13T10:24:06.8444947Z   ✓  15 tests/e2e/media.spec.ts:204:1 › synthetic image, audio, video and fake-microphone voice arrive at a real peer (8.6s)
+native-go	Real UI against the native Go application	2026-09-13T10:24:10.5845277Z   ✓  16 tests/e2e/media.spec.ts:377:1 › microphone denial and unsupported recording are explicit and do not add attachments (3.7s)
+native-go	Real UI against the native Go application	2026-09-13T10:24:16.3929034Z   ✓  17 tests/e2e/media.spec.ts:430:1 › late permission, recording error, byte cap and virtual duration cap release synthetic tracks (5.8s)
+native-go	Real UI against the native Go application	2026-09-13T10:24:16.4808864Z 
+native-go	Real UI against the native Go application	2026-09-13T10:24:16.4813866Z   17 passed (2.3m)
+native-go	Run actions/upload-artifact@v4	﻿2026-09-13T10:24:16.5079477Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+native-go	Run actions/upload-artifact@v4	2026-09-13T10:24:16.5080774Z ##[group]Run actions/upload-artifact@v4
+native-go	Run actions/upload-artifact@v4	2026-09-13T10:24:16.5081053Z with:
+native-go	Run actions/upload-artifact@v4	2026-09-13T10:24:16.5081275Z   name: native-go-evidence
+native-go	Run actions/upload-artifact@v4	2026-09-13T10:24:16.5081710Z   path: .cache/native-mixed/*.json
+native-go	Run actions/upload-artifact@v4	.cache/native-interop/*/report.json
+native-go	Run actions/upload-artifact@v4	.cache/native-ui-e2e
+native-go	Run actions/upload-artifact@v4	
+native-go	Run actions/upload-artifact@v4	2026-09-13T10:24:16.5082162Z   retention-days: 7
+native-go	Run actions/upload-artifact@v4	2026-09-13T10:24:16.5082385Z   if-no-files-found: warn
+native-go	Run actions/upload-artifact@v4	2026-09-13T10:24:16.5082620Z   compression-level: 6
+native-go	Run actions/upload-artifact@v4	2026-09-13T10:24:16.5082847Z   overwrite: false
+native-go	Run actions/upload-artifact@v4	2026-09-13T10:24:16.5083064Z   include-hidden-files: false
+native-go	Run actions/upload-artifact@v4	2026-09-13T10:24:16.5083307Z ##[endgroup]
+native-go	Run actions/upload-artifact@v4	2026-09-13T10:24:16.6767949Z (node:13936) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+native-go	Run actions/upload-artifact@v4	2026-09-13T10:24:16.6769592Z (Use `node --trace-deprecation ...` to show where the warning was created)
+native-go	Run actions/upload-artifact@v4	2026-09-13T10:24:16.6911026Z Multiple search paths detected. Calculating the least common ancestor of all paths
+native-go	Run actions/upload-artifact@v4	2026-09-13T10:24:16.6913395Z The least common ancestor is /home/runner/work/relayloom/relayloom/.cache. This will be the root directory of the artifact
+native-go	Run actions/upload-artifact@v4	2026-09-13T10:24:16.6914645Z With the provided path, there will be 15 files uploaded
+native-go	Run actions/upload-artifact@v4	2026-09-13T10:24:16.6920134Z Artifact name is valid!
+native-go	Run actions/upload-artifact@v4	2026-09-13T10:24:16.6920832Z Root directory input is valid!
+native-go	Run actions/upload-artifact@v4	2026-09-13T10:24:17.0897220Z Beginning upload of artifact content to blob storage
+native-go	Run actions/upload-artifact@v4	2026-09-13T10:24:17.1368979Z (node:13936) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+native-go	Run actions/upload-artifact@v4	2026-09-13T10:24:17.7001610Z Uploaded bytes 259501
+native-go	Run actions/upload-artifact@v4	2026-09-13T10:24:17.7805657Z Finished uploading artifact content to blob storage!
+native-go	Run actions/upload-artifact@v4	2026-09-13T10:24:17.7807437Z SHA256 digest of uploaded artifact zip is be00c2990fcccd6c5a327387d1b8ff4799d7b3fe57d2c3788940825ceb34e400
+native-go	Run actions/upload-artifact@v4	2026-09-13T10:24:17.7808562Z Finalizing artifact upload
+native-go	Run actions/upload-artifact@v4	2026-09-13T10:24:18.0347887Z Artifact native-go-evidence.zip successfully finalized. Artifact ID 10316385546
+native-go	Run actions/upload-artifact@v4	2026-09-13T10:24:18.0349549Z Artifact native-go-evidence has been successfully uploaded! Final size is 259501 bytes. Artifact ID is 10316385546
+native-go	Run actions/upload-artifact@v4	2026-09-13T10:24:18.0357224Z Artifact download URL: https://github.com/JohnnyPBelo/relayloom/actions/runs/34750795247/artifacts/10316385546
+native-go	Post Run actions/setup-go@v5	﻿2026-09-13T10:24:18.0539585Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+native-go	Post Run actions/setup-go@v5	2026-09-13T10:24:18.0540846Z Post job cleanup.
+native-go	Post Run actions/setup-go@v5	2026-09-13T10:24:18.1787578Z (node:13951) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+native-go	Post Run actions/setup-go@v5	2026-09-13T10:24:18.1788517Z (Use `node --trace-deprecation ...` to show where the warning was created)
+native-go	Post Run actions/setup-node@v4	﻿2026-09-13T10:24:18.1939822Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+native-go	Post Run actions/setup-node@v4	2026-09-13T10:24:18.1941220Z Post job cleanup.
+native-go	Post Run actions/setup-node@v4	2026-09-13T10:24:18.3248561Z (node:13959) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+native-go	Post Run actions/setup-node@v4	2026-09-13T10:24:18.3250107Z (Use `node --trace-deprecation ...` to show where the warning was created)
+native-go	Post Run actions/checkout@v4	﻿2026-09-13T10:24:18.3461324Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+native-go	Post Run actions/checkout@v4	2026-09-13T10:24:18.3463509Z Post job cleanup.
+native-go	Post Run actions/checkout@v4	2026-09-13T10:24:18.4391217Z [command]/usr/bin/git version
+native-go	Post Run actions/checkout@v4	2026-09-13T10:24:18.4437607Z git version 2.55.0
+native-go	Post Run actions/checkout@v4	2026-09-13T10:24:18.4479958Z Temporarily overriding HOME='/home/runner/work/_temp/dcae8b60-3038-4667-8f1d-2e52b5e2425d' before making global git config changes
+native-go	Post Run actions/checkout@v4	2026-09-13T10:24:18.4481802Z Adding repository directory to the temporary git global config as a safe directory
+native-go	Post Run actions/checkout@v4	2026-09-13T10:24:18.4484236Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/relayloom/relayloom
+native-go	Post Run actions/checkout@v4	2026-09-13T10:24:18.4524237Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+native-go	Post Run actions/checkout@v4	2026-09-13T10:24:18.4560932Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+native-go	Post Run actions/checkout@v4	2026-09-13T10:24:18.4817172Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+native-go	Post Run actions/checkout@v4	2026-09-13T10:24:18.4846901Z http.https://github.com/.extraheader
+native-go	Post Run actions/checkout@v4	2026-09-13T10:24:18.4858216Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+native-go	Post Run actions/checkout@v4	2026-09-13T10:24:18.4897022Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+native-go	Post Run actions/checkout@v4	2026-09-13T10:24:18.5174080Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+native-go	Post Run actions/checkout@v4	2026-09-13T10:24:18.5218851Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+native-go	Complete job	﻿2026-09-13T10:24:18.5615614Z Cleaning up orphan processes
+native-go	Complete job	2026-09-13T10:24:18.6045923Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-go@v5, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
