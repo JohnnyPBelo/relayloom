@@ -21,7 +21,7 @@
     "desktop:smoke": "node scripts/desktop-run.mjs --smoke --x11",
     "desktop:packaged-smoke": "node scripts/desktop-packaged-smoke.mjs",
     "native:build": "node scripts/native-build.mjs",
-    "test:native": "node scripts/go.mjs test -race -p=2 ./core ./transport ./app ./groups ./groupstore ./groupauthority ./groupaccess ./groupledger ./profilelock ./profilestate ./profilebinding ./profiledb ./sqlitedriver",
+    "test:native": "node scripts/go.mjs test -race -p=2 ./core ./transport ./app ./groups ./groupstore ./groupauthority ./groupaccess ./groupcontrol ./groupledger ./profilelock ./profilestate ./profilebinding ./profiledb ./sqlitedriver",
     "test:native:cgo-storage": "node scripts/go.mjs test -race -p=1 -tags relayloom_sqlite_cgo,sqlite_omit_load_extension ./sqlitedriver ./groupstore ./profilelock ./profiledb ./profilestate",
     "test:interop": "tsx --test --test-concurrency=1 tests/native/*.test.ts"
   },
