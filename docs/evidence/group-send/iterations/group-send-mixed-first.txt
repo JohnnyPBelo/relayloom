@@ -1,0 +1,28 @@
+TAP version 13
+# Subtest: actual native/node group send, file-only message and reply use authenticated epoch cards
+ok 1 - actual native/node group send, file-only message and reply use authenticated epoch cards
+  ---
+  duration_ms: 3752.84748
+  type: 'test'
+  ...
+# Subtest: actual node/native group send, file-only message and reply use authenticated epoch cards
+ok 2 - actual node/native group send, file-only message and reply use authenticated epoch cards
+  ---
+  duration_ms: 3730.648197
+  type: 'test'
+  ...
+# Subtest: actual native/native group send, file-only message and reply use authenticated epoch cards
+ok 3 - actual native/native group send, file-only message and reply use authenticated epoch cards
+  ---
+  duration_ms: 3147.517694
+  type: 'test'
+  ...
+1..3
+# tests 3
+# suites 0
+# pass 3
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 10782.311825

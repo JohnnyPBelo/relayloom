@@ -16,6 +16,7 @@ import { LoomNode } from "../apps/node/src/node.js";
 import {
   admitOutbox,
   isPending,
+  outboxPreview,
   OUTBOX_LIMITS,
   validateOutbox,
 } from "../apps/node/src/outbox.js";
@@ -646,3 +647,14 @@ for (const failureAt of [1, 2])
     assert.equal(retried.accepted, failureAt === 2);
     assert.equal(retried.outbox.attempts, 0);
   });
+
+test("outbox preview preserves full astral characters within its UTF-16 budget", () => {
+  assert.equal(outboxPreview("x".repeat(159) + "🧶tail"), "x".repeat(159));
+  assert.equal(
+    outboxPreview("x".repeat(158) + "🧶tail"),
+    "x".repeat(158) + "🧶",
+  );
+  assert.equal(outboxPreview("x".repeat(160) + "tail"), "x".repeat(160));
+  assert.equal(outboxPreview("🧶".repeat(81)), "🧶".repeat(80));
+  assert.equal(outboxPreview(""), "");
+});

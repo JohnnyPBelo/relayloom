@@ -9,6 +9,7 @@ import (
 	"unicode/utf8"
 
 	"github.com/JohnnyPBelo/relayloom/native/core"
+	"github.com/JohnnyPBelo/relayloom/native/groupaccess"
 	"github.com/JohnnyPBelo/relayloom/native/transport"
 )
 
@@ -200,6 +201,26 @@ func outboxPreview(value string) string {
 	return value
 }
 
+func outboxPreviewMatches(value, preview string) bool {
+	expected := outboxPreview(value)
+	if preview == expected {
+		return true
+	}
+	// Earlier Node releases used slice(0, 160), which could retain only the
+	// high surrogate. Accept exactly that legacy prefix without changing the
+	// signed payload or widening any author/reader/ID verification.
+	if jsLen(expected) != 159 || len(expected) >= len(value) {
+		return false
+	}
+	r, _ := utf8.DecodeRuneInString(value[len(expected):])
+	if r <= 0xffff {
+		return false
+	}
+	high := 0xd800 + ((r - 0x10000) >> 10)
+	legacy := expected + string([]byte{byte(0xe0 | (high >> 12)), byte(0x80 | ((high >> 6) & 0x3f)), byte(0x80 | (high & 0x3f))})
+	return preview == legacy
+}
+
 func (n *Node) exactOutboxBundleLocked(record OutboxRecord) (core.Bundle, error) {
 	bundle, err := n.Store.GetWithTouch(record.ID, false)
 	if err != nil {
@@ -218,7 +239,14 @@ func (n *Node) exactOutboxBundleLocked(record OutboxRecord) (core.Bundle, error)
 		return core.Bundle{}, errors.New("conteúdo do envio não corresponde ao diário")
 	}
 	object, err := n.displayLocked(bundle)
-	if err != nil || text(object.Content["conversation"]) != record.Conversation || outboxPreview(text(object.Content["text"])) != record.Preview {
+	if err != nil {
+		return core.Bundle{}, err
+	}
+	previewSource := text(object.Content["text"])
+	if record.GroupEpoch != "" {
+		previewSource = groupMessagePreviewSource(object.Content)
+	}
+	if text(object.Content["conversation"]) != record.Conversation || !outboxPreviewMatches(previewSource, record.Preview) {
 		return core.Bundle{}, errors.New("conteúdo do envio não corresponde ao diário")
 	}
 	if record.GroupEpoch != "" && text(object.Content["groupEpoch"]) != record.GroupEpoch {
@@ -295,6 +323,11 @@ func (n *Node) reconcileOutboxManifestsLocked(now int64, recovering bool, manife
 					}
 				}
 				if record.Phase == "preparing" {
+					if record.GroupEpoch != "" {
+						if err := n.Store.Pin(record.ID, record.ManualPin || n.Store.IsPinned(record.ID)); err != nil {
+							return err
+						}
+					}
 					record.Phase = "ready"
 					changed = true
 				}
@@ -457,6 +490,9 @@ func (n *Node) sendLocked(body map[string]any) (any, error) {
 	}
 	if _, err = n.objectsLocked(); err != nil {
 		return nil, err
+	}
+	if groupaccess.HasBinding(content) {
+		return n.sendGroupLocked(operation, fingerprint, Content(content), ids, ttl)
 	}
 	prepared, err := n.prepareLocked(Content(content), ids, ttl)
 	if err != nil {

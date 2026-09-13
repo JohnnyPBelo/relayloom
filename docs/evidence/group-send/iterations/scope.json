@@ -1,0 +1,16 @@
+{
+  "kind": "directed iteration results before complete regression",
+  "limits": [
+    "one initial process-driver failure was its invalid ACK fixture",
+    "Unicode before-fix log is an actual compatibility failure",
+    "historical source/binary versions differ; final gate has its own hashes",
+    "no mobile/radio or independent-review evidence"
+  ],
+  "commands": [
+    "node --import tsx --test --test-concurrency=1 tests/group-send.test.ts",
+    "node --import tsx --test --test-concurrency=1 tests/group-send-failures.test.ts",
+    "node scripts/go.mjs test -race -count=1 -p=1 ./app -run '^TestGroupSend(LegacyPreviewRecovery|CommitFailures|ContentIndexFailure)$' -v",
+    "node --import tsx --test --test-concurrency=1 tests/native/group-send.test.ts",
+    "node --import tsx --test --test-concurrency=1 tests/native/group-send-recovery.test.ts"
+  ]
+}

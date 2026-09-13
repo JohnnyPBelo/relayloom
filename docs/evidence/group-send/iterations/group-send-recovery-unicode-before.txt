@@ -1,0 +1,38 @@
+TAP version 13
+# {"runtime":"node","phase":"preparing","mode":"before"}
+# {"runtime":"node","phase":"preparing","mode":"after"}
+# {"runtime":"node","phase":"ready","mode":"before"}
+# Subtest: actual group creation/send survives eight Node/Go process deaths at intent and ready commits
+not ok 1 - actual group creation/send survives eight Node/Go process deaths at intent and ready commits
+  ---
+  duration_ms: 8446.923041
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/tests/native/group-send-recovery.test.ts:1:1134'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'unavailable'
+    - 'pending'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'pending'
+  actual: 'unavailable'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/home/absint0o/projects/relayloom/tests/native/group-send-recovery.test.ts:174:24)
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 8650.856497

@@ -1,0 +1,14 @@
+=== RUN   TestGroupSendCommitFailures
+=== RUN   TestGroupSendCommitFailures/preparing-rollback
+=== RUN   TestGroupSendCommitFailures/preparing-lost-response
+=== RUN   TestGroupSendCommitFailures/ready-rollback
+=== RUN   TestGroupSendCommitFailures/ready-lost-response
+--- PASS: TestGroupSendCommitFailures (29.74s)
+    --- PASS: TestGroupSendCommitFailures/preparing-rollback (7.33s)
+    --- PASS: TestGroupSendCommitFailures/preparing-lost-response (7.36s)
+    --- PASS: TestGroupSendCommitFailures/ready-rollback (7.60s)
+    --- PASS: TestGroupSendCommitFailures/ready-lost-response (7.45s)
+=== RUN   TestGroupSendContentIndexFailure
+--- PASS: TestGroupSendContentIndexFailure (8.18s)
+PASS
+ok  	github.com/JohnnyPBelo/relayloom/native/app	38.954s

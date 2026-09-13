@@ -1,0 +1,93 @@
+{
+  "status": "pass",
+  "elapsedMs": 23197,
+  "sourceDigest": "ea1b5e5ec2e9740cbe81eaf1fc18fd9b050634eba4f0b8d5a3d5a26d052516be",
+  "workerSha256": "53bf2b4f05acea28fc445d8ae14c283dca77b3a345a90d523596675bc0c65390",
+  "nativeBinarySha256": "7ff4a608dbe35a1c0262469fd28fca86abf5b06e98dbe20e0ad46d29bae81f7f",
+  "cases": [
+    {
+      "runtime": "node",
+      "phase": "preparing",
+      "mode": "before",
+      "recoveredBy": "native",
+      "returnedTo": "node",
+      "retained": false,
+      "payloadRecovered": false,
+      "exit": 83
+    },
+    {
+      "runtime": "node",
+      "phase": "preparing",
+      "mode": "after",
+      "recoveredBy": "native",
+      "returnedTo": "node",
+      "retained": true,
+      "payloadRecovered": false,
+      "exit": 84
+    },
+    {
+      "runtime": "node",
+      "phase": "ready",
+      "mode": "before",
+      "recoveredBy": "native",
+      "returnedTo": "node",
+      "retained": true,
+      "payloadRecovered": true,
+      "exit": 83
+    },
+    {
+      "runtime": "node",
+      "phase": "ready",
+      "mode": "after",
+      "recoveredBy": "native",
+      "returnedTo": "node",
+      "retained": true,
+      "payloadRecovered": true,
+      "exit": 84
+    },
+    {
+      "runtime": "native",
+      "phase": "preparing",
+      "mode": "before",
+      "recoveredBy": "node",
+      "returnedTo": "native",
+      "retained": false,
+      "payloadRecovered": false,
+      "exit": 83
+    },
+    {
+      "runtime": "native",
+      "phase": "preparing",
+      "mode": "after",
+      "recoveredBy": "node",
+      "returnedTo": "native",
+      "retained": true,
+      "payloadRecovered": false,
+      "exit": 84
+    },
+    {
+      "runtime": "native",
+      "phase": "ready",
+      "mode": "before",
+      "recoveredBy": "node",
+      "returnedTo": "native",
+      "retained": true,
+      "payloadRecovered": true,
+      "exit": 83
+    },
+    {
+      "runtime": "native",
+      "phase": "ready",
+      "mode": "after",
+      "recoveredBy": "node",
+      "returnedTo": "native",
+      "retained": true,
+      "payloadRecovered": true,
+      "exit": 84
+    }
+  ],
+  "limits": [
+    "control proofs explicitly transferred through APIs",
+    "no automatic carriers or mobile/radio evidence"
+  ]
+}

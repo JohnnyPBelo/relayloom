@@ -44,3 +44,10 @@ Nenhum agente novo/retomado nesta fase. Revisão pelo agente principal, sem subs
 ## Gate da autoridade concluído
 
 211 testes Node passaram179.064s;141 testes Go de topo com race476.758s (10 helpers omitidos isoladamente e executados pelos drivers);26 casos de interoperabilidade243.460s; fronteira SQLite C75.323s;17 UI Node115.845s e17 UI Go109.616s. Build5.524s;22 testes iOS host1.842s e verificação estática0.032s. Desktop Linux: preparação0.336s, execução1.507s, pacote10.029s e execução empacotada1.280s.26 relatórios Axe actualizados, zero violações. Fontes inalteradas durante os gates. Evidência em docs/evidence/group-outbox/final. Cancelamento local, guarda de inventário/requests e apresentação de pausa/superseded foram implementados e testados depois da nota de iteração acima. A criação/envio dinâmico pela API, emissão de confirmações e carriers permanecem por ligar; não considerar as fixtures de intenções como esse resultado. Seguir o contrato integral após este commit.
+
+
+## Criação real — implementação seguinte, ainda não versionada
+
+Node group-send.ts e Go group_send.go agora criam mensagens/replies pelas APIs reais a partir do snapshot e do target local autenticados, sem contactos globais. A intenção preparing e a admissão dos bytes localmente assinados/verificados partilham o commit anterior à escrita do content store. O resto do pipeline exige reserva física e ready antes da rede, e nunca recria a partir do preview. Repeat com UUID retido antecede a validação de head novo e devolve o ID/estado original.
+
+Dois processos Node passaram texto/anexo/reply e recusas; três percursos native/node, node/native e native/native passaram ficheiro sem texto/reply e stop/ID. Testes em tests/group-send.test.ts e tests/native/group-send.test.ts; a fixture group-send transfere provas por APIs, mas não injecta chaves nem intenções. Faltam falhas/restart/partições extensas, confirmações históricas pela aplicação, publicação de eventos, carriers e UI dinâmica. Manter os requisitos e gates completos.

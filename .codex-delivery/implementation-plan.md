@@ -46,3 +46,15 @@ Base publicada fde529e. Integração Node/Go local: paragens no commit de autori
 Regressão completa sequencial em .cache/group-outbox-final/run.py (relatório/source-hashes no mesmo directório), depois desktop.py. Não modificar fontes enquanto corre. Não criar/retomar agentes. Não repetir gates concluídos por perda de handles. Só publicar após os gates aplicáveis passarem e os resultados serem arquivados; conservar falhas e limitações.
 
 Depois deste marco, substituir os bloqueios temporários de envio por publicação/outbox real a partir de snapshots/targets, UUID novo com audiência revista, confirmações históricas mínimas, partições e alterações de membros; seguir com carriers e interface de grupos e o resto de PROJECT-BRIEF.md. Não encerrar o objectivo nesta infra-estrutura.
+
+
+## Criação/envio real em validação — 2026-09-13
+
+FR-007/FR-012: APIs Node/Go criam mensagens/anexos/replies com snapshot/head e audiência exacta. Admissão/intenção partilham commit; reserva e ready precedem rede. Falhas/mortes reais/Unicode e compatibilidade antiga verificadas; gate completo .cache/group-send-final em curso com fontes congeladas. Confirmar relatório antes de novo código/commit. Depois integrar confirmações segundo GROUP-CONFIRMATIONS-INTEGRATION.md, eventos, partições, carriers e UI dinâmica. O contrato integral mantém-se.
+
+
+## Marco de criação/envio — gate concluído, produto incompleto
+
+Build5.816s;219 testes Node194.189s;144 testes Go de topo com race507.918s (11 helpers executados pelos drivers);30 casos de interoperabilidade270.997s; fronteira SQLite C115.655s;17 UI Node115.990s e17 UI Go110.472s.22 testes host iOS1.887s e estática0.030s. Desktop Linux: preparação0.233s, execução1.041s, pacote5.812s, execução empacotada0.800s.26 relatórios Axe actualizados, zero violações.277 ficheiros de fonte inalterados durante os gates. Evidência em docs/evidence/group-send/final.
+
+APIs/falhas/mortes verificadas; confirmações automáticas, eventos, carriers, composição/gestão dinâmica e restantes requisitos continuam pendentes. iOS1aaca64 produziu captura real de falha do isolamento antes da WebView; nenhum fluxo funcional passou. A próxima correcção deve preservar a política e provar sintaxe com o compilador WebKit real.

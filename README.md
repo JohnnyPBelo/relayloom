@@ -1,5 +1,7 @@
 # RelayLoom
 
+Envio de grupos dinâmicos em integração local: Node/Go já criam mensagens, anexos e respostas pelas APIs com audiências autenticadas; os controlos dirigidos incluem falhas e recuperação real entre processos. O gate completo de host/interoperabilidade/UI/desktop passou ([evidência](docs/evidence/group-send/final)); confirmações automáticas, carriers P2P e composição/gestão dinâmica na interface continuam pendentes. Estado e limites em [docs/STATUS.md](docs/STATUS.md).
+
 Conversas, comunidade e páginas pessoais numa rede entre pares. **Aplicação experimental em implementação. Não é infraestrutura validada para catástrofes e não substitui serviços de emergência.** O contrato completo continua em [PROJECT-BRIEF.md](PROJECT-BRIEF.md); o estado real, incluindo lacunas, está em [docs/STATUS.md](docs/STATUS.md).
 
 O código executa um nó persistente por instalação, uma interface React servida por esse nó, TCP entre processos e um adaptador série. Não há serviço central obrigatório, telemetria, fontes remotas ou CDN de execução. A interface começa vazia: mensagens, pares e contadores vêm de operações reais.

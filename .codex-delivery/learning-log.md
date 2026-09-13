@@ -196,3 +196,15 @@ Fixtures novas tiveram erros próprios corrigidos e preservados: Node chamou pre
 
 
 Gate completo da autoridade da outbox concluído: 211 testes Node passaram179.064s;141 testes Go de topo com race476.758s (10 helpers omitidos isoladamente e executados pelos drivers);26 casos de interoperabilidade243.460s; fronteira SQLite C75.323s;17 UI Node115.845s e17 UI Go109.616s. Build5.524s;22 testes iOS host1.842s e verificação estática0.032s. Desktop Linux: preparação0.336s, execução1.507s, pacote10.029s e execução empacotada1.280s.26 relatórios Axe actualizados, zero violações. Fontes inalteradas durante os gates. Evidência em docs/evidence/group-outbox/final. O teste de mutação da cache respeita o bloqueio após falha de integridade: reabre com o mesmo store ID para verificar rollback, em vez de tentar continuar num handle invalidado. A fixture de prova em falta passou a avançar primeiro o cursor válido, conservando a recusa de corrupção do snapshot actual. Produção não relaxou esses controlos. A publicação/carriers/composição dinâmica e o restante contrato continuam pendentes.
+
+
+## Recuperação de criação/envio e Unicode — 2026-09-13
+
+As oito mortes reais antes/depois de preparing/ready passaram com APIs e sockets reais. O primeiro ACK da fixture era um pacote que a aplicação correctamente recusava; a testemunha passou a usar request válido, sem relaxar produção. A variante159 caracteres+emoji reproduziu depois uma falha real: Node slice(0,160) produzia meio surrogate, Go preservava o carácter completo e rejeitava a pré-visualização no restart. Novos previews Node preservam o carácter completo; Go aceita exactamente o prefixo legado quando todas as ligações ao bundle verificado coincidem. Outros prefixes continuam recusados. O gate dirigido corrigido está registado em RESUME.md; ainda não atribuir passe global. Prevenção: testar fronteiras UTF-16 nas duas direcções, incluindo metadados de versões anteriores, além dos bytes de anexos.
+
+
+## Marco de criação/envio — gate concluído, produto incompleto
+
+Build5.816s;219 testes Node194.189s;144 testes Go de topo com race507.918s (11 helpers executados pelos drivers);30 casos de interoperabilidade270.997s; fronteira SQLite C115.655s;17 UI Node115.990s e17 UI Go110.472s.22 testes host iOS1.887s e estática0.030s. Desktop Linux: preparação0.233s, execução1.041s, pacote5.812s, execução empacotada0.800s.26 relatórios Axe actualizados, zero violações.277 ficheiros de fonte inalterados durante os gates. Evidência em docs/evidence/group-send/final.
+
+APIs/falhas/mortes verificadas; confirmações automáticas, eventos, carriers, composição/gestão dinâmica e restantes requisitos continuam pendentes. iOS1aaca64 produziu captura real de falha do isolamento antes da WebView; nenhum fluxo funcional passou. A próxima correcção deve preservar a política e provar sintaxe com o compilador WebKit real.

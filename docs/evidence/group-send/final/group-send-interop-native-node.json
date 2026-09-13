@@ -1,0 +1,19 @@
+{
+  "status": "pass",
+  "creator": "native",
+  "member": "node",
+  "elapsedMs": 3878,
+  "nativeBinarySha256": "7ff4a608dbe35a1c0262469fd28fca86abf5b06e98dbe20e0ad46d29bae81f7f",
+  "checks": [
+    "real authenticated API creation",
+    "no global contacts",
+    "exact attachment bytes over TCP",
+    "member-authored reply",
+    "immutable retry result after closure"
+  ],
+  "limits": [
+    "control proofs transferred by fixture APIs",
+    "automatic group confirmations not yet enabled",
+    "not mobile or radio evidence"
+  ]
+}

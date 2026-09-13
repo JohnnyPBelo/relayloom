@@ -277,9 +277,10 @@
           "tests/group-runtime.test.ts",
           "tests/native/group-runtime.test.ts",
           "docs/GROUP-CONTENT.md",
-          "docs/GROUP-OUTBOX.md"
+          "docs/GROUP-OUTBOX.md",
+          "docs/GROUP-SEND.md"
         ],
-        "limits": "Gestão, admissão e autoridade de outbox por épocas verificadas em Node/Go; paragens e128+128 intenções, recuperação entre processos e UI de estado. Publicação/envio dinâmico, carriers, composição e revisão independente pendentes."
+        "limits": "Gestão, admissão, autoridade e criação/envio/reply por APIs Node/Go; audiências de snapshots sem contactos globais. Testes dirigidos de TCP/falhas/mortes passaram. Confirmações automáticas, eventos, carriers, composição/gestão dinâmica na UI, plataformas e revisão independente pendentes; gate completo de host/UI/desktop passou."
       },
       "evidence": [
         {
@@ -348,6 +349,27 @@
             "docs/GROUP-OUTBOX.md"
           ],
           "notes": "Gestão, admissão e autoridade de outbox por épocas verificadas em Node/Go; paragens e128+128 intenções, recuperação entre processos e UI de estado. Publicação/envio dinâmico, carriers, composição e revisão independente pendentes."
+        },
+        {
+          "kind": "group-send-directed-2026-09-13",
+          "result": "partial",
+          "paths": [
+            "docs/GROUP-SEND.md",
+            "tests/group-send-failures.test.ts",
+            "native/app/group_send_test.go",
+            "tests/native/group-send-recovery.test.ts"
+          ],
+          "notes": "Node5 falhas13.066s; Go3 testes de topo/seis cenários com race46.565s; oito mortes reais Unicode26.633s. Sem alteração de fontes durante cada gate dirigido. Gate completo em curso; não constitui conclusão do produto."
+        },
+        {
+          "kind": "group-send-regression-gate",
+          "result": "pass",
+          "paths": [
+            "docs/evidence/group-send/final/report.json",
+            "docs/evidence/group-send/final/desktop-report.json",
+            "docs/evidence/group-send/final/scope.json"
+          ],
+          "notes": "Build5.816s;219 testes Node194.189s;144 testes Go de topo com race507.918s (11 helpers executados pelos drivers);30 casos de interoperabilidade270.997s; fronteira SQLite C115.655s;17 UI Node115.990s e17 UI Go110.472s.22 testes host iOS1.887s e estática0.030s. Desktop Linux: preparação0.233s, execução1.041s, pacote5.812s, execução empacotada0.800s.26 relatórios Axe actualizados, zero violações.277 ficheiros de fonte inalterados durante os gates. Evidência em docs/evidence/group-send/final. Produto/grupos dinâmicos completos e revisão independente pendentes."
         }
       ]
     },
@@ -537,9 +559,10 @@
           "docs/OUTBOX-PROTOCOL.md",
           "docs/OUTBOX-SNAPSHOT-EXPIRY.md",
           "docs/evidence/outbox/snapshot-expiry",
-          "docs/evidence/group-outbox/final"
+          "docs/evidence/group-outbox/final",
+          "docs/GROUP-SEND.md"
         ],
-        "limits": "Outbox Node/Go e reserva separada de pin; autoridade de grupo no mesmo commit, cancelamento local e seeding do autor controlados.256 intenções reais e saídas81/82 testadas; criação/envio dinâmico ainda instalado por fixture. Binários móveis novos pendentes."
+        "limits": "Outbox por épocas com admissão/intenção no mesmo commit, reserva física antes de ready/rede, UUID e bytes originais após falha. Oito mortes reais entre motores e Unicode/compatibilidade antiga passaram. Confirmações de grupo, binários móveis e validação móvel ainda pendentes."
       },
       "evidence": [
         {
@@ -604,6 +627,27 @@
             "docs/evidence/group-outbox/final"
           ],
           "notes": "Outbox Node/Go e reserva separada de pin; autoridade de grupo no mesmo commit, cancelamento local e seeding do autor controlados.256 intenções reais e saídas81/82 testadas; criação/envio dinâmico ainda instalado por fixture. Binários móveis novos pendentes."
+        },
+        {
+          "kind": "group-send-directed-2026-09-13",
+          "result": "partial",
+          "paths": [
+            "docs/GROUP-SEND.md",
+            "tests/group-send-failures.test.ts",
+            "native/app/group_send_test.go",
+            "tests/native/group-send-recovery.test.ts"
+          ],
+          "notes": "Node5 falhas13.066s; Go3 testes de topo/seis cenários com race46.565s; oito mortes reais Unicode26.633s. Sem alteração de fontes durante cada gate dirigido. Gate completo em curso; não constitui conclusão do produto."
+        },
+        {
+          "kind": "group-send-regression-gate",
+          "result": "pass",
+          "paths": [
+            "docs/evidence/group-send/final/report.json",
+            "docs/evidence/group-send/final/desktop-report.json",
+            "docs/evidence/group-send/final/scope.json"
+          ],
+          "notes": "Build5.816s;219 testes Node194.189s;144 testes Go de topo com race507.918s (11 helpers executados pelos drivers);30 casos de interoperabilidade270.997s; fronteira SQLite C115.655s;17 UI Node115.990s e17 UI Go110.472s.22 testes host iOS1.887s e estática0.030s. Desktop Linux: preparação0.233s, execução1.041s, pacote5.812s, execução empacotada0.800s.26 relatórios Axe actualizados, zero violações.277 ficheiros de fonte inalterados durante os gates. Evidência em docs/evidence/group-send/final. Produto/grupos dinâmicos completos e revisão independente pendentes."
         }
       ]
     },

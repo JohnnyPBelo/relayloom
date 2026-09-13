@@ -1,3 +1,4 @@
+import { commitGroupSendIntent } from "./group-send.js";
 import {
   readProfileState,
   writeProfileState,
@@ -65,6 +66,7 @@ import {
   applyConfirmations,
   isPending,
   outboxItem,
+  outboxPreview,
   requireOperationId,
   sendFingerprint,
   type OutboxEntry,
@@ -560,6 +562,59 @@ export class LoomNode extends EventEmitter {
         throw new Error("Este identificador já pertence a outro envio");
       return this.sendResult(previous);
     }
+    if (hasGroupBinding(content)) {
+      try {
+        const intent = commitGroupSendIntent(
+          this.privateDatabase!,
+          identity,
+          this.privateState,
+          this.privateDigest!,
+          operationId,
+          fingerprint,
+          content,
+          recipients,
+          ttlMs,
+          this.config.blocked,
+          new Set(this.store.list().map((manifest) => manifest.id)),
+        );
+        this.privateState = intent.state;
+        this.privateDigest = intent.digest;
+        try {
+          this.store.putReserved(intent.bundle);
+        } catch (error) {
+          const failed = structuredClone(this.privateState);
+          failed.outbox![operationId].phase = "unavailable";
+          failed.outbox![operationId].lastError =
+            "Não foi possível guardar o conteúdo do envio. Não foi criado outro ID.";
+          try {
+            this.persistPrivate(failed);
+            this.restoreGroupHolds();
+          } catch {
+            this.lock();
+          }
+          throw error;
+        }
+        const ready = structuredClone(this.privateState);
+        ready.outbox![operationId].phase = "ready";
+        this.persistPrivate(ready);
+        this.flushOutbox();
+        return this.sendResult(this.privateState.outbox![operationId]);
+      } catch (error) {
+        if (this.identity) {
+          try {
+            this.privateDatabase?.close();
+            const loaded = openPrivateProfile(this.dir, identity);
+            this.privateDatabase = loaded.database;
+            this.privateState = loaded.state;
+            this.privateDigest = loaded.digest;
+            this.restoreGroupHolds();
+          } catch {
+            this.lock();
+          }
+        }
+        throw error;
+      }
+    }
     const { bundle, content: prepared } = this.preparePublication(
       content,
       recipients,
@@ -575,11 +630,11 @@ export class LoomNode extends EventEmitter {
       id: bundle.manifest.id,
       author: identity.public.id,
       conversation: prepared.conversation!,
-      preview: (
+      preview: outboxPreview(
         prepared.text ||
         prepared.attachments?.[0]?.name ||
         "Mensagem"
-      ).slice(0, 160),
+      ),
       created: bundle.manifest.created,
       expires: bundle.manifest.expires,
       priority:
@@ -682,6 +737,12 @@ export class LoomNode extends EventEmitter {
               throw new Error("Reserva não corresponde ao conteúdo verificado");
           }
           if (entry.phase === "preparing") {
+            // Re-establish the index write boundary after uncertain storage.
+            if (entry.groupEpoch)
+              this.store.pin(
+                entry.id,
+                entry.manualPin || this.store.isPinned(entry.id),
+              );
             entry.phase = "ready";
             entry.lastError = "";
             changed = true;

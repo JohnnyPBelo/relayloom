@@ -1,0 +1,21 @@
+{
+  "result": "pass",
+  "at": "2026-09-13T11:26:24.279Z",
+  "platform": "linux",
+  "arch": "x64",
+  "packagedExecutable": "dist/desktop-installers/linux-unpacked/relayloom",
+  "realBundledDaemon": true,
+  "separateDaemonProcess": true,
+  "apiWithoutToken": 401,
+  "apiWithToken": 200,
+  "fuses": {
+    "runAsNode": false,
+    "nodeOptions": false,
+    "nodeInspect": false,
+    "extraFilePrivileges": false,
+    "onlyAsar": true
+  },
+  "sandboxRequested": true,
+  "displayBackend": "x11",
+  "daemonStopped": true
+}

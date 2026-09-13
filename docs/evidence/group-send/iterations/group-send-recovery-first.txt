@@ -1,0 +1,46 @@
+TAP version 13
+# Subtest: actual group creation/send survives eight Node/Go process deaths at intent and ready commits
+not ok 1 - actual group creation/send survives eight Node/Go process deaths at intent and ready commits
+  ---
+  duration_ms: 14496.922103
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/tests/native/group-send-recovery.test.ts:1:1134'
+  failureType: 'testCodeFailure'
+  error: |-
+    (node:4115318) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+    (Use `node --trace-warnings ...` to show where the warning was created)
+    /home/absint0o/projects/relayloom/tests/helpers.ts:123
+      throw new Error("condition timed out");
+            ^
+    
+    Error: condition timed out
+        at until (/home/absint0o/projects/relayloom/tests/helpers.ts:123:9)
+        at async <anonymous> (/home/absint0o/projects/relayloom/tests/fixtures/group-send-worker.ts:29:1)
+    
+    Node.js v22.22.3
+    
+    
+    1 !== 83
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 83
+  actual: 1
+  operator: 'strictEqual'
+  stack: |-
+    until (/home/absint0o/projects/relayloom/tests/helpers.ts:123:9)
+    async <anonymous> (/home/absint0o/projects/relayloom/tests/fixtures/group-send-worker.ts:29:1)
+    run (/home/absint0o/projects/relayloom/tests/native/group-send-recovery.test.ts:69:14)
+    async TestContext.<anonymous> (/home/absint0o/projects/relayloom/tests/native/group-send-recovery.test.ts:125:17)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 14696.276114

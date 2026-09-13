@@ -1,0 +1,21 @@
+# Criação e envio por épocas — integração parcial
+
+A API autenticada `send` cria mensagens de grupo a partir da autoridade guardada localmente. Uma intenção nova exige `operationId` UUIDv4, `content.type=message`, `conversation`, `groupEpoch`, `groupAudience=epoch` e destinatários exactamente iguais aos membros do snapshot, excluindo opcionalmente o próprio remetente. O motor deriva os cartões autenticados; não exige que os membros sejam contactos globais. Texto e anexos usam o mesmo envelope cifrado assinado.
+
+Uma resposta usa `groupAudience=target`, `replyTo` e `targetEpoch`; a audiência é a intersecção dos leitores originais com os membros actuais. Um head desactualizado, destinatários diferentes ou cartões fornecidos incompatíveis são recusados. O cliente deve rever a audiência e escolher um UUID novo para outra publicação. Repetir um UUID ainda retido devolve o ID/estado original; não actualiza silenciosamente a época, leitores ou anexos.
+
+## Fronteiras persistentes
+
+O motor cria, verifica a assinatura e decifra o bundle localmente. A admissão e a intenção `preparing` partilham um commit SQLite antes de escrever conteúdo ou transmitir. Depois reserva os bytes exactos no ContentStore, grava `ready` e só então tenta o transporte. Um erro comunicado pelo ContentStore deixa a operação indisponível, sem recriar o payload a partir da pré-visualização.
+
+Na recuperação, uma intenção cujo payload se perdeu continua indisponível. Uma intenção com bytes completos e correctos pode recuperar a reserva e `ready`; a escrita do índice tem de terminar antes de avançar. As verificações incluem assinatura, ID, autor, destinatários, tamanhos, datas, conversa e época. Reservas de grupo continuam separadas de pins manuais e partilham a união com quarentena. A autoridade de retry e paragem está descrita em [GROUP-OUTBOX.md](GROUP-OUTBOX.md).
+
+As pré-visualizações novas têm até160 unidades UTF-16 sem cortar caracteres suplementares. Uma incompatibilidade Node→Go com159 caracteres+emoji foi reproduzida: a versão Node antiga guardava apenas o high surrogate, e o Go recusava os bytes válidos. Go reconhece exactamente essa projecção antiga, sem alterar o conteúdo assinado nem aceitar outros prefixes. A versão actual Node preserva o carácter completo como Go.
+
+## Verificação e limites
+
+Os testes `tests/group-send.test.ts` e `tests/native/group-send.test.ts` usam APIs e processos reais para texto/anexo/reply, autor/leitores, repetição de UUID e recusa após mudança de head. A fixture transfere explicitamente os certificados pelas APIs; não injecta chaves nem intenções. Isto não é sincronização P2P automática de controlo.
+
+`tests/group-send-failures.test.ts` e `native/app/group_send_test.go` exercitam rollback/perda de resposta antes/depois dos commits, erro de índice após escrita real, ausência de transmissão antecipada e transmissão dos bytes originais após retry autorizado. O driver `tests/native/group-send-recovery.test.ts` provoca oito mortes reais (saídas83/84) em Node/Go, recupera pelo outro motor e regressa ao original. Há testemunhas TCP positivas e controlo de ausência de transmissão, além de entrega a outro cliente e verificação dos bytes. Inclui texto com emoji no limite da pré-visualização.
+
+Build5.816s;219 testes Node194.189s;144 testes Go de topo com race507.918s (11 helpers executados pelos drivers);30 casos de interoperabilidade270.997s; fronteira SQLite C115.655s;17 UI Node115.990s e17 UI Go110.472s.22 testes host iOS1.887s e estática0.030s. Desktop Linux: preparação0.233s, execução1.041s, pacote5.812s, execução empacotada0.800s.26 relatórios Axe actualizados, zero violações.277 ficheiros de fonte inalterados durante os gates. Evidência em docs/evidence/group-send/final. As capturas do editor Node e conversa escura Go foram revistas pelo agente principal; não é revisão independente. Confirmações automáticas de grupo, eventos relacionados, carriers de controlo e composição/gestão dinâmica na UI continuam pendentes. `outbound=false` e `messaging=false` conservam esse limite de produto. Artefactos móveis anteriores não contêm esta integração; nenhuma execução de rádio físico ou validação para catástrofes é inferida. A recuperação sequencial mantém a revisão desta fase no agente principal; a revisão independente continua obrigatória.

@@ -1,0 +1,143 @@
+{
+  "kind": "IOS_REAL_SIMULATOR_GATE",
+  "runID": "aa1171a5-d6a2-4e1f-86a6-e4466d8da337",
+  "requestedRuntimeVersion": "26.4.1",
+  "status": "FAILED",
+  "simulatorExecuted": false,
+  "physicalDeviceExecuted": false,
+  "photoAttachmentRequested": true,
+  "signing": "disabled; no accounts, identities or profiles requested",
+  "webViewDebugging": false,
+  "extraAppControlPort": false,
+  "cleanup": {
+    "udid": "FE999357-8DFB-461F-9B21-78731087AE42",
+    "deleted": true,
+    "onlyCreatedDeviceTouched": true
+  },
+  "commands": [
+    {
+      "label": "xcode-version",
+      "exitCode": 0,
+      "elapsedMs": 262,
+      "log": "01-xcode-version.log"
+    },
+    {
+      "label": "source-commit",
+      "exitCode": 0,
+      "elapsedMs": 22,
+      "log": "02-source-commit.log"
+    },
+    {
+      "label": "source-cleanliness",
+      "exitCode": 0,
+      "elapsedMs": 11,
+      "log": "03-source-cleanliness.log"
+    },
+    {
+      "label": "installed-runtimes",
+      "exitCode": 0,
+      "elapsedMs": 1148,
+      "log": "04-installed-runtimes.log"
+    },
+    {
+      "label": "installed-device-types",
+      "exitCode": 0,
+      "elapsedMs": 149,
+      "log": "05-installed-device-types.log"
+    },
+    {
+      "label": "create-owned",
+      "exitCode": 0,
+      "elapsedMs": 242,
+      "log": "06-create-owned.log"
+    },
+    {
+      "label": "boot-owned",
+      "exitCode": 0,
+      "elapsedMs": 3042,
+      "log": "07-boot-owned.log"
+    },
+    {
+      "label": "wait-owned-boot",
+      "exitCode": 0,
+      "elapsedMs": 169530,
+      "log": "08-wait-owned-boot.log"
+    },
+    {
+      "label": "build-for-testing",
+      "exitCode": 0,
+      "elapsedMs": 39092,
+      "log": "09-build-for-testing.log"
+    },
+    {
+      "label": "install-owned-app",
+      "exitCode": 0,
+      "elapsedMs": 13165,
+      "log": "10-install-owned-app.log"
+    },
+    {
+      "label": "execute-startup-test",
+      "exitCode": 65,
+      "elapsedMs": 165729,
+      "log": "11-execute-startup-test.log"
+    },
+    {
+      "label": "export-startup-attachments",
+      "exitCode": 0,
+      "elapsedMs": 2253,
+      "log": "12-export-startup-attachments.log"
+    },
+    {
+      "label": "cleanup-inventory",
+      "exitCode": 0,
+      "elapsedMs": 366
+    },
+    {
+      "label": "shutdown-owned",
+      "exitCode": 0,
+      "elapsedMs": 3306,
+      "log": "14-shutdown-owned.log"
+    },
+    {
+      "label": "delete-owned",
+      "exitCode": 0,
+      "elapsedMs": 178,
+      "log": "15-delete-owned.log"
+    }
+  ],
+  "xcode": "Xcode 26.6\nBuild version 17F113",
+  "sourceHashes": {
+    "runner": "4361ae329a59ada8ba4b87ccc03fe38fc70b885ef1f842a52a3c7d72021822a5",
+    "peerFixture": "d046dd045a27c07e36fb5da6734e0487ed1fdd32f1dd702048f5f70fd170b57c",
+    "uiTest": "9a64504289f9cf493f80626c4718baff61d98fbc2944c444a2eca2d6be661e15",
+    "project": "1aaa005e511243a81709153cd7d290b5cb72d73782fa498da2437eeafd884e1e",
+    "scheme": "c105ce198c4a20b9deefe4d3bdb4ecda777108e4abd886440e0c41261e0f4e63"
+  },
+  "sourceCommit": "1aaca64c8eea188527a265db03d7f8490a7da111",
+  "workingTreeDirty": false,
+  "runtime": {
+    "identifier": "com.apple.CoreSimulator.SimRuntime.iOS-26-4",
+    "version": "26.4.1",
+    "buildVersion": "23E254a",
+    "deviceType": "com.apple.CoreSimulator.SimDeviceType.iPhone-SE-3rd-generation",
+    "downloaded": false
+  },
+  "udid": "FE999357-8DFB-461F-9B21-78731087AE42",
+  "firstBootBudgetMs": 600000,
+  "simulatorBooted": true,
+  "app": {
+    "executableSHA256": "6b5ae95b2c54d2975b785a17f28f41ca65d90e076c2a3a84ba7fc2fce42e26ed",
+    "webIndexSHA256": "ef6f445bed8fcbc9f541dd29a7200a84f8cdd30b4dc720047238fb540805c96f",
+    "uiTestSourceSHA256": "9a64504289f9cf493f80626c4718baff61d98fbc2944c444a2eca2d6be661e15",
+    "bindingReportSHA256": "c158c818102c125905394bc06c2f44532838f39936e0e673472598931dc5c7eb"
+  },
+  "startupTestStarted": true,
+  "error": "Owned command failed: execute-startup-test (see sanitized evidence)",
+  "peerDiagnostics": {
+    "captured": true,
+    "bytes": 425
+  },
+  "startupScreenshotsExported": 1,
+  "completedAt": "2026-09-13T11:17:13.786Z",
+  "diskFreeBytesAtEnd": 97828155392
+}

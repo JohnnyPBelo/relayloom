@@ -237,7 +237,11 @@ func (n *Node) persistPrivateLocked(next PrivateState) error {
 	}
 	var digest string
 	if hasGroupOutbox(n.private.Outbox) || hasGroupOutbox(next.Outbox) {
-		err = n.privateDatabase.Update(func(tx *groupstore.Tx) error {
+		update := n.updateGroupState
+		if update == nil {
+			update = n.privateDatabase.Update
+		}
+		err = update(func(tx *groupstore.Tx) error {
 			current, err := profilestate.Read(tx)
 			if err != nil {
 				return err

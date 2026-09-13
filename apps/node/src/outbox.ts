@@ -34,6 +34,18 @@ export interface OutboxEntry {
   groupStopped?: boolean;
 }
 export type Outbox = Record<string, OutboxEntry>;
+
+/** Keep the UTF-16 budget without cutting an astral character in half. */
+export function outboxPreview(value: string): string {
+  let end = Math.min(160, value.length);
+  if (
+    end < value.length &&
+    /[\uD800-\uDBFF]/.test(value[end - 1]) &&
+    /[\uDC00-\uDFFF]/.test(value[end])
+  )
+    end--;
+  return value.slice(0, end);
+}
 export type OutboxStatus =
   | "pending"
   | "received"
