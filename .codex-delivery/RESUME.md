@@ -6,11 +6,11 @@ Continuar TODO o PROJECT-BRIEF.md, apenas em /home/absint0o/projects/relayloom. 
 
 ## Git e testes em curso
 
-HEAD e origin/main: 1aaca64c8eea188527a265db03d7f8490a7da111, push85817 confirmado0. Marco de autoridade93c598f publicado; 1aaca64 só ajusta o orçamento do job CI Go de15→25min com cobertura inalterada. Preservar TODAS as alterações não commitadas. Não fazer reset.
+Marco de envio guardado localmente em1e027c8; origin/main ainda1aaca64c8eea188527a265db03d7f8490a7da111 (push85817 confirmado0). Publicar com a próxima correcção iOS para não repetir o gate Apple inalterado que já falhou. Marco de autoridade93c598f publicado; 1aaca64 só ajusta o orçamento do job CI Go de15→25min com cobertura inalterada. Preservar TODAS as alterações não commitadas. Não fazer reset.
 
 Sequência66585 terminou0: typecheck e1 teste de preview Node passaram; Go3 testes de topo (seis cenários, incluindo quatro subcasos de commit) passou46.565s com race; CLI reconstruída e oito mortes Unicode passaram26.633s. Logs .cache/group-send-unicode-*.txt e .cache/group-send-recovery-unicode-after.txt. A falha Unicode anterior continua preservada.
 
-**Gate71338 terminou0; nenhum teste deste gate fica em curso.** Build5.816s;219 testes Node194.189s;144 testes Go de topo com race507.918s (11 helpers executados pelos drivers);30 casos de interoperabilidade270.997s; fronteira SQLite C115.655s;17 UI Node115.990s e17 UI Go110.472s.22 testes host iOS1.887s e estática0.030s. Desktop Linux: preparação0.233s, execução1.041s, pacote5.812s, execução empacotada0.800s.26 relatórios Axe actualizados, zero violações.277 ficheiros de fonte inalterados durante os gates. Evidência em docs/evidence/group-send/final. Não repetir por perda de handles. Próximo: commit/push normal deste marco, depois corrigir sintaxe WebKit mantendo isolamento e continuar confirmações/carriers/UI segundo GROUP-CONFIRMATIONS-INTEGRATION.md.
+**Gate71338 terminou0; nenhum teste deste gate fica em curso.** Build5.816s;219 testes Node194.189s;144 testes Go de topo com race507.918s (11 helpers executados pelos drivers);30 casos de interoperabilidade270.997s; fronteira SQLite C115.655s;17 UI Node115.990s e17 UI Go110.472s.22 testes host iOS1.887s e estática0.030s. Desktop Linux: preparação0.233s, execução1.041s, pacote5.812s, execução empacotada0.800s.26 relatórios Axe actualizados, zero violações.277 ficheiros de fonte inalterados durante os gates. Evidência em docs/evidence/group-send/final. Não repetir por perda de handles. Commit1e027c8 criado; logs completos a arquivar explicitamente porque *.log é ignorado por omissão. Depois corrigir sintaxe WebKit mantendo isolamento e continuar confirmações/carriers/UI segundo GROUP-CONFIRMATIONS-INTEGRATION.md.
 
 ## Implementação local nova
 
