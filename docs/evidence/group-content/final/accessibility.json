@@ -1,0 +1,115 @@
+{
+  "reports": [
+    {
+      "path": "docs/evidence/ui/messenger-light-axe.json",
+      "violations": 0,
+      "sha256": "0375585d7fc0a48bf92d73f72bb4968c1bd8b48a07d950e078c720ce5f58ce7a"
+    },
+    {
+      "path": "docs/evidence/ui/site-editor-axe.json",
+      "violations": 0,
+      "sha256": "9f91f4bc76d65b7face168dd1e03815f0382045c8c58415d50da928f70c2444d"
+    },
+    {
+      "path": "docs/evidence/ui/social-axe.json",
+      "violations": 0,
+      "sha256": "96fe729e9fcae9740e541f39a7ed278cb1445a3aba7a45d381d21276d1134646"
+    },
+    {
+      "path": "docs/evidence/ui/messenger-dark-axe.json",
+      "violations": 0,
+      "sha256": "1c9816160c162ceba68ebf6f3852c09bb4b636f02faa22b3ca57aed8fc1eed4c"
+    },
+    {
+      "path": "docs/evidence/ui/onboarding-axe.json",
+      "violations": 0,
+      "sha256": "f019aa331919b7ec373cc99ce189631252ec5c9f207cba852f0489e8d101ba01"
+    },
+    {
+      "path": "docs/evidence/ui/mobile-social-axe.json",
+      "violations": 0,
+      "sha256": "c92ad8166009d397cafd7d614781eb84b885f3f5b0e9b3644f06ba05ed1f4261"
+    },
+    {
+      "path": "docs/evidence/ui/onboarding-layout-go/dark-axe.json",
+      "violations": 0,
+      "sha256": "8a46f99c4b066a201b1bcf83ecb00964d128872e8559a97afd9eb5b52224b52f"
+    },
+    {
+      "path": "docs/evidence/ui/onboarding-layout-go/light-axe.json",
+      "violations": 0,
+      "sha256": "8a46f99c4b066a201b1bcf83ecb00964d128872e8559a97afd9eb5b52224b52f"
+    },
+    {
+      "path": "docs/evidence/ui/onboarding-layout-node/dark-axe.json",
+      "violations": 0,
+      "sha256": "8a46f99c4b066a201b1bcf83ecb00964d128872e8559a97afd9eb5b52224b52f"
+    },
+    {
+      "path": "docs/evidence/ui/onboarding-layout-node/light-axe.json",
+      "violations": 0,
+      "sha256": "8a46f99c4b066a201b1bcf83ecb00964d128872e8559a97afd9eb5b52224b52f"
+    },
+    {
+      "path": "docs/evidence/outbox/node/expired-axe.json",
+      "violations": 0,
+      "sha256": "1bc0f5b11806f90602ead7bf51bdabcc662d336cb95ef5a6c8ce717f3628d9b7"
+    },
+    {
+      "path": "docs/evidence/outbox/node/pending-dark-axe.json",
+      "violations": 0,
+      "sha256": "a72592a79b3a1f5716f7d82cae6d59a12e1a78ebc30b667b2cba493bc8dfadda"
+    },
+    {
+      "path": "docs/evidence/outbox/node/pending-light-axe.json",
+      "violations": 0,
+      "sha256": "c4efbd731dd3f1bf851cff6e21a40f74bb16e3387bb3305cfb15c87706266beb"
+    },
+    {
+      "path": "docs/evidence/outbox/node/keyboard-focus-axe.json",
+      "violations": 0,
+      "sha256": "4a75220096259788f53540652ea15b53fe91649c72b48ae9f97a95aad2f862d9"
+    },
+    {
+      "path": "docs/evidence/outbox/node/pending-mobile-axe.json",
+      "violations": 0,
+      "sha256": "1987dc5fa7b800bae6a6f647b4e871715d5dc81cad551af263802485b0754f5d"
+    },
+    {
+      "path": "docs/evidence/outbox/node/legacy-group-read-axe.json",
+      "violations": 0,
+      "sha256": "70e9b9cad5171ea5a2b2707c41552d126378ace112864b398f8a19fc059785dc"
+    },
+    {
+      "path": "docs/evidence/outbox/go/expired-axe.json",
+      "violations": 0,
+      "sha256": "1681cb2129720a3a2b3d9cc80bb2acd0abd1a94dccda84c89e8c4f39a4d5c28e"
+    },
+    {
+      "path": "docs/evidence/outbox/go/pending-dark-axe.json",
+      "violations": 0,
+      "sha256": "e9707a14544a50aeaf4da8c05e6de2c3ab3abdbcabc1b505eeeb4cb350d3f547"
+    },
+    {
+      "path": "docs/evidence/outbox/go/pending-light-axe.json",
+      "violations": 0,
+      "sha256": "7d4971412e911bca8e48a4c0312465a0b76e184b51de6794f8fb8ad3e93de7ae"
+    },
+    {
+      "path": "docs/evidence/outbox/go/keyboard-focus-axe.json",
+      "violations": 0,
+      "sha256": "7c728eba431f15bd5552ef0913b83e4fcd38f69b88f5174513a17684bdf1670b"
+    },
+    {
+      "path": "docs/evidence/outbox/go/pending-mobile-axe.json",
+      "violations": 0,
+      "sha256": "2a7d2780b52ec25ea301d1ac39ea63218f4c33313a80cdde900144de78f036b8"
+    },
+    {
+      "path": "docs/evidence/outbox/go/legacy-group-read-axe.json",
+      "violations": 0,
+      "sha256": "080ec989ccc47eabc6a2d599396c9282cceeb0591193150b9210cfec628dcad0"
+    }
+  ],
+  "review": "Root inspected the Node mobile-social capture and the Go desktop editor capture. No overlap/clipping regression observed in those states; not independent review, physical touch or screen-reader certification."
+}

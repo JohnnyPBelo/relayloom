@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/JohnnyPBelo/relayloom/native/core"
+	"github.com/JohnnyPBelo/relayloom/native/groupaccess"
 )
 
 const HistoryPageObjects = 100
@@ -27,6 +28,13 @@ type HistoryPage struct {
 // into an otherwise bounded attachment-free snapshot. Full /view is unchanged.
 func summaryContent(content Content) Content {
 	result := Content{}
+	if groupaccess.HasBinding(content) {
+		for _, field := range []string{"groupAudience", "groupEpoch", "targetEpoch"} {
+			if value, ok := content[field].(string); ok {
+				result[field] = value
+			}
+		}
+	}
 	for _, field := range []string{"type", "text", "title", "conversation", "target", "emoji", "replyTo", "priority"} {
 		if value, ok := content[field].(string); ok {
 			result[field] = value
@@ -141,6 +149,7 @@ func (n *Node) authorizedObjectLocked(id string, touch bool) (*DisplayObject, er
 		return nil, errors.New("endereço inválido")
 	}
 	loaded := make(map[string]*DisplayObject)
+	groupAllowed := map[string]bool{}
 	var load func(string, int) (*DisplayObject, error)
 	load = func(current string, depth int) (*DisplayObject, error) {
 		if old := loaded[current]; old != nil {
@@ -161,6 +170,17 @@ func (n *Node) authorizedObjectLocked(id string, touch bool) (*DisplayObject, er
 			return nil, err
 		}
 		loaded[current] = object
+		if groupaccess.HasBinding(object.Content) {
+			allowed, err := n.observeGroupLocked(current, n.protectedGroupContentLocked())
+			if err != nil {
+				return nil, err
+			}
+			if !allowed {
+				return nil, errors.New("sem autorização de leitura do grupo")
+			}
+			groupAllowed[current] = true
+			return object, nil
+		}
 		if related(object.Kind) {
 			target := text(object.Content["target"])
 			if !core.ValidAddress(target) {
@@ -192,7 +212,7 @@ func (n *Node) authorizedObjectLocked(id string, touch bool) (*DisplayObject, er
 	for _, object := range loaded {
 		all = append(all, *object)
 	}
-	if !authorized(*target, all) {
+	if !groupAllowed[id] && !authorized(*target, all) {
 		return nil, errors.New("sem autorização de leitura")
 	}
 	// A journalled deletion/edit survives loss of its original wire event.
@@ -244,6 +264,12 @@ func (n *Node) materializedObjectLocked(id string) (*DisplayObject, error) {
 			}
 			event, err := n.displayLocked(bundle)
 			if err != nil || text(event.Content["target"]) != id {
+				continue
+			}
+			if groupaccess.HasBinding(event.Content) {
+				if _, err = n.observeGroupLocked(event.ID, n.protectedGroupContentLocked()); err != nil {
+					return nil, err
+				}
 				continue
 			}
 			if err = n.journalMutationLocked(event, manifest, display); err != nil {

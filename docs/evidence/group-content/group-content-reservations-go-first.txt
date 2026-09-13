@@ -1,0 +1,9 @@
+--- FAIL: TestStoreRestartDedupCountPinsAndDiskVerification (0.27s)
+    core_test.go:254: índice inválido: campos JSON inválidos
+--- FAIL: TestReservationsSurviveRestartAndPressureWithoutChangingPins (0.05s)
+    reservations_test.go:37: índice inválido: campos JSON inválidos
+--- FAIL: TestReservationWriteFailureProtectsUnionUntilReconciliation (0.07s)
+    reservations_test.go:157: índice inválido: campos JSON inválidos
+FAIL
+FAIL	github.com/JohnnyPBelo/relayloom/native/core	6.347s
+FAIL

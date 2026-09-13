@@ -1,6 +1,6 @@
 # Gestão autenticada de grupos — integração parcial
 
-O contrato completo permanece em `PROJECT-BRIEF.md`. As conversas da interface continuam a usar grupos fixos. A API de gestão de épocas funciona nos núcleos Node e Go; ainda falta ligar o envio dinâmico, a admissão dos conteúdos, os carriers de controlo e a UI. `management: true` e `messaging: false` são capacidades distintas na resposta da API.
+O contrato completo permanece em `PROJECT-BRIEF.md`. As conversas da interface continuam a usar grupos fixos. A API de gestão de épocas funciona nos núcleos Node e Go; a admissão dos conteúdos já está ligada e verificada em [GROUP-CONTENT](GROUP-CONTENT.md). Envio/outbox dinâmica, carriers de controlo e UI continuam pendentes. `management: true` e `messaging: false` são capacidades distintas na resposta da API.
 
 ## Fronteira implementada
 
@@ -20,7 +20,7 @@ As bibliotecas Node/Go implementam as audiências por época, leitores originais
 
 O registo local conserva até 4096 contextos de admissão autenticados, 128 retenções pendentes/16MiB de bytes cifrados contabilizados, 256 paragens imutáveis e contadores limitados de retirada/recusa. As paragens cabem num checkpoint de 128 KiB dentro da reserva existente de 4 MiB; não dependem de aumentar o documento privado quando o espaço normal está esgotado. O histórico fornecido por HTTP nunca é aceite como prova de observação local.
 
-Estes registos ainda não estão ligados aos pins e à retenção física do `ContentStore`. Contabilizar um payload não demonstra que os seus bytes continuam disponíveis. Um backup integral anterior, ainda autenticamente válido, continua indistinguível sem testemunha monotónica externa.
+A admissão e as reservas físicas do `ContentStore` estão agora ligadas conforme [GROUP-CONTENT](GROUP-CONTENT.md); a reserva dos envios dinâmicos continua pendente. Contabilizar um payload não demonstra que os seus bytes continuam disponíveis. Um backup integral anterior, ainda autenticamente válido, continua indistinguível sem testemunha monotónica externa.
 
 ## Evidência e limites
 

@@ -275,9 +275,10 @@
           "docs/evidence/group-authority/node",
           "docs/GROUP-RUNTIME.md",
           "tests/group-runtime.test.ts",
-          "tests/native/group-runtime.test.ts"
+          "tests/native/group-runtime.test.ts",
+          "docs/GROUP-CONTENT.md"
         ],
-        "limits": "Grupos fixos em rede/UI; gest\u00e3o din\u00e2mica pela API Node/Go verificada. Falta admiss\u00e3o/outbox, carriers P2P, mensagens/UI din\u00e2mica e revis\u00e3o independente desta integra\u00e7\u00e3o."
+        "limits": "Gest\u00e3o e admiss\u00e3o por \u00e9pocas em Node/Go verificadas. Envio/outbox din\u00e2mica, carriers autom\u00e1ticos, UI e revis\u00e3o independente desta integra\u00e7\u00e3o pendentes."
       },
       "evidence": [
         {
@@ -329,6 +330,15 @@
             "docs/evidence/group-runtime/final/desktop-report.json"
           ],
           "notes": "Gate completo: build5.497s;177 testes Node122.851s;118 testes Go de topo com race380.032s (oito helpers omitidos sem fixture e exercitados pelos drivers reais);20 casos de interoperabilidade199.504s; driver C dirigido8.039s;16 UI Node112.105s e16 UI Go106.110s. Desktop Linux: prepara\u00e7\u00e3o0.239s, execu\u00e7\u00e3o2.075s, pacote5.377s e execu\u00e7\u00e3o empacotada0.795s.22 relat\u00f3rios Axe actualizados sem viola\u00e7\u00f5es. Fontes inalteradas em todas as fases. Evid\u00eancia em `docs/evidence/group-runtime/final`. Capturas do editor/social Node e conversa escura Go revistas por root; isto n\u00e3o \u00e9 revis\u00e3o independente. Nenhuma nova execu\u00e7\u00e3o m\u00f3vel pertence a este gate."
+        },
+        {
+          "kind": "regression-gate",
+          "result": "pass",
+          "paths": [
+            "docs/evidence/group-content/final/report.json",
+            "docs/evidence/group-content/final/desktop-report.json"
+          ],
+          "notes": "190 testes Node passaram137.762s;129 testes Go de topo/race396.073s (9 helpers executados pelos drivers de interoperabilidade);24 testes de interoperabilidade219.736s; fronteira SQLite C15.538s;16 UI Node112.941s e16 UI Go103.288s. Build6.072s e CLI0.221s passaram. Desktop Linux: prepara\u00e7\u00e3o0.224s, execu\u00e7\u00e3o1.028s, pacote5.347s e execu\u00e7\u00e3o empacotada0.798s.22 relat\u00f3rios Axe actualizados, zero viola\u00e7\u00f5es. Fontes inalteradas em todas as fases. Evid\u00eancia em docs/evidence/group-content/final."
         }
       ]
     },

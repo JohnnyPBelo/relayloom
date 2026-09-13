@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/JohnnyPBelo/relayloom/native/core"
+	"github.com/JohnnyPBelo/relayloom/native/groupaccess"
 	"github.com/JohnnyPBelo/relayloom/native/transport"
 )
 
@@ -74,6 +75,9 @@ func (n *Node) journalReceivedConfirmationLocked(bundle core.Bundle) error {
 	if err != nil {
 		return nil
 	}
+	if groupaccess.HasBinding(event.Content) {
+		return nil
+	}
 	original, err := n.authorizedObjectLocked(text(event.Content["target"]), false)
 	if err != nil {
 		return nil
@@ -82,6 +86,9 @@ func (n *Node) journalReceivedConfirmationLocked(bundle core.Bundle) error {
 }
 
 func (n *Node) confirmationAllowedLocked(original *DisplayObject) bool {
+	if groupaccess.HasBinding(original.Content) {
+		return false
+	}
 	if n.identity == nil || original.Kind != "message" || original.Public || original.Author.ID == n.identity.Public.ID || !contains(original.Readers, n.identity.Public.ID) {
 		return false
 	}
@@ -168,6 +175,9 @@ func (n *Node) issueDeliveriesLocked(objects []DisplayObject) {
 // Preserve the existing convenience of learning signed member cards on view.
 // Contact quota/disk failures are independent of authorized content access.
 func (n *Node) rememberViewedMembersLocked(original *DisplayObject) {
+	if groupaccess.HasBinding(original.Content) {
+		return
+	}
 	cards, err := members(original.Content["members"])
 	if err != nil {
 		return

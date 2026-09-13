@@ -14,6 +14,8 @@ import (
 	"time"
 
 	"github.com/JohnnyPBelo/relayloom/native/core"
+	"github.com/JohnnyPBelo/relayloom/native/groupaccess"
+	"github.com/JohnnyPBelo/relayloom/native/groupledger"
 	"github.com/JohnnyPBelo/relayloom/native/groupstore"
 	"github.com/JohnnyPBelo/relayloom/native/profiledb"
 	"github.com/JohnnyPBelo/relayloom/native/profilelock"
@@ -34,6 +36,8 @@ type Node struct {
 	updateGroupState   func(func(*groupstore.Tx) error) error
 	privateDatabase    *profiledb.Database
 	privateDigest      string
+	groupHolds         []groupledger.HeldRecord
+	groupDecisions     map[string]groupaccess.Decision
 	routes             map[string]transport.Route
 	requests           map[string]int64
 	receipts           map[string]bool
@@ -177,6 +181,8 @@ func (n *Node) Close() error {
 	n.identity = nil
 	n.private = emptyPrivate()
 	n.clearSummariesLocked()
+	n.groupHolds = nil
+	n.groupDecisions = nil
 	n.mu.Unlock()
 	for _, cancel := range cancellations {
 		cancel()
@@ -202,6 +208,8 @@ func (n *Node) lockPrivateLocked() error {
 	n.private = emptyPrivate()
 	n.privateDigest = ""
 	n.clearSummariesLocked()
+	n.groupHolds = nil
+	n.groupDecisions = nil
 	if n.privateDatabase != nil {
 		err := n.privateDatabase.Close()
 		n.privateDatabase = nil
@@ -310,6 +318,9 @@ func (n *Node) journalReceivedMutationLocked(bundle core.Bundle) error {
 	if err != nil {
 		return nil
 	}
+	if groupaccess.HasBinding(event.Content) {
+		return nil
+	}
 	original, err := n.authorizedObjectLocked(text(event.Content["target"]), false)
 	if err != nil {
 		return nil
@@ -318,6 +329,9 @@ func (n *Node) journalReceivedMutationLocked(bundle core.Bundle) error {
 }
 
 func (n *Node) journalMutationLocked(event *DisplayObject, manifest core.Manifest, original *DisplayObject) error {
+	if groupaccess.HasBinding(event.Content) || groupaccess.HasBinding(original.Content) {
+		return nil
+	}
 	if related(original.Kind) || original.Author.ID != event.Author.ID || original.Public != event.Public || !equalIDs(original.Readers, event.Readers) {
 		return nil
 	}
@@ -355,6 +369,14 @@ func (n *Node) receiveLocked(delivery transport.Delivery) error {
 		}
 		if err = n.journalReceivedConfirmationLocked(b); err != nil {
 			return err
+		}
+		if n.identity != nil {
+			incoming, e := n.displayLocked(b)
+			if e == nil && groupaccess.HasBinding(incoming.Content) && (text(incoming.Content["target"]) != "" || text(incoming.Content["replyTo"]) != "") {
+				if _, err = n.objectsLocked(); err != nil {
+					return err
+				}
+			}
 		}
 		added, err := n.Store.Put(b, false)
 		if err != nil {
@@ -475,6 +497,11 @@ func (n *Node) displayLocked(bundle core.Bundle) (*DisplayObject, error) {
 	if text(content["type"]) != manifest.Kind {
 		return nil, errors.New("tipo não corresponde ao manifesto")
 	}
+	if groupaccess.HasBinding(content) {
+		if _, err = groupaccess.ParseBinding(content); err != nil {
+			return nil, err
+		}
+	}
 	readers := make([]string, 0, len(manifest.Keys))
 	for _, k := range manifest.Keys {
 		readers = append(readers, k.Reader)
@@ -494,6 +521,9 @@ func findObject(all []DisplayObject, id string) *DisplayObject {
 	return nil
 }
 func authorized(o DisplayObject, all []DisplayObject) bool {
+	if groupaccess.HasBinding(o.Content) {
+		return false
+	}
 	seen := map[string]bool{}
 	for _, id := range o.Readers {
 		if seen[id] {
@@ -625,8 +655,48 @@ func (n *Node) objectsSnapshotLocked() ([]DisplayObject, map[string]core.Manifes
 		}
 	}
 	accepted := make([]DisplayObject, 0, len(all))
+	groupObjects := []DisplayObject{}
 	for _, o := range all {
-		if !contains(n.config.Blocked, o.Author.ID) && authorized(o, all) {
+		if groupaccess.HasBinding(o.Content) && !contains(n.config.Blocked, o.Author.ID) {
+			groupObjects = append(groupObjects, o)
+		}
+	}
+	inspected := map[string]groupInspection{}
+	if len(groupObjects) > 0 || len(n.groupHolds) > 0 {
+		var err error
+		inspected, err = n.inspectGroupObjectsLocked(groupObjects, verified)
+		if err != nil {
+			return nil, nil, 0, err
+		}
+	}
+	protected := make(map[string]bool, len(present))
+	for id := range verified {
+		protected[id] = true
+	}
+	for _, entry := range n.private.Outbox {
+		protected[entry.ID] = true
+	}
+	n.groupDecisions = map[string]groupaccess.Decision{}
+	for _, o := range all {
+		if contains(n.config.Blocked, o.Author.ID) {
+			continue
+		}
+		allowed := false
+		if groupaccess.HasBinding(o.Content) {
+			if observation, ok := inspected[o.ID]; ok && observation.Stable {
+				n.groupDecisions[o.ID] = observation.Decision
+				allowed = observation.Decision.Status == "accepted"
+			} else {
+				var err error
+				allowed, err = n.observeGroupLocked(o.ID, protected)
+				if err != nil {
+					return nil, nil, 0, err
+				}
+			}
+		} else {
+			allowed = authorized(o, all)
+		}
+		if allowed {
 			accepted = append(accepted, o)
 		}
 	}
@@ -636,6 +706,9 @@ func (n *Node) objectsSnapshotLocked() ([]DisplayObject, map[string]core.Manifes
 	}
 	changed := false
 	for _, event := range accepted {
+		if groupaccess.HasBinding(event.Content) {
+			continue
+		}
 		if event.Kind != "edit" && event.Kind != "delete" {
 			continue
 		}
@@ -723,7 +796,7 @@ func (n *Node) stateLocked() (map[string]any, error) {
 	}
 	counters := n.Router.Counters()
 	counters.Rejected += n.rejected
-	return map[string]any{"initialized": n.initialized(), "locked": n.identity == nil, "identity": identity, "tcpPort": n.TCPPort, "peers": n.Router.Peers(), "counters": counters, "storage": n.Store.Stats(), "settings": map[string]any{"relay": n.config.Relay, "lowPower": n.config.LowPower}, "contacts": contacts, "blocked": blocked, "following": following, "saved": saved, "reports": reports, "objects": page.Objects, "outbox": n.outboxItemsLocked(outboxAt, manifests), "outboxPolicy": outboxPolicy(), "history": page.History, "followedPostIds": followed, "collections": collections, "siteDraft": draft, "transportError": n.lastTransportError, "now": outboxAt, "nativeRuntime": "Go"}, nil
+	return map[string]any{"initialized": n.initialized(), "locked": n.identity == nil, "identity": identity, "tcpPort": n.TCPPort, "peers": n.Router.Peers(), "counters": counters, "storage": n.Store.Stats(), "settings": map[string]any{"relay": n.config.Relay, "lowPower": n.config.LowPower}, "contacts": contacts, "blocked": blocked, "following": following, "saved": saved, "reports": reports, "groupContent": n.groupContentStateLocked(), "objects": page.Objects, "outbox": n.outboxItemsLocked(outboxAt, manifests), "outboxPolicy": outboxPolicy(), "history": page.History, "followedPostIds": followed, "collections": collections, "siteDraft": draft, "transportError": n.lastTransportError, "now": outboxAt, "nativeRuntime": "Go"}, nil
 }
 
 func (n *Node) Publish(content Content, recipients any, ttlMS int64) (DisplayObject, error) {
@@ -754,6 +827,9 @@ func (n *Node) prepareLocked(content Content, recipients any, ttlMS int64) (*pre
 	content = Content(m)
 	if err = validateContent(content); err != nil {
 		return nil, err
+	}
+	if groupaccess.HasBinding(content) {
+		return nil, errors.New("o envio neste grupo ainda não está disponível")
 	}
 	kind := text(content["type"])
 	public := text(recipients) == "public"
@@ -836,8 +912,12 @@ func (n *Node) prepareLocked(content Content, recipients any, ttlMS int64) (*pre
 		if err != nil {
 			return nil, err
 		}
-		if _, err = core.DecryptBundle(original, n.identity); err != nil {
+		originalValue, err := core.DecryptBundle(original, n.identity)
+		if err != nil {
 			return nil, err
+		}
+		if content, ok := originalValue.(map[string]any); ok && groupaccess.HasBinding(content) {
+			return nil, errors.New("esta acção ainda não está disponível neste grupo")
 		}
 		objects, err := n.objectsLocked()
 		if err != nil {
@@ -959,6 +1039,10 @@ func (n *Node) Handle(operation string, body map[string]any) (any, error) {
 		n.privateDatabase = database
 		n.privateDigest = digest
 		n.clearSummariesLocked()
+		if err = n.restoreGroupHoldsLocked(); err != nil {
+			_ = n.lockPrivateLocked()
+			return nil, err
+		}
 		if err = n.recoverOutboxLocked(time.Now().UnixMilli()); err != nil {
 			_ = n.lockPrivateLocked()
 			return nil, err
@@ -989,6 +1073,10 @@ func (n *Node) Handle(operation string, body map[string]any) (any, error) {
 		n.privateDatabase = database
 		n.privateDigest = digest
 		n.clearSummariesLocked()
+		if err = n.restoreGroupHoldsLocked(); err != nil {
+			_ = n.lockPrivateLocked()
+			return nil, err
+		}
 		if err = n.recoverOutboxLocked(time.Now().UnixMilli()); err != nil {
 			_ = n.lockPrivateLocked()
 			return nil, err

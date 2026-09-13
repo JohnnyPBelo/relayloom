@@ -1,0 +1,26 @@
+{
+  "commit": "274004ee0e4c3d2a3f5c9513bdb741fc0ee3e4e9",
+  "runId": 34721962376,
+  "photoImport": {
+    "exitCode": 0,
+    "elapsedMs": 10038
+  },
+  "testCommand": {
+    "exitCode": 65,
+    "elapsedMs": 181893
+  },
+  "xcuitest": {
+    "executed": 1,
+    "failed": 1,
+    "caseSeconds": 57.965,
+    "applicationLaunchObserved": true,
+    "applicationPidInLog": 17625,
+    "failure": "missing(\"WKWebView startup\")",
+    "webViewWaitSeconds": 45
+  },
+  "functionalIOSFlowPassed": false,
+  "physicalDeviceTested": false,
+  "note": "simulatorExecuted=false in the original runner report means the entire acceptance gate did not pass; the XCUITest log independently records app launch and one executed failing test. No assertion that the Go core or web UI started successfully.",
+  "publicLogNormalization": "Trailing whitespace and final blank lines removed; original log hash retained in artifact-hashes.json.",
+  "publicLogSha256": "d89811432fc6991a1537486ae242fa0fe691ff4228ffa1e7d0a9146794c615d8"
+}

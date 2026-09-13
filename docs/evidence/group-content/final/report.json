@@ -1,0 +1,156 @@
+{
+  "startedAt": "2026-09-12T23:44:29Z",
+  "baseCommit": "274004ee0e4c3d2a3f5c9513bdb741fc0ee3e4e9",
+  "workingTree": "uncommitted integration",
+  "sourceSha256": "60c39b820017127f42b36cab43d509d7a62bd31d7bc4a25b6f42ea3d89e77d5e",
+  "checks": [
+    {
+      "name": "build",
+      "argv": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "environmentOverrides": {},
+      "status": "pass",
+      "startedAt": "2026-09-12T23:44:29Z",
+      "pid": 2123521,
+      "exitCode": 0,
+      "elapsedSeconds": 6.072,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "node",
+      "argv": [
+        "npm",
+        "test"
+      ],
+      "environmentOverrides": {},
+      "status": "pass",
+      "startedAt": "2026-09-12T23:44:35Z",
+      "pid": 2123825,
+      "exitCode": 0,
+      "elapsedSeconds": 137.762,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "go",
+      "argv": [
+        "node",
+        "scripts/go.mjs",
+        "test",
+        "-json",
+        "-race",
+        "-count=1",
+        "-p=1",
+        "./core",
+        "./transport",
+        "./app",
+        "./groups",
+        "./groupstore",
+        "./groupauthority",
+        "./groupaccess",
+        "./groupledger",
+        "./profilelock",
+        "./profilestate",
+        "./profilebinding",
+        "./profiledb",
+        "./sqlitedriver"
+      ],
+      "environmentOverrides": {},
+      "status": "pass",
+      "startedAt": "2026-09-12T23:46:53Z",
+      "pid": 2135176,
+      "exitCode": 0,
+      "elapsedSeconds": 396.073,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "native-build",
+      "argv": [
+        "npm",
+        "run",
+        "native:build"
+      ],
+      "environmentOverrides": {},
+      "status": "pass",
+      "startedAt": "2026-09-12T23:53:29Z",
+      "pid": 2155526,
+      "exitCode": 0,
+      "elapsedSeconds": 0.221,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "interop",
+      "argv": [
+        "npm",
+        "run",
+        "test:interop"
+      ],
+      "environmentOverrides": {},
+      "status": "pass",
+      "startedAt": "2026-09-12T23:53:29Z",
+      "pid": 2155671,
+      "exitCode": 0,
+      "elapsedSeconds": 219.736,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "cgo-boundary",
+      "argv": [
+        "node",
+        "scripts/go.mjs",
+        "test",
+        "-json",
+        "-race",
+        "-count=1",
+        "-p=1",
+        "-tags",
+        "relayloom_sqlite_cgo,sqlite_omit_load_extension",
+        "-run",
+        "TestGroupCommand|TestScopedRawProofTail|TestScopedRestrictivePrefix|TestGroupAdmission|TestGroupHistoricalDelete|TestGroupQuarantineReservation|TestGroupCorruptQuarantine|TestGroupHistoryExpiry",
+        "./app",
+        "./groupauthority"
+      ],
+      "environmentOverrides": {},
+      "status": "pass",
+      "startedAt": "2026-09-12T23:57:09Z",
+      "pid": 2166487,
+      "exitCode": 0,
+      "elapsedSeconds": 15.538,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "ui-node",
+      "argv": [
+        "node",
+        "scripts/e2e.mjs"
+      ],
+      "environmentOverrides": {},
+      "status": "pass",
+      "startedAt": "2026-09-12T23:57:25Z",
+      "pid": 2167785,
+      "exitCode": 0,
+      "elapsedSeconds": 112.941,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "ui-go",
+      "argv": [
+        "node",
+        "scripts/e2e.mjs"
+      ],
+      "environmentOverrides": {
+        "RELAYLOOM_TEST_BACKEND": "native"
+      },
+      "status": "pass",
+      "startedAt": "2026-09-12T23:59:18Z",
+      "pid": 2174312,
+      "exitCode": 0,
+      "elapsedSeconds": 103.288,
+      "sourceUnchanged": true
+    }
+  ],
+  "status": "pass",
+  "finishedAt": "2026-09-13T00:01:01Z"
+}

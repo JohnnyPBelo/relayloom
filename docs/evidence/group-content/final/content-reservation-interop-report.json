@@ -1,0 +1,14 @@
+{
+  "result": "pass",
+  "sourceDigest": "98c6e17354caae740ff005ac4b46fd1b566b7be96a9670dc6751515a3938cc35",
+  "realProcesses": true,
+  "encryptedPayloadRetainedWithoutDecryption": true,
+  "negativeControlRemovesOnlyReservation": true,
+  "bothEnginesExitAfterReservationCommit": 78,
+  "manualPinPreservedOnRelease": true,
+  "notTested": [
+    "application ledger coordination",
+    "physical power failure",
+    "mobile runtime"
+  ]
+}

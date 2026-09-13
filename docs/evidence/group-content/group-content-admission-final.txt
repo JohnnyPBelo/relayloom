@@ -1,0 +1,75 @@
+TAP version 13
+# (node:2049050) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: an API observation cannot display an admission whose outer transaction rolled back
+ok 1 - an API observation cannot display an admission whose outer transaction rolled back
+  ---
+  duration_ms: 519.172084
+  type: 'test'
+  ...
+# Subtest: a historical delete and its accepted context recover together after lost commit response and real cache removal
+ok 2 - a historical delete and its accepted context recover together after lost commit response and real cache removal
+  ---
+  duration_ms: 714.924462
+  type: 'test'
+  ...
+# Subtest: failure to reserve quarantine bytes aborts the hold and locks until authenticated reconciliation succeeds
+ok 3 - failure to reserve quarantine bytes aborts the hold and locks until authenticated reconciliation succeeds
+  ---
+  duration_ms: 582.253466
+  type: 'test'
+  ...
+# Subtest: an unavailable quarantined blob cannot block admission of another valid group object
+ok 4 - an unavailable quarantined blob cannot block admission of another valid group object
+  ---
+  duration_ms: 477.080185
+  type: 'test'
+  ...
+# Subtest: authenticated history with an expiry inconsistent with its signed bundle is rejected
+ok 5 - authenticated history with an expiry inconsistent with its signed bundle is rejected
+  ---
+  duration_ms: 421.96046
+  type: 'test'
+  ...
+# (node:2049237) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: an unchanged group snapshot walks its authority chain once, and a later closure still invalidates new admission
+ok 6 - an unchanged group snapshot walks its authority chain once, and a later closure still invalidates new admission
+  ---
+  duration_ms: 8252.291606
+  type: 'test'
+  ...
+# {"retainedObjects":32,"epochs":32,"visitedHeaders":32,"elapsedMs":120.14625400000023}
+# Subtest: real Node receivers hold epoch content until its snapshot arrives and keep only accepted history after closure
+ok 7 - real Node receivers hold epoch content until its snapshot arrives and keep only accepted history after closure
+  ---
+  duration_ms: 4764.95173
+  type: 'test'
+  ...
+# Subtest: actual node/native group admission preserves quarantine and history through node restart
+ok 8 - actual node/native group admission preserves quarantine and history through node restart
+  ---
+  duration_ms: 4154.101688
+  type: 'test'
+  ...
+# Subtest: actual native/node group admission preserves quarantine and history through native restart
+ok 9 - actual native/node group admission preserves quarantine and history through native restart
+  ---
+  duration_ms: 3495.624809
+  type: 'test'
+  ...
+# Subtest: actual native/native group admission preserves quarantine and history through native restart
+ok 10 - actual native/native group admission preserves quarantine and history through native restart
+  ---
+  duration_ms: 3010.230826
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 27234.36034

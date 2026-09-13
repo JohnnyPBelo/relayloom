@@ -1,0 +1,24 @@
+{
+  "result": "pass",
+  "sourceDigest": "8431d32065e211192255705082a945768d1f23bce686b7e2343f438745d76a34",
+  "elapsedMs": 3553,
+  "creator": "native",
+  "member": "node",
+  "restart": "native",
+  "tested": [
+    "actual authenticated HTTP APIs",
+    "actual TCP encrypted bundle injection",
+    "snapshot required before acceptance",
+    "physical quarantine reserve",
+    "previously accepted history after closure",
+    "unknown old ciphertext quarantined",
+    "state shared across real engine restart",
+    "minimal historical receipt vs forbidden text extension",
+    "valid DM vs falsy group-tag bypass"
+  ],
+  "limits": [
+    "fixture signs the test bundles; dynamic outbound API/outbox is unfinished",
+    "control certificates are transferred by the fixture; automatic carrier synchronization is unfinished",
+    "no mobile/hardware evidence"
+  ]
+}

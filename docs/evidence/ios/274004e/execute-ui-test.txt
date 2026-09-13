@@ -1,0 +1,192 @@
+Command line invocation:
+    /Applications/Xcode_26.6.app/Contents/Developer/usr/bin/xcodebuild -project apps/ios/RelayLoom.xcodeproj -scheme RelayLoomSimulator -configuration Debug -sdk iphonesimulator -destination id=EB25BE8B-E258-4176-BFD7-4B1BA595905A -destination-timeout 90 -derivedDataPath /Users/runner/work/relayloom/relayloom/.cache/ios/DerivedData -jobs 2 -disableAutomaticPackageResolution CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= ARCHS=arm64 -resultBundlePath /Users/runner/work/relayloom/relayloom/.cache/ios/simulator/raw/110d35ee-6e01-496b-b392-75a7eef69e47/ui-results.xcresult -parallel-testing-enabled NO -maximum-concurrent-test-simulator-destinations 1 -maximum-parallel-testing-workers 1 -test-timeouts-enabled YES -default-test-execution-time-allowance 360 -maximum-test-execution-time-allowance 420 "-only-testing:RelayLoomUITests/NativeSimulatorTests/testNativeCoreUIAndRecovery" test-without-building
+
+Build settings from command line:
+    ARCHS = arm64
+    CODE_SIGN_IDENTITY =
+    CODE_SIGNING_ALLOWED = NO
+    CODE_SIGNING_REQUIRED = NO
+    SDKROOT = iphonesimulator26.5
+
+Writing result bundle at path:
+	/Users/runner/work/relayloom/relayloom/.cache/ios/simulator/raw/110d35ee-6e01-496b-b392-75a7eef69e47/ui-results.xcresult
+
+2026-09-12 22:35:55.910601+0000 RelayLoomUITests-Runner[17193:57155] [Default] Running tests...
+objc[17193]: Class UIAccessibilityLoaderWebShared is implemented in both /Library/Developer/CoreSimulator/Volumes/iOS_23E254a/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.4.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebCore.axbundle/WebCore (0x10708c310) and /Library/Developer/CoreSimulator/Volumes/iOS_23E254a/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.4.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebKit.axbundle/WebKit (0x1071fc398). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+    t =      nans Interface orientation changed to Portrait
+Test Suite 'Selected tests' started at 2026-09-12 22:36:05.547.
+Test Suite 'RelayLoomUITests.xctest' started at 2026-09-12 22:36:05.549.
+Test Suite 'NativeSimulatorTests' started at 2026-09-12 22:36:05.550.
+Test Case '-[RelayLoomUITests.NativeSimulatorTests testNativeCoreUIAndRecovery]' started.
+    t =     0.00s Start Test at 2026-09-12 22:36:05.553
+    t =     0.99s Set Up
+    t =     1.05s Open org.relayloom.ios
+    t =     1.05s     Launch org.relayloom.ios
+    t =     7.75s         Setting up automation session
+    t =     8.42s         Wait for org.relayloom.ios to idle
+    t =     9.79s Waiting 45.0s for WebView (First Match) to exist
+    t =    10.81s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    10.81s         Checking existence of `WebView (First Match)`
+    t =    10.85s         Capturing element debug description
+    t =    11.79s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    11.79s         Checking existence of `WebView (First Match)`
+    t =    11.81s         Capturing element debug description
+    t =    12.86s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    12.86s         Checking existence of `WebView (First Match)`
+    t =    12.87s         Capturing element debug description
+    t =    13.79s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    13.79s         Checking existence of `WebView (First Match)`
+    t =    13.83s         Capturing element debug description
+    t =    14.79s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    14.79s         Checking existence of `WebView (First Match)`
+    t =    14.84s         Capturing element debug description
+    t =    15.79s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    15.79s         Checking existence of `WebView (First Match)`
+    t =    15.83s         Capturing element debug description
+    t =    16.79s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    16.79s         Checking existence of `WebView (First Match)`
+    t =    16.82s         Capturing element debug description
+    t =    17.79s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    17.79s         Checking existence of `WebView (First Match)`
+    t =    17.90s         Capturing element debug description
+    t =    18.82s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    18.82s         Checking existence of `WebView (First Match)`
+    t =    18.84s         Capturing element debug description
+    t =    19.79s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    19.79s         Checking existence of `WebView (First Match)`
+    t =    19.81s         Capturing element debug description
+    t =    20.87s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    20.88s         Checking existence of `WebView (First Match)`
+    t =    20.90s         Capturing element debug description
+    t =    21.86s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    21.86s         Checking existence of `WebView (First Match)`
+    t =    21.88s         Capturing element debug description
+    t =    22.79s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    22.79s         Checking existence of `WebView (First Match)`
+    t =    22.80s         Capturing element debug description
+    t =    23.81s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    23.82s         Checking existence of `WebView (First Match)`
+    t =    23.83s         Capturing element debug description
+    t =    24.87s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    24.88s         Checking existence of `WebView (First Match)`
+    t =    24.91s         Capturing element debug description
+    t =    25.79s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    25.79s         Checking existence of `WebView (First Match)`
+    t =    25.82s         Capturing element debug description
+    t =    26.79s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    26.79s         Checking existence of `WebView (First Match)`
+    t =    26.84s         Capturing element debug description
+    t =    27.79s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    27.79s         Checking existence of `WebView (First Match)`
+    t =    27.84s         Capturing element debug description
+    t =    28.79s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    28.79s         Checking existence of `WebView (First Match)`
+    t =    28.82s         Capturing element debug description
+    t =    29.87s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    29.88s         Checking existence of `WebView (First Match)`
+    t =    30.05s         Capturing element debug description
+    t =    30.86s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    30.86s         Checking existence of `WebView (First Match)`
+    t =    30.90s         Capturing element debug description
+    t =    31.79s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    31.79s         Checking existence of `WebView (First Match)`
+    t =    31.86s         Capturing element debug description
+    t =    32.79s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    32.79s         Checking existence of `WebView (First Match)`
+    t =    32.82s         Capturing element debug description
+    t =    33.86s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    33.86s         Checking existence of `WebView (First Match)`
+    t =    33.89s         Capturing element debug description
+    t =    34.81s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    34.81s         Checking existence of `WebView (First Match)`
+    t =    34.84s         Capturing element debug description
+    t =    35.79s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    35.79s         Checking existence of `WebView (First Match)`
+    t =    36.11s         Capturing element debug description
+    t =    36.79s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    36.79s         Checking existence of `WebView (First Match)`
+    t =    36.80s         Capturing element debug description
+    t =    37.87s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    37.87s         Checking existence of `WebView (First Match)`
+    t =    37.90s         Capturing element debug description
+    t =    38.83s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    38.83s         Checking existence of `WebView (First Match)`
+    t =    38.85s         Capturing element debug description
+    t =    39.79s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    39.79s         Checking existence of `WebView (First Match)`
+    t =    39.81s         Capturing element debug description
+    t =    40.86s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    40.86s         Checking existence of `WebView (First Match)`
+    t =    40.93s         Capturing element debug description
+    t =    41.86s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    41.86s         Checking existence of `WebView (First Match)`
+    t =    41.89s         Capturing element debug description
+    t =    42.79s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    42.79s         Checking existence of `WebView (First Match)`
+    t =    42.81s         Capturing element debug description
+    t =    43.88s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    43.88s         Checking existence of `WebView (First Match)`
+    t =    43.94s         Capturing element debug description
+    t =    44.88s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    44.88s         Checking existence of `WebView (First Match)`
+    t =    44.90s         Capturing element debug description
+    t =    45.85s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    45.88s         Checking existence of `WebView (First Match)`
+    t =    46.06s         Capturing element debug description
+    t =    46.79s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    46.79s         Checking existence of `WebView (First Match)`
+    t =    46.83s         Capturing element debug description
+    t =    47.86s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    47.86s         Checking existence of `WebView (First Match)`
+    t =    48.09s         Capturing element debug description
+    t =    48.79s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    48.79s         Checking existence of `WebView (First Match)`
+    t =    48.81s         Capturing element debug description
+    t =    49.79s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    49.79s         Checking existence of `WebView (First Match)`
+    t =    49.82s         Capturing element debug description
+    t =    50.86s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    50.86s         Checking existence of `WebView (First Match)`
+    t =    50.92s         Capturing element debug description
+    t =    51.79s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    51.79s         Checking existence of `WebView (First Match)`
+    t =    51.81s         Capturing element debug description
+    t =    52.79s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    52.79s         Checking existence of `WebView (First Match)`
+    t =    52.91s         Capturing element debug description
+    t =    53.84s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    53.84s         Checking existence of `WebView (First Match)`
+    t =    53.98s         Capturing element debug description
+    t =    54.82s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    54.83s         Checking existence of `WebView (First Match)`
+    t =    55.09s         Capturing element debug description
+    t =    55.15s     Checking existence of `WebView (First Match)`
+    t =    55.26s Collecting debug information to assist test failure triage
+    t =    55.26s     Requesting snapshot of accessibility hierarchy for app with pid 17625
+    t =    55.43s Terminate org.relayloom.ios:17625
+/Users/runner/work/relayloom/relayloom/apps/ios/UITests/NativeSimulatorTests.swift:0: error: -[RelayLoomUITests.NativeSimulatorTests testNativeCoreUIAndRecovery] : failed: caught error: "missing("WKWebView startup")"
+    t =    57.80s Tear Down
+Test Case '-[RelayLoomUITests.NativeSimulatorTests testNativeCoreUIAndRecovery]' failed (57.965 seconds).
+Test Suite 'NativeSimulatorTests' failed at 2026-09-12 22:37:03.518.
+	 Executed 1 test, with 1 failure (1 unexpected) in 57.965 (57.969) seconds
+Test Suite 'RelayLoomUITests.xctest' failed at 2026-09-12 22:37:03.519.
+	 Executed 1 test, with 1 failure (1 unexpected) in 57.965 (57.970) seconds
+Test Suite 'Selected tests' failed at 2026-09-12 22:37:03.520.
+	 Executed 1 test, with 1 failure (1 unexpected) in 57.965 (57.973) seconds
+
+Test session results, code coverage, and logs:
+	/Users/runner/work/relayloom/relayloom/.cache/ios/simulator/raw/110d35ee-6e01-496b-b392-75a7eef69e47/ui-results.xcresult
+
+Testing started
+--- xcodebuild: WARNING: Using the first of multiple matching destinations:
+{ platform:iOS Simulator, arch:arm64, id:EB25BE8B-E258-4176-BFD7-4B1BA595905A, OS:26.4.1, name:RelayLoom-CI-110d35ee-6e01-496b-b392-75a7eef69e47 }
+{ platform:iOS Simulator, arch:x86_64, id:EB25BE8B-E258-4176-BFD7-4B1BA595905A, OS:26.4.1, name:RelayLoom-CI-110d35ee-6e01-496b-b392-75a7eef69e47 }
+2026-09-12 22:36:07.850 xcodebuild[15986:53295] [MT] IDELaunchParametersSnapshot: The operation couldn’t be completed. (DebuggerLLDB.DebuggerVersionStore.StoreError error 0.)
+2026-09-12 22:36:07.851 xcodebuild[15986:53295] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-09-12 22:37:39.248 xcodebuild[15986:53295] [MT] IDETestOperationsObserverDebug: 117.584 elapsed -- Testing started completed.
+2026-09-12 22:37:39.249 xcodebuild[15986:53295] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-09-12 22:37:39.249 xcodebuild[15986:53295] [MT] IDETestOperationsObserverDebug: 117.584 sec, +117.584 sec -- end
+Failing tests:
+	NativeSimulatorTests.testNativeCoreUIAndRecovery()
+
+** TEST EXECUTE FAILED **

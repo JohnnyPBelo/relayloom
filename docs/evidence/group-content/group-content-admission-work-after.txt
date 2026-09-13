@@ -1,0 +1,45 @@
+TAP version 13
+# (node:2035649) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: an API observation cannot display an admission whose outer transaction rolled back
+ok 1 - an API observation cannot display an admission whose outer transaction rolled back
+  ---
+  duration_ms: 399.160266
+  type: 'test'
+  ...
+# Subtest: a historical delete and its accepted context recover together after lost commit response and real cache removal
+ok 2 - a historical delete and its accepted context recover together after lost commit response and real cache removal
+  ---
+  duration_ms: 507.243432
+  type: 'test'
+  ...
+# Subtest: failure to reserve quarantine bytes aborts the hold and locks until authenticated reconciliation succeeds
+ok 3 - failure to reserve quarantine bytes aborts the hold and locks until authenticated reconciliation succeeds
+  ---
+  duration_ms: 407.520801
+  type: 'test'
+  ...
+# (node:2035725) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: an unchanged group snapshot walks its authority chain once, and a later closure still invalidates new admission
+ok 4 - an unchanged group snapshot walks its authority chain once, and a later closure still invalidates new admission
+  ---
+  duration_ms: 7498.069719
+  type: 'test'
+  ...
+# {"retainedObjects":32,"epochs":32,"visitedHeaders":32,"elapsedMs":119.58946899999955}
+# Subtest: real Node receivers hold epoch content until its snapshot arrives and keep only accepted history after closure
+ok 5 - real Node receivers hold epoch content until its snapshot arrives and keep only accepted history after closure
+  ---
+  duration_ms: 4590.955183
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 13957.10503
