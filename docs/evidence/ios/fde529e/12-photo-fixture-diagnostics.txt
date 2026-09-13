@@ -1,0 +1,63 @@
+Timestamp               Ty Process[PID:TID]
+2026-09-13 01:15:24.191 Df assetsd[15455:d302] [com.apple.launchservices:db] NotifyToken:[redacted] fired for session key LSSessionKey(system: 0 uid: 501)
+2026-09-13 01:15:32.163 A  assetsd[15455:d302] (TCC) tcc_send_request_authorization() IPC
+2026-09-13 01:15:32.163 Df assetsd[15455:d302] [com.apple.xpc:connection] [0x108b25b80] activating connection: mach=true listener=false peer=false name=com.apple.tccd
+2026-09-13 01:15:32.165 Df assetsd[15455:d302] [com.apple.xpc:connection] [0x108b25b80] invalidated after the last release of the connection object
+2026-09-13 01:15:32.165 A  assetsd[15455:d302] (TCC) tcc_send_request_authorization() IPC
+2026-09-13 01:15:32.165 Df assetsd[15455:d302] [com.apple.xpc:connection] [0x108b25cc0] activating connection: mach=true listener=false peer=false name=com.apple.tccd
+2026-09-13 01:15:32.166 Df assetsd[15455:d302] [com.apple.xpc:connection] [0x108b25cc0] invalidated after the last release of the connection object
+2026-09-13 01:15:32.166 A  assetsd[15455:d302] (TCC) tcc_send_request_authorization() IPC
+2026-09-13 01:15:32.166 Df assetsd[15455:d302] [com.apple.xpc:connection] [0x108b25cc0] activating connection: mach=true listener=false peer=false name=com.apple.tccd
+2026-09-13 01:15:32.167 Df assetsd[15455:d302] [com.apple.xpc:connection] [0x108b25cc0] invalidated after the last release of the connection object
+2026-09-13 01:15:32.167 A  assetsd[15455:d302] (TCC) tcc_send_request_authorization() IPC
+2026-09-13 01:15:32.167 Df assetsd[15455:d302] [com.apple.xpc:connection] [0x108b25b80] activating connection: mach=true listener=false peer=false name=com.apple.tccd
+2026-09-13 01:15:32.168 Df assetsd[15455:d302] [com.apple.xpc:connection] [0x108b25b80] invalidated after the last release of the connection object
+2026-09-13 01:15:32.169 Df assetsd[15455:d302] [com.apple.photos.backend:GatekeeperXPC] Connection opened for client with PID: 15253, bundle ID: com.apple.CoreSimulator.CoreSimulatorBridge at QoS: QOS_CLASS_DEFAULT
+2026-09-13 01:15:32.170 Df assetsd[15455:d302] [com.apple.xpc:connection] [0x107130780] activating connection: mach=false listener=false peer=true name=com.apple.photos.service.peer[15253].0x107130780
+2026-09-13 01:15:32.173 Df assetsd[15455:d302] [com.apple.photos.backend:Backend] PLWellKnownPhotoLibraryIdentifierSystem library directory exists at URL file:///Users/runner/Library/Developer/CoreSimulator/Devices/EA5C5AC7-54C7-41E2-A626-9F4E9F6DED80/data/Media/
+2026-09-13 01:15:32.173 A  assetsd[15455:d302] (TCC) tcc_send_request_authorization() IPC
+2026-09-13 01:15:32.173 Df assetsd[15455:d302] [com.apple.xpc:connection] [0x108b25cc0] activating connection: mach=true listener=false peer=false name=com.apple.tccd
+2026-09-13 01:15:32.174 Df assetsd[15455:d302] [com.apple.xpc:connection] [0x108b25cc0] invalidated after the last release of the connection object
+2026-09-13 01:15:32.176 Df assetsd[15455:d302] [com.apple.photos.backend:GatekeeperXPC] Invalidating cached client authorizations
+2026-09-13 01:15:32.177 A  assetsd[15455:d302] (TCC) tcc_send_request_authorization() IPC
+2026-09-13 01:15:32.177 Df assetsd[15455:d302] [com.apple.xpc:connection] [0x108b25cc0] activating connection: mach=true listener=false peer=false name=com.apple.tccd
+2026-09-13 01:15:32.178 Df assetsd[15455:d302] [com.apple.xpc:connection] [0x108b25cc0] invalidated after the last release of the connection object
+2026-09-13 01:15:32.179 Df assetsd[15455:d302] [com.apple.photos.backend:LibraryServices] LSM-1-0x1036f3750: Already good to go for library state prep-accessible at QoS: QOS_CLASS_DEFAULT
+2026-09-13 01:15:32.184 A  assetsd[15455:d302] (TCC) tcc_send_request_authorization() IPC
+2026-09-13 01:15:32.184 Df assetsd[15455:d302] [com.apple.xpc:connection] [0x108b25cc0] activating connection: mach=true listener=false peer=false name=com.apple.tccd
+2026-09-13 01:15:32.187 Df assetsd[15455:d302] [com.apple.xpc:connection] [0x108b25cc0] invalidated after the last release of the connection object
+2026-09-13 01:15:32.187 Df assetsd[15455:d302] [com.apple.photos.backend:PhotoKit] PhotoKit changes: [E5245893-4C9F-4A1D-91D7-DE6A0F62A841] Request received from client: com.apple.CoreSimulator.CoreSimulatorBridge(15253) at QOS_CLASS_DEFAULT, inserts: [Asset: 1]
+2026-09-13 01:15:32.223 Df assetsd[15455:cb3d] [com.apple.photos.backend:Thumbnails] Rebuilding thumbs for batch of 6 assets
+2026-09-13 01:15:32.238 Df assetsd[15455:cb3d] [com.apple.photos.backend:Thumbnails] All indexes (count = 6), fetched at 24564481124, duration: 0.0003s, library type: PLWellKnownPhotoLibraryIdentifierSystem
+2026-09-13 01:15:32.260 A  assetsd[15455:cb3d] (CoreFoundation) Loading Preferences From User Session CFPrefsD
+2026-09-13 01:15:32.417 Df assetsd[15455:cb3d] (CoreVideo) Pixel format registry initialized. Constant classes enabled.
+2026-09-13 01:15:32.419 A  assetsd[15455:cb3d] (CoreFoundation) Loading Preferences From User Session CFPrefsD
+2026-09-13 01:16:06.729 A  assetsd[15455:e8eb] (TCC) tcc_send_request_authorization() IPC
+2026-09-13 01:16:06.729 Df assetsd[15455:e8eb] [com.apple.xpc:connection] [0x108b26080] activating connection: mach=true listener=false peer=false name=com.apple.tccd
+2026-09-13 01:16:06.861 Df assetsd[15455:e8eb] [com.apple.xpc:connection] [0x108b26080] invalidated after the last release of the connection object
+2026-09-13 01:16:06.861 A  assetsd[15455:e8eb] (TCC) tcc_send_request_authorization() IPC
+2026-09-13 01:16:06.861 Df assetsd[15455:e8eb] [com.apple.xpc:connection] [0x108b26300] activating connection: mach=true listener=false peer=false name=com.apple.tccd
+2026-09-13 01:16:06.863 Df assetsd[15455:e8eb] [com.apple.xpc:connection] [0x108b26300] invalidated after the last release of the connection object
+2026-09-13 01:16:06.863 A  assetsd[15455:e8eb] (TCC) tcc_send_request_authorization() IPC
+2026-09-13 01:16:06.863 Df assetsd[15455:e8eb] [com.apple.xpc:connection] [0x108b26080] activating connection: mach=true listener=false peer=false name=com.apple.tccd
+2026-09-13 01:16:06.864 Df assetsd[15455:e8eb] [com.apple.xpc:connection] [0x108b26080] invalidated after the last release of the connection object
+2026-09-13 01:16:06.864 A  assetsd[15455:e8eb] (TCC) tcc_send_request_authorization() IPC
+2026-09-13 01:16:06.864 Df assetsd[15455:e8eb] [com.apple.xpc:connection] [0x108b26300] activating connection: mach=true listener=false peer=false name=com.apple.tccd
+2026-09-13 01:16:06.866 Df assetsd[15455:e8eb] [com.apple.xpc:connection] [0x108b26300] invalidated after the last release of the connection object
+2026-09-13 01:16:06.867 Df assetsd[15455:e8eb] [com.apple.photos.backend:GatekeeperXPC] Connection opened for client with PID: 17980, bundle ID: com.apple.WorkflowKit.BackgroundShortcutRunner at QoS: QOS_CLASS_USER_INITIATED
+2026-09-13 01:16:06.867 Df assetsd[15455:e8eb] [com.apple.xpc:connection] [0x107132880] activating connection: mach=false listener=false peer=true name=com.apple.photos.service.peer[17980].0x107132880
+2026-09-13 01:16:06.868 Df assetsd[15455:e8eb] [com.apple.photos.backend:Backend] PLWellKnownPhotoLibraryIdentifierSystem library directory exists at URL file:///Users/runner/Library/Developer/CoreSimulator/Devices/EA5C5AC7-54C7-41E2-A626-9F4E9F6DED80/data/Media/
+2026-09-13 01:16:06.868 A  assetsd[15455:e8eb] (TCC) tcc_send_request_authorization() IPC
+2026-09-13 01:16:06.868 Df assetsd[15455:e8eb] [com.apple.xpc:connection] [0x108b26080] activating connection: mach=true listener=false peer=false name=com.apple.tccd
+2026-09-13 01:16:06.870 Df assetsd[15455:e8eb] [com.apple.xpc:connection] [0x108b26080] invalidated after the last release of the connection object
+2026-09-13 01:16:06.871 Df assetsd[15455:f4d0] [com.apple.photos.backend:GatekeeperXPC] Invalidating cached client authorizations
+2026-09-13 01:16:06.871 A  assetsd[15455:f4d0] (TCC) tcc_send_request_authorization() IPC
+2026-09-13 01:16:06.871 Df assetsd[15455:f4d0] [com.apple.xpc:connection] [0x108b26080] activating connection: mach=true listener=false peer=false name=com.apple.tccd
+2026-09-13 01:16:06.873 Df assetsd[15455:f4d0] [com.apple.xpc:connection] [0x108b26080] invalidated after the last release of the connection object
+2026-09-13 01:16:06.881 Df assetsd[15455:f4d1] [com.apple.photos.backend:Backend] Capture Session: Client is not a bundled executable: Error Domain=NSOSStatusErrorDomain Code=-10814 "Unable to find this application extension record in the Launch Services database." UserInfo={_LSLine=652, _LSFunction=_LSPluginFindWithPlatformInfo, _LSFile=LSPluginBundle.mm, NSDebugDescription=Unable to find this application extension record in the Launch Services database., SK=/Library/Developer/CoreSimulator/Volumes/iOS_23E254a/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.4.simruntime/Contents/Resources/RuntimeRoot/System/Library/PrivateFrameworks/WorkflowKit.framework/XPCServices/BackgroundShortcutRunner.xpc, IS=false}
+2026-09-13 01:16:06.882 Df assetsd[15455:f4d1] [com.apple.photos.backend:GatekeeperXPC] Capture Session: [client com.apple.WorkflowKit.BackgroundShortcutRunner(17980)] Session state from audit token: [redacted]
+2026-09-13 01:16:06.882 A  assetsd[15455:f4d1] (TCC) tcc_send_request_authorization() IPC
+2026-09-13 01:16:06.882 Df assetsd[15455:f4d1] [com.apple.xpc:connection] [0x108b26080] activating connection: mach=true listener=false peer=false name=com.apple.tccd
+2026-09-13 01:16:06.884 Df assetsd[15455:f4d1] [com.apple.xpc:connection] [0x108b26080] invalidated after the last release of the connection object
+2026-09-13 01:16:28.972 Df assetsd[15455:f4d0] [com.apple.xpc:connection] [0x107132880] invalidated because the client process (pid 17980) either cancelled the connection or exited
+getpwuid_r did not find a match for uid 501

@@ -12,6 +12,23 @@ const uuid = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i;
 const reserveBytes = 15 * 1024 ** 3;
 const maxLogBytes = 2 * 1024 ** 2;
 const testName = 'NativeSimulatorTests/testNativeCoreUIAndRecovery';
+const startupTestName = 'NativeSimulatorTests/testStartupBeforeMedia';
+
+function uiTestArguments(common, result, name) {
+  return [...common, '-resultBundlePath', result, '-parallel-testing-enabled', 'NO', '-maximum-concurrent-test-simulator-destinations', '1', '-maximum-parallel-testing-workers', '1', '-test-timeouts-enabled', 'YES', '-default-test-execution-time-allowance', '360', '-maximum-test-execution-time-allowance', '420', '-only-testing:RelayLoomUITests/' + name, 'test-without-building'];
+}
+
+/** Establish the app's native startup separately from photo-library readiness.
+ * Both XCTest invocations use the original per-test/global budget controls.
+ * A startup pass never sets the functional UI gate's success flag. */
+export async function startupBeforePhoto(tool, { common, result, udid, photoPath }, report) {
+  report.startupTestStarted = true;
+  await tool('execute-startup-test', 'xcodebuild', uiTestArguments(common, result, startupTestName), 8 * 60_000);
+  const summary = JSON.parse((await tool('startup-xctest-summary', 'xcrun', ['xcresulttool', 'get', 'test-results', 'summary', '--path', result], 60_000)).output);
+  const checked = assertTestSummary(summary);
+  report.appStartup = { result: checked, passedTests: summary.passedTests, failedTests: summary.failedTests, skippedTests: summary.skippedTests ?? 0 };
+  if (photoPath) await tool('seed-synthetic-photo', 'xcrun', ['simctl', 'addmedia', udid, photoPath]);
+}
 
 export function sanitize(value) {
   return String(value).replace(/\bBearer\s+[^\s"'<>]+/gi, 'Bearer [redacted]')
@@ -142,7 +159,7 @@ function staticCheck() {
   if (new Set(definitions).size !== definitions.length || references.size !== definitions.length || definitions.some(id => !references.has(id))) throw new Error('Invalid Xcode project object references');
   const source = readFileSync(join(root, 'apps/ios/UITests/NativeSimulatorTests.swift'), 'utf8');
   const scheme = readFileSync(join(root, 'apps/ios/RelayLoom.xcodeproj/xcshareddata/xcschemes/RelayLoomSimulator.xcscheme'), 'utf8');
-  if (!project.includes('com.apple.product-type.bundle.ui-testing') || !project.includes('run-fixtures.json') || !scheme.includes('parallelizeBuildables="NO"') || !scheme.includes('selectedDebuggerIdentifier=""') || !source.includes('testNativeCoreUIAndRecovery') || !source.includes('XCUIDevice.shared.press(.home)') || !source.includes('photoSelectedViaSystemPicker')) throw new Error('Simulator target, lifecycle or fixture contract is incomplete');
+  if (!project.includes('com.apple.product-type.bundle.ui-testing') || !project.includes('run-fixtures.json') || !scheme.includes('parallelizeBuildables="NO"') || !scheme.includes('selectedDebuggerIdentifier=""') || !source.includes('testNativeCoreUIAndRecovery') || !source.includes('testStartupBeforeMedia') || !source.includes('XCUIDevice.shared.press(.home)') || !source.includes('photoSelectedViaSystemPicker')) throw new Error('Simulator target, lifecycle or fixture contract is incomplete');
   if (/evaluateJavaScript|URLSession|RLStartCore|MobileStart|isInspectable\s*=\s*true/.test(source)) throw new Error('UI test bypasses the production interface');
   const host = readFileSync(join(root, 'apps/ios/RelayLoom/RelayViewController.swift'), 'utf8');
   if (!host.includes('web.isInspectable = false') || !host.includes('.nonPersistent()')) throw new Error('Production WebView isolation changed');
@@ -386,7 +403,7 @@ async function main(argv) {
     const app = join(derived, 'Build/Products/Debug-iphonesimulator/RelayLoom.app');
     report.app = { executableSHA256: hashFile(join(app, 'RelayLoom')), webIndexSHA256: hashFile(join(app, 'web/index.html')), uiTestSourceSHA256: hashFile(join(root, 'apps/ios/UITests/NativeSimulatorTests.swift')), bindingReportSHA256: hashFile(join(root, '.cache/ios/binding-report.json')) };
     await tool('install-owned-app', 'xcrun', ['simctl', 'install', udid, app]);
-    if (fixtures.photoAttachment) await tool('seed-synthetic-photo', 'xcrun', ['simctl', 'addmedia', udid, join(root, 'apps/ios/Tests/Fixtures/synthetic-photo.png')]);
+    await startupBeforePhoto(tool, { common, result: join(raw, 'startup-results.xcresult'), udid, photoPath: fixtures.photoAttachment ? join(root, 'apps/ios/Tests/Fixtures/synthetic-photo.png') : null }, report);
     const peerEvidence = { runtime: 'real production Node engine in owned child process', relayForOthers: false, recipientID: recipient.id, senderID: null, messages: [], replyReadConfirmed: false };
     let replyID;
     context.watch = (async () => {
@@ -413,7 +430,7 @@ async function main(argv) {
     })().catch(error => { context.abort = error; });
     const result = join(raw, 'ui-results.xcresult');
     report.status = 'RUNNING'; report.testCommandStarted = true;
-    await tool('execute-ui-test', 'xcodebuild', [...common, '-resultBundlePath', result, '-parallel-testing-enabled', 'NO', '-maximum-concurrent-test-simulator-destinations', '1', '-maximum-parallel-testing-workers', '1', '-test-timeouts-enabled', 'YES', '-default-test-execution-time-allowance', '360', '-maximum-test-execution-time-allowance', '420', '-only-testing:RelayLoomUITests/' + testName, 'test-without-building'], 8 * 60_000);
+    await tool('execute-ui-test', 'xcodebuild', uiTestArguments(common, result, testName), 8 * 60_000);
     const summary = JSON.parse((await tool('xctest-summary', 'xcrun', ['xcresulttool', 'get', 'test-results', 'summary', '--path', result], 60_000)).output);
     const testResult = assertTestSummary(summary);
     report.simulatorExecuted = true;
@@ -443,6 +460,23 @@ async function main(argv) {
       if (context.peer.exitCode === null) context.peer.kill('SIGKILL');
     }
     if (context.peer) recordPeerDiagnostics(report, evidence, context.peerErrors ?? '');
+    const startupResult = join(raw, 'startup-results.xcresult');
+    if (existsSync(startupResult)) {
+      try {
+        const exported = join(raw, 'startup-attachments');
+        await tool('export-startup-attachments', 'xcrun', ['xcresulttool', 'export', 'attachments', '--path', startupResult, '--output-path', exported], 60_000, { cleanup: true });
+        let copied = 0, bytes = 0;
+        for (const path of regularFiles(exported, 200)) {
+          if (!path.toLowerCase().endsWith('.png')) continue;
+          const picture = boundedRead(path, 4 * 1024 ** 2);
+          if (!picture.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))) continue;
+          bytes += picture.length;
+          if (++copied > 2 || bytes > 8 * 1024 ** 2 || diskFree() - picture.length < reserveBytes) throw new Error('Startup screenshot budget exceeded');
+          writeFileSync(join(evidence, 'startup-' + String(copied).padStart(2, '0') + '.png'), picture, { mode: 0o600 });
+        }
+        report.startupScreenshotsExported = copied;
+      } catch (error) { report.startupExportError = sanitize(error.message); }
+    }
     const result = join(raw, 'ui-results.xcresult');
     if (existsSync(result)) {
       const exportPath = join(raw, 'attachments');

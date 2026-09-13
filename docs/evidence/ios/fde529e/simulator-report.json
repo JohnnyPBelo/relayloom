@@ -1,0 +1,145 @@
+{
+  "kind": "IOS_REAL_SIMULATOR_GATE",
+  "runID": "5dd0d321-0512-4295-9bd1-609efecfeb88",
+  "requestedRuntimeVersion": "26.4.1",
+  "status": "FAILED",
+  "simulatorExecuted": false,
+  "physicalDeviceExecuted": false,
+  "photoAttachmentRequested": true,
+  "signing": "disabled; no accounts, identities or profiles requested",
+  "webViewDebugging": false,
+  "extraAppControlPort": false,
+  "cleanup": {
+    "udid": "EA5C5AC7-54C7-41E2-A626-9F4E9F6DED80",
+    "deleted": true,
+    "onlyCreatedDeviceTouched": true
+  },
+  "commands": [
+    {
+      "label": "xcode-version",
+      "exitCode": 0,
+      "elapsedMs": 485,
+      "log": "01-xcode-version.txt"
+    },
+    {
+      "label": "source-commit",
+      "exitCode": 0,
+      "elapsedMs": 44,
+      "log": "02-source-commit.txt"
+    },
+    {
+      "label": "source-cleanliness",
+      "exitCode": 0,
+      "elapsedMs": 19,
+      "log": "03-source-cleanliness.txt"
+    },
+    {
+      "label": "installed-runtimes",
+      "exitCode": 0,
+      "elapsedMs": 1721,
+      "log": "04-installed-runtimes.txt"
+    },
+    {
+      "label": "installed-device-types",
+      "exitCode": 0,
+      "elapsedMs": 258,
+      "log": "05-installed-device-types.txt"
+    },
+    {
+      "label": "create-owned",
+      "exitCode": 0,
+      "elapsedMs": 406,
+      "log": "06-create-owned.txt"
+    },
+    {
+      "label": "boot-owned",
+      "exitCode": 0,
+      "elapsedMs": 2925,
+      "log": "07-boot-owned.txt"
+    },
+    {
+      "label": "wait-owned-boot",
+      "exitCode": 0,
+      "elapsedMs": 148054,
+      "log": "08-wait-owned-boot.txt"
+    },
+    {
+      "label": "build-for-testing",
+      "exitCode": 0,
+      "elapsedMs": 115631,
+      "log": "09-build-for-testing.txt"
+    },
+    {
+      "label": "install-owned-app",
+      "exitCode": 0,
+      "elapsedMs": 23115,
+      "log": "10-install-owned-app.txt"
+    },
+    {
+      "label": "seed-synthetic-photo",
+      "exitCode": null,
+      "elapsedMs": 60836,
+      "log": "11-seed-synthetic-photo.txt"
+    },
+    {
+      "label": "photo-fixture-diagnostics",
+      "exitCode": 0,
+      "elapsedMs": 5754,
+      "log": "12-photo-fixture-diagnostics.txt"
+    },
+    {
+      "label": "cleanup-inventory",
+      "exitCode": 0,
+      "elapsedMs": 831
+    },
+    {
+      "label": "shutdown-owned",
+      "exitCode": 0,
+      "elapsedMs": 4242,
+      "log": "14-shutdown-owned.txt"
+    },
+    {
+      "label": "delete-owned",
+      "exitCode": 0,
+      "elapsedMs": 451,
+      "log": "15-delete-owned.txt"
+    }
+  ],
+  "xcode": "Xcode 26.6\nBuild version 17F113",
+  "sourceHashes": {
+    "runner": "bc3a597fb3a014991af8d6adc5682d188793adc1b34d9a58a22b09f077040623",
+    "peerFixture": "d046dd045a27c07e36fb5da6734e0487ed1fdd32f1dd702048f5f70fd170b57c",
+    "uiTest": "f7b7fa2d2ed02e412f005eec5b368f77490fa19d82987a8028ff6512d891b1bb",
+    "project": "1aaa005e511243a81709153cd7d290b5cb72d73782fa498da2437eeafd884e1e",
+    "scheme": "c105ce198c4a20b9deefe4d3bdb4ecda777108e4abd886440e0c41261e0f4e63"
+  },
+  "sourceCommit": "fde529ed0ff9dad7eacd7b3f157929ba1f3f0d6a",
+  "workingTreeDirty": false,
+  "runtime": {
+    "identifier": "com.apple.CoreSimulator.SimRuntime.iOS-26-4",
+    "version": "26.4.1",
+    "buildVersion": "23E254a",
+    "deviceType": "com.apple.CoreSimulator.SimDeviceType.iPhone-SE-3rd-generation",
+    "downloaded": false
+  },
+  "udid": "EA5C5AC7-54C7-41E2-A626-9F4E9F6DED80",
+  "firstBootBudgetMs": 600000,
+  "simulatorBooted": true,
+  "app": {
+    "executableSHA256": "aa1854a8573b5298da53fbd6ab80e4ef4c16e6aeb5e525eb12321e1ce98fdc11",
+    "webIndexSHA256": "50a8e949e2cabea97706a225a42c8ed449687fcaa4c980d66e6d618a0a3592d9",
+    "uiTestSourceSHA256": "f7b7fa2d2ed02e412f005eec5b368f77490fa19d82987a8028ff6512d891b1bb",
+    "bindingReportSHA256": "1c22cd104d891cf14dd64d3ddc4a2c1aadf640a604fc799499dd7096d0713ac2"
+  },
+  "error": "Owned command timed out: seed-synthetic-photo",
+  "photoDiagnostics": {
+    "captured": true,
+    "exitCode": 0
+  },
+  "peerDiagnostics": {
+    "captured": true,
+    "bytes": 427
+  },
+  "completedAt": "2026-09-13T01:16:39.649Z",
+  "diskFreeBytesAtEnd": 99316224000
+}

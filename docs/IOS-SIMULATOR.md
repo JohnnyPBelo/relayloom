@@ -213,3 +213,12 @@ The actual90cb649 inventory contained available iOS26.4.1 and26.5.26.5 repeatedl
 Run34693678391 used installed26.4.1 and booted in326.346s. The required host Node peer then missed its20s startup deadline; the photo importer and XCTest were not reached. This does not evaluate photo import on26.4.1. The runner had collected stderr in memory but discarded it on failure.
 
 The corrective runner now starts/verifies its required real Node peer before creating/booting a simulator, preserves bounded redacted stderr and explicit secret-free startup phases, and retains the20s deadline.19 host cases passed2.449s, including an actual peer process/private IPC and unauthenticated401/authenticated200 controls, plus diagnostic redaction/error preservation. Static checks passed. These changes are still awaiting a new Apple CI run; no simulator app or physical device execution follows from the host tests. Evidence in `evidence/ios/e72af64`.
+
+
+## Pré-condição de arranque separada — após fde529e
+
+O CI34728934069 compilou/arrancou/instalou, mas addmedia voltou a exceder o prazo em60.836s antes do XCUITest. O run274004e, preservado separadamente, importou a fotografia e chegou à falha WKWebView. A causa da importação intermitente ainda não está demonstrada.
+
+O runner passa a executar `NativeSimulatorTests/testStartupBeforeMedia` antes da fotografia: exige a WebView e o formulário de identidade pela acessibilidade real e guarda uma captura nativa antes do teardown em caso de falha. O resultado de arranque e até2 PNG são separados do resultado funcional. A fotografia e `testNativeCoreUIAndRecovery` continuam obrigatórios na CI; os4 screenshots e o relatório de checkpoints exigidos por esse percurso não são substituídos pelas capturas de arranque.
+
+Os prazos de45s da WebView,360/420s por teste e o deadline global mantêm-se. Não altera permissões, bridge, isolamento, debugging ou serviços.22 testes host e verificação estática passaram; esta alteração ainda não foi compilada/executada em Apple. Evidência em `evidence/ios/startup-before-photo-host`; falha anterior em `evidence/ios/fde529e`.

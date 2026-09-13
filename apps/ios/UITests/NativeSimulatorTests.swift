@@ -28,25 +28,42 @@ final class NativeSimulatorTests: XCTestCase {
     override func setUpWithError() throws { continueAfterFailure = false }
 
     @MainActor
+    func testStartupBeforeMedia() throws {
+        let app = launchOwnedApp()
+        defer { app.terminate() }
+        try requireStartup(app)
+        try require(app.webViews.buttons["Criar identidade"].firstMatch, "new identity form")
+        capture(app, "relayloom-00-startup-ready")
+        print("IOS_SIMULATOR_PHASE app-startup-checked")
+    }
+
+    @MainActor private func launchOwnedApp() -> XCUIApplication {
+        let app = XCUIApplication(bundleIdentifier: "org.relayloom.ios")
+        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+        return app
+    }
+
+    @MainActor private func requireStartup(_ app: XCUIApplication) throws {
+        do {
+            try require(app.webViews.firstMatch, "WKWebView startup", timeout: 45)
+        } catch {
+            if app.state == .runningForeground { capture(app, "relayloom-00-startup-failed") }
+            throw error
+        }
+    }
+
+    @MainActor
     func testNativeCoreUIAndRecovery() throws {
         let bundle = Bundle(for: NativeSimulatorTests.self)
         let url = try XCTUnwrap(bundle.url(forResource: "run-fixtures", withExtension: "json"))
         let fixtures = try JSONDecoder().decode(SimulatorFixtures.self, from: Data(contentsOf: url))
         XCTAssertLessThan(fixtures.recipientCard.utf8.count, 2048)
-        let app = XCUIApplication(bundleIdentifier: "org.relayloom.ios")
         // Locale overrides apply only to this test application process. The
         // shared web UI remains Portuguese; Apple picker buttons use English.
-        app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
-        app.launch()
+        let app = launchOwnedApp()
         defer { app.terminate() }
-        do {
-            try require(app.webViews.firstMatch, "WKWebView startup", timeout: 45)
-        } catch {
-            // Preserve the owned app's native startup status before teardown.
-            // The previous failure terminated it before any capture was kept.
-            if app.state == .runningForeground { capture(app, "relayloom-00-startup-failed") }
-            throw error
-        }
+        try requireStartup(app)
         try require(app.webViews.buttons["Criar identidade"].firstMatch, "new identity form")
         capture(app, "relayloom-01-onboarding")
 

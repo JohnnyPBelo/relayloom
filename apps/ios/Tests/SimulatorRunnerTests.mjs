@@ -7,7 +7,7 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync, readFileSync } from 'nod
 import { DatabaseSync } from 'node:sqlite';
 import { join, resolve } from 'node:path';
 import { tsImport } from 'tsx/esm/api';
-import { sanitize, selectSimulator, requestedSimulatorVersion, validateOwnedContainer, assertTestSummary, verifySyntheticContainer, removeMatchingRunRecord, requireInactiveCleanupOwner, stopOwnedProcessGroup, annotatePhotoFailure, recordPeerDiagnostics } from '../../../scripts/ios-simulator.mjs';
+import { startupBeforePhoto, sanitize, selectSimulator, requestedSimulatorVersion, validateOwnedContainer, assertTestSummary, verifySyntheticContainer, removeMatchingRunRecord, requireInactiveCleanupOwner, stopOwnedProcessGroup, annotatePhotoFailure, recordPeerDiagnostics } from '../../../scripts/ios-simulator.mjs';
 
 test('select only compatible installed iOS runtimes, never unavailable or other platforms', () => {
   const runtime = (identifier, version, available) => ({ identifier: 'com.apple.CoreSimulator.SimRuntime.' + identifier, version, isAvailable: available });
@@ -233,4 +233,43 @@ test('real simulator peer bootstraps through private IPC and enforces its authen
   const allowed = await fetch(ready.origin + '/api/state', { headers: { Authorization: 'Bearer ' + ready.token }, signal: AbortSignal.timeout(5000) });
   assert.equal(allowed.status, 200); assert.equal((await allowed.json()).locked, true);
   assert.match(stderr, /RELAYLOOM_PEER_PHASE api-listening/); assert.equal(stderr.includes(ready.token), false);
+});
+
+
+test('startup XCTest must pass exactly once before photo import and cannot satisfy the functional gate', async () => {
+  const calls = [], report = { simulatorExecuted: false, status: 'NOT_EXECUTED' };
+  const tool = async (label, command, args, timeout) => {
+    calls.push({ label, command, args, timeout });
+    return { output: label === 'startup-xctest-summary' ? JSON.stringify({result:'Passed',passedTests:1,failedTests:0,skippedTests:0,totalTestCount:1}) : '' };
+  };
+  await startupBeforePhoto(tool, {common:['-destination','id=owned-device'],result:'owned-startup.xcresult',udid:'owned-device',photoPath:'synthetic.png'}, report);
+  assert.deepEqual(calls.map(c=>c.label),['execute-startup-test','startup-xctest-summary','seed-synthetic-photo']);
+  assert.ok(calls[0].args.includes('-only-testing:RelayLoomUITests/NativeSimulatorTests/testStartupBeforeMedia'));
+  assert.ok(calls[0].args.includes('test-without-building'));
+  assert.equal(calls[0].timeout,8*60_000);
+  assert.deepEqual(calls[2].args,['simctl','addmedia','owned-device','synthetic.png']);
+  assert.equal(report.appStartup.result,'Passed');
+  assert.equal(report.simulatorExecuted,false);
+  assert.equal(report.status,'NOT_EXECUTED');
+});
+
+test('startup command failure or empty/failed summary stops before photo import and retains the failure', async () => {
+  for (const mode of ['command','empty','failed']) {
+    const calls=[], report={simulatorExecuted:false};
+    const original = new Error('startup failure');
+    const tool=async label=>{ calls.push(label); if(mode==='command')throw original;
+      return {output:JSON.stringify({result:mode==='empty'?'Passed':'Failed',passedTests:0,failedTests:mode==='failed'?1:0})}; };
+    await assert.rejects(startupBeforePhoto(tool,{common:[],result:'owned.xcresult',udid:'owned',photoPath:'synthetic.png'},report),mode==='command'?error=>error===original:/exactly/);
+    assert.equal(calls.includes('seed-synthetic-photo'),false);
+    assert.equal(report.simulatorExecuted,false);
+    assert.equal(report.appStartup,undefined);
+  }
+});
+
+test('photo failure preserves a separately confirmed startup but does not pass the functional gate', async () => {
+  const report={simulatorExecuted:false}, failure=new Error('photo fixture timeout');
+  const tool=async label=>{if(label==='seed-synthetic-photo')throw failure;
+    return {output:JSON.stringify({result:'Passed',passedTests:1,failedTests:0,skippedTests:0,totalTestCount:1})};};
+  await assert.rejects(startupBeforePhoto(tool,{common:[],result:'owned.xcresult',udid:'owned',photoPath:'synthetic.png'},report),error=>error===failure);
+  assert.equal(report.appStartup.result,'Passed');assert.equal(report.simulatorExecuted,false);
 });
