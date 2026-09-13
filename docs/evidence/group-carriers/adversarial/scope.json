@@ -1,0 +1,69 @@
+{
+  "date": "2026-09-13",
+  "baseCommit": "adfd52a21e1e6ff3c5c6b02ca5971c2280943b0c",
+  "workingTree": "successive uncommitted C1 iterations; these are not a single frozen gate",
+  "review": "root, not independent",
+  "fullContractComplete": false,
+  "checks": [
+    {
+      "log": "response-quota-node-before.log",
+      "command": "node --import tsx --test --test-name-pattern=\"network responses\" tests/group-sync-budget.test.ts",
+      "result": "fail",
+      "scope": "648886 bytes para limite524288"
+    },
+    {
+      "log": "response-quota-go-before.log",
+      "command": "node scripts/go.mjs test -race -count=1 -p=1 ./app -run ^TestGroupControlResponsesRespectProducerQuota$",
+      "result": "fail",
+      "scope": "649474 bytes para limite524288"
+    },
+    {
+      "log": "eviction-plan-node-before.log",
+      "command": "node --import tsx --test --test-name-pattern=\"network responses\" tests/group-sync-budget.test.ts",
+      "result": "fail",
+      "scope": "admissão impossível retirou prova anterior"
+    },
+    {
+      "log": "eviction-plan-go-before.log",
+      "command": "node scripts/go.mjs test -race -count=1 -p=1 ./app -run ^TestGroupControlResponsesRespectProducerQuota$",
+      "result": "fail",
+      "scope": "admissão impossível retirou prova anterior"
+    },
+    {
+      "log": "producer-limits-node.log",
+      "command": "node --import tsx --test tests/group-sync-budget.test.ts",
+      "result": "pass",
+      "scope": "3 casos; quota, falha de escrita, substituição e bytes; anterior à política final de envelope"
+    },
+    {
+      "log": "producer-limits-go.log",
+      "command": "node scripts/go.mjs test -race -count=1 -p=1 ./app -run ^TestGroupControl",
+      "result": "pass",
+      "scope": "4 casos;42.101s; anterior à política final de envelope"
+    },
+    {
+      "log": "opaque-envelope-node-before.log",
+      "command": "node --import tsx --test tests/group-control-envelope.test.ts",
+      "result": "fail",
+      "scope": "controlo público chegou ao destinatário através do relay Node"
+    },
+    {
+      "log": "opaque-envelope-go-before.log",
+      "command": "node --import tsx --test tests/native/group-control-envelope.test.ts",
+      "result": "fail",
+      "scope": "controlo público chegou ao destinatário através do relay Go"
+    },
+    {
+      "log": "envelope-complete-directed.log",
+      "command": "node --import tsx --test --test-concurrency=1 tests/group-carriers.test.ts tests/group-control-envelope.test.ts tests/native/group-control-envelope.test.ts tests/native/group-carriers.test.ts",
+      "result": "pass",
+      "scope": "9 casos;9.314s;18 vectores em ambos os motores e2 percursos opacos reais"
+    },
+    {
+      "log": "go-recovery-transports.log",
+      "command": "node --import tsx --test --test-concurrency=1 tests/native/group-sync-requests.test.ts tests/native/group-sync-serial.test.ts",
+      "result": "pass",
+      "scope": "2 casos;22.538s;TCP/serial por PTY, não rádio; anterior às últimas correcções"
+    }
+  ]
+}

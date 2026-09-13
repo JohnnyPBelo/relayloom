@@ -57,3 +57,8 @@ APIs/falhas/mortes verificadas; confirmações automáticas, eventos, carriers, 
 Build5.598s;224 Node219.220s;148 testes Go de topo/race548.587s (11 helpers pelos drivers);33 interoperabilidade315.613s;SQLite C143.711s;17 UI Node118.995s e17 Go112.607s;22 host iOS2.319s/estática0.050s. Desktop Linux: build0.230s,execução1.011s,pacote5.055s,execução empacotada0.809s.26 Axe sem violações;284 fontes inalteradas. Evidência em docs/evidence/group-confirmations/final.
 
 Sem agentes novos/retomados. Eventos, carriers, UI dinâmica, artefactos móveis actuais e restantes requisitos continuam abertos. iOS1663cbe provou política/arranque e criação de identidade, mas o formulário de publicação não fechou; os logs estavam no artefacto e foram lidos pelo caminho explícito após a listagem ignorar *.log.
+
+
+## C1 — gate final concluído, contrato incompleto
+
+Build6.056s;253 Node405.684s;161 Go principais/race711.420s (12 helpers pelos drivers);47 interoperabilidade480.894s;35 SQLite C283.498s;19 UI Node138.097s/19 Go128.687s. Desktop Linux preparação0.319s/execução2.412s/pacote --dir7.260s/execução empacotada1.255s.62 Axe sem violações;326 fontes inalteradas. Sessões83929 e43358 terminaram0. Evidência em docs/evidence/group-carriers/final, falhas em adversarial. Root reviu as capturas; revisão independente e plataformas actuais pendentes. C2/C3 e todo o resto de PROJECT-BRIEF continuam activos; não marcar produto completo.

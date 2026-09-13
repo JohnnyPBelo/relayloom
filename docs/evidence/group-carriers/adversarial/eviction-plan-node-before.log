@@ -1,0 +1,30 @@
+TAP version 13
+# Subtest: network responses obey the producer cache quota without evicting pinned controls
+not ok 1 - network responses obey the producer cache quota without evicting pinned controls
+  ---
+  duration_ms: 544.816168
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/tests/group-sync-budget.test.ts:1:2259'
+  failureType: 'testCodeFailure'
+  error: 'failed admission discarded an earlier control'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (/home/absint0o/projects/relayloom/tests/group-sync-budget.test.ts:194:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 704.412839

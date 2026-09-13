@@ -1,0 +1,25 @@
+2026-09-13T15:28:10.1643470Z   ...
+2026-09-13T15:28:16.6902820Z # Subtest: corrupt stored event cannot authorise a valid retained packet; exact bytes restore serving
+2026-09-13T15:28:16.6904620Z ok 63 - corrupt stored event cannot authorise a valid retained packet; exact bytes restore serving
+2026-09-13T15:28:16.6905180Z   ---
+2026-09-13T15:28:16.6905530Z   duration_ms: 6570.796
+2026-09-13T15:28:16.6905760Z   type: 'test'
+2026-09-13T15:28:16.6906040Z   ...
+2026-09-13T15:28:43.2166830Z # Subtest: real Node group newcomer cannot read earlier audiences; peer serves author's edit while author is offline
+2026-09-13T15:28:43.2170940Z not ok 64 - real Node group newcomer cannot read earlier audiences; peer serves author's edit while author is offline
+2026-09-13T15:28:43.2173430Z   ---
+2026-09-13T15:28:43.2174330Z   duration_ms: 26257.065167
+2026-09-13T15:28:43.2175150Z   type: 'test'
+2026-09-13T15:28:43.2193600Z   location: '/Users/runner/work/relayloom/relayloom/tests/group-event-seeding.test.ts:4:1'
+2026-09-13T15:28:43.2194600Z   failureType: 'testCodeFailure'
+2026-09-13T15:28:43.2195280Z   error: 'fetch failed'
+2026-09-13T15:28:43.2195570Z   code: 'ERR_TEST_FAILURE'
+2026-09-13T15:28:43.2195910Z   name: 'TypeError'
+2026-09-13T15:28:43.2196660Z   stack: |-
+2026-09-13T15:28:43.2197060Z     node:internal/deps/undici/undici:15157:13
+2026-09-13T15:28:43.2197760Z     async Object.call (/Users/runner/work/relayloom/relayloom/tests/helpers.ts:83:19)
+2026-09-13T15:28:43.2198600Z     async groupEventSeeding (/Users/runner/work/relayloom/relayloom/tests/fixtures/group-event-seeding.ts:285:21)
+2026-09-13T15:28:43.2199670Z     async TestContext.<anonymous> (/Users/runner/work/relayloom/relayloom/tests/group-event-seeding.test.ts:8:5)
+2026-09-13T15:28:43.2200320Z     async Test.run (node:internal/test_runner/test:1054:7)
+2026-09-13T15:28:43.2200880Z     async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+2026-09-13T15:28:43.2201340Z   ...

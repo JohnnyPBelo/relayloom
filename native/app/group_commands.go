@@ -18,6 +18,11 @@ func (n *Node) groupCommandLocked(body map[string]any) (any, error) {
 	if n.identity == nil || n.privateDatabase == nil {
 		return nil, errors.New("desbloqueie a identidade")
 	}
+	if !contains([]string{"list", "state", "operation", "proofs", "private-state", "headers", "snapshot", "remember", "leave"}, text(body["action"])) {
+		if err := n.requireGroupReplayLocked(); err != nil {
+			return nil, err
+		}
+	}
 	update := n.updateGroupState
 	if update == nil {
 		update = n.privateDatabase.Update
@@ -68,6 +73,7 @@ func (n *Node) groupCommandLocked(body map[string]any) (any, error) {
 		n.recoverGroupContentLocked()
 		return nil, err
 	}
+	n.groupSync.record(body, result)
 	return result, nil
 }
 

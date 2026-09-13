@@ -33,6 +33,13 @@ import { validateContent } from "./content-validation.js";
 import { type PrivateState } from "./local-state.js";
 import { openPrivateProfile } from "./protected-private.js";
 import { commitGroupConfirmation } from "./group-confirmations.js";
+import { GroupSynchronizer } from "./group-sync.js";
+import {
+  GroupControlError,
+  groupControlPolicy,
+  verifyGroupControlEnvelope,
+} from "../../../packages/groups/src/carriers.js";
+import type { GroupRegistry } from "../../../packages/groups/src/registry.js";
 import {
   commitGroupEvent,
   currentGroupEvent,
@@ -184,6 +191,35 @@ export class LoomNode extends EventEmitter {
         validate: (payload) => this.validateWire(payload),
       });
       this.router.lowPower = this.config.lowPower;
+      this.groupSync = new GroupSynchronizer({
+        identity: () => this.identity,
+        store: this.store,
+        connected: () => this.router.peers.some((p) => p.connected),
+        relay: () => this.config.relay,
+        blocked: () => this.config.blocked,
+        registry: <T>(fn: (g: GroupRegistry) => T) => this.controlRegistry(fn),
+        apply: (command) => this.groupCommand(command),
+        send: (bundle, relayed) => {
+          this.router.broadcast(
+            { type: "bundle", bundle },
+            "normal",
+            120_000,
+            relayed,
+          );
+        },
+        pauseGroups: () => this.cancelGroupPackets(true),
+        needs: () =>
+          [...this.summaryCache.values()].flatMap(({ object }) =>
+            object.content.groupAudience
+              ? [object.content.groupEpoch, object.content.targetEpoch]
+                  .filter((id): id is string => !!id)
+                  .map((epochId) => ({
+                    groupId: object.content.conversation!,
+                    epochId,
+                  }))
+              : [],
+          ),
+      });
       this.router.on("payload", (payload, route) =>
         this.receive(payload, route),
       );
@@ -199,6 +235,40 @@ export class LoomNode extends EventEmitter {
   }
   get initialized() {
     return existsSync(join(this.dir, "identity.vault"));
+  }
+  private groupSync: GroupSynchronizer;
+  private controlRegistry<T>(fn: (g: GroupRegistry) => T): T {
+    const identity = this.requireIdentity();
+    if (!this.privateDatabase || !this.privateDigest)
+      throw new Error("Estado privado indisponível");
+    try {
+      return this.privateDatabase.transaction((tx) => {
+        if (readProfileState(tx)?.digest !== this.privateDigest)
+          throw new Error("Estado privado desactualizado");
+        return GroupLedger.run(tx, identity, (_, g) => fn(g)).value;
+      });
+    } catch (error) {
+      if (error instanceof GroupControlError) throw error;
+      this.cancelGroupPackets(true);
+      try {
+        this.privateDatabase.close();
+        const loaded = openPrivateProfile(this.dir, identity);
+        this.privateDatabase = loaded.database;
+        this.privateState = loaded.state;
+        this.privateDigest = loaded.digest;
+        this.restoreGroupHolds();
+      } catch {
+        this.lock();
+      }
+      throw error;
+    }
+  }
+  private requireGroupReplay() {
+    if (!this.groupSync.applying && !this.groupSync.drain())
+      throw new Error(
+        "A verificar controlos de grupo recebidos; tente novamente.",
+      );
+    this.requireIdentity();
   }
   private saveConfig() {
     this.requireRunning();
@@ -253,6 +323,7 @@ export class LoomNode extends EventEmitter {
     this.privateDatabase = loaded.database;
     this.privateDigest = loaded.digest;
     try {
+      this.groupSync.recover();
       this.restoreGroupHolds();
     } catch (error) {
       this.lock();
@@ -275,6 +346,7 @@ export class LoomNode extends EventEmitter {
     this.privateDatabase = loaded.database;
     this.privateDigest = loaded.digest;
     try {
+      this.groupSync.recover();
       this.restoreGroupHolds();
     } catch (error) {
       this.lock();
@@ -284,6 +356,7 @@ export class LoomNode extends EventEmitter {
   }
   lock() {
     this.cancelGroupPackets(true);
+    this.groupSync.reset();
     this.summaryCache.clear();
     this.summaryCacheBytes = 0;
     this.groupHolds = [];
@@ -321,6 +394,14 @@ export class LoomNode extends EventEmitter {
       if (payload?.type !== "bundle") return false;
       const manifest = payload.bundle?.manifest;
       if (ids.has(manifest?.id)) return true;
+      if (manifest?.kind === "group-control")
+        return (
+          (Array.isArray(manifest.keys) &&
+            manifest.keys.some((k: any) =>
+              this.config.blocked.includes(k.reader),
+            )) ||
+          (all && manifest.author?.id === this.identity?.public.id)
+        );
       if (
         !manifest ||
         manifest.publicKey ||
@@ -387,6 +468,20 @@ export class LoomNode extends EventEmitter {
   }
   groupCommand(command: GroupCommand) {
     const identity = this.requireIdentity();
+    if (
+      ![
+        "list",
+        "state",
+        "operation",
+        "proofs",
+        "private-state",
+        "headers",
+        "snapshot",
+        "remember",
+        "leave",
+      ].includes(command?.action)
+    )
+      this.requireGroupReplay();
     if (!this.privateDatabase || !this.privateDigest)
       throw new Error("Estado privado indisponível");
     try {
@@ -404,6 +499,7 @@ export class LoomNode extends EventEmitter {
       this.privateState = next;
       this.groupRetries = decisions;
       this.restoreGroupHolds();
+      this.groupSync.record(command, result);
       return result;
     } catch (error) {
       // Reopen authenticated state after any uncertain outer commit. Never
@@ -603,6 +699,7 @@ export class LoomNode extends EventEmitter {
       return this.sendResult(previous);
     }
     if (hasGroupBinding(content)) {
+      this.requireGroupReplay();
       try {
         const intent = commitGroupSendIntent(
           this.privateDatabase!,
@@ -827,7 +924,8 @@ export class LoomNode extends EventEmitter {
       .filter(
         (e) =>
           (!e.groupEpoch ||
-            this.groupRetries.get(e.operationId)?.allowed === true) &&
+            (this.groupSync.ready &&
+              this.groupRetries.get(e.operationId)?.allowed === true)) &&
           e.phase === "ready" &&
           outboxItem(e, now, this.config.blocked).status === "pending" &&
           e.nextAttemptAt <= now,
@@ -1217,6 +1315,7 @@ export class LoomNode extends EventEmitter {
     ttlMs?: number,
   ): DisplayObject {
     if (hasGroupBinding(content)) {
+      if (content.groupAudience !== "historical") this.requireGroupReplay();
       const identity = this.requireIdentity();
       this.objects(); // Admit the verified original before an event can evict it.
       if (!this.privateDatabase || !this.privateDigest)
@@ -1300,6 +1399,11 @@ export class LoomNode extends EventEmitter {
     return this.display(bundle)!;
   }
   private maySeed(manifest: Manifest) {
+    if (manifest.kind === "group-control")
+      return (
+        groupControlPolicy(manifest) &&
+        !manifest.keys.some((k) => this.config.blocked.includes(k.reader))
+      );
     if (
       (manifest.kind !== "message" && !currentGroupEvent(manifest.kind)) ||
       manifest.publicKey
@@ -1315,6 +1419,7 @@ export class LoomNode extends EventEmitter {
     ) as Content;
     validateContent(content);
     if (!hasGroupBinding(content)) return true;
+    if (!this.groupSync.ready) return false;
     if (currentGroupEvent(manifest.kind))
       return this.groupEventSeeds.has(manifest.id);
     const entry = Object.values(this.privateState.outbox ?? {}).find(
@@ -1338,8 +1443,11 @@ export class LoomNode extends EventEmitter {
   private validateWire(payload: any) {
     if (!payload || !["bundle", "inventory", "request"].includes(payload.type))
       throw new Error("Protocolo inválido");
-    if (payload.type === "bundle") verifyBundle(payload.bundle);
-    else if (
+    if (payload.type === "bundle") {
+      if (payload.bundle?.manifest?.kind === "group-control")
+        verifyGroupControlEnvelope(payload.bundle);
+      else verifyBundle(payload.bundle);
+    } else if (
       !Array.isArray(payload.ids) ||
       payload.ids.length > 64 ||
       payload.ids.some(
@@ -1357,8 +1465,17 @@ export class LoomNode extends EventEmitter {
     if (this.stopped) return;
     try {
       if (payload.type === "bundle") {
-        if (this.config.blocked.includes(payload.bundle.manifest.author.id))
+        if (
+          this.config.blocked.includes(payload.bundle.manifest.author.id) &&
+          payload.bundle.manifest.kind !== "group-control"
+        )
           return;
+        if (payload.bundle.manifest.kind === "group-control") {
+          verifyGroupControlEnvelope(payload.bundle);
+          this.store.put(payload.bundle);
+          this.groupSync.receive(payload.bundle);
+          return;
+        }
         if (
           this.identity &&
           ["edit", "delete", "receipt", "delivery"].includes(
@@ -1435,6 +1552,7 @@ export class LoomNode extends EventEmitter {
     if (this.stopped) return;
     try {
       if (this.identity) {
+        this.groupSync.tick();
         const objects = this.objects();
         this.issueDeliveries(objects);
         this.flushOutbox();
@@ -1528,11 +1646,15 @@ export class LoomNode extends EventEmitter {
   private objectsSnapshot(): { objects: DisplayObject[]; outboxAt: number } {
     this.requireRunning();
     if (!this.identity) return { objects: [], outboxAt: Date.now() };
+    if (!this.groupSync.applying) this.groupSync.drain();
+    if (!this.identity) return { objects: [], outboxAt: Date.now() };
     const stored = this.store.list();
     this.reconcileGroupSends(stored);
     const verifiedIds = new Set(stored.map((manifest) => manifest.id));
     const manifests = stored.filter(
-      (m) => !this.config.blocked.includes(m.author.id) || m.kind === "group",
+      (m) =>
+        m.kind !== "group-control" &&
+        (!this.config.blocked.includes(m.author.id) || m.kind === "group"),
     );
     const present = new Set(manifests.map((m) => m.id));
     for (const [id, entry] of this.summaryCache)
@@ -1576,11 +1698,13 @@ export class LoomNode extends EventEmitter {
       }
     });
     this.groupDecisions.clear();
-    const groupObjects = all.filter(
-      (object) =>
-        hasGroupBinding(object.content) &&
-        !this.config.blocked.includes(object.author.id),
-    );
+    const groupObjects = this.groupSync.ready
+      ? all.filter(
+          (object) =>
+            hasGroupBinding(object.content) &&
+            !this.config.blocked.includes(object.author.id),
+        )
+      : [];
     const inspected =
       groupObjects.length || this.groupHolds.length
         ? this.inspectGroups(groupObjects, verifiedIds)
@@ -1592,6 +1716,7 @@ export class LoomNode extends EventEmitter {
     const accepted = all.filter((o) => {
       if (this.config.blocked.includes(o.author.id)) return false;
       if (!hasGroupBinding(o.content)) return this.authorized(o, all);
+      if (!this.groupSync.ready) return false;
       const observation = inspected.get(o.id);
       if (observation?.stable) {
         this.groupDecisions.set(o.id, observation.decision);

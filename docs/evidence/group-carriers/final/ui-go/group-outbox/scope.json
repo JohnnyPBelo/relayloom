@@ -1,0 +1,17 @@
+{
+  "runtime": "go",
+  "interface": "real browser and authenticated application process",
+  "fixture": "installs a valid signed/admitted message and initial intent",
+  "checks": [
+    "proof pause disables retry",
+    "proof recovery enables retry",
+    "group closure renders terminal stop",
+    "terminal pending filter",
+    "keyboard filter focus",
+    "desktop/mobile Axe"
+  ],
+  "limits": [
+    "not dynamic composition UI coverage",
+    "not a physical mobile test"
+  ]
+}

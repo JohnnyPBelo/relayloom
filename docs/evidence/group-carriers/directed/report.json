@@ -1,0 +1,64 @@
+{
+  "status": "pass",
+  "checks": [
+    {
+      "name": "typecheck",
+      "argv": [
+        "npm",
+        "run",
+        "typecheck"
+      ],
+      "status": "pass",
+      "exitCode": 0,
+      "elapsedSeconds": 5.902
+    },
+    {
+      "name": "node",
+      "argv": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "--test-concurrency=1",
+        "tests/group-carriers.test.ts",
+        "tests/group-sync.test.ts",
+        "tests/group-sync-order.test.ts",
+        "tests/group-sync-replay.test.ts",
+        "tests/group-sync-seeding.test.ts"
+      ],
+      "status": "pass",
+      "exitCode": 0,
+      "elapsedSeconds": 34.546
+    },
+    {
+      "name": "go-codec",
+      "argv": [
+        "node",
+        "scripts/go.mjs",
+        "test",
+        "-race",
+        "-count=1",
+        "./groupcontrol"
+      ],
+      "status": "pass",
+      "exitCode": 0,
+      "elapsedSeconds": 7.065
+    },
+    {
+      "name": "go-runtime",
+      "argv": [
+        "node",
+        "scripts/go.mjs",
+        "test",
+        "-race",
+        "-count=1",
+        "-run",
+        "^TestGroupControl",
+        "./app"
+      ],
+      "status": "pass",
+      "exitCode": 0,
+      "elapsedSeconds": 7.936
+    }
+  ]
+}

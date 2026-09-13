@@ -1,7 +1,8 @@
 import { spawn, type ChildProcess } from "node:child_process";
-import { mkdirSync, mkdtempSync } from "node:fs";
+import { mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
+import { Agent, request as httpRequest, type ClientRequest } from "node:http";
 export const password = "relayloom integration passphrase";
 export interface Client {
   process: ChildProcess;
@@ -42,6 +43,10 @@ export async function launch(
       : ["--import", "tsx", "apps/node/src/cli.ts", ...common],
     { cwd: process.cwd(), stdio: ["ignore", "pipe", "pipe"] },
   );
+  let stderrTail = "";
+  child.stderr!.on("data", (data: Buffer) => {
+    stderrTail = (stderrTail + data.toString()).slice(-8192);
+  });
   const info: { url: string; tcpPort: number; token?: string } =
     await new Promise((resolve, reject) => {
       let out = "",
@@ -73,6 +78,10 @@ export async function launch(
     });
   const url = new URL(info.url),
     token = info.token ?? new URLSearchParams(url.hash.slice(1)).get("token")!;
+  // A restarted process may reuse the origin but has a new capability and
+  // lifecycle. Keep each fixture's sockets separate instead of sharing the
+  // global fetch pool across old/new processes. Never retry a mutation here.
+  const agent = new Agent({ keepAlive: true, maxSockets: 4 });
   return {
     process: child,
     dir,
@@ -80,19 +89,97 @@ export async function launch(
     token,
     tcpPort: info.tcpPort,
     async call(path, body) {
-      const res = await fetch(url.origin + "/api/" + path, {
-        method: body === undefined ? "GET" : "POST",
-        headers: {
-          Authorization: "Bearer " + token,
-          ...(body === undefined ? {} : { "Content-Type": "application/json" }),
-        },
-        body: body === undefined ? undefined : JSON.stringify(body),
+      const payload = body === undefined ? undefined : JSON.stringify(body);
+      const action =
+        body &&
+        typeof body === "object" &&
+        "action" in body &&
+        typeof body.action === "string"
+          ? body.action.slice(0, 40)
+          : undefined;
+      const start = Date.now(),
+        origin = new Error("Fixture API call origin");
+      return new Promise((resolve, reject) => {
+        let req: ClientRequest,
+          headersReceived = false,
+          finished = false;
+        const failed = (error: Error & { code?: string }) => {
+          if (finished) return;
+          finished = true;
+          setTimeout(() => {
+            const data = {
+              backend,
+              path,
+              action,
+              elapsedMs: Date.now() - start,
+              code: error.code ?? error.name,
+              reusedSocket: req?.reusedSocket,
+              headersReceived,
+              exit: child.exitCode,
+              signal: child.signalCode,
+              stderr: stderrTail
+                .replaceAll(token, "[capability]")
+                .replaceAll(password, "[fixture-password]"),
+              caller: origin.stack,
+            };
+            const directory = join(
+              process.cwd(),
+              ".cache",
+              "fixture-http-failures",
+            );
+            mkdirSync(directory, { recursive: true });
+            writeFileSync(
+              join(directory, `${process.pid}-${start}.json`),
+              JSON.stringify(data, null, 2),
+              { mode: 0o600 },
+            );
+            const failure = new Error(
+              `Fixture ${backend} API ${path}${data.action ? ":" + data.action : ""} failed: ${data.code}; reused=${data.reusedSocket}, headers=${headersReceived}, elapsed=${data.elapsedMs}ms, process exit=${data.exit}, signal=${data.signal}`,
+              { cause: error },
+            );
+            failure.stack += "\n" + origin.stack;
+            reject(failure);
+          }, 50);
+        };
+        req = httpRequest(
+          url.origin + "/api/" + path,
+          {
+            agent,
+            method: body === undefined ? "GET" : "POST",
+            headers: {
+              Authorization: "Bearer " + token,
+              ...(payload === undefined
+                ? {}
+                : {
+                    "Content-Type": "application/json",
+                    "Content-Length": Buffer.byteLength(payload),
+                  }),
+            },
+          },
+          (res) => {
+            headersReceived = true;
+            const chunks: Buffer[] = [];
+            res.on("data", (chunk: Buffer) => chunks.push(chunk));
+            res.on("error", failed);
+            res.on("end", () => {
+              try {
+                const data = JSON.parse(Buffer.concat(chunks).toString("utf8"));
+                finished = true;
+                if ((res.statusCode ?? 500) >= 400)
+                  reject(new Error(data.error));
+                else resolve(data);
+              } catch (error) {
+                failed(error as Error);
+              }
+            });
+          },
+        );
+        req.on("error", failed);
+        req.end(payload);
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
-      return data;
     },
     async stop() {
+      agent.destroy();
       if (child.exitCode !== null || child.signalCode !== null) return;
       child.kill("SIGTERM");
       await new Promise<void>((resolve, reject) => {

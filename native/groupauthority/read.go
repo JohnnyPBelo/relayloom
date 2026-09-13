@@ -20,6 +20,38 @@ func (g *Registry) State(id string) (View, error) {
 	})
 	return result, err
 }
+
+type SyncState struct {
+	View             View
+	Anchor           groups.GroupAnchor
+	Invitation       *groups.GroupInvitation
+	InvitationParent *groups.GroupEpoch
+	Consent          *groups.GroupConsent
+	CheckedThrough   *int
+	Admitted         bool
+}
+
+// Scheduling material is not admission. Call only within the authenticated
+// registry transaction that derives any outgoing control data.
+func (g *Registry) SyncState(id string) (SyncState, error) {
+	var result SyncState
+	if _, err := g.ScopeGeneration(); err != nil {
+		return result, err
+	}
+	err := g.store.View(func(tx *groupstore.Tx) error {
+		r, err := g.record(tx, id)
+		if err != nil {
+			return err
+		}
+		view, err := g.view(tx, r)
+		if err != nil {
+			return err
+		}
+		result = SyncState{view, r.Anchor, r.Invitation, r.InvitationParent, r.Consent, r.CheckedThrough, r.Admitted != nil}
+		return nil
+	})
+	return result, err
+}
 func (g *Registry) Anchor(id string) (groups.GroupAnchor, error) {
 	var result groups.GroupAnchor
 	err := g.store.View(func(tx *groupstore.Tx) error {

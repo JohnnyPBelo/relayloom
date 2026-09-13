@@ -16,6 +16,7 @@ import (
 	"github.com/JohnnyPBelo/relayloom/native/core"
 	"github.com/JohnnyPBelo/relayloom/native/groupaccess"
 	"github.com/JohnnyPBelo/relayloom/native/groupauthority"
+	"github.com/JohnnyPBelo/relayloom/native/groupcontrol"
 	"github.com/JohnnyPBelo/relayloom/native/groupledger"
 	"github.com/JohnnyPBelo/relayloom/native/groupstore"
 	"github.com/JohnnyPBelo/relayloom/native/profiledb"
@@ -41,6 +42,7 @@ type Node struct {
 	groupHolds         []groupledger.HeldRecord
 	groupRetries       map[string]groupRetry
 	groupEventSeeds    map[string]bool
+	groupSync          *groupSynchronizer
 	groupDecisions     map[string]groupaccess.Decision
 	routes             map[string]transport.Route
 	requests           map[string]int64
@@ -101,6 +103,7 @@ func NewNode(dir string) (*Node, error) {
 	ctx, cancel := context.WithCancel(context.Background())
 	n := &Node{Dir: dir, Store: store, Router: router, config: config, private: emptyPrivate(), routes: map[string]transport.Route{}, requests: map[string]int64{}, receipts: map[string]bool{}, ctx: ctx, cancel: cancel, ownership: ownership, closeDone: make(chan struct{})}
 	n.clearSummariesLocked()
+	n.groupSync = newGroupSynchronizer(n)
 	n.wg.Add(2)
 	go func() {
 		defer n.wg.Done()
@@ -211,6 +214,9 @@ func (n *Node) initialized() bool {
 }
 func (n *Node) lockPrivateLocked() error {
 	n.cancelGroupPacketsLocked(true)
+	if n.groupSync != nil {
+		n.groupSync.reset()
+	}
 	n.identity = nil
 	n.private = emptyPrivate()
 	n.privateDigest = ""
@@ -327,7 +333,11 @@ func ValidateWire(raw json.RawMessage) error {
 	}
 	switch text(m["type"]) {
 	case "bundle":
-		_, err = decodeBundle(m["bundle"])
+		var b core.Bundle
+		b, err = decodeBundle(m["bundle"])
+		if err == nil && b.Manifest.Kind == "group-control" {
+			return groupcontrol.VerifyEnvelope(b)
+		}
 		return err
 	case "inventory", "request":
 		_, err = stringsList(m["ids"], 64, true)
@@ -406,7 +416,17 @@ func (n *Node) receiveLocked(delivery transport.Delivery) error {
 		if err != nil {
 			return err
 		}
-		if contains(n.config.Blocked, b.Manifest.Author.ID) {
+		if contains(n.config.Blocked, b.Manifest.Author.ID) && b.Manifest.Kind != "group-control" {
+			return nil
+		}
+		if b.Manifest.Kind == "group-control" {
+			if err = groupcontrol.VerifyEnvelope(b); err != nil {
+				return err
+			}
+			if _, err = n.Store.Put(b, false); err != nil {
+				return err
+			}
+			n.groupSync.receive(b, false)
 			return nil
 		}
 		if err = n.journalReceivedMutationLocked(b); err != nil {
@@ -498,6 +518,10 @@ func (n *Node) receiveLocked(delivery transport.Delivery) error {
 }
 func (n *Node) syncLocked() {
 	if n.identity != nil {
+		if err := n.groupSync.tick(); err != nil {
+			n.lastTransportError = "Sincronização de grupos adiada; estado por verificar"
+			return
+		}
 		objects, err := n.objectsLocked()
 		if err != nil {
 			n.lastTransportError = "Não foi possível atualizar o envio persistente"
@@ -665,6 +689,12 @@ func (n *Node) objectsSnapshotLocked() ([]DisplayObject, map[string]core.Manifes
 		n.clearSummariesLocked()
 		return all, map[string]core.Manifest{}, time.Now().UnixMilli(), nil
 	}
+	if !n.groupSync.processing {
+		n.groupSync.drain()
+	}
+	if n.identity == nil {
+		return all, map[string]core.Manifest{}, time.Now().UnixMilli(), nil
+	}
 	if n.summaryIdentity != n.identity.Public.ID {
 		n.clearSummariesLocked()
 		n.summaryIdentity = n.identity.Public.ID
@@ -678,7 +708,7 @@ func (n *Node) objectsSnapshotLocked() ([]DisplayObject, map[string]core.Manifes
 	}
 	present := make(map[string]bool, len(manifests))
 	for _, manifest := range manifests {
-		if manifest.Kind == "group" || !contains(n.config.Blocked, manifest.Author.ID) {
+		if manifest.Kind != "group-control" && (manifest.Kind == "group" || !contains(n.config.Blocked, manifest.Author.ID)) {
 			present[manifest.ID] = true
 		}
 	}
@@ -690,7 +720,7 @@ func (n *Node) objectsSnapshotLocked() ([]DisplayObject, map[string]core.Manifes
 	for _, manifest := range manifests {
 		// An already retained signed group remains an ACL dependency for
 		// messages by other authors. The blocked author's object stays hidden.
-		if manifest.Kind != "group" && contains(n.config.Blocked, manifest.Author.ID) {
+		if manifest.Kind == "group-control" || (manifest.Kind != "group" && contains(n.config.Blocked, manifest.Author.ID)) {
 			continue
 		}
 		if cached, exists := n.summaries[manifest.ID]; exists {
@@ -748,6 +778,9 @@ func (n *Node) objectsSnapshotLocked() ([]DisplayObject, map[string]core.Manifes
 		}
 		allowed := false
 		if groupaccess.HasBinding(o.Content) {
+			if !n.groupReplayReadyLocked() {
+				continue
+			}
 			if observation, ok := inspected[o.ID]; ok && observation.Stable {
 				n.groupDecisions[o.ID] = observation.Decision
 				allowed = observation.Decision.Status == "accepted"
@@ -1107,6 +1140,7 @@ func (n *Node) Handle(operation string, body map[string]any) (any, error) {
 		n.privateDatabase = database
 		n.privateDigest = digest
 		n.clearSummariesLocked()
+		n.groupSync.recover()
 		if err = n.restoreGroupHoldsLocked(); err != nil {
 			_ = n.lockPrivateLocked()
 			return nil, err
@@ -1141,6 +1175,7 @@ func (n *Node) Handle(operation string, body map[string]any) (any, error) {
 		n.privateDatabase = database
 		n.privateDigest = digest
 		n.clearSummariesLocked()
+		n.groupSync.recover()
 		if err = n.restoreGroupHoldsLocked(); err != nil {
 			_ = n.lockPrivateLocked()
 			return nil, err

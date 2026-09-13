@@ -7,12 +7,24 @@ import (
 	"time"
 
 	"github.com/JohnnyPBelo/relayloom/native/groupauthority"
+	"github.com/JohnnyPBelo/relayloom/native/groupcontrol"
 	"github.com/JohnnyPBelo/relayloom/native/groupledger"
 	"github.com/JohnnyPBelo/relayloom/native/groupstore"
 	"github.com/JohnnyPBelo/relayloom/native/profilestate"
 )
 
 func (n *Node) maySeedLocked(manifest core.Manifest) (bool, error) {
+	if manifest.Kind == "group-control" {
+		if !groupcontrol.ManifestPolicy(manifest) {
+			return false, nil
+		}
+		for _, key := range manifest.Keys {
+			if contains(n.config.Blocked, key.Reader) {
+				return false, nil
+			}
+		}
+		return true, nil
+	}
 	if (manifest.Kind != "message" && !currentGroupEvent(manifest.Kind)) || manifest.PublicKey != nil {
 		return true, nil
 	}
@@ -34,6 +46,9 @@ func (n *Node) maySeedLocked(manifest core.Manifest) (bool, error) {
 	}
 	if !groupaccess.HasBinding(object.Content) {
 		return true, nil
+	}
+	if !n.groupReplayReadyLocked() {
+		return false, nil
 	}
 	if currentGroupEvent(manifest.Kind) {
 		return n.groupEventSeeds[manifest.ID], nil
@@ -224,6 +239,17 @@ func (n *Node) cancelGroupPacketsLocked(all bool) {
 		}
 		if ids[text(manifest["id"])] {
 			return true
+		}
+		if text(manifest["kind"]) == "group-control" {
+			keys, _ := manifest["keys"].([]any)
+			for _, raw := range keys {
+				key, _ := raw.(map[string]any)
+				if contains(n.config.Blocked, text(key["reader"])) {
+					return true
+				}
+			}
+			author, _ := manifest["author"].(map[string]any)
+			return all && n.identity != nil && text(author["id"]) == n.identity.Public.ID
 		}
 		author, _ := manifest["author"].(map[string]any)
 		if n.identity == nil || text(author["id"]) != n.identity.Public.ID || manifest["publicKey"] != nil || !currentGroupEvent(text(manifest["kind"])) {

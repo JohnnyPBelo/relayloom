@@ -208,6 +208,11 @@ func (n *Node) publishGroupEventLocked(content Content, recipients any, ttl int6
 	if n.identity == nil || n.privateDatabase == nil {
 		return DisplayObject{}, errors.New("desbloqueie a identidade")
 	}
+	if text(content["groupAudience"]) != "historical" {
+		if err := n.requireGroupReplayLocked(); err != nil {
+			return DisplayObject{}, err
+		}
+	}
 	if _, err := n.objectsLocked(); err != nil {
 		return DisplayObject{}, err
 	}

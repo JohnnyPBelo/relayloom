@@ -1193,6 +1193,23 @@ export class GroupRegistry {
   state(groupId: string): GroupAuthorityView {
     return this.store.view((tx) => this.view(tx, this.record(tx, groupId)));
   }
+  /** Scheduler input only. This never grants admission and must be read in the
+   * same authenticated transaction as any derived control publication. */
+  syncState(groupId: string) {
+    this.assertScope();
+    return this.store.view((tx) => {
+      const r = this.record(tx, groupId);
+      return structuredClone({
+        view: this.view(tx, r),
+        anchor: r.anchor,
+        invitation: r.invitation,
+        invitationParent: r.invitationParent,
+        consent: r.consent,
+        checkedThrough: r.checkedThrough,
+        admitted: r.admitted,
+      });
+    });
+  }
   operationStatus(id: string): GroupOperationResult | null {
     requireThat(operationID(id), "Identificador de operação inválido");
     return this.store.view((tx) => {

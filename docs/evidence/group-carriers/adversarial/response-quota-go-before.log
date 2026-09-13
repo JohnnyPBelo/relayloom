@@ -1,0 +1,5 @@
+--- FAIL: TestGroupControlResponsesRespectProducerQuota (6.13s)
+    group_sync_test.go:60: responses occupied 649474; producer limit 524288
+FAIL
+FAIL	github.com/JohnnyPBelo/relayloom/native/app	6.158s
+FAIL

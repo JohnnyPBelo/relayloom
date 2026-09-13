@@ -79,3 +79,8 @@ P3/P5/P6/P7 permanecem abertos. Seguem eventos/carriers e composição/gestão d
 FR-014/edição/eliminação e contexto de grupos avançaram nas APIs Node/Go: autoria original, intersecção de leitores, histórico mínimo, admissão antes de rede e revalidação de filas/seeding. Controlos reais de3 nós com entrada/remoção, autor offline (porta recusada), seeder e reinício; falhas SQL/índice/corrupção e snapshot de memória testados. Gate83716 e desktop48666 terminaram0:236 Node,153 Go de topo/race,38 interop,SQLite C,19 UI por motor,56 Axe arquivados sem violações,300 fontes inalteradas. Comandos/durações em docs/GROUP-EVENTS.md e docs/evidence/group-events/final. Falhas e correcções preservadas separadamente.
 
 Continuam carriers automáticos, criação/gestão dinâmica na UI, pesquisa integral, keystore/rotação, restantes media/social/templates, notificações reais, plataformas e revisão independente. Nenhuma task nova de agente nem alteração a modelos/bridges/configuração. Produto não concluído.
+
+
+## C1 — gate final concluído, contrato incompleto
+
+Build6.056s;253 Node405.684s;161 Go principais/race711.420s (12 helpers pelos drivers);47 interoperabilidade480.894s;35 SQLite C283.498s;19 UI Node138.097s/19 Go128.687s. Desktop Linux preparação0.319s/execução2.412s/pacote --dir7.260s/execução empacotada1.255s.62 Axe sem violações;326 fontes inalteradas. Sessões83929 e43358 terminaram0. Evidência em docs/evidence/group-carriers/final, falhas em adversarial. Root reviu as capturas; revisão independente e plataformas actuais pendentes. C2/C3 e todo o resto de PROJECT-BRIEF continuam activos; não marcar produto completo.

@@ -590,6 +590,9 @@ func (n *Node) attemptOutboxLocked(operation string, now int64) error {
 		return err
 	}
 	record, exists := n.private.Outbox[operation]
+	if exists && record.GroupEpoch != "" && !n.groupReplayReadyLocked() {
+		return nil
+	}
 	if !exists || record.Phase != "ready" || !pendingOutbox(record, now) || record.NextAttemptAt > now || n.blockedOutboxLocked(record) {
 		return nil
 	}

@@ -39,6 +39,9 @@ func groupMessagePreview(content Content) string {
 // share one SQL commit. No content-store or network write happens before that
 // commit. A preparing record whose payload is lost never signs a replacement.
 func (n *Node) sendGroupLocked(operation, fingerprint string, input Content, recipients []string, ttl int64) (any, error) {
+	if err := n.requireGroupReplayLocked(); err != nil {
+		return nil, err
+	}
 	if err := validateContent(input); err != nil {
 		return nil, err
 	}

@@ -1,5 +1,13 @@
 # Learning log
 
+## Carriers: quotas partilhadas e validação antes do encaminhamento — 2026-09-13
+
+O teste novo reproduziu a quota auxiliar ultrapassada nos dois motores: `cache` aplicava o limite, `output` guardava respostas directamente. `retain` passou a cobrir ambos. Outra prova reproduziu retirada prematura de um controlo quando um pin tornava a nova admissão impossível; agora o plano completo antecede qualquer retirada e a substituição é guardada primeiro. O teste Node injecta também falha de escrita e verifica a conservação das provas; ambos os motores medem os bytes realmente submetidos ao transporte contra4MiB/min, com controlo positivo acima de3MiB. Logs before/corrected/producer-limits em `.cache/group-carriers`.
+
+O teste de sockets do retransmissor opaco mostrou que recusar um controlo público em `receive` chegava tarde: o router já o encaminhava após o callback. A política comum valida envelope privado/tamanho/duração na fronteira do router, sem precisar de decifrar. Controlos rejeitados não recebem ACK de sucesso; a fixture cancela cada retry antes de medir a recusa seguinte, evitando que um pacote anterior satisfaça o contador negativo de outro caso. Node e Go reproduziram a falha e passaram a correcção. Prevenção: distinguir recusa de apresentação, recusa de armazenamento e recusa de trânsito; medir cada fronteira com um destinatário realmente separado.
+
+Os18 vectores são cifrados e verificados independentemente nos dois motores, incluindo Unicode e negativos assinados válidos. Chaves sintéticas ficam apenas na cache temporária privada. A regressão intermédia passou251 testes Node;9 casos dirigidos posteriores passaram9.314s. O gate integral actual ainda está em curso; não atribuir-lhe passes antecipados. Não houve agentes novos/retomados nem alterações a modelos/bridges/configuração.
+
 ## Prevention rules
 
 - Treat a task spawn response as dispatch only; require actual agent outputs/files before claiming delegated work.
@@ -230,3 +238,8 @@ rg --files respeita *.log de .gitignore mesmo ao listar o directório de artefac
 Build5.598s;224 Node219.220s;148 testes Go de topo/race548.587s (11 helpers pelos drivers);33 interoperabilidade315.613s;SQLite C143.711s;17 UI Node118.995s e17 Go112.607s;22 host iOS2.319s/estática0.050s. Desktop Linux: build0.230s,execução1.011s,pacote5.055s,execução empacotada0.809s.26 Axe sem violações;284 fontes inalteradas. Evidência em docs/evidence/group-confirmations/final.
 
 Sem agentes novos/retomados. Eventos, carriers, UI dinâmica, artefactos móveis actuais e restantes requisitos continuam abertos. iOS1663cbe provou política/arranque e criação de identidade, mas o formulário de publicação não fechou; os logs estavam no artefacto e foram lidos pelo caminho explícito após a listagem ignorar *.log.
+
+
+## C1 — gate final concluído, contrato incompleto
+
+Build6.056s;253 Node405.684s;161 Go principais/race711.420s (12 helpers pelos drivers);47 interoperabilidade480.894s;35 SQLite C283.498s;19 UI Node138.097s/19 Go128.687s. Desktop Linux preparação0.319s/execução2.412s/pacote --dir7.260s/execução empacotada1.255s.62 Axe sem violações;326 fontes inalteradas. Sessões83929 e43358 terminaram0. Evidência em docs/evidence/group-carriers/final, falhas em adversarial. Root reviu as capturas; revisão independente e plataformas actuais pendentes. C2/C3 e todo o resto de PROJECT-BRIEF continuam activos; não marcar produto completo.

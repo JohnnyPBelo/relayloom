@@ -6,7 +6,7 @@
     ],
     "generated_at": "2026-09-11T16:22:15.403613+00:00",
     "version": 1,
-    "updated_at": "2026-09-13T10:00:53.485093+00:00"
+    "updated_at": "2026-09-13"
   },
   "requirements": [
     {
@@ -279,9 +279,12 @@
           "docs/GROUP-CONTENT.md",
           "docs/GROUP-OUTBOX.md",
           "docs/GROUP-SEND.md",
-          "docs/GROUP-CONFIRMATIONS.md"
+          "docs/GROUP-CONFIRMATIONS.md",
+          "docs/GROUP-EVENTS.md",
+          "docs/GROUP-CARRIERS.md",
+          "docs/evidence/group-carriers/final"
         ],
-        "limits": "Envio e confirmações históricas por épocas em Node/Go, audiência original e factos preservados; gate completo host/interoperabilidade/UI/desktop passou. Eventos, carriers, composição/gestão dinâmica, artefactos móveis actuais e revisão independente pendentes."
+        "limits": "C1 headers/snapshots automáticos, envio/eventos/recibos nas APIs Node/Go com gate completo host/interoperabilidade/UI/desktop passado. C2 convites/consentimentos/saídas, C3 UI dinâmica, plataformas actuais e revisão independente pendentes."
       },
       "evidence": [
         {
@@ -381,6 +384,20 @@
             "docs/evidence/group-confirmations/final/scope.json"
           ],
           "notes": "Build5.598s;224 Node219.220s;148 testes Go de topo/race548.587s (11 helpers pelos drivers);33 interoperabilidade315.613s;SQLite C143.711s;17 UI Node118.995s e17 Go112.607s;22 host iOS2.319s/estática0.050s. Desktop Linux: build0.230s,execução1.011s,pacote5.055s,execução empacotada0.809s.26 Axe sem violações;284 fontes inalteradas. Evidência em docs/evidence/group-confirmations/final."
+        },
+        {
+          "kind": "test",
+          "command": "npm test",
+          "result": "pass",
+          "timestamp": "2026-09-13",
+          "notes": "C1, fontes b43741ef070d437b224b69b396e4ddddc9bc251c35dbab79f72ef68d70ffd017:253 casos/405.684s (runner), sem skips. Gate completo ainda em curso; .cache/group-carriers-final/report.json. Não é conclusão do requisito."
+        },
+        {
+          "kind": "test",
+          "command": "Exact sequential invocations in docs/evidence/group-carriers/final/report.json and desktop-report.json",
+          "result": "pass",
+          "timestamp": "2026-09-13",
+          "notes": "253 Node,161 Go top-level/race,47 interop,35 C SQLite,19 UI per engine,62 Axe reports without violations, Linux desktop run/package/run;326 frozen source files. C2/C3 and overall requirement remain incomplete."
         }
       ]
     },
@@ -572,9 +589,12 @@
           "docs/evidence/outbox/snapshot-expiry",
           "docs/evidence/group-outbox/final",
           "docs/GROUP-SEND.md",
-          "docs/GROUP-CONFIRMATIONS.md"
+          "docs/GROUP-CONFIRMATIONS.md",
+          "docs/GROUP-EVENTS.md",
+          "docs/GROUP-CARRIERS.md",
+          "docs/evidence/group-carriers/final"
         ],
-        "limits": "Envio e confirmações históricas por épocas em Node/Go, audiência original e factos preservados; gate completo host/interoperabilidade/UI/desktop passou. Eventos, carriers, composição/gestão dinâmica, artefactos móveis actuais e revisão independente pendentes."
+        "limits": "C1 headers/snapshots automáticos, envio/eventos/recibos nas APIs Node/Go com gate completo host/interoperabilidade/UI/desktop passado. C2 convites/consentimentos/saídas, C3 UI dinâmica, plataformas actuais e revisão independente pendentes."
       },
       "evidence": [
         {
@@ -670,6 +690,20 @@
             "docs/evidence/group-confirmations/final/scope.json"
           ],
           "notes": "Build5.598s;224 Node219.220s;148 testes Go de topo/race548.587s (11 helpers pelos drivers);33 interoperabilidade315.613s;SQLite C143.711s;17 UI Node118.995s e17 Go112.607s;22 host iOS2.319s/estática0.050s. Desktop Linux: build0.230s,execução1.011s,pacote5.055s,execução empacotada0.809s.26 Axe sem violações;284 fontes inalteradas. Evidência em docs/evidence/group-confirmations/final."
+        },
+        {
+          "kind": "test",
+          "command": "npm test",
+          "result": "pass",
+          "timestamp": "2026-09-13",
+          "notes": "C1, fontes b43741ef070d437b224b69b396e4ddddc9bc251c35dbab79f72ef68d70ffd017:253 casos/405.684s (runner), sem skips. Gate completo ainda em curso; .cache/group-carriers-final/report.json. Não é conclusão do requisito."
+        },
+        {
+          "kind": "test",
+          "command": "Exact sequential invocations in docs/evidence/group-carriers/final/report.json and desktop-report.json",
+          "result": "pass",
+          "timestamp": "2026-09-13",
+          "notes": "253 Node,161 Go top-level/race,47 interop,35 C SQLite,19 UI per engine,62 Axe reports without violations, Linux desktop run/package/run;326 frozen source files. C2/C3 and overall requirement remain incomplete."
         }
       ]
     },
@@ -692,9 +726,12 @@
           "docs/evidence/desktop/layout-expiry-fix",
           "docs/evidence/android/documents-fa1481d3",
           "tests/e2e/group-outbox.spec.ts",
-          "docs/GROUP-CONFIRMATIONS.md"
+          "docs/GROUP-CONFIRMATIONS.md",
+          "docs/GROUP-EVENTS.md",
+          "docs/GROUP-CARRIERS.md",
+          "docs/evidence/group-carriers/final"
         ],
-        "limits": "Envio e confirmações históricas por épocas em Node/Go, audiência original e factos preservados; gate completo host/interoperabilidade/UI/desktop passou. Eventos, carriers, composição/gestão dinâmica, artefactos móveis actuais e revisão independente pendentes."
+        "limits": "C1 headers/snapshots automáticos, envio/eventos/recibos nas APIs Node/Go com gate completo host/interoperabilidade/UI/desktop passado. C2 convites/consentimentos/saídas, C3 UI dinâmica, plataformas actuais e revisão independente pendentes."
       },
       "evidence": [
         {
@@ -753,6 +790,20 @@
             "docs/evidence/group-confirmations/final/scope.json"
           ],
           "notes": "Build5.598s;224 Node219.220s;148 testes Go de topo/race548.587s (11 helpers pelos drivers);33 interoperabilidade315.613s;SQLite C143.711s;17 UI Node118.995s e17 Go112.607s;22 host iOS2.319s/estática0.050s. Desktop Linux: build0.230s,execução1.011s,pacote5.055s,execução empacotada0.809s.26 Axe sem violações;284 fontes inalteradas. Evidência em docs/evidence/group-confirmations/final."
+        },
+        {
+          "kind": "test",
+          "command": "npm test",
+          "result": "pass",
+          "timestamp": "2026-09-13",
+          "notes": "C1, fontes b43741ef070d437b224b69b396e4ddddc9bc251c35dbab79f72ef68d70ffd017:253 casos/405.684s (runner), sem skips. Gate completo ainda em curso; .cache/group-carriers-final/report.json. Não é conclusão do requisito."
+        },
+        {
+          "kind": "test",
+          "command": "Exact sequential invocations in docs/evidence/group-carriers/final/report.json and desktop-report.json",
+          "result": "pass",
+          "timestamp": "2026-09-13",
+          "notes": "253 Node,161 Go top-level/race,47 interop,35 C SQLite,19 UI per engine,62 Axe reports without violations, Linux desktop run/package/run;326 frozen source files. C2/C3 and overall requirement remain incomplete."
         }
       ]
     },
