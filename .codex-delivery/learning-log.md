@@ -208,3 +208,8 @@ As oito mortes reais antes/depois de preparing/ready passaram com APIs e sockets
 Build5.816s;219 testes Node194.189s;144 testes Go de topo com race507.918s (11 helpers executados pelos drivers);30 casos de interoperabilidade270.997s; fronteira SQLite C115.655s;17 UI Node115.990s e17 UI Go110.472s.22 testes host iOS1.887s e estática0.030s. Desktop Linux: preparação0.233s, execução1.041s, pacote5.812s, execução empacotada0.800s.26 relatórios Axe actualizados, zero violações.277 ficheiros de fonte inalterados durante os gates. Evidência em docs/evidence/group-send/final.
 
 APIs/falhas/mortes verificadas; confirmações automáticas, eventos, carriers, composição/gestão dinâmica e restantes requisitos continuam pendentes. iOS1aaca64 produziu captura real de falha do isolamento antes da WebView; nenhum fluxo funcional passou. A próxima correcção deve preservar a política e provar sintaxe com o compilador WebKit real.
+
+
+## O parser WebKit não é NSRegularExpression — 2026-09-13
+
+A captura real de1aaca64 isolou o ramo de erro de compileContentRuleList; os testes Foundation anteriores só contavam regras, por isso não detectavam a sintaxe específica do WebKit. A expressão(/|$) contraria a restrição documentada do marcador final. Foi substituída pela união de duas expressões com a mesma fronteira de origem, mantendo bloqueio/excepções. A política tem agora controlos positivos/negativos de compilação WebKit e matriz de origens/tipos de recurso; estes ainda aguardam execução Apple, enquanto22 testes host do runner/estática passaram. Não assumir que um regex válido em Foundation/JavaScript é aceite pelo motor de isolamento de outra plataforma.

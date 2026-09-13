@@ -6,7 +6,7 @@ Continuar TODO o PROJECT-BRIEF.md, apenas em /home/absint0o/projects/relayloom. 
 
 ## Git e testes em curso
 
-Marco de envio guardado localmente em1e027c8; origin/main ainda1aaca64c8eea188527a265db03d7f8490a7da111 (push85817 confirmado0). Publicar com a próxima correcção iOS para não repetir o gate Apple inalterado que já falhou. Marco de autoridade93c598f publicado; 1aaca64 só ajusta o orçamento do job CI Go de15→25min com cobertura inalterada. Preservar TODAS as alterações não commitadas. Não fazer reset.
+Marco de envio guardado localmente em1e027c8, logs completos emc1d6f89; origin/main ainda1aaca64c8eea188527a265db03d7f8490a7da111 (push85817 confirmado0). Publicar com a próxima correcção iOS para não repetir o gate Apple inalterado que já falhou. Marco de autoridade93c598f publicado; 1aaca64 só ajusta o orçamento do job CI Go de15→25min com cobertura inalterada. Preservar TODAS as alterações não commitadas. Não fazer reset.
 
 Sequência66585 terminou0: typecheck e1 teste de preview Node passaram; Go3 testes de topo (seis cenários, incluindo quatro subcasos de commit) passou46.565s com race; CLI reconstruída e oito mortes Unicode passaram26.633s. Logs .cache/group-send-unicode-*.txt e .cache/group-send-recovery-unicode-after.txt. A falha Unicode anterior continua preservada.
 
@@ -44,7 +44,7 @@ Android anterior APK136a5103/AAR9e2fb77f:82 asserções no único emulador API36
 
 ## Próximos passos
 
-1. Gate71338 concluído e arquivado. Commit/push coerente do envio por API, depois correcção iOS e continuação integral.
+1. Gate71338 concluído, arquivado e commitado1e027c8/c1d6f89. Correcção iOS implementada em OriginPolicy/PolicyTests: origem exacta e prefixo com barra, compilação WebKit real positiva/negativa e matriz semântica.22 testes host1.817s/estática passaram; sem Swift/WebKit local. Publicar estes commits com a correcção e observar CI Apple; não repetir o iOS inalterado.
 2. Gate completo com fontes congeladas (Node/Go race, C SQLite, interoperabilidade incluindo workers, UI Node/Go, desktop); sem reduzir cobertura. Commit/push coerente só após passe.
 3. Ligar confirmações históricas mínimas e eventos; preservar received/read completos após close e usar intenção incompleta para superseded.
 4. Partição/add/remove/rekey/reentrar/close, audiência original, multi-adapter/multi-hop, seeder offline; carriers limitados e UI dinâmica real.

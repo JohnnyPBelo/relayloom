@@ -48,7 +48,10 @@ struct OriginPolicy {
         let escaped = NSRegularExpression.escapedPattern(for: origin.absoluteString)
         let rules: [[String: Any]] = [
             ["trigger": ["url-filter": ".*"], "action": ["type": "block"]],
-            ["trigger": ["url-filter": "^\(escaped)(/|$)"], "action": ["type": "ignore-previous-rules"]],
+            // WebKit's URL-filter parser requires $ at the end of the whole
+            // expression. Keep the same origin boundary using two rules.
+            ["trigger": ["url-filter": "^\(escaped)$"], "action": ["type": "ignore-previous-rules"]],
+            ["trigger": ["url-filter": "^\(escaped)/"], "action": ["type": "ignore-previous-rules"]],
             ["trigger": ["url-filter": "^blob:\(escaped)/", "resource-type": ["image", "media"]], "action": ["type": "ignore-previous-rules"]],
             ["trigger": ["url-filter": "^data:", "resource-type": ["image", "media"]], "action": ["type": "ignore-previous-rules"]],
         ]

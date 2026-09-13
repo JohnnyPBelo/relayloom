@@ -222,3 +222,12 @@ O CI34728934069 compilou/arrancou/instalou, mas addmedia voltou a exceder o praz
 O runner passa a executar `NativeSimulatorTests/testStartupBeforeMedia` antes da fotografia: exige a WebView e o formulário de identidade pela acessibilidade real e guarda uma captura nativa antes do teardown em caso de falha. O resultado de arranque e até2 PNG são separados do resultado funcional. A fotografia e `testNativeCoreUIAndRecovery` continuam obrigatórios na CI; os4 screenshots e o relatório de checkpoints exigidos por esse percurso não são substituídos pelas capturas de arranque.
 
 Os prazos de45s da WebView,360/420s por teste e o deadline global mantêm-se. Não altera permissões, bridge, isolamento, debugging ou serviços.22 testes host e verificação estática passaram; esta alteração ainda não foi compilada/executada em Apple. Evidência em `evidence/ios/startup-before-photo-host`; falha anterior em `evidence/ios/fde529e`.
+
+
+## Diagnóstico real de1aaca64 e correcção em validação
+
+O novo XCTest de pré-arranque falhou antes de importar a fotografia, mas exportou uma captura nativa: a app mostra falha ao activar o isolamento. O ramo é a rejeição de compileContentRuleList, antes da WKWebView. Boot/build/install passaram; nenhum fluxo funcional passou. Relatório/captura em evidence/ios/1aaca64.
+
+OriginPolicy usava(/|$), apesar de o parser WebKit exigir$ no fim da expressão. A correcção separa dois filtros equivalentes: origem exacta e prefixo com barra. O bloqueio geral e as excepções media existentes mantêm-se. PolicyTests acrescenta matriz de origens/portas/schemes/tipos de recurso e compilação real macOS WebKit com controlo positivo da política nova e negativo da expressão antiga. Usa cache sob .cache/ios com nome único e espera limitada; não abre WebView, não envia pedidos de rede, não altera serviços ou segurança.
+
+Localmente22 testes do runner e a verificação estática passaram. Não há Swift/WebKit neste Linux; compilação e execução desses novos controlos Apple só podem ser atribuídas após o CI. O teste de arranque, fotografia, teste funcional, isolamento, prazos e limpeza do dispositivo próprio continuam obrigatórios.

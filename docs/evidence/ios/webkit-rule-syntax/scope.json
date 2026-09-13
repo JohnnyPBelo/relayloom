@@ -1,0 +1,39 @@
+{
+  "status": "APPLE_VALIDATION_PENDING",
+  "sourceChangesSinceGroupSendGate": [
+    "apps/ios/RelayLoom/OriginPolicy.swift",
+    "apps/ios/Tests/PolicyTests.swift"
+  ],
+  "localCommands": [
+    {
+      "argv": [
+        "node",
+        "--test",
+        "apps/ios/Tests/SimulatorRunnerTests.mjs"
+      ],
+      "exitCode": 0,
+      "tests": 22,
+      "durationMs": 1817.054584
+    },
+    {
+      "argv": [
+        "node",
+        "scripts/ios-simulator.mjs",
+        "--check"
+      ],
+      "exitCode": 0,
+      "scope": "static only"
+    }
+  ],
+  "swiftCompiledLocally": false,
+  "webKitCompilerExecutedLocally": false,
+  "iosUIExecutedForThisChange": false,
+  "policy": "block all; allow same exact origin or slash-prefixed paths; preserve existing blob/data image/media exceptions",
+  "reference": "https://webkit.org/blog/3476/content-blockers-first-look/",
+  "limits": [
+    "real iOS failure screenshot is in ../1aaca64",
+    "new host test requires real macOS WebKit",
+    "positive/negative parser controls and full iOS flow must pass in CI",
+    "no bridge/provider/service/permission/security-setting changes"
+  ]
+}
