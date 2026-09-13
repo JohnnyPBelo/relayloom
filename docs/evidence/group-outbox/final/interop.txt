@@ -1,0 +1,201 @@
+
+> relayloom@0.1.0 test:interop
+> tsx --test --test-concurrency=1 tests/native/*.test.ts
+
+TAP version 13
+# Subtest: real Node and Go processes preserve encrypted reservations after process exit, with an eviction negative control
+ok 1 - real Node and Go processes preserve encrypted reservations after process exit, with an eviction negative control
+  ---
+  duration_ms: 4914.642849
+  type: 'test'
+  ...
+# (node:2640253) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Node and Go derive identical authorization from signed bundles and the same protected authority files
+ok 2 - Node and Go derive identical authorization from signed bundles and the same protected authority files
+  ---
+  duration_ms: 13755.99842
+  type: 'test'
+  ...
+# Subtest: actual node/native group admission preserves quarantine and history through node restart
+ok 3 - actual node/native group admission preserves quarantine and history through node restart
+  ---
+  duration_ms: 3908.889916
+  type: 'test'
+  ...
+# Subtest: actual native/node group admission preserves quarantine and history through native restart
+ok 4 - actual native/node group admission preserves quarantine and history through native restart
+  ---
+  duration_ms: 3251.453056
+  type: 'test'
+  ...
+# Subtest: actual native/native group admission preserves quarantine and history through native restart
+ok 5 - actual native/native group admission preserves quarantine and history through native restart
+  ---
+  duration_ms: 2813.710088
+  type: 'test'
+  ...
+# (node:2641094) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: real Node/Go authority files preserve heads, cursors, fences, CAS and crash idempotence
+ok 6 - real Node/Go authority files preserve heads, cursors, fences, CAS and crash idempotence
+  ---
+  duration_ms: 21471.807906
+  type: 'test'
+  ...
+# Subtest: Node and Go verify each other's signed group epochs, consent, reader scope and exact Unicode bytes
+ok 7 - Node and Go verify each other's signed group epochs, consent, reader scope and exact Unicode bytes
+  ---
+  duration_ms: 382.426957
+  type: 'test'
+  ...
+# (node:2642015) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: real Node/Go near-limit index preserves stop headroom and the disabled-guard control fails
+ok 8 - real Node/Go near-limit index preserves stop headroom and the disabled-guard control fails
+  ---
+  duration_ms: 9570.116614
+  type: 'test'
+  ...
+# (node:2642544) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Node and Go share durable admission, quarantine and stops across real commit-boundary process exits
+ok 9 - Node and Go share durable admission, quarantine and stops across real commit-boundary process exits
+  ---
+  duration_ms: 15069.796081
+  type: 'test'
+  ...
+# (node:2643142) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# {"phase":"node-install-first-128","elapsedMs":9608}
+# {"phase":"node-observe-first-128","elapsedMs":456}
+# {"phase":"node-stop-first-128","elapsedMs":3993}
+# {"phase":"node-observe-stops","elapsedMs":123}
+# {"phase":"node-create-next-group","elapsedMs":236}
+# {"phase":"node-install-next-128","elapsedMs":10971}
+# {"phase":"node-observe-256","elapsedMs":561}
+# Subtest: real Node/Go application deaths preserve an outbox stop at the same commit as group closure
+ok 10 - real Node/Go application deaths preserve an outbox stop at the same commit as group closure
+  ---
+  duration_ms: 7773.421605
+  type: 'test'
+  ...
+# {"phase":"go-open-256","elapsedMs":612}
+# {"phase":"go-observe-256","elapsedMs":487}
+# {"phase":"go-stop-next-128","elapsedMs":3789}
+# {"phase":"go-observe-256-stops","elapsedMs":672}
+# Subtest: 128 real stopped intents and 128 pending reserved payloads reopen across Node and Go without reopening old retries
+ok 11 - 128 real stopped intents and 128 pending reserved payloads reopen across Node and Go without reopening old retries
+  ---
+  duration_ms: 33263.925932
+  type: 'test'
+  ...
+# Subtest: actual node creator and native member APIs preserve authority across engine takeover
+ok 12 - actual node creator and native member APIs preserve authority across engine takeover
+  ---
+  duration_ms: 1665.437257
+  type: 'test'
+  ...
+# Subtest: actual native creator and node member APIs preserve authority across engine takeover
+ok 13 - actual native creator and node member APIs preserve authority across engine takeover
+  ---
+  duration_ms: 1419.48324
+  type: 'test'
+  ...
+# (node:2646247) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Node and Go share encrypted SQLite files, serialize real writers and recover each other's crashed transactions
+ok 14 - Node and Go share encrypted SQLite files, serialize real writers and recover each other's crashed transactions
+  ---
+  duration_ms: 874.174337
+  type: 'test'
+  ...
+# (node:2646417) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: real Node/Go process exits preserve group authority and the private document at one commit boundary
+ok 15 - real Node/Go process exits preserve group authority and the private document at one commit boundary
+  ---
+  duration_ms: 4749.30027
+  type: 'test'
+  ...
+# Subtest: Go A → Node B → Go C: isolated real sockets, encrypted messages/receipts, partition, restart and publisher-offline seeding
+ok 16 - Go A → Node B → Go C: isolated real sockets, encrypted messages/receipts, partition, restart and publisher-offline seeding
+  ---
+  duration_ms: 7108.417358
+  type: 'test'
+  ...
+# Subtest: Go A → Node B → Node C over TCP and serial PTYs preserves bytes, receipts and partition recovery
+ok 17 - Go A → Node B → Node C over TCP and serial PTYs preserves bytes, receipts and partition recovery
+  ---
+  duration_ms: 4613.565964
+  type: 'test'
+  ...
+# Subtest: Node ↔ Go generated vectors preserve canonical bytes, identities, vaults, reader authority, chunks and disk seeds
+ok 18 - Node ↔ Go generated vectors preserve canonical bytes, identities, vaults, reader authority, chunks and disk seeds
+  ---
+  duration_ms: 806.202318
+  type: 'test'
+  ...
+# Subtest: node outbox → go relay → go recipient: durable restart, real ACK control, signed group confirmations and expiry
+ok 19 - node outbox → go relay → go recipient: durable restart, real ACK control, signed group confirmations and expiry
+  ---
+  duration_ms: 41843.763415
+  type: 'test'
+  ...
+# Subtest: go outbox → node relay → node recipient: durable restart, real ACK control, signed group confirmations and expiry
+ok 20 - go outbox → node relay → node recipient: durable restart, real ACK control, signed group confirmations and expiry
+  ---
+  duration_ms: 49992.641159
+  type: 'test'
+  ...
+# (node:2650741) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: node API migrates legacy private data and the other engine recovers after process death without fallback
+ok 21 - node API migrates legacy private data and the other engine recovers after process death without fallback
+  ---
+  duration_ms: 1222.053622
+  type: 'test'
+  ...
+# Subtest: go API migrates legacy private data and the other engine recovers after process death without fallback
+ok 22 - go API migrates legacy private data and the other engine recovers after process death without fallback
+  ---
+  duration_ms: 982.888164
+  type: 'test'
+  ...
+# Subtest: node application owns its profile until close; another engine recovers its pending outbox
+ok 23 - node application owns its profile until close; another engine recovers its pending outbox
+  ---
+  duration_ms: 680.540928
+  type: 'test'
+  ...
+# Subtest: go application owns its profile until close; another engine recovers its pending outbox
+ok 24 - go application owns its profile until close; another engine recovers its pending outbox
+  ---
+  duration_ms: 788.257213
+  type: 'test'
+  ...
+# (node:2651120) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Node and Go share initialized private state and recover staged and committed process deaths
+ok 25 - Node and Go share initialized private state and recover staged and committed process deaths
+  ---
+  duration_ms: 4436.567081
+  type: 'test'
+  ...
+# (node:2651369) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: real Node and Go processes exclude the same profile and recover after owner death
+ok 26 - real Node and Go processes exclude the same profile and recover after owner death
+  ---
+  duration_ms: 3885.623534
+  type: 'test'
+  ...
+1..26
+# tests 26
+# suites 0
+# pass 26
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 243284.943415

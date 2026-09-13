@@ -1,0 +1,41 @@
+TAP version 13
+# (node:2491262) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: stop reads share one validated snapshot but invalidate on mutation and scope exit
+ok 1 - stop reads share one validated snapshot but invalidate on mutation and scope exit
+  ---
+  duration_ms: 157.437367
+  type: 'test'
+  ...
+# (node:2491299) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: missing private proof pauses a valid reserved send without losing availability, then releases its obsolete hold
+not ok 2 - missing private proof pauses a valid reserved send without losing availability, then releases its obsolete hold
+  ---
+  duration_ms: 760.543182
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/tests/group-outbox.test.ts:1:570'
+  failureType: 'testCodeFailure'
+  error: 'Checkpoint de autoridade inválido: Cursor sem estado privado verificado'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    GroupRegistry.record (/home/absint0o/projects/relayloom/packages/groups/src/registry.ts:399:13)
+    <anonymous> (/home/absint0o/projects/relayloom/packages/groups/src/registry.ts:1213:55)
+    Array.map (<anonymous>)
+    <anonymous> (/home/absint0o/projects/relayloom/packages/groups/src/registry.ts:1213:25)
+    Object.execute (/home/absint0o/projects/relayloom/packages/groups/src/registry.ts:202:23)
+    GroupRegistry.list (/home/absint0o/projects/relayloom/packages/groups/src/registry.ts:1212:23)
+    GroupAccess.chain (/home/absint0o/projects/relayloom/packages/groups/src/access.ts:128:40)
+    GroupAccess.retry (/home/absint0o/projects/relayloom/packages/groups/src/access.ts:177:24)
+    GroupLedger.reconcileRetry (/home/absint0o/projects/relayloom/packages/groups/src/ledger.ts:541:34)
+    reconcileGroupOutbox (/home/absint0o/projects/relayloom/apps/node/src/group-outbox.ts:45:29)
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 1
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1309.366364

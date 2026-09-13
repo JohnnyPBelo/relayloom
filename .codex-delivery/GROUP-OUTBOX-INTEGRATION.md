@@ -1,6 +1,6 @@
 # Próxima integração: envios de grupos com épocas
 
-Todo PROJECT-BRIEF.md permanece activo. Esta página prepara implementação posterior ao gate da admissão; não é uma funcionalidade entregue. Execução sequencial, nenhum agente novo/retomado, nenhum provider/bridge/serviço/permissão alterado.
+Todo PROJECT-BRIEF.md permanece activo. A integração da autoridade da outbox está agora em implementação local, posterior ao gate da admissão; ainda não é publicação dinâmica entregue. Execução sequencial, nenhum agente novo/retomado, nenhum provider/bridge/serviço/permissão alterado.
 
 ## Estado de partida
 
@@ -29,3 +29,18 @@ A admissão já existe em Node/Go e conserva contexto histórico, quarentena e m
 6. Provar que callbacks de envio, inventário, confirmação, view/attachment e recuperação consultam a mesma autoridade. Depois ligar carriers e UI real e repetir gates de todos os requisitos afectados.
 
 Esta direcção deve ser ajustada se os controlos revelarem uma contradição; não reduzir o contrato para acomodar uma implementação parcial.
+
+## Iteração local em curso — 2026-09-13
+
+Base publicada fde529ed0ff9dad7eacd7b3f157929ba1f3f0d6a (inclui6734f1f/5845515 e diagnóstico iOS). Não confundir com as alterações locais seguintes.
+
+Node/Go têm agora os campos opcionais exactos groupEpoch/groupStopped, estado superseded, contexto de paragem na projecção, reconciliação dentro do commit de gestão, verificação na abertura/repetição e retirada conjunta dos stops ao retirar intenções. O espelho normalizado pode diferir do documento em disco, cujo digest continua a ser comparado. Reservas da outbox de grupo e quarentena partilham uma união; manualPin conserva significado separado. Publicação, envio automático de confirmações, carriers, UI dinâmica e guarda de inventário/seeding próprio continuam pendentes, por isso outbound/messaging continuam false.
+
+As fixtures destes testes instalam uma mensagem realmente assinada/admitida e a intenção correspondente. Não são ainda envio dinâmico pela API. Nove testes Node passaram8.080s, incluindo quota normal cheia e controlo de crescimento recusado, rollback/perda de resposta, reinício com false+stop, true sem stop, ligação alterada e stop órfão. A primeira fixture chamou preference em vez de localAction; erro corrigido, log preservado. Go dirigido detectou primeiro assinaturas erradas da fixture e depois retry em vez de outbox-retry; a repetição corrigida está em .cache/group-outbox-go-second.txt. Confirmar o código de saída antes de atribuir passe. Prefixo restritivo/cauda inválida e retirada conjunta acrescentados depois dos9 Node e precisam do gate actualizado.
+
+Nenhum agente novo/retomado nesta fase. Revisão pelo agente principal, sem substituir o gate independente. Seguem controlos reais de múltiplos processos, mortes antes/depois de commit,128 stops+128 pendentes no ledger (o teste actual só prova o orçamento estrutural), transporte/partição/heal e UI. O contrato não foi reduzido.
+
+
+## Gate da autoridade concluído
+
+211 testes Node passaram179.064s;141 testes Go de topo com race476.758s (10 helpers omitidos isoladamente e executados pelos drivers);26 casos de interoperabilidade243.460s; fronteira SQLite C75.323s;17 UI Node115.845s e17 UI Go109.616s. Build5.524s;22 testes iOS host1.842s e verificação estática0.032s. Desktop Linux: preparação0.336s, execução1.507s, pacote10.029s e execução empacotada1.280s.26 relatórios Axe actualizados, zero violações. Fontes inalteradas durante os gates. Evidência em docs/evidence/group-outbox/final. Cancelamento local, guarda de inventário/requests e apresentação de pausa/superseded foram implementados e testados depois da nota de iteração acima. A criação/envio dinâmico pela API, emissão de confirmações e carriers permanecem por ligar; não considerar as fixtures de intenções como esse resultado. Seguir o contrato integral após este commit.

@@ -1,0 +1,204 @@
+TAP version 13
+# (node:2482723) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: stop reads share one validated snapshot but invalidate on mutation and scope exit
+not ok 1 - stop reads share one validated snapshot but invalidate on mutation and scope exit
+  ---
+  duration_ms: 108.522868
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/tests/group-ledger-retirement.test.ts:1:669'
+  failureType: 'testCodeFailure'
+  error: 'Registo fechado, incerto ou já em transacção'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    ProtectedGroupStore.execute (/home/absint0o/projects/relayloom/packages/groups/src/storage.ts:462:13)
+    ProtectedGroupStore.transaction (/home/absint0o/projects/relayloom/packages/groups/src/storage.ts:606:17)
+    run (/home/absint0o/projects/relayloom/tests/group-ledger-retirement.test.ts:12:11)
+    TestContext.<anonymous> (/home/absint0o/projects/relayloom/tests/group-ledger-retirement.test.ts:68:5)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: all256 immutable stops fit; retirement preserves retained facts and counts only removed records
+ok 2 - all256 immutable stops fit; retirement preserves retained facts and counts only removed records
+  ---
+  duration_ms: 7493.278337
+  type: 'test'
+  ...
+# Subtest: expired holds have counted removal and malformed counters cannot be used as valid state
+ok 3 - expired holds have counted removal and malformed counters cannot be used as valid state
+  ---
+  duration_ms: 64.574129
+  type: 'test'
+  ...
+# (node:2483351) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: accepted history is authenticated and unknown old content stays separately held after removal
+ok 4 - accepted history is authenticated and unknown old content stays separately held after removal
+  ---
+  duration_ms: 637.511061
+  type: 'test'
+  ...
+# Subtest: group closure and immutable outbox stop commit together and callback failure rolls both back
+ok 5 - group closure and immutable outbox stop commit together and callback failure rolls both back
+  ---
+  duration_ms: 165.035693
+  type: 'test'
+  ...
+# Subtest: historical receipt uses only a locally persisted accepted target, never an ID supplied by its sender
+ok 6 - historical receipt uses only a locally persisted accepted target, never an ID supplied by its sender
+  ---
+  duration_ms: 527.912717
+  type: 'test'
+  ...
+# Subtest: missing observation clock or malformed authenticated context cannot grant historical access
+ok 7 - missing observation clock or malformed authenticated context cannot grant historical access
+  ---
+  duration_ms: 64.831071
+  type: 'test'
+  ...
+# Subtest: quarantine byte quota uses actual signed ciphertext sizes and refuses overflow
+ok 8 - quarantine byte quota uses actual signed ciphertext sizes and refuses overflow
+  ---
+  duration_ms: 951.755795
+  type: 'test'
+  ...
+# Subtest: minimal outbox stop survives exhausted ordinary space without rewriting private content
+ok 9 - minimal outbox stop survives exhausted ordinary space without rewriting private content
+  ---
+  duration_ms: 93.846021
+  type: 'test'
+  ...
+# Subtest: ledger readers cannot escape the borrowed scope, even when every collection is empty
+ok 10 - ledger readers cannot escape the borrowed scope, even when every collection is empty
+  ---
+  duration_ms: 9.909188
+  type: 'test'
+  ...
+# Subtest: the authority reserve also accommodates every retained outbox stop
+ok 11 - the authority reserve also accommodates every retained outbox stop
+  ---
+  duration_ms: 148.761901
+  type: 'test'
+  ...
+# Subtest: quarantine count remains bounded and replay does not consume another slot
+ok 12 - quarantine count remains bounded and replay does not consume another slot
+  ---
+  duration_ms: 1616.715689
+  type: 'test'
+  ...
+# Subtest: full4096 history respects protected records and retains the exact accepted count on retirement
+ok 13 - full4096 history respects protected records and retains the exact accepted count on retirement
+  ---
+  duration_ms: 34646.480144
+  type: 'test'
+  ...
+# (node:2484815) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: runtime closure persists the minimal stop without rewriting the private document and releases only automatic protection
+ok 14 - runtime closure persists the minimal stop without rewriting the private document and releases only automatic protection
+  ---
+  duration_ms: 1253.175212
+  type: 'test'
+  ...
+# Subtest: runtime group stop and closure recover together after rollback
+ok 15 - runtime group stop and closure recover together after rollback
+  ---
+  duration_ms: 989.722197
+  type: 'test'
+  ...
+# Subtest: runtime group stop and closure recover together after lost commit response
+ok 16 - runtime group stop and closure recover together after lost commit response
+  ---
+  duration_ms: 736.568022
+  type: 'test'
+  ...
+# Subtest: full normal database quota still commits a group stop while the ordinary growth control fails
+ok 17 - full normal database quota still commits a group stop while the ordinary growth control fails
+  ---
+  duration_ms: 1225.608226
+  type: 'test'
+  ...
+# Subtest: forged stop mirror, mismatched binding and orphan stop all fail authenticated reopening
+    # Subtest: mirror
+    ok 1 - mirror
+      ---
+      duration_ms: 665.138549
+      type: 'test'
+      ...
+    # Subtest: binding
+    ok 2 - binding
+      ---
+      duration_ms: 740.116064
+      type: 'test'
+      ...
+    # Subtest: orphan
+    ok 3 - orphan
+      ---
+      duration_ms: 732.100646
+      type: 'test'
+      ...
+    1..3
+ok 18 - forged stop mirror, mismatched binding and orphan stop all fail authenticated reopening
+  ---
+  duration_ms: 2138.249315
+  type: 'test'
+  ...
+# Subtest: bounded stopped entries coexist with 128 new pending operations; half bindings and extra fields fail
+ok 19 - bounded stopped entries coexist with 128 new pending operations; half bindings and extra fields fail
+  ---
+  duration_ms: 648.815616
+  type: 'test'
+  ...
+# Subtest: a restrictive prefix with an invalid tail stops the runtime intent in its accepted transaction
+ok 20 - a restrictive prefix with an invalid tail stops the runtime intent in its accepted transaction
+  ---
+  duration_ms: 799.338389
+  type: 'test'
+  ...
+# Subtest: stop retirement and removal of the corresponding intent share a private commit
+ok 21 - stop retirement and removal of the corresponding intent share a private commit
+  ---
+  duration_ms: 863.040083
+  type: 'test'
+  ...
+# Subtest: runtime stop cancels its existing transport queue
+ok 22 - runtime stop cancels its existing transport queue
+  ---
+  duration_ms: 1126.578467
+  type: 'test'
+  ...
+# Subtest: runtime negative control delivers its existing transport queue
+ok 23 - runtime negative control delivers its existing transport queue
+  ---
+  duration_ms: 1127.508261
+  type: 'test'
+  ...
+# Subtest: real TCP cache request checks active author authority even after delivery completed
+ok 24 - real TCP cache request checks active author authority even after delivery completed
+  ---
+  duration_ms: 1642.541118
+  type: 'test'
+  ...
+# Subtest: real TCP cache request checks closed author authority even after delivery completed
+ok 25 - real TCP cache request checks closed author authority even after delivery completed
+  ---
+  duration_ms: 1636.88787
+  type: 'test'
+  ...
+# Subtest: real TCP cache request checks locked author authority even after delivery completed
+ok 26 - real TCP cache request checks locked author authority even after delivery completed
+  ---
+  duration_ms: 1353.569089
+  type: 'test'
+  ...
+1..26
+# tests 29
+# suites 0
+# pass 28
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 62576.403275

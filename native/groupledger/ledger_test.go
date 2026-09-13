@@ -39,6 +39,97 @@ func checked(t *testing.T, err error) {
 	}
 }
 
+func TestStopSnapshotInvalidatesOnMutationAndScopeExit(t *testing.T) {
+	root := filepath.Join("..", "..", ".cache", "group-ledger-go")
+	checked(t, os.MkdirAll(root, 0700))
+	dir, err := os.MkdirTemp(root, "stop-snapshot-")
+	checked(t, err)
+	identity, err := core.CreateIdentity("Stop snapshot")
+	checked(t, err)
+	path := filepath.Join(dir, "state.sqlite")
+	store, err := groupstore.Open(path, identity, groupstore.Options{Create: true})
+	checked(t, err)
+	t.Cleanup(func() { store.Close(); os.RemoveAll(dir) })
+	storeID, err := store.ID()
+	checked(t, err)
+	g, err := groupauthority.New(store, identity)
+	checked(t, err)
+	group, err := g.Create("01111111-1111-4111-8111-111111111111", "Snapshot")
+	checked(t, err)
+	_, err = g.Close("02222222-2222-4222-8222-222222222222", group.GroupID, *group.EpochID)
+	checked(t, err)
+	entry := RetryEntry{"03333333-3333-4333-8333-333333333333", core.Hash([]byte("intent")), group.GroupID, *group.EpochID}
+	var original StopRecord
+	var escaped *Ledger
+	checked(t, store.Update(func(tx *groupstore.Tx) error {
+		_, err := Run(tx, identity, func(l *Ledger, _ *groupauthority.Registry) error {
+			escaped = l
+			result, err := l.ReconcileRetry(entry, true)
+			if err != nil {
+				return err
+			}
+			original = *result.Stop
+			result.Stop.Reason = "caller mutation"
+			for i := 0; i < 256; i++ {
+				record, err := l.Stop(entry.OperationID)
+				if err != nil {
+					return err
+				}
+				if *record != original {
+					t.Fatal("returned stop aliases cache")
+				}
+				record.Reason = "caller mutation"
+			}
+			if !l.stopCached {
+				t.Fatal("no validated stop snapshot")
+			}
+			return nil
+		})
+		return err
+	}))
+	if _, err := escaped.Stop(entry.OperationID); err == nil {
+		t.Fatal("stop cache escaped its transaction")
+	}
+	err = store.Update(func(tx *groupstore.Tx) error {
+		_, err := Run(tx, identity, func(l *Ledger, _ *groupauthority.Registry) error {
+			if _, err := l.Stop(entry.OperationID); err != nil {
+				return err
+			}
+			changed := original
+			changed.Reason = "forged"
+			data, err := core.Canonical(stopRecordSet{1, []StopRecord{changed}})
+			if err != nil {
+				return err
+			}
+			if err := tx.Put(stopKey, data, groupstore.Checkpoint); err != nil {
+				return err
+			}
+			_, err = l.Stop(entry.OperationID)
+			return err
+		})
+		return err
+	})
+	if !errors.Is(err, groupstore.ErrIntegrity) {
+		t.Fatalf("stale cache hid a changed record: %v", err)
+	}
+	checked(t, store.Close())
+	store, err = groupstore.Open(path, identity, groupstore.Options{ExpectedStoreID: storeID})
+	checked(t, err)
+	checked(t, store.Update(func(tx *groupstore.Tx) error {
+		_, err := Run(tx, identity, func(l *Ledger, _ *groupauthority.Registry) error {
+			record, err := l.Stop(entry.OperationID)
+			if err != nil {
+				return err
+			}
+			if *record != original {
+				t.Fatal("rollback lost authentic stop")
+			}
+			return nil
+		})
+		return err
+	}))
+}
+
 func TestClosureStopsAndRetirementStayAtomic(t *testing.T) {
 	store, identity := testStore(t)
 	g, err := groupauthority.New(store, identity)

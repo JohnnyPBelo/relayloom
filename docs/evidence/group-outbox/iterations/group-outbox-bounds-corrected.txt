@@ -1,0 +1,18 @@
+TAP version 13
+# (node:2442338) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: 128 real stopped intents and 128 pending reserved payloads reopen across Node and Go without reopening old retries
+ok 1 - 128 real stopped intents and 128 pending reserved payloads reopen across Node and Go without reopening old retries
+  ---
+  duration_ms: 93110.507099
+  type: 'test'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 1
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 93339.080006

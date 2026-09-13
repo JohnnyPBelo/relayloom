@@ -1,0 +1,46 @@
+{
+  "status": "pass",
+  "sourceDigest": "43a27ee00d0af364d28608c99d60508ebfb5adf01bbaff499cb05a4031a073ce",
+  "workerSha256": "575a867a6f23450e2754c7d88c02594b5e9c28f4f235fe97bf438137bef80b87",
+  "nativeBinarySha256": "e4d714129496c422cfd71588e74e3236ea815738ff9367f64cbdbceb85e4f72e",
+  "elapsedMs": 7761,
+  "cases": [
+    {
+      "runtime": "node",
+      "mode": "before",
+      "recoveredBy": "native",
+      "returnedTo": "node",
+      "exit": 81,
+      "status": "pending"
+    },
+    {
+      "runtime": "node",
+      "mode": "after",
+      "recoveredBy": "native",
+      "returnedTo": "node",
+      "exit": 82,
+      "status": "superseded"
+    },
+    {
+      "runtime": "go",
+      "mode": "before",
+      "recoveredBy": "node",
+      "returnedTo": "native",
+      "exit": 81,
+      "status": "pending"
+    },
+    {
+      "runtime": "go",
+      "mode": "after",
+      "recoveredBy": "node",
+      "returnedTo": "native",
+      "exit": 82,
+      "status": "superseded"
+    }
+  ],
+  "limits": [
+    "fixture installs the signed/admitted message and initial intent; dynamic sending still disabled",
+    "application death and authenticated recovery are real",
+    "no hardware or mobile evidence"
+  ]
+}

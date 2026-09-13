@@ -1,3 +1,5 @@
+import { GroupLedger } from "../../../packages/groups/src/ledger.js";
+import { reconcileGroupOutbox } from "./group-outbox.js";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import {
@@ -26,7 +28,18 @@ export function openPrivateProfile(directory: string, identity: Identity) {
   });
   try {
     const { bytes, digest } = database.read();
-    return { database, state: parsePrivateState(bytes, identity), digest };
+    const state = parsePrivateState(bytes, identity);
+    database.transaction((tx) =>
+      GroupLedger.run(tx, identity, (ledger) => {
+        const decisions = reconcileGroupOutbox(ledger, state.outbox);
+        if (
+          ledger.accounting().stops !==
+          [...decisions.values()].filter((d) => d.stop).length
+        )
+          throw new Error("Paragem sem intenção de envio retida");
+      }),
+    );
+    return { database, state, digest };
   } catch (error) {
     database.close();
     throw error;

@@ -66,6 +66,7 @@ export function executeGroupCommand(
   identity: Identity,
   privateDigest: string,
   command: GroupCommand,
+  reconcile?: (ledger: GroupLedger) => void,
 ) {
   if (!command || typeof command !== "object" || Array.isArray(command))
     throw new Error("Comando de grupo inválido");
@@ -74,96 +75,102 @@ export function executeGroupCommand(
       throw new Error(
         "O estado privado mudou; volte a lê-lo antes de gerir o grupo",
       );
-    return GroupLedger.run(tx, identity, (_ledger, g) => {
-      let result: unknown;
-      switch (command.action) {
-        case "list":
-          return {
-            groups: g.list(),
-            limits: { groups: 64, operations: 256 },
-            management: true,
-            messaging: false,
-          };
-        case "state":
-          return { group: g.state(command.groupId) };
-        case "operation":
-          return { operation: g.operationStatus(command.operationId) };
-        case "create":
-          result = g.create(command.operationId, command.title);
-          break;
-        case "invite":
-          result = g.invite(
-            command.operationId,
-            command.groupId,
-            command.expected,
-            command.card,
-          );
-          break;
-        case "remember":
-          result = g.rememberInvitation(
-            command.operationId,
-            command.anchor,
-            command.parent,
-            command.invitation,
-          );
-          break;
-        case "accept":
-          result = g.accept(
-            command.operationId,
-            command.groupId,
-            command.expected,
-          );
-          break;
-        case "commit":
-          result = g.commit(
-            command.operationId,
-            command.groupId,
-            command.expected,
-            {
-              title: command.title,
-              members: command.members,
-              joins: command.joins,
-            },
-          );
-          break;
-        case "close":
-          result = g.close(
-            command.operationId,
-            command.groupId,
-            command.expected,
-          );
-          break;
-        case "leave":
-          result = g.leave(command.operationId, command.groupId);
-          break;
-        case "headers":
-          return {
-            observation: g.observeHeaders(command.groupId, command.headers),
-          };
-        case "snapshot":
-          return {
-            group: g.observeSnapshot(
+    return GroupLedger.run(tx, identity, (ledger, g) => {
+      const response = (() => {
+        let result: unknown;
+        switch (command.action) {
+          case "list":
+            return {
+              groups: g.list(),
+              limits: { groups: 64, operations: 256 },
+              management: true,
+              messaging: false,
+            };
+          case "state":
+            return { group: g.state(command.groupId) };
+          case "operation":
+            return { operation: g.operationStatus(command.operationId) };
+          case "create":
+            result = g.create(command.operationId, command.title);
+            break;
+          case "invite":
+            result = g.invite(
+              command.operationId,
               command.groupId,
-              command.epochId,
-              command.snapshot,
-            ),
-          };
-        case "resume":
-          return { group: g.resumeCapacity(command.groupId) };
-        case "proofs":
-          return {
-            anchor: g.anchor(command.groupId),
-            headers: g.proofs(command.groupId, command.from, command.count),
-          };
-        case "private-state":
-          return { snapshot: g.privateState(command.groupId, command.epochId) };
-        default:
-          throw new Error("Acção de grupo desconhecida");
-      }
-      return {
-        operation: result,
-        group: g.state((result as GroupOperationResult).groupId),
-      };
+              command.expected,
+              command.card,
+            );
+            break;
+          case "remember":
+            result = g.rememberInvitation(
+              command.operationId,
+              command.anchor,
+              command.parent,
+              command.invitation,
+            );
+            break;
+          case "accept":
+            result = g.accept(
+              command.operationId,
+              command.groupId,
+              command.expected,
+            );
+            break;
+          case "commit":
+            result = g.commit(
+              command.operationId,
+              command.groupId,
+              command.expected,
+              {
+                title: command.title,
+                members: command.members,
+                joins: command.joins,
+              },
+            );
+            break;
+          case "close":
+            result = g.close(
+              command.operationId,
+              command.groupId,
+              command.expected,
+            );
+            break;
+          case "leave":
+            result = g.leave(command.operationId, command.groupId);
+            break;
+          case "headers":
+            return {
+              observation: g.observeHeaders(command.groupId, command.headers),
+            };
+          case "snapshot":
+            return {
+              group: g.observeSnapshot(
+                command.groupId,
+                command.epochId,
+                command.snapshot,
+              ),
+            };
+          case "resume":
+            return { group: g.resumeCapacity(command.groupId) };
+          case "proofs":
+            return {
+              anchor: g.anchor(command.groupId),
+              headers: g.proofs(command.groupId, command.from, command.count),
+            };
+          case "private-state":
+            return {
+              snapshot: g.privateState(command.groupId, command.epochId),
+            };
+          default:
+            throw new Error("Acção de grupo desconhecida");
+        }
+        return {
+          operation: result,
+          group: g.state((result as GroupOperationResult).groupId),
+        };
+      })();
+      reconcile?.(ledger);
+      return response;
     }).value;
   });
 }

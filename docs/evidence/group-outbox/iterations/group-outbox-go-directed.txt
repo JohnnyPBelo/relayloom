@@ -1,0 +1,10 @@
+{"ImportPath":"github.com/JohnnyPBelo/relayloom/native/app [github.com/JohnnyPBelo/relayloom/native/app.test]","Action":"build-output","Output":"# github.com/JohnnyPBelo/relayloom/native/app [github.com/JohnnyPBelo/relayloom/native/app.test]\n"}
+{"ImportPath":"github.com/JohnnyPBelo/relayloom/native/app [github.com/JohnnyPBelo/relayloom/native/app.test]","Action":"build-output","Output":"app/group_outbox_test.go:32:58: invalid operation: cannot indirect anchor (variable of struct type groups.GroupAnchor)\n"}
+{"ImportPath":"github.com/JohnnyPBelo/relayloom/native/app [github.com/JohnnyPBelo/relayloom/native/app.test]","Action":"build-output","Output":"app/group_outbox_test.go:36:53: invalid operation: cannot indirect anchor (variable of struct type groups.GroupAnchor)\n"}
+{"ImportPath":"github.com/JohnnyPBelo/relayloom/native/app [github.com/JohnnyPBelo/relayloom/native/app.test]","Action":"build-output","Output":"app/group_outbox_test.go:57:35: not enough arguments in call to n.Store.PutReserved\n"}
+{"ImportPath":"github.com/JohnnyPBelo/relayloom/native/app [github.com/JohnnyPBelo/relayloom/native/app.test]","Action":"build-output","Output":"\thave (core.Bundle)\n"}
+{"ImportPath":"github.com/JohnnyPBelo/relayloom/native/app [github.com/JohnnyPBelo/relayloom/native/app.test]","Action":"build-output","Output":"\twant (core.Bundle, bool)\n"}
+{"ImportPath":"github.com/JohnnyPBelo/relayloom/native/app [github.com/JohnnyPBelo/relayloom/native/app.test]","Action":"build-fail"}
+{"Time":"2026-09-13T01:56:00.815693603+01:00","Action":"start","Package":"github.com/JohnnyPBelo/relayloom/native/app"}
+{"Time":"2026-09-13T01:56:00.815810222+01:00","Action":"output","Package":"github.com/JohnnyPBelo/relayloom/native/app","Output":"FAIL\tgithub.com/JohnnyPBelo/relayloom/native/app [build failed]\n"}
+{"Time":"2026-09-13T01:56:00.815888799+01:00","Action":"fail","Package":"github.com/JohnnyPBelo/relayloom/native/app","Elapsed":0,"FailedBuild":"github.com/JohnnyPBelo/relayloom/native/app [github.com/JohnnyPBelo/relayloom/native/app.test]"}

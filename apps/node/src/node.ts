@@ -1,3 +1,12 @@
+import {
+  readProfileState,
+  writeProfileState,
+} from "../../../packages/profile/src/state.js";
+import {
+  reconcileGroupOutbox,
+  groupOutboxReservations,
+  type GroupRetry,
+} from "./group-outbox.js";
 import { mkdirSync, existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { ProfileOwnership } from "../../../packages/profile/src/ownership.js";
@@ -264,10 +273,12 @@ export class LoomNode extends EventEmitter {
     return identity.public;
   }
   lock() {
+    this.cancelGroupPackets(true);
     this.summaryCache.clear();
     this.summaryCacheBytes = 0;
     this.groupHolds = [];
     this.groupDecisions.clear();
+    this.groupRetries.clear();
     this.identity = undefined;
     this.privateState = { mutations: {} };
     this.privateDatabase?.close();
@@ -279,17 +290,80 @@ export class LoomNode extends EventEmitter {
     if (!this.identity) throw new Error("Desbloqueie a identidade");
     return this.identity;
   }
+  private groupRetries = new Map<string, GroupRetry>();
+  private cancelGroupPackets(all = false) {
+    const ids = new Set(
+      Object.values(this.privateState.outbox ?? {})
+        .filter(
+          (e) =>
+            e.groupEpoch &&
+            (all ||
+              !(
+                this.groupRetries.get(e.operationId)?.allowed ||
+                this.groupRetries.get(e.operationId)?.seedAllowed
+              )),
+        )
+        .map((e) => e.id),
+    );
+    if (ids.size)
+      this.router.cancelLocal(
+        (payload: any) =>
+          payload?.type === "bundle" && ids.has(payload.bundle?.manifest?.id),
+      );
+  }
+  private reconcileGroupSends() {
+    if (!this.identity || !this.privateDatabase || !this.privateDigest) return;
+    if (
+      !Object.values(this.privateState.outbox ?? {}).some((e) => e.groupEpoch)
+    )
+      return;
+    const next = structuredClone(this.privateState);
+    try {
+      const decisions = this.privateDatabase.transaction((tx) => {
+        if (readProfileState(tx)?.digest !== this.privateDigest)
+          throw new Error("Estado privado desactualizado");
+        return GroupLedger.run(tx, this.identity!, (l) =>
+          reconcileGroupOutbox(l, next.outbox),
+        ).value;
+      });
+      this.privateState = next;
+      this.groupRetries = decisions;
+      this.cancelGroupPackets();
+    } catch (error) {
+      this.cancelGroupPackets(true);
+      try {
+        this.privateDatabase.close();
+        const loaded = openPrivateProfile(this.dir, this.identity);
+        this.privateDatabase = loaded.database;
+        this.privateState = loaded.state;
+        this.privateDigest = loaded.digest;
+        this.groupRetries.clear();
+      } catch {
+        this.lock();
+      }
+      throw error;
+    }
+  }
   groupCommand(command: GroupCommand) {
     const identity = this.requireIdentity();
     if (!this.privateDatabase || !this.privateDigest)
       throw new Error("Estado privado indisponível");
     try {
-      return executeGroupCommand(
+      const next = structuredClone(this.privateState);
+      let decisions = this.groupRetries;
+      const result = executeGroupCommand(
         this.privateDatabase,
         identity,
         this.privateDigest,
         command,
+        (ledger) => {
+          decisions = reconcileGroupOutbox(ledger, next.outbox);
+        },
       );
+      this.privateState = next;
+      this.groupRetries = decisions;
+      this.restoreGroupHolds();
+      return result;
     } catch (error) {
       // Reopen authenticated state after any uncertain outer commit. Never
       // replace it with the legacy JSON, or return success before verification.
@@ -299,6 +373,7 @@ export class LoomNode extends EventEmitter {
         this.privateDatabase = loaded.database;
         this.privateDigest = loaded.digest;
         this.privateState = loaded.state;
+        this.restoreGroupHolds();
       } catch {
         this.lock();
       }
@@ -352,14 +427,16 @@ export class LoomNode extends EventEmitter {
         this.privateDigest,
         objects,
       );
-      reconcileGroupReservations(
-        this.store,
-        result.held
+      reconcileGroupReservations(this.store, [
+        ...groupOutboxReservations(this.privateState.outbox).filter(
+          (id) => available.has(id) && this.store.has(id),
+        ),
+        ...result.held
           .filter(
             (entry) => available.has(entry.id) && this.store.has(entry.id),
           )
           .map((entry) => entry.id),
-      );
+      ]);
       this.groupHolds = result.held;
       return result.results;
     } catch (error) {
@@ -378,6 +455,7 @@ export class LoomNode extends EventEmitter {
   }
   private restoreGroupHolds() {
     if (!this.identity || !this.privateDatabase) return;
+    this.reconcileGroupSends();
     const held = this.privateDatabase
       .transaction(
         (tx) =>
@@ -385,9 +463,14 @@ export class LoomNode extends EventEmitter {
       )
       .filter((entry) => entry.expires > Date.now());
     const verified = new Set(this.store.list().map((manifest) => manifest.id));
-    this.store.setReservations(
-      held.filter((entry) => verified.has(entry.id)).map((entry) => entry.id),
-    );
+    this.store.setReservations([
+      ...groupOutboxReservations(this.privateState.outbox).filter((id) =>
+        verified.has(id),
+      ),
+      ...held
+        .filter((entry) => verified.has(entry.id))
+        .map((entry) => entry.id),
+    ]);
     this.groupHolds = held;
   }
   saveDraft(blocks: SiteBlock[], theme: string) {
@@ -404,10 +487,33 @@ export class LoomNode extends EventEmitter {
     if (!this.privateDatabase || !this.privateDigest)
       throw new Error("Estado privado indisponível");
     try {
-      this.privateDigest = this.privateDatabase.write(
-        Buffer.from(canonical(next)),
-        this.privateDigest,
-      );
+      if (
+        Object.values({ ...this.privateState.outbox, ...next.outbox }).some(
+          (e) => e.groupEpoch,
+        )
+      ) {
+        next = structuredClone(next);
+        let decisions = this.groupRetries;
+        this.privateDigest = this.privateDatabase.transaction((tx) => {
+          if (readProfileState(tx)?.digest !== this.privateDigest)
+            throw new Error("Estado privado desactualizado");
+          return GroupLedger.run(tx, identity, (ledger) => {
+            decisions = reconcileGroupOutbox(ledger, next.outbox);
+            ledger.retireStops(new Set(Object.keys(next.outbox ?? {})));
+            return writeProfileState(
+              tx,
+              Buffer.from(canonical(next)),
+              this.privateDigest!,
+            );
+          }).value;
+        });
+        this.groupRetries = decisions;
+      } else {
+        this.privateDigest = this.privateDatabase.write(
+          Buffer.from(canonical(next)),
+          this.privateDigest,
+        );
+      }
     } catch (error) {
       // Reopen with the signed installation binding after any uncertain SQL
       // completion. Never fall back to an older legacy JSON snapshot.
@@ -432,6 +538,7 @@ export class LoomNode extends EventEmitter {
       outboxAt,
       this.config.blocked,
       objects.some((object) => object.id === entry.id),
+      this.groupRetries.get(entry.operationId),
     );
     return { accepted: outbox.accepted, id: entry.id, outbox };
   }
@@ -532,6 +639,16 @@ export class LoomNode extends EventEmitter {
         canonical([entry.author, ...Object.keys(entry.confirmations)].sort())
     )
       throw new Error("Reserva não corresponde ao envio");
+    if (entry.groupEpoch) {
+      const content = decryptBundle(bundle, this.requireIdentity()) as Content;
+      validateContent(content);
+      parseGroupBinding(content);
+      if (
+        content.conversation !== entry.conversation ||
+        content.groupEpoch !== entry.groupEpoch
+      )
+        throw new Error("Reserva não corresponde à época de envio");
+    }
     return bundle;
   }
   private reconcileOutbox(accepted: DisplayObject[], now = Date.now()) {
@@ -543,7 +660,11 @@ export class LoomNode extends EventEmitter {
     for (const entry of Object.values(next.outbox!)) {
       if (isPending(entry, now)) {
         try {
-          if (entry.phase === "preparing") this.checkReservedBundle(entry);
+          // Availability is independent of the current authority/proof pause.
+          // A valid reserved group payload must not become unavailable merely
+          // because it is not presently displayable.
+          if (entry.phase === "preparing" || entry.groupEpoch)
+            this.checkReservedBundle(entry);
           else {
             const current = verified.get(entry.id);
             if (
@@ -565,7 +686,11 @@ export class LoomNode extends EventEmitter {
             entry.lastError = "";
             changed = true;
           }
-          if (!this.store.isPinned(entry.id))
+          if (entry.groupEpoch) {
+            const reservations = this.store.reservations();
+            if (!reservations.includes(entry.id))
+              this.store.setReservations([...reservations, entry.id]);
+          } else if (!this.store.isPinned(entry.id))
             pins.push({ id: entry.id, value: true });
         } catch {
           entry.phase = "unavailable";
@@ -575,6 +700,7 @@ export class LoomNode extends EventEmitter {
         }
       }
       if (
+        !entry.groupEpoch &&
         !isPending(entry, now) &&
         !entry.manualPin &&
         this.store.isPinned(entry.id)
@@ -595,11 +721,14 @@ export class LoomNode extends EventEmitter {
   }
   private flushOutbox() {
     if (!this.identity || !this.router.peers.some((p) => p.connected)) return;
+    this.reconcileGroupSends();
     const priorities = { sos: 0, normal: 1, bulk: 2 },
       now = Date.now();
     const due = Object.values(this.privateState.outbox ?? {})
       .filter(
         (e) =>
+          (!e.groupEpoch ||
+            this.groupRetries.get(e.operationId)?.allowed === true) &&
           e.phase === "ready" &&
           outboxItem(e, now, this.config.blocked).status === "pending" &&
           e.nextAttemptAt <= now,
@@ -1001,6 +1130,36 @@ export class LoomNode extends EventEmitter {
     );
     return this.display(bundle)!;
   }
+  private maySeed(manifest: Manifest) {
+    if (manifest.kind !== "message" || manifest.publicKey) return true;
+    // A cold locked profile cannot authenticate its own private retry history.
+    // Transit relay remains active; a fresh relay without an identity can seed.
+    if (!this.identity) return !this.initialized;
+    if (manifest.author.id !== this.identity.public.id) return true;
+    const content = decryptBundle(
+      this.store.get(manifest.id, false),
+      this.identity,
+    ) as Content;
+    validateContent(content);
+    if (!hasGroupBinding(content)) return true;
+    const entry = Object.values(this.privateState.outbox ?? {}).find(
+      (e) => e.id === manifest.id,
+    );
+    if (
+      !entry ||
+      entry.phase !== "ready" ||
+      !entry.groupEpoch ||
+      entry.groupEpoch !== content.groupEpoch ||
+      entry.conversation !== content.conversation ||
+      !this.groupRetries.get(entry.operationId)?.seedAllowed ||
+      Object.keys(entry.confirmations).some((id) =>
+        this.config.blocked.includes(id),
+      )
+    )
+      return false;
+    this.checkReservedBundle(entry);
+    return true;
+  }
   private validateWire(payload: any) {
     if (!payload || !["bundle", "inventory", "request"].includes(payload.type))
       throw new Error("Protocolo inválido");
@@ -1075,6 +1234,7 @@ export class LoomNode extends EventEmitter {
         }
       } else {
         if (!this.config.relay) return;
+        this.reconcileGroupSends();
         for (const id of payload.ids.slice(0, 8))
           if (
             this.store.has(id) &&
@@ -1082,6 +1242,7 @@ export class LoomNode extends EventEmitter {
           ) {
             this.markRequest("serve:" + id);
             const bundle = this.store.get(id, false);
+            if (!this.maySeed(bundle.manifest)) continue;
             this.router.broadcast(
               { type: "bundle", bundle },
               bundle.manifest.kind === "alert" ? "sos" : "bulk",
@@ -1105,7 +1266,10 @@ export class LoomNode extends EventEmitter {
       }
       if (!this.router.peers.some((p) => p.connected) || !this.config.relay)
         return;
-      const ids = this.store.list().map((m) => m.id);
+      const ids = this.store
+        .list()
+        .filter((m) => this.maySeed(m))
+        .map((m) => m.id);
       if (ids.length) {
         const start =
           (Math.floor(Date.now() / 2200) * 64) %
@@ -1189,6 +1353,7 @@ export class LoomNode extends EventEmitter {
   private objectsSnapshot(): { objects: DisplayObject[]; outboxAt: number } {
     this.requireRunning();
     if (!this.identity) return { objects: [], outboxAt: Date.now() };
+    this.reconcileGroupSends();
     const stored = this.store.list();
     const verifiedIds = new Set(stored.map((manifest) => manifest.id));
     const manifests = stored.filter(
@@ -1510,6 +1675,7 @@ export class LoomNode extends EventEmitter {
               outboxAt,
               this.config.blocked,
               availableIds.has(e.id),
+              this.groupRetries.get(e.operationId),
             ),
           )
         : [],

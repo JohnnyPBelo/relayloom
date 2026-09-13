@@ -1,0 +1,63 @@
+{
+  "status": "pass",
+  "sourceDigest": "43a27ee00d0af364d28608c99d60508ebfb5adf01bbaff499cb05a4031a073ce",
+  "elapsedMs": 32668,
+  "phases": [
+    {
+      "phase": "node-install-first-128",
+      "elapsedMs": 9608
+    },
+    {
+      "phase": "node-observe-first-128",
+      "elapsedMs": 456
+    },
+    {
+      "phase": "node-stop-first-128",
+      "elapsedMs": 3993
+    },
+    {
+      "phase": "node-observe-stops",
+      "elapsedMs": 123
+    },
+    {
+      "phase": "node-create-next-group",
+      "elapsedMs": 236
+    },
+    {
+      "phase": "node-install-next-128",
+      "elapsedMs": 10971
+    },
+    {
+      "phase": "node-observe-256",
+      "elapsedMs": 561
+    },
+    {
+      "phase": "go-open-256",
+      "elapsedMs": 612
+    },
+    {
+      "phase": "go-observe-256",
+      "elapsedMs": 487
+    },
+    {
+      "phase": "go-stop-next-128",
+      "elapsedMs": 3789
+    },
+    {
+      "phase": "go-observe-256-stops",
+      "elapsedMs": 672
+    }
+  ],
+  "actualBundles": 256,
+  "stoppedThenPending": [
+    128,
+    128
+  ],
+  "finalStopped": 256,
+  "engines": [
+    "node",
+    "native",
+    "node"
+  ],
+  "limit": "fixture installs initial intents; this is not dynamic send API coverage"
+}

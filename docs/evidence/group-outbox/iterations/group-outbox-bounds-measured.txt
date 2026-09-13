@@ -1,0 +1,29 @@
+TAP version 13
+# {"phase":"node-install-first-128","elapsedMs":12111}
+# {"phase":"node-observe-first-128","elapsedMs":455}
+# {"phase":"node-stop-first-128","elapsedMs":4284}
+# {"phase":"node-observe-stops","elapsedMs":268}
+# {"phase":"node-create-next-group","elapsedMs":1384}
+# {"phase":"node-install-next-128","elapsedMs":11282}
+# {"phase":"node-observe-256","elapsedMs":856}
+# (node:2461599) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# {"phase":"go-open-256","elapsedMs":3652}
+# {"phase":"go-observe-256","elapsedMs":3874}
+# {"phase":"go-stop-next-128","elapsedMs":9163}
+# {"phase":"go-observe-256-stops","elapsedMs":6752}
+# Subtest: 128 real stopped intents and 128 pending reserved payloads reopen across Node and Go without reopening old retries
+ok 1 - 128 real stopped intents and 128 pending reserved payloads reopen across Node and Go without reopening old retries
+  ---
+  duration_ms: 69450.639459
+  type: 'test'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 1
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 69790.648718

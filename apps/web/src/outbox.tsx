@@ -16,6 +16,13 @@ export function deliveryLabel(item: OutboxItem): string {
   if (item.status === "expired") return "Prazo terminado";
   if (item.status === "unavailable") return "Conteúdo indisponível";
   if (item.status === "blocked") return "Envio suspenso";
+  if (item.status === "superseded") return "Envio interrompido";
+  if (
+    item.status === "pending" &&
+    item.groupEpoch &&
+    !item.groupAuthority?.allowed
+  )
+    return "A confirmar o grupo";
   if (item.readCount === item.recipientCount)
     return item.recipientCount === 1 ? "Lida" : "Lida por todos";
   if (item.readCount)
@@ -27,7 +34,9 @@ export function deliveryLabel(item: OutboxItem): string {
   return "Em espera";
 }
 function StatusIcon({ item }: { item: OutboxItem }) {
-  return ["expired", "unavailable", "blocked"].includes(item.status) ? (
+  return ["expired", "unavailable", "blocked", "superseded"].includes(
+    item.status,
+  ) ? (
     <AlertTriangle size={14} />
   ) : item.readCount ? (
     <CheckCheck size={15} />
@@ -194,6 +203,21 @@ export function OutboxPanel({
                       podem ser recolhidos.
                     </p>
                   )}
+                  {item.groupAuthority?.stop && (
+                    <p>
+                      O grupo mudou. Este envio não volta a ser tentado. Para
+                      enviar uma nova mensagem, reveja os destinatários. As
+                      confirmações já recebidas ficam neste registo.
+                    </p>
+                  )}
+                  {item.status === "pending" &&
+                    item.groupEpoch &&
+                    !item.groupAuthority?.allowed && (
+                      <p>
+                        À espera de confirmar o estado do grupo. A mensagem
+                        continua guardada.
+                      </p>
+                    )}
                   {item.lastError && (
                     <p className="outbox-error">{item.lastError}</p>
                   )}
@@ -226,7 +250,11 @@ export function OutboxPanel({
                       <button
                         type="button"
                         className="secondary"
-                        disabled={busy || now < item.lastAttemptAt + 2200}
+                        disabled={
+                          busy ||
+                          now < item.lastAttemptAt + 2200 ||
+                          (!!item.groupEpoch && !item.groupAuthority?.allowed)
+                        }
                         onClick={async () => {
                           setFeedback("");
                           const result = await onRetry(item.operationId);

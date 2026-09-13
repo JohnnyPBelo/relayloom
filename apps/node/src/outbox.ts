@@ -1,3 +1,4 @@
+import type { GroupRetry } from "./group-outbox.js";
 import { canonical, hash } from "../../../packages/core/src/index.js";
 import type { Content, DisplayObject } from "./node.js";
 
@@ -28,15 +29,25 @@ export interface OutboxEntry {
   lastError: string;
   manualPin: boolean;
   confirmations: Record<string, Confirmation>;
+  groupEpoch?: string;
+  /** Projection only. The authenticated ledger is the retry authority. */
+  groupStopped?: boolean;
 }
 export type Outbox = Record<string, OutboxEntry>;
 export type OutboxStatus =
-  "pending" | "received" | "read" | "expired" | "unavailable" | "blocked";
+  | "pending"
+  | "received"
+  | "read"
+  | "expired"
+  | "unavailable"
+  | "blocked"
+  | "superseded";
 export interface OutboxItem extends Omit<
   OutboxEntry,
   "fingerprint" | "phase" | "confirmations"
 > {
   status: OutboxStatus;
+  groupAuthority?: GroupRetry;
   accepted: boolean;
   contentExpired: boolean;
   receivedCount: number;
@@ -68,6 +79,7 @@ export function sendFingerprint(
 }
 export function isPending(entry: OutboxEntry, now: number): boolean {
   return (
+    !entry.groupStopped &&
     entry.phase !== "unavailable" &&
     entry.expires > now &&
     Object.values(entry.confirmations).some(
@@ -80,6 +92,7 @@ export function outboxItem(
   now: number,
   blocked: string[],
   available = true,
+  groupAuthority?: GroupRetry,
 ): OutboxItem {
   const { fingerprint: _fingerprint, phase, confirmations, ...fields } = entry;
   const recipients = Object.entries(confirmations)
@@ -98,17 +111,22 @@ export function outboxItem(
       ? "read"
       : receivedCount === recipients.length
         ? "received"
-        : contentExpired
-          ? "expired"
-          : phase === "unavailable"
-            ? "unavailable"
-            : recipients.some((c) => blocked.includes(c.id))
-              ? "blocked"
-              : "pending";
+        : entry.groupStopped
+          ? "superseded"
+          : contentExpired
+            ? "expired"
+            : phase === "unavailable"
+              ? "unavailable"
+              : recipients.some((c) => blocked.includes(c.id))
+                ? "blocked"
+                : "pending";
   const retained = available && !contentExpired;
   return {
     ...structuredClone(fields),
     status,
+    ...(entry.groupEpoch && groupAuthority
+      ? { groupAuthority: structuredClone(groupAuthority) }
+      : {}),
     contentExpired,
     accepted: phase === "ready" && retained,
     receivedCount,
@@ -164,10 +182,19 @@ export function validateOutbox(
   ];
   for (const [op, e] of Object.entries(value)) {
     requireOperationId(op);
+    const grouped =
+      object(e) &&
+      (Object.hasOwn(e, "groupEpoch") || Object.hasOwn(e, "groupStopped"));
+    const fields = grouped ? [...keys, "groupEpoch", "groupStopped"] : keys;
     if (
       !object(e) ||
-      Object.keys(e).length !== keys.length ||
-      keys.some((k) => !Object.hasOwn(e, k)) ||
+      Object.keys(e).length !== fields.length ||
+      fields.some((k) => !Object.hasOwn(e, k)) ||
+      (grouped &&
+        (typeof e.groupEpoch !== "string" ||
+          !address.test(e.groupEpoch) ||
+          typeof e.groupStopped !== "boolean" ||
+          !address.test(e.conversation))) ||
       e.operationId !== op ||
       e.author !== owner ||
       !address.test(e.id) ||

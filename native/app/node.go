@@ -15,10 +15,12 @@ import (
 
 	"github.com/JohnnyPBelo/relayloom/native/core"
 	"github.com/JohnnyPBelo/relayloom/native/groupaccess"
+	"github.com/JohnnyPBelo/relayloom/native/groupauthority"
 	"github.com/JohnnyPBelo/relayloom/native/groupledger"
 	"github.com/JohnnyPBelo/relayloom/native/groupstore"
 	"github.com/JohnnyPBelo/relayloom/native/profiledb"
 	"github.com/JohnnyPBelo/relayloom/native/profilelock"
+	"github.com/JohnnyPBelo/relayloom/native/profilestate"
 	"github.com/JohnnyPBelo/relayloom/native/transport"
 )
 
@@ -37,6 +39,7 @@ type Node struct {
 	privateDatabase    *profiledb.Database
 	privateDigest      string
 	groupHolds         []groupledger.HeldRecord
+	groupRetries       map[string]groupRetry
 	groupDecisions     map[string]groupaccess.Decision
 	routes             map[string]transport.Route
 	requests           map[string]int64
@@ -182,6 +185,7 @@ func (n *Node) Close() error {
 	n.private = emptyPrivate()
 	n.clearSummariesLocked()
 	n.groupHolds = nil
+	n.groupRetries = nil
 	n.groupDecisions = nil
 	n.mu.Unlock()
 	for _, cancel := range cancellations {
@@ -204,11 +208,13 @@ func (n *Node) initialized() bool {
 	return err == nil
 }
 func (n *Node) lockPrivateLocked() error {
+	n.cancelGroupPacketsLocked(true)
 	n.identity = nil
 	n.private = emptyPrivate()
 	n.privateDigest = ""
 	n.clearSummariesLocked()
 	n.groupHolds = nil
+	n.groupRetries = nil
 	n.groupDecisions = nil
 	if n.privateDatabase != nil {
 		err := n.privateDatabase.Close()
@@ -229,7 +235,39 @@ func (n *Node) persistPrivateLocked(next PrivateState) error {
 	if writer == nil {
 		writer = n.privateDatabase.Write
 	}
-	digest, err := writer(data, n.privateDigest)
+	var digest string
+	if hasGroupOutbox(n.private.Outbox) || hasGroupOutbox(next.Outbox) {
+		err = n.privateDatabase.Update(func(tx *groupstore.Tx) error {
+			current, err := profilestate.Read(tx)
+			if err != nil {
+				return err
+			}
+			if current == nil || current.Digest != n.privateDigest {
+				return errors.New("estado privado desactualizado")
+			}
+			_, err = groupledger.Run(tx, *n.identity, func(l *groupledger.Ledger, _ *groupauthority.Registry) error {
+				if _, err := reconcileGroupOutbox(l, next.Outbox); err != nil {
+					return err
+				}
+				retained := map[string]bool{}
+				for operation := range next.Outbox {
+					retained[operation] = true
+				}
+				if err := l.RetireStops(retained); err != nil {
+					return err
+				}
+				data, err := core.Canonical(next)
+				if err != nil {
+					return err
+				}
+				digest, err = profilestate.Write(tx, data, &n.privateDigest)
+				return err
+			})
+			return err
+		})
+	} else {
+		digest, err = writer(data, n.privateDigest)
+	}
 	if err != nil {
 		// The SQL commit may have completed. Reopen only through the signed binding;
 		// a legacy JSON snapshot must never replace initialized protected state.
@@ -420,12 +458,22 @@ func (n *Node) receiveLocked(delivery transport.Delivery) error {
 		if err != nil {
 			return err
 		}
+		if err := n.reconcileGroupSendsLocked(); err != nil {
+			return err
+		}
 		for _, id := range ids[:min(8, len(ids))] {
 			if n.Store.Has(id) && now-n.requests["serve:"+id] > 1000 {
 				n.rememberRequestLocked("serve:"+id, now)
 				b, err := n.Store.GetWithTouch(id, false)
 				if err != nil {
 					return err
+				}
+				allowed, err := n.maySeedLocked(b.Manifest)
+				if err != nil {
+					return err
+				}
+				if !allowed {
+					continue
 				}
 				priority := transport.Bulk
 				if b.Manifest.Kind == "alert" {
@@ -470,7 +518,17 @@ func (n *Node) syncLocked() {
 	}
 	ids := make([]string, 0, len(manifests))
 	for _, m := range manifests {
-		ids = append(ids, m.ID)
+		allowed, err := n.maySeedLocked(m)
+		if err != nil {
+			n.lastTransportError = "Partilha adiada; estado local por verificar"
+			return
+		}
+		if allowed {
+			ids = append(ids, m.ID)
+		}
+	}
+	if len(ids) == 0 {
+		return
 	}
 	pages := max(64, ((len(ids)+63)/64)*64)
 	start := int((time.Now().UnixMilli() / 2200) * 64 % int64(pages))

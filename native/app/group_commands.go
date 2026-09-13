@@ -23,7 +23,12 @@ func (n *Node) groupCommandLocked(body map[string]any) (any, error) {
 		update = n.privateDatabase.Update
 	}
 	var result any
-	err := update(func(tx *groupstore.Tx) error {
+	next, err := copyPrivate(n.private, n.identity.Public.ID)
+	if err != nil {
+		return nil, err
+	}
+	var decisions map[string]groupRetry
+	err = update(func(tx *groupstore.Tx) error {
 		current, err := profilestate.Read(tx)
 		if err != nil {
 			return err
@@ -31,9 +36,13 @@ func (n *Node) groupCommandLocked(body map[string]any) (any, error) {
 		if current == nil || current.Digest != n.privateDigest {
 			return errors.New("o estado privado mudou; volte a lê-lo antes de gerir o grupo")
 		}
-		_, err = groupledger.Run(tx, *n.identity, func(_ *groupledger.Ledger, g *groupauthority.Registry) error {
+		_, err = groupledger.Run(tx, *n.identity, func(l *groupledger.Ledger, g *groupauthority.Registry) error {
 			var err error
 			result, err = executeGroupCommand(g, n.identity.Public, body)
+			if err != nil {
+				return err
+			}
+			decisions, err = reconcileGroupOutbox(l, next.Outbox)
 			return err
 		})
 		return err
@@ -46,9 +55,17 @@ func (n *Node) groupCommandLocked(body map[string]any) (any, error) {
 		database, recovered, digest, readErr := openPrivateProfile(n.Dir, identity)
 		if readErr == nil {
 			n.privateDatabase, n.private, n.privateDigest = database, recovered, digest
+			if err := n.restoreGroupHoldsLocked(); err != nil {
+				_ = n.lockPrivateLocked()
+			}
 		} else {
 			_ = n.lockPrivateLocked()
 		}
+		return nil, err
+	}
+	n.private, n.groupRetries = next, decisions
+	if err := n.restoreGroupHoldsLocked(); err != nil {
+		n.recoverGroupContentLocked()
 		return nil, err
 	}
 	return result, nil

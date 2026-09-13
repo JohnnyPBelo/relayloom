@@ -214,6 +214,30 @@ func (r *Router) SetLowPower(enabled bool) {
 		link.wakeLocked()
 	}
 }
+
+// CancelLocal retires our own packets and future fragments across all adapters.
+// The trusted predicate runs under the router mutex and must be pure. A frame
+// already handed to the operating system and remote copies cannot be recalled.
+func (r *Router) CancelLocal(match func(any) bool) int {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	removed := map[string]bool{}
+	for id, value := range r.retained {
+		if value.packet.source == r.id && match(value.packet.payload) {
+			r.removeRetainedLocked(id)
+			removed[id] = true
+		}
+	}
+	for link := range r.links {
+		for id, value := range link.pending {
+			if value.packet.source == r.id && match(value.packet.payload) {
+				link.removeTransferLocked(id)
+				removed[id] = true
+			}
+		}
+	}
+	return len(removed)
+}
 func (r *Router) Next(ctx context.Context) (Delivery, error) {
 	for {
 		r.mu.Lock()

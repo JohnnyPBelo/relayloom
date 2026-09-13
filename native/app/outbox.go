@@ -24,6 +24,8 @@ type Confirmation struct {
 	ReadAt     int64 `json:"readAt,omitempty"`
 }
 type OutboxRecord struct {
+	GroupEpoch    string                  `json:"groupEpoch,omitempty"`
+	GroupStopped  *bool                   `json:"groupStopped,omitempty"`
 	OperationID   string                  `json:"operationId"`
 	Fingerprint   string                  `json:"fingerprint"`
 	ID            string                  `json:"id"`
@@ -56,7 +58,7 @@ func confirmationCounts(record OutboxRecord) (received, read int) {
 }
 func pendingOutbox(record OutboxRecord, now int64) bool {
 	received, _ := confirmationCounts(record)
-	return record.Phase != "unavailable" && record.Expires > now && received < len(record.Confirmations)
+	return !groupStopped(record) && record.Phase != "unavailable" && record.Expires > now && received < len(record.Confirmations)
 }
 func outboxReaders(record OutboxRecord) []string {
 	readers := []string{record.Author}
@@ -80,6 +82,12 @@ func parseOutbox(value any, owner string, now int64) (map[string]OutboxRecord, e
 		}
 		// Require the documented schema rather than accepting lossy coercion.
 		fields := []string{"operationId", "fingerprint", "id", "author", "conversation", "preview", "created", "expires", "priority", "bytes", "phase", "attempts", "lastAttemptAt", "nextAttemptAt", "lastError", "manualPin", "confirmations"}
+		_, epochPresent := m["groupEpoch"]
+		_, stoppedPresent := m["groupStopped"]
+		grouped := epochPresent || stoppedPresent
+		if grouped {
+			fields = append(fields, "groupEpoch", "groupStopped")
+		}
 		if len(m) != len(fields) {
 			return nil, errors.New("formato do diário de envios incompatível")
 		}
@@ -89,6 +97,14 @@ func parseOutbox(value any, owner string, now int64) (map[string]OutboxRecord, e
 			}
 		}
 		r := OutboxRecord{Confirmations: map[string]Confirmation{}}
+		if grouped {
+			epoch, ok := m["groupEpoch"].(string)
+			stopped, flagOK := m["groupStopped"].(bool)
+			if !ok || !flagOK || !core.ValidAddress(epoch) || !core.ValidAddress(text(m["conversation"])) {
+				return nil, errors.New("ligação de época do envio inválida")
+			}
+			r.GroupEpoch, r.GroupStopped = epoch, &stopped
+		}
 		for field, dest := range map[string]*string{"operationId": &r.OperationID, "fingerprint": &r.Fingerprint, "id": &r.ID, "author": &r.Author, "conversation": &r.Conversation, "preview": &r.Preview, "phase": &r.Phase, "lastError": &r.LastError} {
 			value, ok := m[field].(string)
 			if !ok {
@@ -205,6 +221,9 @@ func (n *Node) exactOutboxBundleLocked(record OutboxRecord) (core.Bundle, error)
 	if err != nil || text(object.Content["conversation"]) != record.Conversation || outboxPreview(text(object.Content["text"])) != record.Preview {
 		return core.Bundle{}, errors.New("conteúdo do envio não corresponde ao diário")
 	}
+	if record.GroupEpoch != "" && text(object.Content["groupEpoch"]) != record.GroupEpoch {
+		return core.Bundle{}, errors.New("reserva não corresponde à época de envio")
+	}
 	cards, err := members(object.Content["members"])
 	if err != nil || !equalIDs(memberIDs(cards), readers) {
 		return core.Bundle{}, errors.New("destinatários do envio não correspondem ao diário")
@@ -238,11 +257,15 @@ func (n *Node) reconcileOutboxManifestsLocked(now int64, recovering bool, manife
 	if n.identity == nil || len(n.private.Outbox) == 0 {
 		return nil
 	}
+	if err := n.reconcileGroupSendsLocked(); err != nil {
+		return err
+	}
 	next, err := copyPrivate(n.private, n.identity.Public.ID)
 	if err != nil {
 		return err
 	}
 	changed := false
+	reserved := n.Store.Reservations()
 	// Store.List verifies the current bytes/fingerprint before returning each
 	// manifest. Warm state queries need no attachment decryption/rehydration.
 	for operation, record := range next.Outbox {
@@ -257,7 +280,16 @@ func (n *Node) reconcileOutboxManifestsLocked(now int64, recovering bool, manife
 				record.LastError = "O conteúdo original do envio está indisponível"
 				changed = true
 			} else {
-				if !n.Store.IsPinned(record.ID) {
+				if record.GroupEpoch != "" {
+					// Unchanged availability flags need no repeated full-set verification.
+					// Store.List already checked the actual bytes for this snapshot.
+					if !contains(reserved, record.ID) {
+						reserved = append(reserved, record.ID)
+						if err = n.Store.SetReservations(reserved); err != nil {
+							return err
+						}
+					}
+				} else if !n.Store.IsPinned(record.ID) {
 					if err = n.Store.Pin(record.ID, true); err != nil {
 						return err
 					}
@@ -277,7 +309,7 @@ func (n *Node) reconcileOutboxManifestsLocked(now int64, recovering bool, manife
 		}
 	}
 	for _, record := range n.private.Outbox {
-		if !pendingOutbox(record, now) && !record.ManualPin && n.Store.IsPinned(record.ID) {
+		if record.GroupEpoch == "" && !pendingOutbox(record, now) && !record.ManualPin && n.Store.IsPinned(record.ID) {
 			if _, err := n.Store.GetWithTouch(record.ID, false); err != nil {
 				err = n.Store.Remove(record.ID)
 				if err != nil {
@@ -313,6 +345,8 @@ func (n *Node) outboxItemLocked(record OutboxRecord, now int64, retained bool) m
 		status = "read"
 	case received == len(record.Confirmations):
 		status = "received"
+	case groupStopped(record):
+		status = "superseded"
 	case record.Expires <= now:
 		status = "expired"
 	case record.Phase == "unavailable" || !retained:
@@ -334,6 +368,9 @@ func (n *Node) outboxItemLocked(record OutboxRecord, now int64, retained bool) m
 			entry["readAt"] = c.ReadAt
 		}
 		recipients = append(recipients, entry)
+	}
+	if record.GroupEpoch != "" {
+		item["groupAuthority"] = n.groupRetries[record.OperationID]
 	}
 	item["status"], item["accepted"], item["contentExpired"], item["retained"] = status, record.Phase == "ready" && retained, record.Expires <= now, retained
 	item["receivedCount"], item["readCount"], item["recipientCount"], item["recipients"] = received, read, len(record.Confirmations), recipients
@@ -510,8 +547,14 @@ func (n *Node) connectedOutboxLocked() bool {
 	return false
 }
 func (n *Node) attemptOutboxLocked(operation string, now int64) error {
+	if err := n.reconcileGroupSendsLocked(); err != nil {
+		return err
+	}
 	record, exists := n.private.Outbox[operation]
 	if !exists || record.Phase != "ready" || !pendingOutbox(record, now) || record.NextAttemptAt > now || n.blockedOutboxLocked(record) {
+		return nil
+	}
+	if record.GroupEpoch != "" && !n.groupRetries[operation].Allowed {
 		return nil
 	}
 	bundle, err := n.exactOutboxBundleLocked(record)

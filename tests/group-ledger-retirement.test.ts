@@ -4,6 +4,7 @@ import { randomUUID } from "node:crypto";
 import { canonical, createBundle, hash } from "../packages/core/src/index.js";
 import { GroupLedger } from "../packages/groups/src/ledger.js";
 import {
+  ProtectedGroupStore,
   RegistryCapacityError,
   RegistryIntegrityError,
 } from "../packages/groups/src/storage.js";
@@ -12,6 +13,86 @@ const run = <T>(a: Actor, callback: Parameters<typeof GroupLedger.run<T>>[2]) =>
   a.store.transaction((tx) => GroupLedger.run(tx, a.identity, callback)).value;
 const bytes = (b: ReturnType<typeof createBundle>) =>
   Buffer.byteLength(canonical(b));
+
+test("stop reads share one validated snapshot but invalidate on mutation and scope exit", (t) => {
+  const f = fixture(t),
+    a = f.actor("Stop snapshot"),
+    group = a.registry.create(randomUUID(), "Group");
+  a.registry.close(randomUUID(), group.groupId, group.epochId!);
+  const entry = {
+    operationId: randomUUID(),
+    id: hash("intent"),
+    groupId: group.groupId,
+    epochId: group.epochId!,
+  };
+  const original = run(a, (l) => l.reconcileRetry(entry, true).stop!);
+  let reads = 0,
+    escaped: GroupLedger | undefined;
+  a.store.transaction((tx) => {
+    const get = tx.get.bind(tx);
+    tx.get = (key: string) => {
+      if (key === "group-access:stops") reads++;
+      return get(key);
+    };
+    GroupLedger.run(tx, a.identity, (l) => {
+      escaped = l;
+      for (let i = 0; i < 256; i++) {
+        const result = l.stop(entry.operationId)!;
+        assert.deepEqual(result, original);
+        result.reason = "caller mutation";
+      }
+    });
+  });
+  assert.equal(reads, 1, "stable stop list was decoded repeatedly");
+  assert.throws(() => escaped!.stop(entry.operationId), /encerrado/);
+  assert.throws(
+    () =>
+      a.store.transaction((tx) =>
+        GroupLedger.run(tx, a.identity, (l) => {
+          assert.deepEqual(l.stop(entry.operationId), original);
+          tx.put(
+            "group-access:stops",
+            Buffer.from(
+              canonical({
+                version: 1,
+                entries: [{ ...original, reason: "forged" }],
+              }),
+            ),
+            "checkpoint",
+          );
+          l.stop(entry.operationId);
+        }),
+      ),
+    RegistryIntegrityError,
+  );
+  a.store.close();
+  const reopened = new ProtectedGroupStore(a.path, a.identity, {
+    expectedStoreId: a.storeId,
+  });
+  a.store = reopened;
+  try {
+    assert.deepEqual(
+      run(a, (l) => l.stop(entry.operationId)),
+      original,
+      "rollback or scope cache lost the authentic stop",
+    );
+    run(a, (l) => {
+      const fresh = l.reconcileRetry(
+        { ...entry, operationId: randomUUID(), id: hash("second") },
+        true,
+      ).stop!;
+      const saved = structuredClone(fresh);
+      fresh.reason = "caller mutation";
+      assert.deepEqual(
+        l.stop(saved.operationId),
+        saved,
+        "newly written cache aliases the returned stop",
+      );
+    });
+  } finally {
+    reopened.close();
+  }
+});
 
 test("all256 immutable stops fit; retirement preserves retained facts and counts only removed records", (t) => {
   const f = fixture(t),

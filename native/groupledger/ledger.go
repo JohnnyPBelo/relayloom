@@ -113,9 +113,12 @@ type Accounting struct {
 	Storage   groupstore.Accounting `json:"storage"`
 }
 type Ledger struct {
-	tx       *groupstore.Tx
-	registry *groupauthority.Registry
-	access   *groupaccess.Access
+	tx             *groupstore.Tx
+	registry       *groupauthority.Registry
+	access         *groupaccess.Access
+	stopCache      []StopRecord
+	stopGeneration uint64
+	stopCached     bool
 }
 
 func integrity(message string) error { return fmt.Errorf("%w: %s", groupstore.ErrIntegrity, message) }
@@ -169,7 +172,7 @@ func Run(tx *groupstore.Tx, identity core.Identity, callback func(*Ledger, *grou
 		if err != nil {
 			return err
 		}
-		l := &Ledger{tx, g, a}
+		l := &Ledger{tx: tx, registry: g, access: a}
 		if err := l.initialize(); err != nil {
 			return err
 		}
@@ -514,13 +517,21 @@ func (l *Ledger) Consider(candidate groupaccess.Candidate, expires, size int64, 
 	return ConsiderResult{decision, held}, err
 }
 func (l *Ledger) stops() ([]StopRecord, error) {
+	generation, err := l.registry.ScopeGeneration()
+	if err != nil {
+		return nil, err
+	}
+	if l.stopCached && l.stopGeneration == generation {
+		return l.stopCache, nil
+	}
 	var value stopRecordSet
 	exists, err := l.read(stopKey, StopByteLimit, &value)
 	if err != nil {
 		return nil, err
 	}
 	if !exists {
-		return []StopRecord{}, nil
+		l.stopCache, l.stopGeneration, l.stopCached = []StopRecord{}, generation, true
+		return l.stopCache, nil
 	}
 	if value.Version != 1 || value.Entries == nil || len(value.Entries) > StopLimit {
 		return nil, integrity("limite de paragens inválido")
@@ -532,7 +543,8 @@ func (l *Ledger) stops() ([]StopRecord, error) {
 		}
 		ids[entry.OperationID] = true
 	}
-	return value.Entries, nil
+	l.stopCache, l.stopGeneration, l.stopCached = value.Entries, generation, true
+	return l.stopCache, nil
 }
 func (l *Ledger) writeStops(entries []StopRecord) error {
 	data, err := core.Canonical(stopRecordSet{1, entries})
@@ -543,9 +555,19 @@ func (l *Ledger) writeStops(entries []StopRecord) error {
 		return fmt.Errorf("%w: bytes das paragens", groupstore.ErrCapacity)
 	}
 	if len(entries) == 0 {
-		return l.tx.Delete(stopKey)
+		err = l.tx.Delete(stopKey)
+	} else {
+		err = l.tx.Put(stopKey, data, groupstore.Checkpoint)
 	}
-	return l.tx.Put(stopKey, data, groupstore.Checkpoint)
+	if err != nil {
+		return err
+	}
+	generation, err := l.registry.ScopeGeneration()
+	if err != nil {
+		return err
+	}
+	l.stopCache, l.stopGeneration, l.stopCached = append([]StopRecord{}, entries...), generation, true
+	return nil
 }
 func (l *Ledger) Stop(operation string) (*StopRecord, error) {
 	if !operationPattern.MatchString(operation) {
@@ -624,6 +646,12 @@ func (l *Ledger) RetireStops(retained map[string]bool) error {
 		return err
 	}
 	return l.loss("stopRetired", int64(len(before)-len(after)))
+}
+
+// RetryAuthority reads the current epoch boundary even for a completed send.
+// A delivery fact alone is not permission to seed into an incompatible epoch.
+func (l *Ledger) RetryAuthority(groupID, epochID string) (groupaccess.RetryDecision, error) {
+	return l.access.Retry(groupID, epochID)
 }
 func (l *Ledger) Accounting() (Accounting, error) {
 	held, err := l.Held()

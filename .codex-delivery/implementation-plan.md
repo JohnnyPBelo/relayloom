@@ -37,3 +37,12 @@ Sequential recovery at bff00cc: access policy, durable ledger and authenticated 
 
 
 A facade transaccional Node/Go foi implementada e verificada:81 Node/36.565s,36 Go de topo com race/169.094s (quatro helpers executados pelos drivers),9 interoperabilidade/45.760s; build8.157s e CLI0.901s. Fontes registadas inalteradas durante o gate. Evidência em `docs/evidence/group-transaction`. A aplicação ainda não usa esta facade para grupos dinâmicos.
+
+
+## Iteração activa — autoridade da outbox, 2026-09-13
+
+Base publicada fde529e. Integração Node/Go local: paragens no commit de autoridade, mirror não autoritativo, guarda na abertura/retry, retiro conjunto, união de reservas, cancelamento local em todos os adaptadores e controlo de inventário/pedidos do autor. A interface já apresenta pausa/interrupção e desactiva retry não autorizado; teste real dirigido dos dois núcleos e Axe desktop/móvel passou. As fixtures instalam bundle/intenção, por isso composição/envio dinâmico e carriers continuam tarefas seguintes.
+
+Regressão completa sequencial em .cache/group-outbox-final/run.py (relatório/source-hashes no mesmo directório), depois desktop.py. Não modificar fontes enquanto corre. Não criar/retomar agentes. Não repetir gates concluídos por perda de handles. Só publicar após os gates aplicáveis passarem e os resultados serem arquivados; conservar falhas e limitações.
+
+Depois deste marco, substituir os bloqueios temporários de envio por publicação/outbox real a partir de snapshots/targets, UUID novo com audiência revista, confirmações históricas mínimas, partições e alterações de membros; seguir com carriers e interface de grupos e o resto de PROJECT-BRIEF.md. Não encerrar o objectivo nesta infra-estrutura.

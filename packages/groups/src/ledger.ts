@@ -128,6 +128,7 @@ function context(value: any): AcceptedGroupContext {
  * decrypted candidates, actual payload byte counts and protected retained IDs.
  * Neither an HTTP request nor a carrier may provide an accepted-history record. */
 export class GroupLedger {
+  private stopSnapshot?: { generation: number; entries: StopRecord[] };
   private constructor(
     private readonly tx: RegistryTransaction,
     private readonly registry: GroupRegistry,
@@ -457,8 +458,14 @@ export class GroupLedger {
     };
   }
   private stops(): StopRecord[] {
+    const generation = this.registry.assertScope();
+    if (this.stopSnapshot?.generation === generation)
+      return this.stopSnapshot.entries;
     const container = this.read(STOP, GROUP_LEDGER_LIMITS.stopBytes);
-    if (!container) return [];
+    if (!container) {
+      this.stopSnapshot = { generation, entries: [] };
+      return this.stopSnapshot.entries;
+    }
     exact(container, ["version", "entries"]);
     insist(
       container.version === 1 &&
@@ -489,7 +496,8 @@ export class GroupLedger {
       );
       ids.add(value.operationId);
     }
-    return container.entries;
+    this.stopSnapshot = { generation, entries: container.entries };
+    return this.stopSnapshot.entries;
   }
   private writeStops(entries: StopRecord[]) {
     const bytes = Buffer.from(canonical({ version: 1, entries }));
@@ -497,6 +505,12 @@ export class GroupLedger {
       throw new RegistryCapacityError("Limite de bytes das paragens");
     if (entries.length) this.tx.put(STOP, bytes, "checkpoint");
     else this.tx.delete(STOP);
+    // Only internally constructed, validated stops reach this writer. Keep an
+    // owned copy; the returned StopRecord must not mutate this read snapshot.
+    this.stopSnapshot = {
+      generation: this.registry.assertScope(),
+      entries: structuredClone(entries),
+    };
   }
   stop(operationId: string): StopRecord | null {
     insist(uuid(operationId), "Identificador de envio inválido");
@@ -542,6 +556,12 @@ export class GroupLedger {
     };
     this.writeStops([...stops, stop]);
     return { allowed: false, reason: stop.reason, stop };
+  }
+  /** Fresh read-only authority for serving an already completed local send.
+   * Completion is not permission to seed into an incompatible later epoch. */
+  retryAuthority(groupId: string, epochId: string) {
+    this.registry.assertScope();
+    return this.access.retry(groupId, epochId);
   }
   retireStops(retainedOperationIds: ReadonlySet<string>) {
     this.registry.assertScope();

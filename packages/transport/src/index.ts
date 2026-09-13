@@ -144,6 +144,18 @@ class Link {
     for (const [id, transfer] of this.pending)
       if (transfer.relayOnly) this.removeTransfer(id);
   }
+  cancelLocal(match: (payload: unknown) => boolean): string[] {
+    const removed: string[] = [];
+    for (const [id, transfer] of this.pending)
+      if (
+        transfer.packet.source === this.router.id &&
+        match(transfer.packet.payload)
+      ) {
+        this.removeTransfer(id);
+        removed.push(id);
+      }
+    return removed;
+  }
   private removeAssembly(id: string) {
     const assembly = this.assemblies.get(id);
     if (assembly) {
@@ -581,6 +593,20 @@ export class Router extends EventEmitter {
       return false;
     }
     return true;
+  }
+  /** Retire our own retained packets and future fragments on every adapter.
+   * The trusted local predicate must be pure. A frame already handed to the
+   * operating system and copies held by peers cannot be recalled. */
+  cancelLocal(match: (payload: unknown) => boolean): number {
+    const removed = new Set<string>();
+    for (const [id, value] of this.retained)
+      if (value.packet.source === this.id && match(value.packet.payload)) {
+        this.removeRetained(id);
+        removed.add(id);
+      }
+    for (const link of this.links)
+      for (const id of link.cancelLocal(match)) removed.add(id);
+    return removed.size;
   }
   private removeRetained(id: string) {
     const value = this.retained.get(id);

@@ -1,3 +1,4 @@
+import { groupOutboxReservations } from "./group-outbox.js";
 import {
   canonical,
   decryptBundle,
@@ -97,7 +98,7 @@ export function inspectGroupObjects(
           throw new Error("A quarentena não corresponde ao conteúdo imutável");
         const stable =
           decision.status === "invalid" ||
-          (!!previous && decision.status === "accepted") ||
+          (!!previous && !hold && decision.status === "accepted") ||
           (!!hold &&
             ["quarantine", "awaiting-proof"].includes(decision.status));
         results.set(object.id, { decision, stable });
@@ -203,6 +204,7 @@ export function observeGroupObject(
               entry.author !== target.context.author ||
               entry.conversation !== target.context.groupId ||
               entry.expires !== target.expires ||
+              entry.groupEpoch !== target.context.epochId ||
               canonical(
                 [entry.author, ...Object.keys(entry.confirmations)].sort(),
               ) !== canonical(target.context.readers))
@@ -214,9 +216,14 @@ export function observeGroupObject(
         }
       }
       const held = ledger.held().filter((entry) => entry.expires > now);
-      const desired = held
-        .filter((entry) => available.has(entry.id) && store.has(entry.id))
-        .map((entry) => entry.id);
+      const desired = [
+        ...groupOutboxReservations(next.outbox, now).filter(
+          (id) => available.has(id) && store.has(id),
+        ),
+        ...held
+          .filter((entry) => available.has(entry.id) && store.has(entry.id))
+          .map((entry) => entry.id),
+      ];
       // Add protection before SQL commits; release prior reservations only
       // afterwards. This transaction considers one candidate, so a live hold
       // cannot be replaced by another whole provisional quarantine set.
@@ -231,11 +238,13 @@ export function observeGroupObject(
   });
   // Failure here yields no successful display/receipt response. Authenticated
   // admission may have committed; the caller reopens before the next attempt.
-  reconcileGroupReservations(
-    store,
-    result.held
+  reconcileGroupReservations(store, [
+    ...groupOutboxReservations(result.state.outbox, now).filter(
+      (id) => available.has(id) && store.has(id),
+    ),
+    ...result.held
       .filter((entry) => available.has(entry.id) && store.has(entry.id))
       .map((entry) => entry.id),
-  );
+  ]);
   return result;
 }

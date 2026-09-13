@@ -23,7 +23,25 @@ type groupInspection struct {
 	Stable   bool
 }
 
-func (n *Node) reconcileGroupReservationsLocked(ids []string) error {
+func (n *Node) reconcileGroupReservationsLocked(ids []string, outbox ...map[string]OutboxRecord) error {
+	selected := map[string]bool{}
+	reserved := n.groupReservedIDsLocked()
+	if len(outbox) > 0 {
+		reserved = nil
+		for _, id := range groupOutboxReservations(outbox[0], time.Now().UnixMilli()) {
+			if n.Store.Has(id) {
+				reserved = append(reserved, id)
+			}
+		}
+	}
+	for _, id := range append(ids, reserved...) {
+		selected[id] = true
+	}
+	ids = []string{}
+	for id := range selected {
+		ids = append(ids, id)
+	}
+	ids = sorted(ids)
 	if equalIDs(ids, n.Store.Reservations()) {
 		return nil
 	}
@@ -118,7 +136,7 @@ func (n *Node) inspectGroupObjectsLocked(objects []DisplayObject, available map[
 				if exists && (hold.GroupID != text(object.Content["conversation"]) || hold.EpochID != epoch || hold.Expires != object.Expires) {
 					return errors.New("quarentena não corresponde ao conteúdo imutável")
 				}
-				stable := decision.Status == "invalid" || (previous != nil && decision.Status == "accepted") || (exists && (decision.Status == "quarantine" || decision.Status == "awaiting-proof"))
+				stable := decision.Status == "invalid" || (previous != nil && !exists && decision.Status == "accepted") || (exists && (decision.Status == "quarantine" || decision.Status == "awaiting-proof"))
 				results[object.ID] = groupInspection{decision, stable}
 			}
 			return nil
@@ -157,6 +175,9 @@ func (n *Node) restoreGroupHoldsLocked() error {
 	if n.identity == nil || n.privateDatabase == nil {
 		return nil
 	}
+	if err := n.reconcileGroupSendsLocked(); err != nil {
+		return err
+	}
 	var held []groupledger.HeldRecord
 	err := n.privateDatabase.Update(func(tx *groupstore.Tx) error {
 		_, err := groupledger.Run(tx, *n.identity, func(l *groupledger.Ledger, _ *groupauthority.Registry) error {
@@ -184,7 +205,7 @@ func (n *Node) restoreGroupHoldsLocked() error {
 			}
 		}
 	}
-	if err = n.Store.SetReservations(ids); err != nil {
+	if err = n.reconcileGroupReservationsLocked(ids); err != nil {
 		return err
 	}
 	n.groupHolds = live
@@ -309,7 +330,7 @@ func (n *Node) observeGroupTransactionLocked(id string, protected map[string]boo
 						if entry.ID != text(object.Content["target"]) {
 							continue
 						}
-						if target == nil || entry.Author != target.Context.Author || entry.Conversation != target.Context.GroupID || entry.Expires != target.Expires || !equalIDs(outboxReaders(entry), target.Context.Readers) {
+						if target == nil || entry.Author != target.Context.Author || entry.Conversation != target.Context.GroupID || entry.Expires != target.Expires || entry.GroupEpoch != target.Context.EpochID || !equalIDs(outboxReaders(entry), target.Context.Readers) {
 							return errors.New("confirmação não corresponde à intenção de grupo retida")
 						}
 						fact, exists := entry.Confirmations[object.Author.ID]
@@ -371,7 +392,7 @@ func (n *Node) observeGroupTransactionLocked(id string, protected map[string]boo
 			ids = append(ids, entry.ID)
 		}
 	}
-	if err = n.reconcileGroupReservationsLocked(ids); err != nil {
+	if err = n.reconcileGroupReservationsLocked(ids, next.Outbox); err != nil {
 		return false, err
 	}
 	n.private, n.privateDigest, n.groupHolds = next, digest, held

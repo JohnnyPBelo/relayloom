@@ -29,6 +29,7 @@
 }
 .delivery-badge.expired,
 .delivery-badge.unavailable,
+.delivery-badge.superseded,
 .delivery-badge.blocked {
   color: var(--ink);
 }
