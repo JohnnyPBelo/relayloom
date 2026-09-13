@@ -1,0 +1,22 @@
+2026-09-13T19:44:22.9305906Z # Subtest: real Node group newcomer cannot read earlier audiences; peer serves author's edit while author is offline
+2026-09-13T19:44:22.9310911Z not ok 71 - real Node group newcomer cannot read earlier audiences; peer serves author's edit while author is offline
+2026-09-13T19:44:22.9312070Z   ---
+2026-09-13T19:44:22.9312570Z   duration_ms: 35269.8138
+2026-09-13T19:44:22.9313017Z   type: 'test'
+2026-09-13T19:44:22.9314153Z   location: 'D:\\a\\relayloom\\relayloom\\tests\\group-event-seeding.test.ts:4:1'
+2026-09-13T19:44:22.9315123Z   failureType: 'testCodeFailure'
+2026-09-13T19:44:22.9316315Z   error: 'Fixture node API state failed: ECONNRESET; reused=true, headers=false, elapsed=4401ms, process exit=null, signal=null'
+2026-09-13T19:44:22.9317242Z   code: 'ERR_TEST_FAILURE'
+2026-09-13T19:44:22.9317656Z   stack: |-
+2026-09-13T19:44:22.9318337Z     Timeout._onTimeout (D:\a\relayloom\relayloom\tests\helpers.ts:136:29)
+2026-09-13T19:44:22.9318886Z     listOnTimeout (node:internal/timers:585:17)
+2026-09-13T19:44:22.9319357Z     process.processTimers (node:internal/timers:521:7)
+2026-09-13T19:44:22.9319896Z     Object.call (D:\a\relayloom\relayloom\tests\helpers.ts:101:18)
+2026-09-13T19:44:22.9320515Z     <anonymous> (D:\a\relayloom\relayloom\tests\fixtures\group-event-seeding.ts:267:17)
+2026-09-13T19:44:22.9321134Z     until (D:\a\relayloom\relayloom\tests\helpers.ts:206:18)
+2026-09-13T19:44:22.9321747Z     groupEventSeeding (D:\a\relayloom\relayloom\tests\fixtures\group-event-seeding.ts:266:11)
+2026-09-13T19:44:22.9322452Z     process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+2026-09-13T19:44:22.9323205Z     async TestContext.<anonymous> (D:\a\relayloom\relayloom\tests\group-event-seeding.test.ts:8:5)
+2026-09-13T19:44:22.9323824Z     async Test.run (node:internal/test_runner/test:1054:7)
+2026-09-13T19:44:22.9324402Z     async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+2026-09-13T19:44:22.9324906Z   ...

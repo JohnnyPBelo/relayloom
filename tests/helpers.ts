@@ -78,10 +78,11 @@ export async function launch(
     });
   const url = new URL(info.url),
     token = info.token ?? new URLSearchParams(url.hash.slice(1)).get("token")!;
-  // A restarted process may reuse the origin but has a new capability and
-  // lifecycle. Keep each fixture's sockets separate instead of sharing the
-  // global fetch pool across old/new processes. Never retry a mutation here.
-  const agent = new Agent({ keepAlive: true, maxSockets: 4 });
+  // A delayed fixture event loop can reuse an idle socket whose remote FIN is
+  // still waiting to be processed. Use one connection per RPC, with bounded
+  // concurrency and exactly one attempt; never replay a mutation. Browser E2E
+  // continues to exercise the application's normal keep-alive connections.
+  const agent = new Agent({ keepAlive: false, maxSockets: 4 });
   return {
     process: child,
     dir,
@@ -148,6 +149,7 @@ export async function launch(
             method: body === undefined ? "GET" : "POST",
             headers: {
               Authorization: "Bearer " + token,
+              Connection: "close",
               ...(payload === undefined
                 ? {}
                 : {

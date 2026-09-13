@@ -1,0 +1,15 @@
+{
+  "ciRun": 34778397733,
+  "baseCommit": "187d7f3d961d6a76814b84e33f92bd11658d1b67",
+  "ciOutcome": "Linux/macOS Node and Linux UI passed; Windows HTTP reset; Go/desktop/iOS skipped",
+  "previousOfflineAssertionFixedOnWindows": true,
+  "diagnosis": "delaying only the fixture client event loop reproduces stale keep-alive socket reuse and ECONNRESET; delaying only the server did not. CI lacks client idle timing, so this establishes the failure mode, not the exact scheduler history of that runner.",
+  "correction": "fixture HTTP agent closes each RPC connection; bounded concurrency and one attempt; no mutation retry; application HTTP server/timeouts/P2P and browser keep-alive behavior unchanged",
+  "beforeCommand": "node --import tsx --test tests/http-fixture-lifecycle.test.ts",
+  "beforeResult": "failure ECONNRESET on publish, reused=true, application process alive",
+  "correctedCommand": "node --import tsx --test --test-concurrency=1 tests/http-fixture-lifecycle.test.ts tests/group-event-seeding.test.ts tests/native/group-event-seeding.test.ts",
+  "correctedResult": "4 passed;92.466s;non-idempotent operation applied exactly once;both runtime combinations and seeder controls retained",
+  "testEnvironment": "Linux x64; uncommitted C2 invitation journal integration also present; these are directed results, not a new full gate",
+  "windowsCorrectionRun": "pending",
+  "fullContractComplete": false
+}

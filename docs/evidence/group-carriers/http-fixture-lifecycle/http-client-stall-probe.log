@@ -1,0 +1,4 @@
+{"phase":"warm","keepAlive":true,"result":{"status":200,"reused":false,"elapsed":8}}
+{"phase":"after-client-stall","keepAlive":true,"result":{"error":"ECONNRESET","reused":true,"elapsed":1}}
+{"phase":"warm","keepAlive":false,"result":{"status":200,"reused":false,"elapsed":2}}
+{"phase":"after-client-stall","keepAlive":false,"result":{"status":200,"reused":false,"elapsed":2}}

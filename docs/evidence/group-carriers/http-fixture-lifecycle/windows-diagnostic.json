@@ -1,0 +1,12 @@
+{
+  "backend": "node",
+  "path": "state",
+  "elapsedMs": 4401,
+  "code": "ECONNRESET",
+  "reusedSocket": true,
+  "headersReceived": false,
+  "exit": null,
+  "signal": null,
+  "stderr": "(node:7968) ExperimentalWarning: SQLite is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+  "caller": "Error: Fixture API call origin\n    at Object.call (D:\\a\\relayloom\\relayloom\\tests\\helpers.ts:101:18)\n    at <anonymous> (D:\\a\\relayloom\\relayloom\\tests\\fixtures\\group-event-seeding.ts:267:17)\n    at until (D:\\a\\relayloom\\relayloom\\tests\\helpers.ts:206:18)\n    at groupEventSeeding (D:\\a\\relayloom\\relayloom\\tests\\fixtures\\group-event-seeding.ts:266:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async TestContext.<anonymous> (D:\\a\\relayloom\\relayloom\\tests\\group-event-seeding.test.ts:8:5)\n    at async Test.run (node:internal/test_runner/test:1054:7)\n    at async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)"
+}
