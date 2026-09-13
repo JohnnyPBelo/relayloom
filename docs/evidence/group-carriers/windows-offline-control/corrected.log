@@ -1,0 +1,46 @@
+TAP version 13
+# Subtest: real Node control proofs heal a partition from another member after creator stops
+ok 1 - real Node control proofs heal a partition from another member after creator stops
+  ---
+  duration_ms: 8979.188622
+  type: 'test'
+  ...
+# Subtest: Node control proofs traverse TCP and serial PTYs, with partition, relay-off and offline opaque seeder controls
+ok 2 - Node control proofs traverse TCP and serial PTYs, with partition, relay-off and offline opaque seeder controls
+  ---
+  duration_ms: 9832.611774
+  type: 'test'
+  ...
+# Subtest: real native/node/native proof sync heals from offline creator through a seeder
+ok 3 - real native/node/native proof sync heals from offline creator through a seeder
+  ---
+  duration_ms: 5288.816494
+  type: 'test'
+  ...
+# Subtest: real node/native/node proof sync heals from offline creator through a seeder
+ok 4 - real node/native/node proof sync heals from offline creator through a seeder
+  ---
+  duration_ms: 6168.317549
+  type: 'test'
+  ...
+# Subtest: Go control publisher reaches isolated Node serial reader through opaque Node relay
+ok 5 - Go control publisher reaches isolated Node serial reader through opaque Node relay
+  ---
+  duration_ms: 9687.500322
+  type: 'test'
+  ...
+# Subtest: offline control rejects a live origin and proves socket refusal after normal and signal termination
+ok 6 - offline control rejects a live origin and proves socket refusal after normal and signal termination
+  ---
+  duration_ms: 356.55889
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 41055.072169

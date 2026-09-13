@@ -1,0 +1,20 @@
+2026-09-13T19:29:07.7693969Z # Subtest: real Node control proofs heal a partition from another member after creator stops
+2026-09-13T19:29:07.7696805Z not ok 152 - real Node control proofs heal a partition from another member after creator stops
+2026-09-13T19:29:07.7697379Z   ---
+2026-09-13T19:29:07.7697622Z   duration_ms: 5852.688
+2026-09-13T19:29:07.7697897Z   type: 'test'
+2026-09-13T19:29:07.7698360Z   location: 'D:\\a\\relayloom\\relayloom\\tests\\group-sync-seeding.test.ts:4:1'
+2026-09-13T19:29:07.7699818Z   failureType: 'testCodeFailure'
+2026-09-13T19:29:07.7700277Z   error: 'Expected "actual" to be strictly unequal to: null'
+2026-09-13T19:29:07.7700692Z   code: 'ERR_ASSERTION'
+2026-09-13T19:29:07.7700975Z   name: 'AssertionError'
+2026-09-13T19:29:07.7701247Z   expected: ~
+2026-09-13T19:29:07.7701469Z   actual: ~
+2026-09-13T19:29:07.7702728Z   operator: 'notStrictEqual'
+2026-09-13T19:29:07.7703502Z   stack: |-
+2026-09-13T19:29:07.7704038Z     groupSyncSeeding (D:\a\relayloom\relayloom\tests\fixtures\group-sync-seeding.ts:97:12)
+2026-09-13T19:29:07.7704848Z     process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+2026-09-13T19:29:07.7705692Z     async TestContext.<anonymous> (D:\a\relayloom\relayloom\tests\group-sync-seeding.test.ts:8:5)
+2026-09-13T19:29:07.7706360Z     async Test.run (node:internal/test_runner/test:1054:7)
+2026-09-13T19:29:07.7706962Z     async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+2026-09-13T19:29:07.7707464Z   ...

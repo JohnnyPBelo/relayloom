@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import { rmSync } from "node:fs";
 import { launch, password, until, type Client } from "../helpers.js";
 import { messagingPair } from "./group-send.js";
+import { assertOffline, tcpOutcome } from "./offline-process.js";
 
 export async function groupSyncSeeding(
   creator: "node" | "native",
@@ -93,8 +94,9 @@ export async function groupSyncSeeding(
       (s) => s.group.head?.id === group.head.id && s.group.status === "active",
       30000,
     );
+    assert.equal(await tcpOutcome(f.a.tcpPort), "CONNECTED");
     await f.a.stop();
-    assert.notEqual(f.a.process.exitCode, null);
+    await assertOffline(f.a);
     restored = await launch(c.dir, port, 0, reader);
     await restored.call("unlock", { password });
     assert.equal(

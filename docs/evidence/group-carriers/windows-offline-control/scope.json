@@ -1,0 +1,12 @@
+{
+  "base": "63ded7b065336691844e982193ab255371eb5b24",
+  "ciRun": 34777466884,
+  "windowsJob": 103778097025,
+  "failure": "seeder fixture required exitCode even when stop had already observed process exit via signal",
+  "change": "accept either terminated-process field, plus require a previously reachable origin TCP port to refuse a connection after stop",
+  "localCommand": "node --import tsx --test --test-concurrency=1 tests/offline-process.test.ts tests/group-sync-seeding.test.ts tests/group-sync-serial.test.ts tests/native/group-sync-seeding.test.ts tests/native/group-sync-serial.test.ts",
+  "localResult": "6 passed;41.055s;Linux x64",
+  "runtimeChanged": false,
+  "windowsCorrectionExecuted": false,
+  "fullContractComplete": false
+}

@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { assertOffline, tcpOutcome } from "./offline-process.js";
 import { randomUUID } from "node:crypto";
 import { readdirSync, readFileSync, rmSync } from "node:fs";
 import { join } from "node:path";
@@ -179,8 +180,9 @@ export async function groupSyncSerial(creator: "node" | "native") {
       old,
       "disabled relay still delivered a new proof",
     );
+    assert.equal(await tcpOutcome(a.tcpPort), "CONNECTED");
     await a.stop();
-    assert.notEqual(a.process.exitCode, null);
+    await assertOffline(a);
     await b.call("settings", { relay: true });
     const restored = await until(
       () => command(c, { action: "state", groupId: id }),
