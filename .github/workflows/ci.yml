@@ -37,6 +37,7 @@ jobs:
           path: |
             docs/evidence
             test-results
+            .cache/fixture-http-failures/*.json
           retention-days: 7
 
   native-go:
@@ -74,6 +75,7 @@ jobs:
             .cache/native-mixed/*.json
             .cache/native-interop/*/report.json
             .cache/native-ui-e2e
+            .cache/fixture-http-failures/*.json
           retention-days: 7
 
   desktop-package:
