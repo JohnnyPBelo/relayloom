@@ -1,0 +1,11 @@
+2026-09-13T20:21:38.4649101Z # Subtest: real Node group newcomer cannot read earlier audiences; peer serves author's edit while author is offline
+2026-09-13T20:21:38.4651287Z not ok 71 - real Node group newcomer cannot read earlier audiences; peer serves author's edit while author is offline
+2026-09-13T20:21:38.4652949Z   ---
+2026-09-13T20:21:38.4653579Z   duration_ms: 65010.6294
+2026-09-13T20:21:38.4654233Z   type: 'test'
+2026-09-13T20:21:38.4655227Z   location: 'D:\\a\\relayloom\\relayloom\\tests\\group-event-seeding.test.ts:4:1'
+2026-09-13T20:21:38.4656709Z   failureType: 'testTimeoutFailure'
+2026-09-13T20:21:38.4657505Z   error: 'test timed out after 65000ms'
+2026-09-13T20:21:38.4658300Z   code: 'ERR_TEST_FAILURE'
+2026-09-13T20:21:38.4658926Z   ...
+2026-09-13T20:22:12.7374978Z # Subtest: real Node group reactions/comments/author edits and historical deletion preserve signing ownership

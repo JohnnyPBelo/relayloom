@@ -1,0 +1,12 @@
+{
+  "ciRun": 34780282385,
+  "baseCommit": "336820b245cfd5bb875e0f37b8430ecbd4baca91",
+  "observed": "Linux/macOS Node and Linux UI passed. Windows group-event-seeding exceeded its existing 65000ms test deadline; no ECONNRESET was reported there. Native/desktop/iOS skipped.",
+  "change": "bounded phase/API-duration diagnostics and abort snapshot; no request bodies, credentials, URLs, deadline increase, retry or removed assertion",
+  "localCommand": "node --import tsx --test tests/group-event-seeding.test.ts",
+  "localResult": "1 passed;30.884s;current uncommitted Node C2 transport also present",
+  "tracePrivacyCommand": "node --import tsx --test tests/scenario-trace.test.ts",
+  "tracePrivacyResult": "pass;active call retained on abort, body/credentials excluded, timeout not overwritten by later completion",
+  "cause": "Windows slow phase still unknown; local unlock and first view took about7.4s combined",
+  "fullContractComplete": false
+}

@@ -10,6 +10,7 @@ import {
 } from "../../packages/core/src/index.js";
 import { messagingPair } from "./group-send.js";
 import { launch, password, until, type Client } from "../helpers.js";
+import { ScenarioTrace } from "./scenario-trace.js";
 
 /** Three real API-created identities. Group proofs are transferred explicitly;
  * payloads travel only through real socket peers, including offline takeover. */
@@ -17,16 +18,26 @@ export async function groupEventSeeding(
   creator: "node" | "native",
   relay: "node" | "native",
   newcomer: "node" | "native",
+  signal?: AbortSignal,
 ) {
+  const trace = new ScenarioTrace(
+    `group-event-${creator}-${relay}-${newcomer}`,
+    signal,
+  );
   const f = await messagingPair(creator, relay);
+  trace.wrap(f.a, "author");
+  trace.wrap(f.b, "seeder");
   let c: Client | undefined;
   let resumed: Client | undefined;
+  let bodyPassed = false;
   try {
-    c = await launch(undefined, 0, 0, newcomer);
+    trace.phase("bootstrap-newcomer");
+    c = trace.wrap(await launch(undefined, 0, 0, newcomer), "newcomer");
     const carla = await c.call("setup", {
       name: "New consenting group reader",
       password,
     });
+    trace.phase("original-message");
     const old = await f.a.call("send", {
       operationId: randomUUID(),
       content: {
@@ -44,6 +55,7 @@ export async function groupEventSeeding(
       () => f.b.call("state"),
       (s) => s.objects.some((o: any) => o.id === old.id),
     );
+    trace.phase("admit-newcomer");
     const parent = (
       await f.command(f.a, { action: "state", groupId: f.groupId })
     ).group.head;
@@ -111,6 +123,7 @@ export async function groupEventSeeding(
         snapshot,
       });
     }
+    trace.phase("historical-event-controls");
     const oldReaction = {
       type: "reaction",
       emoji: "heart",
@@ -141,6 +154,7 @@ export async function groupEventSeeding(
       [...historical.readers].sort(),
       [f.alice.id, f.bob.id].sort(),
     );
+    trace.phase("current-message-and-edit");
     const sent = await f.a.call("send", {
       operationId: randomUUID(),
       content: {
@@ -183,6 +197,7 @@ export async function groupEventSeeding(
       false,
       "isolated reader received without a path",
     );
+    trace.phase("stop-origin");
     await f.a.stop();
     const noOrigin = await new Promise<string>((resolve, reject) => {
       const socket = createConnection({ host: "127.0.0.1", port: f.a.tcpPort });
@@ -200,6 +215,7 @@ export async function groupEventSeeding(
       });
     });
     assert.equal(noOrigin, "ECONNREFUSED");
+    trace.phase("offline-seed-takeover");
     await c.call("connect", { host: "127.0.0.1", port: f.b.tcpPort });
     const taken = await until(
       () => c!.call("state"),
@@ -216,6 +232,7 @@ export async function groupEventSeeding(
       taken.objects.find((o: any) => o.id === edit.id).author.id,
       f.alice.id,
     );
+    trace.phase("old-ciphertext-controls");
     await c.call("retrieve", { id: old.id });
     await c.call("retrieve", { id: historical.id });
     await until(
@@ -250,6 +267,7 @@ export async function groupEventSeeding(
         recipients: [f.alice.id, f.bob.id],
       }),
     );
+    trace.phase("newcomer-reaction");
     const reply = await c.call("publish", {
       content: {
         type: "reaction",
@@ -275,13 +293,18 @@ export async function groupEventSeeding(
       assert.equal((await client.call("state")).contacts.length, 0);
     // Restart the real author, then remove an original reader. New edits use
     // the current intersection; the historical deletion still reaches all old readers.
-    resumed = await launch(f.a.dir, Number(new URL(f.a.url).port), 0, creator);
+    trace.phase("restart-origin");
+    resumed = trace.wrap(
+      await launch(f.a.dir, Number(new URL(f.a.url).port), 0, creator),
+      "resumed",
+    );
     await resumed.call("unlock", { password });
     const restored = await resumed.call("view", { id: sent.id });
     assert.equal(
       restored.editedText,
       "Author-corrected content from the offline cache",
     );
+    trace.phase("remove-reader");
     const removed = await f.command(resumed, {
       action: "commit",
       operationId: randomUUID(),
@@ -322,6 +345,7 @@ export async function groupEventSeeding(
         recipients: [f.alice.id, carla.id],
       }),
     );
+    trace.phase("removed-reader-edit-controls");
     const correction = {
       type: "edit",
       text: "Only current original readers can decrypt this correction",
@@ -374,6 +398,7 @@ export async function groupEventSeeding(
       (await f.b.call("view", { id: sent.id })).editedText,
       "Author-corrected content from the offline cache",
     );
+    trace.phase("historical-delete");
     await resumed.call("publish", {
       content: {
         type: "delete",
@@ -389,6 +414,7 @@ export async function groupEventSeeding(
         () => client.call("state"),
         (s) => s.objects.some((o: any) => o.id === sent.id && o.deleted),
       );
+    bodyPassed = true;
     return {
       creator,
       relay,
@@ -402,11 +428,18 @@ export async function groupEventSeeding(
       historicalDeleteReachesRemovedReader: true,
     };
   } finally {
-    await resumed?.stop();
-    if (c) {
-      await c.stop();
-      rmSync(c.dir, { recursive: true, force: true });
+    trace.phase("cleanup");
+    let cleanupComplete = false;
+    try {
+      await resumed?.stop();
+      if (c) {
+        await c.stop();
+        rmSync(c.dir, { recursive: true, force: true });
+      }
+      await f.close();
+      cleanupComplete = true;
+    } finally {
+      trace.finish(bodyPassed && cleanupComplete);
     }
-    await f.close();
   }
 }
