@@ -1,0 +1,66 @@
+{
+  "sourceSha256": "7b99a46f351b18e5fc4b0d5edcbeae19819333c0de322019ba7791e58c71e735",
+  "status": "pass",
+  "checks": [
+    {
+      "name": "desktop-build",
+      "argv": [
+        "npm",
+        "run",
+        "desktop:build"
+      ],
+      "startedAt": "2026-09-13T15:07:46Z",
+      "status": "pass",
+      "pid": 848392,
+      "exitCode": 0,
+      "elapsedSeconds": 0.208,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "desktop-smoke",
+      "argv": [
+        "npm",
+        "run",
+        "desktop:smoke"
+      ],
+      "startedAt": "2026-09-13T15:07:46Z",
+      "status": "pass",
+      "pid": 848461,
+      "exitCode": 0,
+      "elapsedSeconds": 1.878,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "desktop-package",
+      "argv": [
+        "npm",
+        "run",
+        "desktop:package",
+        "--",
+        "--linux",
+        "--x64",
+        "--dir"
+      ],
+      "startedAt": "2026-09-13T15:07:48Z",
+      "status": "pass",
+      "pid": 848694,
+      "exitCode": 0,
+      "elapsedSeconds": 4.889,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "desktop-packaged-smoke",
+      "argv": [
+        "npm",
+        "run",
+        "desktop:packaged-smoke"
+      ],
+      "startedAt": "2026-09-13T15:07:53Z",
+      "status": "pass",
+      "pid": 848881,
+      "exitCode": 0,
+      "elapsedSeconds": 0.876,
+      "sourceUnchanged": true
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "started": "2026-09-13T14:41:24.963Z",
+  "finished": "2026-09-13T14:41:33.610Z",
+  "result": "pass",
+  "environment": "linux",
+  "mediumAtoB": "real TCP socket",
+  "mediumBtoC": "real serialport over two OS PTYs with byte forwarding",
+  "physicalRadio": "not tested",
+  "processCount": 3,
+  "controls": [
+    "C has TCP listener disabled; only serial transport attached. A has exactly one TCP link, terminating at B. No A-C transport exists.",
+    "Unpartitioned positive control: C received A-authored object with two-hop trace over serial, and B counted real forwarding.",
+    "Partition control: B received object; C had none after 2.5 seconds with serial bridge disconnected.",
+    "Heal positive control: C receives exact 108,000-byte attachment through serial, original A signature retained.",
+    "Relay-off negative control: B stores publication but does not forward/advertise it to C.",
+    "Publisher offline positive control: after A exits, B serves the previously unseen signed publication to C."
+  ],
+  "routingCounters": {
+    "b": {
+      "received": 14,
+      "forwarded": 9,
+      "duplicates": 0,
+      "rejected": 0,
+      "dropped": 0,
+      "retransmits": 0,
+      "rateLimited": 0
+    },
+    "c": {
+      "received": 9,
+      "forwarded": 0,
+      "duplicates": 0,
+      "rejected": 0,
+      "dropped": 0,
+      "retransmits": 0,
+      "rateLimited": 0
+    }
+  }
+}

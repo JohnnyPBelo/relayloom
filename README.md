@@ -1,5 +1,7 @@
 # RelayLoom
 
+Eventos de grupos dinâmicos verificados nas APIs Node/Go: reacções, comentários, edições do autor e eliminação histórica, com audiência original/actual controlada e seeder offline. [Gate completo e limites](docs/GROUP-EVENTS.md). Carriers de provas e gestão/composição dinâmica na UI continuam pendentes.
+
 Interface Liquid Glass implementada e verificada em Chromium com os dois motores e no desktop Linux: navegação flutuante, temas claro/escuro e pesquisa por Ctrl/Cmd+K ligada às conversas e mensagens autorizadas já carregadas. Efeitos reduzidos por baixo consumo, contraste e preferências do sistema. [38 testes E2E,62 auditorias Axe, capturas e limites](docs/LIQUID-GLASS.md).
 
 Envio de grupos dinâmicos em integração local: Node/Go já criam mensagens, anexos e respostas pelas APIs com audiências autenticadas; os controlos dirigidos incluem falhas e recuperação real entre processos. O gate completo de host/interoperabilidade/UI/desktop passou ([evidência](docs/evidence/group-send/final)); carriers P2P e composição/gestão dinâmica na interface continuam pendentes. Estado e limites em [docs/STATUS.md](docs/STATUS.md).

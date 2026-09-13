@@ -1,0 +1,14 @@
+
+> relayloom@0.1.0 desktop:package
+> node scripts/desktop-package.mjs --linux --x64 --dir
+
+  • electron-builder  version=26.15.3 os=7.0.0-31-generic
+  • loaded configuration  file=/home/absint0o/projects/relayloom/apps/desktop/electron-builder.cjs
+  • skipped dependencies rebuild  reason=npmRebuild is set to false
+  • packaging       platform=linux arch=x64 electron=44.3.0 appOutDir=dist/desktop-installers/linux-unpacked
+  • downloaded      label=electron progress=100%
+  • downloaded electron zip extracted successfully  output=/home/absint0o/projects/relayloom/dist/desktop-installers/linux-unpacked
+  • searching for node modules  pm=npm searchDir=/home/absint0o/projects/relayloom/dist/desktop/app
+  • no node modules found in collection, trying next search directory  searchDir=/home/absint0o/projects/relayloom/dist/desktop/app attempt=0
+  • searching for node modules  pm=npm searchDir=/home/absint0o/projects/relayloom
+  • executing @electron/fuses  electronPath=dist/desktop-installers/linux-unpacked/relayloom

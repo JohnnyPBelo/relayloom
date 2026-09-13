@@ -175,7 +175,8 @@ func (n *Node) restoreGroupHoldsLocked() error {
 	if n.identity == nil || n.privateDatabase == nil {
 		return nil
 	}
-	if err := n.reconcileGroupSendsLocked(); err != nil {
+	manifests := n.outboxManifestsLocked()
+	if err := n.reconcileGroupSendsLocked(manifests); err != nil {
 		return err
 	}
 	var held []groupledger.HeldRecord
@@ -191,7 +192,7 @@ func (n *Node) restoreGroupHoldsLocked() error {
 		return err
 	}
 	verified := map[string]bool{}
-	for _, m := range n.Store.List() {
+	for _, m := range manifests {
 		verified[m.ID] = true
 	}
 	now := time.Now().UnixMilli()

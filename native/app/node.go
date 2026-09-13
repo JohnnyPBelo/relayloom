@@ -40,6 +40,7 @@ type Node struct {
 	privateDigest      string
 	groupHolds         []groupledger.HeldRecord
 	groupRetries       map[string]groupRetry
+	groupEventSeeds    map[string]bool
 	groupDecisions     map[string]groupaccess.Decision
 	routes             map[string]transport.Route
 	requests           map[string]int64
@@ -186,6 +187,7 @@ func (n *Node) Close() error {
 	n.clearSummariesLocked()
 	n.groupHolds = nil
 	n.groupRetries = nil
+	n.groupEventSeeds = nil
 	n.groupDecisions = nil
 	n.mu.Unlock()
 	for _, cancel := range cancellations {
@@ -215,6 +217,7 @@ func (n *Node) lockPrivateLocked() error {
 	n.clearSummariesLocked()
 	n.groupHolds = nil
 	n.groupRetries = nil
+	n.groupEventSeeds = nil
 	n.groupDecisions = nil
 	if n.privateDatabase != nil {
 		err := n.privateDatabase.Close()
@@ -1028,6 +1031,9 @@ func (n *Node) prepareLocked(content Content, recipients any, ttlMS int64) (*pre
 	return &preparedPublication{bundle, content, mutationTarget, priority}, nil
 }
 func (n *Node) publishLocked(content Content, recipients any, ttlMS int64) (DisplayObject, error) {
+	if groupaccess.HasBinding(content) {
+		return n.publishGroupEventLocked(content, recipients, ttlMS)
+	}
 	prepared, err := n.prepareLocked(content, recipients, ttlMS)
 	if err != nil {
 		return DisplayObject{}, err
@@ -1392,7 +1398,13 @@ func (n *Node) actionLocked(body map[string]any) error {
 	} else {
 		return errors.New("acção desconhecida")
 	}
-	return n.saveConfigLocked(next)
+	if err := n.saveConfigLocked(next); err != nil {
+		return err
+	}
+	if action == "block" {
+		return n.reconcileGroupSendsLocked()
+	}
+	return nil
 }
 func (n *Node) viewLocked(id string) (DisplayObject, error) {
 	o, err := n.materializedObjectLocked(id)

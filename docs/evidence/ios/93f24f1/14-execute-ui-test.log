@@ -1,0 +1,123 @@
+Command line invocation:
+    /Applications/Xcode_26.6.app/Contents/Developer/usr/bin/xcodebuild -project apps/ios/RelayLoom.xcodeproj -scheme RelayLoomSimulator -configuration Debug -sdk iphonesimulator -destination id=45AC39EC-D5D8-4EE0-AA96-143CCA18B47C -destination-timeout 90 -derivedDataPath /Users/runner/work/relayloom/relayloom/.cache/ios/DerivedData -jobs 2 -disableAutomaticPackageResolution CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= ARCHS=arm64 -resultBundlePath /Users/runner/work/relayloom/relayloom/.cache/ios/simulator/raw/d6589bcf-7c15-454d-9c46-ea4715b752d6/ui-results.xcresult -parallel-testing-enabled NO -maximum-concurrent-test-simulator-destinations 1 -maximum-parallel-testing-workers 1 -test-timeouts-enabled YES -default-test-execution-time-allowance 360 -maximum-test-execution-time-allowance 420 "-only-testing:RelayLoomUITests/NativeSimulatorTests/testNativeCoreUIAndRecovery" test-without-building
+
+Build settings from command line:
+    ARCHS = arm64
+    CODE_SIGN_IDENTITY = 
+    CODE_SIGNING_ALLOWED = NO
+    CODE_SIGNING_REQUIRED = NO
+    SDKROOT = iphonesimulator26.5
+
+Writing result bundle at path:
+	/Users/runner/work/relayloom/relayloom/.cache/ios/simulator/raw/d6589bcf-7c15-454d-9c46-ea4715b752d6/ui-results.xcresult
+
+2026-09-13 14:13:44.750351+0000 RelayLoomUITests-Runner[21586:67880] [Default] Running tests...
+2026-09-13 14:13:45.102387+0000 RelayLoomUITests-Runner[21586:67949] [General] Failed to send CA Event for app launch measurements for ca_event_type: 0 event_name: com.apple.app_launch_measurement.FirstFramePresentationMetric
+    t =      nans Interface orientation changed to Portrait
+2026-09-13 14:13:48.945247+0000 RelayLoomUITests-Runner[21586:67946] [General] Failed to send CA Event for app launch measurements for ca_event_type: 1 event_name: com.apple.app_launch_measurement.ExtendedLaunchMetrics
+Test Suite 'Selected tests' started at 2026-09-13 14:13:49.387.
+Test Suite 'RelayLoomUITests.xctest' started at 2026-09-13 14:13:49.389.
+Test Suite 'NativeSimulatorTests' started at 2026-09-13 14:13:49.389.
+Test Case '-[RelayLoomUITests.NativeSimulatorTests testNativeCoreUIAndRecovery]' started.
+    t =     0.00s Start Test at 2026-09-13 14:13:49.393
+    t =     0.67s Set Up
+    t =     0.78s Open org.relayloom.ios
+    t =     0.78s     Launch org.relayloom.ios
+objc[21586]: Class UIAccessibilityLoaderWebShared is implemented in both /Library/Developer/CoreSimulator/Volumes/iOS_23E254a/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.4.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebCore.axbundle/WebCore (0x10945c310) and /Library/Developer/CoreSimulator/Volumes/iOS_23E254a/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.4.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebKit.axbundle/WebKit (0x109118398). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+    t =     7.39s         Setting up automation session
+    t =    10.15s         Wait for org.relayloom.ios to idle
+    t =    12.08s Waiting 45.0s for WebView (First Match) to exist
+    t =    13.25s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    13.26s         Checking existence of `WebView (First Match)`
+    t =    13.67s Waiting 30.0s for "Criar identidade" Button to exist
+    t =    14.75s     Checking `Expect predicate `existsNoRetry == 1` for object "Criar identidade" Button`
+    t =    14.75s         Checking existence of `"Criar identidade" Button`
+    t =    15.04s         Capturing element debug description
+    t =    15.69s     Checking `Expect predicate `existsNoRetry == 1` for object "Criar identidade" Button`
+    t =    15.69s         Checking existence of `"Criar identidade" Button`
+    t =    15.75s         Capturing element debug description
+    t =    16.69s     Checking `Expect predicate `existsNoRetry == 1` for object "Criar identidade" Button`
+    t =    16.69s         Checking existence of `"Criar identidade" Button`
+    t =    16.90s         Capturing element debug description
+    t =    17.75s     Checking `Expect predicate `existsNoRetry == 1` for object "Criar identidade" Button`
+    t =    17.76s         Checking existence of `"Criar identidade" Button`
+    t =    17.85s         Capturing element debug description
+    t =    18.68s     Checking `Expect predicate `existsNoRetry == 1` for object "Criar identidade" Button`
+    t =    18.68s         Checking existence of `"Criar identidade" Button`
+    t =    18.74s         Capturing element debug description
+    t =    19.68s     Checking `Expect predicate `existsNoRetry == 1` for object "Criar identidade" Button`
+    t =    19.68s         Checking existence of `"Criar identidade" Button`
+    t =    19.77s         Capturing element debug description
+    t =    20.68s     Checking `Expect predicate `existsNoRetry == 1` for object "Criar identidade" Button`
+    t =    20.69s         Checking existence of `"Criar identidade" Button`
+    t =    20.78s         Capturing element debug description
+    t =    21.75s     Checking `Expect predicate `existsNoRetry == 1` for object "Criar identidade" Button`
+    t =    21.76s         Checking existence of `"Criar identidade" Button`
+    t =    22.05s Find the Target Application 'org.relayloom.ios'
+    t =    23.05s Added attachment named 'relayloom-01-onboarding'
+    t =    23.05s Waiting 30.0s for TextField (First Match) to exist
+    t =    24.10s     Checking `Expect predicate `existsNoRetry == 1` for object TextField (First Match)`
+    t =    24.10s         Checking existence of `TextField (First Match)`
+    t =    24.19s Tap TextField (First Match)
+    t =    24.19s     Wait for org.relayloom.ios to idle
+    t =    24.19s     Find the TextField (First Match)
+    t =    24.26s     Check for interrupting elements affecting "O teu nome" TextField
+    t =    24.47s     Synthesize event
+    t =    26.22s     Wait for org.relayloom.ios to idle
+    t =    28.68s Type 'iOS Simulator Send...' into "O teu nome" TextField
+    t =    28.69s     Wait for org.relayloom.ios to idle
+    t =    30.04s     Find the "O teu nome" TextField
+    t =    34.04s     Check for interrupting elements affecting "O teu nome" TextField
+    t =    35.00s     Synthesize event
+    t =    36.41s     Wait for org.relayloom.ios to idle
+    t =    36.63s Waiting 30.0s for SecureTextField (First Match) to exist
+    t =    37.68s     Checking `Expect predicate `existsNoRetry == 1` for object SecureTextField (First Match)`
+    t =    37.69s         Checking existence of `SecureTextField (First Match)`
+    t =    49.31s Tap SecureTextField (First Match)
+    t =    49.31s     Wait for org.relayloom.ios to idle
+    t =    49.35s     Find the SecureTextField (First Match)
+    t =    51.27s     Check for interrupting elements affecting "Pelo menos 12 caracteres" SecureTextField
+    t =    51.41s     Synthesize event
+    t =    51.75s     Wait for org.relayloom.ios to idle
+    t =    51.93s Type 'relayloom ios simu...' into "Pelo menos 12 caracteres" SecureTextField
+    t =    51.93s     Wait for org.relayloom.ios to idle
+    t =    52.28s     Find the "Pelo menos 12 caracteres" SecureTextField
+    t =    52.67s     Check for interrupting elements affecting "Pelo menos 12 caracteres" SecureTextField
+    t =    52.77s     Synthesize event
+    t =    53.75s     Wait for org.relayloom.ios to idle
+    t =    53.80s Checking existence of `Keyboard (First Match)`
+    t =    54.25s Get all elements bound by index for: Elements matching predicate '"Done" IN identifiers'
+    t =    54.39s Checking existence of `"Um novo fio na rede." StaticText`
+    t =    54.72s Find the "Um novo fio na rede." StaticText
+    t =    55.14s Find the Target Application 'org.relayloom.ios'
+    t =    55.34s Added attachment named 'relayloom-99-functional-failed'
+    t =    55.35s Checking existence of `Keyboard (First Match)`
+IOS_SIMULATOR_PHASE failure-keyboard-visible
+    t =    55.44s Terminate org.relayloom.ios:21818
+/Users/runner/work/relayloom/relayloom/apps/ios/UITests/NativeSimulatorTests.swift:213: error: -[RelayLoomUITests.NativeSimulatorTests testNativeCoreUIAndRecovery] : failed: caught error: "missing("keyboard dismiss control for Um novo fio na rede.")"
+    t =    58.00s Tear Down
+Test Case '-[RelayLoomUITests.NativeSimulatorTests testNativeCoreUIAndRecovery]' failed (58.149 seconds).
+Test Suite 'NativeSimulatorTests' failed at 2026-09-13 14:14:47.543.
+	 Executed 1 test, with 1 failure (1 unexpected) in 58.149 (58.153) seconds
+Test Suite 'RelayLoomUITests.xctest' failed at 2026-09-13 14:14:47.543.
+	 Executed 1 test, with 1 failure (1 unexpected) in 58.149 (58.154) seconds
+Test Suite 'Selected tests' failed at 2026-09-13 14:14:47.544.
+	 Executed 1 test, with 1 failure (1 unexpected) in 58.149 (58.157) seconds
+
+Test session results, code coverage, and logs:
+	/Users/runner/work/relayloom/relayloom/.cache/ios/simulator/raw/d6589bcf-7c15-454d-9c46-ea4715b752d6/ui-results.xcresult
+
+Testing started
+--- xcodebuild: WARNING: Using the first of multiple matching destinations:
+{ platform:iOS Simulator, arch:arm64, id:45AC39EC-D5D8-4EE0-AA96-143CCA18B47C, OS:26.4.1, name:RelayLoom-CI-d6589bcf-7c15-454d-9c46-ea4715b752d6 }
+{ platform:iOS Simulator, arch:x86_64, id:45AC39EC-D5D8-4EE0-AA96-143CCA18B47C, OS:26.4.1, name:RelayLoom-CI-d6589bcf-7c15-454d-9c46-ea4715b752d6 }
+2026-09-13 14:13:52.983 xcodebuild[20623:65113] [MT] IDELaunchParametersSnapshot: The operation couldn’t be completed. (DebuggerLLDB.DebuggerVersionStore.StoreError error 0.)
+2026-09-13 14:13:52.984 xcodebuild[20623:65113] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-09-13 14:15:26.768 xcodebuild[20623:65113] [MT] IDETestOperationsObserverDebug: 110.307 elapsed -- Testing started completed.
+2026-09-13 14:15:26.768 xcodebuild[20623:65113] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-09-13 14:15:26.768 xcodebuild[20623:65113] [MT] IDETestOperationsObserverDebug: 110.307 sec, +110.307 sec -- end
+Failing tests:
+	NativeSimulatorTests.testNativeCoreUIAndRecovery()
+
+** TEST EXECUTE FAILED **
+

@@ -1,0 +1,100 @@
+{
+  "startedAt": "2026-09-13T14:17:32Z",
+  "baseCommit": "93f24f1f87f75a12f5aec31f10c88002414bec72",
+  "workingTree": "uncommitted integration",
+  "sourceSha256": "3d19f43f4b9956d550926a2840739db83239be7a8b334f7391d138c98e537a6f",
+  "checks": [
+    {
+      "name": "build",
+      "argv": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "environmentOverrides": {},
+      "status": "pass",
+      "startedAt": "2026-09-13T14:17:32Z",
+      "pid": 606147,
+      "exitCode": 0,
+      "elapsedSeconds": 8.606,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "ios-host",
+      "argv": [
+        "node",
+        "--test",
+        "apps/ios/Tests/SimulatorRunnerTests.mjs"
+      ],
+      "environmentOverrides": {},
+      "status": "pass",
+      "startedAt": "2026-09-13T14:17:41Z",
+      "pid": 606393,
+      "exitCode": 0,
+      "elapsedSeconds": 2.314,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "ios-static",
+      "argv": [
+        "node",
+        "scripts/ios-simulator.mjs",
+        "--check"
+      ],
+      "environmentOverrides": {},
+      "status": "pass",
+      "startedAt": "2026-09-13T14:17:43Z",
+      "pid": 606502,
+      "exitCode": 0,
+      "elapsedSeconds": 0.041,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "node",
+      "argv": [
+        "npm",
+        "test"
+      ],
+      "environmentOverrides": {},
+      "status": "pass",
+      "startedAt": "2026-09-13T14:17:43Z",
+      "pid": 606537,
+      "exitCode": 0,
+      "elapsedSeconds": 270.775,
+      "sourceUnchanged": true
+    },
+    {
+      "name": "go",
+      "argv": [
+        "node",
+        "scripts/go.mjs",
+        "test",
+        "-json",
+        "-race",
+        "-count=1",
+        "-p=1",
+        "./core",
+        "./transport",
+        "./app",
+        "./groups",
+        "./groupstore",
+        "./groupauthority",
+        "./groupaccess",
+        "./groupledger",
+        "./profilelock",
+        "./profilestate",
+        "./profilebinding",
+        "./profiledb",
+        "./sqlitedriver"
+      ],
+      "environmentOverrides": {},
+      "status": "fail",
+      "startedAt": "2026-09-13T14:22:14Z",
+      "pid": 617078,
+      "exitCode": 1,
+      "elapsedSeconds": 595.16,
+      "sourceUnchanged": true
+    }
+  ],
+  "status": "failed"
+}

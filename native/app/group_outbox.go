@@ -13,7 +13,7 @@ import (
 )
 
 func (n *Node) maySeedLocked(manifest core.Manifest) (bool, error) {
-	if manifest.Kind != "message" || manifest.PublicKey != nil {
+	if (manifest.Kind != "message" && !currentGroupEvent(manifest.Kind)) || manifest.PublicKey != nil {
 		return true, nil
 	}
 	// Cold locked profiles cannot authenticate their private retry journal.
@@ -34,6 +34,9 @@ func (n *Node) maySeedLocked(manifest core.Manifest) (bool, error) {
 	}
 	if !groupaccess.HasBinding(object.Content) {
 		return true, nil
+	}
+	if currentGroupEvent(manifest.Kind) {
+		return n.groupEventSeeds[manifest.ID], nil
 	}
 	for operation, entry := range n.private.Outbox {
 		if entry.ID != manifest.ID {
@@ -123,8 +126,22 @@ func groupOutboxReservations(outbox map[string]OutboxRecord, now int64) []string
 	return ids
 }
 
-func (n *Node) reconcileGroupSendsLocked() error {
-	if n.identity == nil || n.privateDatabase == nil || !hasGroupOutbox(n.private.Outbox) {
+func (n *Node) reconcileGroupSendsLocked(verified ...map[string]core.Manifest) error {
+	if n.identity == nil || n.privateDatabase == nil {
+		return nil
+	}
+	// A state snapshot already verified every retained file. Reuse that exact
+	// observation instead of reading large DM attachments for a second time.
+	var manifests map[string]core.Manifest
+	if len(verified) > 0 {
+		manifests = verified[0]
+	} else {
+		manifests = n.outboxManifestsLocked()
+	}
+	events := n.localGroupEventsLocked(manifests)
+	if len(events) == 0 && !hasGroupOutbox(n.private.Outbox) {
+		n.groupEventSeeds = nil
+		n.cancelGroupPacketsLocked(false)
 		return nil
 	}
 	next, err := copyPrivate(n.private, n.identity.Public.ID)
@@ -132,6 +149,7 @@ func (n *Node) reconcileGroupSendsLocked() error {
 		return err
 	}
 	var decisions map[string]groupRetry
+	var eventDecisions map[string]bool
 	err = n.privateDatabase.Update(func(tx *groupstore.Tx) error {
 		current, err := profilestate.Read(tx)
 		if err != nil {
@@ -140,9 +158,16 @@ func (n *Node) reconcileGroupSendsLocked() error {
 		if current == nil || current.Digest != n.privateDigest {
 			return errors.New("estado privado desactualizado")
 		}
-		_, err = groupledger.Run(tx, *n.identity, func(l *groupledger.Ledger, _ *groupauthority.Registry) error {
+		_, err = groupledger.Run(tx, *n.identity, func(l *groupledger.Ledger, g *groupauthority.Registry) error {
 			var err error
 			decisions, err = reconcileGroupOutbox(l, next.Outbox)
+			if err == nil {
+				var access *groupaccess.Access
+				access, err = groupaccess.New(g, n.identity.Public)
+				if err == nil {
+					eventDecisions, err = eventSeeds(l, events, n.config.Blocked, access)
+				}
+			}
 			return err
 		})
 		return err
@@ -157,10 +182,12 @@ func (n *Node) reconcileGroupSendsLocked() error {
 		} else {
 			n.privateDatabase, n.private, n.privateDigest = database, local, digest
 			n.groupRetries = nil
+			n.groupEventSeeds = nil
 		}
 		return err
 	}
 	n.private, n.groupRetries = next, decisions
+	n.groupEventSeeds = eventDecisions
 	n.cancelGroupPacketsLocked(false)
 	return nil
 }
@@ -182,9 +209,6 @@ func (n *Node) cancelGroupPacketsLocked(all bool) {
 			ids[entry.ID] = true
 		}
 	}
-	if len(ids) == 0 {
-		return
-	}
 	n.Router.CancelLocal(func(payload any) bool {
 		m, ok := payload.(map[string]any)
 		if !ok || m["type"] != "bundle" {
@@ -195,6 +219,31 @@ func (n *Node) cancelGroupPacketsLocked(all bool) {
 			return false
 		}
 		manifest, ok := bundle["manifest"].(map[string]any)
-		return ok && ids[text(manifest["id"])]
+		if !ok {
+			return false
+		}
+		if ids[text(manifest["id"])] {
+			return true
+		}
+		author, _ := manifest["author"].(map[string]any)
+		if n.identity == nil || text(author["id"]) != n.identity.Public.ID || manifest["publicKey"] != nil || !currentGroupEvent(text(manifest["kind"])) {
+			return false
+		}
+		if all {
+			return true
+		}
+		original, err := decodeBundle(bundle)
+		if err != nil {
+			return true
+		}
+		decoded, err := core.DecryptBundle(original, n.identity)
+		if err != nil {
+			return true
+		}
+		content, err := object(decoded)
+		if err != nil {
+			return true
+		}
+		return groupaccess.HasBinding(content) && !n.groupEventSeeds[text(manifest["id"])]
 	})
 }

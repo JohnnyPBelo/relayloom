@@ -72,3 +72,10 @@ Sem agentes novos/retomados. Eventos, carriers, UI dinâmica, artefactos móveis
 Pedido do proprietário priorizou UI/UX sem cancelar o contrato. Implementados material CSS com fallback, preferências, pesquisa/comandos autorizados com teclado/lock, barra móvel, conversa compacta e controlos44px. Gate final74981 terminou0:19 Node142.211s/19 Go127.734s,62 Axe sem violações e desktop Linux compilado/executado/empacotado/executado,289 fontes inalteradas. `docs/LIQUID-GLASS.md` e `docs/evidence/liquid-glass/final` guardam comandos/fontes/âmbito/falhas corrigidas. Nenhum novo agente/modelo/provider/bridge alterado; recuperação sequencial mantida.
 
 P3/P5/P6/P7 permanecem abertos. Seguem eventos/carriers e composição/gestão dinâmica com audiências verificadas; pesquisa integral, keystore/rotação, social/media/templates/notificações e gates móveis/revisão independente. iOS f370 passou arranque mas excedeu60.306s na fotografia; não chegou ao fluxo funcional. Não fechar o objectivo por este marco.
+
+
+## Eventos de grupo — APIs verificadas, contrato incompleto
+
+FR-014/edição/eliminação e contexto de grupos avançaram nas APIs Node/Go: autoria original, intersecção de leitores, histórico mínimo, admissão antes de rede e revalidação de filas/seeding. Controlos reais de3 nós com entrada/remoção, autor offline (porta recusada), seeder e reinício; falhas SQL/índice/corrupção e snapshot de memória testados. Gate83716 e desktop48666 terminaram0:236 Node,153 Go de topo/race,38 interop,SQLite C,19 UI por motor,56 Axe arquivados sem violações,300 fontes inalteradas. Comandos/durações em docs/GROUP-EVENTS.md e docs/evidence/group-events/final. Falhas e correcções preservadas separadamente.
+
+Continuam carriers automáticos, criação/gestão dinâmica na UI, pesquisa integral, keystore/rotação, restantes media/social/templates, notificações reais, plataformas e revisão independente. Nenhuma task nova de agente nem alteração a modelos/bridges/configuração. Produto não concluído.

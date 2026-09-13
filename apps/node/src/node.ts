@@ -33,9 +33,16 @@ import { validateContent } from "./content-validation.js";
 import { type PrivateState } from "./local-state.js";
 import { openPrivateProfile } from "./protected-private.js";
 import { commitGroupConfirmation } from "./group-confirmations.js";
+import {
+  commitGroupEvent,
+  currentGroupEvent,
+  localGroupEvents,
+  groupEventSeeds,
+} from "./group-events.js";
 import type { ProfileDatabase } from "../../../packages/profile/src/database.js";
 import { executeGroupCommand, type GroupCommand } from "./group-commands.js";
 import {
+  GroupAccess,
   hasGroupBinding,
   parseGroupBinding,
   type GroupDecision,
@@ -282,6 +289,7 @@ export class LoomNode extends EventEmitter {
     this.groupHolds = [];
     this.groupDecisions.clear();
     this.groupRetries.clear();
+    this.groupEventSeeds.clear();
     this.identity = undefined;
     this.privateState = { mutations: {} };
     this.privateDatabase?.close();
@@ -294,6 +302,7 @@ export class LoomNode extends EventEmitter {
     return this.identity;
   }
   private groupRetries = new Map<string, GroupRetry>();
+  private groupEventSeeds = new Set<string>();
   private cancelGroupPackets(all = false) {
     const ids = new Set(
       Object.values(this.privateState.outbox ?? {})
@@ -308,29 +317,57 @@ export class LoomNode extends EventEmitter {
         )
         .map((e) => e.id),
     );
-    if (ids.size)
-      this.router.cancelLocal(
-        (payload: any) =>
-          payload?.type === "bundle" && ids.has(payload.bundle?.manifest?.id),
-      );
+    this.router.cancelLocal((payload: any) => {
+      if (payload?.type !== "bundle") return false;
+      const manifest = payload.bundle?.manifest;
+      if (ids.has(manifest?.id)) return true;
+      if (
+        !manifest ||
+        manifest.publicKey ||
+        manifest.author?.id !== this.identity?.public.id ||
+        !currentGroupEvent(manifest.kind)
+      )
+        return false;
+      if (all) return true;
+      try {
+        const content = decryptBundle(payload.bundle, this.identity) as Content;
+        return (
+          hasGroupBinding(content) && !this.groupEventSeeds.has(manifest.id)
+        );
+      } catch {
+        return true;
+      }
+    });
   }
-  private reconcileGroupSends() {
+  private reconcileGroupSends(stored?: readonly Manifest[]) {
     if (!this.identity || !this.privateDatabase || !this.privateDigest) return;
+    const events = localGroupEvents(this.store, this.identity, stored);
     if (
+      !events.length &&
       !Object.values(this.privateState.outbox ?? {}).some((e) => e.groupEpoch)
-    )
+    ) {
+      this.groupEventSeeds.clear();
+      this.cancelGroupPackets();
       return;
+    }
     const next = structuredClone(this.privateState);
     try {
       const decisions = this.privateDatabase.transaction((tx) => {
         if (readProfileState(tx)?.digest !== this.privateDigest)
           throw new Error("Estado privado desactualizado");
-        return GroupLedger.run(tx, this.identity!, (l) =>
-          reconcileGroupOutbox(l, next.outbox),
-        ).value;
+        return GroupLedger.run(tx, this.identity!, (l, registry) => ({
+          outbox: reconcileGroupOutbox(l, next.outbox),
+          events: groupEventSeeds(
+            l,
+            events,
+            this.config.blocked,
+            new GroupAccess(registry, this.identity!.public),
+          ),
+        })).value;
       });
       this.privateState = next;
-      this.groupRetries = decisions;
+      this.groupRetries = decisions.outbox;
+      this.groupEventSeeds = decisions.events;
       this.cancelGroupPackets();
     } catch (error) {
       this.cancelGroupPackets(true);
@@ -341,6 +378,7 @@ export class LoomNode extends EventEmitter {
         this.privateState = loaded.state;
         this.privateDigest = loaded.digest;
         this.groupRetries.clear();
+        this.groupEventSeeds.clear();
       } catch {
         this.lock();
       }
@@ -458,14 +496,15 @@ export class LoomNode extends EventEmitter {
   }
   private restoreGroupHolds() {
     if (!this.identity || !this.privateDatabase) return;
-    this.reconcileGroupSends();
+    const stored = this.store.list();
+    this.reconcileGroupSends(stored);
     const held = this.privateDatabase
       .transaction(
         (tx) =>
           GroupLedger.run(tx, this.identity!, (ledger) => ledger.held()).value,
       )
       .filter((entry) => entry.expires > Date.now());
-    const verified = new Set(this.store.list().map((manifest) => manifest.id));
+    const verified = new Set(stored.map((manifest) => manifest.id));
     this.store.setReservations([
       ...groupOutboxReservations(this.privateState.outbox).filter((id) =>
         verified.has(id),
@@ -1040,6 +1079,7 @@ export class LoomNode extends EventEmitter {
       ];
     } else throw new Error("Acção desconhecida");
     this.saveConfig();
+    if (action === "block") this.reconcileGroupSends();
   }
   private preparePublication(
     content: Content,
@@ -1176,6 +1216,50 @@ export class LoomNode extends EventEmitter {
     recipients: string[] | "public",
     ttlMs?: number,
   ): DisplayObject {
+    if (hasGroupBinding(content)) {
+      const identity = this.requireIdentity();
+      this.objects(); // Admit the verified original before an event can evict it.
+      if (!this.privateDatabase || !this.privateDigest)
+        throw new Error("Estado privado indisponível");
+      let bundle: Bundle;
+      try {
+        bundle = commitGroupEvent(
+          this.privateDatabase,
+          identity,
+          this.privateDigest,
+          this.store,
+          content,
+          recipients,
+          this.config.blocked,
+          ttlMs,
+        );
+      } catch (error) {
+        try {
+          this.privateDatabase.close();
+          const loaded = openPrivateProfile(this.dir, identity);
+          this.privateDatabase = loaded.database;
+          this.privateState = loaded.state;
+          this.privateDigest = loaded.digest;
+          this.restoreGroupHolds();
+        } catch {
+          this.lock();
+        }
+        throw error;
+      }
+      this.store.put(bundle);
+      if (
+        !this.observeGroup(
+          bundle.manifest.id,
+          new Set(this.store.list().map((m) => m.id)),
+        )
+      )
+        throw new Error("O evento não pôde ser admitido");
+      this.reconcileGroupSends();
+      if (!this.maySeed(bundle.manifest))
+        throw new Error("O grupo já não autoriza este evento");
+      this.router.broadcast({ type: "bundle", bundle }, "normal");
+      return this.display(bundle)!;
+    }
     return this.commitPublication(
       this.preparePublication(content, recipients, ttlMs),
     );
@@ -1216,7 +1300,11 @@ export class LoomNode extends EventEmitter {
     return this.display(bundle)!;
   }
   private maySeed(manifest: Manifest) {
-    if (manifest.kind !== "message" || manifest.publicKey) return true;
+    if (
+      (manifest.kind !== "message" && !currentGroupEvent(manifest.kind)) ||
+      manifest.publicKey
+    )
+      return true;
     // A cold locked profile cannot authenticate its own private retry history.
     // Transit relay remains active; a fresh relay without an identity can seed.
     if (!this.identity) return !this.initialized;
@@ -1227,6 +1315,8 @@ export class LoomNode extends EventEmitter {
     ) as Content;
     validateContent(content);
     if (!hasGroupBinding(content)) return true;
+    if (currentGroupEvent(manifest.kind))
+      return this.groupEventSeeds.has(manifest.id);
     const entry = Object.values(this.privateState.outbox ?? {}).find(
       (e) => e.id === manifest.id,
     );
@@ -1438,8 +1528,8 @@ export class LoomNode extends EventEmitter {
   private objectsSnapshot(): { objects: DisplayObject[]; outboxAt: number } {
     this.requireRunning();
     if (!this.identity) return { objects: [], outboxAt: Date.now() };
-    this.reconcileGroupSends();
     const stored = this.store.list();
+    this.reconcileGroupSends(stored);
     const verifiedIds = new Set(stored.map((manifest) => manifest.id));
     const manifests = stored.filter(
       (m) => !this.config.blocked.includes(m.author.id) || m.kind === "group",

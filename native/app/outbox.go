@@ -282,11 +282,14 @@ func (n *Node) reconcileOutboxModeLocked(now int64, recovering bool) error {
 	return n.reconcileOutboxManifestsLocked(now, recovering, n.outboxManifestsLocked())
 }
 func (n *Node) reconcileOutboxManifestsLocked(now int64, recovering bool, manifests map[string]core.Manifest) error {
-	if n.identity == nil || len(n.private.Outbox) == 0 {
+	if n.identity == nil {
 		return nil
 	}
-	if err := n.reconcileGroupSendsLocked(); err != nil {
+	if err := n.reconcileGroupSendsLocked(manifests); err != nil {
 		return err
+	}
+	if len(n.private.Outbox) == 0 {
+		return nil
 	}
 	next, err := copyPrivate(n.private, n.identity.Public.ID)
 	if err != nil {
