@@ -1,0 +1,74 @@
+[
+  {
+    "variant": "seeding-profile",
+    "note": "CPU samples across owned Node processes, including the driver. Different random identities and host scheduling; not a Windows benchmark.",
+    "processes": [
+      {
+        "profile": "17131-main.cpuprofile",
+        "sampledMs": 38203.0,
+        "signatureVerificationMs": 0.8,
+        "publicKeyImportMs": 1.5
+      },
+      {
+        "profile": "17175-main.cpuprofile",
+        "sampledMs": 10876.2,
+        "signatureVerificationMs": 3997.4,
+        "publicKeyImportMs": 612.3
+      },
+      {
+        "profile": "17203-main.cpuprofile",
+        "sampledMs": 37638.4,
+        "signatureVerificationMs": 11283.7,
+        "publicKeyImportMs": 1595.6
+      },
+      {
+        "profile": "17405-main.cpuprofile",
+        "sampledMs": 36378.4,
+        "signatureVerificationMs": 8665.1,
+        "publicKeyImportMs": 1342.1
+      },
+      {
+        "profile": "22003-main.cpuprofile",
+        "sampledMs": 19515.2,
+        "signatureVerificationMs": 8543.3,
+        "publicKeyImportMs": 1256.5
+      }
+    ]
+  },
+  {
+    "variant": "seeding-profile-after",
+    "note": "CPU samples across owned Node processes, including the driver. Different random identities and host scheduling; not a Windows benchmark.",
+    "processes": [
+      {
+        "profile": "101764-main.cpuprofile",
+        "sampledMs": 21103.8,
+        "signatureVerificationMs": 0.0,
+        "publicKeyImportMs": 0.0
+      },
+      {
+        "profile": "101796-main.cpuprofile",
+        "sampledMs": 7016.0,
+        "signatureVerificationMs": 1744.6,
+        "publicKeyImportMs": 287.6
+      },
+      {
+        "profile": "101849-main.cpuprofile",
+        "sampledMs": 20257.0,
+        "signatureVerificationMs": 4532.6,
+        "publicKeyImportMs": 632.8
+      },
+      {
+        "profile": "101908-main.cpuprofile",
+        "sampledMs": 19202.2,
+        "signatureVerificationMs": 3462.4,
+        "publicKeyImportMs": 475.8
+      },
+      {
+        "profile": "102564-main.cpuprofile",
+        "sampledMs": 10404.3,
+        "signatureVerificationMs": 3601.4,
+        "publicKeyImportMs": 470.1
+      }
+    ]
+  }
+]

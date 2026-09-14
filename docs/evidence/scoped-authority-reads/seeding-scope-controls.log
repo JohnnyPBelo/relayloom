@@ -1,0 +1,48 @@
+TAP version 13
+# (node:84150) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: repeated authority reads share verified checkpoint work only inside an unchanged transaction
+ok 1 - repeated authority reads share verified checkpoint work only inside an unchanged transaction
+  ---
+  duration_ms: 71.213988
+  type: 'test'
+  ...
+# Subtest: a write after a cached read revalidates corruption and aborts the outer transaction
+ok 2 - a write after a cached read revalidates corruption and aborts the outer transaction
+  ---
+  duration_ms: 49.152095
+  type: 'test'
+  ...
+# Subtest: a closure in the same authority scope invalidates an earlier active view
+ok 3 - a closure in the same authority scope invalidates an earlier active view
+  ---
+  duration_ms: 89.555186
+  type: 'test'
+  ...
+# Subtest: a cached checkpoint cannot hide deletion of its referenced epoch: proof
+ok 4 - a cached checkpoint cannot hide deletion of its referenced epoch: proof
+  ---
+  duration_ms: 48.280691
+  type: 'test'
+  ...
+# Subtest: a cached checkpoint cannot hide deletion of its referenced snapshot: proof
+ok 5 - a cached checkpoint cannot hide deletion of its referenced snapshot: proof
+  ---
+  duration_ms: 59.915555
+  type: 'test'
+  ...
+# Subtest: the scoped checkpoint work cache evicts old groups instead of retaining every read
+ok 6 - the scoped checkpoint work cache evicts old groups instead of retaining every read
+  ---
+  duration_ms: 232.282343
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 736.55609

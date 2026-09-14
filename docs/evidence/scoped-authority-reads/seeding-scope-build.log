@@ -1,0 +1,18 @@
+
+> relayloom@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 1591 modules transformed.
+rendering chunks...
+computing gzip size...
+../../dist/web/index.html                   0.58 kB │ gzip:   0.35 kB
+../../dist/web/assets/index-BnqLzYZ2.css   68.66 kB │ gzip:  14.19 kB
+../../dist/web/assets/index-BL498P-X.js   336.95 kB │ gzip: 104.00 kB
+✓ built in 1.45s
+npm notice
+npm notice New major version of npm available! 10.9.8 -> 12.0.2
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.0.2
+npm notice To update run: npm install -g npm@12.0.2
+npm notice

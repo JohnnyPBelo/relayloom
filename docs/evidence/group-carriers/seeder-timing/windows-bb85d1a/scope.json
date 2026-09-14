@@ -16,8 +16,12 @@
     "elapsedMs": 651148.4245
   },
   "linux": "success",
-  "macos": "last observed running",
+  "macos": "success",
   "rerun_dispatched": false,
-  "whole_run_finished": false,
-  "no_timeout_increase": true
+  "whole_run_finished": true,
+  "no_timeout_increase": true,
+  "runConclusion": "failure",
+  "nativeGo": "skipped",
+  "desktop": "skipped",
+  "iOS": "skipped"
 }

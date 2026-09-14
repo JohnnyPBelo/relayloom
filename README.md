@@ -1,5 +1,7 @@
 # RelayLoom
 
+As leituras de autoridade reutilizam trabalho apenas na mesma transacção autenticada, com invalidação após escritas. Passaram 275 testes Node, 57 de interoperabilidade e 46 de UI no host; o CI Windows continua por confirmar. [Regras, controlos e evidência](docs/SCOPED-AUTHORITY-READS.md).
+
 **Grupos na interface Liquid Glass:** criação, convites, aceitação explícita, aprovação e mensagens reais em Node/Go. A mudança de membros preserva o rascunho e exige rever a audiência. [Como funciona, testes e limites](docs/DYNAMIC-GROUP-UI.md).
 
 **Paridade web obrigatória:** o contrato inclui uma aplicação autónoma aberta por URL, sem instalação, com todas as funcionalidades de produto das versões nativas. Este marco ainda serve a interface a partir do nó local; o motor autónomo e a sua paridade permanecem em desenvolvimento.

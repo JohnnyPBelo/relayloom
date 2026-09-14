@@ -157,6 +157,10 @@ export class GroupRegistry {
   private readonly cardHash: string;
   private deferredRejections?: GroupProofRejection[];
   private scopeCheck?: () => number;
+  private verifiedRecords?: {
+    generation: number;
+    values: Map<string, GroupRecord>;
+  };
   /** Runtime admission caches may only live inside the borrowed transaction. */
   assertScope() {
     requireThat(
@@ -195,6 +199,7 @@ export class GroupRegistry {
     let active = true,
       failed = false,
       failure: unknown;
+    let borrowed: GroupRegistry | undefined;
     const execute = <R>(operation: (tx: RegistryTransaction) => R): R => {
       if (!active) throw new Error("Âmbito de autoridade encerrado");
       if (failed) throw failure;
@@ -218,11 +223,16 @@ export class GroupRegistry {
         },
         identity,
       );
+      borrowed = registry;
       const rejections: GroupProofRejection[] = [];
       registry.deferredRejections = rejections;
       registry.scopeCheck = () => {
         requireThat(active, "Âmbito de autoridade encerrado");
         return tx.generation();
+      };
+      registry.verifiedRecords = {
+        generation: tx.generation(),
+        values: new Map(),
       };
       const value = callback(registry);
       if (failed) throw failure;
@@ -237,9 +247,33 @@ export class GroupRegistry {
       );
     } finally {
       active = false;
+      if (borrowed) borrowed.verifiedRecords = undefined;
     }
   }
   private record(tx: RegistryTransaction, id: string): GroupRecord {
+    const cache = this.verifiedRecords;
+    if (!cache) return this.readRecord(tx, id);
+    const generation = this.assertScope();
+    if (cache.generation !== generation) {
+      cache.values.clear();
+      cache.generation = generation;
+    }
+    const saved = cache.values.get(id);
+    if (saved) return structuredClone(saved);
+    const record = this.readRecord(tx, id);
+    // Only immutable reads in the same authenticated transaction share work.
+    // Any write invalidates all entries; returned objects never alias the cache.
+    // Eight bounded checkpoints retain at most 416 KiB of encoded data.
+    if (
+      Buffer.byteLength(canonical(record)) <= AUTHORITY_LIMITS.checkpointBytes
+    ) {
+      if (cache.values.size >= 8)
+        cache.values.delete(cache.values.keys().next().value!);
+      cache.values.set(id, structuredClone(record));
+    }
+    return record;
+  }
+  private readRecord(tx: RegistryTransaction, id: string): GroupRecord {
     requireThat(address(id), "Identificador de grupo inválido");
     const bytes = tx.get(key(id));
     requireThat(bytes, "Grupo não está registado localmente");
