@@ -1,0 +1,41 @@
+File: before.test
+Build ID: f51a73f0e5c8989147fca96fd5e4083a062bdee8
+Type: cpu
+Time: 2026-09-14 07:06:37 WEST
+Duration: 36.80s, Total samples = 33.97s (92.32%)
+Showing nodes accounting for 18.03s, 53.08% of 33.97s total
+Dropped 714 nodes (cum <= 0.17s)
+Showing top 32 nodes out of 226
+      flat  flat%   sum%        cum   cum%
+         0     0%     0%     15.39s 45.30%  runtime._System
+         0     0%     0%     12.93s 38.06%  testing.tRunner
+         0     0%     0%     12.92s 38.03%  github.com/JohnnyPBelo/relayloom/native/app.TestGroupEventQueuedFences.func1
+         0     0%     0%     10.90s 32.09%  github.com/JohnnyPBelo/relayloom/native/groupstore.(*Store).execute
+         0     0%     0%     10.78s 31.73%  github.com/JohnnyPBelo/relayloom/native/profiledb.(*Database).Update
+         0     0%     0%     10.29s 30.29%  github.com/JohnnyPBelo/relayloom/native/profiledb.(*Database).Update.func1
+         0     0%     0%      9.55s 28.11%  github.com/JohnnyPBelo/relayloom/native/groupauthority.InTransaction
+         0     0%     0%      9.55s 28.11%  github.com/JohnnyPBelo/relayloom/native/groupledger.Run
+         0     0%     0%      9.38s 27.61%  github.com/JohnnyPBelo/relayloom/native/groupledger.Run.func1
+         0     0%     0%      9.03s 26.58%  github.com/JohnnyPBelo/relayloom/native/groupauthority.(*borrowedStore).execute
+         0     0%     0%      8.70s 25.61%  github.com/JohnnyPBelo/relayloom/native/app.(*Node).Handle
+     8.64s 25.43% 25.43%      8.64s 25.43%  __tsan_read
+         0     0% 25.43%      8.58s 25.26%  github.com/JohnnyPBelo/relayloom/native/app.groupConfirmationFixture
+         0     0% 25.43%      8.29s 24.40%  github.com/JohnnyPBelo/relayloom/native/groupauthority.(*borrowedStore).View
+         0     0% 25.43%      6.83s 20.11%  github.com/JohnnyPBelo/relayloom/native/app.apply
+         0     0% 25.43%      6.09s 17.93%  github.com/JohnnyPBelo/relayloom/native/groupauthority.(*Registry).snapshot
+         0     0% 25.43%      5.79s 17.04%  github.com/JohnnyPBelo/relayloom/native/groupauthority.(*Registry).record
+         0     0% 25.43%      5.28s 15.54%  github.com/JohnnyPBelo/relayloom/native/groupauthority.(*Registry).validateRecord
+     5.11s 15.04% 40.48%      5.11s 15.04%  racecall
+         0     0% 40.48%      4.92s 14.48%  github.com/JohnnyPBelo/relayloom/native/groups.VerifyEpoch
+         0     0% 40.48%      4.67s 13.75%  crypto/ed25519.VerifyWithOptions
+         0     0% 40.48%      4.64s 13.66%  github.com/JohnnyPBelo/relayloom/native/app.(*Node).groupCommandLocked
+         0     0% 40.48%      4.50s 13.25%  crypto/internal/fips140/ed25519.verify
+         0     0% 40.48%      4.49s 13.22%  crypto/internal/fips140/ed25519.verifyWithDom
+         0     0% 40.48%      4.36s 12.83%  github.com/JohnnyPBelo/relayloom/native/groupauthority.(*Registry).checkedSnapshot
+         0     0% 40.48%      4.25s 12.51%  github.com/JohnnyPBelo/relayloom/native/groupaccess.(*Access).chain
+     0.12s  0.35% 40.83%      4.24s 12.48%  crypto/internal/fips140/edwards25519.(*Point).VarTimeDoubleScalarBaseMult
+     4.16s 12.25% 53.08%      4.16s 12.25%  __tsan_write
+         0     0% 53.08%      3.65s 10.74%  github.com/JohnnyPBelo/relayloom/native/groupaccess.(*Access).Decide
+         0     0% 53.08%      3.59s 10.57%  github.com/JohnnyPBelo/relayloom/native/core.ValidateIdentity
+         0     0% 53.08%      3.41s 10.04%  github.com/JohnnyPBelo/relayloom/native/app.(*Node).Publish
+         0     0% 53.08%      3.41s 10.04%  github.com/JohnnyPBelo/relayloom/native/app.(*Node).publishGroupEventLocked

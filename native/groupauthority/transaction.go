@@ -49,8 +49,12 @@ func (s *borrowedStore) Update(callback func(*groupstore.Tx) error) error { retu
 // even if the callback tried to swallow that error.
 func InTransaction(tx *groupstore.Tx, identity core.Identity, callback func(*Registry) error) (rejections []ProofRejection, err error) {
 	scope := &borrowedStore{tx: tx, active: true}
+	var registry *Registry
 	defer func() {
 		scope.active = false
+		if registry != nil {
+			registry.verifiedRecords = nil
+		}
 		if recovered := recover(); recovered != nil {
 			_ = tx.Abort(errors.New("âmbito de autoridade interrompido"))
 			panic(recovered)
@@ -59,7 +63,7 @@ func InTransaction(tx *groupstore.Tx, identity core.Identity, callback func(*Reg
 			err = tx.Abort(err)
 		}
 	}()
-	registry, err := newRegistry(scope, identity)
+	registry, err = newRegistry(scope, identity)
 	if err != nil {
 		return nil, err
 	}
@@ -71,6 +75,11 @@ func InTransaction(tx *groupstore.Tx, identity core.Identity, callback func(*Reg
 		}
 		return tx.Generation()
 	}
+	generation, err := tx.Generation()
+	if err != nil {
+		return nil, err
+	}
+	registry.verifiedRecords = &verifiedRecords{generation: generation, values: make(map[string]*record)}
 	if err := callback(registry); err != nil {
 		return nil, err
 	}

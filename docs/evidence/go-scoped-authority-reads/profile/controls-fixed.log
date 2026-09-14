@@ -1,0 +1,20 @@
+=== RUN   TestVerifiedReadScopeClonesAndLifetime
+    read_cache_test.go:35: 25 unchanged scoped reads: 214.648046ms
+    read_cache_test.go:35: 25 unchanged scoped reads: 208.683187ms
+--- PASS: TestVerifiedReadScopeClonesAndLifetime (0.49s)
+=== RUN   TestVerifiedReadScopeInvalidatesReferencedWrites
+=== RUN   TestVerifiedReadScopeInvalidatesReferencedWrites/checkpoint
+=== RUN   TestVerifiedReadScopeInvalidatesReferencedWrites/epoch:
+=== RUN   TestVerifiedReadScopeInvalidatesReferencedWrites/snapshot:
+--- PASS: TestVerifiedReadScopeInvalidatesReferencedWrites (0.41s)
+    --- PASS: TestVerifiedReadScopeInvalidatesReferencedWrites/checkpoint (0.13s)
+    --- PASS: TestVerifiedReadScopeInvalidatesReferencedWrites/epoch: (0.13s)
+    --- PASS: TestVerifiedReadScopeInvalidatesReferencedWrites/snapshot: (0.14s)
+=== RUN   TestVerifiedReadScopeClosureInvalidatesEarlierView
+--- PASS: TestVerifiedReadScopeClosureInvalidatesEarlierView (0.18s)
+=== RUN   TestVerifiedReadScopeRetainsAtMostEightCheckpoints
+--- PASS: TestVerifiedReadScopeRetainsAtMostEightCheckpoints (0.66s)
+=== RUN   TestAuthorityRecordClonePreservesWireStringsAndReferences
+--- PASS: TestAuthorityRecordClonePreservesWireStringsAndReferences (0.00s)
+PASS
+ok  	github.com/JohnnyPBelo/relayloom/native/groupauthority	2.754s

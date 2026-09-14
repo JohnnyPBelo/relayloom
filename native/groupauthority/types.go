@@ -69,11 +69,12 @@ type View struct {
 	StopEvidence   []EvidenceID        `json:"stopEvidence"`
 }
 type Registry struct {
-	rejections *[]ProofRejection
-	store      authorityStore
-	identity   core.Identity
-	cardHash   string
-	scopeCheck func() (uint64, error)
+	rejections      *[]ProofRejection
+	store           authorityStore
+	identity        core.Identity
+	cardHash        string
+	scopeCheck      func() (uint64, error)
+	verifiedRecords *verifiedRecords
 }
 
 func (g *Registry) ScopeGeneration() (uint64, error) {

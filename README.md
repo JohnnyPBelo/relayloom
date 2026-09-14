@@ -1,5 +1,7 @@
 # RelayLoom
 
+A optimização das leituras de autoridade também está ligada ao motor Go. Passou o gate local completo, incluindo interoperabilidade e UI; o novo resultado CI ainda está pendente. [Comportamento, comandos e limites](docs/GO-SCOPED-AUTHORITY-READS.md).
+
 As leituras de autoridade reutilizam trabalho apenas na mesma transacção autenticada, com invalidação após escritas. Passaram 275 testes Node, 57 de interoperabilidade e 46 de UI no host; o CI Windows continua por confirmar. [Regras, controlos e evidência](docs/SCOPED-AUTHORITY-READS.md).
 
 **Grupos na interface Liquid Glass:** criação, convites, aceitação explícita, aprovação e mensagens reais em Node/Go. A mudança de membros preserva o rascunho e exige rever a audiência. [Como funciona, testes e limites](docs/DYNAMIC-GROUP-UI.md).

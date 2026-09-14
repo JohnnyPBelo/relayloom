@@ -108,6 +108,21 @@ func (g *Registry) record(tx *groupstore.Tx, id string) (*record, error) {
 	if !core.ValidAddress(id) {
 		return nil, errors.New("identificador de grupo inválido")
 	}
+	cache := g.verifiedRecords
+	if cache != nil {
+		generation, err := g.ScopeGeneration()
+		if err != nil {
+			return nil, err
+		}
+		if cache.generation != generation {
+			cache.values = make(map[string]*record)
+			cache.order = nil
+			cache.generation = generation
+		}
+		if saved := cache.values[id]; saved != nil {
+			return cloneAuthorityRecord(saved), nil
+		}
+	}
 	data, exists, err := tx.Get(groupKey(id))
 	if err != nil {
 		return nil, err
@@ -121,6 +136,9 @@ func (g *Registry) record(tx *groupstore.Tx, id string) (*record, error) {
 	}
 	if err = g.validateRecord(tx, r, id); err != nil {
 		return nil, integrity(err)
+	}
+	if cache != nil && len(data) <= CheckpointBytes {
+		cache.remember(id, r)
 	}
 	return r, nil
 }

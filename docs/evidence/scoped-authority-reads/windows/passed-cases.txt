@@ -1,0 +1,32 @@
+2026-09-14T05:30:09.9503766Z # Subtest: real Node group newcomer cannot read earlier audiences; peer serves author's edit while author is offline
+2026-09-14T05:30:09.9505551Z ok 73 - real Node group newcomer cannot read earlier audiences; peer serves author's edit while author is offline
+2026-09-14T05:30:09.9506532Z   ---
+2026-09-14T05:30:09.9507251Z   duration_ms: 30975.5938
+2026-09-14T05:30:09.9507650Z   type: 'test'
+2026-09-14T05:30:09.9507980Z   ...
+
+2026-09-14T05:32:38.0517987Z # Subtest: invitation result and exact delivery card commit together and survive reopening encrypted SQLite
+2026-09-14T05:32:38.0519537Z ok 96 - invitation result and exact delivery card commit together and survive reopening encrypted SQLite
+2026-09-14T05:32:38.0520038Z   ---
+2026-09-14T05:32:38.0520599Z   duration_ms: 123.7928
+2026-09-14T05:32:38.0520954Z   type: 'test'
+2026-09-14T05:32:38.0521234Z   ...
+
+2026-09-14T05:32:38.0603731Z # Subtest: authenticated malformed notice metadata aborts the outer transaction even if its error is caught
+2026-09-14T05:32:38.0605412Z ok 99 - authenticated malformed notice metadata aborts the outer transaction even if its error is caught
+2026-09-14T05:32:38.0606423Z   ---
+2026-09-14T05:32:38.0607116Z   duration_ms: 65.7528
+2026-09-14T05:32:38.0607480Z   type: 'test'
+2026-09-14T05:32:38.0607821Z   ...
+
+2026-09-14T05:35:41.0163102Z   type: 'test'
+2026-09-14T05:35:41.0163844Z   ...
+2026-09-14T05:35:41.0344496Z 1..272
+2026-09-14T05:35:41.0344844Z # tests 275
+2026-09-14T05:35:41.0345503Z # suites 0
+2026-09-14T05:35:41.0345873Z # pass 270
+2026-09-14T05:35:41.0346185Z # fail 0
+2026-09-14T05:35:41.0346696Z # cancelled 0
+2026-09-14T05:35:41.0347061Z # skipped 5
+2026-09-14T05:35:41.0347239Z # todo 0
+2026-09-14T05:35:41.0347456Z # duration_ms 487684.5113
