@@ -21,11 +21,58 @@ final class RelayViewController: UIViewController, WKNavigationDelegate, WKUIDel
     private var backgroundTask: UIBackgroundTaskIdentifier = .invalid
     private var microphonePrompt = false
     private var pendingMediaDecision: OnceCompletion<WKPermissionDecision>?
+    private let keyboardDismissButton = UIButton(type: .system)
+    private var keyboardDismissConstraints: [NSLayoutConstraint] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(red: 0.96, green: 0.96, blue: 0.94, alpha: 1)
+        var keyboardStyle = UIButton.Configuration.tinted()
+        keyboardStyle.title = "Ocultar teclado"
+        keyboardStyle.image = UIImage(systemName: "keyboard.chevron.compact.down")
+        keyboardStyle.imagePadding = 8
+        keyboardStyle.cornerStyle = .capsule
+        keyboardStyle.baseForegroundColor = .label
+        keyboardStyle.baseBackgroundColor = .secondarySystemBackground
+        keyboardStyle.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12)
+        keyboardDismissButton.configuration = keyboardStyle
+        keyboardDismissButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        keyboardDismissButton.titleLabel?.numberOfLines = 0
+        keyboardDismissButton.accessibilityIdentifier = "relayloom.hide-keyboard"
+        keyboardDismissButton.accessibilityLabel = "Ocultar teclado"
+        keyboardDismissButton.accessibilityHint = "Termina a escrita sem enviar o formulário."
+        keyboardDismissButton.addTarget(self, action: #selector(hideKeyboard), for: .touchUpInside)
+        keyboardDismissButton.isHidden = true
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardFrameChanged(_:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
         showStatus("A preparar o teu nó neste dispositivo…", retry: false)
+    }
+
+    deinit { NotificationCenter.default.removeObserver(self) }
+
+    @objc private func hideKeyboard() {
+        guard foreground, web != nil else { return }
+        view.endEditing(true)
+    }
+
+    @objc private func keyboardFrameChanged(_ notification: Notification) {
+        guard isViewLoaded, let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+        let localFrame = view.convert(frame, from: nil)
+        keyboardDismissButton.isHidden = !foreground || web == nil || localFrame.height <= 0 || localFrame.minY >= view.bounds.maxY || !view.bounds.intersects(localFrame)
+    }
+
+    private func installKeyboardDismissButton() {
+        NSLayoutConstraint.deactivate(keyboardDismissConstraints)
+        keyboardDismissButton.translatesAutoresizingMaskIntoConstraints = false
+        keyboardDismissButton.isHidden = true
+        view.addSubview(keyboardDismissButton)
+        view.keyboardLayoutGuide.followsUndockedKeyboard = true
+        keyboardDismissConstraints = [
+            keyboardDismissButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            keyboardDismissButton.leadingAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            keyboardDismissButton.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor, constant: -8),
+            keyboardDismissButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 44)
+        ]
+        NSLayoutConstraint.activate(keyboardDismissConstraints)
     }
 
     func startForeground() {
@@ -75,6 +122,10 @@ final class RelayViewController: UIViewController, WKNavigationDelegate, WKUIDel
     }
 
     private func disposeWeb() {
+        keyboardDismissButton.isHidden = true
+        NSLayoutConstraint.deactivate(keyboardDismissConstraints)
+        keyboardDismissConstraints = []
+        keyboardDismissButton.removeFromSuperview()
         if let web {
             web.stopLoading()
             web.pauseAllMediaPlayback(completionHandler: nil)
@@ -116,6 +167,7 @@ final class RelayViewController: UIViewController, WKNavigationDelegate, WKUIDel
                     self.view.addSubview(web)
                     NSLayoutConstraint.activate([web.leadingAnchor.constraint(equalTo: self.view.leadingAnchor), web.trailingAnchor.constraint(equalTo: self.view.trailingAnchor), web.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor), web.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)])
                     self.web = web; web.load(URLRequest(url: policy.launchURL))
+                    self.installKeyboardDismissButton()
                 }
             }
         } catch { Self.runtime.stop(current); lease = 0; endpoint = nil; showStatus("Sessão local inválida.", retry: true) }

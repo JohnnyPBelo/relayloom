@@ -214,12 +214,15 @@ final class NativeSimulatorTests: XCTestCase {
     @MainActor private func dismissKeyboard(_ app: XCUIApplication, anchor: String) throws {
         guard app.keyboards.firstMatch.exists else { return }
         do {
+            let nativeDismiss = app.buttons["relayloom.hide-keyboard"]
             // The iOS input accessory can be a button or a key. These exact
             // semantic labels never select Return or submit the form.
             let labels = ["Done", "Hide keyboard", "Dismiss keyboard"] as NSArray
             let predicate = NSPredicate(format: "identifier IN[c] %@ OR label IN[c] %@", labels, labels)
             let candidates = app.buttons.matching(predicate).allElementsBoundByIndex + app.keys.matching(predicate).allElementsBoundByIndex
-            if let done = candidates.first(where: { $0.isHittable }) {
+            if nativeDismiss.exists && nativeDismiss.isHittable {
+                nativeDismiss.tap()
+            } else if let done = candidates.first(where: { $0.isHittable }) {
                 done.tap()
             } else {
                 let text = app.webViews.staticTexts[anchor].firstMatch
