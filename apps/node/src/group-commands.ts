@@ -11,9 +11,16 @@ import type {
   GroupSnapshot,
 } from "../../../packages/groups/src/certificates.js";
 import type { PublicIdentity } from "../../../packages/core/src/index.js";
+import {
+  GroupNotices,
+  type GroupNotice,
+} from "../../../packages/groups/src/notices.js";
 
 export type GroupCommand =
   | { action: "list" }
+  | { action: "notice-list" | "notice-outbox" }
+  | { action: "notice-dismiss"; id: string }
+  | { action: "notice-open"; id: string; operationId: string }
   | { action: "state"; groupId: string }
   | { action: "operation"; operationId: string }
   | { action: "create"; operationId: string; title: string }
@@ -76,15 +83,69 @@ export function executeGroupCommand(
         "O estado privado mudou; volte a lê-lo antes de gerir o grupo",
       );
     return GroupLedger.run(tx, identity, (ledger, g) => {
+      const notices = new GroupNotices(tx, identity.public);
       const response = (() => {
         let result: unknown;
         switch (command.action) {
+          case "notice-list":
+            return { notices: notices.list("in") };
+          case "notice-outbox":
+            return { notices: notices.list("out") };
+          case "notice-dismiss":
+            return { retired: notices.retire("in", command.id) };
+          case "notice-open": {
+            const previous = g.operationStatus(command.operationId);
+            if (
+              previous?.certificate?.id === command.id &&
+              previous.certificate.body.domain ===
+                "relayloom/group-invitation/1" &&
+              previous.certificate.body.inviteeId === identity.public.id
+            ) {
+              result = previous;
+              break;
+            }
+            const notice = notices
+              .list("in")
+              .find((e) => e.notice.certificate.id === command.id)?.notice;
+            if (!notice || notice.kind !== "invitation")
+              throw new Error("Convite indisponível");
+            const known = g.list().find((v) => v.id === notice.anchor.id);
+            if (known) {
+              const info = g.syncState(known.id);
+              if (
+                info.admitted ||
+                (info.consent && info.invitation?.id === notice.certificate.id)
+              )
+                throw new Error(
+                  "Convite já aceite; aguarda a confirmação ou consulta o grupo",
+                );
+            }
+            if (
+              known?.head &&
+              known.head.body.number >= notice.parent.body.number &&
+              known.head.id !== notice.parent.id
+            )
+              throw new Error(
+                "O grupo já avançou; é necessário um convite actual",
+              );
+            result = g.rememberInvitation(
+              command.operationId,
+              notice.anchor,
+              notice.parent,
+              notice.certificate,
+            );
+            // Explicit opening makes this a known group. Its signed birth
+            // header is sufficient by itself; later parents still need ancestry.
+            g.observeHeaders(notice.anchor.id, [notice.parent]);
+            break;
+          }
           case "list":
             return {
               groups: g.list(),
               limits: { groups: 64, operations: 256 },
               management: true,
               messaging: false,
+              noticeCount: notices.count("in"),
             };
           case "state":
             return { group: g.state(command.groupId) };
@@ -100,6 +161,22 @@ export function executeGroupCommand(
               command.expected,
               command.card,
             );
+            // Keep the exact delivery card with the issuance transaction.
+            // Replaying an old operation must not revive an obsolete invitation.
+            const parent = g.state(command.groupId).head;
+            if (parent?.id === command.expected) {
+              const notice: GroupNotice = {
+                type: "group-notice",
+                version: 1,
+                kind: "invitation",
+                anchor: g.anchor(command.groupId),
+                parent,
+                member: command.card,
+                certificate: (result as GroupOperationResult)
+                  .certificate as GroupInvitation,
+              };
+              notices.save("out", notice);
+            }
             break;
           case "remember":
             result = g.rememberInvitation(

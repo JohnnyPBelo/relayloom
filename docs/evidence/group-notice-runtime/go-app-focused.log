@@ -1,0 +1,8 @@
+=== RUN   TestApplicationMessagesGroupsReceiptsAndPrivacy
+--- PASS: TestApplicationMessagesGroupsReceiptsAndPrivacy (1.82s)
+=== RUN   TestVerifiedControlReplayAvoidsReapplicationAndKeepsSafetyHeaders
+--- PASS: TestVerifiedControlReplayAvoidsReapplicationAndKeepsSafetyHeaders (11.97s)
+=== RUN   TestNoticeCancellationRecoversStaleStateOutsideRouterLock
+--- PASS: TestNoticeCancellationRecoversStaleStateOutsideRouterLock (1.29s)
+PASS
+ok  	github.com/JohnnyPBelo/relayloom/native/app	16.137s

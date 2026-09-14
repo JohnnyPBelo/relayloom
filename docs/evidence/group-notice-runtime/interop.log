@@ -1,0 +1,122 @@
+TAP version 13
+# Subtest: opaque Go relay rejects public, oversized and excessive-lifetime controls before storage and forwarding
+ok 1 - opaque Go relay rejects public, oversized and excessive-lifetime controls before storage and forwarding
+  ---
+  duration_ms: 1440.951954
+  type: 'test'
+  ...
+# Subtest: real native/node/native group event seed takeover and new-reader exclusion
+ok 2 - real native/node/native group event seed takeover and new-reader exclusion
+  ---
+  duration_ms: 18456.314927
+  type: 'test'
+  ...
+# Subtest: real node/native/node group event seed takeover and new-reader exclusion
+ok 3 - real node/native/node group event seed takeover and new-reader exclusion
+  ---
+  duration_ms: 26880.894631
+  type: 'test'
+  ...
+# Subtest: real node→native invitation API preserves exact card, capacity rollback and closure
+ok 4 - real node→native invitation API preserves exact card, capacity rollback and closure
+  ---
+  duration_ms: 14471.32078
+  type: 'test'
+  ...
+# Subtest: real native→node invitation API preserves exact card, capacity rollback and closure
+ok 5 - real native→node invitation API preserves exact card, capacity rollback and closure
+  ---
+  duration_ms: 17055.24615
+  type: 'test'
+  ...
+# Subtest: real native/node invitations, consent, group message and leave use P2P notices
+ok 6 - real native/node invitations, consent, group message and leave use P2P notices
+  ---
+  duration_ms: 2985.22872
+  type: 'test'
+  ...
+# Subtest: real node/native invitations, consent, group message and leave use P2P notices
+ok 7 - real node/native invitations, consent, group message and leave use P2P notices
+  ---
+  duration_ms: 3025.991856
+  type: 'test'
+  ...
+# Subtest: real native/native invitations, consent, group message and leave use P2P notices
+ok 8 - real native/native invitations, consent, group message and leave use P2P notices
+  ---
+  duration_ms: 1708.5178
+  type: 'test'
+  ...
+# (node:4009754) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Go replays notice safety headers before sending, blocked source=false
+ok 9 - Go replays notice safety headers before sending, blocked source=false
+  ---
+  duration_ms: 4175.492251
+  type: 'test'
+  ...
+# Subtest: Go replays notice safety headers before sending, blocked source=true
+ok 10 - Go replays notice safety headers before sending, blocked source=true
+  ---
+  duration_ms: 3903.01693
+  type: 'test'
+  ...
+# (node:4010378) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: opaque relay serves native/node invitation and consent with each author offline
+ok 11 - opaque relay serves native/node invitation and consent with each author offline
+  ---
+  duration_ms: 3598.164526
+  type: 'test'
+  ...
+# Subtest: opaque relay serves node/native invitation and consent with each author offline
+ok 12 - opaque relay serves node/native invitation and consent with each author offline
+  ---
+  duration_ms: 3472.336522
+  type: 'test'
+  ...
+# Subtest: real native/node/native proof sync heals from offline creator through a seeder
+ok 13 - real native/node/native proof sync heals from offline creator through a seeder
+  ---
+  duration_ms: 6541.924848
+  type: 'test'
+  ...
+# Subtest: real node/native/node proof sync heals from offline creator through a seeder
+ok 14 - real node/native/node proof sync heals from offline creator through a seeder
+  ---
+  duration_ms: 9621.973534
+  type: 'test'
+  ...
+# Subtest: Go control publisher reaches isolated Node serial reader through opaque Node relay
+ok 15 - Go control publisher reaches isolated Node serial reader through opaque Node relay
+  ---
+  duration_ms: 10071.277189
+  type: 'test'
+  ...
+# Subtest: real native/node synchronises group changes and closure over encrypted transport
+ok 16 - real native/node synchronises group changes and closure over encrypted transport
+  ---
+  duration_ms: 2056.347541
+  type: 'test'
+  ...
+# Subtest: real node/native synchronises group changes and closure over encrypted transport
+ok 17 - real node/native synchronises group changes and closure over encrypted transport
+  ---
+  duration_ms: 2879.572456
+  type: 'test'
+  ...
+# Subtest: real native/native synchronises group changes and closure over encrypted transport
+ok 18 - real native/native synchronises group changes and closure over encrypted transport
+  ---
+  duration_ms: 1581.597639
+  type: 'test'
+  ...
+1..18
+# tests 18
+# suites 0
+# pass 18
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 135640.303832

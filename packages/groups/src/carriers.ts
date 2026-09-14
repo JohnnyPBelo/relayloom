@@ -421,6 +421,38 @@ export function checkedSnapshot(
   return { epoch, snapshot };
 }
 
+/** Called after openGroupControl. A no-op is proven inside one authenticated
+ * scope, never inferred from the carrier ID or a cached UI projection. */
+export function alreadyAppliedSnapshot(
+  g: GroupRegistry,
+  bundle: Bundle,
+  payload: Extract<GroupControl, { action: "snapshot" }>,
+) {
+  const info = g.syncState(payload.groupId);
+  if (
+    info.view.status !== "active" ||
+    !info.admitted ||
+    info.checkedThrough === null
+  )
+    return null;
+  let checked: ReturnType<typeof snapshotPreview>;
+  try {
+    checked = snapshotPreview(bundle, payload, info.anchor);
+  } catch {
+    return null;
+  } // The normal path must still apply any valid safety header.
+  if (
+    checked.epoch.body.number > info.checkedThrough ||
+    g.proofs(payload.groupId, checked.epoch.body.number, 1)[0]?.id !==
+      checked.epoch.id
+  )
+    return null;
+  const saved = g.privateState(payload.groupId, checked.epoch.id);
+  return saved && canonical(saved) === canonical(checked.snapshot)
+    ? checked
+    : null;
+}
+
 /** Cryptographic preview is not adoption. It can identify a potential proof
  * holder without granting keys or letting an unanchored head win. */
 export function snapshotPreview(

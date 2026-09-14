@@ -9,6 +9,7 @@ import {
 } from "../../../packages/core/src/index.js";
 import {
   checkedSnapshot,
+  alreadyAppliedSnapshot,
   CONTROL_LIMITS,
   openGroupControl,
   requestedHeaders,
@@ -26,6 +27,10 @@ import {
 } from "../../../packages/groups/src/certificates.js";
 import type { GroupRegistry } from "../../../packages/groups/src/registry.js";
 import type { GroupCommand } from "./group-commands.js";
+import {
+  sealGroupNotice,
+  type GroupNotice,
+} from "../../../packages/groups/src/notices.js";
 
 export interface GroupSyncHost {
   identity(): Identity | undefined;
@@ -38,6 +43,7 @@ export interface GroupSyncHost {
   send(bundle: Bundle, relayed: boolean): void;
   pauseGroups(): void;
   needs(): { groupId: string; epochId: string }[];
+  receiveNotice(bundle: Bundle): void;
 }
 const boundedSet = (
   map: Map<string, number>,
@@ -109,7 +115,7 @@ export class GroupSynchronizer {
       .list()
       .filter(
         (m) =>
-          m.kind === "group-control" &&
+          (m.kind === "group-control" || m.kind === "group-notice") &&
           m.keys.some((k) => k.reader === identity.public.id),
       )
       .map((m) => m.id);
@@ -120,7 +126,15 @@ export class GroupSynchronizer {
     for (let n = 0; n < 16 && this.replay.length; n++) {
       const id = this.replay.shift()!;
       try {
-        this.receive(this.host.store.get(id, false));
+        const bundle = this.host.store.get(id, false);
+        if (bundle.manifest.kind === "group-notice") {
+          this.processing = true;
+          try {
+            this.host.receiveNotice(bundle);
+          } finally {
+            this.processing = false;
+          }
+        } else this.receive(bundle);
       } catch {
         this.counts.rejected++;
       }
@@ -180,6 +194,17 @@ export class GroupSynchronizer {
     this.published.set(key, bundle.manifest.id);
     this.host.send(bundle, relayed);
     this.counts.sent++;
+  }
+  /** Notices share the work, byte, cooldown and producer-cache budgets. */
+  publishNotice(value: GroupNotice) {
+    const identity = this.host.identity();
+    if (!identity || !this.ready) return;
+    this.output(
+      `notice:${value.certificate.id}`,
+      () => sealGroupNotice(identity, value),
+      false,
+      15000,
+    );
   }
   /** Cache each local membership change, including while peers are absent.
    * The authority operation has already committed; cache pressure must never
@@ -282,7 +307,9 @@ export class GroupSynchronizer {
     const retained = this.host.store
       .list()
       .filter(
-        (m) => m.kind === "group-control" && m.author.id === identity.public.id,
+        (m) =>
+          (m.kind === "group-control" || m.kind === "group-notice") &&
+          m.author.id === identity.public.id,
       );
     const estimate = (m: (typeof retained)[number]) =>
       512 +
@@ -354,11 +381,22 @@ export class GroupSynchronizer {
         this.requests++;
         boundedSet(this.cooldown, key, now);
       }
-      const known = this.host.registry((g) =>
-        g.list().some((v) => v.id === value.groupId),
-      );
-      if (!known) return; // A network hint cannot enrol an unknown group.
       const blocked = this.host.blocked().includes(bundle.manifest.author.id);
+      const { known, incorporated } = this.host.registry((g) => {
+        const known = g.list().some((v) => v.id === value.groupId);
+        return {
+          known,
+          incorporated:
+            known && !blocked && value.action === "snapshot"
+              ? alreadyAppliedSnapshot(g, bundle, value)
+              : null,
+        };
+      });
+      if (!known) return; // A network hint cannot enrol an unknown group.
+      if (incorporated && value.action === "snapshot") {
+        this.rememberSnapshot(bundle, value, incorporated.epoch);
+        return;
+      }
       if (
         value.action === "headers-request" ||
         value.action === "snapshot-request"
@@ -478,13 +516,7 @@ export class GroupSynchronizer {
             epochId: checked.epoch.id,
             snapshot: checked.snapshot,
           });
-          this.deferred.delete(bundle.manifest.id);
-          this.counts.applied++;
-          if (bundle.manifest.author.id === identity.public.id)
-            this.published.set(
-              `snapshot:${value.groupId}:${checked.epoch.id}${value.to ? ":" + value.to : ""}`,
-              bundle.manifest.id,
-            );
+          this.rememberSnapshot(bundle, value, checked.epoch);
         } catch {
           // Missing ancestry/consent may become available later. The bounded
           // retry set confers no permission; each retry validates everything.
@@ -496,6 +528,28 @@ export class GroupSynchronizer {
     } finally {
       boundedSet(this.seen, bundle.manifest.id, Date.now());
       this.processing = false;
+    }
+  }
+  private rememberSnapshot(
+    bundle: Bundle,
+    value: Extract<GroupControl, { action: "snapshot" }>,
+    epoch: GroupEpoch,
+  ) {
+    this.deferred.delete(bundle.manifest.id);
+    this.counts.applied++;
+    const holder = `${value.groupId}:${bundle.manifest.author.id}`;
+    if (this.holders.size >= 256 && !this.holders.has(holder))
+      this.holders.delete(this.holders.keys().next().value!);
+    this.holders.set(holder, {
+      groupId: value.groupId,
+      card: bundle.manifest.author,
+      number: epoch.body.number,
+    });
+    if (bundle.manifest.author.id === this.host.identity()?.public.id) {
+      const key = `snapshot:${value.groupId}:${epoch.id}${value.to ? ":" + value.to : ""}`;
+      if (this.published.size >= 256 && !this.published.has(key))
+        this.published.delete(this.published.keys().next().value!);
+      this.published.set(key, bundle.manifest.id);
     }
   }
   tick() {

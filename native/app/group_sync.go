@@ -8,6 +8,7 @@ import (
 	"github.com/JohnnyPBelo/relayloom/native/groupauthority"
 	"github.com/JohnnyPBelo/relayloom/native/groupcontrol"
 	"github.com/JohnnyPBelo/relayloom/native/groupledger"
+	"github.com/JohnnyPBelo/relayloom/native/groupnotice"
 	"github.com/JohnnyPBelo/relayloom/native/groups"
 	"github.com/JohnnyPBelo/relayloom/native/groupstore"
 	"github.com/JohnnyPBelo/relayloom/native/profilestate"
@@ -98,7 +99,7 @@ func (s *groupSynchronizer) recover() {
 		return
 	}
 	for _, m := range s.n.Store.List() {
-		if m.Kind == "group-control" {
+		if m.Kind == "group-control" || m.Kind == "group-notice" {
 			for _, key := range m.Keys {
 				if key.Reader == s.n.identity.Public.ID {
 					s.replay = append(s.replay, m.ID)
@@ -121,7 +122,13 @@ func (s *groupSynchronizer) drain() bool {
 			s.rejected++
 			continue
 		}
-		s.receive(bundle, false)
+		if bundle.Manifest.Kind == "group-notice" {
+			s.processing = true
+			s.n.noticeSync.receive(bundle)
+			s.processing = false
+		} else {
+			s.receive(bundle, false)
+		}
 	}
 	return s.ready()
 }
@@ -190,6 +197,9 @@ func (s *groupSynchronizer) output(key string, makeBundle func() (core.Bundle, e
 	return nil
 }
 func (n *Node) controlRegistryLocked(fn func(*groupauthority.Registry) error) error {
+	return n.controlStateLocked(func(g *groupauthority.Registry, _ *groupstore.Tx) error { return fn(g) })
+}
+func (n *Node) controlStateLocked(fn func(*groupauthority.Registry, *groupstore.Tx) error) error {
 	if n.identity == nil || n.privateDatabase == nil {
 		return errors.New("estado privado indisponível")
 	}
@@ -201,12 +211,13 @@ func (n *Node) controlRegistryLocked(fn func(*groupauthority.Registry) error) er
 		if state == nil || state.Digest != n.privateDigest {
 			return errors.New("estado privado desactualizado")
 		}
-		_, err = groupledger.Run(tx, *n.identity, func(_ *groupledger.Ledger, g *groupauthority.Registry) error { return fn(g) })
+		_, err = groupledger.Run(tx, *n.identity, func(_ *groupledger.Ledger, g *groupauthority.Registry) error { return fn(g, tx) })
 		return err
 	})
 	if err != nil {
 		var input *groupcontrol.InputError
-		if !errors.As(err, &input) {
+		var noticeInput *groupnotice.InputError
+		if !errors.As(err, &input) && !errors.As(err, &noticeInput) {
 			n.cancelGroupPacketsLocked(true)
 			n.recoverGroupContentLocked()
 		}
@@ -268,6 +279,8 @@ func (s *groupSynchronizer) receive(bundle core.Bundle, retry bool) {
 		controlStamp(s.cooldown, key, now)
 	}
 	known := false
+	blocked := contains(n.config.Blocked, bundle.Manifest.Author.ID)
+	var incorporated *groupcontrol.SnapshotResult
 	if err = n.controlRegistryLocked(func(g *groupauthority.Registry) error {
 		list, err := g.List()
 		if err != nil {
@@ -275,6 +288,10 @@ func (s *groupSynchronizer) receive(bundle core.Bundle, retry bool) {
 		}
 		for _, group := range list {
 			known = known || group.ID == c.GroupID
+		}
+		if known && !blocked && c.Action == "snapshot" {
+			incorporated, err = groupcontrol.AlreadyAppliedSnapshot(g, bundle, c)
+			return err
 		}
 		return nil
 	}); err != nil {
@@ -284,7 +301,10 @@ func (s *groupSynchronizer) receive(bundle core.Bundle, retry bool) {
 	if !known {
 		return
 	}
-	blocked := contains(n.config.Blocked, bundle.Manifest.Author.ID)
+	if incorporated != nil {
+		s.rememberSnapshot(bundle, c, incorporated.Epoch)
+		return
+	}
 	if c.Action == "headers-request" || c.Action == "snapshot-request" {
 		if blocked {
 			return
@@ -401,10 +421,18 @@ func (s *groupSynchronizer) receive(bundle core.Bundle, retry bool) {
 		s.deferCarrier(bundle.Manifest.ID)
 		return
 	}
+	s.rememberSnapshot(bundle, c, prepared.Epoch)
+}
+func (s *groupSynchronizer) rememberSnapshot(bundle core.Bundle, c groupcontrol.Control, epoch groups.GroupEpoch) {
 	delete(s.deferred, bundle.Manifest.ID)
 	s.applied++
-	if bundle.Manifest.Author.ID == identity.Public.ID {
-		key := "snapshot:" + c.GroupID + ":" + prepared.Epoch.ID
+	holderKey := c.GroupID + ":" + bundle.Manifest.Author.ID
+	if _, ok := s.holders[holderKey]; !ok {
+		trimControlMap(s.holders, 256)
+	}
+	s.holders[holderKey] = controlHolder{c.GroupID, bundle.Manifest.Author, epoch.Body.Number}
+	if s.n.identity != nil && bundle.Manifest.Author.ID == s.n.identity.Public.ID {
+		key := "snapshot:" + c.GroupID + ":" + epoch.ID
 		if c.To != "" {
 			key += ":" + c.To
 		}
@@ -574,7 +602,7 @@ func (s *groupSynchronizer) retain(bundle core.Bundle, critical bool) (bool, err
 	retained := []core.Manifest{}
 	bytes := int64(0)
 	for _, m := range n.Store.List() {
-		if m.Kind == "group-control" && m.Author.ID == n.identity.Public.ID {
+		if (m.Kind == "group-control" || m.Kind == "group-notice") && m.Author.ID == n.identity.Public.ID {
 			retained = append(retained, m)
 			bytes += estimate(m)
 		}

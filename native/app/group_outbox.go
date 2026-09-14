@@ -9,11 +9,40 @@ import (
 	"github.com/JohnnyPBelo/relayloom/native/groupauthority"
 	"github.com/JohnnyPBelo/relayloom/native/groupcontrol"
 	"github.com/JohnnyPBelo/relayloom/native/groupledger"
+	"github.com/JohnnyPBelo/relayloom/native/groupnotice"
 	"github.com/JohnnyPBelo/relayloom/native/groupstore"
 	"github.com/JohnnyPBelo/relayloom/native/profilestate"
 )
 
 func (n *Node) maySeedLocked(manifest core.Manifest) (bool, error) {
+	if manifest.Kind == "group-notice" {
+		if !groupnotice.ManifestPolicy(manifest) {
+			return false, nil
+		}
+		for _, k := range manifest.Keys {
+			if contains(n.config.Blocked, k.Reader) {
+				return false, nil
+			}
+		}
+		if n.identity == nil {
+			return !n.initialized(), nil
+		}
+		if manifest.Author.ID != n.identity.Public.ID {
+			return true, nil
+		}
+		if !n.groupSync.ready() {
+			return false, nil
+		}
+		bundle, err := n.Store.GetWithTouch(manifest.ID, false)
+		if err != nil {
+			return false, err
+		}
+		notice, err := groupnotice.Open(bundle, *n.identity)
+		if err != nil {
+			return false, err
+		}
+		return n.noticeSync.mayPublish(notice)
+	}
 	if manifest.Kind == "group-control" {
 		if !groupcontrol.ManifestPolicy(manifest) {
 			return false, nil
@@ -240,7 +269,7 @@ func (n *Node) cancelGroupPacketsLocked(all bool) {
 		if ids[text(manifest["id"])] {
 			return true
 		}
-		if text(manifest["kind"]) == "group-control" {
+		if text(manifest["kind"]) == "group-control" || text(manifest["kind"]) == "group-notice" {
 			keys, _ := manifest["keys"].([]any)
 			for _, raw := range keys {
 				key, _ := raw.(map[string]any)

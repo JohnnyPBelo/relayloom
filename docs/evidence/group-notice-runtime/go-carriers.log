@@ -1,0 +1,13 @@
+=== RUN   TestExpiredEnvelopeCannotReplayAuthority
+--- PASS: TestExpiredEnvelopeCannotReplayAuthority (1.14s)
+=== RUN   TestPrivateCarrierKeepsCreatorProofAndRestrictsRecipient
+--- PASS: TestPrivateCarrierKeepsCreatorProofAndRestrictsRecipient (2.77s)
+=== RUN   TestOldMembershipStopsAtRemovalAndCannotReadFutureSnapshot
+--- PASS: TestOldMembershipStopsAtRemovalAndCannotReadFutureSnapshot (3.05s)
+=== RUN   TestShapePreservesBadCertificateTailForAuthorityBoundary
+--- PASS: TestShapePreservesBadCertificateTailForAuthorityBoundary (0.10s)
+=== RUN   TestControlInteropFixture
+    interop_test.go:18: driven by tests/native/group-carriers.test.ts
+--- SKIP: TestControlInteropFixture (0.00s)
+PASS
+ok  	github.com/JohnnyPBelo/relayloom/native/groupcontrol	8.075s

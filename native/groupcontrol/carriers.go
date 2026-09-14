@@ -576,3 +576,37 @@ func CheckedSnapshot(g *groupauthority.Registry, bundle core.Bundle, c Control) 
 	}
 	return result, nil
 }
+
+// AlreadyAppliedSnapshot requires an opened envelope. The authenticated
+// admission cursor and exact persisted bytes prove that replay is a no-op.
+func AlreadyAppliedSnapshot(g *groupauthority.Registry, bundle core.Bundle, c Control) (*SnapshotResult, error) {
+	info, err := g.SyncState(c.GroupID)
+	if err != nil {
+		return nil, err
+	}
+	if info.View.Status != "active" || !info.Admitted || info.CheckedThrough == nil {
+		return nil, nil
+	}
+	checked, err := SnapshotPreview(bundle, c, info.Anchor)
+	if err != nil {
+		return nil, nil
+	} // Preserve normal header-before-invalid-snapshot handling.
+	if checked.Epoch.Body.Number > *info.CheckedThrough {
+		return nil, nil
+	}
+	proof, err := g.Proofs(c.GroupID, checked.Epoch.Body.Number, 1)
+	if err != nil {
+		return nil, err
+	}
+	if len(proof) == 0 || proof[0].ID != checked.Epoch.ID {
+		return nil, nil
+	}
+	saved, err := g.PrivateState(c.GroupID, checked.Epoch.ID)
+	if err != nil {
+		return nil, err
+	}
+	if saved == nil || !equal(*saved, checked.Snapshot) {
+		return nil, nil
+	}
+	return &checked, nil
+}

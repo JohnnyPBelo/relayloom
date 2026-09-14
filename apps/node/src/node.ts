@@ -34,6 +34,14 @@ import { type PrivateState } from "./local-state.js";
 import { openPrivateProfile } from "./protected-private.js";
 import { commitGroupConfirmation } from "./group-confirmations.js";
 import { GroupSynchronizer } from "./group-sync.js";
+import { NoticeSynchronizer } from "./group-notice-sync.js";
+import {
+  GroupNotices,
+  GroupNoticeError,
+  noticeManifestPolicy,
+  openGroupNotice,
+  verifyNoticeEnvelope,
+} from "../../../packages/groups/src/notices.js";
 import {
   GroupControlError,
   groupControlPolicy,
@@ -89,49 +97,18 @@ import {
   OUTBOX_LIMITS,
 } from "./outbox.js";
 
-export interface Attachment {
-  size?: number;
-  name: string;
-  mime: string;
-  data: string;
-}
-export interface SiteBlock {
-  id: string;
-  type: "hero" | "text" | "links" | "callout";
-  title: string;
-  body: string;
-  url?: string;
-}
-export interface Content {
-  type: string;
-  text?: string;
-  title?: string;
-  conversation?: string;
-  members?: PublicIdentity[];
-  target?: string;
-  emoji?: string;
-  replyTo?: string;
-  attachments?: Attachment[];
-  blocks?: SiteBlock[];
-  theme?: string;
-  value?: boolean;
-  priority?: Priority;
-  [key: string]: unknown;
-}
-export interface DisplayObject {
-  id: string;
-  author: PublicIdentity;
-  kind: string;
-  created: number;
-  expires: number;
-  content: Content;
-  pinned: boolean;
-  readers: string[];
-  public: boolean;
-  deleted?: boolean;
-  editedText?: string;
-  route?: unknown;
-}
+import type {
+  Attachment,
+  SiteBlock,
+  Content,
+  DisplayObject,
+} from "../../../packages/content/src/types.js";
+export type {
+  Attachment,
+  SiteBlock,
+  Content,
+  DisplayObject,
+} from "../../../packages/content/src/types.js";
 interface Config {
   contacts: PublicIdentity[];
   blocked: string[];
@@ -219,6 +196,17 @@ export class LoomNode extends EventEmitter {
                   }))
               : [],
           ),
+        receiveNotice: (bundle) => this.noticeSync.receive(bundle),
+      });
+      this.noticeSync = new NoticeSynchronizer({
+        identity: () => this.identity,
+        registry: <T>(fn: (g: GroupRegistry, notices: GroupNotices) => T) =>
+          this.controlRegistry((g, notices) => fn(g, notices())),
+        apply: (command) => this.groupCommand(command),
+        publish: (value) => this.groupSync.publishNotice(value),
+        blocked: () => this.config.blocked,
+        ready: () => this.groupSync.ready,
+        connected: () => this.router.peers.some((p) => p.connected),
       });
       this.router.on("payload", (payload, route) =>
         this.receive(payload, route),
@@ -237,7 +225,10 @@ export class LoomNode extends EventEmitter {
     return existsSync(join(this.dir, "identity.vault"));
   }
   private groupSync: GroupSynchronizer;
-  private controlRegistry<T>(fn: (g: GroupRegistry) => T): T {
+  private noticeSync: NoticeSynchronizer;
+  private controlRegistry<T>(
+    fn: (g: GroupRegistry, notices: () => GroupNotices) => T,
+  ): T {
     const identity = this.requireIdentity();
     if (!this.privateDatabase || !this.privateDigest)
       throw new Error("Estado privado indisponível");
@@ -245,10 +236,16 @@ export class LoomNode extends EventEmitter {
       return this.privateDatabase.transaction((tx) => {
         if (readProfileState(tx)?.digest !== this.privateDigest)
           throw new Error("Estado privado desactualizado");
-        return GroupLedger.run(tx, identity, (_, g) => fn(g)).value;
+        return GroupLedger.run(tx, identity, (_, g) =>
+          fn(g, () => new GroupNotices(tx, identity.public)),
+        ).value;
       });
     } catch (error) {
-      if (error instanceof GroupControlError) throw error;
+      if (
+        error instanceof GroupControlError ||
+        error instanceof GroupNoticeError
+      )
+        throw error;
       this.cancelGroupPackets(true);
       try {
         this.privateDatabase.close();
@@ -323,6 +320,7 @@ export class LoomNode extends EventEmitter {
     this.privateDatabase = loaded.database;
     this.privateDigest = loaded.digest;
     try {
+      this.noticeSync.reset();
       this.groupSync.recover();
       this.restoreGroupHolds();
     } catch (error) {
@@ -346,6 +344,7 @@ export class LoomNode extends EventEmitter {
     this.privateDatabase = loaded.database;
     this.privateDigest = loaded.digest;
     try {
+      this.noticeSync.reset();
       this.groupSync.recover();
       this.restoreGroupHolds();
     } catch (error) {
@@ -357,6 +356,7 @@ export class LoomNode extends EventEmitter {
   lock() {
     this.cancelGroupPackets(true);
     this.groupSync.reset();
+    this.noticeSync.reset();
     this.summaryCache.clear();
     this.summaryCacheBytes = 0;
     this.groupHolds = [];
@@ -394,7 +394,10 @@ export class LoomNode extends EventEmitter {
       if (payload?.type !== "bundle") return false;
       const manifest = payload.bundle?.manifest;
       if (ids.has(manifest?.id)) return true;
-      if (manifest?.kind === "group-control")
+      if (
+        manifest?.kind === "group-control" ||
+        manifest?.kind === "group-notice"
+      )
         return (
           (Array.isArray(manifest.keys) &&
             manifest.keys.some((k: any) =>
@@ -479,6 +482,10 @@ export class LoomNode extends EventEmitter {
         "snapshot",
         "remember",
         "leave",
+        "notice-list",
+        "notice-outbox",
+        "notice-dismiss",
+        "notice-open",
       ].includes(command?.action)
     )
       this.requireGroupReplay();
@@ -500,6 +507,19 @@ export class LoomNode extends EventEmitter {
       this.groupRetries = decisions;
       this.restoreGroupHolds();
       this.groupSync.record(command, result);
+      if (
+        [
+          "headers",
+          "snapshot",
+          "commit",
+          "close",
+          "leave",
+          "accept",
+          "notice-open",
+        ].includes(command.action)
+      )
+        this.cancelStaleNotices();
+      this.noticeSync.record(command, result);
       return result;
     } catch (error) {
       // Reopen authenticated state after any uncertain outer commit. Never
@@ -511,6 +531,18 @@ export class LoomNode extends EventEmitter {
         this.privateDigest = loaded.digest;
         this.privateState = loaded.state;
         this.restoreGroupHolds();
+        if (
+          [
+            "headers",
+            "snapshot",
+            "commit",
+            "close",
+            "leave",
+            "accept",
+            "notice-open",
+          ].includes(command?.action)
+        )
+          this.cancelStaleNotices();
       } catch {
         this.lock();
       }
@@ -1399,6 +1431,19 @@ export class LoomNode extends EventEmitter {
     return this.display(bundle)!;
   }
   private maySeed(manifest: Manifest) {
+    if (manifest.kind === "group-notice") {
+      if (
+        !noticeManifestPolicy(manifest) ||
+        manifest.keys.some((k) => this.config.blocked.includes(k.reader))
+      )
+        return false;
+      if (!this.identity) return !this.initialized;
+      if (manifest.author.id !== this.identity.public.id) return true;
+      if (!this.groupSync.ready) return false;
+      return this.noticeSync.mayPublish(
+        openGroupNotice(this.store.get(manifest.id, false), this.identity),
+      );
+    }
     if (manifest.kind === "group-control")
       return (
         groupControlPolicy(manifest) &&
@@ -1446,6 +1491,8 @@ export class LoomNode extends EventEmitter {
     if (payload.type === "bundle") {
       if (payload.bundle?.manifest?.kind === "group-control")
         verifyGroupControlEnvelope(payload.bundle);
+      else if (payload.bundle?.manifest?.kind === "group-notice")
+        verifyNoticeEnvelope(payload.bundle);
       else verifyBundle(payload.bundle);
     } else if (
       !Array.isArray(payload.ids) ||
@@ -1455,6 +1502,43 @@ export class LoomNode extends EventEmitter {
       )
     )
       throw new Error("Inventário inválido");
+  }
+  private cancelStaleNotices() {
+    const identity = this.identity;
+    if (!identity) return;
+    const allowed = new Map<string, boolean>();
+    const certificates = new Map<string, boolean>();
+    for (const manifest of this.store.list()) {
+      if (
+        manifest.kind !== "group-notice" ||
+        manifest.author.id !== identity.public.id
+      )
+        continue;
+      try {
+        const notice = openGroupNotice(
+          this.store.get(manifest.id, false),
+          identity,
+        );
+        if (!certificates.has(notice.certificate.id))
+          certificates.set(
+            notice.certificate.id,
+            this.noticeSync.mayPublish(notice),
+          );
+        allowed.set(manifest.id, certificates.get(notice.certificate.id)!);
+      } catch {
+        allowed.set(manifest.id, false);
+      }
+    }
+    this.router.cancelLocal((payload: any) => {
+      if (
+        payload?.type !== "bundle" ||
+        payload.bundle?.manifest?.kind !== "group-notice" ||
+        payload.bundle.manifest.author.id !== identity.public.id
+      )
+        return false;
+      const id = payload.bundle.manifest.id;
+      return !allowed.get(id);
+    });
   }
   private markRequest(id: string) {
     if (!this.requests.has(id) && this.requests.size >= 2048)
@@ -1467,13 +1551,20 @@ export class LoomNode extends EventEmitter {
       if (payload.type === "bundle") {
         if (
           this.config.blocked.includes(payload.bundle.manifest.author.id) &&
-          payload.bundle.manifest.kind !== "group-control"
+          payload.bundle.manifest.kind !== "group-control" &&
+          payload.bundle.manifest.kind !== "group-notice"
         )
           return;
         if (payload.bundle.manifest.kind === "group-control") {
           verifyGroupControlEnvelope(payload.bundle);
           this.store.put(payload.bundle);
           this.groupSync.receive(payload.bundle);
+          return;
+        }
+        if (payload.bundle.manifest.kind === "group-notice") {
+          verifyNoticeEnvelope(payload.bundle);
+          this.store.put(payload.bundle);
+          this.noticeSync.receive(payload.bundle);
           return;
         }
         if (
@@ -1553,6 +1644,7 @@ export class LoomNode extends EventEmitter {
     try {
       if (this.identity) {
         this.groupSync.tick();
+        this.noticeSync.tick();
         const objects = this.objects();
         this.issueDeliveries(objects);
         this.flushOutbox();
@@ -1654,6 +1746,7 @@ export class LoomNode extends EventEmitter {
     const manifests = stored.filter(
       (m) =>
         m.kind !== "group-control" &&
+        m.kind !== "group-notice" &&
         (!this.config.blocked.includes(m.author.id) || m.kind === "group"),
     );
     const present = new Set(manifests.map((m) => m.id));

@@ -6,6 +6,7 @@ import (
 	"github.com/JohnnyPBelo/relayloom/native/core"
 	"github.com/JohnnyPBelo/relayloom/native/groupauthority"
 	"github.com/JohnnyPBelo/relayloom/native/groupledger"
+	"github.com/JohnnyPBelo/relayloom/native/groupnotice"
 	"github.com/JohnnyPBelo/relayloom/native/groups"
 	"github.com/JohnnyPBelo/relayloom/native/groupstore"
 	"github.com/JohnnyPBelo/relayloom/native/profilestate"
@@ -18,7 +19,7 @@ func (n *Node) groupCommandLocked(body map[string]any) (any, error) {
 	if n.identity == nil || n.privateDatabase == nil {
 		return nil, errors.New("desbloqueie a identidade")
 	}
-	if !contains([]string{"list", "state", "operation", "proofs", "private-state", "headers", "snapshot", "remember", "leave"}, text(body["action"])) {
+	if !contains([]string{"list", "state", "operation", "proofs", "private-state", "headers", "snapshot", "remember", "leave", "notice-list", "notice-outbox", "notice-dismiss", "notice-open"}, text(body["action"])) {
 		if err := n.requireGroupReplayLocked(); err != nil {
 			return nil, err
 		}
@@ -42,8 +43,11 @@ func (n *Node) groupCommandLocked(body map[string]any) (any, error) {
 			return errors.New("o estado privado mudou; volte a lê-lo antes de gerir o grupo")
 		}
 		_, err = groupledger.Run(tx, *n.identity, func(l *groupledger.Ledger, g *groupauthority.Registry) error {
-			var err error
-			result, err = executeGroupCommand(g, n.identity.Public, body)
+			notices, err := groupnotice.New(tx, n.identity.Public)
+			if err != nil {
+				return err
+			}
+			result, err = executeGroupCommand(g, notices, n.identity.Public, body)
 			if err != nil {
 				return err
 			}
@@ -63,6 +67,9 @@ func (n *Node) groupCommandLocked(body map[string]any) (any, error) {
 			if err := n.restoreGroupHoldsLocked(); err != nil {
 				_ = n.lockPrivateLocked()
 			}
+			if contains([]string{"headers", "snapshot", "commit", "close", "leave", "accept", "notice-open"}, text(body["action"])) {
+				n.cancelStaleNoticesLocked()
+			}
 		} else {
 			_ = n.lockPrivateLocked()
 		}
@@ -74,10 +81,14 @@ func (n *Node) groupCommandLocked(body map[string]any) (any, error) {
 		return nil, err
 	}
 	n.groupSync.record(body, result)
+	if contains([]string{"headers", "snapshot", "commit", "close", "leave", "accept", "notice-open"}, text(body["action"])) {
+		n.cancelStaleNoticesLocked()
+	}
+	n.noticeSync.record(body, result)
 	return result, nil
 }
 
-func executeGroupCommand(g *groupauthority.Registry, identity core.PublicIdentity, body map[string]any) (any, error) {
+func executeGroupCommand(g *groupauthority.Registry, notices *groupnotice.Journal, identity core.PublicIdentity, body map[string]any) (any, error) {
 	action, err := fieldString(body, "action")
 	if err != nil {
 		return nil, err
@@ -85,9 +96,95 @@ func executeGroupCommand(g *groupauthority.Registry, identity core.PublicIdentit
 	id, operation, expected := text(body["groupId"]), text(body["operationId"]), text(body["expected"])
 	var result groupauthority.Result
 	switch action {
+	case "notice-list", "notice-outbox":
+		direction := groupnotice.Incoming
+		if action == "notice-outbox" {
+			direction = groupnotice.Outgoing
+		}
+		entries, err := notices.List(direction)
+		return map[string]any{"notices": entries}, err
+	case "notice-dismiss":
+		retired, err := notices.Retire(groupnotice.Incoming, text(body["id"]))
+		return map[string]any{"retired": retired}, err
+	case "notice-open":
+		previous, err := g.OperationStatus(operation)
+		if err != nil {
+			return nil, err
+		}
+		if previous != nil && previous.Certificate != nil {
+			raw, err := core.Canonical(previous.Certificate)
+			if err != nil {
+				return nil, err
+			}
+			value, err := core.DecodeJSON(raw, groups.CertificateBytes)
+			if err != nil {
+				return nil, err
+			}
+			certificate, _ := value.(map[string]any)
+			proof, _ := certificate["body"].(map[string]any)
+			if certificate["id"] == text(body["id"]) && proof["domain"] == "relayloom/group-invitation/1" && proof["inviteeId"] == identity.ID {
+				result = *previous
+				break
+			}
+		}
+		entries, err := notices.List(groupnotice.Incoming)
+		if err != nil {
+			return nil, err
+		}
+		var wanted *groupnotice.Notice
+		for _, entry := range entries {
+			notice, err := groupnotice.Parse(entry.Notice)
+			if err != nil {
+				return nil, err
+			}
+			if notice.ID == text(body["id"]) && notice.Kind == "invitation" {
+				wanted = &notice
+				break
+			}
+		}
+		if wanted == nil {
+			return nil, errors.New("convite indisponível")
+		}
+		known, err := g.List()
+		if err != nil {
+			return nil, err
+		}
+		for _, view := range known {
+			if view.ID == wanted.Anchor.ID {
+				info, err := g.SyncState(view.ID)
+				if err != nil {
+					return nil, err
+				}
+				if info.Admitted || (info.Consent != nil && info.Invitation != nil && info.Invitation.ID == wanted.ID) {
+					return nil, errors.New("convite já aceite; aguarda a confirmação ou consulta o grupo")
+				}
+			}
+			if view.ID == wanted.Anchor.ID && view.Head != nil && view.Head.Body.Number >= wanted.Parent.Body.Number && view.Head.ID != wanted.Parent.ID {
+				return nil, errors.New("o grupo já avançou; é necessário um convite actual")
+			}
+		}
+		raw, err := core.Canonical(wanted.Raw["certificate"])
+		if err != nil {
+			return nil, err
+		}
+		invitation, err := groups.DecodeInvitation(raw, wanted.Anchor, wanted.Parent, identity)
+		if err != nil {
+			return nil, err
+		}
+		result, err = g.RememberInvitation(operation, wanted.Anchor, wanted.Parent, invitation)
+		if err != nil {
+			return nil, err
+		}
+		if _, err = g.ObserveHeaders(wanted.Anchor.ID, []groups.GroupEpoch{wanted.Parent}); err != nil {
+			return nil, err
+		}
 	case "list":
 		list, err := g.List()
-		return map[string]any{"groups": list, "limits": map[string]int{"groups": groupauthority.GroupLimit, "operations": groupauthority.OperationLimit}, "management": true, "messaging": false}, err
+		if err != nil {
+			return nil, err
+		}
+		count, err := notices.Count(groupnotice.Incoming)
+		return map[string]any{"groups": list, "limits": map[string]int{"groups": groupauthority.GroupLimit, "operations": groupauthority.OperationLimit}, "management": true, "messaging": false, "noticeCount": count}, err
 	case "state":
 		state, err := g.State(id)
 		return map[string]any{"group": state}, err
@@ -111,6 +208,23 @@ func executeGroupCommand(g *groupauthority.Registry, identity core.PublicIdentit
 		result, err = g.Invite(operation, id, expected, card)
 		if err != nil {
 			return nil, err
+		}
+		view, err := g.State(id)
+		if err != nil {
+			return nil, err
+		}
+		if view.Head != nil && view.Head.ID == expected {
+			anchor, err := g.Anchor(id)
+			if err != nil {
+				return nil, err
+			}
+			notice, err := groupnotice.Parse(map[string]any{"type": "group-notice", "version": 1, "kind": "invitation", "anchor": anchor, "parent": *view.Head, "member": card, "certificate": result.Certificate})
+			if err != nil {
+				return nil, err
+			}
+			if _, err = notices.Save(groupnotice.Outgoing, notice); err != nil {
+				return nil, err
+			}
 		}
 	case "remember":
 		raw, err := core.Canonical(body["anchor"])

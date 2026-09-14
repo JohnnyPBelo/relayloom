@@ -40,6 +40,9 @@ for (const failure of ["store", "transport"] as const)
       blocked: () => [],
       pauseGroups: () => {},
       needs: () => [],
+      receiveNotice: () => {
+        throw new Error("unused notice callback");
+      },
       send: (bundle) => {
         verifyBundle(bundle);
         attempts++;
@@ -112,6 +115,9 @@ test("network responses obey the producer cache quota without evicting pinned co
     blocked: () => [],
     pauseGroups: () => {},
     needs: () => [],
+    receiveNotice: () => {
+      throw new Error("unused notice callback");
+    },
     send: (bundle) => {
       verifyBundle(bundle);
       sent.push(bundle.manifest.id);
