@@ -1,5 +1,9 @@
 # RelayLoom — estado verificável
 
+**Extensão RTC verificada — código335324d:** três percursos reais de UI passaram sequencialmente (41.6s,47.0s,12.6s), seis Axe sem violações. A autora tem apenas um parWebRTC; outro browser consentido faz a passagem paraWS/RNS TCP/sériePTY e recusa ler a mensagem privada. Os dois browsers fecham antes do seeder nativo reiniciar. [Comandos,capturas e controlos](evidence/rtc-reticulum). O código de execução não mudou nesta extensão de testes.
+
+**iOS — resultado real do ramoWIP eec2806:** UIKit e alvo de testes compilaram emApple; o arranque no simulador passou25.409s. A importação de fotografia excedeu o prazo com a bibliotecaPhotos em reconstrução, antes do percurso funcional. O teclado novo não foi exercitado. [Evidência e bloqueio](evidence/ios-keyboard-ci). Não foi integrado como correcção validada na main. A matriz física/assinatura continua pendente.
+
 **Ponto actual — incremento criptográfico verificado no host:** o gate `node scripts/verify-group-browser.mjs` terminou0 com457fontes estáveis:281Node,16pacotesGo/race,5pacotesSQLiteC,58interop,28browser,25UI por motor e desktopLinux executado/empacotado. O pacoteGo/app levou416.988s, dentro do limite600s. Certificados e admissão de chaves têm controlos Node/Go/Chromium reais, incluindo as recusas que falharam antes da correcção. [Relatórios e capturas](evidence/group-certificate-profile). Isto não conclui o registo de autoridade/grupos dinâmicos da aplicação web, a matriz de browsers/dispositivos ou uma revisão independente.
 
 O ramo iOS WIP eec2806 continua no CI34902268397, sem passe Apple antecipado. A extensão posterior RTC→browser intermediário→WS→RNS está preparada mas ainda não testada; não faz parte do gate acima. Os parágrafos abaixo conservam o histórico e não substituem este ponto.

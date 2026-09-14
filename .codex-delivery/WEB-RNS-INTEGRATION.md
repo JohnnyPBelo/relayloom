@@ -13,3 +13,13 @@ Os resultados só são marcados depois de executados. O incremento iOS não pert
 ## Resultado executado
 
 A sessão86790 terminou0. A cópia isolada manteve os nove inputs; gate RNS,26browser,25UI por motor e desktopLinux passaram. Oito auditorias Axe novas sem violações; convite revogado por teclado a320px. O anexo tinha22000bytes. Comandos/logs/hashes/capturas e as falhasiniciais conservados em docs/evidence/web-reticulum. A fonteGo deprodução não mudou; iOS e orefactor posterior degrupos estão excluídos. Commit local preparado; esperar o CI34897998431 antes de umpush queocancele.
+
+
+## Extensão RTC preparada depois de congelar GC
+
+Root acrescenta um segundo percurso ao teste autonomous-ui.spec.ts: a autora só tem um par WebRTC; outro browser consentido faz a passagem RTC→WS para o nó RNS. A UI do intermediário deve recusar ler a mensagem privada. Fecha-se também esse browser antes do seeder nativo reiniciar. É um teste novo ainda NÃO EXECUTADO; não está no candidatoGC do gate89503. Depois de esse gate terminar, validar esta extensão separadamente e recolher o directório.cache/reticulum-web-rtc; não lhe atribuir passes anteriores.
+
+
+## Extensão RTC concluída
+
+Gate67931 terminou0: os três percursos UI-RNS passaram1.7min. SeisAxe sem violações,22 000bytes exactos e o browser intermediário sem autorização de leitura. Evidência docs/evidence/rtc-reticulum. O teste espera a confirmação do consentimento no worker; a primeira edição falhou por indentação e o seu ensaio sem alteração ficou identificado, sem mascarar falhas. Não houve alteração de produção nesta extensão.

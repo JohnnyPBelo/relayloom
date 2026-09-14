@@ -1,0 +1,54 @@
+Timestamp               Ty Process[PID:TID]
+2026-09-14 22:48:51.798 Df assetsd[4812:76b1] [com.apple.xpc:connection] [0x104aa43c0] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-14 22:48:51.798 Df assetsd[4812:80e6] [com.apple.accounts:core] "The connection to ACDAccountStore was invalidated."
+2026-09-14 22:49:00.736 Df assetsd[4812:76b2] [com.apple.photos.backend:Thumbnails] Rebuilding thumbs for batch of 6 assets
+2026-09-14 22:49:03.001 Df assetsd[4812:83eb] [com.apple.xpc:connection] [0x105ebad00] activating connection: mach=false listener=false peer=true name=com.apple.bg.system.task.peer[4552].0x105ebad00
+2026-09-14 22:49:03.006 Df assetsd[4812:83e9] [com.apple.BackgroundSystemTasks:BGSTFramework] Calling launch handler for com.apple.assetsd.migration.16777230.3011442
+2026-09-14 22:49:03.557 E  assetsd[4812:83e9] [com.apple.photos.backend:Backend] Photo library at file:///Users/runner/Library/Developer/CoreSimulator/Devices/A03E9F69-3475-4D8B-BD30-3BF324A4DAD1/data/Library/Photos/Libraries/Syndication.photoslibrary/ is currently not ready
+2026-09-14 22:49:03.557 Df assetsd[4812:83e9] [com.apple.photos.backend:Backend] Library not ready for background migration - rebuild in progress. Identifier: com.apple.assetsd.migration.16777230.3011442
+2026-09-14 22:49:03.558 Df assetsd[4812:83e9] [com.apple.BackgroundSystemTasks:BGSTFramework] setTaskExpiredWithRetryAfter: Proactive expirations must have a cool off of at least 300 seconds, clamping
+2026-09-14 22:49:03.558 Df assetsd[4812:83e9] [com.apple.BackgroundSystemTasks:BGSTFramework] Client requested expiration of task <BGNonRepeatingSystemTask: com.apple.assetsd.migration.16777230.3011442>
+2026-09-14 22:49:03.775 Df assetsd[4812:83eb] [com.apple.photos.backend:LibraryServices] CPLReadiness: Ready for CPL 'ready'
+2026-09-14 22:49:05.845 Df assetsd[4812:83eb] [com.apple.launchservices:db] NotifyToken:[redacted] fired for session key LSSessionKey(system: 0 uid: 501)
+2026-09-14 22:49:37.279 E  assetsd[4812:76b4] [com.apple.photos.backend:Backend] Timed dispatch group session timed out waiting for group leave
+2026-09-14 22:49:37.462 E  assetsd[4812:76b4] [com.apple.photos.backend:Backend] Timed dispatch group session timed out waiting for group leave
+2026-09-14 22:49:38.432 Df assetsd[4812:76b2] [com.apple.photos.backend:Thumbnails] All indexes (count = 6), fetched at 10734434616, duration: 5.0032s, library type: PLWellKnownPhotoLibraryIdentifierSystem
+2026-09-14 22:49:40.856 A  assetsd[4812:76b2] (CoreFoundation) Loading Preferences From User Session CFPrefsD
+2026-09-14 22:49:42.062 Df assetsd[4812:76b2] (CoreVideo) Pixel format registry initialized. Constant classes enabled.
+2026-09-14 22:49:42.084 A  assetsd[4812:76b2] (CoreFoundation) Loading Preferences From User Session CFPrefsD
+2026-09-14 22:50:03.807 Df assetsd[4812:76b4] [com.apple.xpc:connection] [0x105f4a6c0] activating connection: mach=true listener=false peer=false name=com.apple.metal.simulator
+2026-09-14 22:50:03.815 Df assetsd[4812:76b4] [com.apple.xpc:connection] [0x105f4af80] activating connection: mach=true listener=false peer=false name=com.apple.metal.simulator
+2026-09-14 22:50:03.816 Df assetsd[4812:76b4] [com.apple.xpc:connection] [0x105f4b0c0] activating connection: mach=true listener=false peer=false name=com.apple.metal.simulator
+2026-09-14 22:50:05.092 A  assetsd[4812:83eb] (TCC) tcc_send_request_authorization() IPC
+2026-09-14 22:50:05.092 Df assetsd[4812:83eb] [com.apple.xpc:connection] [0x105f4b200] activating connection: mach=true listener=false peer=false name=com.apple.tccd
+2026-09-14 22:50:05.093 Df assetsd[4812:83eb] [com.apple.xpc:connection] [0x105f4b200] invalidated after the last release of the connection object
+2026-09-14 22:50:05.093 A  assetsd[4812:83eb] (TCC) tcc_send_request_authorization() IPC
+2026-09-14 22:50:05.093 Df assetsd[4812:83eb] [com.apple.xpc:connection] [0x105f4b340] activating connection: mach=true listener=false peer=false name=com.apple.tccd
+2026-09-14 22:50:05.094 Df assetsd[4812:83eb] [com.apple.xpc:connection] [0x105f4b340] invalidated after the last release of the connection object
+2026-09-14 22:50:05.094 A  assetsd[4812:83eb] (TCC) tcc_send_request_authorization() IPC
+2026-09-14 22:50:05.094 Df assetsd[4812:83eb] [com.apple.xpc:connection] [0x105f4b200] activating connection: mach=true listener=false peer=false name=com.apple.tccd
+2026-09-14 22:50:05.095 Df assetsd[4812:83eb] [com.apple.xpc:connection] [0x105f4b200] invalidated after the last release of the connection object
+2026-09-14 22:50:05.095 A  assetsd[4812:83eb] (TCC) tcc_send_request_authorization() IPC
+2026-09-14 22:50:05.095 Df assetsd[4812:83eb] [com.apple.xpc:connection] [0x105f4b340] activating connection: mach=true listener=false peer=false name=com.apple.tccd
+2026-09-14 22:50:05.096 Df assetsd[4812:83eb] [com.apple.xpc:connection] [0x105f4b340] invalidated after the last release of the connection object
+2026-09-14 22:50:05.096 Df assetsd[4812:83eb] [com.apple.photos.backend:GatekeeperXPC] Connection opened for client with PID: 4556, bundle ID: com.apple.CoreSimulator.CoreSimulatorBridge at QoS: QOS_CLASS_DEFAULT
+2026-09-14 22:50:05.096 Df assetsd[4812:83eb] [com.apple.xpc:connection] [0x105eba880] activating connection: mach=false listener=false peer=true name=com.apple.photos.service.peer[4556].0x105eba880
+2026-09-14 22:50:05.099 Df assetsd[4812:83eb] [com.apple.photos.backend:Backend] PLWellKnownPhotoLibraryIdentifierSystem library directory exists at URL file:///Users/runner/Library/Developer/CoreSimulator/Devices/A03E9F69-3475-4D8B-BD30-3BF324A4DAD1/data/Media/
+2026-09-14 22:50:05.099 A  assetsd[4812:83eb] (TCC) tcc_send_request_authorization() IPC
+2026-09-14 22:50:05.099 Df assetsd[4812:83eb] [com.apple.xpc:connection] [0x105f4b200] activating connection: mach=true listener=false peer=false name=com.apple.tccd
+2026-09-14 22:50:05.100 Df assetsd[4812:83eb] [com.apple.xpc:connection] [0x105f4b200] invalidated after the last release of the connection object
+2026-09-14 22:50:05.102 Df assetsd[4812:83eb] [com.apple.photos.backend:GatekeeperXPC] Invalidating cached client authorizations
+2026-09-14 22:50:05.103 A  assetsd[4812:83eb] (TCC) tcc_send_request_authorization() IPC
+2026-09-14 22:50:05.103 Df assetsd[4812:83eb] [com.apple.xpc:connection] [0x105f4b200] activating connection: mach=true listener=false peer=false name=com.apple.tccd
+2026-09-14 22:50:05.104 Df assetsd[4812:83eb] [com.apple.xpc:connection] [0x105f4b200] invalidated after the last release of the connection object
+2026-09-14 22:50:05.105 Df assetsd[4812:83eb] [com.apple.photos.backend:LibraryServices] LSM-1-0x100d02180: Already good to go for library state prep-accessible at QoS: QOS_CLASS_DEFAULT
+2026-09-14 22:50:05.108 A  assetsd[4812:83eb] (TCC) tcc_send_request_authorization() IPC
+2026-09-14 22:50:05.108 Df assetsd[4812:83eb] [com.apple.xpc:connection] [0x105f4b200] activating connection: mach=true listener=false peer=false name=com.apple.tccd
+2026-09-14 22:50:05.109 Df assetsd[4812:83eb] [com.apple.xpc:connection] [0x105f4b200] invalidated after the last release of the connection object
+2026-09-14 22:50:05.110 Df assetsd[4812:83eb] [com.apple.photos.backend:PhotoKit] PhotoKit changes: [30A669E5-C6B0-4369-9E3A-596B9BDA5D18] Request received from client: com.apple.CoreSimulator.CoreSimulatorBridge(4556) at QOS_CLASS_DEFAULT, inserts: [Asset: 1]
+2026-09-14 22:50:34.709 Df assetsd[4812:a15a] [com.apple.xpc:connection] [0x101668300] invalidated because the client process (pid 5175) either cancelled the connection or exited
+2026-09-14 22:50:34.710 Df assetsd[4812:a15a] [com.apple.photos.backend:GatekeeperXPC] Connection invalidated for client with PID: 5175
+2026-09-14 22:50:37.103 Df assetsd[4812:5227] [com.apple.photos.backend:Backend] ReadyForAnalysis status [0x100d02180] (1): Initialized
+2026-09-14 22:50:40.305 Df assetsd[4812:5227] [com.apple.photos.backend:Backend] ReadyForAnalysis status [0x100d02180] (1): ReadyForCPL
+2026-09-14 22:50:40.558 Df assetsd[4812:5227] [com.apple.photos.backend:Backend] ReadyForAnalysis status [0x100d02180] (1): CPLDownloadCompleted (iCPL Disabled)
+getpwuid_r did not find a match for uid 501
