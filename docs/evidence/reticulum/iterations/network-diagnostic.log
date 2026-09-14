@@ -1,0 +1,29 @@
+TAP version 13
+# Preserved fixture: /home/absint0o/projects/relayloom/.cache/rns-network-ypFaYO
+# {"runtime":"/home/absint0o/projects/relayloom/.cache/rns-network-ypFaYO/a","counters":{"received":59,"forwarded":0,"duplicates":0,"rejected":0,"dropped":27,"retransmits":0,"rateLimited":0},"peers":[{"id":"eddb9cb6b1df029e","medium":"tcp","address":"127.0.0.1:38887","connected":true,"sent":559771,"received":500333,"queued":0}],"rns":null,"objects":[{"id":"556981acbc5ba488964f9b3c7609754baabd0110856a59b968a4d663722ec7d3","kind":"message"},{"id":"72378e2041bba4a810a38c44a28de00fd14db636c2aab9b380216a96382af115","kind":"receipt"},{"id":"f6a8bdd2775ea9aaf3d5bd8c12a20c87cddccca3c3eb4b4c70231476fe8f75ab","kind":"post"}],"storage":{"count":3,"bytes":58719,"quota":134217728,"maxObjects":1024,"pinned":0,"reserved":0,"reservedBytes":0}}
+# {"runtime":"/home/absint0o/projects/relayloom/.cache/rns-network-ypFaYO/b","counters":{"received":61,"forwarded":61,"duplicates":0,"rejected":0,"dropped":27,"retransmits":0,"rateLimited":0},"peers":[{"id":"b0b1db3bfa2a6803","medium":"tcp","address":"127.0.0.1:35336","connected":true,"sent":500333,"received":559771,"queued":0},{"id":"afcb6b8b0011101d","medium":"reticulum","address":"a4b0196839238596cca820a76014c94d","connected":true,"sent":117278,"received":25765,"queued":13}],"rns":{"destination":"07df06975aa157696da0d268de3d240b","running":true,"paths":[{"destination":"a4b0196839238596cca820a76014c94d","hops":2}],"diagnostics":{"t":"stats","sent":501,"received":138,"proved":500,"links":[{"pending":32,"rtt":0.07310938835144043,"window":48,"status":2}]}},"objects":[{"id":"f6a8bdd2775ea9aaf3d5bd8c12a20c87cddccca3c3eb4b4c70231476fe8f75ab","kind":"post"}],"storage":{"count":3,"bytes":58719,"quota":134217728,"maxObjects":1024,"pinned":0,"reserved":0,"reservedBytes":0}}
+# {"runtime":"/home/absint0o/projects/relayloom/.cache/rns-network-ypFaYO/c","counters":{"received":45,"forwarded":0,"duplicates":0,"rejected":0,"dropped":12,"retransmits":0,"rateLimited":0},"peers":[{"id":"ee3ac3479fd7b3ee","medium":"reticulum","address":"07df06975aa157696da0d268de3d240b","connected":true,"sent":25765,"received":117246,"queued":0}],"rns":{"destination":"a4b0196839238596cca820a76014c94d","running":true,"paths":[{"destination":"07df06975aa157696da0d268de3d240b","hops":2}],"diagnostics":{"t":"stats","sent":146,"received":510,"proved":145,"links":[{"pending":0,"rtt":0.07998490333557129,"window":48,"status":2}]}},"objects":[{"id":"556981acbc5ba488964f9b3c7609754baabd0110856a59b968a4d663722ec7d3","kind":"message"},{"id":"72378e2041bba4a810a38c44a28de00fd14db636c2aab9b380216a96382af115","kind":"receipt"}],"storage":{"count":2,"bytes":4122,"quota":134217728,"maxObjects":1024,"pinned":0,"reserved":0,"reservedBytes":0}}
+# Subtest: reference Reticulum routes RelayLoom through TCP and serial PTY with partition/heal and offline seeding
+not ok 1 - reference Reticulum routes RelayLoom through TCP and serial PTY with partition/heal and offline seeding
+  ---
+  duration_ms: 58907.246916
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/tests/reticulum/heterogeneous.test.ts:10:13'
+  failureType: 'testCodeFailure'
+  error: 'condition timed out'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    until (/home/absint0o/projects/relayloom/tests/helpers.ts:214:9)
+    async TestContext.<anonymous> (/home/absint0o/projects/relayloom/tests/reticulum/heterogeneous.test.ts:101:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 59084.13886

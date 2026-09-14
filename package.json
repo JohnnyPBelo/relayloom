@@ -23,7 +23,10 @@
     "native:build": "node scripts/native-build.mjs",
     "test:native": "node scripts/go.mjs test -race -p=2 ./core ./transport ./webpeer ./app ./groups ./groupstore ./groupauthority ./groupaccess ./groupcontrol ./groupnotice ./groupledger ./profilelock ./profilestate ./profilebinding ./profiledb ./sqlitedriver",
     "test:native:cgo-storage": "node scripts/go.mjs test -race -p=1 -tags relayloom_sqlite_cgo,sqlite_omit_load_extension ./sqlitedriver ./groupstore ./profilelock ./profiledb ./profilestate",
-    "test:interop": "tsx --test --test-concurrency=1 tests/native/*.test.ts"
+    "test:interop": "tsx --test --test-concurrency=1 tests/native/*.test.ts",
+    "reticulum:setup": "python3 scripts/reticulum-setup.py",
+    "test:reticulum": "npm run native:build && node --import tsx --test --test-concurrency=1 tests/reticulum/*.test.ts",
+    "verify:reticulum": "node scripts/verify-reticulum.mjs"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",

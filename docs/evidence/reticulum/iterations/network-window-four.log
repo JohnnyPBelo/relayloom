@@ -1,0 +1,47 @@
+TAP version 13
+# Preserved fixture: /home/absint0o/projects/relayloom/.cache/rns-network-FcJ7oQ
+# {"runtime":"/home/absint0o/projects/relayloom/.cache/rns-network-FcJ7oQ/c","counters":{"received":17,"forwarded":0,"duplicates":0,"rejected":0,"dropped":0,"retransmits":0,"rateLimited":0},"peers":[],"rns":{"destination":"ec1fefed1aed91c823fb5edcdb2e4950","running":true,"paths":[],"diagnostics":{"t":"stats","sent":58,"received":412,"proved":58,"links":[{"pending":0,"unproved":0,"rtt":0.07982897758483887,"window":48,"status":2}]},"progress":[]},"objects":[{"id":"55a67586647af10bcc078b00e34e47316e0dacaa981f129c8972523e42085e98","kind":"message"},{"id":"4b78c5c5c9a3fee8a7c1d8edb0dea7ca96c2f89aa05da081016ea36368100ff7","kind":"receipt"},{"id":"ea59c1d03f19f69f6cad825195ce0db8fe4ea3efe88de043a9815448d7ec8398","kind":"post"}],"storage":{"count":3,"bytes":58719,"quota":134217728,"maxObjects":1024,"pinned":0,"reserved":0,"reservedBytes":0}}
+# Subtest: reference Reticulum routes RelayLoom through TCP and serial PTY with partition/heal and offline seeding
+not ok 1 - reference Reticulum routes RelayLoom through TCP and serial PTY with partition/heal and offline seeding
+  ---
+  duration_ms: 28787.733552
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/tests/reticulum/heterogeneous.test.ts:10:13'
+  failureType: 'testCodeFailure'
+  error: |-
+    node exited 1: (node:2591049) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+    (Use `node --trace-warnings ...` to show where the warning was created)
+    /home/absint0o/projects/relayloom/packages/transport/src/reticulum.ts:71
+          this.fail(new Error("Reticulum terminou: " + this.errors.slice(-1024)));
+                    ^
+    
+    Error: Reticulum terminou: Reticulum adapter stopped: ValueError: custom executable interfaces are not accepted
+    
+        at ChildProcess.<anonymous> (/home/absint0o/projects/relayloom/packages/transport/src/reticulum.ts:71:17)
+        at Object.onceWrapper (node:events:634:26)
+        at ChildProcess.emit (node:events:519:28)
+        at maybeClose (node:internal/child_process:1101:16)
+        at ChildProcess._handle.onexit (node:internal/child_process:304:5)
+    
+    Node.js v22.22.3
+    
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    ChildProcess.<anonymous> (/home/absint0o/projects/relayloom/packages/transport/src/reticulum.ts:71:17)
+    Object.onceWrapper (node:events:634:26)
+    ChildProcess.emit (node:events:519:28)
+    maybeClose (node:internal/child_process:1101:16)
+    ChildProcess._handle.onexit (node:internal/child_process:304:5)
+    ChildProcess.<anonymous> (/home/absint0o/projects/relayloom/tests/helpers.ts:65:16)
+    ChildProcess.emit (node:events:519:28)
+    ChildProcess._handle.onexit (node:internal/child_process:293:12)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 28903.201241

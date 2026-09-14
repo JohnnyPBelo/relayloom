@@ -6,7 +6,7 @@
     ],
     "generated_at": "2026-09-11T16:22:15.403613+00:00",
     "version": 1,
-    "updated_at": "2026-09-13"
+    "updated_at": "2026-09-14"
   },
   "requirements": [
     {
@@ -3141,6 +3141,42 @@
             "docs/STATUS.md"
           ],
           "notes": "Restrição preservada durante a implementação; obrigação contínua."
+        }
+      ]
+    },
+    {
+      "id": "INT-010",
+      "type": "integration",
+      "title": "Real Reticulum and medium-agnostic delivery",
+      "statement": "Use the real RNS implementation across heterogeneous supported interfaces; normal sending chooses recipients rather than communication media.",
+      "status": "partial",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md",
+        "section": "Owner extension 2026-09-14"
+      },
+      "implementation": {
+        "milestone": "RNS integration"
+      },
+      "validation": {
+        "integration": [
+          "actual RNS intermediate router",
+          "no direct path controls",
+          "partition/heal",
+          "offline seeder",
+          "authorization/corruption failures"
+        ],
+        "limits": "Radio hardware, packaging and browser restrictions remain explicit."
+      },
+      "evidence": [
+        {
+          "kind": "host-integration",
+          "result": "pass",
+          "paths": [
+            "docs/RETICULUM.md",
+            "docs/evidence/reticulum/milestone/report.json"
+          ],
+          "notes": "Reference RNS, Node/Go process transfers, partition/heal, offline seeder, ownership/corruption, shared native UI. Physical radio, embedding, durable peering and full web parity remain pending."
         }
       ]
     }

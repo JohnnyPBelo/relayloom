@@ -1,0 +1,92 @@
+{
+  "status": "ALL_REQUIRED_LOCAL_CHECKS_PASSED",
+  "finished": "2026-09-14T20:05:39.183899+00:00",
+  "baseCommit": "b15b6e60862b6acf7a16e51736067d195f3c6187",
+  "candidate": "/home/absint0o/projects/relayloom/.cache/rn",
+  "inputsStable": true,
+  "inputs": {
+    "apps/node/src/cli.ts": "9c5ec91983b7e2bb09981e255b0638c37fca0297d094c602d96d80924c234d34",
+    "apps/node/src/node.ts": "dfc06936ea06b5d104299f85e895c945760dee2b478d53b42c8b4c3040df944e",
+    "apps/node/src/server.ts": "c34faa27385ec2722bb8297886b627e7e886c10ff649bb3e5e8fb62511732062",
+    "packages/transport/src/index.ts": "b5ecf9052193d3eb86c5a3d250133e25a027a9b3b8e5e28c9d205b0d78b676e9",
+    "packages/transport/src/reticulum.ts": "4d3de97454bde89758f416aec075f81bb4844c327c0b86482de7f576502c3a78",
+    "native/transport/link.go": "eae869957b469d061d399b46b5c2331d0c24b7f7f819c0fa8e7b8f6a5541c27a",
+    "native/transport/arrival_fairness_test.go": "20c283b5fc5d1eaef9e8b7e46d041a6fd55121f0a3ebd2a5ad40c6ff5b68445d",
+    "tests/helpers.ts": "5d17b850517b6565c5c8b284b264c4f0a27977348cba204b2befc9e17178c8f9",
+    "tests/transport-arrival-fairness.test.ts": "fe853327859a83b1255fbc2c939690fbe8ded706df21f4f125e74e3ddd4b7b19",
+    "scripts/reticulum-setup.py": "4c43ecd314ce95f9de9f3d0e0c76e8f96afc725acad0094b84bb380102292505",
+    "adapters/reticulum/sidecar.py": "2ccf4d5f527831b658fb023f9ddb4a80a31ef7e4b5e32929a5135eadeb487fc3",
+    "adapters/reticulum/requirements-linux.lock": "668b83cecf3c4ff9044d690874421f1ff9ed666c79554e745d9e7588f8cc2556",
+    "tests/reticulum/authorization.test.ts": "ea0a5637cc331b747cea30f42f59a6643a8a863eb838a49224302c1815975d4a",
+    "tests/reticulum/heterogeneous.test.ts": "b79499969f5256e8a7768fb565a30b98dafcead81bc4e7b7d2e5ad5506b2d1d1",
+    "tests/reticulum/reference-router.py": "1e7974654e3cd18a6f7c9468b619ff5d21d0e49c3059c2192f7a0419e71d7b7d",
+    "docs/licenses/reticulum/cryptography-50.0.1-LICENSE": "3e0c7c091a948b82533ba98fd7cbb40432d6f1a9acbf85f5922d2f99a93ae6bb",
+    "docs/licenses/reticulum/manifest.json": "d83ecc752de76fbcd810875c83fa28beedc43d6bf2dccf66a3d009c8026bf1e7",
+    "docs/licenses/reticulum/cffi-2.1.1-LICENSE": "5ba24ddc57067f9249add644c3afc41a5d6dc37e23433ef759d95df370b0af63",
+    "docs/licenses/reticulum/rns-1.5.4-LICENSE": "00d736d22a942ba144a5914d05877f0532288024dc189c1aadd1930ee9b4b295",
+    "docs/licenses/reticulum/cryptography-50.0.1-LICENSE.APACHE": "aac73b3148f6d1d7111dbca32099f68d26c644c6813ae1e4f05f6579aa2663fe",
+    "docs/licenses/reticulum/cryptography-50.0.1-LICENSE.BSD": "602c4c7482de6479dd2e9793cda275e5e63d773dacd1eca689232ab7008fb4fb",
+    "docs/licenses/reticulum/pyserial-3.5-LICENSE.txt": "f91cb9813de6a5b142b8f7f2dede630b5134160aedaeaf55f4d6a7e2593ca3f3",
+    "docs/licenses/reticulum/pycparser-3.0-LICENSE": "0c846399369ea76ddd7b5c44fe6d16497415fcf015f5cbb508c24bf98b81c5b1",
+    "package.json": "c28c9000cc892da3f15d5c63cecacdfbb98c5cb49de998641282818cbb9e784f",
+    "apps/web/src/main.tsx": "f87860e80e4979a5adc3e2e81eb01ffa277ccd990ebfe18171cb2edea3a4262f",
+    "tests/reticulum/profile_policy_test.py": "833bd59cc39e31622e1dab7cb16fdd15437e50e03ee070aa73e9f90099909ff3",
+    "tests/reticulum/ui.config.ts": "fdab8b78ecc9f05469b281ab7a77074066c6c370f8bef3d38e6fa86c35731a15",
+    "tests/reticulum/shared-ui.spec.ts": "c9915fb14f56052ac440e6db35d11aef54f7855d11dfbce9a0d1c0ef09378c2c",
+    "native/webpeer/server_test.go": "8a4f2767fc5fefc2461f2f720b54983ee11454ac286c0a922fb6458a1d30aafd",
+    "scripts/verify-reticulum.mjs": "f71b3a4060a885e6eb8a10ae2b0bf8b10ee1b567d7cdec835cc3a5c3643523ff",
+    ".gitignore": "a3d11045903978af8b56f4601e9ab47783e2e7be38037d0640d78bf4394bacb8",
+    ".github/workflows/ci.yml": "18093431422b0fca5cc8bb7e27bfb4e9e3aba5dd14b03038b0dd52e01baf9176"
+  },
+  "node": {
+    "pass": 279,
+    "fail": 0,
+    "skipped": 0,
+    "durationMs": 376313.261261,
+    "source": "../initial-gate/reticulum-report.json",
+    "reuse": "Node test/runtime/dependency inputs unchanged; later changes were RNS Python, Go-only fixture and verification scripts."
+  },
+  "go": {
+    "topLevelPasses": 177,
+    "passesWithSubtests": 229,
+    "helpersSkipped": 13,
+    "fail": 0,
+    "appSeconds": 429.493,
+    "source": "reticulum-go-final-command.json"
+  },
+  "interop": {
+    "pass": 58,
+    "fail": 0,
+    "skipped": 0,
+    "durationMs": 435387.002896
+  },
+  "ui": {
+    "node": 23,
+    "go": 23,
+    "generalAxe": 70,
+    "rnsCases": 1,
+    "rnsAxe": 2,
+    "rnsDuration": "17.3s; exact Playwright output retained",
+    "desktop": "Linux build, execution, package and packaged execution passed",
+    "axeSource": "axe-manifest.json"
+  },
+  "referenceRns": {
+    "version": "1.5.4",
+    "cases": 3,
+    "profilePolicyCases": 7,
+    "status": "passed before interruption; pending UI passed separately"
+  },
+  "interruption": {
+    "code": 143,
+    "cause": "not established",
+    "handling": "Interrupted reports preserved; pending checks completed as separate commands. No uninterrupted whole-command success is claimed."
+  },
+  "limits": [
+    "Linux RNS host only; PTY is not a physical radio",
+    "RNS not embedded in desktop/mobile distributions",
+    "per-installation raw RNS transit consent and durable RNS peer list pending",
+    "autonomous-browser/RNS combined path and full web parity pending",
+    "new iOS keyboard work is excluded from this candidate",
+    "no independent security or screen-reader assessment inferred"
+  ]
+}

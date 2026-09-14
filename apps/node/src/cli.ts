@@ -20,6 +20,18 @@ await node.start(
   Number(arg("--tcp-port", "0")),
   arg("--tcp-host", "127.0.0.1"),
 );
+const rnsConfig = arg("--rns-config", "");
+if (rnsConfig) {
+  try {
+    await node.startReticulum(
+      resolve(arg("--rns-python", ".cache/reticulum/venv/bin/python")),
+      resolve(rnsConfig),
+    );
+  } catch (error) {
+    await node.stop();
+    throw error;
+  }
+}
 const api = await serve(node, Number(arg("--http-port", "4173")));
 const info = {
   url: api.url,

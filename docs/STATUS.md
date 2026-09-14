@@ -1,5 +1,9 @@
 # RelayLoom — estado verificável
 
+**Reticulum real, verificado no host Linux:** o adaptador usa RNS1.5.4 sem alterações e transporta envelopes RelayLoom por TCP e série por PTY, com origens Node e Go. Passaram partição/heal, pausa, seeder reiniciado com autora offline, corrupção/autorização e envio pela UI sem escolha do meio. A regressão inclui279 Node,177 Go de topo com race detector,58 interoperabilidade,46 UI gerais,70 auditorias Axe e execução do pacote Linux; o percurso UI RNS acrescenta duas auditorias. [Implementação, comandos e limites](RETICULUM.md). PTY não é rádio físico; embalagem RNS e paridade web continuam pendentes.
+
+Os registos abaixo mantêm o âmbito e a data de cada execução anterior.
+
 **Cache Go validado localmente — 2026-09-14.** O pacote native/app passou em 413,181 s com o mesmo limite de 600 s e paralelismo -p=2 do CI. O gate passou 173 testes Go de topo, 45 de SQLite C, 57 de interoperabilidade e 23 de UI Go; helpers omitidos estão discriminados na evidência. Fontes estáveis, 35 auditorias Axe sem violações. [Semântica](GO-SCOPED-AUTHORITY-READS.md) · [Evidência](evidence/go-scoped-authority-reads). Novo CI ainda pendente. A paridade web, os restantes adversariais, plataformas/hardware e revisão independente continuam por concluir.
 
 **Leituras de autoridade com validação local concluída — 2026-09-14.** Cache limitado à mesma transacção e invalidado por cada escrita: 6 controlos, 275 Node (393,015 s), 57 de interoperabilidade (508,800 s), 23 UI por motor, 70 auditorias Axe e execução do pacote Linux passaram, com 366 fontes estáveis. O cenário completo instrumentado passou em 38,261 s antes e 21,171 s depois, sem remover fases ou aumentar o prazo de 65 s. [Semântica](SCOPED-AUTHORITY-READS.md) · [Evidência](evidence/scoped-authority-reads). Go/race integral e SQLite C adicionais estão em curso; novo Windows ainda pendente. Não é conclusão do produto nem validação de hardware.

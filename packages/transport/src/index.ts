@@ -43,7 +43,7 @@ interface Assembly {
 }
 export interface PeerState {
   id: string;
-  medium: "tcp" | "serial" | "websocket";
+  medium: "tcp" | "serial" | "websocket" | "reticulum";
   address: string;
   connected: boolean;
   sent: number;
@@ -78,6 +78,7 @@ class Link {
   active = true;
   writing = false;
   turn = 0;
+  private priorityTurns = { sos: 0, normal: 0, bulk: 0 };
   private resynchronize = false;
   // Control frames use the same writer as fragments. No receive path writes directly to the stream.
   readonly controls = new Set<string>();
@@ -95,7 +96,7 @@ class Link {
   constructor(
     readonly router: Router,
     readonly io: Socket | SerialPort | Duplex,
-    medium: "tcp" | "serial" | "websocket",
+    medium: "tcp" | "serial" | "websocket" | "reticulum",
     address: string,
   ) {
     this.resynchronize = medium === "serial";
@@ -357,7 +358,9 @@ class Link {
         },
         this.io instanceof SerialPort
           ? serialWriteDeadline(Buffer.byteLength(bytes), this.io.baudRate)
-          : 10_000,
+          : this.state.medium === "reticulum"
+            ? 120_000
+            : 10_000,
       );
       timeout.unref();
       this.cancelWrite = () => finish(false);
@@ -418,7 +421,10 @@ class Link {
       sent: 0,
       attempts: 0,
       next: 0,
-      scheduled: 0,
+      // A new arrival starts at the current turn, not before every flow that
+      // has already made progress. Otherwise new small packets steal all fair
+      // turns from a long-running bulk transfer.
+      scheduled: this.turn,
       inFlight: false,
     });
     this.pendingBytes += bytes;
@@ -436,7 +442,10 @@ class Link {
       (t) =>
         !(this.router.lowPower && t.packet.priority === "bulk") &&
         (t.next < Math.ceil(t.bytes / FRAGMENT) ||
-          now - t.sent >= (this.state.medium === "serial" ? 120_000 : 2000)),
+          now - t.sent >=
+            (["serial", "reticulum"].includes(this.state.medium)
+              ? 120_000
+              : 2000)),
     );
     const waiting = new Set(
       ready
@@ -446,6 +455,18 @@ class Link {
     const due = ready.filter((t) => {
       if (partials.includes(t)) return true;
       const priority = t.packet.priority;
+      // A narrowband RNS stream must finish one bulk object before admitting
+      // another. Repeated inventory responses otherwise divide its bandwidth
+      // across several copies while no complete object becomes usable.
+      // SOS/normal transfers still preempt at the next fragment and keep their
+      // reserved assembly slots; the every-fourth-fragment fairness rule stays.
+      if (
+        this.state.medium === "reticulum" &&
+        priority === "bulk" &&
+        counts.bulk >= 1 &&
+        t.bytes > FRAGMENT
+      )
+        return false;
       // Keep two slots available for SOS and one for either lower-priority class.
       // A stream of newly arriving high-priority objects must not monopolize admission.
       if (
@@ -462,7 +483,10 @@ class Link {
     const fair = (this.turn + 1) % 4 === 0;
     due.sort(
       (a, b) =>
-        (fair ? 0 : rank(a.packet.priority) - rank(b.packet.priority)) ||
+        (fair
+          ? this.priorityTurns[a.packet.priority] -
+            this.priorityTurns[b.packet.priority]
+          : rank(a.packet.priority) - rank(b.packet.priority)) ||
         a.scheduled - b.scheduled ||
         a.packet.created - b.packet.created,
     );
@@ -515,6 +539,7 @@ class Link {
           if (!sent) break;
           transfer.next++;
           transfer.scheduled = this.turn;
+          this.priorityTurns[transfer.packet.priority] = this.turn;
           if (transfer.next === count) transfer.sent = Date.now();
           controlTurn = true;
         } else break;
@@ -661,7 +686,7 @@ export class Router extends EventEmitter {
   }
   private attach(
     io: Socket | SerialPort | Duplex,
-    medium: "tcp" | "serial" | "websocket",
+    medium: "tcp" | "serial" | "websocket" | "reticulum",
     address: string,
   ) {
     for (const link of this.links) if (!link.active) this.links.delete(link);
@@ -677,7 +702,11 @@ export class Router extends EventEmitter {
     this.emit("change");
     return link;
   }
-  attachStream(stream: Duplex, medium: "websocket", address: string) {
+  attachStream(
+    stream: Duplex,
+    medium: "websocket" | "reticulum",
+    address: string,
+  ) {
     const link = this.attach(stream, medium, address);
     return {
       close: () => link?.destroy(),

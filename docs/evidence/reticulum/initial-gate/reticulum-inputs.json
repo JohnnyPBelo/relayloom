@@ -1,0 +1,32 @@
+{
+  "baseCommit": "b15b6e60862b6acf7a16e51736067d195f3c6187",
+  "candidate": ".cache/rn",
+  "files": {
+    "apps/node/src/cli.ts": "9c5ec91983b7e2bb09981e255b0638c37fca0297d094c602d96d80924c234d34",
+    "apps/node/src/node.ts": "dfc06936ea06b5d104299f85e895c945760dee2b478d53b42c8b4c3040df944e",
+    "apps/node/src/server.ts": "c34faa27385ec2722bb8297886b627e7e886c10ff649bb3e5e8fb62511732062",
+    "packages/transport/src/index.ts": "b5ecf9052193d3eb86c5a3d250133e25a027a9b3b8e5e28c9d205b0d78b676e9",
+    "packages/transport/src/reticulum.ts": "4d3de97454bde89758f416aec075f81bb4844c327c0b86482de7f576502c3a78",
+    "native/transport/link.go": "eae869957b469d061d399b46b5c2331d0c24b7f7f819c0fa8e7b8f6a5541c27a",
+    "native/transport/arrival_fairness_test.go": "20c283b5fc5d1eaef9e8b7e46d041a6fd55121f0a3ebd2a5ad40c6ff5b68445d",
+    "tests/helpers.ts": "5d17b850517b6565c5c8b284b264c4f0a27977348cba204b2befc9e17178c8f9",
+    "tests/transport-arrival-fairness.test.ts": "fe853327859a83b1255fbc2c939690fbe8ded706df21f4f125e74e3ddd4b7b19",
+    "scripts/reticulum-setup.py": "4c43ecd314ce95f9de9f3d0e0c76e8f96afc725acad0094b84bb380102292505",
+    "adapters/reticulum/sidecar.py": "68833edffc8ac9c6d443064d675c9c32ff0597f890bafe82a3d040fc1421fc8b",
+    "adapters/reticulum/requirements-linux.lock": "668b83cecf3c4ff9044d690874421f1ff9ed666c79554e745d9e7588f8cc2556",
+    "tests/reticulum/authorization.test.ts": "ea0a5637cc331b747cea30f42f59a6643a8a863eb838a49224302c1815975d4a",
+    "tests/reticulum/heterogeneous.test.ts": "b79499969f5256e8a7768fb565a30b98dafcead81bc4e7b7d2e5ad5506b2d1d1",
+    "tests/reticulum/reference-router.py": "1e7974654e3cd18a6f7c9468b619ff5d21d0e49c3059c2192f7a0419e71d7b7d",
+    "docs/licenses/reticulum/cryptography-50.0.1-LICENSE": "3e0c7c091a948b82533ba98fd7cbb40432d6f1a9acbf85f5922d2f99a93ae6bb",
+    "docs/licenses/reticulum/manifest.json": "d83ecc752de76fbcd810875c83fa28beedc43d6bf2dccf66a3d009c8026bf1e7",
+    "docs/licenses/reticulum/cffi-2.1.1-LICENSE": "5ba24ddc57067f9249add644c3afc41a5d6dc37e23433ef759d95df370b0af63",
+    "docs/licenses/reticulum/rns-1.5.4-LICENSE": "00d736d22a942ba144a5914d05877f0532288024dc189c1aadd1930ee9b4b295",
+    "docs/licenses/reticulum/cryptography-50.0.1-LICENSE.APACHE": "aac73b3148f6d1d7111dbca32099f68d26c644c6813ae1e4f05f6579aa2663fe",
+    "docs/licenses/reticulum/cryptography-50.0.1-LICENSE.BSD": "602c4c7482de6479dd2e9793cda275e5e63d773dacd1eca689232ab7008fb4fb",
+    "docs/licenses/reticulum/pyserial-3.5-LICENSE.txt": "f91cb9813de6a5b142b8f7f2dede630b5134160aedaeaf55f4d6a7e2593ca3f3",
+    "docs/licenses/reticulum/pycparser-3.0-LICENSE": "0c846399369ea76ddd7b5c44fe6d16497415fcf015f5cbb508c24bf98b81c5b1",
+    "package.json": "b58304dfe947c55d137ae25601589e0523cf729f5c7fd746b16ac24529e68a51",
+    "apps/web/src/main.tsx": "f87860e80e4979a5adc3e2e81eb01ffa277ccd990ebfe18171cb2edea3a4262f"
+  },
+  "scope": "RNS native CLI adapter and Node/Go arrival fairness; excludes pending autonomous browser code"
+}

@@ -1,0 +1,15 @@
+{
+  "finished": "2026-09-14T16:13:06.591Z",
+  "status": "passed",
+  "version": "1.5.4",
+  "medium": "real RNS Link/Channel over loopback TCP",
+  "controls": [
+    "forged author rejected before storage",
+    "ciphertext corruption rejected before storage",
+    "valid control delivered and verified",
+    "reader cannot edit another author",
+    "fresh transport replay has one stored object and unchanged author"
+  ],
+  "limits": "Linux host; does not prove physical radio or UI accessibility",
+  "work": "/home/absint0o/projects/relayloom/.cache/rn/.cache/rns-authorization-uq5nLr"
+}

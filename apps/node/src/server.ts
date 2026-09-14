@@ -111,6 +111,9 @@ export async function serve(
             case "/api/serial":
               node.connectSerial(body.path, body.baud ?? 115200);
               break;
+            case "/api/reticulum-connect":
+              node.connectReticulum(body.destination);
+              return json(200, { ok: true });
             case "/api/site-draft":
               node.saveDraft(body.blocks, body.theme);
               break;

@@ -3,11 +3,13 @@
 | Carrier | Implementation | Actual evidence | Unverified or blocked |
 | --- | --- | --- | --- |
 | TCP/IP | Node TCP sockets, explicit peer addresses, reconnect | Linux process and socket tests, bridge controls | Internet/NAT and physical devices pending; Node CI executes on Windows/macOS |
+| Browser WebRTC | `RtcTransportPeer`/`BrowserRouter`/`BrowserMesh`, bounded SCTP/DTLS/ICE with explicit SDP, consent and inventory | Actual Chromium contexts, automatic forwarding/partition/heal/restarted seeder, cancellation and fairness; [routing evidence](evidence/browser-routing) | WS adapter implemented in Node/Go and tested on loopback; autonomous product UI, public WSS/NAT, Firefox/Safari and radio validation still pending; no implicit STUN/TURN |
+| Browser/native WebSocket | Origin/capability-bound listener in Node/Go, browser adapter, native packet framing | Actual browser→RTC→WS→Go/TCP→Node/serialPTY route, opaque relays, partition/heal and restarted seeder; [evidence](evidence/browser-native) | Loopback only tested in browser; WSS/certificates/LAN and current mobile artifacts unverified |
 | Serial byte stream | serialport device adapter, configurable baud | Linux OS PTY pair, real byte forwarding, heterogeneous three-process test | Physical UART/radio hardware and vendor packet modems not tested; PTY also exercised on macOS CI |
 | BLE | Not implemented | None | Device APIs, pairing, MTU, OS restrictions |
 | Wi-Fi Direct | Not implemented | None | Platform APIs and real hardware |
-| LoRa/RNode | Not implemented | None | Physical radio, regional/airtime compliance, driver compatibility |
-| RNS/Reticulum | Evaluation only, no code included | Public upstream documentation/licence read on 2026-09-11 | No interoperability, addressing or wire-compatibility claim |
+| LoRa/RNode | RNS RNodeInterface can be selected in the dedicated adapter configuration; no separate native driver | No physical radio execution | Hardware/firmware, regional airtime, signal range and all platform behavior remain unverified |
+| RNS/Reticulum | Real reference RNS1.5.4 sidecar/Link/Channel carrying RelayLoom envelopes | Linux: real TCP → RNS transit router → serial PTY, partition/heal, restarted seeder and authorization/corruption controls passed directed tests | Host milestone validated; physical radios, packaging, per-installation RNS transit policy and browser-combined path pending; see [Reticulum](RETICULUM.md) |
 | Simulation | Separate deterministic engine in progress | Reports only after actual simulation test completion | Never substitutes for transport or hardware tests |
 
 ## Routing and storage
@@ -18,7 +20,9 @@ Configured installations relay by default with a visible pause setting. The curr
 
 Manual bootstrap is currently required. TCP listeners bind loopback by default; the owner can select a LAN interface. The local control API remains authenticated and loopback-only. No central server is mandatory. NAT/CGNAT, firewalls and partitions can prevent a path; there is no implicit TURN/relay/cloud service.
 
-## Reticulum evaluation
+## Historical Reticulum evaluation — 2026-09-11
+
+Superseded in implementation scope by the owner-authorized integration on 2026-09-14; see [current adapter, licensing and limits](RETICULUM.md). The following records the earlier evaluation, before any dependency was included.
 
 Sources inspected: [upstream README](https://github.com/markqvist/Reticulum/blob/master/README.md) and [upstream licence](https://github.com/markqvist/Reticulum/blob/master/LICENSE), fetched 2026-09-11. Upstream describes a complete non-IP stack with optional IP carriers and a reference implementation that authoritatively defines its protocol. RelayLoom’s JSON framing, identity addressing and cryptographic envelope are different; inspiration is architectural only.
 

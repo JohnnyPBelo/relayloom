@@ -2453,7 +2453,7 @@ function App() {
                               ? "WebRTC"
                               : p.medium === "websocket"
                                 ? "WebSocket"
-                                : "TCP / IP"}
+                                : p.medium === "reticulum" ? "Reticulum" : "TCP / IP"}
                         </span>
                         <span>
                           ↑ {bytes(p.sent)} · ↓ {bytes(p.received)}

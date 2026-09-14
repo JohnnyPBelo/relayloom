@@ -1,0 +1,43 @@
+{
+  "started": "2026-09-14T15:29:13.308Z",
+  "finished": "2026-09-14T15:29:55.982Z",
+  "status": "passed",
+  "version": "1.5.4",
+  "platform": "linux",
+  "controls": [
+    "A has only TCP to B; C has no TCP listener and only RNS. RNS path B-C has two hops through reference transit.",
+    "Positive encrypted private delivery; B forwarded the object but its identity cannot decrypt it.",
+    "Serial partition negative control: B stores the publication; C cannot receive it across disconnected PTYs.",
+    "Heal positive control: exact 30000-byte attachment and original author signature reach C over the RNS path.",
+    "Relay-off negative control: B reads a new publication but does not forward or advertise it to C.",
+    "Publisher process stopped; restarted B retains transport identity and seeds previously unseen content without acquiring authorship."
+  ],
+  "transit": {
+    "interfaces": [
+      {
+        "type": "TCPServerInterface",
+        "name": "TCPServerInterface[TCP/127.0.0.1:43233]",
+        "tx": 168750,
+        "rx": 226149
+      },
+      {
+        "type": "TCPClientInterface",
+        "name": "TCPInterface[Client on TCP/127.0.0.1:44414]",
+        "tx": 102860,
+        "rx": 87041
+      },
+      {
+        "type": "SerialInterface",
+        "name": "SerialInterface[Serial]",
+        "tx": 230122,
+        "rx": 164017
+      }
+    ]
+  },
+  "work": "/home/absint0o/projects/relayloom/.cache/rns-network-zyfONf",
+  "limitations": [
+    "PTY is not a radio",
+    "Linux only",
+    "RNS/native packaging and complete browser integration pending"
+  ]
+}

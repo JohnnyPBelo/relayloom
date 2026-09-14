@@ -1,0 +1,12 @@
+test_corrupt_transport_identity_is_not_replaced (__main__.ProfilePolicy.test_corrupt_transport_identity_is_not_replaced) ... ok
+test_executable_interface_is_never_loaded (__main__.ProfilePolicy.test_executable_interface_is_never_loaded) ... ok
+test_killed_owner_releases_the_lease_without_changing_identity (__main__.ProfilePolicy.test_killed_owner_releases_the_lease_without_changing_identity) ... ok
+test_missing_explicit_config_cannot_fall_back_to_global (__main__.ProfilePolicy.test_missing_explicit_config_cannot_fall_back_to_global) ... ok
+test_real_process_ownership_release_and_empty_directory_restart (__main__.ProfilePolicy.test_real_process_ownership_release_and_empty_directory_restart) ... ok
+test_shared_daemon_is_rejected (__main__.ProfilePolicy.test_shared_daemon_is_rejected) ... ok
+test_uncoordinated_rns_transit_is_rejected (__main__.ProfilePolicy.test_uncoordinated_rns_transit_is_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 1.252s
+
+OK

@@ -1,0 +1,8 @@
+
+Running 1 test using 1 worker
+
+(node:2847927) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/reticulum/shared-ui.spec.ts:31:1 › shared Liquid Glass UI sends without choosing a medium over TCP and real RNS serial, recovers a partition and receives a reply (17.3s)
+
+  1 passed (18.0s)

@@ -1,4 +1,5 @@
 import { commitGroupSendIntent } from "./group-send.js";
+import { ReticulumAdapter } from "../../../packages/transport/src/reticulum.js";
 import {
   listenWebSocket,
   webOrigin,
@@ -150,6 +151,17 @@ export class LoomNode extends EventEmitter {
   private stopping?: Promise<void>;
   private webPeer?: Awaited<ReturnType<typeof listenWebSocket>>;
   private webPeerTask = Promise.resolve();
+  private reticulum?: ReticulumAdapter;
+  async startReticulum(python: string, config: string) {
+    this.requireRunning();
+    if (this.reticulum) throw new Error("Reticulum já iniciado");
+    this.reticulum = await ReticulumAdapter.start(this.router, { python, config });
+  }
+  connectReticulum(destination: string) {
+    this.requireIdentity();
+    if (!this.reticulum) throw new Error("Reticulum não está configurado nesta instalação");
+    this.reticulum.connect(destination);
+  }
   inviteWeb(origin: string) {
     webOrigin(origin);
     const owner = this.requireIdentity();
@@ -325,6 +337,7 @@ export class LoomNode extends EventEmitter {
         clearInterval(this.syncTimer);
         for (const cancel of this.cancellations) cancel();
         await this.stopWebPeer();
+        await this.reticulum?.close();
         await this.router.stop();
         this.privateDatabase?.close();
         this.privateDatabase = undefined;
@@ -2071,6 +2084,7 @@ export class LoomNode extends EventEmitter {
       tcpPort: this.tcpPort,
       peers: this.router.peers,
       webPeer: this.webPeer?.state() ?? null,
+      reticulum: this.reticulum?.state() ?? null,
       counters: this.router.counters,
       storage: this.store.stats(),
       settings: { relay: this.config.relay, lowPower: this.config.lowPower },

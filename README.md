@@ -1,5 +1,7 @@
 # RelayLoom
 
+**Reticulum real, verificado no host Linux:** o adaptador usa RNS1.5.4 sem alterações e transporta envelopes RelayLoom por TCP e série por PTY, com origens Node e Go. Passaram partição/heal, pausa, seeder reiniciado com autora offline, corrupção/autorização e envio pela UI sem escolha do meio. A regressão inclui279 Node,177 Go de topo com race detector,58 interoperabilidade,46 UI gerais,70 auditorias Axe e execução do pacote Linux; o percurso UI RNS acrescenta duas auditorias. [Implementação, comandos e limites](docs/RETICULUM.md). PTY não é rádio físico; embalagem RNS e paridade web continuam pendentes.
+
 A optimização das leituras de autoridade também está ligada ao motor Go. Passou o gate local completo, incluindo interoperabilidade e UI; o novo resultado CI ainda está pendente. [Comportamento, comandos e limites](docs/GO-SCOPED-AUTHORITY-READS.md).
 
 As leituras de autoridade reutilizam trabalho apenas na mesma transacção autenticada, com invalidação após escritas. Passaram 275 testes Node, 57 de interoperabilidade e 46 de UI no host; o CI Windows continua por confirmar. [Regras, controlos e evidência](docs/SCOPED-AUTHORITY-READS.md).

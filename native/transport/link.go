@@ -62,6 +62,7 @@ type Link struct {
 	receiveBytes, receiveFrames, invalidFrames int
 	sent, received                             uint64
 	turn                                       uint64
+	priorityTurns                              [3]uint64
 	wake                                       chan struct{}
 	done                                       chan struct{}
 	closeOnce                                  sync.Once
@@ -189,7 +190,7 @@ func (l *Link) enqueueLocked(value *retained) bool {
 		l.removeTransferLocked(victim.packet.id)
 		l.router.counters.Dropped++
 	}
-	l.pending[value.packet.id] = &transfer{retained: value}
+	l.pending[value.packet.id] = &transfer{retained: value, scheduled: l.turn}
 	l.pendingBytes += len(value.encoded)
 	l.wakeLocked()
 	return true
@@ -435,6 +436,9 @@ func (l *Link) selectLocked(now time.Time) *transfer {
 	fair := (l.turn+1)%4 == 0
 	sort.Slice(due, func(i, j int) bool {
 		a, b := due[i], due[j]
+		if fair && l.priorityTurns[priorityRank(a.packet.priority)] != l.priorityTurns[priorityRank(b.packet.priority)] {
+			return l.priorityTurns[priorityRank(a.packet.priority)] < l.priorityTurns[priorityRank(b.packet.priority)]
+		}
 		if !fair && a.packet.priority != b.packet.priority {
 			return priorityRank(a.packet.priority) < priorityRank(b.packet.priority)
 		}
@@ -551,6 +555,7 @@ func (l *Link) writeLoop() {
 			}
 			value.next++
 			value.scheduled = l.turn
+			l.priorityTurns[priorityRank(value.packet.priority)] = l.turn
 			if value.next == value.count() {
 				value.sent = time.Now()
 			}

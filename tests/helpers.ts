@@ -20,6 +20,7 @@ export async function launch(
   backend: "node" | "native" = process.env.RELAYLOOM_TEST_BACKEND === "native"
     ? "native"
     : "node",
+  extraArgs: string[] = [],
 ): Promise<Client> {
   mkdirSync(".cache", { recursive: true });
   dir ??= mkdtempSync(join(process.cwd(), ".cache/node-"));
@@ -35,6 +36,7 @@ export async function launch(
     String(httpPort),
     "--tcp-port",
     String(tcpPort),
+    ...extraArgs,
   ];
   const child = spawn(
     backend === "native" ? nativeBinary : process.execPath,

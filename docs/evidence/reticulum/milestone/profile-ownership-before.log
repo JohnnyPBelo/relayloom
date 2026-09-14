@@ -1,0 +1,13 @@
+F
+======================================================================
+FAIL: test_real_process_ownership_release_and_empty_directory_restart (__main__.ProfilePolicy.test_real_process_ownership_release_and_empty_directory_restart)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/absint0o/projects/relayloom/tests/reticulum/profile_policy_test.py", line 100, in test_real_process_ownership_release_and_empty_directory_restart
+    self.assertNotEqual(second.returncode, 0)
+AssertionError: 0 == 0
+
+----------------------------------------------------------------------
+Ran 1 test in 0.265s
+
+FAILED (failures=1)
