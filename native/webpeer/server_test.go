@@ -18,6 +18,23 @@ func dial(t *testing.T, s *Server, origin, token string) (*websocket.Conn, *http
 	defer cancel()
 	return websocket.Dial(ctx, s.Invitation().Endpoint, &websocket.DialOptions{HTTPHeader: http.Header{"Origin": []string{origin}}, Subprotocols: []string{Protocol, "invite-" + token}})
 }
+func heartbeat(t *testing.T, client *websocket.Conn) {
+	t.Helper()
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+	nonce := "11111111-1111-1111-1111-111111111111"
+	if err := client.Write(ctx, websocket.MessageText, []byte(`{"t":"ping","nonce":"`+nonce+`"}`+"\n")); err != nil {
+		t.Fatal(err)
+	}
+	_, data, err := client.Read(ctx)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var pong map[string]string
+	if json.Unmarshal(data, &pong) != nil || pong["t"] != "pong" || pong["nonce"] != nonce {
+		t.Fatal("heartbeat failed")
+	}
+}
 func TestInvitationOriginCapabilitiesAndConnectionLimit(t *testing.T) {
 	r, err := transport.New(transport.Options{})
 	if err != nil {
@@ -59,6 +76,10 @@ func TestInvitationOriginCapabilitiesAndConnectionLimit(t *testing.T) {
 			t.Fatalf("valid peer %d of 8 was refused: %v", i+1, err)
 		}
 		clients = append(clients, c)
+		// HTTP101 may reach Dial before Accept returns in the server goroutine.
+		// A real protocol response proves registration and router attachment;
+		// do not turn pending upgrades into reported active connections.
+		heartbeat(t, c)
 	}
 	if s.State().Connections != 8 {
 		t.Fatalf("expected8 connections, got%d", s.State().Connections)
@@ -70,20 +91,7 @@ func TestInvitationOriginCapabilitiesAndConnectionLimit(t *testing.T) {
 	if err == nil || response == nil || response.StatusCode != 403 {
 		t.Fatal("connection cap missing")
 	}
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-	defer cancel()
-	nonce := "11111111-1111-1111-1111-111111111111"
-	if err = clients[0].Write(ctx, websocket.MessageText, []byte(`{"t":"ping","nonce":"`+nonce+`"}`+"\n")); err != nil {
-		t.Fatal(err)
-	}
-	_, data, err := clients[0].Read(ctx)
-	if err != nil {
-		t.Fatal(err)
-	}
-	var pong map[string]string
-	if json.Unmarshal(data, &pong) != nil || pong["t"] != "pong" || pong["nonce"] != nonce {
-		t.Fatal("heartbeat failed")
-	}
+	heartbeat(t, clients[0])
 }
 func TestInvitationExpiryAndCleartextScope(t *testing.T) {
 	r, _ := transport.New(transport.Options{})

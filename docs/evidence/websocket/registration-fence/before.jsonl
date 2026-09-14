@@ -1,0 +1,13 @@
+{"Time": "2026-09-14T16:41:21.906422446+01:00", "Action": "start", "Package": "github.com/JohnnyPBelo/relayloom/native/webpeer"}
+{"Time": "2026-09-14T16:41:21.914875877+01:00", "Action": "run", "Package": "github.com/JohnnyPBelo/relayloom/native/webpeer", "Test": "TestInvitationOriginCapabilitiesAndConnectionLimit"}
+{"Time": "2026-09-14T16:41:21.914918938+01:00", "Action": "output", "Package": "github.com/JohnnyPBelo/relayloom/native/webpeer", "Test": "TestInvitationOriginCapabilitiesAndConnectionLimit", "Output": "=== RUN   TestInvitationOriginCapabilitiesAndConnectionLimit\n"}
+{"Time": "2026-09-14T16:41:21.92258917+01:00", "Action": "output", "Package": "github.com/JohnnyPBelo/relayloom/native/webpeer", "Test": "TestInvitationOriginCapabilitiesAndConnectionLimit", "Output": "    server_test.go:64: expected8 connections, got7\n"}
+{"Time": "2026-09-14T16:41:21.92311169+01:00", "Action": "output", "Package": "github.com/JohnnyPBelo/relayloom/native/webpeer", "Test": "TestInvitationOriginCapabilitiesAndConnectionLimit", "Output": "--- FAIL: TestInvitationOriginCapabilitiesAndConnectionLimit (0.01s)\n"}
+{"Time": "2026-09-14T16:41:21.923155271+01:00", "Action": "fail", "Package": "github.com/JohnnyPBelo/relayloom/native/webpeer", "Test": "TestInvitationOriginCapabilitiesAndConnectionLimit", "Elapsed": 0.01}
+{"Time": "2026-09-14T16:41:21.92316521+01:00", "Action": "run", "Package": "github.com/JohnnyPBelo/relayloom/native/webpeer", "Test": "TestInvitationExpiryAndCleartextScope"}
+{"Time": "2026-09-14T16:41:21.923168817+01:00", "Action": "output", "Package": "github.com/JohnnyPBelo/relayloom/native/webpeer", "Test": "TestInvitationExpiryAndCleartextScope", "Output": "=== RUN   TestInvitationExpiryAndCleartextScope\n"}
+{"Time": "2026-09-14T16:41:22.924847077+01:00", "Action": "output", "Package": "github.com/JohnnyPBelo/relayloom/native/webpeer", "Test": "TestInvitationExpiryAndCleartextScope", "Output": "--- PASS: TestInvitationExpiryAndCleartextScope (1.00s)\n"}
+{"Time": "2026-09-14T16:41:22.924892011+01:00", "Action": "pass", "Package": "github.com/JohnnyPBelo/relayloom/native/webpeer", "Test": "TestInvitationExpiryAndCleartextScope", "Elapsed": 1}
+{"Time": "2026-09-14T16:41:22.924904835+01:00", "Action": "output", "Package": "github.com/JohnnyPBelo/relayloom/native/webpeer", "Output": "FAIL\n"}
+{"Time": "2026-09-14T16:41:22.927365509+01:00", "Action": "output", "Package": "github.com/JohnnyPBelo/relayloom/native/webpeer", "Output": "FAIL\tgithub.com/JohnnyPBelo/relayloom/native/webpeer\t1.021s\n"}
+{"Time": "2026-09-14T16:41:22.927383783+01:00", "Action": "fail", "Package": "github.com/JohnnyPBelo/relayloom/native/webpeer", "Elapsed": 1.021}

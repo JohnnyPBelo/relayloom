@@ -1,0 +1,10 @@
+{
+  "baseCommit": "b15b6e60862b6acf7a16e51736067d195f3c6187",
+  "files": {
+    "native/webpeer/server.go": "ca3c7daca9bfe11b97984db47f78e164bceacd22234a976eb3b3d894c26bd317",
+    "native/webpeer/server_test.go": "8a4f2767fc5fefc2461f2f720b54983ee11454ac286c0a922fb6458a1d30aafd"
+  },
+  "command": "node scripts/go.mjs test -race -count=1 -p=1 ./webpeer",
+  "result": "pass",
+  "elapsedSeconds": 2.025
+}
