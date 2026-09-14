@@ -24,6 +24,10 @@ const checks = [
     ],
   ],
   ["e2e", ["scripts/e2e.mjs"]],
+  [
+    "autonomous-browser-kernel",
+    ["scripts/e2e.mjs", "--config", "tests/browser/browser.config.ts"],
+  ],
   ["simulation", ["--import", "tsx", "scripts/simulate.ts"]],
 ];
 const report = {

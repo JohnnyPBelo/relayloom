@@ -243,3 +243,106 @@ Sem agentes novos/retomados. Eventos, carriers, UI dinâmica, artefactos móveis
 ## C1 — gate final concluído, contrato incompleto
 
 Build6.056s;253 Node405.684s;161 Go principais/race711.420s (12 helpers pelos drivers);47 interoperabilidade480.894s;35 SQLite C283.498s;19 UI Node138.097s/19 Go128.687s. Desktop Linux preparação0.319s/execução2.412s/pacote --dir7.260s/execução empacotada1.255s.62 Axe sem violações;326 fontes inalteradas. Sessões83929 e43358 terminaram0. Evidência em docs/evidence/group-carriers/final, falhas em adversarial. Root reviu as capturas; revisão independente e plataformas actuais pendentes. C2/C3 e todo o resto de PROJECT-BRIEF continuam activos; não marcar produto completo.
+
+
+## HTTP de fixtures e início C2 — 2026-09-13
+
+CI Windows distinguiu terminação por sinal de exitCode: controlo offline passou após aceitar ambos e medir recusa de socket com positivo antes de parar. O run seguinte encontrou ECONNRESET num socket HTTP reutilizado e processo vivo; diagnóstico privado foi recolhido do artefacto oculto. Bloquear só o cliente local reproduziu a reutilização de ligação já fechada; bloquear apenas o servidor não. O helper usa uma ligação por RPC/uma tentativa, com regressão não idempotente exactamente uma vez.4 casos afectados passaram92.466s; não inferir o histórico preciso de agendamento do CI nem mexer em timeouts/bridges.
+
+C2 teve dois erros de fixture corrigidos: ProtectedGroupStore.transaction devolve T directo; só GroupRegistry.inTransaction devolve ScopeResult.value. O worker compilado via launchOwned inicia no root, portanto a restrição de cache deve resolver .cache nesse cwd, sem a enfraquecer.6 Node/5 Go-race/interop real/API três percursos passaram; ainda falta transporte/UI de avisos e gate completo. Retire aborta a transacção mesmo se o chamador engolir erro após delete, conservando o convite. Chaves de teste só na cache privada temporária.
+
+
+## C2: callbacks sob mutex e reabertura de consentimento
+
+O cancelamento Go fazia DB/recuperação dentro de Router.CancelLocal, que segura r.mu. O teste de estado em memória desactualizado reproduziu reentrada no mesmo mutex e expirou12s. Decisões passaram a ser calculadas antes do callback; o mesmo teste passou com race2.326s e o mesmo prazo. Node foi alinhado para não fazer recuperação durante a travessia da fila. Preservar a fronteira: callbacks do router só consultam decisões imutáveis, não chamam DB nem recuperação.
+
+Abertura repetida de um convite com UUID novo apagava consentimento local. A regressão de rede falhou antes da guarda; agora recusa reabrir convite já aceite/admitido e recupera a operação original antes de comparar a versão actual.4 percursos Node/Go passaram17.621s. C2 permanece em integração, com adversariais/partições e UI ainda pendentes.
+
+
+## Replay de snapshots incorporados — 2026-09-13
+
+O desbloqueio reaplicava22 vezes autoridade para11 snapshots já guardados. O novo teste reproduziu-o, mantendo um controlo de fecho novo com snapshot inválido. O caminho de no-op só é escolhido após validar estado activo/admissão/cursor e bytes, header, emissores e leitores exactos no mesmo scope autenticado. Node0 aplicações/≈0.7s contra22/≈1.8s; Go/race e17 regressões dirigidas passaram. Não usar ID de carrier ou projecção de UI como substituto dessa prova; estados parcialmente admitidos e toda falha de verificação conservam o caminho normal, incluindo fences. Windows e regressão integral ainda pendentes.
+
+
+## Web autónoma — fronteira real e liveness de WebRTC
+
+Foi identificado que apps/web era apenas cliente do daemon. O requisito explícito de paridade sem instalação entrou no contrato e no planoW1–W5, sem marcar os passes de UI antigos como browser autónomo. Protocolo portátil e criptografia Web Crypto/scrypt compatíveis foram implementados, com IndexedDB cifrado transaccional e adaptador WebRTC real.
+
+Primeiro typecheck falhou na assinatura DOM Web Locks que inferia Promise<Promise<T>>; tornar a facade async/await preservou a semântica real e passou. Os3primeiros testes browser passaram. A integração seguinte passou4casos mas falhou no seeder: encerrar o contexto do autor não notificou o canal remoto em15s. Foi adicionado controlo de presença limitado2s/5s e o mesmo caso passou9.2s, com prazo inalterado. Não aumentar timeouts por ausência de detecção de pares; distinguir encerramento remoto observado de simplesmente enviar close local.
+
+Não confundir interoperabilidade de bundles/cofres com interoperabilidade de transporte. O programa Go foi efectivamente executado também com bytes produzidos pelo Chromium, e voltou a produzir uma resposta decifrada no navegador; usar chaves produzidas pelo Go dentro do Node não bastava como prova. Grupo/rotas/worker/UI/PWA permanecem por integrar. Sem agentes novos/retomados ou alterações de provider/bridge.
+
+Gate do núcleo web concluído64554:16Node/6Chromium, typecheck/build,366fontes inalteradas. `docs/evidence/browser-foundation` preserva âmbito/logs/falhas. O lockfile não traz nova versão transitiva, apenas torna scrypt uma dependência de execução explícita. Todos os pendentes C2/C3 foram conservados.
+
+
+## Routing browser e provas de fronteira — 2026-09-14
+
+O protocolo de pacote foi partilhado com os sockets nativos. Recepção global serializada/limitada e validação antes de admissão evitam dupla entrega concorrente; callbacks confirmam armazenamento local sem esperar pelo ACK de outro salto. O RTC passou a multiplexar fragmentos com7turnos prioritários/1justo e a verificar cancelamento depois de backpressure. Controlos reais comprovaram SOS e interrupção de relay sem fechar a ligação própria.
+
+Exigir um único dono de rede por perfil/origem: só serializar as escritas IndexedDB não impediria outro separador de continuar a retransmitir após pause. BrowserMesh mantém Web Lock durante a vida da rede e até drenar operações no close; alterações de preferências serializadas respeitam revogação mais recente mesmo se um enable antigo ainda persistir.
+
+Um teste não abriu RTC em15s, antes de exercer prioridade. A repetição com diagnóstico e os gates passaram, mas sem reproduzir estado da falha original; não chamar isto correcção de conectividade. Preservar log e capturar ICE/canal sem publicar SDP ou credenciais. findLastIndex não faz parte do alvoES2022: usar map/lastIndexOf, sem mudar config por conveniência.
+
+Durante arquivo descobriu-se que reporter.outputFile relativo numa config dentro de tests/browser cria a cache nessa pasta. Resolver caminho da raiz explicitamente; a suite14 foi executada e o JSON real recolhido no destino do CI. Não inventar ficheiros/contagens a partir de caminhos esperados. Fonte de produção idêntica entre gate372fontes e suite ampliada14.
+
+
+## Web/nativo: contabilização, ACK tardio e retoma de gates
+
+GoWS contava sessões abertas como handshakes pendentes e recusava o5.ºpar. Teste falhou antes; pending agora é retirado na passagem para sessão,8válidos/9.ºrecusado passaram comrace. Escritas de controlos Go são enfileiradas semI/O sob o mutex; cancelamento de fragmento em-flight só publica drop depois da escrita. Origem inválida é validada antes de fechar um convite existente.
+
+A fixtureAxe falhou por usar browser.newPage, que impede a ferramenta de abrir a página auxiliar no contexto; usar newContext/newPage e conservar a auditoria. A aparência real Node/GoWS foi depois revista, sem confundir comUI autónoma.
+
+ACKtardio: o primeiro ensaio passou semprovar retryparcial. O controlo reforçado usa lowPower doemissor+marcadorSos na mesma ligação antes de libertar armazenamento; reproduziu1reassemblagem órfã. Cache deIDs só após verificação/aceitação, limitada4096/prazo do pacote/1h, evita recomeçar a tentativa já aceite. Mesmo prazo3s deassert e15s deassembly; regressão passou4.2s.
+
+271Node e89Go de topo/race já tinham passado385fontes. A retoma verificou hashesde todasasfontes nativas e ambiente; só4ficheiros de browser/test/runner mudaram.18browser e42UI, desktop executado/empacotado,66Axe passaram. Preservar o prefixo originalmenteFAILED porAxe, não reescrever como passe integral. Coder/websocket éISC, não a suposiçãoMIT; copiar licença real e hash. Plataforma física eparidade continuam pendentes.
+
+
+## UI autónoma: erro vazio, scopeSW e resposta perdida
+
+O worker enviava DOMException.message vazia; oclienteusava truthiness deerror e resolvia como sucesso. Teste deDBcorrompida falhou pelaausência de alerta. Normalizar mensagem e distinguir presença deerror; repetiu comidentidadebloqueada, semreset.
+
+Serviceworker guardavaUI mas oworker emitido em/assets nãoera controlado noarranqueoffline. Trace confirmou503 do worker. Emitirworker em/browser e incluí-lo na lista verificada; teste comservidor503 passou. CacheStoragecorrompida não executa código alterado e sórepara combytes válidos daorigem. A versãodacacheinclui templateSW além doshashes dosassets.
+
+UI mobile precisavaabrirnavegação; Conversas mudavadenomeacessível comcontador. Nomefixo+aria-description conservaramcontagem. Resposta de sendperdida depoisdocommit recuperou mesmoUUID/ID; reserva eledger/transacçãoIDB tiveramcontrole deaborto epressão. Novo gatepassou271Node/26browser/42UI/Linuxpacote,403fontesestáveis/72Axe. Isto não prova dinâmicos/gruposeparidade nemuma revisãoindependente.
+
+Browser skillfoi lida para preview; execução NodeREPL existia masbackendIABnãofoidescoberto. Abertura pelopainelretornouqueued; nãoafirmar queabriu/verificou. PreviewVite próprio ficou activo na sessão49020/porta4174, semidentidadepré-criada.
+
+
+## Recuperação de grupo e rascunho depois do bloqueio — 2026-09-14
+
+A revisão identificou uma segunda leitura assíncrona em recover sem voltar a verificar se o diálogo ainda pertencia à sessão. O teste real perdeu a resposta de uma criação já commitada, reteve a resposta de estado durante recuperação, bloqueou pela UI e entregou a resposta antiga. Depois de desbloquear, o rascunho apagado reapareceu: falha reproduzida (1 passe/1 falha). A closure de chooseConversation conservava o texto anterior ao bloqueio.
+
+A correcção verifica alive depois de cada await que antecede callbacks ou actualização do workspace. Os mesmos dois cenários passaram Node6.6s/Go5.1s, sem segunda criação. A suite UI completa/desktop está pendente. Prevenção: validar a sessão em cada fronteira assíncrona, incluindo recuperações de UUID com mais de uma leitura; não basta verificar apenas a primeira resposta. As cópias de validação exigem um root explícito: uma primeira cópia usou o cwd errado, falhou antes de escrever e foi repetida correctamente antes dos testes.
+
+
+## Validação visual, Windows e leituras de autoridade — 2026-09-14
+
+Axe não detectou o contador9px fora do botão de convites a320px. A revisão de imagem encontrou-o; a asserção geométrica falhou e passou após usar colunas no botão móvel. O gate completo foi repetido:23 UI Node/23 Go,70 Axe,desktop Linux. A cópia longa produziu socketUnix111bytes; movê-la para.cache/u conservou fontes/estado e permitiu o mesmo arranque com94bytes, sem mudar sandbox.
+
+CIbb85d1a passou Linux/macOS, mas Windows reteve o timeout65s e revelou dois hooks SQLite fora de ordem. Fechar a reabertura em finally, antes do hook da fixture, passou6 testes locais; não inferir passeWindows. O perfil Linux mostrou verificações de assinaturas repetidas em leituras de checkpoint na mesma transacção. Novo cache8/416KiB é estritamente ligado à generation, retorna clones e acaba com o scope. Testes mediram5leituras→1 e provaram invalidar após corrupção/remoção de provas/encerramento, separar transacções e limitar8entradas. O cenário completo instrumentado38.261s→21.171s passou sem mudar prazo ou fases; a regressão completa está em curso. Custo menor num host não substitui o CI Windows.
+
+
+## CI Go e política de lock do transporte — 2026-09-14
+
+60f514c passou os3jobsNode, incluindo seederWindows30.976s no prazo65s e asduaslimpezasSQLite. O jobGo excedeu o limite global10min do pacoteapp, com o casoByteReserve em1m03; nohost o pacote tinha passado514.819s. A stack activa não estava disponível, por isso não se atribui deadlock nem se aumentam prazos sem diagnóstico. Perfil dirigido em preparação.
+
+Um novo teste APIWS assumiuincorrectamente que bloquear chaves revogava consentimento de relay. Ambos os motores mantêm o transporte opacoatéstop/expiry;isto está alinhado com a separação entre chaves e retransmissão. A fixture passou a provar essa política, a negação de leitura/publicação privadas bloqueadas e a revogação explícita, inclusivequando bloqueado. Os2percursos passaram1.236s;falhaoriginalconservada. Não enfraquecer um requisito para fazer umteste passar, mas também não inventar um requisito de stopque contraria a política existente.
+
+
+## IntegraçãoGo e caminhosGit — 2026-09-14
+
+GoMemo passou-gaterace integralcom-p=2(app413.181s dentro600s),45SQLiteC,57interop e23UIGo;368fontesestáveis. Commit9866889 publicado,CIactivo. A cópiaWS foi actualizada semtocar nas26alterações; git diff --name-only sem-z devolveu algunsnomesUTF8 comaspas/escapes que git restore recusou. Usar-z e separarNUL resolveu,comhashescomparados antes/depois. Não interpretar nomesde ficheiro human-readableGit como pathspecs exactos.
+
+
+## Reticulum real e fairness por classe — 2026-09-14
+
+A integração usa o pacote RNS1.5.4 inalterado (licençaReticulum, nãoMIT). O primeiroDM privado atravessouTCP/serialviaRNS e orelaynãoodescifrou, mas o ficheiro28800bytes não terminava apósapartição. Diagnósticos mostraramcontenção de fila. A regressão dirigida dechegadascontínuas deu1/120turnosbulk; inicializar schedulednacontagemactualdeu14/120;a selecçãopelaclassemenosrecentementeservida passouNode/Go-race. Nãoatribuir à referência RNS uma falha nãoisolada: o limite deprópriossegmentosemvoofoi ajustadopara4, retiradossóemordemdeprova, semalterarRNS.
+
+Outros controlos detectaram reinício recusado pelo directóriovazio/interfaces criado pelo RNS, e pequenosobjectosdeseeding presosatrásdeum bulk. Validarconteúdoexecutáveldo directórioe admitirobjectosdeumfragmentoresolveram. Testefinaldirigido passou43,779s semalterarficheiro/partição3s/prazos45s+35s. Autor/ciphertextcorrompidos recusados antesdoarmazenamento, leitura semautoria e replaypassaram6,756s. Logs deiteraçõespreservados;gateisoladointegral emexecução, não concluído.
+
+Prevenção: medirprogresso porprioridade e contagemdefragmentos, nãosóvolume; fluxosnovosnão devemroubarturnosjustos. Configuraçãocriadapelo upstreamfazpartedociclo de reinício. Registarpassesespecíficoscomhashes; não convertergatedirigidoemvalidaçãoderádio,paridade ouprontidão.
+
+
+## Consolidação web e recolha de evidência — 2026-09-14
+
+A verificação sequencial sobre5e049f1 terminou sem falhas,279Node/26browser/46UI/desktopLinux. Os testes da web escrevem capturas em.cache, mas o novo jobCI recolhia docs/evidence. Corrigidos apenas os caminhos de recolha, com hashes anterior/posterior separados do relatório do gate. Contar apenas8Axe novos da web/transporte; a UI nativa comum é sobrescrita entre motores e não pode ser contada duas vezes a partir da mesma captura. A nova execução iOS confirma a mesma falha de teclado; não chamar ao incremento UIKit uma correcção validada até correr em Apple.

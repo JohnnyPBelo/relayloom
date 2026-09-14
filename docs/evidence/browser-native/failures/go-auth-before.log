@@ -1,0 +1,5 @@
+--- FAIL: TestInvitationOriginCapabilitiesAndConnectionLimit (0.01s)
+    server_test.go:24: valid peer 5 of 8 was refused: failed to WebSocket dial: expected handshake response status code 101 but got 403
+FAIL
+FAIL	github.com/JohnnyPBelo/relayloom/native/webpeer	1.017s
+FAIL

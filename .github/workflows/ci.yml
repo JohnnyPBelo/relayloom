@@ -112,6 +112,40 @@ jobs:
             docs/evidence/reticulum/authorization.json
           retention-days: 7
 
+  autonomous-browser:
+    needs: reticulum-reference
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.26.8"
+          cache: false
+      - run: npm ci --ignore-scripts
+      - name: Autonomous browser application, offline storage and actual WebRTC/WS peers
+        run: npm run test:browser
+        env:
+          RELAYLOOM_BROWSER_CHANNEL: chrome
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: autonomous-browser-evidence
+          path: |
+            .cache/browser-foundation/crypto-scope.json
+            .cache/browser-foundation/rtc-scope.json
+            .cache/browser-foundation/playwright.json
+            .cache/browser-routing/mesh.json
+            .cache/browser-routing/scheduling.json
+            .cache/browser-routing/native-packet.json
+            .cache/browser-routing/scheduling-failure.json
+            .cache/browser-application/ui
+            .cache/browser-native/*-network*
+          retention-days: 7
+
   desktop-package:
     needs: native-go
     strategy:

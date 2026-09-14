@@ -1,0 +1,185 @@
+{
+  "result": "PASSED_SCOPED_INTEGRATION",
+  "baseCommit": "526d75a321536374923921a429b86f7e623ed5a4",
+  "uncommitted": true,
+  "nodeTests": 271,
+  "goTopTests": 89,
+  "goHelperSkips": [
+    "TestGroupOutboxProcessExitFixture",
+    "TestGroupSendProcessExitFixture"
+  ],
+  "goIncludingSubtests": 125,
+  "browser": {
+    "startTime": "2026-09-14T01:04:12.569Z",
+    "duration": 54309.037,
+    "expected": 18,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "uiTestsPerDaemon": 21,
+  "axeAudits": 66,
+  "axePaths": [
+    "docs/evidence/ui/messenger-light-axe.json",
+    "docs/evidence/ui/site-editor-axe.json",
+    "docs/evidence/ui/social-axe.json",
+    "docs/evidence/ui/messenger-dark-axe.json",
+    "docs/evidence/ui/onboarding-axe.json",
+    "docs/evidence/ui/mobile-social-axe.json",
+    "docs/evidence/ui/onboarding-layout-go/dark-axe.json",
+    "docs/evidence/ui/onboarding-layout-go/light-axe.json",
+    "docs/evidence/ui/onboarding-layout-node/dark-axe.json",
+    "docs/evidence/ui/onboarding-layout-node/light-axe.json",
+    "docs/evidence/outbox/node/expired-axe.json",
+    "docs/evidence/outbox/node/pending-dark-axe.json",
+    "docs/evidence/outbox/node/pending-light-axe.json",
+    "docs/evidence/outbox/node/keyboard-focus-axe.json",
+    "docs/evidence/outbox/node/pending-mobile-axe.json",
+    "docs/evidence/outbox/node/legacy-group-read-axe.json",
+    "docs/evidence/outbox/go/expired-axe.json",
+    "docs/evidence/outbox/go/pending-dark-axe.json",
+    "docs/evidence/outbox/go/pending-light-axe.json",
+    "docs/evidence/outbox/go/keyboard-focus-axe.json",
+    "docs/evidence/outbox/go/pending-mobile-axe.json",
+    "docs/evidence/outbox/go/legacy-group-read-axe.json",
+    "docs/evidence/group-outbox/ui-node/mobile-axe.json",
+    "docs/evidence/group-outbox/ui-node/desktop-axe.json",
+    "docs/evidence/group-outbox/ui-go/mobile-axe.json",
+    "docs/evidence/group-outbox/ui-go/desktop-axe.json",
+    ".cache/liquid-glass/node/editor-mobile-axe.json",
+    ".cache/liquid-glass/node/A-praça-dark-axe.json",
+    ".cache/liquid-glass/node/messenger-mobile-320-axe.json",
+    ".cache/liquid-glass/node/Definições-dark-axe.json",
+    ".cache/liquid-glass/node/commands-mobile-axe.json",
+    ".cache/liquid-glass/node/settings-high-contrast-axe.json",
+    ".cache/liquid-glass/node/A-minha-página-dark-axe.json",
+    ".cache/liquid-glass/node/commands-forced-colors-axe.json",
+    ".cache/liquid-glass/node/A-rede-dark-axe.json",
+    ".cache/liquid-glass/node/A-minha-página-light-axe.json",
+    ".cache/liquid-glass/node/commands-dark-axe.json",
+    ".cache/liquid-glass/node/A-praça-light-axe.json",
+    ".cache/liquid-glass/node/Definições-light-axe.json",
+    ".cache/liquid-glass/node/commands-light-axe.json",
+    ".cache/liquid-glass/node/A-rede-light-axe.json",
+    ".cache/liquid-glass/go/editor-mobile-axe.json",
+    ".cache/liquid-glass/go/A-praça-dark-axe.json",
+    ".cache/liquid-glass/go/messenger-mobile-320-axe.json",
+    ".cache/liquid-glass/go/Definições-dark-axe.json",
+    ".cache/liquid-glass/go/commands-mobile-axe.json",
+    ".cache/liquid-glass/go/settings-high-contrast-axe.json",
+    ".cache/liquid-glass/go/A-minha-página-dark-axe.json",
+    ".cache/liquid-glass/go/commands-forced-colors-axe.json",
+    ".cache/liquid-glass/go/A-rede-dark-axe.json",
+    ".cache/liquid-glass/go/A-minha-página-light-axe.json",
+    ".cache/liquid-glass/go/commands-dark-axe.json",
+    ".cache/liquid-glass/go/A-praça-light-axe.json",
+    ".cache/liquid-glass/go/Definições-light-axe.json",
+    ".cache/liquid-glass/go/commands-light-axe.json",
+    ".cache/liquid-glass/go/A-rede-light-axe.json",
+    ".cache/dynamic-groups-ui/node/invitation-light-axe.json",
+    ".cache/dynamic-groups-ui/node/create-light-axe.json",
+    ".cache/dynamic-groups-ui/node/members-light-axe.json",
+    ".cache/dynamic-groups-ui/node/members-mobile-axe.json",
+    ".cache/dynamic-groups-ui/go/invitation-light-axe.json",
+    ".cache/dynamic-groups-ui/go/create-light-axe.json",
+    ".cache/dynamic-groups-ui/go/members-light-axe.json",
+    ".cache/dynamic-groups-ui/go/members-mobile-axe.json",
+    ".cache/browser-native/node-network-axe.json",
+    ".cache/browser-native/native-network-axe.json"
+  ],
+  "axeViolations": 0,
+  "sourcesStable": 385,
+  "nativePrefixPreserved": true,
+  "nativeSourcesUnchangedAcrossBrowserFix": true,
+  "changedSinceNativePrefix": [
+    "packages/browser/src/packet.ts",
+    "packages/browser/src/rtc.ts",
+    "scripts/verify-browser-native.mjs",
+    "tests/browser/native-transport.spec.ts"
+  ],
+  "remainingChecks": [
+    {
+      "name": "typecheck",
+      "command": "node node_modules/typescript/bin/tsc --noEmit",
+      "env": {},
+      "exit": 0,
+      "elapsedMs": 5821
+    },
+    {
+      "name": "web-build",
+      "command": "node node_modules/vite/bin/vite.js build",
+      "env": {},
+      "exit": 0,
+      "elapsedMs": 2067
+    },
+    {
+      "name": "native-build",
+      "command": "node scripts/native-build.mjs",
+      "env": {},
+      "exit": 0,
+      "elapsedMs": 310
+    },
+    {
+      "name": "browser-native",
+      "command": "node scripts/e2e.mjs --config tests/browser/browser.config.ts",
+      "env": {},
+      "exit": 0,
+      "elapsedMs": 54874
+    },
+    {
+      "name": "ui-node",
+      "command": "node scripts/e2e.mjs",
+      "env": {
+        "RELAYLOOM_TEST_BACKEND": "node"
+      },
+      "exit": 0,
+      "elapsedMs": 167983
+    },
+    {
+      "name": "ui-go",
+      "command": "node scripts/e2e.mjs",
+      "env": {
+        "RELAYLOOM_TEST_BACKEND": "native"
+      },
+      "exit": 0,
+      "elapsedMs": 148074
+    },
+    {
+      "name": "desktop-build",
+      "command": "node scripts/desktop-build.mjs",
+      "env": {},
+      "exit": 0,
+      "elapsedMs": 175
+    },
+    {
+      "name": "desktop-run",
+      "command": "node scripts/desktop-run.mjs --smoke --x11",
+      "env": {},
+      "exit": 0,
+      "elapsedMs": 2443
+    },
+    {
+      "name": "desktop-package",
+      "command": "node scripts/desktop-package.mjs",
+      "env": {},
+      "exit": 0,
+      "elapsedMs": 13185
+    },
+    {
+      "name": "desktop-packaged-run",
+      "command": "node scripts/desktop-packaged-smoke.mjs",
+      "env": {},
+      "exit": 0,
+      "elapsedMs": 1000
+    }
+  ],
+  "limits": [
+    "Not a completed autonomous web app or native feature parity",
+    "WebSocket browser execution is loopback; public WSS, LAN/NAT and certificate UX remain unverified",
+    "No current mobile/hardware/radio or all-OS claim",
+    "POSIX PTY is a real byte stream, not physical radio",
+    "Browser ICE readiness previously failed once at15s with no established cause; later passes do not resolve that history",
+    "Not full C2/C3 adversarial/runtime/SQLite/interop acceptance",
+    "Root review only; delegation remains suspended by owner"
+  ]
+}

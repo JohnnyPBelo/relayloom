@@ -1,0 +1,21 @@
+
+Running 14 tests using 1 worker
+
+(node:2666889) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/browser/foundation.spec.ts:24:1 › Chromium owns compatible identities/vaults/bundles: real Node and Go positive and negative controls (2.0s)
+  ✓   2 tests/browser/foundation.spec.ts:205:1 › encrypted IndexedDB persists, coordinates two pages, rejects corruption and preserves pins on failed admission (765ms)
+  ✓   3 tests/browser/foundation.spec.ts:397:1 › lock during unlock cannot resurrect keys; missing authenticated state is not replaced with empty success (527ms)
+  ✓   4 tests/browser/foundation.spec.ts:449:1 › real WebRTC transfers encrypted chunks and an offline author's reader seeds identical bytes to a new reader (9.0s)
+  ✓   5 tests/browser/foundation.spec.ts:623:1 › WebRTC rejects a correctly framed corrupt bundle before storage and rejects admission failure without ACK (1.0s)
+  ✓   6 tests/browser/foundation.spec.ts:723:1 › identity recovery is compatible and cannot overwrite an existing profile; quota eviction retains pinned objects (340ms)
+  ✓   7 tests/browser/routing.spec.ts:83:1 › automatic A-B-C mesh: consent controls, own sends while paused, partition/heal and restarted reader takeover with author offline (6.6s)
+  ✓   8 tests/browser/routing.spec.ts:211:1 › one network owner per profile and concurrent consent/preferences do not resurrect revoked relay (366ms)
+  ✓   9 tests/browser/routing.spec.ts:269:1 › fragment scheduling preempts bulk with SOS, gives bulk a fair turn, and cancels relayed bytes without closing own traffic (2.9s)
+  ✓  10 tests/browser/routing.spec.ts:475:1 › packet bounds reject expiry, hop loops and tampering; retained flood is bounded (93ms)
+  ✓  11 tests/browser/routing.spec.ts:539:1 › low-power defers bulk on a live link, keeps SOS moving and never revives an expired queued packet (1.1s)
+  ✓  12 tests/browser/routing.spec.ts:597:1 › browser routing packets cross real native TCP routers; native packet bytes verify in the browser and corruption never forwards (977ms)
+  ✓  13 tests/browser/routing.spec.ts:745:1 › opaque packet corruption is rejected by the browser mesh before storage or forwarding, with valid controls on both sides (1.2s)
+  ✓  14 tests/browser/routing.spec.ts:828:1 › managed relay revocation cancels an in-flight forwarded packet and keeps an authored SOS on that same open link (2.1s)
+
+  14 passed (29.7s)

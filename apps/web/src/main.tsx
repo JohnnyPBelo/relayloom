@@ -1,4 +1,5 @@
 import { api } from "./api";
+import { BrowserPeerPanel } from "./browser/peers";
 import React, { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
@@ -2453,7 +2454,9 @@ function App() {
                               ? "WebRTC"
                               : p.medium === "websocket"
                                 ? "WebSocket"
-                                : p.medium === "reticulum" ? "Reticulum" : "TCP / IP"}
+                                : p.medium === "reticulum"
+                                  ? "Reticulum"
+                                  : "TCP / IP"}
                         </span>
                         <span>
                           ↑ {bytes(p.sent)} · ↓ {bytes(p.received)}
@@ -2977,6 +2980,9 @@ function App() {
                 impressões com as pessoas que conheces.
               </p>
             </>
+          )}
+          {modal === "peer" && state.capabilities?.autonomous && (
+            <BrowserPeerPanel api={api} />
           )}
           {modal === "peer" && !state.capabilities?.autonomous && (
             <>

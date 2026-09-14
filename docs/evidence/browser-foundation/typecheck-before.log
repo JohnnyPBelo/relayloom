@@ -1,0 +1,7 @@
+
+> relayloom@0.1.0 typecheck
+> tsc --noEmit
+
+packages/browser/src/profile.ts(34,5): error TS2322: Type 'Promise<Promise<T>>' is not assignable to type 'Promise<T>'.
+  Type 'Promise<T>' is not assignable to type 'T'.
+    'T' could be instantiated with an arbitrary type which could be unrelated to 'Promise<T>'.

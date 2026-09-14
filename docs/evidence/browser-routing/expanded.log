@@ -1,0 +1,44 @@
+
+Running 5 tests using 1 worker
+
+(node:2596070) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/browser/routing.spec.ts:83:1 › automatic A-B-C mesh: consent controls, own sends while paused, partition/heal and restarted reader takeover with author offline (6.6s)
+  ✓  2 tests/browser/routing.spec.ts:211:1 › one network owner per profile and concurrent consent/preferences do not resurrect revoked relay (371ms)
+  ✘  3 tests/browser/routing.spec.ts:269:1 › fragment scheduling preempts bulk with SOS, gives bulk a fair turn, and cancels relayed bytes without closing own traffic (15.5s)
+(node:2597268) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  4 tests/browser/routing.spec.ts:429:1 › packet bounds reject expiry, hop loops and tampering; retained flood is bounded (151ms)
+  ✓  5 tests/browser/routing.spec.ts:493:1 › low-power defers bulk on a live link, keeps SOS moving and never revives an expired queued packet (1.1s)
+
+
+  1) tests/browser/routing.spec.ts:269:1 › fragment scheduling preempts bulk with SOS, gives bulk a fair turn, and cancels relayed bytes without closing own traffic 
+
+    Error: page.evaluate: Error: Não foi possível estabelecer o caminho entre pares
+        at http://127.0.0.1:34069/engine.js:1681:18
+        at http://127.0.0.1:34069/engine.js:1681:18
+        at /home/absint0o/projects/relayloom/tests/browser/routing.spec.ts:297:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/routing-fragment-schedulin-1eb5c-without-closing-own-traffic/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/routing-fragment-schedulin-1eb5c-without-closing-own-traffic/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/routing-fragment-schedulin-1eb5c-without-closing-own-traffic/error-context.md
+
+    Error Context: test-results/routing-fragment-schedulin-1eb5c-without-closing-own-traffic/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/routing-fragment-schedulin-1eb5c-without-closing-own-traffic/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/routing-fragment-schedulin-1eb5c-without-closing-own-traffic/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/browser/routing.spec.ts:269:1 › fragment scheduling preempts bulk with SOS, gives bulk a fair turn, and cancels relayed bytes without closing own traffic 
+  4 passed (25.0s)

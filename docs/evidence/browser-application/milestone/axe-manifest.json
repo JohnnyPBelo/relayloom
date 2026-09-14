@@ -1,0 +1,38 @@
+{
+  "count": 8,
+  "scope": "Fresh autonomous UI and browser/native transport captures only. Native shared UI gates passed but their overwritten common capture files are not double-counted.",
+  "audits": [
+    {
+      "path": "ui/offline-message-axe.json",
+      "sha256": "55f2e945451b9b099950b8e3d95d5faa00f2c366358dcb3e87904f260b9afd8e"
+    },
+    {
+      "path": "ui/received-mobile-axe.json",
+      "sha256": "339a56b2fdcad31cc38b38309f84fe89e04a5774d42d91000a221fc5581b8704"
+    },
+    {
+      "path": "ui/offline-application-axe.json",
+      "sha256": "06a71e4fecb723b1b06ad000e44dcfbf7ef5eb3ec8770b210811f18f41bb66d3"
+    },
+    {
+      "path": "ui/autonomous-site-editor-axe.json",
+      "sha256": "339a56b2fdcad31cc38b38309f84fe89e04a5774d42d91000a221fc5581b8704"
+    },
+    {
+      "path": "ui/cached-foreign-site-axe.json",
+      "sha256": "0a58f82ca4af11a5870fe61bf9a8d30c342fa88c212ce1880addfb298a3fa268"
+    },
+    {
+      "path": "ui/peer-linked-axe.json",
+      "sha256": "39b84eb45bf8a86ae5efeb2b44825a18538dfbeb9d5c01b30c39534c65940e32"
+    },
+    {
+      "path": "browser-native/node-network-axe.json",
+      "sha256": "0f77602a742676b8c23a0170479be5e80b80aa7e3e6fd8a530467034172b667f"
+    },
+    {
+      "path": "browser-native/native-network-axe.json",
+      "sha256": "0f77602a742676b8c23a0170479be5e80b80aa7e3e6fd8a530467034172b667f"
+    }
+  ]
+}

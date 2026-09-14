@@ -1,0 +1,6 @@
+{
+  "scope": "Post-gate CI artifact path correction only; tested runtime sources unchanged",
+  "previousSha256": "2e24966580b51c4832b902262ebc9af24826d8c12c157b4f4a29cf4538fad70a",
+  "currentSha256": "49fa4829c4b03a2ec08131dcb5d3eb27ce23fc148639987bab18d4b7732cf2ef",
+  "reason": "The browser fixtures write fresh UI captures to .cache/browser-application/ui and .cache/browser-native, not docs/evidence/browser-application."
+}

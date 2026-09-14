@@ -1,0 +1,60 @@
+
+Running 5 tests using 1 worker
+
+(node:2494565) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/browser/foundation.spec.ts:24:1 › Chromium owns compatible identities/vaults/bundles: real Node and Go positive and negative controls (2.2s)
+  ✓  2 tests/browser/foundation.spec.ts:86:1 › encrypted IndexedDB persists, coordinates two pages, rejects corruption and preserves pins on failed admission (804ms)
+  ✓  3 tests/browser/foundation.spec.ts:137:1 › lock during unlock cannot resurrect keys; missing authenticated state is not replaced with empty success (587ms)
+  ✘  4 tests/browser/foundation.spec.ts:155:1 › real WebRTC transfers encrypted chunks and an offline author's reader seeds identical bytes to a new reader (16.3s)
+(node:2495957) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  5 tests/browser/foundation.spec.ts:209:1 › WebRTC rejects a correctly framed corrupt bundle before storage and rejects admission failure without ACK (1.1s)
+
+
+  1) tests/browser/foundation.spec.ts:155:1 › real WebRTC transfers encrypted chunks and an offline author's reader seeds identical bytes to a new reader 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    Call Log:
+    - Timeout 15000ms exceeded while waiting on the predicate
+
+      186 |     // No A-C connection exists. Stop the author context, then create the previously absent B-C path.
+      187 |     await contexts[0].close();
+    > 188 |     await expect.poll(() => b.evaluate(() => (window as any).left.link?.closed)).toBe(true);
+          |                                                                                  ^
+      189 |     await pair(b, c, "right", "left");
+      190 |     await b.evaluate(async id => (window as any).right.link.send(await (window as any).profile.getBundle(id)), bundleID);
+      191 |     const received = await c.evaluate(async id => {
+        at /home/absint0o/projects/relayloom/tests/browser/foundation.spec.ts:188:82
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/foundation-real-WebRTC-tra-b1fbc-tical-bytes-to-a-new-reader/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/foundation-real-WebRTC-tra-b1fbc-tical-bytes-to-a-new-reader/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/foundation-real-WebRTC-tra-b1fbc-tical-bytes-to-a-new-reader/test-failed-3.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/foundation-real-WebRTC-tra-b1fbc-tical-bytes-to-a-new-reader/error-context.md
+
+    Error Context: test-results/foundation-real-WebRTC-tra-b1fbc-tical-bytes-to-a-new-reader/error-context.md
+
+    attachment #6: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/foundation-real-WebRTC-tra-b1fbc-tical-bytes-to-a-new-reader/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/foundation-real-WebRTC-tra-b1fbc-tical-bytes-to-a-new-reader/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/browser/foundation.spec.ts:155:1 › real WebRTC transfers encrypted chunks and an offline author's reader seeds identical bytes to a new reader 
+  4 passed (22.3s)

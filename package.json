@@ -12,7 +12,8 @@
     "typecheck": "tsc --noEmit",
     "test": "tsx --test --test-concurrency=1 tests/*.test.ts",
     "test:e2e": "node scripts/e2e.mjs",
-    "check": "npm run build && npm test && npm run test:e2e",
+    "test:browser": "npm run build && npm run native:build && node scripts/e2e.mjs --config tests/browser/browser.config.ts",
+    "check": "npm run build && npm test && npm run test:e2e && npm run test:browser",
     "simulate": "tsx scripts/simulate.ts",
     "verify": "node scripts/verify.mjs",
     "desktop": "node scripts/desktop-run.mjs",
@@ -29,6 +30,7 @@
     "verify:reticulum": "node scripts/verify-reticulum.mjs"
   },
   "dependencies": {
+    "@noble/hashes": "2.4.0",
     "lucide-react": "^0.468.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
@@ -42,6 +44,7 @@
     "@types/node": "^22.18.1",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
+    "@types/ws": "8.18.1",
     "@vitejs/plugin-react": "^5.0.2",
     "electron": "44.3.0",
     "electron-builder": "26.15.3",
@@ -49,7 +52,6 @@
     "prettier": "^3.9.6",
     "tsx": "^4.20.5",
     "typescript": "^5.9.2",
-    "vite": "^7.1.5",
-    "@types/ws": "8.18.1"
+    "vite": "^7.1.5"
   }
 }

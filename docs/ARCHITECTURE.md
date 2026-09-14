@@ -4,7 +4,9 @@ The complete acceptance contract remains PROJECT-BRIEF.md. This is an experiment
 
 ## Stack and boundaries
 
-Node.js 22 + TypeScript runs a per-installation local daemon. React + Vite provides a responsive local client with bundled assets. Node crypto/OpenSSL supplies Ed25519 signing, X25519 key agreement, HKDF and AES-256-GCM. The daemon owns the password-encrypted identity vault; private keys never enter browser storage. JSON files and encrypted content-addressed chunks are persisted atomically under an explicit project data directory.
+Node.js 22 + TypeScript and the interoperable Go core run per-installation local daemons. React + Vite provides the shared responsive Liquid Glass client with bundled assets. Node crypto/OpenSSL and Go supply Ed25519 signing, X25519 key agreement, HKDF and AES-256-GCM. In daemon mode the daemon owns the password-encrypted identity vault; private keys do not enter the UI browser. Protected private state uses the authenticated SQLite/profile transaction boundary documented in PROFILE-PERSISTENCE.md; content-addressed encrypted objects have separate bounded retention.
+
+The owner also requires an autonomous web application without installation and with full product parity. This is a new runtime, not a claim about the existing daemon UI. The browser runtime under implementation uses the same wire identities, canonical signed manifests and vault format, with Web Crypto and maintained scrypt, encrypted IndexedDB state and browser peer transports. Its keys necessarily exist in browser memory while unlocked. Shared protocol types/canonical encoding have no Node imports. The complete implementation/gate sequence and honest browser capability gaps are in ../.codex-delivery/WEB-IMPLEMENTATION.md. No autonomous feature parity is claimed yet.
 
 The first supported transport is real TCP. A second adapter opens serial devices, tested using OS PTYs; PTYs prove byte-stream adapter behavior, not physical radio performance. A node forwards opaque signed encrypted content over consenting configured links. Routes use bounded flooding/store-and-forward with expiry, hop limit, duplicate suppression, fair priority scheduling and fragmentation. This is a custom experimental protocol, not Reticulum interoperability.
 
@@ -12,7 +14,7 @@ Local HTTP control binds only loopback. A random launch capability authenticates
 
 ## Data and authority
 
-Identity address hashes the signing public key. An author signs manifests containing encrypted chunk hashes and reader key envelopes. Readers can decrypt and seed exact author-signed objects but cannot modify manifests. Public objects explicitly expose their content key; signatures still determine ownership. Local blocks and materialized views are separate from immutable replicated originals. Deletion publishes signed tombstones; copies held by others cannot be recalled. Group membership uses per-object explicit reader ACLs; removal affects future objects only.
+Identity address hashes the signing public key. An author signs manifests containing encrypted chunk hashes and reader key envelopes. Readers can decrypt and seed exact author-signed objects but cannot modify manifests. Public objects explicitly expose their content key; signatures still determine ownership. Local blocks and materialized views are separate from immutable replicated originals. Deletion publishes signed tombstones; copies held by others cannot be recalled. Fixed groups use per-object ACLs. Dynamic groups add signed epochs, admission and durable authority/outbox boundaries with private control carriers; see GROUP-AUTHORITY.md, GROUP-CARRIERS.md and STATUS.md. Removal affects future access and cannot recall delivered keys.
 
 ## Threat model
 
@@ -25,4 +27,4 @@ Untrusted peers may send malformed, replayed, forged or oversized data, withhold
 3. Messenger/social/site interactions and full UI e2e, accessibility and design refinement.
 4. Simulation, independent reviews, platform packaging/CI, fixes and evidence audit.
 
-File ownership for delegated work was assigned explicitly; all delegation attempts failed before execution (see AGENTS.md evidence). Root implementation continues without changing the harness.
+Initial delegation failures and subsequent real returned implementations/reviews are recorded in AGENTS.md. Current recovery is sequential by owner instruction, with no new or resumed agents and no harness changes.

@@ -1,0 +1,49 @@
+{
+  "result": "PASS",
+  "at": "2026-09-13T22:34:50.550Z",
+  "sourceCount": 366,
+  "workingTreeBase": "526d75a321536374923921a429b86f7e623ed5a4",
+  "uncommittedTree": true,
+  "command": "node scripts/verify-browser.mjs",
+  "checks": [
+    {
+      "name": "typecheck",
+      "command": "node node_modules/typescript/bin/tsc --noEmit",
+      "exit": 0,
+      "elapsedMs": 4665
+    },
+    {
+      "name": "existing-web-build",
+      "command": "node node_modules/vite/bin/vite.js build",
+      "exit": 0,
+      "elapsedMs": 1720
+    },
+    {
+      "name": "existing-core-security",
+      "command": "node --import tsx --test --test-concurrency=1 tests/core.test.ts tests/security.test.ts",
+      "exit": 0,
+      "elapsedMs": 3420
+    },
+    {
+      "name": "browser",
+      "command": "node scripts/e2e.mjs --config tests/browser/browser.config.ts",
+      "exit": 0,
+      "elapsedMs": 15215
+    }
+  ],
+  "tests": {
+    "nodeCoreSecurity": 16,
+    "chromiumKernel": 6,
+    "productBrowserUI": 0,
+    "newAxeAudits": 0
+  },
+  "sourceStabilityVerified": true,
+  "limitations": [
+    "Not autonomous application UI or full parity",
+    "No automatic browser routing or native WebRTC adapter",
+    "Not full C2/C3 regression",
+    "No new Windows run, Firefox, WebKit, Safari, mobile or physical radio tests",
+    "Root review only; new delegation suspended by owner",
+    "No disaster readiness claim"
+  ]
+}

@@ -1,5 +1,9 @@
 # Âmbito funcional ainda por completar
 
+## Extensão obrigatória — web autónoma
+
+FR-043/INT-009/ACC-014: paridade funcional sem instalação/daemon, motor local no navegador, dados cifrados persistentes, P2P e interoperabilidade, recarga offline, UI/a11y e browser/device matrix. [Plano](../.codex-delivery/WEB-IMPLEMENTATION.md). Nenhuma paridade completa entregue; restantes pendentes preservados.
+
 Mapa do código observado em 2026-09-11, preparado após a integração de histórico paginado, anexos sob pedido e cache verificada. Fonte de autoridade: [PROJECT-BRIEF.md](../PROJECT-BRIEF.md); os identificadores abaixo correspondem a [requirements-normalized.json](../.codex-delivery/requirements-normalized.json). Esta tarefa foi só de leitura: não executou testes, builds, SDKs ou dispositivos e não alterou implementação. O objetivo é preparar próximas fatias delegáveis, sem repetir os gates já registados em [STATUS](STATUS.md), [NATIVE-INTEGRATION](NATIVE-INTEGRATION.md), [ANDROID](ANDROID.md), [IOS](IOS.md) e [APPLICATION-REVIEW](APPLICATION-REVIEW.md).
 
 **Parcial** significa que existe comportamento real, mas não cobre o ciclo completo descrito. **Ausente** significa que não foi encontrado contrato/API/implementação para a capacidade indicada. **Verificação pendente** não significa código inexistente. As propostas de protocolo que ultrapassam a redação literal do briefing estão identificadas; não se introduzem chamadas de vídeo, recomendações globais ou outros produtos novos como critérios obrigatórios.

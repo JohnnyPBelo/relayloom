@@ -1,0 +1,49 @@
+
+Running 1 test using 1 worker
+
+(node:3624713) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/browser/application.spec.ts:114:1 › cached application code and encrypted profile reopen when the static host is unavailable, without installing the PWA (15.9s)
+
+
+  1) tests/browser/application.spec.ts:114:1 › cached application code and encrypted profile reopen when the static host is unavailable, without installing the PWA 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Bom ter-te de volta.' })
+    Expected: visible
+    Timeout: 15000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('heading', { name: 'Bom ter-te de volta.' }) with timeout 15000ms
+      - waiting for getByRole('heading', { name: 'Bom ter-te de volta.' })
+
+
+      120 |   const before=await request.get(host.url+"/browser/index.html");expect(before.status()).toBe(200);
+      121 |   host.setUnavailable(true);const negative=await request.get(host.url+"/browser/index.html");expect(negative.status()).toBe(503);
+    > 122 |   await page.reload();await expect(page.getByRole("heading",{name:"Bom ter-te de volta."})).toBeVisible();await unlock(page);await nav(page,"A minha página");await expect(page.getByLabel("Título do bloco 1",{exact:true})).toHaveValue("Uma página disponível offline");
+          |                                                                                             ^
+      123 |   const cached=await page.evaluate(async()=>{const result:string[]=[];for(const name of await caches.keys()){const cache=await caches.open(name);for(const entry of await cache.keys())result.push(new URL(entry.url).pathname);}return result;});
+      124 |   expect(cached.every(path=>path.startsWith("/assets/")||path.startsWith("/browser/"))).toBe(true);expect(cached.some(path=>path.startsWith("/api/"))).toBe(false);
+      125 |   await audit(page,"offline-application");
+        at /home/absint0o/projects/relayloom/tests/browser/application.spec.ts:122:93
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/application-cached-applica-50e8a--without-installing-the-PWA/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/application-cached-applica-50e8a--without-installing-the-PWA/error-context.md
+
+    Error Context: test-results/application-cached-applica-50e8a--without-installing-the-PWA/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/application-cached-applica-50e8a--without-installing-the-PWA/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/application-cached-applica-50e8a--without-installing-the-PWA/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/browser/application.spec.ts:114:1 › cached application code and encrypted profile reopen when the static host is unavailable, without installing the PWA 

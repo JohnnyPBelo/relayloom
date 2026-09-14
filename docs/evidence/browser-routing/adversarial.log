@@ -1,0 +1,9 @@
+
+Running 2 tests using 1 worker
+
+(node:2628193) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/browser/routing.spec.ts:745:1 › opaque packet corruption is rejected by the browser mesh before storage or forwarding, with valid controls on both sides (1.4s)
+  ✓  2 tests/browser/routing.spec.ts:828:1 › managed relay revocation cancels an in-flight forwarded packet and keeps an authored SOS on that same open link (2.2s)
+
+  2 passed (4.3s)

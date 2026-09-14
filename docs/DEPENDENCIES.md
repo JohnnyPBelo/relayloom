@@ -1,10 +1,14 @@
 # Dependency notices
 
-Reference RNS1.5.4 uses the Reticulum License, with additional purpose restrictions. The Linux/Python3.11 hash lock also fixes cryptography50.0.1, cffi2.1.1, pycparser3.0 and pyserial3.5. Notices and provenance: [reticulum](licenses/reticulum/manifest.json). The adapter is not yet embedded in desktop/mobile distributions.
-
-Generated from package-lock.json; exact versions are locked. Electron includes Chromium/Node and their own notices; desktop packages retain runtime dependency licences. Go and x/crypto/x/text carry separate BSD-style notices. RNS is a separately installed, hash-pinned reference dependency; it is not covered by a blanket MIT claim.
+Generated from package-lock.json; exact versions are locked. Electron includes Chromium/Node and their own notices; desktop packages retain runtime dependency licences. Go and x/crypto/x/text carry separate BSD-style notices. RNS is a separately installed, hash-pinned reference dependency; its additional licence conditions are documented below.
 
 Private state/profile ownership and group metadata now link SQLite into the native app. The existing host/iOS backend is `modernc.org/sqlite v1.58.0` (BSD3), with exact libc v1.75.6. Android's protected process rejected that libc's direct Linux x86_64 SYS_LSTAT, so the Android build selects `github.com/mattn/go-sqlite3 v1.14.52` (MIT), compiled against Android Bionic with `sqlite_omit_load_extension`. The C driver refuses connections without that compile option. The optional `relayloom_sqlite_cgo` tag permits host verification of the same driver; it is not an Android-device test. Versions/checksums are pinned in `native/go.mod`/`go.sum`, notices retained in [native-sqlite](licenses/native-sqlite/manifest.json), and the Android package carries the C-driver notice. Platform execution evidence and remaining limitations are tracked in docs/STATUS.md; selecting a backend is not device-test evidence. No protection or permission is disabled. Node uses SQLite supplied by its runtime.
+
+O motor de browser usa directamente `@noble/hashes`2.4.0 (MIT), já presente na lockfile como dependência transitiva e agora fixado como dependência de execução para scrypt compatível. As restantes primitivas do motor usam Web Crypto do navegador; não se infere auditoria do protocolo RelayLoom a partir da manutenção da biblioteca.
+
+O adaptador WebSocket usa `ws`8.21.3 (MIT) no daemon Node e `github.com/coder/websocket`v1.8.15 (**ISC**, confirmado no LICENSE.txt real) no núcleo Go; tipos `@types/ws`8.18.1 são apenas de desenvolvimento. Licenças e hashes em [websocket](licenses/websocket/manifest.json). O pacote desktop conserva ws como dependência externa copiada com a licença; as regras de staging Android/iOS incluem o aviso ISC. Nenhuma nova compilação móvel é inferida dessa regra. Não há servidor cloud/STUN/TURN adquirido ou configurado por estas dependências.
+
+O adaptador RNS usa a implementação de referência **Reticulum1.5.4**, sem alterações, sob a **Reticulum License** (com condições adicionais de finalidade; não MIT). O lock Linux/Python3.11 fixa hashes de rns, cryptography50.0.1, cffi2.1.1, pycparser3.0 e pyserial3.5. [Licenças e proveniência](licenses/reticulum/manifest.json) · [Âmbito e testes](RETICULUM.md). Esta dependência ainda não está embebida nos pacotes desktop/móveis.
 
 ## (MIT OR CC0-1.0)
 

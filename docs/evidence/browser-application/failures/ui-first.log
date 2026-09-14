@@ -1,0 +1,47 @@
+
+Running 1 test using 1 worker
+
+(node:3475379) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/browser/application.spec.ts:15:1 › autonomous Liquid Glass UI owns identity and offline outbox, connects through real RTC, receives signed confirmations and survives reload (13.3s)
+
+
+  1) tests/browser/application.spec.ts:15:1 › autonomous Liquid Glass UI owns identity and offline outbox, connects through real RTC, receives signed confirmations and survives reload 
+
+    TimeoutError: locator.click: Timeout 12000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Definições', exact: true })
+
+
+       8 | test.afterAll(async()=>{await host.close();expect(host.requests.some(path=>path.startsWith("/api/"))).toBe(false);});
+       9 | async function enter(page:Page,name:string){await page.goto(host.url+"/browser.html");await page.getByLabel("Como te chamas?").fill(name);await page.getByLabel("Frase-passe",{exact:true}).fill(password);await page.getByRole("button",{name:"Criar identidade",exact:true}).click();await expect(page.getByRole("heading",{name:"As tuas conversas"})).toBeVisible();}
+    > 10 | async function card(page:Page){await page.getByRole("button",{name:"Definições",exact:true}).click();return JSON.parse(await page.getByLabel("Cartão público da identidade").inputValue());}
+         |                                                                                              ^
+      11 | async function contact(page:Page,card:unknown){await page.getByRole("button",{name:"Conversas",exact:true}).click();await page.getByRole("button",{name:"Adicionar contacto",exact:true}).click();await page.getByLabel("Cartão público do contacto").fill(JSON.stringify(card));await page.getByRole("button",{name:"Verificar e adicionar"}).click();await expect(page.getByRole("dialog")).toHaveCount(0);}
+      12 | async function network(page:Page){await page.getByRole("button",{name:"A rede",exact:true}).click();await page.getByRole("button",{name:"Ligar um par",exact:true}).click();}
+      13 | async function audit(page:Page,name:string){const result=await new AxeBuilder({page}).withTags(["wcag2a","wcag2aa","wcag21aa"]).analyze();mkdirSync(".cache/browser-application/ui",{recursive:true});writeFileSync(`.cache/browser-application/ui/${name}-axe.json`,JSON.stringify({violations:result.violations,passes:result.passes.length},null,2));await page.screenshot({path:`.cache/browser-application/ui/${name}.png`,fullPage:true});expect(result.violations).toEqual([]);}
+        at card (/home/absint0o/projects/relayloom/tests/browser/application.spec.ts:10:94)
+        at /home/absint0o/projects/relayloom/tests/browser/application.spec.ts:20:43
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/application-autonomous-Liq-bf1f8-mations-and-survives-reload/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/application-autonomous-Liq-bf1f8-mations-and-survives-reload/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/application-autonomous-Liq-bf1f8-mations-and-survives-reload/error-context.md
+
+    Error Context: test-results/application-autonomous-Liq-bf1f8-mations-and-survives-reload/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/application-autonomous-Liq-bf1f8-mations-and-survives-reload/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/application-autonomous-Liq-bf1f8-mations-and-survives-reload/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/browser/application.spec.ts:15:1 › autonomous Liquid Glass UI owns identity and offline outbox, connects through real RTC, receives signed confirmations and survives reload 

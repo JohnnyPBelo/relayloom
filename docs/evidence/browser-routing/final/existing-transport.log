@@ -1,0 +1,142 @@
+TAP version 13
+# Subtest: local cancellation removes an actual queued TCP transfer and its reconnect copy
+ok 1 - local cancellation removes an actual queued TCP transfer and its reconnect copy
+  ---
+  duration_ms: 674.34617
+  type: 'test'
+  ...
+# Subtest: local cancellation negative control delivers an actual queued TCP transfer and its reconnect copy
+ok 2 - local cancellation negative control delivers an actual queued TCP transfer and its reconnect copy
+  ---
+  duration_ms: 665.766544
+  type: 'test'
+  ...
+# Subtest: local cancellation leaves another origin's retained relay packet intact
+ok 3 - local cancellation leaves another origin's retained relay packet intact
+  ---
+  duration_ms: 484.783946
+  type: 'test'
+  ...
+# Subtest: TCP parser handles split/coalesced frames, rejects tamper and replays only once
+ok 4 - TCP parser handles split/coalesced frames, rejects tamper and replays only once
+  ---
+  duration_ms: 94.626843
+  type: 'test'
+  ...
+# Subtest: non-reading TCP duplicate flood coalesces and bounds control output
+ok 5 - non-reading TCP duplicate flood coalesces and bounds control output
+  ---
+  duration_ms: 48.332307
+  type: 'test'
+  ...
+# Subtest: TCP malformed frame and unfinished-line floods disconnect and release state
+ok 6 - TCP malformed frame and unfinished-line floods disconnect and release state
+  ---
+  duration_ms: 23.341011
+  type: 'test'
+  ...
+# Subtest: distinct TCP packets cannot grow the ACK queue or exceed its output rate
+ok 7 - distinct TCP packets cannot grow the ACK queue or exceed its output rate
+  ---
+  duration_ms: 165.09436
+  type: 'test'
+  ...
+# Subtest: TCP incomplete assemblies have count and aggregate memory bounds
+ok 8 - TCP incomplete assemblies have count and aggregate memory bounds
+  ---
+  duration_ms: 2280.939449
+  type: 'test'
+  ...
+# Subtest: expired packets, invalid TTLs and exhausted hop limits never relay
+ok 9 - expired packets, invalid TTLs and exhausted hop limits never relay
+  ---
+  duration_ms: 134.102625
+  type: 'test'
+  ...
+# Subtest: queued expiry and stopped sockets release bounded output under backpressure
+ok 10 - queued expiry and stopped sockets release bounded output under backpressure
+  ---
+  duration_ms: 407.255941
+  type: 'test'
+  ...
+# Subtest: partial TCP loss retries exact bytes and missing ACK retries without duplicate delivery
+ok 11 - partial TCP loss retries exact bytes and missing ACK retries without duplicate delivery
+  ---
+  duration_ms: 4414.283557
+  type: 'test'
+  ...
+# Subtest: TCP reconnect delivers a partial transfer and packets created during the partition
+ok 12 - TCP reconnect delivers a partial transfer and packets created during the partition
+  ---
+  duration_ms: 1082.870519
+  type: 'test'
+  ...
+# Subtest: turning relay off cancels queued forwarded fragments and keeps local SOS available
+ok 13 - turning relay off cancels queued forwarded fragments and keeps local SOS available
+  ---
+  duration_ms: 119.876322
+  type: 'test'
+  ...
+# Subtest: relay pause cancels queued local seeding and prevents retained offline replay
+ok 14 - relay pause cancels queued local seeding and prevents retained offline replay
+  ---
+  duration_ms: 131.610242
+  type: 'test'
+  ...
+# Subtest: real TCP fragments preempt bulk for SOS while preserving bulk fairness
+ok 15 - real TCP fragments preempt bulk for SOS while preserving bulk fairness
+  ---
+  duration_ms: 82.098264
+  type: 'test'
+  ...
+# Subtest: many in-progress SOS transfers leave admission capacity for bulk fairness
+ok 16 - many in-progress SOS transfers leave admission capacity for bulk fairness
+  ---
+  duration_ms: 47.092893
+  type: 'test'
+  ...
+# Subtest: real serialport PTY fragments preempt bulk for SOS with the same fairness
+ok 17 - real serialport PTY fragments preempt bulk for SOS with the same fairness
+  ---
+  duration_ms: 153.157009
+  type: 'test'
+  ...
+# Subtest: POSIX poller regression: read rearm must preserve an outstanding write watch
+ok 18 - POSIX poller regression: read rearm must preserve an outstanding write watch
+  ---
+  duration_ms: 0.835436
+  type: 'test'
+  ...
+# Subtest: serial write deadline covers one frame at configured baud while bounding a stalled writer
+ok 19 - serial write deadline covers one frame at configured baud while bounding a stalled writer
+  ---
+  duration_ms: 0.128792
+  type: 'test'
+  ...
+# Subtest: real serial PTY recovers an injected stuck write through bounded reconnect and exact replay
+ok 20 - real serial PTY recovers an injected stuck write through bounded reconnect and exact replay
+  ---
+  duration_ms: 6161.017772
+  type: 'test'
+  ...
+# Subtest: real TCP transfer, two-hop forwarding and relay-off negative control
+ok 21 - real TCP transfer, two-hop forwarding and relay-off negative control
+  ---
+  duration_ms: 912.525725
+  type: 'test'
+  ...
+# Subtest: validation rejection prevents display and relay; positive valid control
+ok 22 - validation rejection prevents display and relay; positive valid control
+  ---
+  duration_ms: 533.310256
+  type: 'test'
+  ...
+1..22
+# tests 22
+# suites 0
+# pass 22
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 19274.645859

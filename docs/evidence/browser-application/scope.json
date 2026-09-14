@@ -1,0 +1,191 @@
+{
+  "result": "PASS_SCOPED_APPLICATION_MILESTONE",
+  "baseCommit": "526d75a321536374923921a429b86f7e623ed5a4",
+  "uncommitted": true,
+  "command": "node scripts/verify-autonomous.mjs",
+  "sources": 403,
+  "sourcesUnchanged": true,
+  "nodeTests": 271,
+  "browserTests": {
+    "startTime": "2026-09-14T03:04:08.899Z",
+    "duration": 122813.415,
+    "expected": 26,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "uiTestsPerNativeEngine": 21,
+  "axeReports": 72,
+  "axeViolations": 0,
+  "axePaths": [
+    "docs/evidence/ui/messenger-light-axe.json",
+    "docs/evidence/ui/site-editor-axe.json",
+    "docs/evidence/ui/social-axe.json",
+    "docs/evidence/ui/messenger-dark-axe.json",
+    "docs/evidence/ui/onboarding-axe.json",
+    "docs/evidence/ui/mobile-social-axe.json",
+    "docs/evidence/ui/onboarding-layout-go/dark-axe.json",
+    "docs/evidence/ui/onboarding-layout-go/light-axe.json",
+    "docs/evidence/ui/onboarding-layout-node/dark-axe.json",
+    "docs/evidence/ui/onboarding-layout-node/light-axe.json",
+    "docs/evidence/outbox/node/expired-axe.json",
+    "docs/evidence/outbox/node/pending-dark-axe.json",
+    "docs/evidence/outbox/node/pending-light-axe.json",
+    "docs/evidence/outbox/node/keyboard-focus-axe.json",
+    "docs/evidence/outbox/node/pending-mobile-axe.json",
+    "docs/evidence/outbox/node/legacy-group-read-axe.json",
+    "docs/evidence/outbox/go/expired-axe.json",
+    "docs/evidence/outbox/go/pending-dark-axe.json",
+    "docs/evidence/outbox/go/pending-light-axe.json",
+    "docs/evidence/outbox/go/keyboard-focus-axe.json",
+    "docs/evidence/outbox/go/pending-mobile-axe.json",
+    "docs/evidence/outbox/go/legacy-group-read-axe.json",
+    "docs/evidence/group-outbox/ui-node/mobile-axe.json",
+    "docs/evidence/group-outbox/ui-node/desktop-axe.json",
+    "docs/evidence/group-outbox/ui-go/mobile-axe.json",
+    "docs/evidence/group-outbox/ui-go/desktop-axe.json",
+    ".cache/liquid-glass/node/editor-mobile-axe.json",
+    ".cache/liquid-glass/node/A-praça-dark-axe.json",
+    ".cache/liquid-glass/node/messenger-mobile-320-axe.json",
+    ".cache/liquid-glass/node/Definições-dark-axe.json",
+    ".cache/liquid-glass/node/commands-mobile-axe.json",
+    ".cache/liquid-glass/node/settings-high-contrast-axe.json",
+    ".cache/liquid-glass/node/A-minha-página-dark-axe.json",
+    ".cache/liquid-glass/node/commands-forced-colors-axe.json",
+    ".cache/liquid-glass/node/A-rede-dark-axe.json",
+    ".cache/liquid-glass/node/A-minha-página-light-axe.json",
+    ".cache/liquid-glass/node/commands-dark-axe.json",
+    ".cache/liquid-glass/node/A-praça-light-axe.json",
+    ".cache/liquid-glass/node/Definições-light-axe.json",
+    ".cache/liquid-glass/node/commands-light-axe.json",
+    ".cache/liquid-glass/node/A-rede-light-axe.json",
+    ".cache/liquid-glass/go/editor-mobile-axe.json",
+    ".cache/liquid-glass/go/A-praça-dark-axe.json",
+    ".cache/liquid-glass/go/messenger-mobile-320-axe.json",
+    ".cache/liquid-glass/go/Definições-dark-axe.json",
+    ".cache/liquid-glass/go/commands-mobile-axe.json",
+    ".cache/liquid-glass/go/settings-high-contrast-axe.json",
+    ".cache/liquid-glass/go/A-minha-página-dark-axe.json",
+    ".cache/liquid-glass/go/commands-forced-colors-axe.json",
+    ".cache/liquid-glass/go/A-rede-dark-axe.json",
+    ".cache/liquid-glass/go/A-minha-página-light-axe.json",
+    ".cache/liquid-glass/go/commands-dark-axe.json",
+    ".cache/liquid-glass/go/A-praça-light-axe.json",
+    ".cache/liquid-glass/go/Definições-light-axe.json",
+    ".cache/liquid-glass/go/commands-light-axe.json",
+    ".cache/liquid-glass/go/A-rede-light-axe.json",
+    ".cache/dynamic-groups-ui/node/invitation-light-axe.json",
+    ".cache/dynamic-groups-ui/node/create-light-axe.json",
+    ".cache/dynamic-groups-ui/node/members-light-axe.json",
+    ".cache/dynamic-groups-ui/node/members-mobile-axe.json",
+    ".cache/dynamic-groups-ui/go/invitation-light-axe.json",
+    ".cache/dynamic-groups-ui/go/create-light-axe.json",
+    ".cache/dynamic-groups-ui/go/members-light-axe.json",
+    ".cache/dynamic-groups-ui/go/members-mobile-axe.json",
+    ".cache/browser-native/node-network-axe.json",
+    ".cache/browser-native/native-network-axe.json",
+    ".cache/browser-application/ui/offline-message-axe.json",
+    ".cache/browser-application/ui/received-mobile-axe.json",
+    ".cache/browser-application/ui/offline-application-axe.json",
+    ".cache/browser-application/ui/autonomous-site-editor-axe.json",
+    ".cache/browser-application/ui/cached-foreign-site-axe.json",
+    ".cache/browser-application/ui/peer-linked-axe.json"
+  ],
+  "checks": [
+    {
+      "name": "typecheck",
+      "command": "node node_modules/typescript/bin/tsc --noEmit",
+      "env": {},
+      "exit": 0,
+      "elapsedMs": 5007
+    },
+    {
+      "name": "web-build",
+      "command": "node node_modules/vite/bin/vite.js build",
+      "env": {},
+      "exit": 0,
+      "elapsedMs": 2135
+    },
+    {
+      "name": "native-build",
+      "command": "node scripts/native-build.mjs",
+      "env": {},
+      "exit": 0,
+      "elapsedMs": 283
+    },
+    {
+      "name": "node-all",
+      "command": "node node_modules/tsx/dist/cli.mjs --test --test-concurrency=1 tests/content-reservations.test.ts tests/core.test.ts tests/desktop-policy.test.ts tests/fixture-lifecycle.test.ts tests/group-access.test.ts tests/group-admission-failures.test.ts tests/group-admission-work.test.ts tests/group-admission.test.ts tests/group-carriers.test.ts tests/group-certificates.test.ts tests/group-confirmation-failures.test.ts tests/group-confirmations.test.ts tests/group-control-envelope.test.ts tests/group-control-replay-work.test.ts tests/group-event-failures.test.ts tests/group-event-seeding.test.ts tests/group-events.test.ts tests/group-index-reserve.test.ts tests/group-ledger-retirement.test.ts tests/group-ledger.test.ts tests/group-notice-api.test.ts tests/group-notice-network.test.ts tests/group-notice-replay.test.ts tests/group-notice-seeding.test.ts tests/group-notices.test.ts tests/group-outbox.test.ts tests/group-registry.test.ts tests/group-runtime.test.ts tests/group-send-failures.test.ts tests/group-send.test.ts tests/group-storage.test.ts tests/group-sync-budget.test.ts tests/group-sync-order.test.ts tests/group-sync-replay.test.ts tests/group-sync-requests.test.ts tests/group-sync-seeding.test.ts tests/group-sync-serial.test.ts tests/group-sync.test.ts tests/group-transaction.test.ts tests/heterogeneous.test.ts tests/http-fixture-lifecycle.test.ts tests/node.test.ts tests/offline-process.test.ts tests/outbox.test.ts tests/private-migration.test.ts tests/profile-binding.test.ts tests/profile-database.test.ts tests/profile-ownership.test.ts tests/profile-runtime.test.ts tests/profile-state.test.ts tests/scenario-trace.test.ts tests/security.test.ts tests/simulation.test.ts tests/snapshot.test.ts tests/social-integration.test.ts tests/social.test.ts tests/transport-cancellation.test.ts tests/transport-hardening.test.ts tests/transport-serial.test.ts tests/transport.test.ts tests/websocket.test.ts",
+      "env": {},
+      "exit": 0,
+      "elapsedMs": 475610
+    },
+    {
+      "name": "browser-all",
+      "command": "node scripts/e2e.mjs --config tests/browser/browser.config.ts",
+      "env": {},
+      "exit": 0,
+      "elapsedMs": 123368
+    },
+    {
+      "name": "ui-node",
+      "command": "node scripts/e2e.mjs",
+      "env": {
+        "RELAYLOOM_TEST_BACKEND": "node"
+      },
+      "exit": 0,
+      "elapsedMs": 203927
+    },
+    {
+      "name": "ui-go",
+      "command": "node scripts/e2e.mjs",
+      "env": {
+        "RELAYLOOM_TEST_BACKEND": "native"
+      },
+      "exit": 0,
+      "elapsedMs": 168723
+    },
+    {
+      "name": "desktop-build",
+      "command": "node scripts/desktop-build.mjs",
+      "env": {},
+      "exit": 0,
+      "elapsedMs": 239
+    },
+    {
+      "name": "desktop-run",
+      "command": "node scripts/desktop-run.mjs --smoke --x11",
+      "env": {},
+      "exit": 0,
+      "elapsedMs": 1891
+    },
+    {
+      "name": "desktop-package",
+      "command": "node scripts/desktop-package.mjs",
+      "env": {},
+      "exit": 0,
+      "elapsedMs": 15284
+    },
+    {
+      "name": "desktop-packaged-run",
+      "command": "node scripts/desktop-packaged-smoke.mjs",
+      "env": {},
+      "exit": 0,
+      "elapsedMs": 1572
+    }
+  ],
+  "browserEntry": "/browser/index.html",
+  "preview": "http://127.0.0.1:4174/browser/index.html",
+  "limits": [
+    "Autonomous browser entry is implemented but complete native parity is not achieved",
+    "Dynamic group authority/invitations still unintegrated in browser; fixed readers are explicit",
+    "Initial code loading requires access to distribution; code-origin compromise is outside cache-integrity protection",
+    "No public deployment or verified application signing; current mobile/radio/hardware and all-OS claims remain unavailable",
+    "Physical microphone/media and OS notifications remain distinct from synthetic/stub tests",
+    "Root screenshot review is not independent design/security or manual screen-reader review",
+    "Native Go sources unchanged; this gate did not repeat the earlier89-test race suite",
+    "In-app browser automation backend was not available; opening the app panel was queued, not verified"
+  ],
+  "nativeGoSourcesUnchanged": true,
+  "nativeGoPriorEvidence": "docs/evidence/browser-native/remaining/report.json"
+}

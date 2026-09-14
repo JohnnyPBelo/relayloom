@@ -1,0 +1,47 @@
+
+Running 1 test using 1 worker
+
+(node:3488131) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/browser/application.spec.ts:16:1 › autonomous Liquid Glass UI owns identity and offline outbox, connects through real RTC, receives signed confirmations and survives reload (17.3s)
+
+
+  1) tests/browser/application.spec.ts:16:1 › autonomous Liquid Glass UI owns identity and offline outbox, connects through real RTC, receives signed confirmations and survives reload 
+
+    TimeoutError: locator.click: Timeout 12000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Conversas', exact: true })
+
+
+       8 | test.afterAll(async()=>{await host.close();expect(host.requests.some(path=>path.startsWith("/api/"))).toBe(false);});
+       9 | async function enter(page:Page,name:string){await page.goto(host.url+"/browser.html");await page.getByLabel("Como te chamas?").fill(name);await page.getByLabel("Frase-passe",{exact:true}).fill(password);await page.getByRole("button",{name:"Criar identidade",exact:true}).click();await expect(page.getByRole("heading",{name:"As tuas conversas"})).toBeVisible();}
+    > 10 | async function nav(page:Page,name:string){const button=page.getByRole("button",{name,exact:true});if(!await button.isVisible())await page.getByRole("button",{name:"Abrir navegação",exact:true}).click();await button.click();}
+         |                                                                                                                                                                                                                        ^
+      11 | async function card(page:Page){await nav(page,"Definições");return JSON.parse(await page.getByLabel("Cartão público da identidade").inputValue());}
+      12 | async function contact(page:Page,card:unknown){await nav(page,"Conversas");await page.getByRole("button",{name:"Adicionar contacto",exact:true}).click();await page.getByLabel("Cartão público do contacto").fill(JSON.stringify(card));await page.getByRole("button",{name:"Verificar e adicionar"}).click();await expect(page.getByRole("dialog")).toHaveCount(0);}
+      13 | async function network(page:Page){await nav(page,"A rede");await page.getByRole("button",{name:"Ligar um par",exact:true}).click();}
+        at nav (/home/absint0o/projects/relayloom/tests/browser/application.spec.ts:10:216)
+        at /home/absint0o/projects/relayloom/tests/browser/application.spec.ts:32:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/application-autonomous-Liq-bf1f8-mations-and-survives-reload/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/application-autonomous-Liq-bf1f8-mations-and-survives-reload/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/application-autonomous-Liq-bf1f8-mations-and-survives-reload/error-context.md
+
+    Error Context: test-results/application-autonomous-Liq-bf1f8-mations-and-survives-reload/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/application-autonomous-Liq-bf1f8-mations-and-survives-reload/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/application-autonomous-Liq-bf1f8-mations-and-survives-reload/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/browser/application.spec.ts:16:1 › autonomous Liquid Glass UI owns identity and offline outbox, connects through real RTC, receives signed confirmations and survives reload 

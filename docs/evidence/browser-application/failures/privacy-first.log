@@ -1,0 +1,51 @@
+
+Running 2 tests using 1 worker
+
+(node:3564907) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/browser/application.spec.ts:73:1 › production worker keeps private keys out of replies and recovers an applied send after the UI response is lost (22.5s)
+  ✘  2 tests/browser/application.spec.ts:101:1 › a second tab cannot take ownership of a live application profile and an unknown or corrupt profile is never silently reset (16.6s)
+
+
+  1) tests/browser/application.spec.ts:101:1 › a second tab cannot take ownership of a live application profile and an unknown or corrupt profile is never silently reset 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('alert')
+    Expected: visible
+    Timeout: 15000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('alert') with timeout 15000ms
+      - waiting for getByRole('alert')
+
+
+      108 |    await new Promise<void>((resolve,reject)=>{const tx=db.transaction("profile","readwrite"),store=tx.objectStore("profile"),r=store.get("state");r.onsuccess=()=>{const row=r.result;row.sealed.tag="AAAAAAAAAAAAAAAAAAAAAA==";store.put(row,"state");};tx.oncomplete=()=>resolve();tx.onabort=()=>reject(tx.error);});db.close();
+      109 |   });
+    > 110 |   await b.reload();await b.getByLabel("Frase-passe",{exact:true}).fill(password);await b.getByRole("button",{name:"Entrar na minha rede"}).click();await expect(b.getByRole("alert")).toBeVisible();await expect(b.getByLabel("Como te chamas?")).toHaveCount(0);await expect(b.getByRole("heading",{name:"As tuas conversas"})).toHaveCount(0);
+          |                                                                                                                                                                                       ^
+      111 |  }finally{await context.close();}
+      112 | });
+      113 |
+        at /home/absint0o/projects/relayloom/tests/browser/application.spec.ts:110:183
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/application-a-second-tab-c-beb59-ile-is-never-silently-reset/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/application-a-second-tab-c-beb59-ile-is-never-silently-reset/error-context.md
+
+    Error Context: test-results/application-a-second-tab-c-beb59-ile-is-never-silently-reset/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/application-a-second-tab-c-beb59-ile-is-never-silently-reset/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/application-a-second-tab-c-beb59-ile-is-never-silently-reset/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/browser/application.spec.ts:101:1 › a second tab cannot take ownership of a live application profile and an unknown or corrupt profile is never silently reset 
+  1 passed (40.0s)

@@ -1,0 +1,45 @@
+
+Running 1 test using 1 worker
+
+(node:3107957) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/browser/native-transport.spec.ts:417:1 › late native ACK cannot leave an orphan retry assembly or close an otherwise healthy WebSocket (7.1s)
+
+
+  1) tests/browser/native-transport.spec.ts:417:1 › late native ACK cannot leave an orphan retry assembly or close an otherwise healthy WebSocket 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 1
+
+    Call Log:
+    - Timeout 3000ms exceeded while waiting on the predicate
+
+      464 |     expect((await native.call("state")).counters.retransmits).toBeGreaterThan(0);
+      465 |     await until(()=>native.call("state"),s=>s.peers.every((p:any)=>p.queued===0));
+    > 466 |     await expect.poll(()=>page.evaluate(()=>(window as any).retryPeer.link.resources.incoming),{timeout:3000}).toBe(0);
+          |                                                                                                                ^
+      467 |     await native.call("settings",{lowPower:false});
+      468 |     const probe=await native.call("publish",{content:{type:"post",text:"Valid traffic after late ACK"},recipients:"public"});
+      469 |     await expect.poll(()=>browserIDs(page)).toContain(probe.id);
+        at /home/absint0o/projects/relayloom/tests/browser/native-transport.spec.ts:466:112
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/native-transport-late-nati-4bd3b-otherwise-healthy-WebSocket/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/native-transport-late-nati-4bd3b-otherwise-healthy-WebSocket/error-context.md
+
+    Error Context: test-results/native-transport-late-nati-4bd3b-otherwise-healthy-WebSocket/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/native-transport-late-nati-4bd3b-otherwise-healthy-WebSocket/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/native-transport-late-nati-4bd3b-otherwise-healthy-WebSocket/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/browser/native-transport.spec.ts:417:1 › late native ACK cannot leave an orphan retry assembly or close an otherwise healthy WebSocket 

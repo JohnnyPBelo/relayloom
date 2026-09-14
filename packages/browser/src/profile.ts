@@ -1,0 +1,580 @@
+import { canonical, exactShape } from "../../core/src/protocol";
+import type {
+  Bundle,
+  Identity,
+  PublicIdentity,
+  Sealed,
+} from "../../core/src/protocol";
+import {
+  createIdentity,
+  createBundle,
+  exportVault,
+  importVault,
+  hkdf,
+  un64,
+  utf8,
+  seal,
+  open,
+  verifiedBundle,
+  decryptBundle,
+} from "./crypto";
+
+const MAX_BYTES = 128 * 1024 * 1024;
+const MAX_OBJECTS = 1024;
+const MAX_STATE = 1024 * 1024;
+const decoder = new TextDecoder("utf-8", { fatal: true });
+type CipherRow = { sealed: Sealed; revision: string; size: number };
+type State = {
+  values: Record<string, unknown>;
+  bundles: Record<
+    string,
+    {
+      size: number;
+      pinned: boolean;
+      accessed: number;
+      expires: number;
+      reserved?: boolean;
+      created?: number;
+      revision?: string;
+    }
+  >;
+};
+type Session = { identity: Identity; key: Uint8Array; generation: number };
+const request = <T>(r: IDBRequest<T>) =>
+  new Promise<T>((resolve, reject) => {
+    r.onsuccess = () => resolve(r.result);
+    r.onerror = () => reject(r.error);
+  });
+const complete = (tx: IDBTransaction) =>
+  new Promise<void>((resolve, reject) => {
+    tx.oncomplete = () => resolve();
+    tx.onabort = tx.onerror = () =>
+      reject(tx.error ?? new Error("Transacção abortada"));
+  });
+const allowedID = (id: string) => /^[a-f0-9]{64}$/.test(id);
+
+/** One encrypted profile per origin/name. Full runtime authority/outbox integration remains separate. */
+export class BrowserProfile {
+  #session?: Session;
+  #generation = 0;
+  #closed = false;
+  private constructor(
+    private db: IDBDatabase,
+    readonly name: string,
+    public quota: number,
+    readonly maxObjects: number,
+  ) {}
+  static async connect(
+    name = "relayloom-web-v1",
+    quota = MAX_BYTES,
+    maxObjects = MAX_OBJECTS,
+  ): Promise<BrowserProfile> {
+    if (
+      !/^[a-zA-Z0-9_-]{1,80}$/.test(name) ||
+      !Number.isSafeInteger(quota) ||
+      quota < 1024 ||
+      quota > 1024 ** 3 ||
+      !Number.isSafeInteger(maxObjects) ||
+      maxObjects < 1 ||
+      maxObjects > MAX_OBJECTS
+    )
+      throw new Error("Limites de armazenamento inválidos");
+    if (
+      !globalThis.isSecureContext ||
+      !navigator.locks ||
+      !globalThis.indexedDB
+    )
+      throw new Error(
+        "Este navegador não disponibiliza armazenamento seguro e coordenação entre separadores",
+      );
+    const r = indexedDB.open(name, 1);
+    r.onupgradeneeded = () => {
+      r.result.createObjectStore("profile");
+      r.result.createObjectStore("bundles");
+    };
+    const db = await request(r);
+    const profile = new BrowserProfile(db, name, quota, maxObjects);
+    db.onversionchange = () => profile.close();
+    return profile;
+  }
+  private async exclusive<T>(run: () => Promise<T>): Promise<T> {
+    if (this.#closed) return Promise.reject(new Error("Perfil fechado"));
+    return await navigator.locks.request(
+      "relayloom-profile:" + this.name,
+      async () => {
+        if (this.#closed) throw new Error("Perfil fechado");
+        return run();
+      },
+    );
+  }
+  private active(): Session {
+    if (!this.#session || this.#closed) throw new Error("Perfil bloqueado");
+    return this.#session;
+  }
+  private guard(s: Session) {
+    if (
+      this.#closed ||
+      this.#session !== s ||
+      s.generation !== this.#generation
+    )
+      throw new Error("Perfil bloqueado durante a operação");
+  }
+  private async read<T>(store: string, key: string): Promise<T | undefined> {
+    const tx = this.db.transaction(store, "readonly"),
+      done = complete(tx);
+    const value = await request(tx.objectStore(store).get(key));
+    await done;
+    return value;
+  }
+  async initialized(): Promise<boolean> {
+    return (await this.read("profile", "vault")) !== undefined;
+  }
+  get identity(): PublicIdentity | null {
+    return this.#session
+      ? structuredClone(this.#session.identity.public)
+      : null;
+  }
+  get locked(): boolean {
+    return !this.#session;
+  }
+  lock(): void {
+    this.#generation++;
+    this.#session?.key.fill(0);
+    this.#session = undefined;
+  }
+  close(): void {
+    this.lock();
+    this.#closed = true;
+    this.db.close();
+  }
+  private async makeSession(
+    identity: Identity,
+    generation: number,
+  ): Promise<Session> {
+    const key = await hkdf(
+      un64(identity.signSecret, 256),
+      identity.public.id,
+      "relayloom-browser-profile-v1",
+    );
+    if (this.#generation !== generation || this.#closed) {
+      key.fill(0);
+      throw new Error("Perfil bloqueado durante a operação");
+    }
+    return { identity, key, generation };
+  }
+  private async encryptState(s: Session, state: State): Promise<CipherRow> {
+    const bytes = utf8(canonical(state));
+    if (bytes.length > MAX_STATE)
+      throw new Error("Estado privado excede o limite");
+    return {
+      sealed: await seal(
+        bytes,
+        s.key,
+        "relayloom-browser-state-v1:" + s.identity.public.id,
+      ),
+      revision: crypto.randomUUID(),
+      size: bytes.length,
+    };
+  }
+  private async decodeState(
+    s: Session,
+    row: CipherRow | undefined,
+  ): Promise<State> {
+    if (
+      !row ||
+      !exactShape(row, ["sealed", "revision", "size"]) ||
+      !Number.isSafeInteger(row.size) ||
+      row.size < 1 ||
+      row.size > MAX_STATE ||
+      typeof row.revision !== "string" ||
+      row.revision.length > 64
+    )
+      throw new Error("Índice privado ausente ou inválido");
+    const bytes = await open(
+      row.sealed,
+      s.key,
+      "relayloom-browser-state-v1:" + s.identity.public.id,
+    );
+    if (bytes.length !== row.size) throw new Error("Índice privado corrompido");
+    const state = JSON.parse(decoder.decode(bytes)) as State;
+    if (
+      !exactShape(state, ["values", "bundles"]) ||
+      !state.values ||
+      !state.bundles ||
+      Object.getPrototypeOf(state.values) !== Object.prototype ||
+      Object.getPrototypeOf(state.bundles) !== Object.prototype ||
+      Object.keys(state.bundles).length > MAX_OBJECTS
+    )
+      throw new Error("Índice privado inválido");
+    for (const [id, entry] of Object.entries(state.bundles))
+      if (
+        !allowedID(id) ||
+        (!exactShape(entry, ["size", "pinned", "accessed", "expires"]) &&
+          !exactShape(entry, [
+            "size",
+            "pinned",
+            "accessed",
+            "expires",
+            "reserved",
+            "created",
+            "revision",
+          ])) ||
+        !Number.isSafeInteger(entry.size) ||
+        entry.size < 1 ||
+        entry.size > 9 * 1024 * 1024 ||
+        typeof entry.pinned !== "boolean" ||
+        !Number.isSafeInteger(entry.accessed) ||
+        !Number.isSafeInteger(entry.expires) ||
+        (entry.reserved !== undefined &&
+          (typeof entry.reserved !== "boolean" ||
+            !Number.isSafeInteger(entry.created) ||
+            typeof entry.revision !== "string" ||
+            !/^[a-f0-9-]{36}$/.test(entry.revision)))
+      )
+        throw new Error("Índice privado inválido");
+    return state;
+  }
+  async setup(name: string, password: string): Promise<PublicIdentity> {
+    return this.install(async () => {
+      const identity = await createIdentity(name);
+      return { identity, vault: await exportVault(identity, password) };
+    });
+  }
+  /** Restore identity into an EMPTY profile; never replace existing data or regenerate its authority. */
+  async restore(vault: string, password: string): Promise<PublicIdentity> {
+    return this.install(async () => ({
+      identity: await importVault(vault, password),
+      vault,
+    }));
+  }
+  private async install(
+    make: () => Promise<{ identity: Identity; vault: string }>,
+  ): Promise<PublicIdentity> {
+    return this.exclusive(async () => {
+      if (await this.initialized())
+        throw new Error(
+          "Já existe uma identidade; desbloqueia ou usa outro perfil",
+        );
+      const generation = this.#generation;
+      const { identity, vault } = await make();
+      const s = await this.makeSession(identity, generation);
+      try {
+        const state = await this.encryptState(s, { values: {}, bundles: {} });
+        if (generation !== this.#generation || this.#closed)
+          throw new Error("Perfil bloqueado durante a operação");
+        const tx = this.db.transaction("profile", "readwrite"),
+          done = complete(tx);
+        tx.objectStore("profile").add(vault, "vault");
+        tx.objectStore("profile").add(state, "state");
+        await done;
+        if (generation !== this.#generation || this.#closed)
+          throw new Error("Perfil criado, mas sessão bloqueada");
+        this.#session = s;
+        return structuredClone(identity.public);
+      } catch (error) {
+        s.key.fill(0);
+        throw error;
+      }
+    });
+  }
+  async unlock(password: string): Promise<PublicIdentity> {
+    return this.exclusive(async () => {
+      if (this.#session) throw new Error("Perfil já desbloqueado");
+      const generation = this.#generation,
+        vault = await this.read<string>("profile", "vault");
+      if (!vault) throw new Error("Não existe identidade neste perfil");
+      const s = await this.makeSession(
+        await importVault(vault, password),
+        generation,
+      );
+      try {
+        await this.decodeState(s, await this.read("profile", "state"));
+        if (generation !== this.#generation || this.#closed)
+          throw new Error("Perfil bloqueado durante a operação");
+        this.#session = s;
+        return structuredClone(s.identity.public);
+      } catch (error) {
+        s.key.fill(0);
+        throw error;
+      }
+    });
+  }
+  /** Export is the compatible encrypted identity vault, NOT a full database backup. */
+  async exportIdentity(): Promise<string> {
+    const s = this.active(),
+      vault = await this.read<string>("profile", "vault");
+    this.guard(s);
+    if (!vault) throw new Error("Cofre ausente");
+    return vault;
+  }
+  async signContent(
+    kind: string,
+    payload: unknown,
+    readers: PublicIdentity[] | "public",
+    ttl?: number,
+  ): Promise<Bundle> {
+    const s = this.active(),
+      result = await createBundle(s.identity, kind, payload, readers, ttl);
+    this.guard(s);
+    return result;
+  }
+  async decrypt(value: Bundle): Promise<unknown> {
+    const s = this.active(),
+      valueOwned = await verifiedBundle(value),
+      result = await decryptBundle(valueOwned, s.identity);
+    this.guard(s);
+    return result;
+  }
+  async exportCopy(password: string): Promise<string> {
+    const s = this.active(),
+      vault = await exportVault(s.identity, password);
+    this.guard(s);
+    return vault;
+  }
+  async records() {
+    const s = this.active();
+    return structuredClone((await this.state(s)).value.bundles);
+  }
+  private mutate(
+    state: State,
+    mutation?: { key: string; update: (previous: unknown) => unknown },
+  ) {
+    if (!mutation) return;
+    if (
+      !/^[a-z][a-z0-9-]{0,63}$/.test(mutation.key) ||
+      ["constructor", "prototype"].includes(mutation.key)
+    )
+      throw new Error("Nome de estado inválido");
+    state.values[mutation.key] = JSON.parse(
+      canonical(
+        mutation.update(structuredClone(state.values[mutation.key] ?? null)),
+      ),
+    );
+  }
+  async updateValue(
+    key: string,
+    update: (previous: unknown) => unknown,
+    release: string[] = [],
+  ): Promise<void> {
+    return this.exclusive(async () => {
+      const s = this.active(),
+        state = await this.state(s);
+      this.mutate(state.value, { key, update });
+      for (const id of release) {
+        if (!allowedID(id)) throw new Error("Endereço inválido");
+        if (state.value.bundles[id]?.reserved !== undefined)
+          state.value.bundles[id].reserved = false;
+      }
+      await this.commit(s, state.row, state.value);
+    });
+  }
+  async changeQuota(
+    quota: number,
+    mutation?: { key: string; update: (previous: unknown) => unknown },
+  ): Promise<void> {
+    if (!Number.isSafeInteger(quota) || quota < 1024 || quota > 1024 ** 3)
+      throw new Error("Limite de armazenamento inválido");
+    return this.exclusive(async () => {
+      const s = this.active(),
+        { row, value } = await this.state(s),
+        remove: string[] = [];
+      let size = Object.values(value.bundles).reduce((n, e) => n + e.size, 0);
+      const candidates = Object.entries(value.bundles)
+        .filter(
+          ([, e]) => e.expires <= Date.now() || (!e.pinned && !e.reserved),
+        )
+        .sort((a, b) => a[1].accessed - b[1].accessed);
+      while (size > quota) {
+        const next = candidates.shift();
+        if (!next)
+          throw new Error(
+            "O espaço está reservado por conteúdo fixado ou envios pendentes",
+          );
+        remove.push(next[0]);
+        size -= next[1].size;
+        delete value.bundles[next[0]];
+      }
+      this.mutate(value, mutation);
+      await this.commit(s, row, value, undefined, remove);
+      this.quota = quota;
+    });
+  }
+  private async state(s: Session) {
+    const row = await this.read<CipherRow>("profile", "state"),
+      value = await this.decodeState(s, row);
+    this.guard(s);
+    return { row: row!, value };
+  }
+  private async commit(
+    s: Session,
+    old: CipherRow,
+    next: State,
+    put?: { id: string; sealed: Sealed },
+    remove: string[] = [],
+  ): Promise<void> {
+    const encrypted = await this.encryptState(s, next);
+    this.guard(s);
+    const tx = this.db.transaction(["profile", "bundles"], "readwrite"),
+      done = complete(tx);
+    const check = tx.objectStore("profile").get("state");
+    check.onsuccess = () => {
+      // All requests are enqueued synchronously while the IDB transaction is active.
+      if (this.#session !== s || check.result?.revision !== old.revision) {
+        tx.abort();
+        return;
+      }
+      tx.objectStore("profile").put(encrypted, "state");
+      if (put) tx.objectStore("bundles").put(put.sealed, put.id);
+      for (const id of remove) tx.objectStore("bundles").delete(id);
+    };
+    await done;
+    this.guard(s);
+  }
+  async getValue(key: string): Promise<unknown> {
+    const s = this.active(),
+      values = (await this.state(s)).value.values;
+    return Object.hasOwn(values, key) ? values[key] : null;
+  }
+  async setValue(key: string, value: unknown): Promise<void> {
+    if (
+      !/^[a-z][a-z0-9-]{0,63}$/.test(key) ||
+      key === "constructor" ||
+      key === "prototype"
+    )
+      throw new Error("Nome de estado inválido");
+    const owned = JSON.parse(canonical(value));
+    return this.exclusive(async () => {
+      const s = this.active(),
+        state = await this.state(s);
+      state.value.values[key] = owned;
+      await this.commit(s, state.row, state.value);
+    });
+  }
+  async stats() {
+    const s = this.active(),
+      { value } = await this.state(s),
+      entries = Object.values(value.bundles);
+    return {
+      count: entries.length,
+      bytes: entries.reduce((n, e) => n + e.size, 0),
+      pinned: entries.filter((e) => e.pinned).length,
+      quota: this.quota,
+    };
+  }
+  async ids(): Promise<string[]> {
+    const s = this.active();
+    return Object.keys((await this.state(s)).value.bundles);
+  }
+  async putBundle(
+    value: Bundle,
+    pinned = false,
+    mutation?: { key: string; update: (previous: unknown) => unknown },
+    reserve = false,
+  ): Promise<string> {
+    if (typeof pinned !== "boolean" || typeof reserve !== "boolean")
+      throw new Error("Reserva inválida");
+    const s = this.active(),
+      b = await verifiedBundle(value);
+    this.guard(s);
+    // Admission is an explicit runtime decision; never accept group authority/control as generic content.
+    if (b.manifest.kind.startsWith("group-"))
+      throw new Error("Autoridade de grupos ainda não ligada ao motor web");
+    const sealed = await seal(
+      utf8(canonical(b)),
+      s.key,
+      "relayloom-browser-bundle-v1:" + b.manifest.id,
+    );
+    const size = utf8(canonical(sealed)).length;
+    this.guard(s);
+    if (size > this.quota)
+      throw new Error("Conteúdo excede o espaço disponível");
+    return this.exclusive(async () => {
+      this.guard(s);
+      const { row, value: state } = await this.state(s),
+        id = b.manifest.id;
+      const remove: string[] = [];
+      for (const [other, entry] of Object.entries(state.bundles))
+        if (entry.expires <= Date.now()) {
+          delete state.bundles[other];
+          remove.push(other);
+        }
+      const previous = state.bundles[id];
+      delete state.bundles[id];
+      let bytes = Object.values(state.bundles).reduce((n, e) => n + e.size, 0),
+        count = Object.keys(state.bundles).length;
+      const candidates = Object.entries(state.bundles)
+        .filter(([, e]) => !e.pinned && !e.reserved)
+        .sort(
+          (a, b) => a[1].accessed - b[1].accessed || a[0].localeCompare(b[0]),
+        );
+      while (bytes + size > this.quota || count >= this.maxObjects) {
+        const candidate = candidates.shift();
+        if (!candidate) throw new Error("Espaço reservado por conteúdo fixado");
+        const [drop, entry] = candidate;
+        remove.push(drop);
+        delete state.bundles[drop];
+        bytes -= entry.size;
+        count--;
+      }
+      state.bundles[id] = {
+        size,
+        pinned: pinned || previous?.pinned === true,
+        accessed: Date.now(),
+        expires: b.manifest.expires,
+        reserved: reserve || previous?.reserved === true,
+        created: b.manifest.created,
+        revision: crypto.randomUUID(),
+      };
+      this.mutate(state, mutation);
+      await this.commit(
+        s,
+        row,
+        state,
+        { id, sealed },
+        remove.filter((other) => other !== id),
+      );
+      return id;
+    });
+  }
+  async getBundle(id: string): Promise<Bundle> {
+    if (!allowedID(id)) throw new Error("Endereço inválido");
+    const s = this.active(),
+      { value } = await this.state(s);
+    if (!value.bundles[id]) throw new Error("Conteúdo não encontrado");
+    const row = await this.read<Sealed>("bundles", id);
+    if (!row) throw new Error("Conteúdo ausente do armazenamento");
+    const bytes = await open(row, s.key, "relayloom-browser-bundle-v1:" + id);
+    const b = await verifiedBundle(JSON.parse(decoder.decode(bytes)));
+    this.guard(s);
+    if (b.manifest.id !== id) throw new Error("Endereço não corresponde");
+    return b;
+  }
+  async view(id: string): Promise<unknown> {
+    const s = this.active(),
+      b = await this.getBundle(id),
+      payload = await decryptBundle(b, s.identity);
+    this.guard(s);
+    // Retain the exact signed object. Reading cannot transfer ownership.
+    await this.putBundle(b);
+    this.guard(s);
+    return payload;
+  }
+  async pin(
+    id: string,
+    pinned: boolean,
+    mutation?: { key: string; update: (previous: unknown) => unknown },
+  ): Promise<void> {
+    if (!allowedID(id) || typeof pinned !== "boolean")
+      throw new Error("Reserva inválida");
+    return this.exclusive(async () => {
+      const s = this.active(),
+        { row, value } = await this.state(s);
+      if (!value.bundles[id]) throw new Error("Conteúdo não encontrado");
+      if (value.bundles[id].reserved && !pinned)
+        throw new Error("Conteúdo reservado por um envio pendente");
+      value.bundles[id].pinned = pinned;
+      this.mutate(value, mutation);
+      await this.commit(s, row, value);
+    });
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "gate": {
+    "command": "node scripts/verify-browser.mjs --routing",
+    "status": "PASSED",
+    "at": "2026-09-13T22:57:13.721Z",
+    "checks": [
+      {
+        "name": "typecheck",
+        "command": "node node_modules/typescript/bin/tsc --noEmit",
+        "exit": 0,
+        "elapsedMs": 4746
+      },
+      {
+        "name": "existing-web-build",
+        "command": "node node_modules/vite/bin/vite.js build",
+        "exit": 0,
+        "elapsedMs": 1885
+      },
+      {
+        "name": "existing-transport",
+        "command": "node --import tsx --test --test-concurrency=1 tests/transport.test.ts tests/transport-hardening.test.ts tests/transport-cancellation.test.ts tests/transport-serial.test.ts",
+        "exit": 0,
+        "elapsedMs": 19305
+      },
+      {
+        "name": "existing-core-security",
+        "command": "node --import tsx --test --test-concurrency=1 tests/core.test.ts tests/security.test.ts",
+        "exit": 0,
+        "elapsedMs": 3575
+      },
+      {
+        "name": "browser",
+        "command": "node scripts/e2e.mjs --config tests/browser/browser.config.ts",
+        "exit": 0,
+        "elapsedMs": 28320
+      }
+    ],
+    "sourceCount": 372,
+    "sourcesUnchanged": true,
+    "nodeTransportTests": 22,
+    "nodeCoreSecurityTests": 16,
+    "chromiumTests": 12
+  },
+  "expandedBrowser": {
+    "command": "node scripts/e2e.mjs --config tests/browser/browser.config.ts",
+    "stats": {
+      "startTime": "2026-09-13T23:03:26.957Z",
+      "duration": 29652.457,
+      "expected": 14,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "changedSinceGate": [
+      "tests/browser/browser.config.ts",
+      "tests/browser/routing.spec.ts"
+    ],
+    "productionSourcesUnchanged": true,
+    "testSourceHashes": {
+      "tests/browser/browser.config.ts": "079f3e228c80e06f02db81f0b2763e1ad8715bc0323e43f8c1c519724e8156e0",
+      "tests/browser/routing.spec.ts": "9208e64c8672a030d00f96331e08f568c18157359dbba19a4941e839f6d362ac"
+    }
+  },
+  "uncommitted": true,
+  "base": "526d75a321536374923921a429b86f7e623ed5a4",
+  "limits": [
+    "No full product UI parity",
+    "No implemented browser-to-native transport adapter",
+    "No browser group authority or native outbox parity yet",
+    "A connection readiness failure at15s occurred before scheduler work; later directed/full/expanded gates passed without a demonstrated cause or fix",
+    "No Firefox/WebKit/Safari/native-mobile/hardware/radio/independent-review claim",
+    "The full C2/C3 gate and Windows65s test remain pending"
+  ]
+}

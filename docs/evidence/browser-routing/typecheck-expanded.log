@@ -1,0 +1,8 @@
+
+> relayloom@0.1.0 typecheck
+> tsc --noEmit
+
+tests/browser/routing.spec.ts(378,30): error TS2550: Property 'findLastIndex' does not exist on type '{ id: string; index: number; count: number; }[]'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2023' or later.
+tests/browser/routing.spec.ts(378,45): error TS7006: Parameter 'f' implicitly has an 'any' type.
+tests/browser/routing.spec.ts(379,31): error TS2550: Property 'findLastIndex' does not exist on type '{ id: string; index: number; count: number; }[]'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2023' or later.
+tests/browser/routing.spec.ts(379,46): error TS7006: Parameter 'f' implicitly has an 'any' type.

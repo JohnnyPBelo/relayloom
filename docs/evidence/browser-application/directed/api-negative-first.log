@@ -1,0 +1,8 @@
+
+Running 1 test using 1 worker
+
+(node:3677619) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/browser/application-api.spec.ts:6:1 › application API preserves send identity, rejects corrupt retained acceptance, and validates event author/read scope (432ms)
+
+  1 passed (1.1s)

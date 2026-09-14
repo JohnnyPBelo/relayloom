@@ -1,0 +1,33 @@
+
+Running 26 tests using 1 worker
+
+(node:3731521) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/browser/application-api.spec.ts:11:1 › application API preserves send identity, rejects corrupt retained acceptance, and validates event author/read scope (675ms)
+  ✓   2 tests/browser/application.spec.ts:74:1 › autonomous Liquid Glass UI owns identity and offline outbox, connects through real RTC, receives signed confirmations and survives reload (11.5s)
+  ✓   3 tests/browser/application.spec.ts:200:1 › autonomous social actions and safe signed site builder persist and remain viewable after author closes (14.9s)
+  ✓   4 tests/browser/application.spec.ts:355:1 › production worker keeps private keys out of replies and recovers an applied send after the UI response is lost (23.3s)
+  ✓   5 tests/browser/application.spec.ts:459:1 › a second tab cannot take ownership of a live application profile and an unknown or corrupt profile is never silently reset (2.1s)
+  ✓   6 tests/browser/application.spec.ts:516:1 › cached application code and encrypted profile reopen when the static host is unavailable, without installing the PWA (3.6s)
+  ✓   7 tests/browser/application.spec.ts:579:1 › corrupted cached worker is rejected offline and recovered only from verified available code (1.9s)
+  ✓   8 tests/browser/foundation.spec.ts:24:1 › Chromium owns compatible identities/vaults/bundles: real Node and Go positive and negative controls (2.9s)
+  ✓   9 tests/browser/foundation.spec.ts:205:1 › encrypted IndexedDB persists, coordinates two pages, rejects corruption and preserves pins on failed admission (1.0s)
+  ✓  10 tests/browser/foundation.spec.ts:397:1 › lock during unlock cannot resurrect keys; missing authenticated state is not replaced with empty success (911ms)
+  ✓  11 tests/browser/foundation.spec.ts:449:1 › real WebRTC transfers encrypted chunks and an offline author's reader seeds identical bytes to a new reader (10.3s)
+  ✓  12 tests/browser/foundation.spec.ts:623:1 › WebRTC rejects a correctly framed corrupt bundle before storage and rejects admission failure without ACK (1.5s)
+  ✓  13 tests/browser/foundation.spec.ts:723:1 › identity recovery is compatible and cannot overwrite an existing profile; quota eviction retains pinned objects (388ms)
+  ✓  14 tests/browser/foundation.spec.ts:783:1 › browser application bundle/ledger commit is atomic, pending reservations survive eviction pressure and IDB abort preserves prior state (261ms)
+  ✓  15 tests/browser/native-transport.spec.ts:51:3 › browser WebRTC to browser WebSocket to real node daemon, reverse transfer and invitation revocation (4.7s)
+  ✓  16 tests/browser/native-transport.spec.ts:51:3 › browser WebRTC to browser WebSocket to real native daemon, reverse transfer and invitation revocation (3.9s)
+  ✓  17 tests/browser/native-transport.spec.ts:191:1 › private four-medium route WebRTC-WebSocket-TCP-serial, partition/heal and restarted browser seeder with author offline (11.4s)
+  ✓  18 tests/browser/native-transport.spec.ts:419:1 › late native ACK cannot leave an orphan retry assembly or close an otherwise healthy WebSocket (4.8s)
+  ✓  19 tests/browser/routing.spec.ts:83:1 › automatic A-B-C mesh: consent controls, own sends while paused, partition/heal and restarted reader takeover with author offline (6.9s)
+  ✓  20 tests/browser/routing.spec.ts:211:1 › one network owner per profile and concurrent consent/preferences do not resurrect revoked relay (596ms)
+  ✓  21 tests/browser/routing.spec.ts:269:1 › fragment scheduling preempts bulk with SOS, gives bulk a fair turn, and cancels relayed bytes without closing own traffic (4.4s)
+  ✓  22 tests/browser/routing.spec.ts:475:1 › packet bounds reject expiry, hop loops and tampering; retained flood is bounded (111ms)
+  ✓  23 tests/browser/routing.spec.ts:539:1 › low-power defers bulk on a live link, keeps SOS moving and never revives an expired queued packet (1.2s)
+  ✓  24 tests/browser/routing.spec.ts:597:1 › browser routing packets cross real native TCP routers; native packet bytes verify in the browser and corruption never forwards (854ms)
+  ✓  25 tests/browser/routing.spec.ts:745:1 › opaque packet corruption is rejected by the browser mesh before storage or forwarding, with valid controls on both sides (2.0s)
+  ✓  26 tests/browser/routing.spec.ts:828:1 › managed relay revocation cancels an in-flight forwarded packet and keeps an authored SOS on that same open link (4.2s)
+
+  26 passed (2.0m)

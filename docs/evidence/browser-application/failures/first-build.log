@@ -1,0 +1,5 @@
+
+> relayloom@0.1.0 build
+> tsc --noEmit && vite build
+
+apps/web/src/browser/entry.ts(16,46): error TS2339: Property 'persisted' does not exist on type 'Event'.

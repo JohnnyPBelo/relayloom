@@ -125,3 +125,46 @@ Estes requisitos continuam **partial** no contrato integral: não há pesquisa i
 FR-014/edição/eliminação e contexto de grupos avançaram nas APIs Node/Go: autoria original, intersecção de leitores, histórico mínimo, admissão antes de rede e revalidação de filas/seeding. Controlos reais de3 nós com entrada/remoção, autor offline (porta recusada), seeder e reinício; falhas SQL/índice/corrupção e snapshot de memória testados. Gate83716 e desktop48666 terminaram0:236 Node,153 Go de topo/race,38 interop,SQLite C,19 UI por motor,56 Axe arquivados sem violações,300 fontes inalteradas. Comandos/durações em docs/GROUP-EVENTS.md e docs/evidence/group-events/final. Falhas e correcções preservadas separadamente.
 
 Continuam carriers automáticos, criação/gestão dinâmica na UI, pesquisa integral, keystore/rotação, restantes media/social/templates, notificações reais, plataformas e revisão independente. Nenhuma task nova de agente nem alteração a modelos/bridges/configuração. Produto não concluído.
+
+
+## Extensão web autónoma autorizada — 2026-09-13
+
+FR-043, INT-009 e ACC-014 estão em implementação segundo WEB-IMPLEMENTATION.md. Todos os requisitos de produto passam a exigir paridade web; os estados históricos done nesta tabela referem-se exclusivamente aos runtimes/data dos testes citados, nunca comprovam paridade no browser. Testes de UI sobre /api do daemon não são execução autónoma.
+
+FR-043/INT-009/ACC-014 têm agora evidência parcial em `docs/evidence/browser-foundation`:16Node e6Chromium, comandos/hashes e fontes estáveis. Cofres/bundles nos dois sentidos com Node/Go, IndexedDB cifrado e DataChannel/seeder reais. Continuam in_progress: nenhuma aplicação autónoma com paridade/UI/rotas/grupos entregue.
+
+
+## Gate de routing concluído — produto incompleto
+
+`node scripts/verify-browser.mjs --routing` passou22Node transporte/16núcleo/12Chromium e build/typecheck,372fontes estáveis.2novos adversariais e o caminho do reporter foram depois integrados:14Chromium passaram29.652s, fontes de produção inalteradas. Ver docs/evidence/browser-routing. Rede automática entre browsers, consentimento, partição/heal e seeder reiniciado são reais; os2routers TCP provam formato wire comum, não ponte de transporte. A aplicação autónoma/UI/grupos/outbox e toda a matriz de paridade continuam em implementação. Uma falha de abertura RTC em15s não tem causa confirmada apesar dos passes posteriores.
+
+
+## Integração nativa e gate concluídos — 2026-09-14
+
+WebSocket Node/Go real e ponteRTC/WS/TCP/serialPTY executados com autorização, origem, expiração, revogação, relaysopacos, partição/heal e seeder reiniciado.271Node/89Go de topo-race passaram (2helpers omitidos). Após fixtureAxe e correcção reproduzida de ACKtardio,18browser/21UI por motor/desktopLinux passaram com385fontes estáveis e66Axe sem violações. Prefixo nativo e delta browser provados porhashes, sem repetir testes nativos cujas fontes não mudaram. Comandos/tempos/falhas em docs/evidence/browser-native. Nenhum commit/push, fonteglobal continua incompleta.
+
+Pendente: UIweb seminstalação/facade/worker/domínio completo, peering durável e caminhosforaLoopback, orçamento global/admissão sob carga, C2/C3 adversarial/SQLite/interoperabilidade/Windows, plataformas/hardware/revisão. ISC do coder/websocket confirmada na licença real.
+
+
+## Marco da aplicação autónoma verificado
+
+`node scripts/verify-autonomous.mjs` terminou0:271Node/26browser/21UI pormotor/desktopLinuxbuild+run+package+run,403fontesestáveis,72Axe semviolações. Evidência docs/evidence/browser-application. SemAPIde daemon no cliente/browser/index.html; worker/IndexedDB/RTC/WS/SW reais. FonteGo não mudou desdepasse89race anterior. Gruposdinâmicos e toda arestanteparidade/gates dehardware/revisão continuam obrigatórios. Previewestáticolocal4174activosessão49020; nenhumcommit/pushnovo.
+
+
+## Integração sequencial de 2026-09-14
+
+Runtime C2/replay publicado como bb85d1a:269 Node,7 Go/race dirigidos,18 percursos mistos,19 UI por motor,360 fontes estáveis (`docs/evidence/group-notice-runtime`). UI dinâmica consolidada localmente como719a53f:23 UI por motor,70 Axe,desktopLinux executado,364 fontes estáveis (`docs/evidence/dynamic-groups/milestone`); inclui falhas/correcções de rascunho após lock e contador móvel. Fecho de reaberturas SQLite nas fixtures:54d298a,6 testes locais; novo passeWindows pendente.
+
+CI34805308160/bb85d1a falhouWindows (261pass/2fail/1cancel/5skip);Linux/macOS passaram,Go/desktop/iOS skipped. O prazo65s do seeder mantém-se. Novo trabalho de cache de leituras por transacção tem6controlos e medição completa38.261s→21.171s noLinux; gate48594 Node integral/interop integral/UI/desktop emcurso na cópia.cache/p. Não atribuir ainda passeglobal ou Windows.
+
+Paridadewebcontinuaobrigatória e parcial: móduloautónomo local comUIpartilhada/RTC/WS/IndexedDB/worker/SW, mas gruposdinâmicos e restantecontrato aindaabertos. CódigoWS/browser/app e documentação respectiva porconsolidar. Não altera qualquer requisito de plataformas, rádios ou revisãoindependente.
+
+
+## INT-010 — integração real Reticulum e envio agnóstico
+
+Estado parcial: adaptador RNS1.5.4 real, configuração dedicada, envelopes assinados/cifrados e testes de partição/heal/seeder com origens Node/Go. Gate completo em curso; ver `docs/RETICULUM.md` e `.codex-delivery/RETICULUM-IMPLEMENTATION.md`. Faltam política de trânsito por instalação, peering durável, combinação browser/RNS, embalagem e rádio físico. A avaliação histórica INT-001 não equivale à conclusão desta integração.
+
+
+## Consolidação browser sobre 5e049f1 — 2026-09-14
+
+A sessão3463 terminou0. Gate `node scripts/verify-autonomous.mjs`:279 Node,26 browser,23 UI por motor e desktop Linux build/run/package/run,442 fontes estáveis. Evidência em docs/evidence/browser-application/milestone. A paridade dinâmica continua obrigatória e pendente. O CI5e049f1 passou Node3SO/Go/RNS/desktop e falhou iOS no fecho do teclado; incremento Apple preservado separadamente. Próximo: rota web autónoma↔Reticulum com controlos/UI, grupos dinâmicos e restante contrato.

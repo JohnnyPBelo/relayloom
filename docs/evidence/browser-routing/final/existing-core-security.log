@@ -1,0 +1,110 @@
+TAP version 13
+# (node:2618762) ExperimentalWarning: The MockTimers API is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: identity proof binds signing address, name and decryption key
+ok 1 - identity proof binds signing address, name and decryption key
+  ---
+  duration_ms: 2.169438
+  type: 'test'
+  ...
+# Subtest: vault encrypts private keys; recovery and wrong-password controls
+ok 2 - vault encrypts private keys; recovery and wrong-password controls
+  ---
+  duration_ms: 238.044632
+  type: 'test'
+  ...
+# Subtest: reader decrypts and seeds but cannot become author; unauthorized reader fails
+ok 3 - reader decrypts and seeds but cannot become author; unauthorized reader fails
+  ---
+  duration_ms: 5.980443
+  type: 'test'
+  ...
+# Subtest: ciphertext, manifest, expiry, depth and address negative controls
+ok 4 - ciphertext, manifest, expiry, depth and address negative controls
+  ---
+  duration_ms: 18.35855
+  type: 'test'
+  ...
+# Subtest: encrypted persistent seed takeover, deduplication, pin/quota, disk corruption
+ok 5 - encrypted persistent seed takeover, deduplication, pin/quota, disk corruption
+  ---
+  duration_ms: 44.884422
+  type: 'test'
+  ...
+# Subtest: object-count cap bounds small-object floods, survives restart and preserves pinned content
+ok 6 - object-count cap bounds small-object floods, survives restart and preserves pinned content
+  ---
+  duration_ms: 309.294025
+  type: 'test'
+  ...
+# Subtest: metadata listing does not replace real viewing order in LRU eviction
+ok 7 - metadata listing does not replace real viewing order in LRU eviction
+  ---
+  duration_ms: 78.419837
+  type: 'test'
+  ...
+# Subtest: cached manifest metadata is isolated, invalidated by disk changes, and never bypasses get verification
+ok 8 - cached manifest metadata is isolated, invalidated by disk changes, and never bypasses get verification
+  ---
+  duration_ms: 38.613214
+  type: 'test'
+  ...
+# Subtest: rejected quota decrease preserves existing files and policy; feasible decrease evicts only unpinned content
+ok 9 - rejected quota decrease preserves existing files and policy; feasible decrease evicts only unpinned content
+  ---
+  duration_ms: 174.920523
+  type: 'test'
+  ...
+# Subtest: invalid persisted index fails safely without deleting verified objects
+ok 10 - invalid persisted index fails safely without deleting verified objects
+  ---
+  duration_ms: 35.188153
+  type: 'test'
+  ...
+# Subtest: strict wire fields and every recipient envelope are validated before accepting signatures
+ok 11 - strict wire fields and every recipient envelope are validated before accepting signatures
+  ---
+  duration_ms: 3.919769
+  type: 'test'
+  ...
+# (node:2618785) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: inbound semantic ACL: forged public receipt/message and private wrong-reader mutation are hidden
+ok 12 - inbound semantic ACL: forged public receipt/message and private wrong-reader mutation are hidden
+  ---
+  duration_ms: 386.590556
+  type: 'test'
+  ...
+# Subtest: malformed unauthenticated HTTP paths return 400; service survives and auth boundary holds
+ok 13 - malformed unauthenticated HTTP paths return 400; service survives and auth boundary holds
+  ---
+  duration_ms: 62.553599
+  type: 'test'
+  ...
+# Subtest: private site draft and local deletion survive cache removal/restart without plaintext on disk
+ok 14 - private site draft and local deletion survive cache removal/restart without plaintext on disk
+  ---
+  duration_ms: 475.150734
+  type: 'test'
+  ...
+# Subtest: relay consent: no application-level cached serving while paused, positive control after enabling
+ok 15 - relay consent: no application-level cached serving while paused, positive control after enabling
+  ---
+  duration_ms: 1080.487662
+  type: 'test'
+  ...
+# Subtest: deletion journal survives when publication itself evicts its unpinned original
+ok 16 - deletion journal survives when publication itself evicts its unpinned original
+  ---
+  duration_ms: 265.806662
+  type: 'test'
+  ...
+1..16
+# tests 16
+# suites 0
+# pass 16
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3541.966398
