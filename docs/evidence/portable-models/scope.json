@@ -1,0 +1,35 @@
+{
+  "baseCommit": "526d75a321536374923921a429b86f7e623ed5a4",
+  "candidateCheckout": ".cache/milestone-check",
+  "candidateIncludesOnlyListedChanges": true,
+  "sourceHashes": {
+    "packages/core/src/index.ts": "7d93793ea935eb3c01afc2a2badb45a1e55a63e217a6b73e8638b44cf0cbc20b",
+    "packages/core/src/protocol.ts": "b10709bce07d8ad10175fec74032d48d10b9d785bcecb6a9fdc430bbb9f4ab67",
+    "packages/transport/src/protocol.ts": "fc7e95e7f5d3347055958d8bb9ddf56c61b34876784076de3cba4d5029eb8cbb",
+    "packages/content/src/types.ts": "ec9687635242293eb1241262fbe00820ab4209cd439d6c36051a55ec2a43e26f",
+    "packages/content/src/validation.ts": "1ce34e6b34f4276ddbf8abcb18ac9b34f73087bca1a77648a961e274f80b8980",
+    "packages/content/src/outbox.ts": "317e7cbe64541dc926423f777c3ae1204c8097d67ab93fb521c3e653547764a1",
+    "apps/node/src/content-validation.ts": "678e1ecd8a1db0b89ae3d0acae069ad43f00333cc67882d8f87d34f81ad0b67d",
+    "apps/node/src/outbox.ts": "522b8933225d4a8b80b45ef64ca56866c1b21b4a1a38cecc0fa1827b57a6e6b1"
+  },
+  "dependencyRuntime": "project node_modules and Playwright cache symlinked; no global installation",
+  "commands": [
+    {
+      "command": "npm run build",
+      "exit": 0
+    },
+    {
+      "command": "node --import tsx --test --test-concurrency=1 tests/core.test.ts tests/social.test.ts tests/outbox.test.ts tests/security.test.ts",
+      "exit": 0,
+      "tests": 43,
+      "elapsedMs": 13324.994472
+    },
+    {
+      "command": "node scripts/e2e.mjs tests/e2e/flows.spec.ts --grep 'two live clients'",
+      "exit": 0,
+      "tests": 1,
+      "reportedSeconds": 19.7
+    }
+  ],
+  "scope": "Portable canonical/wire/content/outbox models and preserved Node API. Browser implementation, group notices and other local changes are not part of this candidate."
+}

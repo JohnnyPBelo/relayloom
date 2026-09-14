@@ -1,4 +1,33 @@
 import {
+  MAX_CONTENT,
+  CHUNK_SIZE,
+  MAX_STORED_OBJECTS,
+  canonical,
+  exactShape,
+} from "./protocol.js";
+import type {
+  PublicIdentity,
+  Identity,
+  Sealed,
+  KeyEnvelope,
+  ManifestBody,
+  Manifest,
+  Bundle,
+} from "./protocol.js";
+export {
+  MAX_CONTENT,
+  CHUNK_SIZE,
+  MAX_STORED_OBJECTS,
+  canonical,
+} from "./protocol.js";
+export type {
+  PublicIdentity,
+  Identity,
+  ManifestBody,
+  Manifest,
+  Bundle,
+} from "./protocol.js";
+import {
   createHash,
   generateKeyPairSync,
   createPrivateKey,
@@ -28,37 +57,9 @@ import {
 } from "node:fs";
 import { dirname, join } from "node:path";
 
-export const MAX_CONTENT = 4 * 1024 * 1024;
-export const CHUNK_SIZE = 24 * 1024;
-export const MAX_STORED_OBJECTS = 1024;
 const MAX_STORED_BUNDLE = 6 * 1024 * 1024;
 export function hash(data: string | Buffer): string {
   return createHash("sha256").update(data).digest("hex");
-}
-export function canonical(value: unknown, depth = 0): string {
-  if (depth > 24) throw new Error("Estrutura demasiado profunda");
-  if (value === null || typeof value === "boolean" || typeof value === "string")
-    return JSON.stringify(value);
-  if (typeof value === "number" && Number.isFinite(value))
-    return JSON.stringify(value);
-  if (Array.isArray(value))
-    return "[" + value.map((v) => canonical(v, depth + 1)).join(",") + "]";
-  if (
-    typeof value === "object" &&
-    value &&
-    Object.getPrototypeOf(value) === Object.prototype
-  ) {
-    const o = value as Record<string, unknown>;
-    return (
-      "{" +
-      Object.keys(o)
-        .sort()
-        .map((k) => JSON.stringify(k) + ":" + canonical(o[k], depth + 1))
-        .join(",") +
-      "}"
-    );
-  }
-  throw new Error("Valor não suportado");
 }
 export function atomic(path: string, data: string | Buffer): void {
   const temp = path + "." + randomBytes(6).toString("hex") + ".tmp";
@@ -98,18 +99,6 @@ function un64(s: string, max = MAX_CONTENT * 2): Buffer {
   if (b.toString("base64") !== s) throw new Error("Codificação não canónica");
   return b;
 }
-export interface PublicIdentity {
-  id: string;
-  name: string;
-  signKey: string;
-  boxKey: string;
-  proof: string;
-}
-export interface Identity {
-  public: PublicIdentity;
-  signSecret: string;
-  boxSecret: string;
-}
 function publicBytes(p: Omit<PublicIdentity, "proof">): string {
   return canonical({
     id: p.id,
@@ -117,21 +106,6 @@ function publicBytes(p: Omit<PublicIdentity, "proof">): string {
     signKey: p.signKey,
     boxKey: p.boxKey,
   });
-}
-function exactShape(value: unknown, keys: readonly string[]): boolean {
-  if (
-    !value ||
-    typeof value !== "object" ||
-    Object.getPrototypeOf(value) !== Object.prototype
-  )
-    return false;
-  const descriptors = Object.getOwnPropertyDescriptors(value);
-  return (
-    Reflect.ownKeys(value).length === keys.length &&
-    keys.every(
-      (key) => Object.hasOwn(descriptors, key) && "value" in descriptors[key],
-    )
-  );
 }
 export function validateIdentity(p: PublicIdentity): boolean {
   try {
@@ -188,11 +162,6 @@ function privateKey(secret: string) {
     format: "der",
     type: "pkcs8",
   });
-}
-interface Sealed {
-  nonce: string;
-  data: string;
-  tag: string;
 }
 function seal(data: Buffer, key: Buffer, aad: string): Sealed {
   const nonce = randomBytes(12),
@@ -269,31 +238,6 @@ export function importVault(vault: string, password: string): Identity {
   )
     throw new Error("Identidade inválida");
   return i;
-}
-interface KeyEnvelope extends Sealed {
-  reader: string;
-  ephemeral: string;
-}
-export interface ManifestBody {
-  version: 1;
-  author: PublicIdentity;
-  kind: string;
-  created: number;
-  expires: number;
-  nonce: string;
-  tag: string;
-  chunks: { hash: string; size: number }[];
-  keys: KeyEnvelope[];
-  publicKey: string | null;
-  salt: string;
-}
-export interface Manifest extends ManifestBody {
-  id: string;
-  signature: string;
-}
-export interface Bundle {
-  manifest: Manifest;
-  chunks: Record<string, string>;
 }
 const aad = "relayloom-content-v1";
 function wrap(key: Buffer, reader: PublicIdentity): KeyEnvelope {

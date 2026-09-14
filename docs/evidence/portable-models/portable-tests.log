@@ -1,0 +1,275 @@
+TAP version 13
+# (node:3883717) ExperimentalWarning: The MockTimers API is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: identity proof binds signing address, name and decryption key
+ok 1 - identity proof binds signing address, name and decryption key
+  ---
+  duration_ms: 2.389349
+  type: 'test'
+  ...
+# Subtest: vault encrypts private keys; recovery and wrong-password controls
+ok 2 - vault encrypts private keys; recovery and wrong-password controls
+  ---
+  duration_ms: 262.840226
+  type: 'test'
+  ...
+# Subtest: reader decrypts and seeds but cannot become author; unauthorized reader fails
+ok 3 - reader decrypts and seeds but cannot become author; unauthorized reader fails
+  ---
+  duration_ms: 6.839914
+  type: 'test'
+  ...
+# Subtest: ciphertext, manifest, expiry, depth and address negative controls
+ok 4 - ciphertext, manifest, expiry, depth and address negative controls
+  ---
+  duration_ms: 23.092666
+  type: 'test'
+  ...
+# Subtest: encrypted persistent seed takeover, deduplication, pin/quota, disk corruption
+ok 5 - encrypted persistent seed takeover, deduplication, pin/quota, disk corruption
+  ---
+  duration_ms: 41.500269
+  type: 'test'
+  ...
+# Subtest: object-count cap bounds small-object floods, survives restart and preserves pinned content
+ok 6 - object-count cap bounds small-object floods, survives restart and preserves pinned content
+  ---
+  duration_ms: 171.710157
+  type: 'test'
+  ...
+# Subtest: metadata listing does not replace real viewing order in LRU eviction
+ok 7 - metadata listing does not replace real viewing order in LRU eviction
+  ---
+  duration_ms: 36.491838
+  type: 'test'
+  ...
+# Subtest: cached manifest metadata is isolated, invalidated by disk changes, and never bypasses get verification
+ok 8 - cached manifest metadata is isolated, invalidated by disk changes, and never bypasses get verification
+  ---
+  duration_ms: 17.965644
+  type: 'test'
+  ...
+# Subtest: rejected quota decrease preserves existing files and policy; feasible decrease evicts only unpinned content
+ok 9 - rejected quota decrease preserves existing files and policy; feasible decrease evicts only unpinned content
+  ---
+  duration_ms: 190.908312
+  type: 'test'
+  ...
+# Subtest: invalid persisted index fails safely without deleting verified objects
+ok 10 - invalid persisted index fails safely without deleting verified objects
+  ---
+  duration_ms: 15.795645
+  type: 'test'
+  ...
+# Subtest: strict wire fields and every recipient envelope are validated before accepting signatures
+ok 11 - strict wire fields and every recipient envelope are validated before accepting signatures
+  ---
+  duration_ms: 7.547631
+  type: 'test'
+  ...
+# (node:3883790) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:3883790) ExperimentalWarning: The MockTimers API is an experimental feature and might change at any time
+# Subtest: offline send is encrypted, pinned, idempotent and recovers the same operation after restart
+ok 12 - offline send is encrypted, pinned, idempotent and recovers the same operation after restart
+  ---
+  duration_ms: 275.045589
+  type: 'test'
+  ...
+# Subtest: preparing journal reconciles surviving exact bytes and never regenerates missing content
+ok 13 - preparing journal reconciles surviving exact bytes and never regenerates missing content
+  ---
+  duration_ms: 225.035666
+  type: 'test'
+  ...
+# Subtest: transport rejection after local acceptance stays pending and cannot crash periodic sync
+ok 14 - transport rejection after local acceptance stays pending and cannot crash periodic sync
+  ---
+  duration_ms: 185.419331
+  type: 'test'
+  ...
+# Subtest: per-reader signed delivery/read confirmations survive paging, replay, eviction and restart
+ok 15 - per-reader signed delivery/read confirmations survive paging, replay, eviction and restart
+  ---
+  duration_ms: 1493.417157
+  type: 'test'
+  ...
+# Subtest: public, foreign-author and wrong-reader confirmations cannot advance a durable send
+ok 16 - public, foreign-author and wrong-reader confirmations cannot advance a durable send
+  ---
+  duration_ms: 250.152798
+  type: 'test'
+  ...
+# Subtest: expiry remains visible after payload removal and explicit user pin is preserved
+ok 17 - expiry remains visible after payload removal and explicit user pin is preserved
+  ---
+  duration_ms: 289.861287
+  type: 'test'
+  ...
+# Subtest: corrupted reserved bytes become unavailable without a new signed publication
+ok 18 - corrupted reserved bytes become unavailable without a new signed publication
+  ---
+  duration_ms: 173.545889
+  type: 'test'
+  ...
+# Subtest: blocked incomplete sends retain bounded reservation; blocked group readers do not break viewing
+ok 19 - blocked incomplete sends retain bounded reservation; blocked group readers do not break viewing
+  ---
+  duration_ms: 486.314555
+  type: 'test'
+  ...
+# Subtest: pending count/byte reservations and restored metadata ownership are bounded
+ok 20 - pending count/byte reservations and restored metadata ownership are bounded
+  ---
+  duration_ms: 178.962554
+  type: 'test'
+  ...
+# Subtest: a content-file directory flush error preserves the recorded operation instead of signing a replacement
+ok 21 - a content-file directory flush error preserves the recorded operation instead of signing a replacement
+  ---
+  duration_ms: 142.501314
+  type: 'test'
+  ...
+# Subtest: incoming read confirmation is journalled before its admission evicts the original
+ok 22 - incoming read confirmation is journalled before its admission evicts the original
+  ---
+  duration_ms: 194.313816
+  type: 'test'
+  ...
+# Subtest: read confirmation uses the signed roster when contact learning fails and can be reissued after eviction
+ok 23 - read confirmation uses the signed roster when contact learning fails and can be reissued after eviction
+  ---
+  duration_ms: 187.489511
+  type: 'test'
+  ...
+# Subtest: saved peer connection remains idempotent at capacity without opening another connection
+ok 24 - saved peer connection remains idempotent at capacity without opening another connection
+  ---
+  duration_ms: 192.548176
+  type: 'test'
+  ...
+# Subtest: snapshot crossing expiry during journal persistence keeps state and reservation consistent
+ok 25 - snapshot crossing expiry during journal persistence keeps state and reservation consistent
+  ---
+  duration_ms: 1736.463292
+  type: 'test'
+  ...
+# Subtest: snapshot crossing expiry during journal persistence keeps send and reservation consistent
+ok 26 - snapshot crossing expiry during journal persistence keeps send and reservation consistent
+  ---
+  duration_ms: 1682.212197
+  type: 'test'
+  ...
+# Subtest: snapshot crossing expiry during journal persistence keeps retry and reservation consistent
+ok 27 - snapshot crossing expiry during journal persistence keeps retry and reservation consistent
+  ---
+  duration_ms: 1684.183523
+  type: 'test'
+  ...
+# Subtest: an uncertain SQL completion at write 1 recovers the same outbox operation
+ok 28 - an uncertain SQL completion at write 1 recovers the same outbox operation
+  ---
+  duration_ms: 150.136589
+  type: 'test'
+  ...
+# Subtest: an uncertain SQL completion at write 2 recovers the same outbox operation
+ok 29 - an uncertain SQL completion at write 2 recovers the same outbox operation
+  ---
+  duration_ms: 153.831567
+  type: 'test'
+  ...
+# Subtest: outbox preview preserves full astral characters within its UTF-16 budget
+ok 30 - outbox preview preserves full astral characters within its UTF-16 budget
+  ---
+  duration_ms: 0.302908
+  type: 'test'
+  ...
+# (node:3884428) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: inbound semantic ACL: forged public receipt/message and private wrong-reader mutation are hidden
+ok 31 - inbound semantic ACL: forged public receipt/message and private wrong-reader mutation are hidden
+  ---
+  duration_ms: 235.311722
+  type: 'test'
+  ...
+# Subtest: malformed unauthenticated HTTP paths return 400; service survives and auth boundary holds
+ok 32 - malformed unauthenticated HTTP paths return 400; service survives and auth boundary holds
+  ---
+  duration_ms: 50.490484
+  type: 'test'
+  ...
+# Subtest: private site draft and local deletion survive cache removal/restart without plaintext on disk
+ok 33 - private site draft and local deletion survive cache removal/restart without plaintext on disk
+  ---
+  duration_ms: 344.440346
+  type: 'test'
+  ...
+# Subtest: relay consent: no application-level cached serving while paused, positive control after enabling
+ok 34 - relay consent: no application-level cached serving while paused, positive control after enabling
+  ---
+  duration_ms: 1007.222698
+  type: 'test'
+  ...
+# Subtest: deletion journal survives when publication itself evicts its unpinned original
+ok 35 - deletion journal survives when publication itself evicts its unpinned original
+  ---
+  duration_ms: 153.202637
+  type: 'test'
+  ...
+# Subtest: collection create, rename, add, remove and delete are immutable local transitions
+ok 36 - collection create, rename, add, remove and delete are immutable local transitions
+  ---
+  duration_ms: 3.395366
+  type: 'test'
+  ...
+# Subtest: collection identity, title and timestamp rules reject ambiguous metadata
+ok 37 - collection identity, title and timestamp rules reject ambiguous metadata
+  ---
+  duration_ms: 2.828713
+  type: 'test'
+  ...
+# Subtest: prototype, accessor, unknown field and sparse-array inputs fail without executing metadata
+ok 38 - prototype, accessor, unknown field and sparse-array inputs fail without executing metadata
+  ---
+  duration_ms: 0.888356
+  type: 'test'
+  ...
+# Subtest: collection ownership cannot be transferred by a command or mixed across identity vaults
+ok 39 - collection ownership cannot be transferred by a command or mixed across identity vaults
+  ---
+  duration_ms: 0.457788
+  type: 'test'
+  ...
+# Subtest: collection and membership quotas reject atomically while allowing idempotent operations
+ok 40 - collection and membership quotas reject atomically while allowing idempotent operations
+  ---
+  duration_ms: 11.587085
+  type: 'test'
+  ...
+# Subtest: recovered collections reject duplicate identifiers, titles, members and excessive total memberships
+ok 41 - recovered collections reject duplicate identifiers, titles, members and excessive total memberships
+  ---
+  duration_ms: 6.451455
+  type: 'test'
+  ...
+# Subtest: content references remain canonical hashes and convey neither reader access nor authorship
+ok 42 - content references remain canonical hashes and convey neither reader access nor authorship
+  ---
+  duration_ms: 15.743898
+  type: 'test'
+  ...
+# Subtest: followed feed selects posts and alerts from followed authors without changing caller order or access
+ok 43 - followed feed selects posts and alerts from followed authors without changing caller order or access
+  ---
+  duration_ms: 0.978916
+  type: 'test'
+  ...
+1..43
+# tests 43
+# suites 0
+# pass 43
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 13324.994472
