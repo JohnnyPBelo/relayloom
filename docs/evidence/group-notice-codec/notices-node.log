@@ -1,0 +1,120 @@
+TAP version 13
+# Subtest: newcomer validates exact join consent from signed parent header without old snapshot keys
+ok 1 - newcomer validates exact join consent from signed parent header without old snapshot keys
+  ---
+  duration_ms: 88.369462
+  type: 'test'
+  ...
+# Subtest: permanent group anchor has real creator signature, exact schema and separate carrier identity
+ok 2 - permanent group anchor has real creator signature, exact schema and separate carrier identity
+  ---
+  duration_ms: 14.012401
+  type: 'test'
+  ...
+# Subtest: invitation and signed consent do not alter roster until the creator commits the exact parent
+ok 3 - invitation and signed consent do not alter roster until the creator commits the exact parent
+  ---
+  duration_ms: 49.371946
+  type: 'test'
+  ...
+# Subtest: newcomer reads real new ciphertext without obtaining historical keys; removed reader cannot read new content
+ok 4 - newcomer reads real new ciphertext without obtaining historical keys; removed reader cannot read new content
+  ---
+  duration_ms: 82.908163
+  type: 'test'
+  ...
+# Subtest: stale, substituted, missing or extra member consents cannot commit a roster
+ok 5 - stale, substituted, missing or extra member consents cannot commit a roster
+  ---
+  duration_ms: 96.118492
+  type: 'test'
+  ...
+# Subtest: removal and rejoin remain restrictive across the complete path even with identical final cards
+ok 6 - removal and rejoin remain restrictive across the complete path even with identical final cards
+  ---
+  duration_ms: 78.391706
+  type: 'test'
+  ...
+# Subtest: creator reading-card replacement preserves signing authority but requires fresh signed consent
+ok 7 - creator reading-card replacement preserves signing authority but requires fresh signed consent
+  ---
+  duration_ms: 44.136961
+  type: 'test'
+  ...
+# Subtest: signed schema tampering, roster duplication, invalid order and snapshot substitution fail
+ok 8 - signed schema tampering, roster duplication, invalid order and snapshot substitution fail
+  ---
+  duration_ms: 28.23088
+  type: 'test'
+  ...
+# Subtest: closure preserves the committed historical state and reserves the final epoch
+ok 9 - closure preserves the committed historical state and reserves the final epoch
+  ---
+  duration_ms: 40.425924
+  type: 'test'
+  ...
+# Subtest: a valid creator fork cannot masquerade as a contiguous successor or grant reader authority
+ok 10 - a valid creator fork cannot masquerade as a contiguous successor or grant reader authority
+  ---
+  duration_ms: 38.647379
+  type: 'test'
+  ...
+# Subtest: full 64-member roster is bounded; capacity and title failures do not mutate its parent
+ok 11 - full 64-member roster is bounded; capacity and title failures do not mutate its parent
+  ---
+  duration_ms: 561.273504
+  type: 'test'
+  ...
+# Subtest: member leave is a signed request with no direct roster effect and cannot replace creator closure
+ok 12 - member leave is a signed request with no direct roster effect and cannot replace creator closure
+  ---
+  duration_ms: 49.5922
+  type: 'test'
+  ...
+# (node:3919893) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: private notices bind invitation, consent and leave without conferring signing ownership or local admission
+ok 13 - private notices bind invitation, consent and leave without conferring signing ownership or local admission
+  ---
+  duration_ms: 622.637194
+  type: 'test'
+  ...
+# Subtest: invitation result and exact delivery card commit together and survive reopening encrypted SQLite
+ok 14 - invitation result and exact delivery card commit together and survive reopening encrypted SQLite
+  ---
+  duration_ms: 157.474086
+  type: 'test'
+  ...
+# Subtest: issuer quota, duplicate reads and dismissal replay memory stay bounded without changing group state
+ok 15 - issuer quota, duplicate reads and dismissal replay memory stay bounded without changing group state
+  ---
+  duration_ms: 483.144572
+  type: 'test'
+  ...
+# Subtest: finite notice history retires oldest entries without making a replay local consent
+ok 16 - finite notice history retires oldest entries without making a replay local consent
+  ---
+  duration_ms: 7894.199138
+  type: 'test'
+  ...
+# Subtest: authenticated malformed notice metadata aborts the outer transaction even if its error is caught
+ok 17 - authenticated malformed notice metadata aborts the outer transaction even if its error is caught
+  ---
+  duration_ms: 78.876675
+  type: 'test'
+  ...
+# Subtest: failed dismissal cannot lose an invitation when the caller swallows the write error
+ok 18 - failed dismissal cannot lose an invitation when the caller swallows the write error
+  ---
+  duration_ms: 63.956842
+  type: 'test'
+  ...
+1..18
+# tests 18
+# suites 0
+# pass 18
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 11174.642566

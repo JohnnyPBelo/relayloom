@@ -1204,7 +1204,10 @@ export class GroupRegistry {
         anchor: r.anchor,
         invitation: r.invitation,
         invitationParent: r.invitationParent,
+        invitationCard: r.invitationCard,
         consent: r.consent,
+        leave: r.left?.request ?? null,
+        leaveCard: r.left?.card ?? null,
         checkedThrough: r.checkedThrough,
         admitted: r.admitted,
       });

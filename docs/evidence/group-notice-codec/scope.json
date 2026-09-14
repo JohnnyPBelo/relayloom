@@ -1,0 +1,43 @@
+{
+  "baseCommit": "e095f2ae379ac60067df0619059a3ef07f7872b5",
+  "isolatedCandidate": ".cache/milestone-notices",
+  "onlyListedSourceChanges": true,
+  "sourceHashes": {
+    "packages/groups/src/notices.ts": "5804fb81a01d56f27cd3c414fe97312cb2aff778e94d6ee52995fcce30f65a8f",
+    "packages/groups/src/registry.ts": "30cbeed7923ccfe7b5ef1dde9c5ad4a1d5829e8dc0c3028705eddc93d2ce4051",
+    "native/groupauthority/read.go": "1de52729d12aa382835c13ae610360070defba173ff87455dfc914685e78e3ce",
+    "tests/group-notices.test.ts": "c0983e113bb298c105d82400279a1ded60e8bd7c307bc38c979a8284e8a5ddf8",
+    "tests/native/group-notices.test.ts": "412dfcf56f8aa4a72e8f186dcd2c5d1d6a4ad4bd4db3c578fa3da2b14742d700",
+    "native/groupnotice/interop_test.go": "0e3f449c72b478fe00f2a66cb3b2c9356b9c0fe8dc175c1a5801bfb7803158d7",
+    "native/groupnotice/notice_test.go": "14e0dd126b5fe95a39764c177631ab241af712195ba3d16087001e557f8c8ea4",
+    "native/groupnotice/notice.go": "f58e63d0c19c3799a28cf6f7bdcb537d4a366dfbda82bf22d0fe648032de7882",
+    "native/groupnotice/journal.go": "a5d7b964d5fe55d286dc3a6de609efca763046bfb916b1c531efd6c3c67cf554",
+    "package.json": "884b20ba4e8c8b817daf360f02aa9d91760bba2f36d3a4c47c440ce2d3b3f649"
+  },
+  "checks": [
+    {
+      "command": "npm run build",
+      "exit": 0
+    },
+    {
+      "command": "node --import tsx --test --test-concurrency=1 tests/group-notices.test.ts tests/group-certificates.test.ts",
+      "exit": 0,
+      "tests": 18,
+      "elapsedMs": 11174.642566
+    },
+    {
+      "command": "node scripts/go.mjs test -race -count=1 -p=1 ./groupnotice",
+      "exit": 0,
+      "topLevelTests": 5,
+      "interopHelperRequiresDriver": true,
+      "packageSeconds": 31.488
+    },
+    {
+      "command": "node --import tsx --test --test-concurrency=1 tests/native/group-notices.test.ts",
+      "exit": 0,
+      "tests": 1,
+      "elapsedMs": 16361.004777
+    }
+  ],
+  "scope": "Private invitation/consent/leave envelopes, bounded transactional journal and read-only sync metadata. Does not include runtime network or UI integration."
+}

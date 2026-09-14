@@ -2,7 +2,6 @@ package groupauthority
 
 import (
 	"errors"
-
 	"github.com/JohnnyPBelo/relayloom/native/core"
 	"github.com/JohnnyPBelo/relayloom/native/groups"
 	"github.com/JohnnyPBelo/relayloom/native/groupstore"
@@ -26,7 +25,10 @@ type SyncState struct {
 	Anchor           groups.GroupAnchor
 	Invitation       *groups.GroupInvitation
 	InvitationParent *groups.GroupEpoch
+	InvitationCard   *core.PublicIdentity
 	Consent          *groups.GroupConsent
+	Leave            *groups.GroupLeave
+	LeaveCard        *core.PublicIdentity
 	CheckedThrough   *int
 	Admitted         bool
 }
@@ -47,7 +49,11 @@ func (g *Registry) SyncState(id string) (SyncState, error) {
 		if err != nil {
 			return err
 		}
-		result = SyncState{view, r.Anchor, r.Invitation, r.InvitationParent, r.Consent, r.CheckedThrough, r.Admitted != nil}
+		result = SyncState{View: view, Anchor: r.Anchor, Invitation: r.Invitation, InvitationParent: r.InvitationParent, InvitationCard: r.InvitationCard, Consent: r.Consent, CheckedThrough: r.CheckedThrough, Admitted: r.Admitted != nil}
+		if r.Left != nil {
+			result.Leave = r.Left.Request
+			result.LeaveCard = r.Left.Card
+		}
 		return nil
 	})
 	return result, err
