@@ -8,7 +8,12 @@
     "two group-notices teardown hooks: reopened SQLite still open before directory removal"
   ],
   "node_summary": {
-    "note": "See timestamped log excerpt for exact counters"
+    "tests": 269,
+    "pass": 261,
+    "fail": 2,
+    "cancelled": 1,
+    "skipped": 5,
+    "elapsedMs": 651148.4245
   },
   "linux": "success",
   "macos": "last observed running",

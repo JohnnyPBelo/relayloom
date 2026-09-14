@@ -1,0 +1,11 @@
+{
+  "baseCommit": "719a53f93734f7190d57d390abed56dd28832e0c",
+  "command": "node --import tsx --test --test-concurrency=1 tests/group-notices.test.ts",
+  "exit": 0,
+  "tests": 6,
+  "elapsedMs": 6692.111937,
+  "changedTestSha256": "175ebe75fb6bff7e72616ea2b8d69086a6d8ea629780d82b30f27bdb1b38f4c6",
+  "productionChanged": false,
+  "windowsRerunObserved": false,
+  "cause": "The fixture directory cleanup hook was registered before the reopened SQLite handle cleanup hook; use finally to close before any after-hook."
+}

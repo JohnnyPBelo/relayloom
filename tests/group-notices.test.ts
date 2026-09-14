@@ -177,26 +177,34 @@ test("invitation result and exact delivery card commit together and survive reop
   const reopened = new ProtectedGroupStore(a.path, a.identity, {
     expectedStoreId: key,
   });
-  t.after(() => reopened.close());
-  const pending = reopened.transaction((tx) =>
-    new GroupNotices(tx, a.identity.public).list("out"),
-  );
-  assert.equal(pending.length, 1);
-  assert.deepEqual(pending[0].notice.member, b.identity.public);
-  assert.deepEqual(
-    openGroupNotice(sealGroupNotice(a.identity, pending[0].notice), b.identity),
-    committed.notice,
-  );
-  for (const secret of [
-    a.identity.public.name,
-    b.identity.public.name,
-    committed.notice.certificate.id,
-  ])
-    assert.equal(
-      readFileSync(a.path).includes(Buffer.from(secret)),
-      false,
-      "private notice material leaked in SQLite",
+  try {
+    const pending = reopened.transaction((tx) =>
+      new GroupNotices(tx, a.identity.public).list("out"),
     );
+    assert.equal(pending.length, 1);
+    assert.deepEqual(pending[0].notice.member, b.identity.public);
+    assert.deepEqual(
+      openGroupNotice(
+        sealGroupNotice(a.identity, pending[0].notice),
+        b.identity,
+      ),
+      committed.notice,
+    );
+    for (const secret of [
+      a.identity.public.name,
+      b.identity.public.name,
+      committed.notice.certificate.id,
+    ])
+      assert.equal(
+        readFileSync(a.path).includes(Buffer.from(secret)),
+        false,
+        "private notice material leaked in SQLite",
+      );
+  } finally {
+    // The fixture's earlier after-hook removes the directory. Windows requires
+    // this reopened SQLite handle to be closed before that hook runs.
+    reopened.close();
+  }
 });
 
 test("issuer quota, duplicate reads and dismissal replay memory stay bounded without changing group state", (t) => {
@@ -293,11 +301,17 @@ test("authenticated malformed notice metadata aborts the outer transaction even 
   const reopened = new ProtectedGroupStore(b.path, b.identity, {
     expectedStoreId: storeId,
   });
-  t.after(() => reopened.close());
-  reopened.transaction((tx) => {
-    assert.equal(tx.get("must-not-commit"), undefined);
-    assert.equal(new GroupNotices(tx, b.identity.public).list("in").length, 1);
-  });
+  try {
+    reopened.transaction((tx) => {
+      assert.equal(tx.get("must-not-commit"), undefined);
+      assert.equal(
+        new GroupNotices(tx, b.identity.public).list("in").length,
+        1,
+      );
+    });
+  } finally {
+    reopened.close();
+  }
 });
 
 test("failed dismissal cannot lose an invitation when the caller swallows the write error", (t) => {
