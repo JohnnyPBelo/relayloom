@@ -1,0 +1,11 @@
+{
+  "baseCommit": "b514ead9591fa978eb2381bf8081b608d551dcb5",
+  "command": "node --import tsx --test --test-concurrency=1 tests/group-control-envelope.test.ts tests/native/group-control-envelope.test.ts",
+  "cwd": "isolated candidate equivalent to b514ead runtime, excluding subsequent group/key-profile implementation",
+  "exit": 0,
+  "tests": 2,
+  "sha256": "3742d0308910284203c41984cdd4e01ef624044d1cf2a90ae2a6c2f8f66edb73",
+  "cause": "The Go router admits and forwards before its application consumer commits the bundle. The fixture assumed immediate persistence after downstream delivery.",
+  "fix": "Bounded wait for actual persistence, plus repeat negative storage/forwarding checks after each valid witness; original deadline and controls retained.",
+  "productionChanged": false
+}

@@ -1,0 +1,22 @@
+TAP version 13
+# Subtest: opaque Node relay rejects public, oversized and excessive-lifetime controls before storage and forwarding
+ok 1 - opaque Node relay rejects public, oversized and excessive-lifetime controls before storage and forwarding
+  ---
+  duration_ms: 1447.45107
+  type: 'test'
+  ...
+# Subtest: opaque Go relay rejects public, oversized and excessive-lifetime controls before storage and forwarding
+ok 2 - opaque Go relay rejects public, oversized and excessive-lifetime controls before storage and forwarding
+  ---
+  duration_ms: 1358.896159
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3208.306584

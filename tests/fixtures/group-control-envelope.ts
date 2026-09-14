@@ -60,6 +60,15 @@ export async function groupControlEnvelope(backend: "node" | "native") {
       );
       verifyBundle(received.get(bundle.manifest.id)!);
       assert.equal((decryptBundle(bundle, b) as any).groupId, group.anchor.id);
+      // The Go router can forward an admitted envelope before the application
+      // consumer commits it. Delivery and durable storage are separate controls.
+      await until(
+        async () =>
+          existsSync(
+            join(relay.dir, "store", "objects", bundle.manifest.id + ".json"),
+          ),
+        Boolean,
+      );
       assert.ok(
         existsSync(
           join(relay.dir, "store", "objects", bundle.manifest.id + ".json"),
@@ -136,6 +145,18 @@ export async function groupControlEnvelope(backend: "node" | "native") {
         (peers) => peers.every((p) => p.queued === 0),
       );
       await sendGood(); // Each rejection preserves actual forwarding capability.
+      assert.equal(
+        received.has(bundle.manifest.id),
+        false,
+        `${name} appeared after the positive witness`,
+      );
+      assert.equal(
+        existsSync(
+          join(relay.dir, "store", "objects", bundle.manifest.id + ".json"),
+        ),
+        false,
+        `${name} persisted after the positive witness`,
+      );
     }
     assert.deepEqual(
       (await relay.call("group-command", { action: "list" })).groups,
