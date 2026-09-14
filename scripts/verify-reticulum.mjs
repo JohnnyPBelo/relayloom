@@ -40,7 +40,7 @@ const report = {
     encoding: "utf8",
   }).trim(),
   scope:
-    "Reference RNS host processes, Node/Go envelopes, real TCP and serial PTY; no physical radio or native mobile execution",
+    "Reference RNS host processes, Node/Go envelopes, native and autonomous web UI over WS/TCP/serial PTY; no physical radio or native mobile execution",
   status: "RUNNING",
   sources,
   checks: [],
@@ -93,7 +93,7 @@ const checks = [
     ],
   ],
   [
-    "shared-native-ui",
+    "shared-native-and-web-ui",
     process.execPath,
     ["scripts/e2e.mjs", "--config", "tests/reticulum/ui.config.ts"],
   ],

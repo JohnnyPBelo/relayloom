@@ -26,7 +26,7 @@ Só uma instância da aplicação detém o perfil por origem. Outro separador n�
 | Grupos dinâmicos | Ainda não ligados ao worker | Obrigatórios para paridade. UI identifica leitoresfixos; não simula êxito das APIs de autoridade/convites |
 | Social | Publicações, comentários/reacções, seguir/guardar, colecções eacções locais | UI de comentário/reacção/colecção e persistência passou; autor/ACL de eventos têm controlos negativos |
 | Páginas pessoais | Mesmos blocos declarativos, arrastar/setas, rascunho cifrado e publicaçãoassinada | UI publicou e leu offline depois de fechar autor. Texto comscript permaneceu texto, semexecução |
-| Rede | Códigos oferta/respostaRTC, conviteWS, mesmoRouter/Mesh real | Semservidor de sinalização obrigatório. Peering persistente/renovação, conectividadeWAN/WSS e gestão detalhada permanecem em integração |
+| Rede | Códigos oferta/respostaRTC, conviteWS, mesmoRouter/Mesh real | Semservidor de sinalização obrigatório. Convites emitidos/revogados pela UI nativa e rota web→WS→RNS TCP/série PTY foram verificados. Peering persistente, conectividade WAN/WSS e gestão detalhada permanecem em integração |
 | Cache de código | Serviceworker em/browser, assets comhashes, versão isolada, semAPI/conversas naCacheStorage | Servidor503 e corrupçãodoworker emcache foram exercitados; código inválido é recusado e sóreparado quando existe origemdisponível válida |
 | Segurança local | Estado cifrado, reservas contraevicção, rollback deIDs/índice/ledger | AbortoIDB e falha do callback preservam estado. Cofre/índicecorrompido não causa reset silencioso |
 
@@ -45,3 +45,10 @@ node scripts/verify-autonomous.mjs
 O gate compila, corre a regressãoNode, todos os testes de browser (incluindo núcleo, adaptadores e UIautónoma), a UI nativaNode/Go e odesktopLinux. Os relatórios ficam em `.cache/browser-application/final`. Assegura pelo menos15GiB livres e fontes estáveis. O gate sobre `5e049f1` terminou 0 com 442 fontes estáveis: 279 Node, 26 browser, 23 UI por motor e pacote Linux executado. Relatórios e oito auditorias Axe novas sem violações estão em `docs/evidence/browser-application/milestone`. A correcção posterior dos caminhos de recolha de artefactos CI está discriminada no mesmo directório; não altera código de execução.
 
 Os testes actuais são Chromium/Linux. Viewports móveis, microfones sintéticos, mocks denotificações e PTYs não provam dispositivos/radios. Safari/Firefox/WebKit, Android/iOS actuais, hardware/keystore/rotação, revisãoindependente, todososadversariaisC2/C3 e paridadecompleta continuam pendentes. O objectivo completo permanece activo.
+
+
+## Ligar à rede de uma app instalada
+
+Na app instalada no mesmo dispositivo, abre **A rede → Ligar um par → Usar a versão web neste dispositivo**. Introduz o endereço da página RelayLoom e cria o convite. Na versão web, abre **A rede → Ligar um par → App instalada** e cola-o. O convite é temporário e limitado à origem; só concede transporte de conteúdo cifrado. Revogá-lo fecha as ligações, sem bloquear a identidade. A ligação directa actual usa o mesmo dispositivo; WSS/WAN continua pendente.
+
+A partir daí, escolhes o destinatário e envias normalmente. O percurso web→WS→RNS TCP/router de referência→série PTY foi executado com partição/heal, resposta privada e seeder reiniciado com autora offline. Ver [evidência](evidence/web-reticulum). PTY não é rádio físico.

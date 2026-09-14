@@ -2,6 +2,25 @@
   display: grid;
   gap: 18px;
 }
+.web-invitation {
+  margin-bottom: 24px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 16px;
+  background: var(--surface);
+}
+.web-invitation summary {
+  min-height: 44px;
+  align-content: center;
+  cursor: pointer;
+  font-weight: 600;
+}
+.web-invitation[open] summary {
+  margin-bottom: 14px;
+}
+.web-invitation strong {
+  overflow-wrap: anywhere;
+}
 .browser-peer-panel p {
   margin: 0;
   line-height: 1.65;

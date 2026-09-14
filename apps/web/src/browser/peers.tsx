@@ -150,8 +150,9 @@ export function BrowserPeerPanel({ api }: { api: API }) {
         >
           <p className="muted">
             O convite é emitido pela app instalada para esta página:{" "}
-            <strong>{location.origin}</strong>. Nesta etapa, a emissão do
-            convite na app nativa usa a API local autenticada.
+            <strong>{location.origin}</strong>. Na app instalada neste
+            dispositivo, abre A rede → Ligar um par → Usar a versão web neste
+            dispositivo.
           </p>
           <label>
             Convite da aplicação instalada

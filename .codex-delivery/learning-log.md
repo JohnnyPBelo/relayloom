@@ -346,3 +346,10 @@ Prevenção: medirprogresso porprioridade e contagemdefragmentos, nãosóvolume;
 ## Consolidação web e recolha de evidência — 2026-09-14
 
 A verificação sequencial sobre5e049f1 terminou sem falhas,279Node/26browser/46UI/desktopLinux. Os testes da web escrevem capturas em.cache, mas o novo jobCI recolhia docs/evidence. Corrigidos apenas os caminhos de recolha, com hashes anterior/posterior separados do relatório do gate. Contar apenas8Axe novos da web/transporte; a UI nativa comum é sobrescrita entre motores e não pode ser contada duas vezes a partir da mesma captura. A nova execução iOS confirma a mesma falha de teclado; não chamar ao incremento UIKit uma correcção validada até correr em Apple.
+
+
+## Convites web e rota RNS — 2026-09-14
+
+A UI nativa cria/revoga capacidades de transporte pela API autenticada, sem mostrar o URL de controlo. O token só fica no componente emissor e desaparece ao fechar/bloquear; a resposta tardia foi retida e entregue depois do bloqueio para testar essa garantia. Revogar fecha a ligação real e mantém a identidade utilizável. As expectativas iniciais do teste usavam uma contagem zero inexistente e pressupunham mudar para Conversas ao desbloquear: corrigidas após ler os estados reais, sem alterar o comportamento da aplicação.
+
+O novo percurso autónomo RNS passou com controlos de isolamento, partição/heal, leitura negada ao relay e seeder reiniciado com autora offline. A regressão final passou26browser/50UI/gateRNS/desktopLinux. Não alterar node_modules partilhado enquanto uma cópia de validação corre: a instalação da dependência criptográfica da fase seguinte foi adiada até o gate terminar.

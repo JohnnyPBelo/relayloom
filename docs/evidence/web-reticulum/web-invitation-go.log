@@ -1,0 +1,9 @@
+
+Running 2 tests using 1 worker
+
+(node:3984557) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/web-invitation.spec.ts:13:1 › native invitation UI connects an autonomous browser, preserves identity authority and revokes the actual socket (5.4s)
+  ✓  2 tests/e2e/web-invitation.spec.ts:71:1 › late invitation response after closing and locking cannot disclose its capability on unlock (1.7s)
+
+  2 passed (7.7s)

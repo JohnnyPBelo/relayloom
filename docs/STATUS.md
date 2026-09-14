@@ -1,5 +1,7 @@
 # RelayLoom — estado verificável
 
+**Incremento web/Reticulum verificado — 2026-09-14:** a app instalada emite e revoga convites pela UI para ligar a versão web no mesmo dispositivo. Passaram ligações reais Node/Go, revogação, rejeição de endereço com credenciais, resposta atrasada após bloqueio, teclado e largura de 320px. A aplicação autónoma enviou 22 000 bytes e recebeu resposta através de WS → RNS TCP/router → série PTY; partição, relay-off e seeder reiniciado com autora offline foram exercitados. Regressão final: 26 browser, 25 UI por motor, gate RNS completo e pacote Linux executado. [Evidência e limites](evidence/web-reticulum). A paridade de grupos dinâmicos, WSS/WAN, rádios físicos e restante contrato continuam pendentes.
+
 **Ponto actual — 2026-09-14:** aplicação web autónoma consolidada sobre `5e049f1`. `node scripts/verify-autonomous.mjs` terminou 0: 279 Node (0 falhas/omissões), 26 browser, 23 UI Node e 23 UI Go, desktop Linux compilado, executado e empacotado. As 442 fontes permaneceram estáveis. Oito auditorias Axe novas da web/transporte não tiveram violações; não são revisão independente nem teste de leitor de ecrã. [Comandos, hashes e capturas](evidence/browser-application/milestone) · [Utilização e lacunas](WEB-APPLICATION.md).
 
 O CI remoto `34891505635` de `5e049f1` terminou: Node Windows/Linux/macOS, Go, Reticulum e os três pacotes desktop passaram; iOS compilou mas o percurso funcional falhou em `keyboard dismissed for Um novo fio na rede.`. O incremento local de teclado ainda exige execução Apple e é separado deste marco web.

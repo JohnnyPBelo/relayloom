@@ -1,0 +1,92 @@
+
+Running 2 tests using 1 worker
+
+(node:3970370) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/e2e/web-invitation.spec.ts:13:1 › native invitation UI connects an autonomous browser, preserves identity authority and revokes the actual socket (19.4s)
+(node:3973563) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 tests/e2e/web-invitation.spec.ts:71:1 › late invitation response after closing and locking cannot disclose its capability on unlock (16.7s)
+
+
+  1) tests/e2e/web-invitation.spec.ts:13:1 › native invitation UI connects an autonomous browser, preserves identity authority and revokes the actual socket 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('0 ligações activas', { exact: true })
+    Expected: visible
+    Timeout: 15000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('0 ligações activas', { exact: true }) with timeout 15000ms
+      - waiting for getByText('0 ligações activas', { exact: true })
+
+
+      61 |     await expect(a.getByRole("status").getByText(/Convite revogado/)).toBeVisible();
+      62 |     await until(() => native.call("state"), (s) => s.webPeer === null && !s.peers.some((p: any) => p.medium === "websocket"));
+    > 63 |     await expect(b.getByText("0 ligações activas", { exact: true })).toBeVisible();
+         |                                                                      ^
+      64 |     expect((await native.call("state")).locked).toBe(false);
+      65 |     expect(host.requests.some((p) => p.startsWith("/api/"))).toBe(false);
+      66 |   } finally {
+        at /home/absint0o/projects/relayloom/tests/e2e/web-invitation.spec.ts:63:70
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/web-invitation-native-invi-4415a-d-revokes-the-actual-socket/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/web-invitation-native-invi-4415a-d-revokes-the-actual-socket/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/web-invitation-native-invi-4415a-d-revokes-the-actual-socket/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/web-invitation-native-invi-4415a-d-revokes-the-actual-socket/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/web-invitation-native-invi-4415a-d-revokes-the-actual-socket/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) tests/e2e/web-invitation.spec.ts:71:1 › late invitation response after closing and locking cannot disclose its capability on unlock 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'As tuas conversas' })
+    Expected: visible
+    Timeout: 15000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('heading', { name: 'As tuas conversas' }) with timeout 15000ms
+      - waiting for getByRole('heading', { name: 'As tuas conversas' })
+
+
+       96 |     await page.getByLabel("Frase-passe", { exact: true }).fill(password);
+       97 |     await page.getByRole("button", { name: "Entrar na minha rede", exact: true }).click();
+    >  98 |     await expect(page.getByRole("heading", { name: "As tuas conversas" })).toBeVisible();
+          |                                                                            ^
+       99 |     await panel(page);
+      100 |     await expect(page.getByLabel("Convite para a versão web")).toHaveCount(0);
+      101 |     expect(await page.content()).not.toContain(issued);
+        at /home/absint0o/projects/relayloom/tests/e2e/web-invitation.spec.ts:98:76
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/web-invitation-late-invita-71c92-se-its-capability-on-unlock/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/web-invitation-late-invita-71c92-se-its-capability-on-unlock/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/web-invitation-late-invita-71c92-se-its-capability-on-unlock/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/web-invitation-late-invita-71c92-se-its-capability-on-unlock/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    tests/e2e/web-invitation.spec.ts:13:1 › native invitation UI connects an autonomous browser, preserves identity authority and revokes the actual socket 
+    tests/e2e/web-invitation.spec.ts:71:1 › late invitation response after closing and locking cannot disclose its capability on unlock 

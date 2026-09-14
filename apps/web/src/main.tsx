@@ -1,5 +1,6 @@
 import { api } from "./api";
 import { BrowserPeerPanel } from "./browser/peers";
+import { WebInvitation, type WebPeerState } from "./web-invitation";
 import React, { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
@@ -70,6 +71,7 @@ import { GroupManager, groupStatus, useGroupWorkspace } from "./groups";
 type State = {
   capabilities?: { autonomous?: boolean; dynamicGroups?: boolean };
   nativeRuntime?: string;
+  webPeer?: WebPeerState;
   initialized: boolean;
   locked: boolean;
   identity: PublicIdentity | null;
@@ -2986,6 +2988,7 @@ function App() {
           )}
           {modal === "peer" && !state.capabilities?.autonomous && (
             <>
+              <WebInvitation api={api} current={state.webPeer} />
               <p>
                 Liga-te ao endereço TCP que o outro nó partilhou contigo. O
                 controlo da aplicação continua apenas neste dispositivo.

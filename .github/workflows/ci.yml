@@ -38,6 +38,7 @@ jobs:
             docs/evidence
             test-results
             .cache/fixture-http-failures/*.json
+            .cache/web-invitation
           retention-days: 7
 
   native-go:
@@ -76,6 +77,7 @@ jobs:
             .cache/native-interop/*/report.json
             .cache/native-ui-e2e
             .cache/fixture-http-failures/*.json
+            .cache/web-invitation
           retention-days: 7
 
   reticulum-reference:
@@ -107,6 +109,8 @@ jobs:
           name: reticulum-reference-evidence
           path: |
             .cache/reticulum-verification
+            .cache/reticulum-web
+            docs/evidence/reticulum/ui
             docs/evidence/reticulum/heterogeneous-node.json
             docs/evidence/reticulum/heterogeneous-native.json
             docs/evidence/reticulum/authorization.json
