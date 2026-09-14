@@ -1,5 +1,9 @@
 # RelayLoom — estado verificável
 
+**UI dinâmica validada no host — 2026-09-14.** Criação, convites, consentimento, aprovação, mensagens e saída/encerramento ligados a Node/Go, com rascunho sujeito a revisão de audiência. Corrigidas e reproduzidas resposta tardia após bloqueio a restaurar rascunho e contador móvel fora do botão. Gate isolado sobrebb85d1a:23 E2E Node/23 Go,70 Axe sem violações, desktop Linux build/run/package/run e364 fontes inalteradas. [Comportamento e limites](DYNAMIC-GROUP-UI.md) · [Evidência](evidence/dynamic-groups/milestone). Paridade web de grupos, adversariais adicionais, plataformas/hardware e revisão independente continuam pendentes.
+
+**CI bb85d1a /34805308160:** Linux passou; Windows falhou com seeding acima do prazo original65s e duas limpezas de testes SQLite com handle ainda aberto. A correcção de limpeza está a ser validada separadamente; o custo de view/revalidação permanece por perfilar. macOS ainda estava em execução na consulta. Nenhum retry de CI foi lançado e nenhum prazo foi aumentado. [Diagnóstico e timings](evidence/group-carriers/seeder-timing/windows-bb85d1a).
+
 **Marco C2/replay validado em Linux, produto incompleto — 2026-09-14.** APIs Node/Go com convites, consentimentos e saídas privados, journal transaccional, replay antes de envio e cancelamento fora do mutex. Na cópia isolada sobre `94c355f`, build/CLI, 269 Node, 7 Go/race dirigidos, 18 percursos entre motores e 19 UI por motor passaram; 360 fontes inalteradas. Um helper Go foi omitido e não é contado como passe. [Evidência e comandos](evidence/group-notice-runtime) · [Semântica e pendentes](GROUP-NOTICE-RUNTIME.md). CI actual, gates integrais Go/SQLite, UI dinâmica e seus adversariais, paridade web e plataformas/hardware continuam pendentes. A versão web autónoma sem instalação é um requisito obrigatório; este commit ainda não inclui esse motor.
 
 Os registos abaixo são históricos e mantêm o âmbito, commit ou árvore local de cada execução.

@@ -1,0 +1,91 @@
+2026-09-14T04:18:24.3112263Z ok 72 - corrupt stored event cannot authorise a valid retained packet; exact bytes restore serving
+2026-09-14T04:18:24.3112940Z   ---
+2026-09-14T04:18:24.3113406Z   duration_ms: 7364.3921
+2026-09-14T04:18:24.3113744Z   type: 'test'
+2026-09-14T04:18:24.3113997Z   ...
+2026-09-14T04:19:29.6064801Z # Subtest: real Node group newcomer cannot read earlier audiences; peer serves author's edit while author is offline
+2026-09-14T04:19:29.6068583Z not ok 73 - real Node group newcomer cannot read earlier audiences; peer serves author's edit while author is offline
+2026-09-14T04:19:29.6069704Z   ---
+2026-09-14T04:19:29.6070005Z   duration_ms: 65004.5734
+2026-09-14T04:19:29.6070304Z   type: 'test'
+2026-09-14T04:19:29.6070753Z   location: 'D:\\a\\relayloom\\relayloom\\tests\\group-event-seeding.test.ts:4:1'
+2026-09-14T04:19:29.6071297Z   failureType: 'testTimeoutFailure'
+2026-09-14T04:19:29.6071655Z   error: 'test timed out after 65000ms'
+2026-09-14T04:19:29.6072034Z   code: 'ERR_TEST_FAILURE'
+2026-09-14T04:19:29.6072350Z   ...
+2026-09-14T04:20:06.4994421Z # Subtest: real Node group reactions/comments/author edits and historical deletion preserve signing ownership
+
+2026-09-14T04:22:41.3486180Z # Subtest: invitation result and exact delivery card commit together and survive reopening encrypted SQLite
+2026-09-14T04:22:41.3494543Z not ok 96 - invitation result and exact delivery card commit together and survive reopening encrypted SQLite
+2026-09-14T04:22:41.3495643Z   ---
+2026-09-14T04:22:41.3495945Z   duration_ms: 198.3507
+2026-09-14T04:22:41.3496251Z   type: 'test'
+2026-09-14T04:22:41.3497052Z   location: 'D:\\a\\relayloom\\relayloom\\tests\\group-notices.test.ts:135:1'
+2026-09-14T04:22:41.3498467Z   failureType: 'hookFailed'
+2026-09-14T04:22:41.3499288Z   error: "EBUSY: resource busy or locked, unlink 'D:\\a\\relayloom\\relayloom\\.cache\\group-access\\case-hSNFrJ\\C2-owner-sensitive-name.sqlite'"
+2026-09-14T04:22:41.3500387Z   code: 'EBUSY'
+2026-09-14T04:22:41.3501190Z   stack: |-
+2026-09-14T04:22:41.3501519Z     unlinkSync (node:fs:1948:11)
+2026-09-14T04:22:41.3501918Z     _unlinkSync (node:internal/fs/rimraf:215:14)
+2026-09-14T04:22:41.3502393Z     rimrafSync (node:internal/fs/rimraf:196:7)
+2026-09-14T04:22:41.3502825Z     node:internal/fs/rimraf:254:9
+2026-09-14T04:22:41.3503256Z     Array.forEach (<anonymous>)
+2026-09-14T04:22:41.3503808Z     _rmdirSync (node:internal/fs/rimraf:251:7)
+2026-09-14T04:22:41.3504396Z     rimrafSync (node:internal/fs/rimraf:194:7)
+2026-09-14T04:22:41.3504804Z     rmSync (node:fs:1239:10)
+2026-09-14T04:22:41.3505420Z     TestContext.<anonymous> (D:\a\relayloom\relayloom\tests\fixtures\group-access.ts:35:5)
+2026-09-14T04:22:41.3506241Z     TestHook.runInAsyncScope (node:async_hooks:214:14)
+2026-09-14T04:22:41.3506784Z   ...
+2026-09-14T04:22:41.3539661Z # Subtest: issuer quota, duplicate reads and dismissal replay memory stay bounded without changing group state
+2026-09-14T04:22:41.3553188Z ok 97 - issuer quota, duplicate reads and dismissal replay memory stay bounded without changing group state
+2026-09-14T04:22:41.3554293Z   ---
+2026-09-14T04:22:41.3554774Z   duration_ms: 664.8403
+2026-09-14T04:22:41.3555320Z   type: 'test'
+2026-09-14T04:22:41.3555792Z   ...
+
+2026-09-14T04:22:41.3562486Z # Subtest: authenticated malformed notice metadata aborts the outer transaction even if its error is caught
+2026-09-14T04:22:41.3564887Z not ok 99 - authenticated malformed notice metadata aborts the outer transaction even if its error is caught
+2026-09-14T04:22:41.3565904Z   ---
+2026-09-14T04:22:41.3566288Z   duration_ms: 71.2151
+2026-09-14T04:22:41.3566759Z   type: 'test'
+2026-09-14T04:22:41.3567427Z   location: 'D:\\a\\relayloom\\relayloom\\tests\\group-notices.test.ts:270:1'
+2026-09-14T04:22:41.3568166Z   failureType: 'hookFailed'
+2026-09-14T04:22:41.3569420Z   error: "EBUSY: resource busy or locked, unlink 'D:\\a\\relayloom\\relayloom\\.cache\\group-access\\case-UxGEz8\\Corruption recipient.sqlite'"
+2026-09-14T04:22:41.3570634Z   code: 'EBUSY'
+2026-09-14T04:22:41.3570993Z   stack: |-
+2026-09-14T04:22:41.3571456Z     unlinkSync (node:fs:1948:11)
+2026-09-14T04:22:41.3572041Z     _unlinkSync (node:internal/fs/rimraf:215:14)
+2026-09-14T04:22:41.3572710Z     rimrafSync (node:internal/fs/rimraf:196:7)
+2026-09-14T04:22:41.3573346Z     node:internal/fs/rimraf:254:9
+2026-09-14T04:22:41.3573881Z     Array.forEach (<anonymous>)
+2026-09-14T04:22:41.3574449Z     _rmdirSync (node:internal/fs/rimraf:251:7)
+2026-09-14T04:22:41.3575073Z     rimrafSync (node:internal/fs/rimraf:194:7)
+2026-09-14T04:22:41.3575664Z     rmSync (node:fs:1239:10)
+2026-09-14T04:22:41.3576490Z     TestContext.<anonymous> (D:\a\relayloom\relayloom\tests\fixtures\group-access.ts:35:5)
+2026-09-14T04:22:41.3577461Z     TestHook.runInAsyncScope (node:async_hooks:214:14)
+2026-09-14T04:22:41.3578471Z   ...
+2026-09-14T04:22:41.3579324Z # Subtest: failed dismissal cannot lose an invitation when the caller swallows the write error
+2026-09-14T04:22:41.3580666Z ok 100 - failed dismissal cannot lose an invitation when the caller swallows the write error
+2026-09-14T04:22:41.3581513Z   ---
+
+2026-09-14T04:26:29.5832987Z   type: 'test'
+2026-09-14T04:26:29.5833287Z   ...
+2026-09-14T04:26:30.1334091Z # Subtest: validation rejection prevents display and relay; positive valid control
+2026-09-14T04:26:30.1335576Z ok 266 - validation rejection prevents display and relay; positive valid control
+2026-09-14T04:26:30.1336131Z   ---
+2026-09-14T04:26:30.1336372Z   duration_ms: 551.9819
+2026-09-14T04:26:30.1336728Z   type: 'test'
+2026-09-14T04:26:30.1337477Z   ...
+2026-09-14T04:26:30.1578486Z 1..266
+2026-09-14T04:26:30.1578994Z # tests 269
+2026-09-14T04:26:30.1579318Z # suites 0
+2026-09-14T04:26:30.1579591Z # pass 261
+2026-09-14T04:26:30.1579928Z # fail 2
+2026-09-14T04:26:30.1580220Z # cancelled 1
+2026-09-14T04:26:30.1580557Z # skipped 5
+2026-09-14T04:26:30.1580884Z # todo 0
+2026-09-14T04:26:30.1581292Z # duration_ms 651148.4245
+2026-09-14T04:26:30.2339966Z ##[error]Process completed with exit code 1.
+2026-09-14T04:26:30.2624116Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-09-14T04:26:30.2625590Z ##[group]Run actions/upload-artifact@v4
+2026-09-14T04:26:30.2625859Z with:

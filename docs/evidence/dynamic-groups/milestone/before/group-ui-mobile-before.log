@@ -1,0 +1,57 @@
+
+Running 1 test using 1 worker
+
+(node:4118058) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/e2e/dynamic-groups.spec.ts:79:1 › Liquid Glass groups create, invite, consent, approve, message and leave through two real clients (11.4s)
+
+
+  1) tests/e2e/dynamic-groups.spec.ts:79:1 › Liquid Glass groups create, invite, consent, approve, message and leave through two real clients
+
+    Error: Tab labels, icons and notice counts must fit their mobile controls
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 9
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "buttonLeft": 173.578125,
+    +     "buttonRight": 295,
+    +     "label": "1",
+    +     "left": 283.828125,
+    +     "right": 303.953125,
+    +   },
+    + ]
+
+      243 |       clippedTabs,
+      244 |       "Tab labels, icons and notice counts must fit their mobile controls",
+    > 245 |     ).toEqual([]);
+          |       ^
+      246 |     await bd
+      247 |       .getByRole("button", { name: "Sair do grupo", exact: true })
+      248 |       .click();
+        at /home/absint0o/projects/relayloom/.cache/u/tests/e2e/dynamic-groups.spec.ts:245:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/dynamic-groups-Liquid-Glas-fe4d3-ve-through-two-real-clients/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/dynamic-groups-Liquid-Glas-fe4d3-ve-through-two-real-clients/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/dynamic-groups-Liquid-Glas-fe4d3-ve-through-two-real-clients/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/dynamic-groups-Liquid-Glas-fe4d3-ve-through-two-real-clients/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/dynamic-groups-Liquid-Glas-fe4d3-ve-through-two-real-clients/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/e2e/dynamic-groups.spec.ts:79:1 › Liquid Glass groups create, invite, consent, approve, message and leave through two real clients

@@ -1,0 +1,51 @@
+
+Running 2 tests using 1 worker
+
+(node:4065221) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/group-operation-recovery.spec.ts:23:1 › a committed group operation with a lost response survives dialog closure and recovers without a second mutation (2.9s)
+  ✘  2 tests/e2e/group-operation-recovery.spec.ts:83:1 › a late recovered group state cannot restore the pre-lock conversation draft (18.0s)
+
+
+  1) tests/e2e/group-operation-recovery.spec.ts:83:1 › a late recovered group state cannot restore the pre-lock conversation draft
+
+    Error: expect(locator).toHaveValue(expected) failed
+
+    Locator:  getByRole('textbox', { name: 'Escrever mensagem' })
+    Expected: ""
+    Received: "Rascunho privado anterior ao bloqueio"
+    Timeout:  15000ms
+
+    Call log:
+      - Expect "toHaveValue" getByRole('textbox', { name: 'Escrever mensagem' }) with timeout 15000ms
+      - waiting for getByRole('textbox', { name: 'Escrever mensagem' })
+        34 × locator resolved to <textarea rows="1" maxlength="12000" aria-label="Escrever mensagem" placeholder="Escreve uma mensagem…">Rascunho privado anterior ao bloqueio</textarea>
+           - unexpected value "Rascunho privado anterior ao bloqueio"
+
+
+      158 |     await expect(
+      159 |       page.getByRole("textbox", { name: "Escrever mensagem" }),
+    > 160 |     ).toHaveValue("");
+          |       ^
+      161 |   } finally {
+      162 |     release();
+      163 |     await page.unrouteAll({ behavior: "wait" });
+        at /home/absint0o/projects/relayloom/.cache/milestone-group-ui/tests/e2e/group-operation-recovery.spec.ts:160:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/group-operation-recovery-a-4acca-pre-lock-conversation-draft/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/group-operation-recovery-a-4acca-pre-lock-conversation-draft/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/group-operation-recovery-a-4acca-pre-lock-conversation-draft/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/group-operation-recovery-a-4acca-pre-lock-conversation-draft/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/e2e/group-operation-recovery.spec.ts:83:1 › a late recovered group state cannot restore the pre-lock conversation draft
+  1 passed (21.6s)

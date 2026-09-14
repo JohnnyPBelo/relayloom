@@ -1,0 +1,18 @@
+{
+  "commit": "bb85d1a50d941606f45080bc61ceb72bd9875a1b",
+  "run": 34805308160,
+  "job": 103855931985,
+  "windows": "failure",
+  "failures": [
+    "group-event-seeding: test timeout at unchanged 65000ms",
+    "two group-notices teardown hooks: reopened SQLite still open before directory removal"
+  ],
+  "node_summary": {
+    "note": "See timestamped log excerpt for exact counters"
+  },
+  "linux": "success",
+  "macos": "last observed running",
+  "rerun_dispatched": false,
+  "whole_run_finished": false,
+  "no_timeout_increase": true
+}

@@ -1,0 +1,273 @@
+{
+  "status": "test-aborted",
+  "elapsedMs": 76584,
+  "phases": [
+    {
+      "phase": "start",
+      "elapsedMs": 1
+    },
+    {
+      "phase": "bootstrap-newcomer",
+      "elapsedMs": 1871
+    },
+    {
+      "phase": "original-message",
+      "elapsedMs": 2413
+    },
+    {
+      "phase": "admit-newcomer",
+      "elapsedMs": 6849
+    },
+    {
+      "phase": "historical-event-controls",
+      "elapsedMs": 11427
+    },
+    {
+      "phase": "current-message-and-edit",
+      "elapsedMs": 13123
+    },
+    {
+      "phase": "stop-origin",
+      "elapsedMs": 19493
+    },
+    {
+      "phase": "offline-seed-takeover",
+      "elapsedMs": 19505
+    },
+    {
+      "phase": "old-ciphertext-controls",
+      "elapsedMs": 23924
+    },
+    {
+      "phase": "newcomer-reaction",
+      "elapsedMs": 24775
+    },
+    {
+      "phase": "restart-origin",
+      "elapsedMs": 33836
+    },
+    {
+      "phase": "remove-reader",
+      "elapsedMs": 47271
+    },
+    {
+      "phase": "removed-reader-edit-controls",
+      "elapsedMs": 60484
+    },
+    {
+      "phase": "historical-delete",
+      "elapsedMs": 68078
+    },
+    {
+      "phase": "cleanup",
+      "elapsedMs": 76517
+    }
+  ],
+  "active": [],
+  "calls": {
+    "newcomer/setup": {
+      "count": 1,
+      "totalMs": 209,
+      "maximumMs": 209,
+      "failed": 0
+    },
+    "author/send": {
+      "count": 2,
+      "totalMs": 1531,
+      "maximumMs": 990,
+      "failed": 0
+    },
+    "author/connect": {
+      "count": 1,
+      "totalMs": 217,
+      "maximumMs": 217,
+      "failed": 0
+    },
+    "seeder/state": {
+      "count": 31,
+      "totalMs": 11906,
+      "maximumMs": 4557,
+      "failed": 0
+    },
+    "author/group-command:state": {
+      "count": 1,
+      "totalMs": 616,
+      "maximumMs": 616,
+      "failed": 0
+    },
+    "author/group-command:proofs": {
+      "count": 1,
+      "totalMs": 1184,
+      "maximumMs": 1184,
+      "failed": 0
+    },
+    "author/group-command:invite": {
+      "count": 1,
+      "totalMs": 356,
+      "maximumMs": 356,
+      "failed": 0
+    },
+    "newcomer/group-command:remember": {
+      "count": 1,
+      "totalMs": 26,
+      "maximumMs": 26,
+      "failed": 0
+    },
+    "newcomer/group-command:headers": {
+      "count": 3,
+      "totalMs": 3955,
+      "maximumMs": 3905,
+      "failed": 0
+    },
+    "newcomer/group-command:accept": {
+      "count": 1,
+      "totalMs": 35,
+      "maximumMs": 35,
+      "failed": 0
+    },
+    "author/group-command:commit": {
+      "count": 1,
+      "totalMs": 888,
+      "maximumMs": 888,
+      "failed": 0
+    },
+    "author/group-command:private-state": {
+      "count": 1,
+      "totalMs": 915,
+      "maximumMs": 915,
+      "failed": 0
+    },
+    "seeder/group-command:headers": {
+      "count": 2,
+      "totalMs": 3681,
+      "maximumMs": 3303,
+      "failed": 0
+    },
+    "seeder/group-command:snapshot": {
+      "count": 1,
+      "totalMs": 59,
+      "maximumMs": 59,
+      "failed": 0
+    },
+    "newcomer/group-command:snapshot": {
+      "count": 2,
+      "totalMs": 1443,
+      "maximumMs": 1373,
+      "failed": 0
+    },
+    "seeder/publish": {
+      "count": 4,
+      "totalMs": 1972,
+      "maximumMs": 1305,
+      "failed": 3
+    },
+    "author/publish": {
+      "count": 1,
+      "totalMs": 1163,
+      "maximumMs": 1163,
+      "failed": 0
+    },
+    "newcomer/state": {
+      "count": 20,
+      "totalMs": 10955,
+      "maximumMs": 2595,
+      "failed": 0
+    },
+    "newcomer/connect": {
+      "count": 1,
+      "totalMs": 5,
+      "maximumMs": 5,
+      "failed": 0
+    },
+    "newcomer/retrieve": {
+      "count": 2,
+      "totalMs": 311,
+      "maximumMs": 161,
+      "failed": 0
+    },
+    "newcomer/export": {
+      "count": 1,
+      "totalMs": 172,
+      "maximumMs": 172,
+      "failed": 0
+    },
+    "newcomer/publish": {
+      "count": 2,
+      "totalMs": 916,
+      "maximumMs": 731,
+      "failed": 1
+    },
+    "resumed/unlock": {
+      "count": 1,
+      "totalMs": 2470,
+      "maximumMs": 2470,
+      "failed": 0
+    },
+    "resumed/view": {
+      "count": 1,
+      "totalMs": 10554,
+      "maximumMs": 10554,
+      "failed": 0
+    },
+    "resumed/group-command:commit": {
+      "count": 1,
+      "totalMs": 2265,
+      "maximumMs": 2265,
+      "failed": 0
+    },
+    "resumed/group-command:private-state": {
+      "count": 1,
+      "totalMs": 1708,
+      "maximumMs": 1708,
+      "failed": 0
+    },
+    "seeder/group-command:state": {
+      "count": 1,
+      "totalMs": 382,
+      "maximumMs": 382,
+      "failed": 0
+    },
+    "resumed/publish": {
+      "count": 3,
+      "totalMs": 7057,
+      "maximumMs": 3702,
+      "failed": 1
+    },
+    "resumed/connect": {
+      "count": 1,
+      "totalMs": 1280,
+      "maximumMs": 1280,
+      "failed": 0
+    },
+    "seeder/export": {
+      "count": 1,
+      "totalMs": 206,
+      "maximumMs": 206,
+      "failed": 0
+    },
+    "seeder/view": {
+      "count": 1,
+      "totalMs": 373,
+      "maximumMs": 373,
+      "failed": 0
+    }
+  },
+  "processes": {
+    "author": {
+      "exit": null,
+      "signal": "SIGTERM"
+    },
+    "seeder": {
+      "exit": null,
+      "signal": "SIGTERM"
+    },
+    "newcomer": {
+      "exit": null,
+      "signal": "SIGTERM"
+    },
+    "resumed": {
+      "exit": null,
+      "signal": "SIGTERM"
+    }
+  }
+}

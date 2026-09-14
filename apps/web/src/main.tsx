@@ -1,3 +1,4 @@
+import { api } from "./api";
 import React, { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
@@ -63,8 +64,10 @@ import { DeliveryBadge, OutboxPanel } from "./outbox";
 import { CommandPalette, type Command } from "./commands";
 import { useAppearance } from "./appearance";
 import "./liquid-glass.css";
+import { GroupManager, groupStatus, useGroupWorkspace } from "./groups";
 
 type State = {
+  capabilities?: { autonomous?: boolean; dynamicGroups?: boolean };
   nativeRuntime?: string;
   initialized: boolean;
   locked: boolean;
@@ -102,48 +105,6 @@ type State = {
   now: number;
 };
 type Page = "messages" | "feed" | "site" | "network" | "saved" | "settings";
-function takeLaunchToken() {
-  const token = new URLSearchParams(location.hash.slice(1)).get("token");
-  if (token) {
-    sessionStorage.setItem("relayloom-token", token);
-    history.replaceState(null, "", location.pathname);
-  }
-}
-takeLaunchToken();
-window.addEventListener("hashchange", takeLaunchToken);
-async function api(path: string, body?: unknown, signal?: AbortSignal) {
-  const controller = new AbortController();
-  let timedOut = false;
-  const cancelled = () => controller.abort();
-  if (signal?.aborted) controller.abort();
-  else signal?.addEventListener("abort", cancelled, { once: true });
-  const timer = setTimeout(() => {
-    timedOut = true;
-    controller.abort();
-  }, 20_000);
-  try {
-    const res = await fetch("/api/" + path, {
-      signal: controller.signal,
-      method: body === undefined ? "GET" : "POST",
-      headers: {
-        Authorization:
-          "Bearer " + (sessionStorage.getItem("relayloom-token") ?? ""),
-        ...(body === undefined ? {} : { "Content-Type": "application/json" }),
-      },
-      body: body === undefined ? undefined : JSON.stringify(body),
-    });
-    const value = await res.json();
-    if (!res.ok) throw new Error(value.error ?? "Não foi possível concluir");
-    return value;
-  } catch (error) {
-    if (timedOut)
-      throw new Error("O nó demorou demasiado a responder. Tenta novamente.");
-    throw error;
-  } finally {
-    clearTimeout(timer);
-    signal?.removeEventListener("abort", cancelled);
-  }
-}
 
 const short = (s: string) => s.slice(0, 8) + "…" + s.slice(-4);
 const bytes = (n: number) =>
@@ -264,6 +225,47 @@ function App() {
     [viewSite, setViewSite] = useState<DisplayObject>(),
     [mobileMenu, setMobileMenu] = useState(false);
   const [messageTTL, setMessageTTL] = useState(30 * 86400_000);
+  const [groupManager, setGroupManager] = useState(false);
+  const [reviewedEpochs, setReviewedEpochs] = useState<Record<string, string>>(
+    {},
+  );
+  const groupWorkspace = useGroupWorkspace(
+    state && !state.locked && state.capabilities?.dynamicGroups !== false
+      ? (state.identity?.id ?? null)
+      : null,
+    selection,
+    groupManager,
+    api,
+  );
+  const openGroups = () =>
+    state?.capabilities?.dynamicGroups === false
+      ? setModal("group")
+      : setGroupManager(true);
+  const selectedAuthority = groupWorkspace.groups.find(
+    (g) => g.id === selection,
+  );
+  const groupSnapshot =
+    selectedAuthority?.head?.id === groupWorkspace.snapshotHead
+      ? groupWorkspace.snapshot
+      : null;
+  const groupCanSend =
+    !selectedAuthority ||
+    (selectedAuthority.status === "active" &&
+      !!groupSnapshot &&
+      groupSnapshot.members.length >= 2 &&
+      groupSnapshot.members.some((m) => m.id === state?.identity?.id) &&
+      reviewedEpochs[selection] === selectedAuthority.head?.id);
+  useEffect(() => {
+    if (
+      selectedAuthority?.status === "active" &&
+      groupSnapshot &&
+      !reviewedEpochs[selection]
+    )
+      setReviewedEpochs((current) => ({
+        ...current,
+        [selection]: selectedAuthority.head!.id,
+      }));
+  }, [selection, selectedAuthority?.head?.id, groupSnapshot]);
   const [uncertainOperation, setUncertainOperation] = useState("");
   const pendingSend = useRef<
     Record<string, { signature: string; operationId: string }>
@@ -310,6 +312,8 @@ function App() {
   const [messageToFocus, setMessageToFocus] = useState("");
   useEffect(() => {
     setCommandsOpen(false);
+    setGroupManager(false);
+    setReviewedEpochs({});
     setMessageToFocus("");
   }, [state?.locked, state?.identity?.id]);
   useEffect(() => {
@@ -321,6 +325,7 @@ function App() {
         state &&
         !state.locked &&
         !modal &&
+        !groupManager &&
         !viewSite
       ) {
         event.preventDefault();
@@ -329,7 +334,7 @@ function App() {
     };
     window.addEventListener("keydown", shortcut);
     return () => window.removeEventListener("keydown", shortcut);
-  }, [state?.locked, state?.identity?.id, modal, viewSite]);
+  }, [state?.locked, state?.identity?.id, modal, viewSite, groupManager]);
   useEffect(() => {
     if (!messageToFocus || state?.locked) return;
     const frame = requestAnimationFrame(() => {
@@ -458,6 +463,8 @@ function App() {
     setText("");
     setAttachments([]);
     setReply(undefined);
+    setGroupManager(false);
+    setReviewedEpochs({});
     setViewSite(undefined);
     setModal("");
     setCommandsOpen(false);
@@ -565,18 +572,26 @@ function App() {
     ...new Set([
       ...messages.map((o) => o.content.conversation!),
       ...groups.map((o) => o.id),
+      ...groupWorkspace.groups.map((g) => g.id),
     ]),
   ];
   const allConversations = conversationIds
     .map((id) => {
       const ms = messages.filter((m) => m.content.conversation === id),
         group = groups.find((g) => g.id === id),
-        members = group?.content.members ?? ms[0]?.content.members ?? [];
+        authority = groupWorkspace.groups.find((g) => g.id === id),
+        members =
+          authority && id === selection
+            ? (groupSnapshot?.members ?? [])
+            : (group?.content.members ?? ms[0]?.content.members ?? []);
       return {
         id,
         group,
+        authority,
         members,
         name:
+          authority?.title ??
+          (authority ? `Grupo de ${authority.creator.name}` : undefined) ??
           group?.content.title ??
           members
             .filter((m) => m.id !== me?.id)
@@ -642,6 +657,42 @@ function App() {
     } else setNewMessages(true);
   }, [selection, page, activeMessages.length]);
   async function publish(content: Content, recipients: string[] | "public") {
+    const target = content.target
+      ? objects.find((o) => o.id === content.target)
+      : undefined;
+    if (
+      target?.content.groupEpoch &&
+      target.content.conversation &&
+      ["edit", "delete", "reaction", "comment"].includes(content.type)
+    ) {
+      const historical = content.type === "delete";
+      const current = groupWorkspace.groups.find(
+        (g) => g.id === target.content.conversation,
+      );
+      if (
+        !historical &&
+        (!current ||
+          current.status !== "active" ||
+          current.id !== selection ||
+          !groupSnapshot ||
+          groupWorkspace.snapshotHead !== current.head?.id)
+      )
+        throw new Error(
+          "Revê a versão e os membros actuais do grupo antes de alterar a mensagem.",
+        );
+      content = {
+        ...content,
+        conversation: target.content.conversation,
+        targetEpoch: target.content.groupEpoch,
+        groupAudience: historical ? "historical" : "target",
+        ...(!historical ? { groupEpoch: current!.head!.id } : {}),
+      };
+      recipients = historical
+        ? target.readers
+        : groupSnapshot!.members
+            .filter((m) => target.readers.includes(m.id))
+            .map((m) => m.id);
+    }
     return api("publish", { content, recipients });
   }
   const targetReaders = (o: DisplayObject): string[] | "public" =>
@@ -726,6 +777,10 @@ function App() {
     ].filter((r) => r.content.value).length;
   async function submitMessage(e: React.FormEvent) {
     e.preventDefault();
+    if (!groupCanSend) {
+      setError("Revê os membros e a versão do grupo antes de enviar.");
+      return;
+    }
     const selectionAtSend = selection,
       generation = privacyGeneration.current,
       ownerAtSend = me?.id;
@@ -733,10 +788,21 @@ function App() {
         type: "message",
         text,
         ...(selected ? { conversation: selection } : {}),
+        ...(selectedAuthority
+          ? {
+              groupEpoch: selectedAuthority.head!.id,
+              groupAudience: reply ? ("target" as const) : ("epoch" as const),
+              ...(reply ? { targetEpoch: reply.content.groupEpoch } : {}),
+            }
+          : {}),
         ...(reply ? { replyTo: reply.id } : {}),
         ...(attachments.length ? { attachments } : {}),
       },
-      recipients = members.map((m) => m.id);
+      recipients = members
+        .filter(
+          (m) => !selectedAuthority || !reply || reply.readers.includes(m.id),
+        )
+        .map((m) => m.id);
     const encoded = new TextEncoder().encode(
       JSON.stringify({ content, recipients, ttlMs: messageTTL }),
     );
@@ -1106,6 +1172,12 @@ function App() {
             <button
               key={n.id}
               className={page === n.id ? "active" : ""}
+              aria-label={n.label}
+              aria-description={
+                n.id === "messages" && conversations.length > 0
+                  ? `${conversations.length} conversas`
+                  : undefined
+              }
               aria-current={page === n.id ? "page" : undefined}
               onClick={() => changePage(n.id)}
             >
@@ -1265,6 +1337,34 @@ function App() {
               <div className="conversation-head-actions">
                 <button
                   className="secondary"
+                  aria-label={
+                    state.capabilities?.dynamicGroups === false
+                      ? "Grupos de leitores fixos"
+                      : "Grupos e convites"
+                  }
+                  aria-describedby={
+                    groupWorkspace.noticeCount > 0
+                      ? "group-notice-count"
+                      : undefined
+                  }
+                  onClick={openGroups}
+                >
+                  <Users size={16} />{" "}
+                  {state.capabilities?.dynamicGroups === false
+                    ? "Leitores fixos"
+                    : "Grupos e convites"}
+                  {groupWorkspace.noticeCount > 0 && (
+                    <span
+                      className="count"
+                      id="group-notice-count"
+                      aria-label={`${groupWorkspace.noticeCount} avisos de grupo por verificar`}
+                    >
+                      {groupWorkspace.noticeCount}
+                    </span>
+                  )}
+                </button>
+                <button
+                  className="secondary"
                   aria-label="Estado dos envios"
                   onClick={() => setModal("outbox")}
                 >
@@ -1350,7 +1450,7 @@ function App() {
                 </label>
                 <div className="list-tabs">
                   <span className="active">Todas</span>
-                  <button onClick={() => setModal("group")}>
+                  <button onClick={openGroups}>
                     Novo grupo <Users size={14} />
                   </button>
                 </div>
@@ -1375,7 +1475,9 @@ function App() {
                           ? deleted(c.last.id)
                             ? "Mensagem eliminada"
                             : renderedText(c.last) || "Anexo"
-                          : "O início de uma conversa"}
+                          : c.authority
+                            ? groupStatus[c.authority.status]
+                            : "O início de uma conversa"}
                       </p>
                     </div>
                   </button>
@@ -1420,17 +1522,35 @@ function App() {
                         <h2>{selected?.name || activeContact?.name}</h2>
                         <span>
                           <ShieldCheck size={13} /> Assinaturas verificadas ·{" "}
-                          {members.length} participantes
+                          {selectedAuthority?.head?.body.members.length ??
+                            members.length}{" "}
+                          participantes
                         </span>
                       </div>
                       <button
                         className="icon"
                         aria-label="Ver participantes"
-                        onClick={() => setModal("participants")}
+                        onClick={() =>
+                          selectedAuthority
+                            ? setGroupManager(true)
+                            : setModal("participants")
+                        }
                       >
                         <Users size={20} />
                       </button>
                     </header>
+                    {selectedAuthority && !groupCanSend && (
+                      <div className="group-epoch-review" role="status">
+                        <span>
+                          {selectedAuthority.status !== "active"
+                            ? groupStatus[selectedAuthority.status]
+                            : (groupSnapshot?.members.length ?? 0) < 2
+                              ? "Convida alguém e aguarda a entrada para começar a conversar."
+                              : "A versão do grupo mudou. O teu rascunho foi preservado; revê os destinatários."}
+                        </span>
+                        <button onClick={openGroups}>Rever grupo</button>
+                      </div>
+                    )}
                     <div
                       className="message-scroll"
                       role="log"
@@ -1688,6 +1808,7 @@ function App() {
                           disabled={
                             busy ||
                             offline ||
+                            !groupCanSend ||
                             (!text.trim() && !attachments.length)
                           }
                         >
@@ -2276,7 +2397,7 @@ function App() {
                     {state.peers.filter((p) => p.connected).length}
                     <Radio size={22} />
                   </strong>
-                  <small>TCP e série configurados</small>
+                  <small>Ligações entre dispositivos</small>
                 </div>
                 <div>
                   <span>Conteúdos neste nó</span>
@@ -2308,7 +2429,11 @@ function App() {
               <section className="card">
                 <div className="section-heading">
                   <h2>Ligações deste dispositivo</h2>
-                  <span className="pill">TCP local: {state.tcpPort}</span>
+                  <span className="pill">
+                    {state.capabilities?.autonomous
+                      ? "Neste navegador"
+                      : `TCP local: ${state.tcpPort}`}
+                  </span>
                 </div>
                 {state.peers.length ? (
                   <div className="peer-table">
@@ -2322,7 +2447,13 @@ function App() {
                       <div className="peer-row" key={p.id}>
                         <strong>{p.address}</strong>
                         <span>
-                          {p.medium === "serial" ? "Série" : "TCP / IP"}
+                          {p.medium === "serial"
+                            ? "Série"
+                            : p.medium === "webrtc"
+                              ? "WebRTC"
+                              : p.medium === "websocket"
+                                ? "WebSocket"
+                                : "TCP / IP"}
                         </span>
                         <span>
                           ↑ {bytes(p.sent)} · ↓ {bytes(p.received)}
@@ -2585,6 +2716,31 @@ function App() {
           close={() => setCommandsOpen(false)}
         />
       )}
+      {me && !state.locked && state.capabilities?.dynamicGroups !== false && (
+        <GroupManager
+          key={me.id}
+          open={groupManager}
+          workspace={groupWorkspace}
+          identity={me}
+          contacts={contacts}
+          blocked={state.blocked}
+          selected={selection}
+          select={(id) => chooseConversation(id)}
+          api={api}
+          close={() => setGroupManager(false)}
+          reviewAudience={() => {
+            if (selectedAuthority?.head && groupSnapshot)
+              setReviewedEpochs((current) => ({
+                ...current,
+                [selection]: selectedAuthority.head!.id,
+              }));
+          }}
+          legacy={() => {
+            setGroupManager(false);
+            setModal("group");
+          }}
+        />
+      )}
       {modal && (
         <Modal
           title={
@@ -2822,7 +2978,7 @@ function App() {
               </p>
             </>
           )}
-          {modal === "peer" && (
+          {modal === "peer" && !state.capabilities?.autonomous && (
             <>
               <p>
                 Liga-te ao endereço TCP que o outro nó partilhou contigo. O

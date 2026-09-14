@@ -156,6 +156,9 @@ test("two live clients: identities, connection, message, attachment, reaction, g
       .getByLabel("Escrever mensagem")
       .fill("Rascunho privado só para o Bruno");
     await pa.getByRole("button", { name: "Novo grupo" }).click();
+    // Legacy fixed-reader groups remain usable alongside the separately tested
+    // explicit invitation/admission workflow.
+    await pa.getByRole("button", { name: "Lista de leitores fixos" }).click();
     await pa.getByLabel("Nome do grupo").fill("Vizinhos da ponte");
     await pa
       .getByRole("checkbox", { name: "Bruno Silva", exact: true })
@@ -204,12 +207,16 @@ test("two live clients: identities, connection, message, attachment, reaction, g
     await pa
       .getByLabel("Texto do bloco 2", { exact: true })
       .fill("Gosto de aproximar pessoas e cuidar dos lugares.");
-    const editableBlocks = pa.locator('.site-block.editable');
+    const editableBlocks = pa.locator(".site-block.editable");
     await expect(editableBlocks).toHaveCount(2);
     await editableBlocks.nth(0).dragTo(editableBlocks.nth(1));
-    await expect(pa.getByLabel('Título do bloco 1', { exact: true })).toHaveValue('Sobre mim');
+    await expect(
+      pa.getByLabel("Título do bloco 1", { exact: true }),
+    ).toHaveValue("Sobre mim");
     await editableBlocks.nth(0).dragTo(editableBlocks.nth(1));
-    await expect(pa.getByLabel('Título do bloco 1', { exact: true })).toHaveValue('Olá, sou a Alice.');
+    await expect(
+      pa.getByLabel("Título do bloco 1", { exact: true }),
+    ).toHaveValue("Olá, sou a Alice.");
     await pa.getByRole("button", { name: "Mover bloco 2 para cima" }).focus();
     await pa.keyboard.press("Enter");
     await expect(
