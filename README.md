@@ -18,6 +18,8 @@ Conversas, comunidade e páginas pessoais numa rede entre pares. **Aplicação e
 
 O código executa nós persistentes nas aplicações instaladas e um motor autónomo no navegador, com a mesma interface Liquid Glass. Os pares usam TCP, série, WebRTC, WebSocket e o adaptador Reticulum real conforme as capacidades disponíveis. Não há serviço central obrigatório, telemetria, fontes remotas ou CDN de execução. A interface começa vazia: mensagens, pares e contadores vêm de operações reais.
 
+O protocolo de certificados de grupos é agora partilhado entre Node e browser. A admissão de chaves recusa cartões Ed25519 degenerados de forma consistente em Node, Go e browser. A regressão integral passou com 457 fontes estáveis; [evidência e limites](docs/evidence/group-certificate-profile). A gestão completa de grupos dinâmicos na web continua em implementação.
+
 ## Usar sem instalar
 
 A entrada estática `/browser/index.html` gera a identidade no navegador e usa um worker, IndexedDB cifrado, WebRTC/WebSocket e cache offline. Para a abrir localmente:

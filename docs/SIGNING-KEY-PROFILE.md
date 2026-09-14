@@ -1,0 +1,13 @@
+# Perfil de admissão das chaves de assinatura
+
+Este incremento passou o gate integral no host Linux: 281 Node, 16 pacotes Go/race, 5 pacotes SQLite C, 58 interoperabilidade, 28 browser, 50 UI e pacote Linux executado. [Comandos, fontes e resultados](evidence/group-certificate-profile). Não representa uma auditoria independente ou paridade de grupos concluída.
+
+Ao portar os certificados de grupos para o browser, um controlo com o ponto neutro Ed25519 e uma assinatura de escalares nulos revelou uma diferença real. OpenSSL/Node e Go aceitavam a equação e o cartão sintético; `@noble/curves` no modo estrito recusava-o. Os testes Node e Go falharam antes da correcção. Isto não demonstra falsificação de uma identidade normal gerada pelo RelayLoom: a chave pública degenerada tem um endereço próprio e não é produzida pelos geradores de identidades.
+
+A aplicação passa a recusar esses cartões de forma consistente antes de lhes atribuir autoridade. O filtro partilhado Node/browser, e o equivalente Go, exigem o SPKI Ed25519 canónico RFC 8410 emitido pelo formato v1, recusam y fora de `0 <= y < 2^255 - 19` e os oito pontos de pequena ordem, incluindo as codificações alternativas do sinal. As assinaturas continuam a ser verificadas por OpenSSL, Web Crypto, Go `crypto/ed25519` ou a biblioteca mantida do adaptador de grupos; o filtro não implementa operações de curva ou uma primitiva criptográfica.
+
+Os oito pontos públicos provêm de `ED25519_TORSION_SUBGROUP` em `@noble/curves` 2.4.0. O ficheiro `tests/fixtures/signing-key-profile.json` regista a origem e o hash do módulo instalado, oito pontos e 40 codificações alternativas/fora do intervalo. [Licença MIT e integridade](licenses/noble-curves/manifest.json). O teste Node compara os vectores com a exportação real da dependência, mede a aceitação permissiva como controlo positivo e exige a recusa pela aplicação. Go e Chromium usam os mesmos vectores, com controlos de identidades geradas e ausência de mutação dos bytes de entrada.
+
+Chaves e cartões normais gerados por Node, Go e Web Crypto mantêm o formato existente. Cartões antigos malformados, com pequena ordem ou DER alternativo passam a ser recusados, incluindo o conteúdo assinado por eles; não se reescrevem identidades ou dados para contornar a validação. A admissão não dispensa a verificação da assinatura, a confirmação humana da identidade, o consentimento de grupo ou o controlo da chave privada de autoria.
+
+O novo protocolo de certificados é partilhado entre os adaptadores síncronos Node/browser. A aplicação browser ainda precisa do registo de autoridade, persistência com reservas, épocas/forks, fences, CAS, outbox e replay completos antes de activar grupos dinâmicos na UI.

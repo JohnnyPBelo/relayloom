@@ -1,5 +1,6 @@
 /** Browser-native implementation of the existing v1 wire format. No Node polyfills. */
 import { scryptAsync } from "@noble/hashes/scrypt.js";
+import { admittedSigningKey } from "../../core/src/signing-key";
 import {
   canonical,
   exactShape,
@@ -86,6 +87,7 @@ export async function validateIdentity(
       typeof p.name !== "string" ||
       p.name.length < 1 ||
       p.name.length > 64 ||
+      !admittedSigningKey(un64(p.signKey, 256)) ||
       p.id !== (await hash(un64(p.signKey, 256)))
     )
       return false;

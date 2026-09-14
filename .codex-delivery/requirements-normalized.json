@@ -14,7 +14,7 @@
       "type": "functional",
       "title": "Local cryptographic identity and proofs",
       "statement": "Local cryptographic identity and proofs",
-      "status": "done",
+      "status": "partial",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -27,7 +27,7 @@
           "tests/core.test.ts",
           "tests/native/native-interop.test.ts"
         ],
-        "limits": "Identidades locais, provas e vectores Node\u2194Go."
+        "limits": "Identidades locais, provas e vectores Node↔Go."
       },
       "evidence": [
         {
@@ -37,7 +37,28 @@
             "tests/core.test.ts",
             "tests/native/native-interop.test.ts"
           ],
-          "notes": "Identidades locais, provas e vectores Node\u2194Go."
+          "notes": "Identidades locais, provas e vectores Node↔Go."
+        },
+        {
+          "kind": "negative-control-and-correction",
+          "result": "directed-pass-full-regression-pending",
+          "paths": [
+            "tests/signing-key-profile.test.ts",
+            "native/core/signing_key_test.go",
+            "tests/browser/group-certificates.spec.ts",
+            "docs/SIGNING-KEY-PROFILE.md"
+          ],
+          "notes": "Neutral-point identity acceptance reproduced in Node/Go. Shared canonical/small-order key admission implemented; directed Node/Go/Chromium controls passed. Full frozen-source gate active in .cache/gc; do not claim it passed yet."
+        },
+        {
+          "kind": "full-frozen-source-gate",
+          "command": "node scripts/verify-group-browser.mjs",
+          "result": "pass-scoped",
+          "paths": [
+            "docs/evidence/group-certificate-profile/report.json",
+            "docs/SIGNING-KEY-PROFILE.md"
+          ],
+          "notes": "457 stable sources:281 Node,16 Go race packages,5 C SQLite packages,58 interop,28 browser,25 UI per engine,Linux package execution. Shared certificates and key admission; dynamic group app authority/storage/UI and browser/device matrix remain open."
         }
       ]
     },
@@ -83,7 +104,7 @@
           "command": "Android documents/deadline/smoke/relay + scripts/android-private-profile.mjs; exact invocations in docs/evidence/android-sqlite/apk-136a5103",
           "result": "pass",
           "timestamp": "2026-09-12",
-          "notes": "APK136a5103c82c4c87f6865aa2b68daa5eb60796ac4d420aa8f09d5fea5fd4e2a5, com AAR9e2fb77f9938721c9df7ef82df19e357ab02ff0c417ec40061a82e0f27004585:82 asser\u00e7\u00f5es no mesmo emulador API36x86_64 (38 SAF36.693s,15 prazo134.729s,16 mensagens15.355s,13 relay18.913s) e inspec\u00e7\u00e3o cifrada0.768s passaram. Hash instalado e inputs inalterados; cofre/JSON legado preservados; SQLite Android e binding autenticados pelo Node. Root reviu a captura nativa final. Instrumenta\u00e7\u00e3o removida, forwards vazios, AVD/adb pr\u00f3prios parados, identidade preservada. Evid\u00eancia em `docs/evidence/android-sqlite/apk-136a5103`. Physical device and dynamic groups are not covered."
+          "notes": "APK136a5103c82c4c87f6865aa2b68daa5eb60796ac4d420aa8f09d5fea5fd4e2a5, com AAR9e2fb77f9938721c9df7ef82df19e357ab02ff0c417ec40061a82e0f27004585:82 asserções no mesmo emulador API36x86_64 (38 SAF36.693s,15 prazo134.729s,16 mensagens15.355s,13 relay18.913s) e inspecção cifrada0.768s passaram. Hash instalado e inputs inalterados; cofre/JSON legado preservados; SQLite Android e binding autenticados pelo Node. Root reviu a captura nativa final. Instrumentação removida, forwards vazios, AVD/adb próprios parados, identidade preservada. Evidência em `docs/evidence/android-sqlite/apk-136a5103`. Physical device and dynamic groups are not covered."
         }
       ]
     },
@@ -105,7 +126,7 @@
           "tests/e2e/flows.spec.ts",
           "docs/evidence/android/documents-fa1481d3"
         ],
-        "limits": "Exporta\u00e7\u00e3o/recupera\u00e7\u00e3o no host e SAF Android finalfa1481d3; exporta\u00e7\u00e3o iOS e restantes fluxos nativos ainda limitados."
+        "limits": "Exportação/recuperação no host e SAF Android finalfa1481d3; exportação iOS e restantes fluxos nativos ainda limitados."
       },
       "evidence": [
         {
@@ -115,7 +136,7 @@
             "tests/e2e/flows.spec.ts",
             "tests/native/mixed-network.test.ts"
           ],
-          "notes": "Exporta\u00e7\u00e3o/recupera\u00e7\u00e3o e identidade persistente no host; fluxos de ficheiros m\u00f3veis limitados."
+          "notes": "Exportação/recuperação e identidade persistente no host; fluxos de ficheiros móveis limitados."
         },
         {
           "kind": "integration-checkpoint-2026-09-12",
@@ -125,7 +146,7 @@
             "tests/native/mixed-network.test.ts",
             "docs/ANDROID.md"
           ],
-          "notes": "Exporta\u00e7\u00e3o/recupera\u00e7\u00e3o no host e via SAF no APK Android 4de67c3e; exporta\u00e7\u00e3o iOS e restantes fluxos nativos ainda limitados."
+          "notes": "Exportação/recuperação no host e via SAF no APK Android 4de67c3e; exportação iOS e restantes fluxos nativos ainda limitados."
         },
         {
           "kind": "android-final-integration-2026-09-12",
@@ -135,7 +156,7 @@
             "tests/native/mixed-network.test.ts",
             "docs/evidence/android/documents-27a71947"
           ],
-          "notes": "Exporta\u00e7\u00e3o/recupera\u00e7\u00e3o no host e via SAF no APK Android final 27a71947; exporta\u00e7\u00e3o iOS e restantes fluxos nativos ainda limitados."
+          "notes": "Exportação/recuperação no host e via SAF no APK Android final 27a71947; exportação iOS e restantes fluxos nativos ainda limitados."
         },
         {
           "kind": "corrective-milestone-2026-09-12",
@@ -144,7 +165,7 @@
             "tests/e2e/flows.spec.ts",
             "docs/evidence/android/documents-fa1481d3"
           ],
-          "notes": "Exporta\u00e7\u00e3o/recupera\u00e7\u00e3o no host e SAF Android finalfa1481d3; exporta\u00e7\u00e3o iOS e restantes fluxos nativos ainda limitados."
+          "notes": "Exportação/recuperação no host e SAF Android finalfa1481d3; exportação iOS e restantes fluxos nativos ainda limitados."
         }
       ]
     },
@@ -166,7 +187,7 @@
           "docs/ARCHITECTURE.md",
           "docs/REMAINING-SCOPE.md"
         ],
-        "limits": "Altera\u00e7\u00f5es assinadas implementadas; rota\u00e7\u00e3o/revoga\u00e7\u00e3o completa em falta."
+        "limits": "Alterações assinadas implementadas; rotação/revogação completa em falta."
       },
       "evidence": [
         {
@@ -176,7 +197,7 @@
             "docs/ARCHITECTURE.md",
             "docs/REMAINING-SCOPE.md"
           ],
-          "notes": "Altera\u00e7\u00f5es assinadas implementadas; rota\u00e7\u00e3o/revoga\u00e7\u00e3o completa em falta."
+          "notes": "Alterações assinadas implementadas; rotação/revogação completa em falta."
         }
       ]
     },
@@ -200,7 +221,7 @@
           "tests/e2e/flows.spec.ts",
           "docs/STATUS.md"
         ],
-        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        "limits": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
       },
       "evidence": [
         {
@@ -212,7 +233,7 @@
             "tests/e2e/flows.spec.ts",
             "docs/STATUS.md"
           ],
-          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+          "notes": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
         }
       ]
     },
@@ -236,7 +257,7 @@
           "tests/e2e/flows.spec.ts",
           "docs/STATUS.md"
         ],
-        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        "limits": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
       },
       "evidence": [
         {
@@ -248,7 +269,7 @@
             "tests/e2e/flows.spec.ts",
             "docs/STATUS.md"
           ],
-          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+          "notes": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
         }
       ]
     },
@@ -284,7 +305,7 @@
           "docs/GROUP-CARRIERS.md",
           "docs/evidence/group-carriers/final"
         ],
-        "limits": "C1 headers/snapshots autom\u00e1ticos, envio/eventos/recibos nas APIs Node/Go com gate completo host/interoperabilidade/UI/desktop passado. C2 convites/consentimentos/sa\u00eddas, C3 UI din\u00e2mica, plataformas actuais e revis\u00e3o independente pendentes."
+        "limits": "C1 headers/snapshots automáticos, envio/eventos/recibos nas APIs Node/Go com gate completo host/interoperabilidade/UI/desktop passado. C2 convites/consentimentos/saídas, C3 UI dinâmica, plataformas actuais e revisão independente pendentes."
       },
       "evidence": [
         {
@@ -294,7 +315,7 @@
             "tests/e2e/flows.spec.ts",
             "tests/security.test.ts"
           ],
-          "notes": "Grupos e ACL com membros fixos; altera\u00e7\u00f5es de membros em falta."
+          "notes": "Grupos e ACL com membros fixos; alterações de membros em falta."
         },
         {
           "kind": "integration-checkpoint-2026-09-12",
@@ -304,7 +325,7 @@
             "tests/security.test.ts",
             "docs/GROUP-EPOCHS.md"
           ],
-          "notes": "Grupos fixos e ACL reais; contrato de \u00e9pocas \u00e9 desenho, sem implementa\u00e7\u00e3o ou testes executados de mudan\u00e7as de membros."
+          "notes": "Grupos fixos e ACL reais; contrato de épocas é desenho, sem implementação ou testes executados de mudanças de membros."
         },
         {
           "kind": "corrective-milestone-2026-09-12",
@@ -314,19 +335,19 @@
             "packages/groups/src/certificates.ts",
             "tests/group-certificates.test.ts"
           ],
-          "notes": "Grupos fixos reais; biblioteca Node de certificados passou11 testes. Sem registry/API/UI din\u00e2mica; port Go em rascunho, por verificar."
+          "notes": "Grupos fixos reais; biblioteca Node de certificados passou11 testes. Sem registry/API/UI dinâmica; port Go em rascunho, por verificar."
         },
         {
           "kind": "post-maintenance-authority-foundation",
           "result": "partial",
           "command": "npm run build; npm test; node_modules/.bin/tsx --test tests/native/group-authority.test.ts",
-          "notes": "Build passou;128 testes Node passaram, incluindo22 do registo. Interoperabilidade real de autoridade Node/Go passou em23.119s com hashes inalterados. Gate Go alargado ainda em curso; n\u00e3o constitui suporte de grupos din\u00e2micos na aplica\u00e7\u00e3o."
+          "notes": "Build passou;128 testes Node passaram, incluindo22 do registo. Interoperabilidade real de autoridade Node/Go passou em23.119s com hashes inalterados. Gate Go alargado ainda em curso; não constitui suporte de grupos dinâmicos na aplicação."
         },
         {
           "kind": "test",
           "command": "node_modules/.bin/tsx --test --test-concurrency=1 tests/group-runtime.test.ts tests/native/group-runtime.test.ts",
           "result": "pass",
-          "notes": "4 casos/5.684s em Linux: gest\u00e3o API e troca de n\u00facleo no rein\u00edcio; certificados transferidos pela fixture autenticada, n\u00e3o por sync P2P autom\u00e1tico. Regress\u00e3o completa posterior em curso."
+          "notes": "4 casos/5.684s em Linux: gestão API e troca de núcleo no reinício; certificados transferidos pela fixture autenticada, não por sync P2P automático. Regressão completa posterior em curso."
         },
         {
           "kind": "regression-gate",
@@ -335,7 +356,7 @@
             "docs/evidence/group-runtime/final/report.json",
             "docs/evidence/group-runtime/final/desktop-report.json"
           ],
-          "notes": "Gate completo: build5.497s;177 testes Node122.851s;118 testes Go de topo com race380.032s (oito helpers omitidos sem fixture e exercitados pelos drivers reais);20 casos de interoperabilidade199.504s; driver C dirigido8.039s;16 UI Node112.105s e16 UI Go106.110s. Desktop Linux: prepara\u00e7\u00e3o0.239s, execu\u00e7\u00e3o2.075s, pacote5.377s e execu\u00e7\u00e3o empacotada0.795s.22 relat\u00f3rios Axe actualizados sem viola\u00e7\u00f5es. Fontes inalteradas em todas as fases. Evid\u00eancia em `docs/evidence/group-runtime/final`. Capturas do editor/social Node e conversa escura Go revistas por root; isto n\u00e3o \u00e9 revis\u00e3o independente. Nenhuma nova execu\u00e7\u00e3o m\u00f3vel pertence a este gate."
+          "notes": "Gate completo: build5.497s;177 testes Node122.851s;118 testes Go de topo com race380.032s (oito helpers omitidos sem fixture e exercitados pelos drivers reais);20 casos de interoperabilidade199.504s; driver C dirigido8.039s;16 UI Node112.105s e16 UI Go106.110s. Desktop Linux: preparação0.239s, execução2.075s, pacote5.377s e execução empacotada0.795s.22 relatórios Axe actualizados sem violações. Fontes inalteradas em todas as fases. Evidência em `docs/evidence/group-runtime/final`. Capturas do editor/social Node e conversa escura Go revistas por root; isto não é revisão independente. Nenhuma nova execução móvel pertence a este gate."
         },
         {
           "kind": "regression-gate",
@@ -344,7 +365,7 @@
             "docs/evidence/group-content/final/report.json",
             "docs/evidence/group-content/final/desktop-report.json"
           ],
-          "notes": "190 testes Node passaram137.762s;129 testes Go de topo/race396.073s (9 helpers executados pelos drivers de interoperabilidade);24 testes de interoperabilidade219.736s; fronteira SQLite C15.538s;16 UI Node112.941s e16 UI Go103.288s. Build6.072s e CLI0.221s passaram. Desktop Linux: prepara\u00e7\u00e3o0.224s, execu\u00e7\u00e3o1.028s, pacote5.347s e execu\u00e7\u00e3o empacotada0.798s.22 relat\u00f3rios Axe actualizados, zero viola\u00e7\u00f5es. Fontes inalteradas em todas as fases. Evid\u00eancia em docs/evidence/group-content/final."
+          "notes": "190 testes Node passaram137.762s;129 testes Go de topo/race396.073s (9 helpers executados pelos drivers de interoperabilidade);24 testes de interoperabilidade219.736s; fronteira SQLite C15.538s;16 UI Node112.941s e16 UI Go103.288s. Build6.072s e CLI0.221s passaram. Desktop Linux: preparação0.224s, execução1.028s, pacote5.347s e execução empacotada0.798s.22 relatórios Axe actualizados, zero violações. Fontes inalteradas em todas as fases. Evidência em docs/evidence/group-content/final."
         },
         {
           "kind": "group-outbox-authority-milestone-2026-09-13",
@@ -352,7 +373,7 @@
           "paths": [
             "docs/GROUP-OUTBOX.md"
           ],
-          "notes": "Gest\u00e3o, admiss\u00e3o e autoridade de outbox por \u00e9pocas verificadas em Node/Go; paragens e128+128 inten\u00e7\u00f5es, recupera\u00e7\u00e3o entre processos e UI de estado. Publica\u00e7\u00e3o/envio din\u00e2mico, carriers, composi\u00e7\u00e3o e revis\u00e3o independente pendentes."
+          "notes": "Gestão, admissão e autoridade de outbox por épocas verificadas em Node/Go; paragens e128+128 intenções, recuperação entre processos e UI de estado. Publicação/envio dinâmico, carriers, composição e revisão independente pendentes."
         },
         {
           "kind": "group-send-directed-2026-09-13",
@@ -363,7 +384,7 @@
             "native/app/group_send_test.go",
             "tests/native/group-send-recovery.test.ts"
           ],
-          "notes": "Node5 falhas13.066s; Go3 testes de topo/seis cen\u00e1rios com race46.565s; oito mortes reais Unicode26.633s. Sem altera\u00e7\u00e3o de fontes durante cada gate dirigido. Gate completo em curso; n\u00e3o constitui conclus\u00e3o do produto."
+          "notes": "Node5 falhas13.066s; Go3 testes de topo/seis cenários com race46.565s; oito mortes reais Unicode26.633s. Sem alteração de fontes durante cada gate dirigido. Gate completo em curso; não constitui conclusão do produto."
         },
         {
           "kind": "group-send-regression-gate",
@@ -373,7 +394,7 @@
             "docs/evidence/group-send/final/desktop-report.json",
             "docs/evidence/group-send/final/scope.json"
           ],
-          "notes": "Build5.816s;219 testes Node194.189s;144 testes Go de topo com race507.918s (11 helpers executados pelos drivers);30 casos de interoperabilidade270.997s; fronteira SQLite C115.655s;17 UI Node115.990s e17 UI Go110.472s.22 testes host iOS1.887s e est\u00e1tica0.030s. Desktop Linux: prepara\u00e7\u00e3o0.233s, execu\u00e7\u00e3o1.041s, pacote5.812s, execu\u00e7\u00e3o empacotada0.800s.26 relat\u00f3rios Axe actualizados, zero viola\u00e7\u00f5es.277 ficheiros de fonte inalterados durante os gates. Evid\u00eancia em docs/evidence/group-send/final. Produto/grupos din\u00e2micos completos e revis\u00e3o independente pendentes."
+          "notes": "Build5.816s;219 testes Node194.189s;144 testes Go de topo com race507.918s (11 helpers executados pelos drivers);30 casos de interoperabilidade270.997s; fronteira SQLite C115.655s;17 UI Node115.990s e17 UI Go110.472s.22 testes host iOS1.887s e estática0.030s. Desktop Linux: preparação0.233s, execução1.041s, pacote5.812s, execução empacotada0.800s.26 relatórios Axe actualizados, zero violações.277 ficheiros de fonte inalterados durante os gates. Evidência em docs/evidence/group-send/final. Produto/grupos dinâmicos completos e revisão independente pendentes."
         },
         {
           "kind": "group-confirmations-regression-gate",
@@ -383,14 +404,14 @@
             "docs/evidence/group-confirmations/final/desktop-report.json",
             "docs/evidence/group-confirmations/final/scope.json"
           ],
-          "notes": "Build5.598s;224 Node219.220s;148 testes Go de topo/race548.587s (11 helpers pelos drivers);33 interoperabilidade315.613s;SQLite C143.711s;17 UI Node118.995s e17 Go112.607s;22 host iOS2.319s/est\u00e1tica0.050s. Desktop Linux: build0.230s,execu\u00e7\u00e3o1.011s,pacote5.055s,execu\u00e7\u00e3o empacotada0.809s.26 Axe sem viola\u00e7\u00f5es;284 fontes inalteradas. Evid\u00eancia em docs/evidence/group-confirmations/final."
+          "notes": "Build5.598s;224 Node219.220s;148 testes Go de topo/race548.587s (11 helpers pelos drivers);33 interoperabilidade315.613s;SQLite C143.711s;17 UI Node118.995s e17 Go112.607s;22 host iOS2.319s/estática0.050s. Desktop Linux: build0.230s,execução1.011s,pacote5.055s,execução empacotada0.809s.26 Axe sem violações;284 fontes inalteradas. Evidência em docs/evidence/group-confirmations/final."
         },
         {
           "kind": "test",
           "command": "npm test",
           "result": "pass",
           "timestamp": "2026-09-13",
-          "notes": "C1, fontes b43741ef070d437b224b69b396e4ddddc9bc251c35dbab79f72ef68d70ffd017:253 casos/405.684s (runner), sem skips. Gate completo ainda em curso; .cache/group-carriers-final/report.json. N\u00e3o \u00e9 conclus\u00e3o do requisito."
+          "notes": "C1, fontes b43741ef070d437b224b69b396e4ddddc9bc251c35dbab79f72ef68d70ffd017:253 casos/405.684s (runner), sem skips. Gate completo ainda em curso; .cache/group-carriers-final/report.json. Não é conclusão do requisito."
         },
         {
           "kind": "test",
@@ -421,7 +442,7 @@
           "tests/e2e/flows.spec.ts",
           "docs/STATUS.md"
         ],
-        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        "limits": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
       },
       "evidence": [
         {
@@ -433,7 +454,7 @@
             "tests/e2e/flows.spec.ts",
             "docs/STATUS.md"
           ],
-          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+          "notes": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
         }
       ]
     },
@@ -457,7 +478,7 @@
           "tests/e2e/flows.spec.ts",
           "docs/STATUS.md"
         ],
-        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        "limits": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
       },
       "evidence": [
         {
@@ -469,7 +490,7 @@
             "tests/e2e/flows.spec.ts",
             "docs/STATUS.md"
           ],
-          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+          "notes": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
         }
       ]
     },
@@ -491,7 +512,7 @@
           "tests/e2e/media.spec.ts",
           "docs/MEDIA.md"
         ],
-        "limits": "Codificador e transporte reais; captura sint\u00e9tica, microfone f\u00edsico n\u00e3o verificado."
+        "limits": "Codificador e transporte reais; captura sintética, microfone físico não verificado."
       },
       "evidence": [
         {
@@ -501,7 +522,7 @@
             "tests/e2e/media.spec.ts",
             "docs/MEDIA.md"
           ],
-          "notes": "Codificador e transporte reais; captura sint\u00e9tica, microfone f\u00edsico n\u00e3o verificado."
+          "notes": "Codificador e transporte reais; captura sintética, microfone físico não verificado."
         }
       ]
     },
@@ -535,7 +556,7 @@
             "docs/ANDROID.md",
             "docs/IOS.md"
           ],
-          "notes": "Bytes e renderizadores reais; fluxos de escolha/guardar em hosts m\u00f3veis incompletos."
+          "notes": "Bytes e renderizadores reais; fluxos de escolha/guardar em hosts móveis incompletos."
         },
         {
           "kind": "integration-checkpoint-2026-09-12",
@@ -594,7 +615,7 @@
           "docs/GROUP-CARRIERS.md",
           "docs/evidence/group-carriers/final"
         ],
-        "limits": "C1 headers/snapshots autom\u00e1ticos, envio/eventos/recibos nas APIs Node/Go com gate completo host/interoperabilidade/UI/desktop passado. C2 convites/consentimentos/sa\u00eddas, C3 UI din\u00e2mica, plataformas actuais e revis\u00e3o independente pendentes."
+        "limits": "C1 headers/snapshots automáticos, envio/eventos/recibos nas APIs Node/Go com gate completo host/interoperabilidade/UI/desktop passado. C2 convites/consentimentos/saídas, C3 UI dinâmica, plataformas actuais e revisão independente pendentes."
       },
       "evidence": [
         {
@@ -604,7 +625,7 @@
             "tests/native/mixed-network.test.ts",
             "docs/REMAINING-SCOPE.md"
           ],
-          "notes": "Objectos cifrados persistem e s\u00e3o anunciados ap\u00f3s restart; falta outbox por destinat\u00e1rio."
+          "notes": "Objectos cifrados persistem e são anunciados após restart; falta outbox por destinatário."
         },
         {
           "kind": "integration-checkpoint-2026-09-12",
@@ -615,7 +636,7 @@
             "tests/native/outbox-network.test.ts",
             "docs/OUTBOX-PROTOCOL.md"
           ],
-          "notes": "Outbox cifrada Node/Go com inten\u00e7\u00e3o/reserva limitadas, idempot\u00eancia enquanto retida e repeti\u00e7\u00e3o ap\u00f3s restart com relay pausado; gates host passaram, integra\u00e7\u00e3o final dos pacotes m\u00f3veis pendente."
+          "notes": "Outbox cifrada Node/Go com intenção/reserva limitadas, idempotência enquanto retida e repetição após restart com relay pausado; gates host passaram, integração final dos pacotes móveis pendente."
         },
         {
           "kind": "android-final-integration-2026-09-12",
@@ -626,7 +647,7 @@
             "tests/native/outbox-network.test.ts",
             "docs/OUTBOX-PROTOCOL.md"
           ],
-          "notes": "Outbox cifrada Node/Go com inten\u00e7\u00e3o/reserva limitadas, idempot\u00eancia enquanto retida e repeti\u00e7\u00e3o ap\u00f3s restart com relay pausado; gates host e APK Android final passaram. Execu\u00e7\u00e3o iOS e restantes plataformas nativas pendentes."
+          "notes": "Outbox cifrada Node/Go com intenção/reserva limitadas, idempotência enquanto retida e repetição após restart com relay pausado; gates host e APK Android final passaram. Execução iOS e restantes plataformas nativas pendentes."
         },
         {
           "kind": "corrective-milestone-2026-09-12",
@@ -636,7 +657,7 @@
             "docs/OUTBOX-SNAPSHOT-EXPIRY.md",
             "docs/evidence/outbox/snapshot-expiry"
           ],
-          "notes": "Outbox dur\u00e1vel Node/Go, idempot\u00eancia limitada e estado/reserva coerentes na expira\u00e7\u00e3o;82 testes Node de aplica\u00e7\u00e3o/existentes,37 Go app race e5 interop passaram. APKfa1481d3 passou; execu\u00e7\u00e3o iOS pendente."
+          "notes": "Outbox durável Node/Go, idempotência limitada e estado/reserva coerentes na expiração;82 testes Node de aplicação/existentes,37 Go app race e5 interop passaram. APKfa1481d3 passou; execução iOS pendente."
         },
         {
           "kind": "test",
@@ -650,7 +671,7 @@
           "command": "Android documents/deadline/smoke/relay + scripts/android-private-profile.mjs; exact invocations in docs/evidence/android-sqlite/apk-136a5103",
           "result": "pass",
           "timestamp": "2026-09-12",
-          "notes": "APK136a5103c82c4c87f6865aa2b68daa5eb60796ac4d420aa8f09d5fea5fd4e2a5, com AAR9e2fb77f9938721c9df7ef82df19e357ab02ff0c417ec40061a82e0f27004585:82 asser\u00e7\u00f5es no mesmo emulador API36x86_64 (38 SAF36.693s,15 prazo134.729s,16 mensagens15.355s,13 relay18.913s) e inspec\u00e7\u00e3o cifrada0.768s passaram. Hash instalado e inputs inalterados; cofre/JSON legado preservados; SQLite Android e binding autenticados pelo Node. Root reviu a captura nativa final. Instrumenta\u00e7\u00e3o removida, forwards vazios, AVD/adb pr\u00f3prios parados, identidade preservada. Evid\u00eancia em `docs/evidence/android-sqlite/apk-136a5103`. Physical device and dynamic groups are not covered."
+          "notes": "APK136a5103c82c4c87f6865aa2b68daa5eb60796ac4d420aa8f09d5fea5fd4e2a5, com AAR9e2fb77f9938721c9df7ef82df19e357ab02ff0c417ec40061a82e0f27004585:82 asserções no mesmo emulador API36x86_64 (38 SAF36.693s,15 prazo134.729s,16 mensagens15.355s,13 relay18.913s) e inspecção cifrada0.768s passaram. Hash instalado e inputs inalterados; cofre/JSON legado preservados; SQLite Android e binding autenticados pelo Node. Root reviu a captura nativa final. Instrumentação removida, forwards vazios, AVD/adb próprios parados, identidade preservada. Evidência em `docs/evidence/android-sqlite/apk-136a5103`. Physical device and dynamic groups are not covered."
         },
         {
           "kind": "group-outbox-authority-milestone-2026-09-13",
@@ -658,7 +679,7 @@
           "paths": [
             "docs/evidence/group-outbox/final"
           ],
-          "notes": "Outbox Node/Go e reserva separada de pin; autoridade de grupo no mesmo commit, cancelamento local e seeding do autor controlados.256 inten\u00e7\u00f5es reais e sa\u00eddas81/82 testadas; cria\u00e7\u00e3o/envio din\u00e2mico ainda instalado por fixture. Bin\u00e1rios m\u00f3veis novos pendentes."
+          "notes": "Outbox Node/Go e reserva separada de pin; autoridade de grupo no mesmo commit, cancelamento local e seeding do autor controlados.256 intenções reais e saídas81/82 testadas; criação/envio dinâmico ainda instalado por fixture. Binários móveis novos pendentes."
         },
         {
           "kind": "group-send-directed-2026-09-13",
@@ -669,7 +690,7 @@
             "native/app/group_send_test.go",
             "tests/native/group-send-recovery.test.ts"
           ],
-          "notes": "Node5 falhas13.066s; Go3 testes de topo/seis cen\u00e1rios com race46.565s; oito mortes reais Unicode26.633s. Sem altera\u00e7\u00e3o de fontes durante cada gate dirigido. Gate completo em curso; n\u00e3o constitui conclus\u00e3o do produto."
+          "notes": "Node5 falhas13.066s; Go3 testes de topo/seis cenários com race46.565s; oito mortes reais Unicode26.633s. Sem alteração de fontes durante cada gate dirigido. Gate completo em curso; não constitui conclusão do produto."
         },
         {
           "kind": "group-send-regression-gate",
@@ -679,7 +700,7 @@
             "docs/evidence/group-send/final/desktop-report.json",
             "docs/evidence/group-send/final/scope.json"
           ],
-          "notes": "Build5.816s;219 testes Node194.189s;144 testes Go de topo com race507.918s (11 helpers executados pelos drivers);30 casos de interoperabilidade270.997s; fronteira SQLite C115.655s;17 UI Node115.990s e17 UI Go110.472s.22 testes host iOS1.887s e est\u00e1tica0.030s. Desktop Linux: prepara\u00e7\u00e3o0.233s, execu\u00e7\u00e3o1.041s, pacote5.812s, execu\u00e7\u00e3o empacotada0.800s.26 relat\u00f3rios Axe actualizados, zero viola\u00e7\u00f5es.277 ficheiros de fonte inalterados durante os gates. Evid\u00eancia em docs/evidence/group-send/final. Produto/grupos din\u00e2micos completos e revis\u00e3o independente pendentes."
+          "notes": "Build5.816s;219 testes Node194.189s;144 testes Go de topo com race507.918s (11 helpers executados pelos drivers);30 casos de interoperabilidade270.997s; fronteira SQLite C115.655s;17 UI Node115.990s e17 UI Go110.472s.22 testes host iOS1.887s e estática0.030s. Desktop Linux: preparação0.233s, execução1.041s, pacote5.812s, execução empacotada0.800s.26 relatórios Axe actualizados, zero violações.277 ficheiros de fonte inalterados durante os gates. Evidência em docs/evidence/group-send/final. Produto/grupos dinâmicos completos e revisão independente pendentes."
         },
         {
           "kind": "group-confirmations-regression-gate",
@@ -689,14 +710,14 @@
             "docs/evidence/group-confirmations/final/desktop-report.json",
             "docs/evidence/group-confirmations/final/scope.json"
           ],
-          "notes": "Build5.598s;224 Node219.220s;148 testes Go de topo/race548.587s (11 helpers pelos drivers);33 interoperabilidade315.613s;SQLite C143.711s;17 UI Node118.995s e17 Go112.607s;22 host iOS2.319s/est\u00e1tica0.050s. Desktop Linux: build0.230s,execu\u00e7\u00e3o1.011s,pacote5.055s,execu\u00e7\u00e3o empacotada0.809s.26 Axe sem viola\u00e7\u00f5es;284 fontes inalteradas. Evid\u00eancia em docs/evidence/group-confirmations/final."
+          "notes": "Build5.598s;224 Node219.220s;148 testes Go de topo/race548.587s (11 helpers pelos drivers);33 interoperabilidade315.613s;SQLite C143.711s;17 UI Node118.995s e17 Go112.607s;22 host iOS2.319s/estática0.050s. Desktop Linux: build0.230s,execução1.011s,pacote5.055s,execução empacotada0.809s.26 Axe sem violações;284 fontes inalteradas. Evidência em docs/evidence/group-confirmations/final."
         },
         {
           "kind": "test",
           "command": "npm test",
           "result": "pass",
           "timestamp": "2026-09-13",
-          "notes": "C1, fontes b43741ef070d437b224b69b396e4ddddc9bc251c35dbab79f72ef68d70ffd017:253 casos/405.684s (runner), sem skips. Gate completo ainda em curso; .cache/group-carriers-final/report.json. N\u00e3o \u00e9 conclus\u00e3o do requisito."
+          "notes": "C1, fontes b43741ef070d437b224b69b396e4ddddc9bc251c35dbab79f72ef68d70ffd017:253 casos/405.684s (runner), sem skips. Gate completo ainda em curso; .cache/group-carriers-final/report.json. Não é conclusão do requisito."
         },
         {
           "kind": "test",
@@ -731,7 +752,7 @@
           "docs/GROUP-CARRIERS.md",
           "docs/evidence/group-carriers/final"
         ],
-        "limits": "C1 headers/snapshots autom\u00e1ticos, envio/eventos/recibos nas APIs Node/Go com gate completo host/interoperabilidade/UI/desktop passado. C2 convites/consentimentos/sa\u00eddas, C3 UI din\u00e2mica, plataformas actuais e revis\u00e3o independente pendentes."
+        "limits": "C1 headers/snapshots automáticos, envio/eventos/recibos nas APIs Node/Go com gate completo host/interoperabilidade/UI/desktop passado. C2 convites/consentimentos/saídas, C3 UI dinâmica, plataformas actuais e revisão independente pendentes."
       },
       "evidence": [
         {
@@ -741,7 +762,7 @@
             "tests/e2e/flows.spec.ts",
             "docs/REMAINING-SCOPE.md"
           ],
-          "notes": "Recibos assinados de leitura; falta quadro completo de entrega/expira\u00e7\u00e3o por membro."
+          "notes": "Recibos assinados de leitura; falta quadro completo de entrega/expiração por membro."
         },
         {
           "kind": "integration-checkpoint-2026-09-12",
@@ -751,7 +772,7 @@
             "docs/evidence/outbox",
             "docs/OUTBOX-REVIEW.md"
           ],
-          "notes": "Recep\u00e7\u00e3o/leitura por destinat\u00e1rio, prazos e estado com dados ausentes implementados; 14 percursos UI Node e Go passaram, depois 4 de outbox por n\u00facleo. APK/interface final e execu\u00e7\u00e3o iOS pendentes."
+          "notes": "Recepção/leitura por destinatário, prazos e estado com dados ausentes implementados; 14 percursos UI Node e Go passaram, depois 4 de outbox por núcleo. APK/interface final e execução iOS pendentes."
         },
         {
           "kind": "android-final-integration-2026-09-12",
@@ -761,7 +782,7 @@
             "docs/evidence/outbox",
             "docs/evidence/android/documents-27a71947"
           ],
-          "notes": "Recep\u00e7\u00e3o/leitura por destinat\u00e1rio, prazos e estado com dados ausentes implementados; 14 percursos UI Node/Go, depois 4 de outbox por n\u00facleo; APK Android final passou. Execu\u00e7\u00e3o iOS pendente."
+          "notes": "Recepção/leitura por destinatário, prazos e estado com dados ausentes implementados; 14 percursos UI Node/Go, depois 4 de outbox por núcleo; APK Android final passou. Execução iOS pendente."
         },
         {
           "kind": "corrective-milestone-2026-09-12",
@@ -771,7 +792,7 @@
             "docs/evidence/desktop/layout-expiry-fix",
             "docs/evidence/android/documents-fa1481d3"
           ],
-          "notes": "Recep\u00e7\u00e3o/leitura por destinat\u00e1rio, expira\u00e7\u00e3o e retry reais;15UI por n\u00facleo e APK final passaram. Execu\u00e7\u00e3o iOS pendente."
+          "notes": "Recepção/leitura por destinatário, expiração e retry reais;15UI por núcleo e APK final passaram. Execução iOS pendente."
         },
         {
           "kind": "group-outbox-authority-milestone-2026-09-13",
@@ -779,7 +800,7 @@
           "paths": [
             "tests/e2e/group-outbox.spec.ts"
           ],
-          "notes": "Received/read hist\u00f3ricos preservados; superseded e pausa por prova na API/UI real,17 percursos por n\u00facleo e26 relat\u00f3rios Axe sem viola\u00e7\u00f5es. Composi\u00e7\u00e3o din\u00e2mica e gates m\u00f3veis actuais pendentes."
+          "notes": "Received/read históricos preservados; superseded e pausa por prova na API/UI real,17 percursos por núcleo e26 relatórios Axe sem violações. Composição dinâmica e gates móveis actuais pendentes."
         },
         {
           "kind": "group-confirmations-regression-gate",
@@ -789,14 +810,14 @@
             "docs/evidence/group-confirmations/final/desktop-report.json",
             "docs/evidence/group-confirmations/final/scope.json"
           ],
-          "notes": "Build5.598s;224 Node219.220s;148 testes Go de topo/race548.587s (11 helpers pelos drivers);33 interoperabilidade315.613s;SQLite C143.711s;17 UI Node118.995s e17 Go112.607s;22 host iOS2.319s/est\u00e1tica0.050s. Desktop Linux: build0.230s,execu\u00e7\u00e3o1.011s,pacote5.055s,execu\u00e7\u00e3o empacotada0.809s.26 Axe sem viola\u00e7\u00f5es;284 fontes inalteradas. Evid\u00eancia em docs/evidence/group-confirmations/final."
+          "notes": "Build5.598s;224 Node219.220s;148 testes Go de topo/race548.587s (11 helpers pelos drivers);33 interoperabilidade315.613s;SQLite C143.711s;17 UI Node118.995s e17 Go112.607s;22 host iOS2.319s/estática0.050s. Desktop Linux: build0.230s,execução1.011s,pacote5.055s,execução empacotada0.809s.26 Axe sem violações;284 fontes inalteradas. Evidência em docs/evidence/group-confirmations/final."
         },
         {
           "kind": "test",
           "command": "npm test",
           "result": "pass",
           "timestamp": "2026-09-13",
-          "notes": "C1, fontes b43741ef070d437b224b69b396e4ddddc9bc251c35dbab79f72ef68d70ffd017:253 casos/405.684s (runner), sem skips. Gate completo ainda em curso; .cache/group-carriers-final/report.json. N\u00e3o \u00e9 conclus\u00e3o do requisito."
+          "notes": "C1, fontes b43741ef070d437b224b69b396e4ddddc9bc251c35dbab79f72ef68d70ffd017:253 casos/405.684s (runner), sem skips. Gate completo ainda em curso; .cache/group-carriers-final/report.json. Não é conclusão do requisito."
         },
         {
           "kind": "test",
@@ -827,7 +848,7 @@
           "tests/e2e/flows.spec.ts",
           "docs/STATUS.md"
         ],
-        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        "limits": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
       },
       "evidence": [
         {
@@ -839,7 +860,7 @@
             "tests/e2e/flows.spec.ts",
             "docs/STATUS.md"
           ],
-          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+          "notes": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
         }
       ]
     },
@@ -863,7 +884,7 @@
           "tests/e2e/flows.spec.ts",
           "docs/STATUS.md"
         ],
-        "limits": "Pesquisa nos objectos j\u00e1 carregados; pesquisa sobre todo o hist\u00f3rico autorizado ainda em falta."
+        "limits": "Pesquisa nos objectos já carregados; pesquisa sobre todo o histórico autorizado ainda em falta."
       },
       "evidence": [
         {
@@ -875,7 +896,7 @@
             "tests/e2e/flows.spec.ts",
             "docs/STATUS.md"
           ],
-          "notes": "Pesquisa nos objectos j\u00e1 carregados; pesquisa sobre todo o hist\u00f3rico autorizado ainda em falta."
+          "notes": "Pesquisa nos objectos já carregados; pesquisa sobre todo o histórico autorizado ainda em falta."
         }
       ]
     },
@@ -899,7 +920,7 @@
           "tests/e2e/flows.spec.ts",
           "docs/STATUS.md"
         ],
-        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        "limits": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
       },
       "evidence": [
         {
@@ -911,7 +932,7 @@
             "tests/e2e/flows.spec.ts",
             "docs/STATUS.md"
           ],
-          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+          "notes": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
         }
       ]
     },
@@ -934,7 +955,7 @@
           "tests/native/outbox-network.test.ts",
           "docs/OUTBOX-PROTOCOL.md"
         ],
-        "limits": "Bloqueio/den\u00fancia locais e regras de grupos/recibos/retry testadas; bloqueio pausa retry sem revogar c\u00f3pias. Gest\u00e3o de grupos din\u00e2micos e cancelamento expl\u00edcito pendentes."
+        "limits": "Bloqueio/denúncia locais e regras de grupos/recibos/retry testadas; bloqueio pausa retry sem revogar cópias. Gestão de grupos dinâmicos e cancelamento explícito pendentes."
       },
       "evidence": [
         {
@@ -944,7 +965,7 @@
             "tests/security.test.ts",
             "docs/ARCHITECTURE.md"
           ],
-          "notes": "Bloqueio/den\u00fancia locais; pol\u00edtica de grupo/cancelamento em falta."
+          "notes": "Bloqueio/denúncia locais; política de grupo/cancelamento em falta."
         },
         {
           "kind": "integration-checkpoint-2026-09-12",
@@ -954,7 +975,7 @@
             "tests/native/outbox-network.test.ts",
             "docs/OUTBOX-PROTOCOL.md"
           ],
-          "notes": "Bloqueio/den\u00fancia locais e regras de grupos/recibos/retry testadas; bloqueio pausa retry sem revogar c\u00f3pias. Gest\u00e3o de grupos din\u00e2micos e cancelamento expl\u00edcito pendentes."
+          "notes": "Bloqueio/denúncia locais e regras de grupos/recibos/retry testadas; bloqueio pausa retry sem revogar cópias. Gestão de grupos dinâmicos e cancelamento explícito pendentes."
         }
       ]
     },
@@ -976,7 +997,7 @@
           "tests/e2e/notifications.spec.ts",
           "docs/NOTIFICATIONS.md"
         ],
-        "limits": "Opt-in e privacidade testados com API substitu\u00edda; apresenta\u00e7\u00e3o real OS pendente."
+        "limits": "Opt-in e privacidade testados com API substituída; apresentação real OS pendente."
       },
       "evidence": [
         {
@@ -986,7 +1007,7 @@
             "tests/e2e/notifications.spec.ts",
             "docs/NOTIFICATIONS.md"
           ],
-          "notes": "Opt-in e privacidade testados com API substitu\u00edda; apresenta\u00e7\u00e3o real OS pendente."
+          "notes": "Opt-in e privacidade testados com API substituída; apresentação real OS pendente."
         }
       ]
     },
@@ -1008,7 +1029,7 @@
           "tests/e2e/social.spec.ts",
           "docs/SOCIAL.md"
         ],
-        "limits": "Perfil assinado e seguir local; rela\u00e7\u00e3o p\u00fablica/seguidores em falta."
+        "limits": "Perfil assinado e seguir local; relação pública/seguidores em falta."
       },
       "evidence": [
         {
@@ -1018,7 +1039,7 @@
             "tests/e2e/social.spec.ts",
             "docs/SOCIAL.md"
           ],
-          "notes": "Perfil assinado e seguir local; rela\u00e7\u00e3o p\u00fablica/seguidores em falta."
+          "notes": "Perfil assinado e seguir local; relação pública/seguidores em falta."
         }
       ]
     },
@@ -1042,7 +1063,7 @@
           "tests/e2e/flows.spec.ts",
           "docs/STATUS.md"
         ],
-        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        "limits": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
       },
       "evidence": [
         {
@@ -1054,7 +1075,7 @@
             "tests/e2e/flows.spec.ts",
             "docs/STATUS.md"
           ],
-          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+          "notes": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
         }
       ]
     },
@@ -1078,7 +1099,7 @@
           "tests/e2e/flows.spec.ts",
           "docs/STATUS.md"
         ],
-        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        "limits": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
       },
       "evidence": [
         {
@@ -1090,7 +1111,7 @@
             "tests/e2e/flows.spec.ts",
             "docs/STATUS.md"
           ],
-          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+          "notes": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
         }
       ]
     },
@@ -1112,7 +1133,7 @@
           "tests/social-integration.test.ts",
           "tests/e2e/social.spec.ts"
         ],
-        "limits": "Colec\u00e7\u00f5es locais cifradas e partilha por endere\u00e7o; colec\u00e7\u00f5es partilhadas n\u00e3o implementadas."
+        "limits": "Colecções locais cifradas e partilha por endereço; colecções partilhadas não implementadas."
       },
       "evidence": [
         {
@@ -1122,7 +1143,7 @@
             "tests/social-integration.test.ts",
             "tests/e2e/social.spec.ts"
           ],
-          "notes": "Colec\u00e7\u00f5es locais cifradas e partilha por endere\u00e7o; colec\u00e7\u00f5es partilhadas n\u00e3o implementadas."
+          "notes": "Colecções locais cifradas e partilha por endereço; colecções partilhadas não implementadas."
         }
       ]
     },
@@ -1144,7 +1165,7 @@
           "docs/SOCIAL.md",
           "docs/STATUS.md"
         ],
-        "limits": "Matriz funcional publicada; auditoria final cont\u00ednua."
+        "limits": "Matriz funcional publicada; auditoria final contínua."
       },
       "evidence": [
         {
@@ -1154,7 +1175,7 @@
             "docs/SOCIAL.md",
             "docs/STATUS.md"
           ],
-          "notes": "Matriz funcional publicada; auditoria final cont\u00ednua."
+          "notes": "Matriz funcional publicada; auditoria final contínua."
         }
       ]
     },
@@ -1178,7 +1199,7 @@
           "tests/e2e/flows.spec.ts",
           "docs/STATUS.md"
         ],
-        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        "limits": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
       },
       "evidence": [
         {
@@ -1190,7 +1211,7 @@
             "tests/e2e/flows.spec.ts",
             "docs/STATUS.md"
           ],
-          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+          "notes": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
         }
       ]
     },
@@ -1214,7 +1235,7 @@
           "tests/e2e/flows.spec.ts",
           "docs/STATUS.md"
         ],
-        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        "limits": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
       },
       "evidence": [
         {
@@ -1226,7 +1247,7 @@
             "tests/e2e/flows.spec.ts",
             "docs/STATUS.md"
           ],
-          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+          "notes": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
         }
       ]
     },
@@ -1250,7 +1271,7 @@
           "tests/e2e/flows.spec.ts",
           "docs/STATUS.md"
         ],
-        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        "limits": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
       },
       "evidence": [
         {
@@ -1262,7 +1283,7 @@
             "tests/e2e/flows.spec.ts",
             "docs/STATUS.md"
           ],
-          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+          "notes": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
         }
       ]
     },
@@ -1286,7 +1307,7 @@
           "tests/e2e/flows.spec.ts",
           "docs/STATUS.md"
         ],
-        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        "limits": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
       },
       "evidence": [
         {
@@ -1298,7 +1319,7 @@
             "tests/e2e/flows.spec.ts",
             "docs/STATUS.md"
           ],
-          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+          "notes": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
         }
       ]
     },
@@ -1320,7 +1341,7 @@
           "tests/transport-hardening.test.ts",
           "docs/TRANSPORT.md"
         ],
-        "limits": "Modo baixo consumo e limites de bytes; consumo f\u00edsico/bateria n\u00e3o medido."
+        "limits": "Modo baixo consumo e limites de bytes; consumo físico/bateria não medido."
       },
       "evidence": [
         {
@@ -1330,7 +1351,7 @@
             "tests/transport-hardening.test.ts",
             "docs/TRANSPORT.md"
           ],
-          "notes": "Modo baixo consumo e limites de bytes; consumo f\u00edsico/bateria n\u00e3o medido."
+          "notes": "Modo baixo consumo e limites de bytes; consumo físico/bateria não medido."
         }
       ]
     },
@@ -1354,7 +1375,7 @@
           "tests/e2e/flows.spec.ts",
           "docs/STATUS.md"
         ],
-        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        "limits": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
       },
       "evidence": [
         {
@@ -1366,7 +1387,7 @@
             "tests/e2e/flows.spec.ts",
             "docs/STATUS.md"
           ],
-          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+          "notes": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
         }
       ]
     },
@@ -1390,7 +1411,7 @@
           "tests/e2e/flows.spec.ts",
           "docs/STATUS.md"
         ],
-        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        "limits": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
       },
       "evidence": [
         {
@@ -1402,7 +1423,7 @@
             "tests/e2e/flows.spec.ts",
             "docs/STATUS.md"
           ],
-          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+          "notes": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
         }
       ]
     },
@@ -1426,7 +1447,7 @@
           "tests/e2e/flows.spec.ts",
           "docs/STATUS.md"
         ],
-        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        "limits": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
       },
       "evidence": [
         {
@@ -1438,7 +1459,7 @@
             "tests/e2e/flows.spec.ts",
             "docs/STATUS.md"
           ],
-          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+          "notes": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
         }
       ]
     },
@@ -1462,7 +1483,7 @@
           "tests/e2e/flows.spec.ts",
           "docs/STATUS.md"
         ],
-        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        "limits": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
       },
       "evidence": [
         {
@@ -1474,7 +1495,7 @@
             "tests/e2e/flows.spec.ts",
             "docs/STATUS.md"
           ],
-          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+          "notes": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
         }
       ]
     },
@@ -1498,7 +1519,7 @@
           "tests/e2e/flows.spec.ts",
           "docs/STATUS.md"
         ],
-        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        "limits": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
       },
       "evidence": [
         {
@@ -1510,7 +1531,7 @@
             "tests/e2e/flows.spec.ts",
             "docs/STATUS.md"
           ],
-          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+          "notes": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
         }
       ]
     },
@@ -1534,7 +1555,7 @@
           "tests/e2e/flows.spec.ts",
           "docs/STATUS.md"
         ],
-        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        "limits": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
       },
       "evidence": [
         {
@@ -1546,7 +1567,7 @@
             "tests/e2e/flows.spec.ts",
             "docs/STATUS.md"
           ],
-          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+          "notes": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
         }
       ]
     },
@@ -1570,7 +1591,7 @@
           "tests/e2e/flows.spec.ts",
           "docs/STATUS.md"
         ],
-        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        "limits": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
       },
       "evidence": [
         {
@@ -1582,7 +1603,7 @@
             "tests/e2e/flows.spec.ts",
             "docs/STATUS.md"
           ],
-          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+          "notes": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
         }
       ]
     },
@@ -1606,7 +1627,7 @@
           "tests/e2e/flows.spec.ts",
           "docs/STATUS.md"
         ],
-        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        "limits": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
       },
       "evidence": [
         {
@@ -1618,7 +1639,7 @@
             "tests/e2e/flows.spec.ts",
             "docs/STATUS.md"
           ],
-          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+          "notes": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
         }
       ]
     },
@@ -1642,7 +1663,7 @@
           "tests/e2e/flows.spec.ts",
           "docs/STATUS.md"
         ],
-        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        "limits": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
       },
       "evidence": [
         {
@@ -1654,7 +1675,7 @@
             "tests/e2e/flows.spec.ts",
             "docs/STATUS.md"
           ],
-          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+          "notes": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
         }
       ]
     },
@@ -1675,7 +1696,7 @@
         "evidence_paths": [
           "tests/e2e/flows.spec.ts"
         ],
-        "limits": "Drag/drop real, setas/teclado, paletas e quatro blocos; mais templates/media e toque f\u00edsico pendentes."
+        "limits": "Drag/drop real, setas/teclado, paletas e quatro blocos; mais templates/media e toque físico pendentes."
       },
       "evidence": [
         {
@@ -1684,7 +1705,7 @@
           "paths": [
             "tests/e2e/flows.spec.ts"
           ],
-          "notes": "Drag/drop real, setas/teclado, paletas e quatro blocos; mais templates/media e toque f\u00edsico pendentes."
+          "notes": "Drag/drop real, setas/teclado, paletas e quatro blocos; mais templates/media e toque físico pendentes."
         }
       ]
     },
@@ -1708,7 +1729,7 @@
           "tests/e2e/flows.spec.ts",
           "docs/STATUS.md"
         ],
-        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        "limits": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
       },
       "evidence": [
         {
@@ -1720,7 +1741,7 @@
             "tests/e2e/flows.spec.ts",
             "docs/STATUS.md"
           ],
-          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+          "notes": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
         }
       ]
     },
@@ -1744,7 +1765,7 @@
           "tests/e2e/flows.spec.ts",
           "docs/STATUS.md"
         ],
-        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        "limits": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
       },
       "evidence": [
         {
@@ -1756,7 +1777,7 @@
             "tests/e2e/flows.spec.ts",
             "docs/STATUS.md"
           ],
-          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+          "notes": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
         }
       ]
     },
@@ -1780,7 +1801,7 @@
           "tests/e2e/flows.spec.ts",
           "docs/STATUS.md"
         ],
-        "limits": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+        "limits": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
       },
       "evidence": [
         {
@@ -1792,7 +1813,7 @@
             "tests/e2e/flows.spec.ts",
             "docs/STATUS.md"
           ],
-          "notes": "Implementa\u00e7\u00e3o e testes do host; limites de plataforma continuam na matriz STATUS."
+          "notes": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
         }
       ]
     },
@@ -1814,7 +1835,7 @@
           "docs/evidence/ui",
           "docs/SIMULATION.md"
         ],
-        "limits": "Contraste/texto maior/baixo consumo implementados; leitor de ecr\u00e3 f\u00edsico e emerg\u00eancia n\u00e3o validados."
+        "limits": "Contraste/texto maior/baixo consumo implementados; leitor de ecrã físico e emergência não validados."
       },
       "evidence": [
         {
@@ -1824,7 +1845,7 @@
             "docs/evidence/ui",
             "docs/SIMULATION.md"
           ],
-          "notes": "Contraste/texto maior/baixo consumo implementados; leitor de ecr\u00e3 f\u00edsico e emerg\u00eancia n\u00e3o validados."
+          "notes": "Contraste/texto maior/baixo consumo implementados; leitor de ecrã físico e emergência não validados."
         }
       ]
     },
@@ -1846,7 +1867,7 @@
           "tests/e2e/flows.spec.ts",
           "docs/evidence/ui"
         ],
-        "limits": "Capturas/axe e browser reais; revis\u00e3o em hardware e leitor de ecr\u00e3 pendentes."
+        "limits": "Capturas/axe e browser reais; revisão em hardware e leitor de ecrã pendentes."
       },
       "evidence": [
         {
@@ -1856,7 +1877,7 @@
             "tests/e2e/flows.spec.ts",
             "docs/evidence/ui"
           ],
-          "notes": "Capturas/axe e browser reais; revis\u00e3o em hardware e leitor de ecr\u00e3 pendentes."
+          "notes": "Capturas/axe e browser reais; revisão em hardware e leitor de ecrã pendentes."
         }
       ]
     },
@@ -1878,7 +1899,7 @@
           "tests/e2e/flows.spec.ts",
           "docs/evidence/ui"
         ],
-        "limits": "Capturas/axe e browser reais; revis\u00e3o em hardware e leitor de ecr\u00e3 pendentes."
+        "limits": "Capturas/axe e browser reais; revisão em hardware e leitor de ecrã pendentes."
       },
       "evidence": [
         {
@@ -1888,7 +1909,7 @@
             "tests/e2e/flows.spec.ts",
             "docs/evidence/ui"
           ],
-          "notes": "Capturas/axe e browser reais; revis\u00e3o em hardware e leitor de ecr\u00e3 pendentes."
+          "notes": "Capturas/axe e browser reais; revisão em hardware e leitor de ecrã pendentes."
         }
       ]
     },
@@ -1910,7 +1931,7 @@
           "tests/e2e/flows.spec.ts",
           "docs/evidence/ui"
         ],
-        "limits": "Capturas/axe e browser reais; revis\u00e3o em hardware e leitor de ecr\u00e3 pendentes."
+        "limits": "Capturas/axe e browser reais; revisão em hardware e leitor de ecrã pendentes."
       },
       "evidence": [
         {
@@ -1920,7 +1941,7 @@
             "tests/e2e/flows.spec.ts",
             "docs/evidence/ui"
           ],
-          "notes": "Capturas/axe e browser reais; revis\u00e3o em hardware e leitor de ecr\u00e3 pendentes."
+          "notes": "Capturas/axe e browser reais; revisão em hardware e leitor de ecrã pendentes."
         }
       ]
     },
@@ -1942,7 +1963,7 @@
           "tests/e2e/flows.spec.ts",
           "docs/evidence/ui"
         ],
-        "limits": "Capturas/axe e browser reais; revis\u00e3o em hardware e leitor de ecr\u00e3 pendentes."
+        "limits": "Capturas/axe e browser reais; revisão em hardware e leitor de ecrã pendentes."
       },
       "evidence": [
         {
@@ -1952,7 +1973,7 @@
             "tests/e2e/flows.spec.ts",
             "docs/evidence/ui"
           ],
-          "notes": "Capturas/axe e browser reais; revis\u00e3o em hardware e leitor de ecr\u00e3 pendentes."
+          "notes": "Capturas/axe e browser reais; revisão em hardware e leitor de ecrã pendentes."
         }
       ]
     },
@@ -1974,7 +1995,7 @@
           "tests/e2e/flows.spec.ts",
           "docs/evidence/ui"
         ],
-        "limits": "Capturas/axe e browser reais; revis\u00e3o em hardware e leitor de ecr\u00e3 pendentes."
+        "limits": "Capturas/axe e browser reais; revisão em hardware e leitor de ecrã pendentes."
       },
       "evidence": [
         {
@@ -1984,7 +2005,7 @@
             "tests/e2e/flows.spec.ts",
             "docs/evidence/ui"
           ],
-          "notes": "Capturas/axe e browser reais; revis\u00e3o em hardware e leitor de ecr\u00e3 pendentes."
+          "notes": "Capturas/axe e browser reais; revisão em hardware e leitor de ecrã pendentes."
         }
       ]
     },
@@ -2005,7 +2026,7 @@
         "evidence_paths": [
           "docs/TRANSPORT.md"
         ],
-        "limits": "RNS/licen\u00e7a avaliados; sem compatibilidade implementada ou alegada."
+        "limits": "RNS/licença avaliados; sem compatibilidade implementada ou alegada."
       },
       "evidence": [
         {
@@ -2014,7 +2035,7 @@
           "paths": [
             "docs/TRANSPORT.md"
           ],
-          "notes": "RNS/licen\u00e7a avaliados; sem compatibilidade implementada ou alegada."
+          "notes": "RNS/licença avaliados; sem compatibilidade implementada ou alegada."
         }
       ]
     },
@@ -2036,7 +2057,7 @@
           "docs/TRANSPORT.md",
           "docs/STATUS.md"
         ],
-        "limits": "Matriz distingue TCP, s\u00e9rie PTY, r\u00e1dio f\u00edsico, BLE/Wi-Fi Direct e simula\u00e7\u00e3o."
+        "limits": "Matriz distingue TCP, série PTY, rádio físico, BLE/Wi-Fi Direct e simulação."
       },
       "evidence": [
         {
@@ -2046,7 +2067,7 @@
             "docs/TRANSPORT.md",
             "docs/STATUS.md"
           ],
-          "notes": "Matriz distingue TCP, s\u00e9rie PTY, r\u00e1dio f\u00edsico, BLE/Wi-Fi Direct e simula\u00e7\u00e3o."
+          "notes": "Matriz distingue TCP, série PTY, rádio físico, BLE/Wi-Fi Direct e simulação."
         }
       ]
     },
@@ -2100,7 +2121,7 @@
           "docs/evidence/ci-919beec.json",
           "docs/evidence/ios/fde529e/observed-ci.json"
         ],
-        "limits": "Node Windows e pacote desktop passaram em CI fde529e. Execu\u00e7\u00e3o gr\u00e1fica Windows continua n\u00e3o verificada."
+        "limits": "Node Windows e pacote desktop passaram em CI fde529e. Execução gráfica Windows continua não verificada."
       },
       "evidence": [
         {
@@ -2117,7 +2138,7 @@
           "paths": [
             "docs/evidence/ios/fde529e/observed-ci.json"
           ],
-          "notes": "Node Windows e pacote desktop passaram em CI fde529e. Execu\u00e7\u00e3o gr\u00e1fica Windows continua n\u00e3o verificada."
+          "notes": "Node Windows e pacote desktop passaram em CI fde529e. Execução gráfica Windows continua não verificada."
         }
       ]
     },
@@ -2139,7 +2160,7 @@
           "docs/evidence/ci-919beec.json",
           "docs/evidence/ios/fde529e/observed-ci.json"
         ],
-        "limits": "Node/macOS e pacote desktop passaram em CI fde529e. Execu\u00e7\u00e3o gr\u00e1fica, hardware e assinatura macOS continuam por verificar."
+        "limits": "Node/macOS e pacote desktop passaram em CI fde529e. Execução gráfica, hardware e assinatura macOS continuam por verificar."
       },
       "evidence": [
         {
@@ -2156,7 +2177,7 @@
           "paths": [
             "docs/evidence/ios/fde529e/observed-ci.json"
           ],
-          "notes": "Node/macOS e pacote desktop passaram em CI fde529e. Execu\u00e7\u00e3o gr\u00e1fica, hardware e assinatura macOS continuam por verificar."
+          "notes": "Node/macOS e pacote desktop passaram em CI fde529e. Execução gráfica, hardware e assinatura macOS continuam por verificar."
         }
       ]
     },
@@ -2179,7 +2200,7 @@
           "docs/evidence/android/documents-fa1481d3/index.json",
           "docs/evidence/android-sqlite/apk-136a5103"
         ],
-        "limits": "APK136a5103/AAR9e2fb77f passaram82 asser\u00e7\u00f5es no \u00fanico emulador API36x86_64 e verifica\u00e7\u00e3o SQLite Node. AVD/adb pr\u00f3prios parados; novos grupos n\u00e3o est\u00e3o nesse APK. ARM64 f\u00edsico, r\u00e1dios e novos artefactos pendentes."
+        "limits": "APK136a5103/AAR9e2fb77f passaram82 asserções no único emulador API36x86_64 e verificação SQLite Node. AVD/adb próprios parados; novos grupos não estão nesse APK. ARM64 físico, rádios e novos artefactos pendentes."
       },
       "evidence": [
         {
@@ -2188,7 +2209,7 @@
           "paths": [
             "docs/ANDROID.md"
           ],
-          "notes": "APK Go real no emulador API36 x86_64; dispositivo f\u00edsico e ARM64 ainda n\u00e3o verificados."
+          "notes": "APK Go real no emulador API36 x86_64; dispositivo físico e ARM64 ainda não verificados."
         },
         {
           "kind": "integration-checkpoint-2026-09-12",
@@ -2198,7 +2219,7 @@
             "docs/evidence/android/documents-4de67c3e/index.json",
             "docs/evidence/android/documents-4de67c3e/post-apk-source-handoff.json"
           ],
-          "notes": "APK 4de67c3e passou 80 asser\u00e7\u00f5es no emulador API36 x86_64; checker posterior tem 28 asser\u00e7\u00f5es host, novo APK/gates pendentes. Dispositivo f\u00edsico/ARM64 n\u00e3o verificados."
+          "notes": "APK 4de67c3e passou 80 asserções no emulador API36 x86_64; checker posterior tem 28 asserções host, novo APK/gates pendentes. Dispositivo físico/ARM64 não verificados."
         },
         {
           "kind": "android-final-integration-2026-09-12",
@@ -2207,7 +2228,7 @@
             "docs/ANDROID.md",
             "docs/evidence/android/documents-27a71947/index.json"
           ],
-          "notes": "APK final 27a71947 com checker/interface actuais passou 80 asser\u00e7\u00f5es no emulador API36 x86_64; 28 document/session host e outras pol\u00edticas passaram. Dispositivo f\u00edsico/ARM64 n\u00e3o verificados."
+          "notes": "APK final 27a71947 com checker/interface actuais passou 80 asserções no emulador API36 x86_64; 28 document/session host e outras políticas passaram. Dispositivo físico/ARM64 não verificados."
         },
         {
           "kind": "corrective-milestone-2026-09-12",
@@ -2216,7 +2237,7 @@
             "docs/ANDROID.md",
             "docs/evidence/android/documents-fa1481d3/index.json"
           ],
-          "notes": "APKfa1481d3 com n\u00facleo corrigido e interface final passou80 asser\u00e7\u00f5es no mesmo emuladorAPI36x86_64; f\u00edsico/ARM64 n\u00e3o verificados."
+          "notes": "APKfa1481d3 com núcleo corrigido e interface final passou80 asserções no mesmo emuladorAPI36x86_64; físico/ARM64 não verificados."
         },
         {
           "kind": "group-outbox-authority-milestone-2026-09-13",
@@ -2224,7 +2245,7 @@
           "paths": [
             "docs/evidence/android-sqlite/apk-136a5103"
           ],
-          "notes": "APK136a5103/AAR9e2fb77f passaram82 asser\u00e7\u00f5es no \u00fanico emulador API36x86_64 e verifica\u00e7\u00e3o SQLite Node. AVD/adb pr\u00f3prios parados; novos grupos n\u00e3o est\u00e3o nesse APK. ARM64 f\u00edsico, r\u00e1dios e novos artefactos pendentes."
+          "notes": "APK136a5103/AAR9e2fb77f passaram82 asserções no único emulador API36x86_64 e verificação SQLite Node. AVD/adb próprios parados; novos grupos não estão nesse APK. ARM64 físico, rádios e novos artefactos pendentes."
         }
       ]
     },
@@ -2248,7 +2269,7 @@
           "docs/evidence/ios/c3f5b42",
           "docs/evidence/ios/fde529e"
         ],
-        "limits": "Em274004e houve lan\u00e7amento real e1 XCUITest falhado na WKWebView; emfde529e a fotografia falhou antes do XCTest. Sem fluxo funcional passado. Pr\u00e9-arranque separado tem22 testes host/est\u00e1tica, sem compila\u00e7\u00e3o/execu\u00e7\u00e3o Apple nessa altera\u00e7\u00e3o. Hardware/assinatura bloqueados."
+        "limits": "Em274004e houve lançamento real e1 XCUITest falhado na WKWebView; emfde529e a fotografia falhou antes do XCTest. Sem fluxo funcional passado. Pré-arranque separado tem22 testes host/estática, sem compilação/execução Apple nessa alteração. Hardware/assinatura bloqueados."
       },
       "evidence": [
         {
@@ -2257,7 +2278,7 @@
           "paths": [
             "docs/IOS.md"
           ],
-          "notes": "Shell iOS implementada; Swift/Xcode/simulador n\u00e3o executados ainda, hardware e assinatura bloqueados neste Linux."
+          "notes": "Shell iOS implementada; Swift/Xcode/simulador não executados ainda, hardware e assinatura bloqueados neste Linux."
         },
         {
           "kind": "integration-checkpoint-2026-09-12",
@@ -2267,7 +2288,7 @@
             "docs/IOS-SIMULATOR.md",
             "docs/evidence/ios/c3f5b42"
           ],
-          "notes": "XCFramework dispositivo/simulador e app unsigned compilaram no runner Xcode26.6; 25 asser\u00e7\u00f5es Foundation host passaram. Novo runner tem 11 checks host; aplica\u00e7\u00e3o iOS n\u00e3o executada, hardware/assinatura bloqueados neste Linux."
+          "notes": "XCFramework dispositivo/simulador e app unsigned compilaram no runner Xcode26.6; 25 asserções Foundation host passaram. Novo runner tem 11 checks host; aplicação iOS não executada, hardware/assinatura bloqueados neste Linux."
         },
         {
           "kind": "group-outbox-authority-milestone-2026-09-13",
@@ -2275,7 +2296,7 @@
           "paths": [
             "docs/evidence/ios/fde529e"
           ],
-          "notes": "Em274004e houve lan\u00e7amento real e1 XCUITest falhado na WKWebView; emfde529e a fotografia falhou antes do XCTest. Sem fluxo funcional passado. Pr\u00e9-arranque separado tem22 testes host/est\u00e1tica, sem compila\u00e7\u00e3o/execu\u00e7\u00e3o Apple nessa altera\u00e7\u00e3o. Hardware/assinatura bloqueados."
+          "notes": "Em274004e houve lançamento real e1 XCUITest falhado na WKWebView; emfde529e a fotografia falhou antes do XCTest. Sem fluxo funcional passado. Pré-arranque separado tem22 testes host/estática, sem compilação/execução Apple nessa alteração. Hardware/assinatura bloqueados."
         }
       ]
     },
@@ -2297,7 +2318,7 @@
           "docs/ANDROID.md",
           "docs/IOS.md"
         ],
-        "limits": "Relaying apenas em primeiro plano, Stop normal no background; restri\u00e7\u00f5es documentadas."
+        "limits": "Relaying apenas em primeiro plano, Stop normal no background; restrições documentadas."
       },
       "evidence": [
         {
@@ -2307,7 +2328,7 @@
             "docs/ANDROID.md",
             "docs/IOS.md"
           ],
-          "notes": "Relaying apenas em primeiro plano, Stop normal no background; restri\u00e7\u00f5es documentadas."
+          "notes": "Relaying apenas em primeiro plano, Stop normal no background; restrições documentadas."
         }
       ]
     },
@@ -2330,7 +2351,7 @@
           "tests/transport-hardening.test.ts",
           "tests/snapshot.test.ts"
         ],
-        "limits": "66 testes Node passados, incluindo limites/corrup\u00e7\u00e3o/ACL; Go11core+11transport+17app com race."
+        "limits": "66 testes Node passados, incluindo limites/corrupção/ACL; Go11core+11transport+17app com race."
       },
       "evidence": [
         {
@@ -2341,7 +2362,7 @@
             "tests/transport-hardening.test.ts",
             "tests/snapshot.test.ts"
           ],
-          "notes": "66 testes Node passados, incluindo limites/corrup\u00e7\u00e3o/ACL; Go11core+11transport+17app com race."
+          "notes": "66 testes Node passados, incluindo limites/corrupção/ACL; Go11core+11transport+17app com race."
         }
       ]
     },
@@ -2363,7 +2384,7 @@
           "docs/evidence/heterogeneous.json",
           "docs/evidence/native/mixed-tcp.json"
         ],
-        "limits": "Isolamento de topologia com controlos positivos/negativos; n\u00e3o firewall f\u00edsico."
+        "limits": "Isolamento de topologia com controlos positivos/negativos; não firewall físico."
       },
       "evidence": [
         {
@@ -2373,7 +2394,7 @@
             "docs/evidence/heterogeneous.json",
             "docs/evidence/native/mixed-tcp.json"
           ],
-          "notes": "Isolamento de topologia com controlos positivos/negativos; n\u00e3o firewall f\u00edsico."
+          "notes": "Isolamento de topologia com controlos positivos/negativos; não firewall físico."
         }
       ]
     },
@@ -2395,7 +2416,7 @@
           "docs/evidence/heterogeneous.json",
           "docs/evidence/native/mixed-serial.json"
         ],
-        "limits": "TCP\u2192serialport por PTYs reais; bytes/autor preservados."
+        "limits": "TCP→serialport por PTYs reais; bytes/autor preservados."
       },
       "evidence": [
         {
@@ -2405,7 +2426,7 @@
             "docs/evidence/heterogeneous.json",
             "docs/evidence/native/mixed-serial.json"
           ],
-          "notes": "TCP\u2192serialport por PTYs reais; bytes/autor preservados."
+          "notes": "TCP→serialport por PTYs reais; bytes/autor preservados."
         }
       ]
     },
@@ -2427,7 +2448,7 @@
           "docs/evidence/native/mixed-tcp.json",
           "docs/ANDROID.md"
         ],
-        "limits": "Autor termina; outro n\u00f3 serve novo leitor sem reautoria."
+        "limits": "Autor termina; outro nó serve novo leitor sem reautoria."
       },
       "evidence": [
         {
@@ -2437,7 +2458,7 @@
             "docs/evidence/native/mixed-tcp.json",
             "docs/ANDROID.md"
           ],
-          "notes": "Autor termina; outro n\u00f3 serve novo leitor sem reautoria."
+          "notes": "Autor termina; outro nó serve novo leitor sem reautoria."
         }
       ]
     },
@@ -2460,7 +2481,7 @@
           "tests/security.test.ts",
           "tests/native/mixed-network.test.ts"
         ],
-        "limits": "Falhas de escrita/leitura indevidas, tamper e replay com controlos v\u00e1lidos."
+        "limits": "Falhas de escrita/leitura indevidas, tamper e replay com controlos válidos."
       },
       "evidence": [
         {
@@ -2471,7 +2492,7 @@
             "tests/security.test.ts",
             "tests/native/mixed-network.test.ts"
           ],
-          "notes": "Falhas de escrita/leitura indevidas, tamper e replay com controlos v\u00e1lidos."
+          "notes": "Falhas de escrita/leitura indevidas, tamper e replay com controlos válidos."
         }
       ]
     },
@@ -2493,7 +2514,7 @@
           "tests/transport-hardening.test.ts",
           "tests/native/mixed-network.test.ts"
         ],
-        "limits": "Restart, fragmenta\u00e7\u00e3o, duplicados, churn e parti\u00e7\u00e3o/heal reais."
+        "limits": "Restart, fragmentação, duplicados, churn e partição/heal reais."
       },
       "evidence": [
         {
@@ -2503,7 +2524,7 @@
             "tests/transport-hardening.test.ts",
             "tests/native/mixed-network.test.ts"
           ],
-          "notes": "Restart, fragmenta\u00e7\u00e3o, duplicados, churn e parti\u00e7\u00e3o/heal reais."
+          "notes": "Restart, fragmentação, duplicados, churn e partição/heal reais."
         },
         {
           "kind": "test",
@@ -2517,7 +2538,7 @@
           "command": "Android documents/deadline/smoke/relay + scripts/android-private-profile.mjs; exact invocations in docs/evidence/android-sqlite/apk-136a5103",
           "result": "pass",
           "timestamp": "2026-09-12",
-          "notes": "APK136a5103c82c4c87f6865aa2b68daa5eb60796ac4d420aa8f09d5fea5fd4e2a5, com AAR9e2fb77f9938721c9df7ef82df19e357ab02ff0c417ec40061a82e0f27004585:82 asser\u00e7\u00f5es no mesmo emulador API36x86_64 (38 SAF36.693s,15 prazo134.729s,16 mensagens15.355s,13 relay18.913s) e inspec\u00e7\u00e3o cifrada0.768s passaram. Hash instalado e inputs inalterados; cofre/JSON legado preservados; SQLite Android e binding autenticados pelo Node. Root reviu a captura nativa final. Instrumenta\u00e7\u00e3o removida, forwards vazios, AVD/adb pr\u00f3prios parados, identidade preservada. Evid\u00eancia em `docs/evidence/android-sqlite/apk-136a5103`. Physical device and dynamic groups are not covered."
+          "notes": "APK136a5103c82c4c87f6865aa2b68daa5eb60796ac4d420aa8f09d5fea5fd4e2a5, com AAR9e2fb77f9938721c9df7ef82df19e357ab02ff0c417ec40061a82e0f27004585:82 asserções no mesmo emulador API36x86_64 (38 SAF36.693s,15 prazo134.729s,16 mensagens15.355s,13 relay18.913s) e inspecção cifrada0.768s passaram. Hash instalado e inputs inalterados; cofre/JSON legado preservados; SQLite Android e binding autenticados pelo Node. Root reviu a captura nativa final. Instrumentação removida, forwards vazios, AVD/adb próprios parados, identidade preservada. Evidência em `docs/evidence/android-sqlite/apk-136a5103`. Physical device and dynamic groups are not covered."
         }
       ]
     },
@@ -2539,7 +2560,7 @@
           "tests/simulation.test.ts",
           "docs/SIMULATION.md"
         ],
-        "limits": "Simula\u00e7\u00e3o determin\u00edstica separada; 9 testes e16 controlos de cen\u00e1rio."
+        "limits": "Simulação determinística separada; 9 testes e16 controlos de cenário."
       },
       "evidence": [
         {
@@ -2549,7 +2570,7 @@
             "tests/simulation.test.ts",
             "docs/SIMULATION.md"
           ],
-          "notes": "Simula\u00e7\u00e3o determin\u00edstica separada; 9 testes e16 controlos de cen\u00e1rio."
+          "notes": "Simulação determinística separada; 9 testes e16 controlos de cenário."
         }
       ]
     },
@@ -2603,7 +2624,7 @@
           "tests/simulation.test.ts",
           "docs/SIMULATION.md"
         ],
-        "limits": "Controlos deliberadamente quebrados de routing e verifica\u00e7\u00e3o detectados."
+        "limits": "Controlos deliberadamente quebrados de routing e verificação detectados."
       },
       "evidence": [
         {
@@ -2613,7 +2634,7 @@
             "tests/simulation.test.ts",
             "docs/SIMULATION.md"
           ],
-          "notes": "Controlos deliberadamente quebrados de routing e verifica\u00e7\u00e3o detectados."
+          "notes": "Controlos deliberadamente quebrados de routing e verificação detectados."
         }
       ]
     },
@@ -2635,7 +2656,7 @@
           "docs/evidence/verification.json",
           "tests/e2e"
         ],
-        "limits": "10 percursos browser Node e10 Go passaram; workflows nativos m\u00f3veis completos pendentes."
+        "limits": "10 percursos browser Node e10 Go passaram; workflows nativos móveis completos pendentes."
       },
       "evidence": [
         {
@@ -2645,7 +2666,7 @@
             "docs/evidence/verification.json",
             "tests/e2e"
           ],
-          "notes": "10 percursos browser Node e10 Go passaram; workflows nativos m\u00f3veis completos pendentes."
+          "notes": "10 percursos browser Node e10 Go passaram; workflows nativos móveis completos pendentes."
         }
       ]
     },
@@ -2668,7 +2689,7 @@
           ".github/workflows/ci.yml",
           "docs/STATUS.md"
         ],
-        "limits": "Oito jobs c3f5b42 passaram: Node em tr\u00eas OS, Go/UI, tr\u00eas pacotes desktop e build iOS. Altera\u00e7\u00f5es locais posteriores ainda n\u00e3o publicadas; novo gate de execu\u00e7\u00e3o iOS n\u00e3o observado."
+        "limits": "Oito jobs c3f5b42 passaram: Node em três OS, Go/UI, três pacotes desktop e build iOS. Alterações locais posteriores ainda não publicadas; novo gate de execução iOS não observado."
       },
       "evidence": [
         {
@@ -2678,7 +2699,7 @@
             "docs/evidence/ci-919beec.json",
             ".github/workflows/ci.yml"
           ],
-          "notes": "Node nos3OS passou; novos jobs Go/desktop/iOS ainda por observar ap\u00f3s push."
+          "notes": "Node nos3OS passou; novos jobs Go/desktop/iOS ainda por observar após push."
         },
         {
           "kind": "integration-checkpoint-2026-09-12",
@@ -2688,7 +2709,7 @@
             ".github/workflows/ci.yml",
             "docs/STATUS.md"
           ],
-          "notes": "Oito jobs c3f5b42 passaram: Node em tr\u00eas OS, Go/UI, tr\u00eas pacotes desktop e build iOS. Altera\u00e7\u00f5es locais posteriores ainda n\u00e3o publicadas; novo gate de execu\u00e7\u00e3o iOS n\u00e3o observado."
+          "notes": "Oito jobs c3f5b42 passaram: Node em três OS, Go/UI, três pacotes desktop e build iOS. Alterações locais posteriores ainda não publicadas; novo gate de execução iOS não observado."
         }
       ]
     },
@@ -2712,7 +2733,7 @@
           "docs/APPLICATION-REVIEW.md",
           "docs/RELEASE-REVIEW.md"
         ],
-        "limits": "Revis\u00f5es reais, correc\u00e7\u00f5es e repeti\u00e7\u00e3o; auditoria continua no \u00e2mbito completo."
+        "limits": "Revisões reais, correcções e repetição; auditoria continua no âmbito completo."
       },
       "evidence": [
         {
@@ -2724,7 +2745,7 @@
             "docs/APPLICATION-REVIEW.md",
             "docs/RELEASE-REVIEW.md"
           ],
-          "notes": "Revis\u00f5es reais, correc\u00e7\u00f5es e repeti\u00e7\u00e3o; auditoria continua no \u00e2mbito completo."
+          "notes": "Revisões reais, correcções e repetição; auditoria continua no âmbito completo."
         }
       ]
     },
@@ -2746,7 +2767,7 @@
           "docs/STATUS.md",
           ".codex-delivery/traceability.md"
         ],
-        "limits": "Evid\u00eancia actualizada por requisito; contrato total ainda incompleto."
+        "limits": "Evidência actualizada por requisito; contrato total ainda incompleto."
       },
       "evidence": [
         {
@@ -2756,7 +2777,7 @@
             "docs/STATUS.md",
             ".codex-delivery/traceability.md"
           ],
-          "notes": "Evid\u00eancia actualizada por requisito; contrato total ainda incompleto."
+          "notes": "Evidência actualizada por requisito; contrato total ainda incompleto."
         }
       ]
     },
@@ -2778,7 +2799,7 @@
           "docs/AGENTS.md",
           "docs/STATUS.md"
         ],
-        "limits": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+        "limits": "Restrição preservada durante a implementação; obrigação contínua."
       },
       "evidence": [
         {
@@ -2788,7 +2809,7 @@
             "docs/AGENTS.md",
             "docs/STATUS.md"
           ],
-          "notes": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+          "notes": "Restrição preservada durante a implementação; obrigação contínua."
         }
       ]
     },
@@ -2810,7 +2831,7 @@
           "docs/AGENTS.md",
           "docs/STATUS.md"
         ],
-        "limits": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+        "limits": "Restrição preservada durante a implementação; obrigação contínua."
       },
       "evidence": [
         {
@@ -2820,7 +2841,7 @@
             "docs/AGENTS.md",
             "docs/STATUS.md"
           ],
-          "notes": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+          "notes": "Restrição preservada durante a implementação; obrigação contínua."
         }
       ]
     },
@@ -2842,7 +2863,7 @@
           "docs/AGENTS.md",
           "docs/STATUS.md"
         ],
-        "limits": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+        "limits": "Restrição preservada durante a implementação; obrigação contínua."
       },
       "evidence": [
         {
@@ -2852,7 +2873,17 @@
             "docs/AGENTS.md",
             "docs/STATUS.md"
           ],
-          "notes": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+          "notes": "Restrição preservada durante a implementação; obrigação contínua."
+        },
+        {
+          "kind": "full-frozen-source-gate",
+          "command": "node scripts/verify-group-browser.mjs",
+          "result": "pass-scoped",
+          "paths": [
+            "docs/evidence/group-certificate-profile/report.json",
+            "docs/SIGNING-KEY-PROFILE.md"
+          ],
+          "notes": "457 stable sources:281 Node,16 Go race packages,5 C SQLite packages,58 interop,28 browser,25 UI per engine,Linux package execution. Shared certificates and key admission; dynamic group app authority/storage/UI and browser/device matrix remain open."
         }
       ]
     },
@@ -2874,7 +2905,7 @@
           "docs/AGENTS.md",
           "docs/STATUS.md"
         ],
-        "limits": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+        "limits": "Restrição preservada durante a implementação; obrigação contínua."
       },
       "evidence": [
         {
@@ -2884,7 +2915,7 @@
             "docs/AGENTS.md",
             "docs/STATUS.md"
           ],
-          "notes": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+          "notes": "Restrição preservada durante a implementação; obrigação contínua."
         }
       ]
     },
@@ -2906,7 +2937,7 @@
           "docs/AGENTS.md",
           "docs/STATUS.md"
         ],
-        "limits": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+        "limits": "Restrição preservada durante a implementação; obrigação contínua."
       },
       "evidence": [
         {
@@ -2916,7 +2947,7 @@
             "docs/AGENTS.md",
             "docs/STATUS.md"
           ],
-          "notes": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+          "notes": "Restrição preservada durante a implementação; obrigação contínua."
         }
       ]
     },
@@ -2938,7 +2969,7 @@
           "docs/AGENTS.md",
           "docs/STATUS.md"
         ],
-        "limits": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+        "limits": "Restrição preservada durante a implementação; obrigação contínua."
       },
       "evidence": [
         {
@@ -2948,7 +2979,7 @@
             "docs/AGENTS.md",
             "docs/STATUS.md"
           ],
-          "notes": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+          "notes": "Restrição preservada durante a implementação; obrigação contínua."
         }
       ]
     },
@@ -2970,7 +3001,7 @@
           "docs/AGENTS.md",
           "docs/STATUS.md"
         ],
-        "limits": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+        "limits": "Restrição preservada durante a implementação; obrigação contínua."
       },
       "evidence": [
         {
@@ -2980,7 +3011,7 @@
             "docs/AGENTS.md",
             "docs/STATUS.md"
           ],
-          "notes": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+          "notes": "Restrição preservada durante a implementação; obrigação contínua."
         }
       ]
     },
@@ -3002,7 +3033,7 @@
           "docs/AGENTS.md",
           "docs/STATUS.md"
         ],
-        "limits": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+        "limits": "Restrição preservada durante a implementação; obrigação contínua."
       },
       "evidence": [
         {
@@ -3012,7 +3043,7 @@
             "docs/AGENTS.md",
             "docs/STATUS.md"
           ],
-          "notes": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+          "notes": "Restrição preservada durante a implementação; obrigação contínua."
         }
       ]
     },
@@ -3034,7 +3065,7 @@
           "docs/AGENTS.md",
           "docs/STATUS.md"
         ],
-        "limits": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+        "limits": "Restrição preservada durante a implementação; obrigação contínua."
       },
       "evidence": [
         {
@@ -3044,7 +3075,7 @@
             "docs/AGENTS.md",
             "docs/STATUS.md"
           ],
-          "notes": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+          "notes": "Restrição preservada durante a implementação; obrigação contínua."
         }
       ]
     },
@@ -3066,7 +3097,7 @@
           "docs/AGENTS.md",
           "docs/STATUS.md"
         ],
-        "limits": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+        "limits": "Restrição preservada durante a implementação; obrigação contínua."
       },
       "evidence": [
         {
@@ -3076,7 +3107,7 @@
             "docs/AGENTS.md",
             "docs/STATUS.md"
           ],
-          "notes": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+          "notes": "Restrição preservada durante a implementação; obrigação contínua."
         }
       ]
     },
@@ -3098,7 +3129,7 @@
           "docs/AGENTS.md",
           "docs/STATUS.md"
         ],
-        "limits": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+        "limits": "Restrição preservada durante a implementação; obrigação contínua."
       },
       "evidence": [
         {
@@ -3108,7 +3139,7 @@
             "docs/AGENTS.md",
             "docs/STATUS.md"
           ],
-          "notes": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+          "notes": "Restrição preservada durante a implementação; obrigação contínua."
         }
       ]
     },
@@ -3130,7 +3161,7 @@
           "docs/AGENTS.md",
           "docs/STATUS.md"
         ],
-        "limits": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+        "limits": "Restrição preservada durante a implementação; obrigação contínua."
       },
       "evidence": [
         {
@@ -3140,7 +3171,7 @@
             "docs/AGENTS.md",
             "docs/STATUS.md"
           ],
-          "notes": "Restri\u00e7\u00e3o preservada durante a implementa\u00e7\u00e3o; obriga\u00e7\u00e3o cont\u00ednua."
+          "notes": "Restrição preservada durante a implementação; obrigação contínua."
         }
       ]
     },
@@ -3154,10 +3185,10 @@
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md",
-        "section": "Functional acceptance scope \u2014 owner extension 2026-09-13"
+        "section": "Functional acceptance scope — owner extension 2026-09-13"
       },
       "implementation": {
-        "milestone": "W1\u2013W5",
+        "milestone": "W1–W5",
         "plan": ".codex-delivery/WEB-IMPLEMENTATION.md"
       },
       "validation": {
@@ -3173,7 +3204,7 @@
             "docs/evidence/browser-foundation/scope.json",
             "docs/WEB.md"
           ],
-          "notes": "N\u00facleo parcial:16Node/6Chromium, dados nos dois sentidos com execut\u00e1vel Go. Sem paridade de UI/produto/routing/grupos/plataformas."
+          "notes": "Núcleo parcial:16Node/6Chromium, dados nos dois sentidos com executável Go. Sem paridade de UI/produto/routing/grupos/plataformas."
         },
         {
           "kind": "routing-and-browser-tests",
@@ -3182,7 +3213,7 @@
           "paths": [
             "docs/evidence/browser-routing/scope.json"
           ],
-          "notes": "22Node transporte/16n\u00facleo e12Chromium no gate;14Chromium ap\u00f3s expans\u00e3o s\u00f3 de testes/reporting. Sem paridade UI/grupos/outbox, ponte nativa real ou outras plataformas."
+          "notes": "22Node transporte/16núcleo e12Chromium no gate;14Chromium após expansão só de testes/reporting. Sem paridade UI/grupos/outbox, ponte nativa real ou outras plataformas."
         },
         {
           "kind": "browser-native-integration",
@@ -3203,6 +3234,27 @@
             "docs/WEB-APPLICATION.md"
           ],
           "notes": "271Node,26browser,42nativeUI,Linuxpackage,403stable sources,72Axe. No daemon APIs for autonomous browser. Dynamic groups/full native parity incomplete."
+        },
+        {
+          "kind": "autonomous-web-reticulum-ui",
+          "command": "node scripts/verify-reticulum.mjs; node scripts/e2e.mjs --config tests/browser/browser.config.ts; node scripts/verify-ui.mjs",
+          "result": "pass-scoped",
+          "paths": [
+            "docs/evidence/web-reticulum/inputs.json",
+            "docs/evidence/web-reticulum/reticulum-web/report.json",
+            "docs/evidence/web-reticulum/ui-verification/report.json"
+          ],
+          "notes": "b514ead runtime: actual browser worker/identity and WS/RNS TCP/serial PTY, 22000 bytes, partition/heal, relay consent and restarted seeder with browser author offline. 26 browser,25 UI per engine,Linux package. Dynamic group app parity and platform/radio limits remain open."
+        },
+        {
+          "kind": "full-frozen-source-gate",
+          "command": "node scripts/verify-group-browser.mjs",
+          "result": "pass-scoped",
+          "paths": [
+            "docs/evidence/group-certificate-profile/report.json",
+            "docs/SIGNING-KEY-PROFILE.md"
+          ],
+          "notes": "457 stable sources:281 Node,16 Go race packages,5 C SQLite packages,58 interop,28 browser,25 UI per engine,Linux package execution. Shared certificates and key admission; dynamic group app authority/storage/UI and browser/device matrix remain open."
         }
       ]
     },
@@ -3216,10 +3268,10 @@
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md",
-        "section": "Functional acceptance scope \u2014 owner extension 2026-09-13"
+        "section": "Functional acceptance scope — owner extension 2026-09-13"
       },
       "implementation": {
-        "milestone": "W1\u2013W5",
+        "milestone": "W1–W5",
         "plan": ".codex-delivery/WEB-IMPLEMENTATION.md"
       },
       "validation": {
@@ -3235,7 +3287,7 @@
             "docs/evidence/browser-foundation/scope.json",
             "docs/WEB.md"
           ],
-          "notes": "N\u00facleo parcial:16Node/6Chromium, dados nos dois sentidos com execut\u00e1vel Go. Sem paridade de UI/produto/routing/grupos/plataformas."
+          "notes": "Núcleo parcial:16Node/6Chromium, dados nos dois sentidos com executável Go. Sem paridade de UI/produto/routing/grupos/plataformas."
         },
         {
           "kind": "routing-and-browser-tests",
@@ -3244,7 +3296,7 @@
           "paths": [
             "docs/evidence/browser-routing/scope.json"
           ],
-          "notes": "22Node transporte/16n\u00facleo e12Chromium no gate;14Chromium ap\u00f3s expans\u00e3o s\u00f3 de testes/reporting. Sem paridade UI/grupos/outbox, ponte nativa real ou outras plataformas."
+          "notes": "22Node transporte/16núcleo e12Chromium no gate;14Chromium após expansão só de testes/reporting. Sem paridade UI/grupos/outbox, ponte nativa real ou outras plataformas."
         },
         {
           "kind": "browser-native-integration",
@@ -3265,6 +3317,27 @@
             "docs/WEB-APPLICATION.md"
           ],
           "notes": "271Node,26browser,42nativeUI,Linuxpackage,403stable sources,72Axe. No daemon APIs for autonomous browser. Dynamic groups/full native parity incomplete."
+        },
+        {
+          "kind": "autonomous-web-reticulum-ui",
+          "command": "node scripts/verify-reticulum.mjs; node scripts/e2e.mjs --config tests/browser/browser.config.ts; node scripts/verify-ui.mjs",
+          "result": "pass-scoped",
+          "paths": [
+            "docs/evidence/web-reticulum/inputs.json",
+            "docs/evidence/web-reticulum/reticulum-web/report.json",
+            "docs/evidence/web-reticulum/ui-verification/report.json"
+          ],
+          "notes": "b514ead runtime: actual browser worker/identity and WS/RNS TCP/serial PTY, 22000 bytes, partition/heal, relay consent and restarted seeder with browser author offline. 26 browser,25 UI per engine,Linux package. Dynamic group app parity and platform/radio limits remain open."
+        },
+        {
+          "kind": "full-frozen-source-gate",
+          "command": "node scripts/verify-group-browser.mjs",
+          "result": "pass-scoped",
+          "paths": [
+            "docs/evidence/group-certificate-profile/report.json",
+            "docs/SIGNING-KEY-PROFILE.md"
+          ],
+          "notes": "457 stable sources:281 Node,16 Go race packages,5 C SQLite packages,58 interop,28 browser,25 UI per engine,Linux package execution. Shared certificates and key admission; dynamic group app authority/storage/UI and browser/device matrix remain open."
         }
       ]
     },
@@ -3278,10 +3351,10 @@
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md",
-        "section": "Functional acceptance scope \u2014 owner extension 2026-09-13"
+        "section": "Functional acceptance scope — owner extension 2026-09-13"
       },
       "implementation": {
-        "milestone": "W1\u2013W5",
+        "milestone": "W1–W5",
         "plan": ".codex-delivery/WEB-IMPLEMENTATION.md"
       },
       "validation": {
@@ -3297,7 +3370,7 @@
             "docs/evidence/browser-foundation/scope.json",
             "docs/WEB.md"
           ],
-          "notes": "N\u00facleo parcial:16Node/6Chromium, dados nos dois sentidos com execut\u00e1vel Go. Sem paridade de UI/produto/routing/grupos/plataformas."
+          "notes": "Núcleo parcial:16Node/6Chromium, dados nos dois sentidos com executável Go. Sem paridade de UI/produto/routing/grupos/plataformas."
         },
         {
           "kind": "routing-and-browser-tests",
@@ -3306,7 +3379,7 @@
           "paths": [
             "docs/evidence/browser-routing/scope.json"
           ],
-          "notes": "22Node transporte/16n\u00facleo e12Chromium no gate;14Chromium ap\u00f3s expans\u00e3o s\u00f3 de testes/reporting. Sem paridade UI/grupos/outbox, ponte nativa real ou outras plataformas."
+          "notes": "22Node transporte/16núcleo e12Chromium no gate;14Chromium após expansão só de testes/reporting. Sem paridade UI/grupos/outbox, ponte nativa real ou outras plataformas."
         },
         {
           "kind": "browser-native-integration",
@@ -3327,6 +3400,27 @@
             "docs/WEB-APPLICATION.md"
           ],
           "notes": "271Node,26browser,42nativeUI,Linuxpackage,403stable sources,72Axe. No daemon APIs for autonomous browser. Dynamic groups/full native parity incomplete."
+        },
+        {
+          "kind": "autonomous-web-reticulum-ui",
+          "command": "node scripts/verify-reticulum.mjs; node scripts/e2e.mjs --config tests/browser/browser.config.ts; node scripts/verify-ui.mjs",
+          "result": "pass-scoped",
+          "paths": [
+            "docs/evidence/web-reticulum/inputs.json",
+            "docs/evidence/web-reticulum/reticulum-web/report.json",
+            "docs/evidence/web-reticulum/ui-verification/report.json"
+          ],
+          "notes": "b514ead runtime: actual browser worker/identity and WS/RNS TCP/serial PTY, 22000 bytes, partition/heal, relay consent and restarted seeder with browser author offline. 26 browser,25 UI per engine,Linux package. Dynamic group app parity and platform/radio limits remain open."
+        },
+        {
+          "kind": "full-frozen-source-gate",
+          "command": "node scripts/verify-group-browser.mjs",
+          "result": "pass-scoped",
+          "paths": [
+            "docs/evidence/group-certificate-profile/report.json",
+            "docs/SIGNING-KEY-PROFILE.md"
+          ],
+          "notes": "457 stable sources:281 Node,16 Go race packages,5 C SQLite packages,58 interop,28 browser,25 UI per engine,Linux package execution. Shared certificates and key admission; dynamic group app authority/storage/UI and browser/device matrix remain open."
         }
       ]
     },
@@ -3363,6 +3457,17 @@
             "docs/evidence/reticulum/milestone/report.json"
           ],
           "notes": "Reference RNS, Node/Go process transfers, partition/heal, offline seeder, ownership/corruption, shared native UI. Physical radio, embedding, durable peering and full web parity remain pending."
+        },
+        {
+          "kind": "autonomous-web-reticulum-ui",
+          "command": "node scripts/verify-reticulum.mjs; node scripts/e2e.mjs --config tests/browser/browser.config.ts; node scripts/verify-ui.mjs",
+          "result": "pass-scoped",
+          "paths": [
+            "docs/evidence/web-reticulum/inputs.json",
+            "docs/evidence/web-reticulum/reticulum-web/report.json",
+            "docs/evidence/web-reticulum/ui-verification/report.json"
+          ],
+          "notes": "b514ead runtime: actual browser worker/identity and WS/RNS TCP/serial PTY, 22000 bytes, partition/heal, relay consent and restarted seeder with browser author offline. 26 browser,25 UI per engine,Linux package. Dynamic group app parity and platform/radio limits remain open."
         }
       ]
     }

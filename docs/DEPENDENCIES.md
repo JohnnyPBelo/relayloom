@@ -1,4 +1,6 @@
 # Dependency notices
+O port dos certificados de grupo acrescenta `@noble/curves` 2.4.0 (MIT), fixado na lockfile com integridade e scripts de instalação desactivados. O adaptador browser usa Ed25519 em modo estrito; as regras do protocolo são partilhadas com Node. O filtro de admissão de chaves usa os vectores públicos de pequena ordem dessa versão. [Proveniência](licenses/noble-curves/manifest.json) e [perfil de chaves](SIGNING-KEY-PROFILE.md). Ainda não activa grupos dinâmicos no motor da aplicação browser.
+
 
 Generated from package-lock.json; exact versions are locked. Electron includes Chromium/Node and their own notices; desktop packages retain runtime dependency licences. Go and x/crypto/x/text carry separate BSD-style notices. RNS is a separately installed, hash-pinned reference dependency; its additional licence conditions are documented below.
 
@@ -192,6 +194,7 @@ O adaptador RNS usa a implementação de referência **Reticulum1.5.4**, sem alt
 - @malept/flatpak-bundler 0.4.0
 - @malept/flatpak-bundler/node_modules/fs-extra 9.1.0
 - @napi-rs/lzma-linux-x64-gnu 1.5.1
+- @noble/curves 2.4.0
 - @noble/hashes 2.4.0
 - @peculiar/asn1-schema 2.9.4
 - @peculiar/json-schema 1.1.12

@@ -1,0 +1,28 @@
+{
+  "baseCommit": "2d4d12ce78fa74026bec709000663344e46c94e8",
+  "scope": "Shared certificate protocol, signing-key admission and browser crypto; excludes unverified iOS keyboard increment",
+  "files": {
+    "package.json": "4c9014df8c6263d9bf7fe4ddc545dc07d95857e121044556b88c9350a4d0caf4",
+    "package-lock.json": "7543175a94ef1d5b759cc2a679310b47aab2a3706bb12b3c1ff1cbbd7885a0ea",
+    "packages/core/src/index.ts": "543d58852e1b15d7bbe4e6c7707024005081cf093301c0a0282e7603b6ed7909",
+    "packages/core/src/signing-key.ts": "54f3089142d35f45a2567ea08463cb9bc30b5bcbbe40050250a06b2c9c0db93a",
+    "packages/browser/src/crypto.ts": "baa3635d53374eb1ad9df88a53869d935e2bd7515aa06dcabf32877b6ca7e577",
+    "packages/browser/src/group-certificates.ts": "a4967fa5d70d78ae95965fd46d95d23ef3eeb78f527a4ba34bbb6ae97d980400",
+    "packages/groups/src/certificates.ts": "0d9242b9038dd16ccafa6c8bc17ee1bd48814b31fb406c0762885b23bfe228b4",
+    "packages/groups/src/certificate-protocol.ts": "325d7db519799f17c35453333cc690a36ce767a643b1d7abf9d0f4b3638b2be7",
+    "native/core/crypto.go": "620f8eca5eb9c10f6f47d20daa9fd5cd2ead9fe0000429b992d1359b247c24a2",
+    "native/core/signing_key.go": "9da2700c573f4ab402ea39396d094496622edd5fc676e4da75cb9d564b708536",
+    "native/core/signing_key_test.go": "62f439a5e9b804632de5abbdae6e0848d01cf1745cf58361afe6903f9873e7d0",
+    "tests/signing-key-profile.test.ts": "cdd4851f72849cb043dbba4802371f72f3af2e87e15e46cb2d0a2d19bf4f8b84",
+    "tests/fixtures/signing-key-profile.json": "a14be9211fc2968a2e6f785774021af99d47e2f987e9f701f603c8c3a41afa50",
+    "tests/browser/harness.ts": "f9982d6ebcca440622145bd2a60870510a317ac4f09e85f6de51441958e2762d",
+    "tests/browser/group-certificates.spec.ts": "02e1650c265622a3e2dd39d4763969f5eaf2c189f47f2dbb2409358194299177",
+    "tests/native/group-certificates.test.ts": "538561aad45379accadd04308ed2c1a3f2f7d6dd1429888dfd43b67776f6a67d",
+    "scripts/verify-group-browser.mjs": "6b05189e6041c1d2a375579896bb67edc194513f003c9cc22fbb07f59e30cc5d",
+    ".github/workflows/ci.yml": "d9614b0a050c269d11e462b9d1a21ae662c1afe62e0083014c08168fd33add20",
+    "docs/licenses/noble-curves/LICENSE": "4f221aee6e072336700c408c68ab3b96a3fc09f6aebe6f48f1bd99e5ef13faec",
+    "docs/licenses/noble-curves/manifest.json": "e1d1952cfab6766bbc2a551da86e36731585da5f16e6598976a5b09ff80440d5",
+    "docs/SIGNING-KEY-PROFILE.md": "6e3fb9ffe731179db047b634308f0d19967dc9f3979b67f57f8b910157f5b744",
+    "docs/DEPENDENCIES.md": "f491f2e8d700a9bfa6cf109b423709dd1e3ecf4bdbbeb2951881a1dd959958d0"
+  }
+}

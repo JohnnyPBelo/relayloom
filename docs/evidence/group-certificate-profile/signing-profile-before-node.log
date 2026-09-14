@@ -1,0 +1,34 @@
+TAP version 13
+# Subtest: identity proof rejects small-order signing keys even when the underlying verifier accepts the equation
+not ok 1 - identity proof rejects small-order signing keys even when the underlying verifier accepts the equation
+  ---
+  duration_ms: 7.339107
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/tests/signing-key-profile.test.ts:1:274'
+  failureType: 'testCodeFailure'
+  error: |-
+    0100000000000000000000000000000000000000000000000000000000000000
+    
+    true !== false
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/home/absint0o/projects/relayloom/tests/signing-key-profile.test.ts:18:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 228.108657

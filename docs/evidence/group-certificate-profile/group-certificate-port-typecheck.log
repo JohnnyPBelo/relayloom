@@ -1,0 +1,5 @@
+
+> relayloom@0.1.0 typecheck
+> tsc --noEmit
+
+packages/browser/src/group-certificates.ts(3,22): error TS2305: Module '"@noble/hashes/utils.js"' has no exported member 'equalBytes'.

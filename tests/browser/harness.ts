@@ -8,6 +8,7 @@ import {
   RTC_LIMITS,
 } from "../../packages/browser/src/rtc";
 import { BrowserApplication } from "../../packages/browser/src/application";
+import { browserGroupCertificates } from "../../packages/browser/src/group-certificates";
 import { BrowserMesh } from "../../packages/browser/src/mesh";
 import { BrowserRouter } from "../../packages/browser/src/router";
 import * as packet from "../../packages/browser/src/packet";
@@ -15,6 +16,7 @@ Object.assign(window, {
   rl: {
     ...crypto,
     BrowserApplication,
+    groups: browserGroupCertificates,
     ...packet,
     BrowserProfile,
     BrowserMesh,

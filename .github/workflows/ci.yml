@@ -148,6 +148,7 @@ jobs:
             .cache/browser-routing/scheduling-failure.json
             .cache/browser-application/ui
             .cache/browser-native/*-network*
+            .cache/browser-groups/*.json
           retention-days: 7
 
   desktop-package:

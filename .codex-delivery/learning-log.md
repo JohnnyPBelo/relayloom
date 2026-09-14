@@ -353,3 +353,12 @@ A verificação sequencial sobre5e049f1 terminou sem falhas,279Node/26browser/46
 A UI nativa cria/revoga capacidades de transporte pela API autenticada, sem mostrar o URL de controlo. O token só fica no componente emissor e desaparece ao fechar/bloquear; a resposta tardia foi retida e entregue depois do bloqueio para testar essa garantia. Revogar fecha a ligação real e mantém a identidade utilizável. As expectativas iniciais do teste usavam uma contagem zero inexistente e pressupunham mudar para Conversas ao desbloquear: corrigidas após ler os estados reais, sem alterar o comportamento da aplicação.
 
 O novo percurso autónomo RNS passou com controlos de isolamento, partição/heal, leitura negada ao relay e seeder reiniciado com autora offline. A regressão final passou26browser/50UI/gateRNS/desktopLinux. Não alterar node_modules partilhado enquanto uma cópia de validação corre: a instalação da dependência criptográfica da fase seguinte foi adiada até o gate terminar.
+
+
+## Certificados partilhados e chaves degeneradas — 2026-09-14
+
+O port síncrono preserva18 operações de certificados e usa a mesma implementação das regras nos dois adaptadores. O import inicial de equalBytes foi corrigido para curves/utils após typecheck. O teste browser leu os vectores JSON pelo filesystem da fixture, pois o carregador Playwright exigia atributos de importação JSON. Falhas e passes dirigidos preservados em.cache/milestones/group-key-*.
+
+Um controlo adicional com Ed25519 neutro revelou que as primitivas OpenSSL e Go validavam uma prova de cartão degenerado; o modo estrito de noble recusava-a. Os testes de aplicação Node/Go falharam antes da correcção. Implementado filtro de admissão do formato e dos pontos públicos de pequena ordem em Node/browser/Go;48vectores, positivos de geração e imutabilidade dos bytes passaram nos controlos dirigidos. O filtro não substitui a verificação criptográfica nem demonstra falsificação de uma identidade normal. O gate integral ainda corre.
+
+No CIa49e4a4, o routerGo entregava ao destino antes de o consumidor da aplicação gravar o ficheiro. A fixture agora espera ambos os factos separadamente e revê os negativos depois de cada testemunho positivo; dois testes isolados passaram3.208s, commit2d4d12c. Prevenção: um ACK de transporte não é confirmação de persistência ou leitura.

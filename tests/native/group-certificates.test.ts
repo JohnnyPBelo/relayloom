@@ -50,6 +50,7 @@ test(
     const sourceHash = () => {
       const files = [
         "packages/groups/src/certificates.ts",
+        "packages/groups/src/certificate-protocol.ts",
         "packages/core/src/index.ts",
         "native/core/crypto.go",
         "native/core/canonical.go",
