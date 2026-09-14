@@ -41,7 +41,7 @@ await build({
   platform: "node",
   format: "esm",
   target: "node22",
-  external: ["serialport"],
+  external: ["serialport", "ws"],
   sourcemap: false,
   legalComments: "external",
 });
@@ -115,6 +115,7 @@ function copyDependency(name, from, destinationParent, ancestry = new Set()) {
     copyDependency(dependency, source, destination, next);
 }
 copyDependency("serialport", repository, daemon);
+copyDependency("ws", repository, daemon);
 writeFileSync(
   join(daemon, "dependency-notices.json"),
   JSON.stringify(

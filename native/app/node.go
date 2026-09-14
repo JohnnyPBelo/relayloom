@@ -24,17 +24,20 @@ import (
 	"github.com/JohnnyPBelo/relayloom/native/profilelock"
 	"github.com/JohnnyPBelo/relayloom/native/profilestate"
 	"github.com/JohnnyPBelo/relayloom/native/transport"
+	"github.com/JohnnyPBelo/relayloom/native/webpeer"
 )
 
 type Node struct {
-	mu       sync.Mutex
-	Dir      string
-	Store    *core.ContentStore
-	Router   *transport.Router
-	TCPPort  int
-	identity *core.Identity
-	config   Config
-	private  PrivateState
+	webPeerMu sync.Mutex
+	webPeer   *webpeer.Server
+	mu        sync.Mutex
+	Dir       string
+	Store     *core.ContentStore
+	Router    *transport.Router
+	TCPPort   int
+	identity  *core.Identity
+	config    Config
+	private   PrivateState
 	// Per-node persistence seam for exercising uncertain completion boundaries.
 	writePrivateState  func([]byte, string) (string, error)
 	updateGroupState   func(func(*groupstore.Tx) error) error
@@ -199,6 +202,7 @@ func (n *Node) Close() error {
 	for _, cancel := range cancellations {
 		cancel()
 	}
+	webErr := n.StopWebPeer()
 	err := n.Router.Close()
 	n.wg.Wait()
 	var privateErr error
@@ -207,7 +211,7 @@ func (n *Node) Close() error {
 		n.privateDatabase = nil
 		n.privateDigest = ""
 	}
-	n.closeErr = errors.Join(err, privateErr, n.ownership.Close())
+	n.closeErr = errors.Join(err, webErr, privateErr, n.ownership.Close())
 	close(n.closeDone)
 	return n.closeErr
 }
@@ -915,7 +919,7 @@ func (n *Node) stateLocked() (map[string]any, error) {
 	}
 	counters := n.Router.Counters()
 	counters.Rejected += n.rejected
-	return map[string]any{"initialized": n.initialized(), "locked": n.identity == nil, "identity": identity, "tcpPort": n.TCPPort, "peers": n.Router.Peers(), "counters": counters, "storage": n.Store.Stats(), "settings": map[string]any{"relay": n.config.Relay, "lowPower": n.config.LowPower}, "contacts": contacts, "blocked": blocked, "following": following, "saved": saved, "reports": reports, "groupContent": n.groupContentStateLocked(), "objects": page.Objects, "outbox": n.outboxItemsLocked(outboxAt, manifests), "outboxPolicy": outboxPolicy(), "history": page.History, "followedPostIds": followed, "collections": collections, "siteDraft": draft, "transportError": n.lastTransportError, "now": outboxAt, "nativeRuntime": "Go"}, nil
+	return map[string]any{"initialized": n.initialized(), "locked": n.identity == nil, "identity": identity, "tcpPort": n.TCPPort, "peers": n.Router.Peers(), "webPeer": n.webPeerStateLocked(), "counters": counters, "storage": n.Store.Stats(), "settings": map[string]any{"relay": n.config.Relay, "lowPower": n.config.LowPower}, "contacts": contacts, "blocked": blocked, "following": following, "saved": saved, "reports": reports, "groupContent": n.groupContentStateLocked(), "objects": page.Objects, "outbox": n.outboxItemsLocked(outboxAt, manifests), "outboxPolicy": outboxPolicy(), "history": page.History, "followedPostIds": followed, "collections": collections, "siteDraft": draft, "transportError": n.lastTransportError, "now": outboxAt, "nativeRuntime": "Go"}, nil
 }
 
 func (n *Node) Publish(content Content, recipients any, ttlMS int64) (DisplayObject, error) {
@@ -1119,6 +1123,12 @@ func (n *Node) publishLocked(content Content, recipients any, ttlMS int64) (Disp
 }
 
 func (n *Node) Handle(operation string, body map[string]any) (any, error) {
+	if operation == "web-peer" {
+		return n.InviteWeb(text(body["origin"]))
+	}
+	if operation == "web-peer-stop" {
+		return map[string]any{"ok": true}, n.StopWebPeer()
+	}
 	n.mu.Lock()
 	defer n.mu.Unlock()
 	if n.closed {

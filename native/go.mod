@@ -3,6 +3,7 @@ module github.com/JohnnyPBelo/relayloom/native
 go 1.26.0
 
 require (
+	github.com/coder/websocket v1.8.15
 	github.com/mattn/go-sqlite3 v1.14.52
 	golang.org/x/crypto v0.57.0
 	golang.org/x/mobile v0.0.0-20260908204917-8b95e45f8d3e

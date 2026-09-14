@@ -1,3 +1,4 @@
+import type { Duplex } from "node:stream";
 import { EventEmitter } from "node:events";
 import {
   createServer,
@@ -10,17 +11,8 @@ import { randomBytes } from "node:crypto";
 import { canonical, hash } from "../../core/src/index.js";
 import { preserveSerialPollInterests, serialWriteDeadline } from "./serial.js";
 
-export type Priority = "sos" | "normal" | "bulk";
-interface Packet {
-  id: string;
-  source: string;
-  created: number;
-  expires: number;
-  maxHops: number;
-  hops: string[];
-  priority: Priority;
-  payload: unknown;
-}
+import type { Priority, Packet } from "./protocol.js";
+export type { Priority } from "./protocol.js";
 interface Frame {
   t: "part";
   id: string;
@@ -40,6 +32,7 @@ interface Transfer extends Retained {
   next: number;
   scheduled: number;
   inFlight: boolean;
+  cancelled?: boolean;
 }
 interface Assembly {
   parts: Map<number, Buffer>;
@@ -50,7 +43,7 @@ interface Assembly {
 }
 export interface PeerState {
   id: string;
-  medium: "tcp" | "serial";
+  medium: "tcp" | "serial" | "websocket";
   address: string;
   connected: boolean;
   sent: number;
@@ -101,8 +94,8 @@ class Link {
   private acksWindow = 0;
   constructor(
     readonly router: Router,
-    readonly io: Socket | SerialPort,
-    medium: "tcp" | "serial",
+    readonly io: Socket | SerialPort | Duplex,
+    medium: "tcp" | "serial" | "websocket",
     address: string,
   ) {
     this.resynchronize = medium === "serial";
@@ -140,9 +133,25 @@ class Link {
       this.state.queued = this.pending.size;
     }
   }
+  private cancelTransfer(id: string) {
+    const transfer = this.pending.get(id);
+    if (transfer) {
+      if (transfer.inFlight) transfer.cancelled = true;
+      else if (transfer.next > 0) this.notifyCancel(id);
+    }
+    this.removeTransfer(id);
+  }
+  private notifyCancel(id: string) {
+    (
+      this.io as Duplex & { cancelPacket?: (id: string) => void }
+    ).cancelPacket?.(id);
+  }
+  discardAssembly(id: string) {
+    if (/^[a-f0-9]{64}$/.test(id)) this.removeAssembly(id);
+  }
   cancelRelayed() {
     for (const [id, transfer] of this.pending)
-      if (transfer.relayOnly) this.removeTransfer(id);
+      if (transfer.relayOnly) this.cancelTransfer(id);
   }
   cancelLocal(match: (payload: unknown) => boolean): string[] {
     const removed: string[] = [];
@@ -151,7 +160,7 @@ class Link {
         transfer.packet.source === this.router.id &&
         match(transfer.packet.payload)
       ) {
-        this.removeTransfer(id);
+        this.cancelTransfer(id);
         removed.push(id);
       }
     return removed;
@@ -502,6 +511,7 @@ class Link {
               .toString("base64"),
           });
           transfer.inFlight = false;
+          if (transfer.cancelled && sent) this.notifyCancel(transfer.packet.id);
           if (!sent) break;
           transfer.next++;
           transfer.scheduled = this.turn;
@@ -650,8 +660,8 @@ export class Router extends EventEmitter {
     return value;
   }
   private attach(
-    io: Socket | SerialPort,
-    medium: "tcp" | "serial",
+    io: Socket | SerialPort | Duplex,
+    medium: "tcp" | "serial" | "websocket",
     address: string,
   ) {
     for (const link of this.links) if (!link.active) this.links.delete(link);
@@ -665,6 +675,14 @@ export class Router extends EventEmitter {
     for (const value of this.retained.values())
       if (!value.relayOnly || this.relay) link.enqueue(value);
     this.emit("change");
+    return link;
+  }
+  attachStream(stream: Duplex, medium: "websocket", address: string) {
+    const link = this.attach(stream, medium, address);
+    return {
+      close: () => link?.destroy(),
+      discard: (id: string) => link?.discardAssembly(id),
+    };
   }
   listen(port = 0, host = "127.0.0.1"): Promise<number> {
     if (this.stopped || this.server)

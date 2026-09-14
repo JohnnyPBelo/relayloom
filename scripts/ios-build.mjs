@@ -57,6 +57,7 @@ if (args.has('--bind-only')) process.exit(0);
 const web = join(root, 'dist', 'web');
 if (!existsSync(join(web, 'index.html'))) throw new Error('Build the actual bundled web interface first: npm run build');
 const staged = join(cache, 'stage', 'web'); rmSync(staged, { recursive: true, force: true }); cpSync(web, staged, { recursive: true });
+cpSync(join(root, 'docs', 'licenses', 'websocket'), join(staged, 'notices', 'websocket'), { recursive: true });
 const device = args.has('--device-unsigned');
 const sdk = device ? 'iphoneos' : 'iphonesimulator';
 const destination = device ? 'generic/platform=iOS' : 'generic/platform=iOS Simulator';

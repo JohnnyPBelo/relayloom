@@ -1,5 +1,9 @@
 import { commitGroupSendIntent } from "./group-send.js";
 import {
+  listenWebSocket,
+  webOrigin,
+} from "../../../packages/transport/src/websocket.js";
+import {
   readProfileState,
   writeProfileState,
 } from "../../../packages/profile/src/state.js";
@@ -144,6 +148,40 @@ export class LoomNode extends EventEmitter {
   private readonly ownership: ProfileOwnership;
   private stopped = false;
   private stopping?: Promise<void>;
+  private webPeer?: Awaited<ReturnType<typeof listenWebSocket>>;
+  private webPeerTask = Promise.resolve();
+  inviteWeb(origin: string) {
+    webOrigin(origin);
+    const owner = this.requireIdentity();
+    const run = this.webPeerTask.then(async () => {
+      if (this.requireIdentity() !== owner)
+        throw new Error("A identidade foi bloqueada entretanto");
+      const previous = this.webPeer;
+      this.webPeer = undefined;
+      await previous?.close();
+      const peer = await listenWebSocket(this.router, { origin });
+      if (this.stopped || this.identity !== owner) {
+        await peer.close();
+        throw new Error("O nó foi bloqueado entretanto");
+      }
+      this.webPeer = peer;
+      return { ...peer.invitation };
+    });
+    this.webPeerTask = run.then(
+      () => {},
+      () => {},
+    );
+    return run;
+  }
+  stopWebPeer() {
+    const run = this.webPeerTask.then(async () => {
+      const peer = this.webPeer;
+      this.webPeer = undefined;
+      await peer?.close();
+    });
+    this.webPeerTask = run.catch(() => {});
+    return run;
+  }
   constructor(readonly dir: string) {
     super();
     mkdirSync(dir, { recursive: true, mode: 0o700 });
@@ -286,6 +324,7 @@ export class LoomNode extends EventEmitter {
       try {
         clearInterval(this.syncTimer);
         for (const cancel of this.cancellations) cancel();
+        await this.stopWebPeer();
         await this.router.stop();
         this.privateDatabase?.close();
         this.privateDatabase = undefined;
@@ -2031,6 +2070,7 @@ export class LoomNode extends EventEmitter {
       identity: this.identity?.public ?? null,
       tcpPort: this.tcpPort,
       peers: this.router.peers,
+      webPeer: this.webPeer?.state() ?? null,
       counters: this.router.counters,
       storage: this.store.stats(),
       settings: { relay: this.config.relay, lowPower: this.config.lowPower },

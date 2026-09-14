@@ -66,6 +66,7 @@ def prepare_web(source, stage):
     (target / 'index.html').write_text(index)
     shutil.copyfile(SOURCE / 'assets/android-host.js', target / 'android-host.js')
     notices = {
+        'websocket-ISC.txt': ROOT / 'docs/licenses/websocket/coder-websocket-1.8.15-ISC.txt',
         'relayloom-MIT.txt': ROOT / 'LICENSE',
         'dependency-boundaries.md': ROOT / 'docs/DEPENDENCIES.md',
         'go-BSD.txt': ROOT / '.cache/toolchains/go1.26.8/LICENSE',

@@ -200,7 +200,7 @@ func (r *Router) SetRelay(enabled bool) {
 		for link := range r.links {
 			for id, value := range link.pending {
 				if value.relayOnly {
-					link.removeTransferLocked(id)
+					link.cancelTransferLocked(id)
 				}
 			}
 		}
@@ -231,7 +231,7 @@ func (r *Router) CancelLocal(match func(any) bool) int {
 	for link := range r.links {
 		for id, value := range link.pending {
 			if value.packet.source == r.id && match(value.packet.payload) {
-				link.removeTransferLocked(id)
+				link.cancelTransferLocked(id)
 				removed[id] = true
 			}
 		}

@@ -170,7 +170,7 @@ func StartWithOptions(dataDir, assetsPath string, options Options) (*Service, er
 				respond(w, 400, map[string]any{"error": err.Error()})
 				return
 			}
-			if !contains([]string{"setup", "unlock", "lock", "export", "contact", "connect", "serial", "site-draft", "collection", "retrieve", "publish", "send", "outbox-retry", "group-command", "action", "settings", "view", "history", "attachment"}, operation) {
+			if !contains([]string{"setup", "unlock", "lock", "export", "contact", "connect", "web-peer", "web-peer-stop", "serial", "site-draft", "collection", "retrieve", "publish", "send", "outbox-retry", "group-command", "action", "settings", "view", "history", "attachment"}, operation) {
 				respond(w, 404, map[string]any{"error": "operação desconhecida"})
 				return
 			}

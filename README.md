@@ -100,3 +100,8 @@ npm run native:build
 ```
 
 O CLI Go imprime `origin` e `token` num registo JSON de arranque. Abra `origin/#token=token`, substituindo os dois valores; esse endereço dá acesso ao nó local e não deve ser partilhado. O estado periódico usa resumos paginados, e os anexos são obtidos através da API autenticada quando necessários. A cache é limitada e continua dependente da verificação dos bytes em disco; disponibilidade e expiração nunca são garantidas por um contador da interface.
+
+
+### Verified WebSocket adapters — 2026-09-14
+
+Native Node/Go data listeners now accept origin-bound, expiring transport capabilities, with bounded framing and explicit revocation. Gate on9866889 passed278 Node,89 top-level Go/race (125 including subtests),58 interoperability tests, UI for both engines and real Linux desktop. [Implementation and exact evidence](docs/WEBSOCKET-ADAPTERS.md). Browser application consolidation and real RNS integration remain in progress. Latest base CI passed Node on3OS and Go/desktop gates, but iOS simulator UI failed; no readiness or device claim.

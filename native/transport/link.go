@@ -23,6 +23,7 @@ type transfer struct {
 	attempts, next int
 	scheduled      uint64
 	inFlight       bool
+	cancelled      bool
 }
 
 func (t *transfer) count() int    { return (len(t.encoded) + FragmentBytes - 1) / FragmentBytes }
@@ -109,6 +110,31 @@ func (l *Link) removeTransferLocked(id string) {
 		l.pendingBytes -= len(value.encoded)
 		delete(l.pending, id)
 	}
+}
+
+// DiscardAssembly is scoped to this peer's inbound partial transfer only.
+func (l *Link) DiscardAssembly(id string) {
+	if !validID(id) {
+		return
+	}
+	l.router.mu.Lock()
+	defer l.router.mu.Unlock()
+	l.removeAssemblyLocked(id)
+}
+func (l *Link) notifyCancelLocked(id string) {
+	if stream, ok := l.stream.(interface{ CancelPacket(string) }); ok {
+		stream.CancelPacket(id)
+	}
+}
+func (l *Link) cancelTransferLocked(id string) {
+	if value := l.pending[id]; value != nil {
+		if value.inFlight {
+			value.cancelled = true
+		} else if value.next > 0 {
+			l.notifyCancelLocked(id)
+		}
+	}
+	l.removeTransferLocked(id)
 }
 func (l *Link) removeAssemblyLocked(id string) {
 	if value := l.assemblies[id]; value != nil {
@@ -520,6 +546,9 @@ func (l *Link) writeLoop() {
 			controlTurn = false
 		} else {
 			value.inFlight = false
+			if value.cancelled {
+				l.notifyCancelLocked(value.packet.id)
+			}
 			value.next++
 			value.scheduled = l.turn
 			if value.next == value.count() {

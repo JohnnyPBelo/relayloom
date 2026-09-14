@@ -103,6 +103,11 @@ export async function serve(
             case "/api/connect":
               node.connect(body.host, body.port);
               break;
+            case "/api/web-peer":
+              return json(200, await node.inviteWeb(body.origin));
+            case "/api/web-peer-stop":
+              await node.stopWebPeer();
+              return json(200, { ok: true });
             case "/api/serial":
               node.connectSerial(body.path, body.baud ?? 115200);
               break;
