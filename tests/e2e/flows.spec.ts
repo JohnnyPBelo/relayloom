@@ -88,7 +88,10 @@ test("two live clients: identities, connection, message, attachment, reaction, g
     await pa
       .getByRole("button", { name: "Nova conversa", exact: true })
       .click();
-    await pa.getByRole("button", { name: /Bruno Silva/ }).click();
+    await pa
+      .getByRole("dialog")
+      .getByRole("button", { name: /Bruno Silva/ })
+      .click();
     await pa
       .getByLabel("Escrever mensagem")
       .fill("Olá Bruno. O caminho pela ponte já está aberto.");

@@ -15,7 +15,9 @@ export function webSources() {
     .filter(
       (file) =>
         /^(apps\/web\/|packages\/|tests\/browser\/|scripts\/)/.test(file) ||
-        /^(package.*\.json|.*config\.ts)$/.test(file),
+        /^(package.*\.json|.*config\.ts|tests\/conversation-id\.test\.ts)$/.test(
+          file,
+        ),
     );
   return Object.fromEntries(
     [...new Set(files)]

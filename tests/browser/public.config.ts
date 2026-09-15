@@ -5,7 +5,11 @@ process.env.RELAYLOOM_PUBLIC_BUILD = "1";
 export default defineConfig({
   ...base,
   testDir: ".",
-  testMatch: ["application.spec.ts", "public-distribution.checks.ts"],
+  testMatch: [
+    "application.spec.ts",
+    "contact-relay.spec.ts",
+    "public-distribution.checks.ts",
+  ],
   projects: ["chromium", "firefox", "webkit"].map((name) => ({
     name,
     use: {

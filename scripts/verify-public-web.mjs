@@ -47,6 +47,7 @@ async function check(name, args, extra = {}) {
       TEMP: temp,
       PLAYWRIGHT_BROWSERS_PATH: resolve(".cache/playwright"),
       XDG_CACHE_HOME: resolve(".cache/public-web/runtime"),
+      RELAYLOOM_LAUNCH_URL: "", // This gate must exercise the local candidate.
       ...extra,
     },
   });
@@ -72,6 +73,12 @@ async function check(name, args, extra = {}) {
 save();
 try {
   await check("typecheck", ["node_modules/typescript/bin/tsc", "--noEmit"]);
+  await check("conversation-address", [
+    "--import",
+    "tsx",
+    "--test",
+    "tests/conversation-id.test.ts",
+  ]);
   await check("default-build", ["node_modules/vite/bin/vite.js", "build"]);
   for (const engine of ["chromium", "firefox", "webkit"]) {
     await check(
@@ -81,6 +88,7 @@ try {
         "--config",
         "tests/browser/matrix.config.ts",
         "tests/browser/application.spec.ts",
+        "tests/browser/contact-relay.spec.ts",
       ],
       { RELAYLOOM_MATRIX_ENGINE: engine },
     );

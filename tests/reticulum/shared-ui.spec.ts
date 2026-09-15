@@ -107,7 +107,10 @@ test("shared Liquid Glass UI sends without choosing a medium over TCP and real R
     await pa
       .getByRole("button", { name: "Nova conversa", exact: true })
       .click();
-    await pa.getByRole("button", { name: /Clara da Rede/ }).click();
+    await pa
+      .getByRole("dialog")
+      .getByRole("button", { name: /Clara da Rede/ })
+      .click();
     const text = "Cheguei à biblioteca. Está tudo bem.";
     await pa.getByLabel("Escrever mensagem").fill(text);
     await pa.getByRole("button", { name: "Enviar mensagem" }).click();

@@ -1,0 +1,117 @@
+.relay-participation {
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+.relay-participation .toggle-row strong {
+  font-size: 14px;
+}
+.relay-participation .toggle-row span {
+  font-size: 13px;
+  line-height: 1.6;
+}
+.relay-participation > p {
+  color: var(--muted);
+  line-height: 1.6;
+}
+.relay-participation .eyebrow {
+  display: block;
+  margin-bottom: 10px;
+}
+.relay-participation .section-heading h2 {
+  margin: 0;
+}
+.relay-readiness {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  margin: 18px 0;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--soft);
+}
+.relay-readiness > svg {
+  flex: 0 0 auto;
+  color: var(--accent);
+}
+.relay-readiness > div {
+  flex: 1;
+  min-width: 0;
+}
+.relay-readiness p {
+  margin: 5px 0 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.relay-readiness button {
+  flex: 0 0 auto;
+}
+.relay-capabilities {
+  border-top: 1px solid var(--line);
+  margin-top: 18px;
+  padding-top: 8px;
+}
+.relay-capabilities summary {
+  min-height: 44px;
+  align-content: center;
+  cursor: pointer;
+  font-weight: 600;
+}
+.relay-capabilities > div {
+  display: flex;
+  gap: 14px;
+  margin: 16px 0;
+}
+.relay-capabilities svg {
+  flex: 0 0 auto;
+  margin-top: 4px;
+  color: var(--muted);
+}
+.relay-capabilities p {
+  margin: 0;
+  line-height: 1.65;
+  color: var(--muted);
+}
+.relay-capabilities strong {
+  display: block;
+  color: var(--ink);
+}
+.conversation-route-note {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+  color: var(--muted);
+}
+.conversation-route-note p {
+  flex: 1;
+  margin: 0;
+  line-height: 1.6;
+}
+.conversation-route-note button {
+  min-height: 44px;
+}
+@media (max-width: 680px) {
+  .relay-readiness {
+    flex-wrap: wrap;
+    padding: 14px;
+  }
+  .relay-readiness > div {
+    flex-basis: calc(100% - 40px);
+  }
+  .relay-readiness button {
+    width: 100%;
+  }
+  .relay-participation .eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+  }
+  .conversation-route-note {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    padding: 10px 14px;
+  }
+}

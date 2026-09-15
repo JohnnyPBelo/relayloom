@@ -67,6 +67,8 @@ import { CommandPalette, type Command } from "./commands";
 import { useAppearance } from "./appearance";
 import "./liquid-glass.css";
 import { GroupManager, groupStatus, useGroupWorkspace } from "./groups";
+import { RelayParticipation } from "./relay-participation";
+import { directConversationId } from "./conversation-id";
 
 type State = {
   capabilities?: { autonomous?: boolean; dynamicGroups?: boolean };
@@ -578,7 +580,7 @@ function App() {
       ...groupWorkspace.groups.map((g) => g.id),
     ]),
   ];
-  const allConversations = conversationIds
+  const storedConversations = conversationIds
     .map((id) => {
       const ms = messages.filter((m) => m.content.conversation === id),
         group = groups.find((g) => g.id === id),
@@ -604,6 +606,33 @@ function App() {
       };
     })
     .sort((a, b) => (b.last?.created ?? 0) - (a.last?.created ?? 0));
+  const directConversation = (contactId: string) =>
+    storedConversations.find(
+      (c) =>
+        !c.group &&
+        !c.authority &&
+        c.id.startsWith("dm:") &&
+        c.members.length === 2 &&
+        c.members.some((m) => m.id === contactId),
+    );
+  // A saved contact is an actionable conversation entry even before the first
+  // message. It does not invent history or publish an empty signed object.
+  const contactConversations = contacts
+    .filter(
+      (c) =>
+        c.id !== me?.id &&
+        !state?.blocked.includes(c.id) &&
+        !directConversation(c.id),
+    )
+    .map((c) => ({
+      id: directConversationId(me!.id, c.id),
+      name: c.name,
+      members: me ? [me, c] : [],
+      group: undefined,
+      authority: undefined,
+      last: undefined,
+    }));
+  const allConversations = [...storedConversations, ...contactConversations];
   const conversations = allConversations.filter(
     (c) =>
       (c.name ?? "").toLowerCase().includes(search.toLowerCase()) ||
@@ -613,15 +642,17 @@ function App() {
           (renderedText(m) ?? "").toLowerCase().includes(search.toLowerCase()),
       ),
   );
-  const selected = allConversations.find((c) => c.id === selection);
   const activeContact = selection.startsWith("contact:")
     ? contacts.find((c) => c.id === selection.slice(8))
     : undefined;
+  const selected =
+    allConversations.find((c) => c.id === selection) ??
+    (activeContact ? directConversation(activeContact.id) : undefined);
   const members =
     selected?.members ?? (activeContact && me ? [me, activeContact] : []);
   const activeMessages = messages.filter(
     (m) =>
-      m.content.conversation === selection &&
+      m.content.conversation === (selected?.id ?? selection) &&
       (!search ||
         (renderedText(m) ?? "").toLowerCase().includes(search.toLowerCase()) ||
         selected?.name?.toLowerCase().includes(search.toLowerCase())),
@@ -790,7 +821,7 @@ function App() {
     const content: Content = {
         type: "message",
         text,
-        ...(selected ? { conversation: selection } : {}),
+        ...(selected ? { conversation: selected.id } : {}),
         ...(selectedAuthority
           ? {
               groupEpoch: selectedAuthority.head!.id,
@@ -801,11 +832,16 @@ function App() {
         ...(reply ? { replyTo: reply.id } : {}),
         ...(attachments.length ? { attachments } : {}),
       },
-      recipients = members
-        .filter(
-          (m) => !selectedAuthority || !reply || reply.readers.includes(m.id),
-        )
-        .map((m) => m.id);
+      recipients = [
+        ...new Set(
+          members
+            .filter(
+              (m) =>
+                !selectedAuthority || !reply || reply.readers.includes(m.id),
+            )
+            .map((m) => m.id),
+        ),
+      ].sort();
     const encoded = new TextEncoder().encode(
       JSON.stringify({ content, recipients, ttlMs: messageTTL }),
     );
@@ -1206,7 +1242,7 @@ function App() {
           <p>
             {state.settings.relay
               ? "Este dispositivo ajuda conteúdos a chegar mais longe quando existe uma ligação."
-              : "Podes voltar a ajudar a rede nas definições."}
+              : "Activa a tua participação em A rede e liga outros dispositivos."}
           </p>
           <button onClick={() => changePage("network")}>
             Conhecer a minha rede <ArrowUpRight size={15} />
@@ -1460,7 +1496,10 @@ function App() {
                 {conversations.map((c) => (
                   <button
                     className={
-                      "conversation " + (selection === c.id ? "selected" : "")
+                      "conversation " +
+                      (selection === c.id || selected?.id === c.id
+                        ? "selected"
+                        : "")
                     }
                     key={c.id}
                     onClick={() => {
@@ -1480,7 +1519,9 @@ function App() {
                             : renderedText(c.last) || "Anexo"
                           : c.authority
                             ? groupStatus[c.authority.status]
-                            : "O início de uma conversa"}
+                            : c.group
+                              ? "O início de uma conversa"
+                              : "Contacto guardado · começar conversa"}
                       </p>
                     </div>
                   </button>
@@ -1542,6 +1583,21 @@ function App() {
                         <Users size={20} />
                       </button>
                     </header>
+                    {state.capabilities?.autonomous &&
+                      !state.peers.some((p) => p.connected) && (
+                        <div className="conversation-route-note" role="status">
+                          <p>
+                            Podes escrever já. A entrega começa quando existir
+                            um caminho entre os dispositivos.
+                          </p>
+                          <button
+                            className="text-button"
+                            onClick={() => setModal("peer")}
+                          >
+                            Ligar outro dispositivo
+                          </button>
+                        </div>
+                      )}
                     {selectedAuthority && !groupCanSend && (
                       <div className="group-epoch-review" role="status">
                         <span>
@@ -2367,7 +2423,7 @@ function App() {
                   <div className="eyebrow">
                     <span className="live-dot" />{" "}
                     {state.settings.relay
-                      ? "RETRANSMISSÃO ACTIVA"
+                      ? "RETRANSMISSÃO PERMITIDA"
                       : "RETRANSMISSÃO EM PAUSA"}
                   </div>
                   <h2>
@@ -2393,6 +2449,14 @@ function App() {
                   <i />
                 </div>
               </div>
+              <RelayParticipation
+                enabled={state.settings.relay}
+                peers={state.peers.filter((p) => p.connected).length}
+                autonomous={state.capabilities?.autonomous === true}
+                busy={busy}
+                onChange={(relay) => run(() => api("settings", { relay }))}
+                onConnect={() => setModal("peer")}
+              />
               <div className="metrics">
                 <div>
                   <span>Pares ligados</span>
@@ -2473,7 +2537,11 @@ function App() {
                   <Empty
                     icon={Radio}
                     title="O próximo caminho começa aqui."
-                    text="Troca o endereço de transporte com outro nó ou liga um dispositivo série suportado. Não há descoberta nem servidor de arranque obrigatório."
+                    text={
+                      state.capabilities?.autonomous
+                        ? "Usa Ligar um par para trocar códigos com outro navegador ou aceitar um convite de uma app instalada. Adicionar o cartão de uma pessoa não estabelece esta ligação."
+                        : "Troca o endereço de transporte com outro nó ou liga um dispositivo série suportado. Não há descoberta nem servidor de arranque obrigatório."
+                    }
                   />
                 )}
                 {state.transportError && (
@@ -2874,14 +2942,16 @@ function App() {
                     className="contact-choice"
                     key={c.id}
                     onClick={() => {
-                      const existing = conversations.find(
+                      const existing = allConversations.find(
                         (g) =>
                           !g.group &&
                           g.id.startsWith("dm:") &&
                           g.members.length === 2 &&
                           g.members.some((m) => m.id === c.id),
                       );
-                      chooseConversation(existing?.id ?? "contact:" + c.id);
+                      chooseConversation(
+                        existing?.id ?? directConversationId(me!.id, c.id),
+                      );
                       setModal("");
                       setPage("messages");
                     }}

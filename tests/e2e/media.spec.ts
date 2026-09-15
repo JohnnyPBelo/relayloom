@@ -94,7 +94,10 @@ async function boot(browser: Browser) {
     await pa
       .getByRole("button", { name: "Nova conversa", exact: true })
       .click();
-    await pa.getByRole("button", { name: /Synthetic Bruno/ }).click();
+    await pa
+      .getByRole("dialog")
+      .getByRole("button", { name: /Synthetic Bruno/ })
+      .click();
     await pa
       .getByLabel("Escrever mensagem")
       .fill("Conversa para testar multimédia sintético.");
@@ -318,9 +321,10 @@ test("synthetic image, audio, video and fake-microphone voice arrive at a real p
         o.kind === "message" &&
         o.content.text === "Quatro anexos sintéticos para teste.",
     );
-    const receivedFull = await b.call('view', { id: received.id });
-    const localFull = await a.call('view', { id: local.id });
-    received.content = receivedFull.content; local.content = localFull.content;
+    const receivedFull = await b.call("view", { id: received.id });
+    const localFull = await a.call("view", { id: local.id });
+    received.content = receivedFull.content;
+    local.content = localFull.content;
     expect(received.content.attachments).toHaveLength(4);
     expect(received.content.attachments).toEqual(local.content.attachments);
     expect(received.content.attachments[0].data).toBe(visual.image);

@@ -23,7 +23,10 @@ async function compose(page: Page, a: Client, text: string) {
   await page
     .getByRole("button", { name: "Nova conversa", exact: true })
     .click();
-  await page.getByRole("button", { name: /Bruno dos Envios/ }).click();
+  await page
+    .getByRole("dialog")
+    .getByRole("button", { name: /Bruno dos Envios/ })
+    .click();
   await page.getByLabel("Escrever mensagem").fill(text);
 }
 async function audit(page: Page, name: string) {

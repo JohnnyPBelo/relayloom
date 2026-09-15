@@ -49,7 +49,8 @@ async function send(page: Page, text: string) {
 }
 
 test("two independent Chromium and Firefox processes exchange UI messages and exact attachment bytes, then reopen offline", async () => {
-  const remote = process.env.RELAYLOOM_LAUNCH_URL?.replace(/\/$/, "");
+  const remote =
+    process.env.RELAYLOOM_LAUNCH_URL?.replace(/\/$/, "") || undefined;
   if (remote && !remote.startsWith("https://"))
     throw new Error(
       "A public launch requires HTTPS, without certificate overrides",
@@ -86,7 +87,10 @@ test("two independent Chromium and Firefox processes exchange UI messages and ex
     await contact(a, bruno);
     await contact(b, alice);
     await a.getByRole("button", { name: "Nova conversa", exact: true }).click();
-    await a.getByRole("button", { name: /Bruno teste web/ }).click();
+    await a
+      .getByRole("dialog")
+      .getByRole("button", { name: /Bruno teste web/ })
+      .click();
     const message =
       "Olá do primeiro dispositivo. O conteúdo segue entre pares.";
     const bytes = Buffer.from(
@@ -94,13 +98,11 @@ test("two independent Chromium and Firefox processes exchange UI messages and ex
         1024,
       ),
     );
-    await a
-      .locator('input[type="file"]')
-      .setInputFiles({
-        name: "teste-relayloom.txt",
-        mimeType: "text/plain",
-        buffer: bytes,
-      });
+    await a.locator('input[type="file"]').setInputFiles({
+      name: "teste-relayloom.txt",
+      mimeType: "text/plain",
+      buffer: bytes,
+    });
     await send(a, message);
     await expect(
       a.getByRole("button", { name: "Estado do envio: Em espera" }),

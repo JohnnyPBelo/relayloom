@@ -91,7 +91,10 @@ test("autonomous Liquid Glass UI owns identity and offline outbox, connects thro
     await contact(a, bruno);
     await contact(b, alice);
     await a.getByRole("button", { name: "Nova conversa", exact: true }).click();
-    await a.getByRole("button", { name: /Bruno autónomo/ }).click();
+    await a
+      .getByRole("dialog")
+      .getByRole("button", { name: /Bruno autónomo/ })
+      .click();
     await a
       .getByLabel("Escrever mensagem")
       .fill("Esta mensagem nasce no navegador, sem daemon.");
@@ -403,7 +406,10 @@ test("production worker keeps private keys out of replies and recovers an applie
     const recipient = await card(b);
     await contact(a, recipient);
     await a.getByRole("button", { name: "Nova conversa", exact: true }).click();
-    await a.getByRole("button", { name: /Bruno de reserva/ }).click();
+    await a
+      .getByRole("dialog")
+      .getByRole("button", { name: /Bruno de reserva/ })
+      .click();
     await a
       .getByLabel("Escrever mensagem")
       .fill("Só uma publicação para este identificador.");

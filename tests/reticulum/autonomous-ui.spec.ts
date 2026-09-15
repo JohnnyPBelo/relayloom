@@ -174,7 +174,10 @@ for (const throughBrowserRelay of [false, true])
       await a
         .getByRole("button", { name: "Nova conversa", exact: true })
         .click();
-      await a.getByRole("button", { name: /Clara da biblioteca/ }).click();
+      await a
+        .getByRole("dialog")
+        .getByRole("button", { name: /Clara da biblioteca/ })
+        .click();
       const text = "Cheguei à biblioteca. A mensagem saiu do navegador.",
         payload = Buffer.from("caminho-reticulum-web-".repeat(1000));
       await a.getByLabel("Escrever mensagem").fill(text);
@@ -362,8 +365,7 @@ for (const throughBrowserRelay of [false, true])
             controls,
             rns: "1.5.4",
             stats,
-            limits:
-              `${browser.browserType().name()}/${process.platform} with actual RNS and serial PTY; no physical radio, WAN/WSS, Safari/device or dynamic-group browser parity claim.`,
+            limits: `${browser.browserType().name()}/${process.platform} with actual RNS and serial PTY; no physical radio, WAN/WSS, Safari/device or dynamic-group browser parity claim.`,
           },
           null,
           2,
