@@ -1,0 +1,25 @@
+TAP version 13
+# Subtest: TCP to UDPInterface: consent gates private delivery, queued partition recovery and author-offline seeding
+not ok 1 - TCP to UDPInterface: consent gates private delivery, queued partition recovery and author-offline seeding
+  ---
+  duration_ms: 20795.275247
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/tests/reticulum/media.test.ts:8:485'
+  failureType: 'testCodeFailure'
+  error: 'Operação desconhecida'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    IncomingMessage.<anonymous> (/home/absint0o/projects/relayloom/tests/helpers.ts:173:26)
+    IncomingMessage.emit (node:events:531:35)
+    endReadableNT (node:internal/streams/readable:1698:12)
+    process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 20988.46898

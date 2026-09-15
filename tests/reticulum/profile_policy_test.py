@@ -89,6 +89,16 @@ class ProfilePolicy(unittest.TestCase):
         self.assertIn(b"refusing replacement", err)
         self.assertEqual(key.read_bytes(), b"corrupted identity")
 
+    def test_pipe_program_cannot_run_without_explicit_local_opt_in(self):
+        self.config()
+        marker = self.path / "executed"
+        program = self.path / "attempt.py"
+        program.write_text(f"from pathlib import Path\nPath({str(marker)!r}).touch()\n")
+        with (self.path / "config").open("a") as config:
+            config.write(f" [[Pipe]]\n type = PipeInterface\n enabled = Yes\n command = {sys.executable} {program}\n")
+        self.rejected("local allow_pipe_interface")
+        self.assertFalse(marker.exists())
+
     def test_real_process_ownership_release_and_empty_directory_restart(self):
         self.config()
         first = self.start()

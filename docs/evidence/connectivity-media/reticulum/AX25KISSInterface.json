@@ -1,0 +1,18 @@
+{
+  "medium": "AX25KISSInterface",
+  "result": "PASS",
+  "scope": "Real RNS and OS PTY, no physical TNC/radio",
+  "evidence": [
+    "Only A-B TCP and B-C RNS; C TCP disabled. Consent false blocks, true delivers. B cannot decrypt.",
+    "Partition prevents receipt; healed path delivers exact attachment bytes.",
+    "Original author process stopped; reader B seeds to C without changing authorship."
+  ],
+  "interfaces": [
+    {
+      "type": "AX25KISSInterface",
+      "online": true,
+      "sent": 73185,
+      "received": 37475
+    }
+  ]
+}

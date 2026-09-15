@@ -4,6 +4,8 @@ Actualizado em 2026-09-15. **Produto experimental em implementação; o contrato
 
 ## Código e verificação actual
 
+Incremento de meios no host: o catálogo RNS reconhece todas as 14 interfaces internas da referência 1.5.4, com isolamento e opt-in local adicional para Pipe. UDP/Backbone passaram integração real; KISS/AX25 passaram com PTY; Bluetooth Nordic UART Linux passou com GATT simulado e PTY. Configuração de Auto/I2P/RNode/Weave aceite não equivale a teste de hardware. A integração directa é no nó Node; RNS ainda não está embebido em todas as apps. [Matriz e uso](RETICULUM-MEDIA.md) · [Gate, fontes e falhas](evidence/connectivity-media/reticulum). Uma ocorrência BLE excedeu o prazo de heal e não se repetiu nas duas execuções seguintes; investigação ainda aberta. Bluetooth directo web e rádios físicos continuam pendentes.
+
 Actualização de contactos/relay em `9abbf20`: os contactos verificados aparecem imediatamente nas conversas, usando o endereço DM definitivo antes do primeiro envio. A ordenação dos destinatários mantém a repetição idempotente quando se perde a resposta. **A rede → Permitir retransmissão** grava o consentimento, permite pausar e distingue autorização de ligações disponíveis. Bluetooth directo e descoberta automática continuam por implementar; a interface indica-o.
 
 Gate desta alteração: 2 oráculos do endereço, 55 testes de browser (24 no build existente, 30 no build público e 1 entre processos), 25 UI Node e 25 Go, execução/empacotamento/execução Linux e 3 UI-RNS por engine (9), todos passados com fontes estáveis. [Evidência e falhas corrigidas](evidence/contact-relay). Não é execução em dispositivos físicos ou todos os SO.

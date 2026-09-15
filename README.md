@@ -34,6 +34,10 @@ Em **A rede → Ligar um par**, troque os códigos de ligação com outro navega
 
 Mensagens/outbox, leitores fixos, social, colecções, páginas e recuperação têm percursos funcionais. **A autoridade, persistência/outbox e UI dos grupos dinâmicos ainda não estão integradas no browser.** Toda a paridade nativa continua obrigatória. [Uso e limites da web](docs/WEB-APPLICATION.md).
 
+## Meios através de Reticulum
+
+O nó Node no Linux integra a referência RNS 1.5.4 e aceita as suas 14 famílias de interfaces internas, com política de isolamento. UDP/Backbone foram exercitados com processos reais; KISS/AX25 com portas série virtuais. O adaptador opcional Bluetooth Nordic UART tem testes com GATT simulado, ainda sem validação de rádio físico. Isto não disponibiliza Bluetooth directo entre browsers nem embebe RNS em todas as apps. [Meios, instalação e limites](docs/RETICULUM-MEDIA.md).
+
 ## Executar um nó Node
 
 Requer Node.js 22.13+; os testes actuais usam Node 22 e Go 1.26.8.

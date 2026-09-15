@@ -1,0 +1,70 @@
+TAP version 13
+# Subtest: TCP to UDPInterface: consent gates private delivery, queued partition recovery and author-offline seeding
+not ok 1 - TCP to UDPInterface: consent gates private delivery, queued partition recovery and author-offline seeding
+  ---
+  duration_ms: 14828.839362
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/tests/reticulum/media.test.ts:8:457'
+  failureType: 'testCodeFailure'
+  error: 'condition timed out'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    until (/home/absint0o/projects/relayloom/tests/helpers.ts:214:9)
+    async TestContext.<anonymous> (/home/absint0o/projects/relayloom/tests/reticulum/media.test.ts:123:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: TCP to BackboneInterface: consent gates private delivery, queued partition recovery and author-offline seeding
+not ok 2 - TCP to BackboneInterface: consent gates private delivery, queued partition recovery and author-offline seeding
+  ---
+  duration_ms: 14137.056984
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/tests/reticulum/media.test.ts:8:457'
+  failureType: 'testCodeFailure'
+  error: 'condition timed out'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    until (/home/absint0o/projects/relayloom/tests/helpers.ts:214:9)
+    async TestContext.<anonymous> (/home/absint0o/projects/relayloom/tests/reticulum/media.test.ts:123:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TCP to KISSInterface: consent gates private delivery, queued partition recovery and author-offline seeding
+not ok 3 - TCP to KISSInterface: consent gates private delivery, queued partition recovery and author-offline seeding
+  ---
+  duration_ms: 18307.960439
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/tests/reticulum/media.test.ts:8:457'
+  failureType: 'testCodeFailure'
+  error: 'condition timed out'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    until (/home/absint0o/projects/relayloom/tests/helpers.ts:214:9)
+    async TestContext.<anonymous> (/home/absint0o/projects/relayloom/tests/reticulum/media.test.ts:123:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: TCP to AX25KISSInterface: consent gates private delivery, queued partition recovery and author-offline seeding
+not ok 4 - TCP to AX25KISSInterface: consent gates private delivery, queued partition recovery and author-offline seeding
+  ---
+  duration_ms: 18033.129001
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/tests/reticulum/media.test.ts:8:457'
+  failureType: 'testCodeFailure'
+  error: 'condition timed out'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    until (/home/absint0o/projects/relayloom/tests/helpers.ts:214:9)
+    async TestContext.<anonymous> (/home/absint0o/projects/relayloom/tests/reticulum/media.test.ts:123:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 0
+# fail 4
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 65534.21876

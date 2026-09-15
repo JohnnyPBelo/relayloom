@@ -1,0 +1,13 @@
+Requirement already satisfied: cffi==2.1.1 in ./.cache/reticulum/venv/lib/python3.11/site-packages (from -r /home/absint0o/projects/relayloom/adapters/reticulum/requirements-linux.lock (line 2)) (2.1.1)
+Requirement already satisfied: cryptography==50.0.1 in ./.cache/reticulum/venv/lib/python3.11/site-packages (from -r /home/absint0o/projects/relayloom/adapters/reticulum/requirements-linux.lock (line 3)) (50.0.1)
+Requirement already satisfied: pycparser==3.0 in ./.cache/reticulum/venv/lib/python3.11/site-packages (from -r /home/absint0o/projects/relayloom/adapters/reticulum/requirements-linux.lock (line 4)) (3.0)
+Requirement already satisfied: pyserial==3.5 in ./.cache/reticulum/venv/lib/python3.11/site-packages (from -r /home/absint0o/projects/relayloom/adapters/reticulum/requirements-linux.lock (line 5)) (3.5)
+Requirement already satisfied: rns==1.5.4 in ./.cache/reticulum/venv/lib/python3.11/site-packages (from -r /home/absint0o/projects/relayloom/adapters/reticulum/requirements-linux.lock (line 6)) (1.5.4)
+Collecting bleak==1.1.1 (from -r /home/absint0o/projects/relayloom/adapters/reticulum/requirements-bluetooth-linux.lock (line 2))
+  Using cached bleak-1.1.1-py3-none-any.whl (136 kB)
+Collecting dbus-fast==5.0.22 (from -r /home/absint0o/projects/relayloom/adapters/reticulum/requirements-bluetooth-linux.lock (line 3))
+  Using cached dbus_fast-5.0.22-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (883 kB)
+Collecting typing-extensions==4.16.0 (from -r /home/absint0o/projects/relayloom/adapters/reticulum/requirements-bluetooth-linux.lock (line 4))
+  Using cached typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+Installing collected packages: typing-extensions, dbus-fast, bleak
+Successfully installed bleak-1.1.1 dbus-fast-5.0.22 typing-extensions-4.16.0

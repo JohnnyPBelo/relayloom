@@ -5,7 +5,7 @@ O adaptador transporta os envelopes RelayLoom existentes através de `RNS.Destin
 ## Executar no host validado
 
 ```sh
-python3 scripts/reticulum-setup.py
+python3.11 scripts/reticulum-setup.py
 node --import tsx apps/node/src/cli.ts --data .runtime/rns-peer --rns-config .runtime/rns-config
 ```
 
@@ -39,10 +39,12 @@ A validação local terminou por etapas, com fontes verificadas: 279 testes Node
 
 Uma invocação conjunta foi interrompida com código 143 antes de a etapa UI produzir saída. O relatório original continua marcado como interrompido; a etapa pendente passou isoladamente em 17,3 s, seguindo-se Go integral, interoperabilidade e UI/desktop. Não se apresenta essa invocação interrompida como sucesso. [Relatório, comandos, hashes e falhas corrigidas](evidence/reticulum/milestone/report.json).
 
-PTY não é rádio. Não há execução RNS comprovada em Windows/Android/macOS/iOS, empacotamento nativo, rádios físicos ou acesso RNS directo no browser. Peers web poderão alcançar a rede através dos adaptadores RTC/WS suportados; essa rota combinada ainda precisa do seu gate. O envio normal deve continuar a pedir destinatários e apresentar estado de entrega; os meios pertencem ao diagnóstico opcional.
+PTY não é rádio. Não há execução RNS comprovada em Windows/Android/macOS/iOS, empacotamento nativo, rádios físicos ou acesso RNS directo no browser. A rota web→RTC→WS→Reticulum já passou os gates registados em STATUS; não implica acesso directo do browser ao rádio. O envio normal deve continuar a pedir destinatários e apresentar estado de entrega; os meios pertencem ao diagnóstico opcional.
 
 ## Dependências e licença
 
 RNS 1.5.4, wheel PyPI SHA256 `862615b12d449750c0b3c451dfc2cb189fd6da1c573c477a29f36f97d2a66a19`. O lock com hashes em `adapters/reticulum/requirements-linux.lock` fixa também cryptography, cffi, pycparser e pyserial para o host Linux/Python 3.11. Os avisos estão em `docs/licenses/reticulum`.
 
 A **Reticulum License** inclui condições de finalidade e conservação de avisos; não deve ser designada MIT. README/LICENSE do mirror oficial foram consultados no commit `1565126ffd08b9d7bc750ce5df82d5aa3e38183e`. A versão incorporada é o wheel fixado, sem alegação de equivalência de commit. Referências: [upstream](https://github.com/markqvist/Reticulum), [API](https://markqvist.github.io/Reticulum/manual/reference.html).
+
+O catálogo completo de interfaces internas e o adaptador Bluetooth Nordic UART Linux estão descritos em [Meios Reticulum e Bluetooth](RETICULUM-MEDIA.md), com distinção entre configuração aceite, testes IP/PTY/GATT simulado e hardware não validado.

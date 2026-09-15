@@ -1,0 +1,18 @@
+{
+  "medium": "UDPInterface",
+  "result": "PASS",
+  "scope": "Real RNS processes and loopback IP, no physical-device claim",
+  "evidence": [
+    "Only A-B TCP and B-C RNS; C TCP disabled. Consent false blocks, true delivers. B cannot decrypt.",
+    "Partition prevents receipt; healed path delivers exact attachment bytes.",
+    "Original author process stopped; reader B seeds to C without changing authorship."
+  ],
+  "interfaces": [
+    {
+      "type": "UDPInterface",
+      "online": true,
+      "sent": 105829,
+      "received": 53973
+    }
+  ]
+}

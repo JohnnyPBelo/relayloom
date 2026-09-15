@@ -63,6 +63,16 @@ const checks = [
   ["native-build", process.execPath, ["scripts/native-build.mjs"]],
   ["profile-policy", python, ["tests/reticulum/profile_policy_test.py", "-v"]],
   [
+    "interface-policy",
+    python,
+    ["tests/reticulum/interface_policy_test.py", "-v"],
+  ],
+  [
+    "bluetooth-pty-simulated-gatt",
+    python,
+    ["tests/reticulum/bluetooth_serial_test.py", "-v"],
+  ],
+  [
     "node-fairness",
     process.execPath,
     ["--import", "tsx", "--test", "tests/transport-arrival-fairness.test.ts"],
@@ -90,6 +100,7 @@ const checks = [
       "--test-concurrency=1",
       "tests/reticulum/authorization.test.ts",
       "tests/reticulum/heterogeneous.test.ts",
+      "tests/reticulum/media.test.ts",
     ],
   ],
   [

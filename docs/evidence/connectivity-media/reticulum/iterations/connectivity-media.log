@@ -1,0 +1,49 @@
+TAP version 13
+# Subtest: TCP to UDPInterface: consent gates private delivery, queued partition recovery and author-offline seeding
+ok 1 - TCP to UDPInterface: consent gates private delivery, queued partition recovery and author-offline seeding
+  ---
+  duration_ms: 20987.764029
+  type: 'test'
+  ...
+# Subtest: TCP to BackboneInterface: consent gates private delivery, queued partition recovery and author-offline seeding
+ok 2 - TCP to BackboneInterface: consent gates private delivery, queued partition recovery and author-offline seeding
+  ---
+  duration_ms: 25984.96197
+  type: 'test'
+  ...
+# Subtest: TCP to KISSInterface: consent gates private delivery, queued partition recovery and author-offline seeding
+ok 3 - TCP to KISSInterface: consent gates private delivery, queued partition recovery and author-offline seeding
+  ---
+  duration_ms: 23380.018416
+  type: 'test'
+  ...
+# Subtest: TCP to AX25KISSInterface: consent gates private delivery, queued partition recovery and author-offline seeding
+ok 4 - TCP to AX25KISSInterface: consent gates private delivery, queued partition recovery and author-offline seeding
+  ---
+  duration_ms: 24197.710795
+  type: 'test'
+  ...
+# Subtest: TCP to BluetoothNusSimulatedGatt: consent gates private delivery, queued partition recovery and author-offline seeding
+not ok 5 - TCP to BluetoothNusSimulatedGatt: consent gates private delivery, queued partition recovery and author-offline seeding
+  ---
+  duration_ms: 56388.989518
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/tests/reticulum/media.test.ts:8:485'
+  failureType: 'testCodeFailure'
+  error: 'condition timed out'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    until (/home/absint0o/projects/relayloom/tests/helpers.ts:214:9)
+    async TestContext.<anonymous> (/home/absint0o/projects/relayloom/tests/reticulum/media.test.ts:193:9)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 4
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 151143.425869

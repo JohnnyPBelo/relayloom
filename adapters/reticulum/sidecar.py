@@ -18,6 +18,7 @@ from collections import deque
 import RNS
 from RNS.Channel import MessageBase, ChannelException, CEType
 from RNS.vendor.configobj import ConfigObj
+from interface_policy import validate_interfaces, interface_stats
 
 MAX_LINKS = 16
 MAX_FRAME = 4097
@@ -58,10 +59,7 @@ class Sidecar:
             raise ValueError("a dedicated config with share_instance=No is required")
         if settings["reticulum"].as_bool("enable_transport"):
             raise ValueError("application sidecars must use enable_transport=No; RelayLoom owns relay consent")
-        allowed = {"TCPClientInterface", "TCPServerInterface", "SerialInterface", "RNodeInterface"}
-        for section in settings.get("interfaces", {}).values():
-            if not isinstance(section, dict) or section.get("type") not in allowed:
-                raise ValueError("unsupported interface in dedicated config")
+        validate_interfaces(settings)
         if (directory / "interfaces").exists() and any((directory / "interfaces").iterdir()):
             raise ValueError("custom executable interfaces are not accepted")
         os.umask(0o077)
@@ -278,6 +276,7 @@ class Sidecar:
             if now >= stats_at:
                 self.emit({"t": "stats", "sent": self.sent_segments,
                            "received": self.received_segments, "proved": self.proved_segments,
+                           "interfaces": interface_stats(RNS.Transport.interfaces),
                            "links": [{"pending": len(p["pending"] or b""),
                                       "unproved": len(p["envelopes"]),
                                       "rtt": p["link"].rtt, "window": p["channel"].window,
