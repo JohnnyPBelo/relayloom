@@ -1,0 +1,11 @@
+{
+  "initialMatrix": "23 passed, 1 cache sentinel failure in WebKit using an image document",
+  "manifest": "Actual Vite-hashed manifest resolved start_url under assets; negative reproduced; ../browser paths fixed it for both plain and hashed manifest",
+  "cacheControls": [
+    "Sentinel in WebKit image document did not survive navigation",
+    "Unregister/reinstall control in WebKit then failed offline asset availability; no production unregister operation added",
+    "Final independent HTML cache owner stays open through app installation; passes in all three engines",
+    "Temporarily restoring global cache cleanup only in built SW fails the sentinel assertion; restored original build before final gate"
+  ],
+  "scope": "Browser engines on Linux; physical devices not exercised; no changes to RTC or cryptographic primitives"
+}

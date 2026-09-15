@@ -1,0 +1,36 @@
+
+Running 1 test using 1 worker
+
+(node:93368) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [chromium] › tests/browser/public-distribution.checks.ts:6:1 › public build serves every integrity-pinned asset below its prefix, with no daemon entry (88ms)
+
+
+  1) [chromium] › tests/browser/public-distribution.checks.ts:6:1 › public build serves every integrity-pinned asset below its prefix, with no daemon entry
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "/relayloom/browser/index.html"
+    Received: "/relayloom/assets/index.html"
+
+      25 |       if (asset.path.endsWith(".webmanifest")) {
+      26 |         const value = await response.json();
+    > 27 |         expect(new URL(value.start_url, origin + asset.path).pathname).toBe("/relayloom/browser/index.html");
+         |                                                                        ^
+      28 |         expect(new URL(value.scope, origin + asset.path).pathname).toBe("/relayloom/browser/");
+      29 |         expect(new URL(value.icons[0].src, origin + asset.path).pathname).toBe("/relayloom/browser/icon.svg");
+      30 |       }
+        at /home/absint0o/projects/relayloom/tests/browser/public-distribution.checks.ts:27:72
+
+    Error Context: .cache/public-web/results/public-distribution.checks-273b6-prefix-with-no-daemon-entry-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    .cache/public-web/results/public-distribution.checks-273b6-prefix-with-no-daemon-entry-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace .cache/public-web/results/public-distribution.checks-273b6-prefix-with-no-daemon-entry-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › tests/browser/public-distribution.checks.ts:6:1 › public build serves every integrity-pinned asset below its prefix, with no daemon entry

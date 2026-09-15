@@ -185,3 +185,8 @@ O gate criptográfico89503 terminou0:457fontes,281Node,Go/race16pacotes,SQLiteC5
 ## Matriz Linux e curvas portáveis — 2026-09-15
 
 FR-001/CON-003/FR-043/INT-009/ACC-014/INT-010:30testes browser por engine (Chromium153,Firefox155,WebKit26.6),3percursosUI-RNS por engine,25UI Node/25Go e pacoteLinux passaram. Evidência docs/evidence/browser-matrix. Geração/importação de curvas nativas do WebKit falhou nos controlos; curvasNoble preservamv1 e passaram512ciclos/RFC7748/interop. O fechoRTC anterior fica em aberto, não reclamado como corrigido. Autoridade/outbox/UI de gruposweb,dispositivos/Safari/radios e revisãoindependente continuam pendentes.
+
+
+## Distribuição web real por HTTPS — 2026-09-15
+
+Extensão web de PROJECT-BRIEF/ACC-010:ff2fb60 acrescenta build público sob /relayloom/,caminhos portáveis,cache por scope e publicação exacta verificada.43testes web locais,50UI nativa,Linux executado;URLHTTPS também testado com dois processos e63 488bytes de anexo exactos. docs/evidence/web-launch e docs/WEB-TWO-DEVICES.md. A paridade de todas as funcionalidades e a execução em dois dispositivos físicos permanecem pendentes; esta distribuição não fecha o contrato.

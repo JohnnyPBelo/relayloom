@@ -4,14 +4,18 @@ Actualizado em 2026-09-15. **Produto experimental em implementação; o contrato
 
 ## Código e verificação actual
 
-A main publicada em `f25598d` inclui a web autónoma, convites de rede, Reticulum real, grupos nativos e o perfil de admissão de chaves. O incremento local seguinte troca as operações Ed25519/X25519 do browser por `@noble/curves` 2.4.0, após reproduzir falhas intermitentes da implementação Web Crypto do WebKit deste host. Mantém os formatos de chaves, cofres e envelopes v1. AES-GCM, HKDF e SHA-256 continuam em Web Crypto.
+**Web experimental publicada:** https://johnnypbelo.github.io/relayloom/browser/index.html · [Testar em dois dispositivos](WEB-TWO-DEVICES.md). Marco de código `ff2fb60`, distribuição `ec3a3baa…` em `codex/web-pages`, Pages `34940021714` concluído com sucesso e HTTPS obrigatório. Treze ficheiros de execução verificados byte a byte depois da publicação; `.nojekyll` é apenas um marcador de build. GitHub Pages distribui código, sem backend RelayLoom para conteúdo, chaves ou sinalização.
+
+Este incremento passou 18 UI autónomos no build existente,24 no build público e um percurso entre processos Chromium/Firefox. A regressão adicional passou25 UI Node+25 Go e build/run/package/run Linux. O mesmo percurso no URL publicado também passou: mensagens nos dois sentidos,63 488 bytes exactos de anexo,recibo de leitura e recarga offline após fechar o emissor. **Dois dispositivos físicos ainda não foram testados.** [Comandos,hashes,capturas e falhas intermédias](evidence/web-launch). O restante contrato não foi reduzido.
+
+A versão actual inclui a web autónoma, convites de rede, Reticulum real, grupos nativos e o perfil de admissão de chaves. O incremento `f378e13` troca as operações Ed25519/X25519 do browser por `@noble/curves` 2.4.0, após reproduzir falhas intermitentes da implementação Web Crypto do WebKit deste host. Mantém os formatos de chaves, cofres e envelopes v1. AES-GCM, HKDF e SHA-256 continuam em Web Crypto.
 
 | Gate executado | Resultado e alcance | Evidência |
 | --- | --- | --- |
 | Regressão integral sobre `2d4d12c`, incorporada em `335324d` | 281 Node; 16 pacotes Go com race detector; 5 pacotes SQLite C; 58 interoperabilidade; 28 Chromium; 25 UI por motor; pacote Linux executado. 457 fontes estáveis; Go/app 416,988 s dentro de 600 s | [Relatórios](evidence/group-certificate-profile) |
-| Incremento actual: Chromium 153.0.8010.12 | 30/30 testes autónomos + 3/3 percursos UI com Reticulum, Linux | [Chromium](evidence/browser-matrix/chromium) |
-| Incremento actual: Firefox 155.0 | 30/30 testes autónomos + 3/3 percursos UI com Reticulum, Linux | [Firefox](evidence/browser-matrix/firefox) |
-| Incremento actual: WebKit 26.6 WPE | 30/30 testes autónomos + 3/3 percursos UI com Reticulum, Linux; existe uma observação RTC anterior ainda aberta | [WebKit](evidence/browser-matrix/webkit) |
+| Matriz f378e13: Chromium 153.0.8010.12 | 30/30 testes autónomos + 3/3 percursos UI com Reticulum, Linux | [Chromium](evidence/browser-matrix/chromium) |
+| Matriz f378e13: Firefox 155.0 | 30/30 testes autónomos + 3/3 percursos UI com Reticulum, Linux | [Firefox](evidence/browser-matrix/firefox) |
+| Matriz f378e13: WebKit 26.6 WPE | 30/30 testes autónomos + 3/3 percursos UI com Reticulum, Linux; existe uma observação RTC anterior ainda aberta | [WebKit](evidence/browser-matrix/webkit) |
 | Regressão da interface e desktop após o incremento | 25 UI Node + 25 UI Go; build/run/package/run Linux. 42 auditorias Axe novas da matriz browser/RNS sem violações; não são revisão independente | [UI e pacote](evidence/browser-matrix/native-ui) · [Auditorias](evidence/browser-matrix/axe-manifest.json) |
 
 Os testes de browser incluem identidade/cofre, IndexedDB cifrado, recuperação, worker, service worker sem instalar PWA, host indisponível, outbox/idempotência, seeding com autora offline, social/sites, falhas de autorização/corrupção e transportes reais. O incremento acrescenta 512 ciclos de geração/reimportação de identidades por engine, oráculos Node, o vector público RFC 7748 e operações nativas de curvas deliberadamente indisponíveis. **Certificados de grupos não equivalem à gestão completa de grupos na aplicação web.**
@@ -53,14 +57,14 @@ Reticulum ainda não está embebido em todos os pacotes. A integração da polí
 | Plataforma | Evidência e bloqueios |
 | --- | --- |
 | Linux | Node/Go, três engines de browser, UI e execução do pacote desktop no host; não é teste de todos os instaladores/distribuições |
-| Windows | Node e empacotamento Windows x64 passaram no CI de `f25598d`; PTY omitido. GUI/instalador/radios físicos e o incremento browser mais recente ainda exigem validação própria |
-| macOS | Node e empacotamento arm64 passaram no runner Apple de `f25598d`; não prova GUI/instalador, assinatura ou hardware/radios locais |
+| Windows | Node e empacotamento Windows x64 passaram no CI34916793582 de `f378e13`; PTY omitido. GUI/instalador/rádios físicos e o incremento público ff2fb60 ainda exigem validação própria |
+| macOS | Node e empacotamento arm64 passaram no runner Apple CI34916793582 de `f378e13`; não prova GUI/instalador, assinatura ou hardware/rádios locais nem o incremento público posterior |
 | Android | APK `136a5103…` passou 82 asserções no emulador API 36 x86_64, incluindo SAF, lifecycle, mensagens, recuperação e relay/seeding. Não herda os incrementos posteriores, não é ARM64/dispositivo físico/radio |
-| iOS main | CI `34906805922` de `f25598d` compilou, arrancou e importou a fotografia; o fluxo funcional voltou a falhar no fecho do teclado |
-| iOS WIP | Ramo `codex/ios-keyboard-verification`, `eec2806`: botão UIKit compilado e arranque passou; a fotografia bloqueou antes do fluxo funcional. Uma repetição focada do job foi pedida após a main comprovar a preparação de fotografia. **Correcção ainda não validada nem integrada**. [Evidência](evidence/ios-keyboard-ci) |
+| iOS main | CI34916793582 de f378e13 compilou/arrancou; o fluxo funcional conserva a falha de fecho do teclado. O código UIKit WIP continua separado |
+| iOS WIP | `codex/ios-keyboard-verification`,496788b,CI34917778173 concluído: teclado/publicação/TCP/mensagem privada confirmados; Fototeca abriu e a fotografia sintética está visível na captura. O selector `app.collectionViews.cells` não a encontrou. Anexo/resposta/retoma/relaunch ainda sem passe integral. [Falha actual](evidence/ios-keyboard-ci/attempt3). A correcção UIKit não está integrada na main |
 | Safari/dispositivos | O WebKit WPE/Linux anuncia um user-agent Safari/Mac, mas não é Safari/macOS/iOS real. Dispositivos Apple, assinatura e todos os radios físicos continuam bloqueados/não verificados |
 
-Não foi publicado um URL de produção da web nesta etapa. A entrada estática `/browser/index.html` funciona sem API de daemon para os seus dados/identidade. [Executar e ligar pares](WEB-APPLICATION.md).
+O URL experimental acima funciona sem API de daemon para os dados/identidade do browser. A visita inicial requer acesso ao código; a cache offline e o armazenamento dependem do browser. [Executar e ligar pares](WEB-APPLICATION.md).
 
 ## Observações abertas e próximos gates
 

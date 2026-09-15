@@ -1,0 +1,13 @@
+
+Running 6 tests using 1 worker
+
+(node:133749) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [webkit] › tests/browser/application.spec.ts:74:1 › autonomous Liquid Glass UI owns identity and offline outbox, connects through real RTC, receives signed confirmations and survives reload (16.6s)
+  ✓  2 [webkit] › tests/browser/application.spec.ts:200:1 › autonomous social actions and safe signed site builder persist and remain viewable after author closes (14.9s)
+  ✓  3 [webkit] › tests/browser/application.spec.ts:355:1 › production worker keeps private keys out of replies and recovers an applied send after the UI response is lost (24.2s)
+  ✓  4 [webkit] › tests/browser/application.spec.ts:459:1 › a second tab cannot take ownership of a live application profile and an unknown or corrupt profile is never silently reset (3.1s)
+  ✓  5 [webkit] › tests/browser/application.spec.ts:516:1 › cached application code and encrypted profile reopen when the static host is unavailable, without installing the PWA (3.1s)
+  ✓  6 [webkit] › tests/browser/application.spec.ts:582:1 › corrupted cached worker is rejected offline and recovered only from verified available code (1.9s)
+
+  6 passed (1.1m)

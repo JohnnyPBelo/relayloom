@@ -1,5 +1,17 @@
 # Durable implementation plan
 
+## Prioridade actual — web em dois dispositivos, 2026-09-15
+
+Executar [WEB-LAUNCH-IMPLEMENTATION.md](WEB-LAUNCH-IMPLEMENTATION.md): build público HTTPS sob /relayloom/,43 testes web locais passados,regressão UI Node/Go/Linux25+25 passada; assets exactos publicados e URL HTTPS verificado. Depois continuar todos os alvos e a paridade de grupos web. O diagnóstico iOS actual é selector da fotografia visível no CI34917778173; não repetir a falha antiga como se fosse a última. Estados “em curso” abaixo são históricos e não substituem RESUME/STATUS.
+
+## Extensão activa — RNS real e envio agnóstico
+
+INT-010 / PROJECT-BRIEF2026-09-14: integração em.adapters/reticulum e packages/transport/src/reticulum.ts, com perfil/identidade de transporte separados. Testes dirigidos passaram;gate completo em.cache/rn sobreb15b6e6 em curso. Concluircorrecções/regressão/commit;seguir política deconsentimentoRNSporinstalação,peeringdurável,interopweb e dispositivos/rádios. A paridadeweb e todoocontrato anterior continuam obrigatórios. VerRETICULUM-IMPLEMENTATION.md eRESUME.md.
+
+## Extensão activa — W1–W5: web sem instalação
+
+O proprietário acrescentou paridade de TODAS as funcionalidades na web autónoma. Executar [WEB-IMPLEMENTATION.md](WEB-IMPLEMENTATION.md), mantendo todos os pendentes C2/C3, plataformas e auditorias anteriores. Não confundir apps/web com nó P2P no navegador.
+
 Full owner contract: PROJECT-BRIEF.md. Work continues through these phases; a phase is not product completion.
 
 - [x] P0: Read contract, inspect clean repository/resources, preserve harness and scope.
@@ -84,3 +96,8 @@ Continuam carriers automáticos, criação/gestão dinâmica na UI, pesquisa int
 ## C1 — gate final concluído, contrato incompleto
 
 Build6.056s;253 Node405.684s;161 Go principais/race711.420s (12 helpers pelos drivers);47 interoperabilidade480.894s;35 SQLite C283.498s;19 UI Node138.097s/19 Go128.687s. Desktop Linux preparação0.319s/execução2.412s/pacote --dir7.260s/execução empacotada1.255s.62 Axe sem violações;326 fontes inalteradas. Sessões83929 e43358 terminaram0. Evidência em docs/evidence/group-carriers/final, falhas em adversarial. Root reviu as capturas; revisão independente e plataformas actuais pendentes. C2/C3 e todo o resto de PROJECT-BRIEF continuam activos; não marcar produto completo.
+
+
+## Marco da aplicação autónoma verificado
+
+`node scripts/verify-autonomous.mjs` terminou0:271Node/26browser/21UI pormotor/desktopLinuxbuild+run+package+run,403fontesestáveis,72Axe semviolações. Evidência docs/evidence/browser-application. SemAPIde daemon no cliente/browser/index.html; worker/IndexedDB/RTC/WS/SW reais. FonteGo não mudou desdepasse89race anterior. Gruposdinâmicos e toda arestanteparidade/gates dehardware/revisão continuam obrigatórios. Previewestáticolocal4174activosessão49020; nenhumcommit/pushnovo.

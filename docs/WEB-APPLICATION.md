@@ -1,6 +1,6 @@
 # RelayLoom directamente no navegador — implementação parcial
 
-A entrada `/browser/index.html` é uma aplicação estática com a UI Liquid Glass partilhada. Gera e usa a identidade no navegador, conserva dados cifrados em IndexedDB e troca pacotes por WebRTC/WebSocket. Não chama `/api` de um daemon para executar as funcionalidades abaixo. Não é ainda a paridade completa exigida pelo proprietário nem existe um URL público publicado nesta etapa.
+A entrada `/browser/index.html` é uma aplicação estática com a UI Liquid Glass partilhada. Gera e usa a identidade no navegador, conserva dados cifrados em IndexedDB e troca pacotes por WebRTC/WebSocket. Não chama `/api` de um daemon para executar as funcionalidades abaixo. Ainda não é a paridade completa exigida pelo proprietário. A versão experimental está publicada em [HTTPS](https://johnnypbelo.github.io/relayloom/browser/index.html); consulte o [guia para dois dispositivos](WEB-TWO-DEVICES.md).
 
 ## Executar a versão local para desenvolvimento
 
@@ -34,7 +34,7 @@ Os limites continuam reais: metadados privados1MiB, armazenamento128MiB pordefei
 
 ## Cache e actualizações
 
-Os assets emitidos peloVite têm um manifesto dehashes incluído no serviceworker. Verifica-se integridade ao instalar e ao ler da cache. Código e worker ficam no âmbito/browser; o cliente nativo em/index.html e a suaAPI não são interceptados. Uma versãonova não força skipWaiting eminstâncias antigas: aguarda o fecho dos clientes antes de assumir. Hashes detectam corrupção; não substituem assinatura de distribuição nem protegem contra servidor deorigem malicioso. Essa fronteira e a assinatura das releases continuam pendentes.
+Os assets emitidos peloVite têm um manifesto dehashes incluído no serviceworker. Verifica-se integridade ao instalar e ao ler da cache. Código e worker ficam no âmbito browser do caminho de instalação, incluindo /relayloom/browser/ no alojamento público; o cliente nativo em/index.html e a suaAPI não são interceptados. Uma versãonova não força skipWaiting eminstâncias antigas: aguarda o fecho dos clientes antes de assumir. Hashes detectam corrupção; não substituem assinatura de distribuição nem protegem contra servidor deorigem malicioso. Essa fronteira e a assinatura das releases continuam pendentes.
 
 ## Verificação
 
@@ -44,7 +44,7 @@ node scripts/verify-autonomous.mjs
 
 O gate compila, corre a regressãoNode, todos os testes de browser (incluindo núcleo, adaptadores e UIautónoma), a UI nativaNode/Go e odesktopLinux. Os relatórios ficam em `.cache/browser-application/final`. Assegura pelo menos15GiB livres e fontes estáveis. O gate sobre `5e049f1` terminou 0 com 442 fontes estáveis: 279 Node, 26 browser, 23 UI por motor e pacote Linux executado. Relatórios e oito auditorias Axe novas sem violações estão em `docs/evidence/browser-application/milestone`. A correcção posterior dos caminhos de recolha de artefactos CI está discriminada no mesmo directório; não altera código de execução.
 
-Os testes actuais são Chromium/Linux. Viewports móveis, microfones sintéticos, mocks denotificações e PTYs não provam dispositivos/radios. Safari/Firefox/WebKit, Android/iOS actuais, hardware/keystore/rotação, revisãoindependente, todososadversariaisC2/C3 e paridadecompleta continuam pendentes. O objectivo completo permanece activo.
+A matriz posterior de Chromium/Firefox/WebKit no Linux passou 90 testes autónomos e nove percursos UI-RNS (docs/evidence/browser-matrix). A distribuição pública passou outros 43 testes locais,50 UI Node/Go e um percurso real no URL HTTPS entre processos Chromium/Firefox (docs/evidence/web-launch). Viewports móveis, microfones sintéticos, mocks de notificações e PTYs não provam dispositivos/rádios. Safari real, Android/iOS actuais, hardware/keystore/rotação, revisão independente, adversariais restantes e paridade completa continuam pendentes.
 
 
 ## Ligar à rede de uma app instalada

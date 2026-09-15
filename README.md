@@ -10,6 +10,12 @@ A captura vem de um teste real: a autora tinha apenas outro navegador como par; 
 
 ## Usar a web sem instalar a aplicação
 
+**[Abrir RelayLoom no browser](https://johnnypbelo.github.io/relayloom/browser/index.html)** · [Guia para testar em dois dispositivos](docs/WEB-TWO-DEVICES.md).
+
+Abra o endereço em dois dispositivos na mesma LAN alcançável, crie identidades diferentes, troque os cartões públicos e depois os códigos em **A rede → Ligar um par**. Escolha a pessoa em Conversas e envie. O alojamento fornece apenas o código; as mensagens seguem entre pares. Redes de convidados/NAT podem impedir o caminho directo. Não há instalação obrigatória.
+
+A publicação HTTPS passou um percurso com processos Chromium e Firefox independentes: mensagens nos dois sentidos, anexo de 63 488 bytes exactos, recibo de leitura e recuperação offline após fechar o emissor. **Não equivale a dois dispositivos físicos testados.** [Evidência do lançamento](docs/evidence/web-launch).
+
 A entrada `/browser/index.html` possui identidade, cofre, worker e armazenamento IndexedDB cifrado próprios. Não usa a API de um daemon para guardar dados ou assinar mensagens. A instalação PWA é opcional e não desbloqueia funcionalidades exclusivas.
 
 Para servir os ficheiros localmente:
@@ -20,7 +26,7 @@ npm run build
 node node_modules/vite/bin/vite.js preview --host 127.0.0.1 --port 4174 --strictPort
 ```
 
-Abra `http://127.0.0.1:4174/browser/index.html`. O processo distribui apenas o código. Ainda não foi publicado um URL de produção; uma distribuição por URL precisa de servir os ficheiros estáticos por HTTPS.
+Abra `http://127.0.0.1:4174/browser/index.html`. O processo distribui apenas o código. Para gerar a distribuição pública separada, use `npm run web:build`; o resultado fica em `dist/public-web`. `npm run web:verify` valida os ficheiros antes de os publicar. O URL acima usa HTTPS obrigatório.
 
 Em **A rede → Ligar um par**, troque os códigos de ligação com outro navegador. Também pode obter um convite em **A rede → Ligar um par → Usar a versão web neste dispositivo** na app instalada. Depois escolhe a pessoa e envia normalmente; o meio não é escolhido em cada mensagem.
 
@@ -64,7 +70,7 @@ npm run native:build
 .cache/native-app/relayloom --data .runtime/go-alice --http-port 4176 --assets dist/web
 ```
 
-O arranque imprime a origem e o token de controlo local. Os pacotes Windows/macOS passaram em CI, mas isso não prova execução da GUI, assinatura ou dispositivos. O APK Android anterior tem testes num emulador; não herda automaticamente as alterações seguintes. O iOS ainda tem um bloqueio no percurso funcional do teclado; existe uma correcção em ramo WIP, sem passe funcional antecipado. [Matriz exacta](docs/STATUS.md#plataformas).
+O arranque imprime a origem e o token de controlo local. Os pacotes Windows/macOS passaram em CI, mas isso não prova execução da GUI, assinatura ou dispositivos. O APK Android anterior tem testes num emulador; não herda automaticamente as alterações seguintes. O ramo WIP iOS já confirmou o fecho do teclado e o envio privado no simulador, mas o teste ainda não selecciona a fotografia visível no picker. O fluxo iOS completo e a assinatura continuam pendentes. [Matriz exacta](docs/STATUS.md#plataformas).
 
 ## Transportes e propriedade
 

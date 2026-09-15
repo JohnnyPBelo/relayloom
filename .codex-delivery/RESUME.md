@@ -1,40 +1,41 @@
-# RelayLoom — retoma activa, 2026-09-13
+# RelayLoom — retoma activa, 2026-09-15
 
-## Objectivo e restrições
+Produto NÃO concluído. Preservar todo o PROJECT-BRIEF.md: Windows/Android/macOS/iOS/Linux e web com paridade integral, Liquid Glass, mensagens/social/sites declarativos seguros, autoria separada de leitura/seeding e transporte agnóstico com Reticulum real.
 
-Continuar todo o PROJECT-BRIEF.md, apenas em /home/absint0o/projects/relayloom. Responder PT-PT. Manter Astra/Copilot Ultra, sem alterar modelos/providers/auth/bridges/serviços/permissões. Recuperação sequencial: sem agentes novos/retomados. Preservar alterações, caches/dependências no projecto, uma compilação pesada de cada vez e pelo menos15GiB livres (92GiB observados). Commits/pushes normais autorizados, sem force-push nem merge de PR. Sem outros projectos/dados pessoais/root/compras. Produto incompleto; não marcar goal completo.
+## Marco actual e entrega web
 
-## Estado mais recente após publicação
+Código ff2fb60 (main local; push do código e desta documentação é o último passo desta etapa). Origem antes desse push f378e130456d036315d9a0b432d65e71b22860a3. Confirmar `git status --short` e `git log -3 --oneline`; não assumir que a referência anterior ainda é HEAD.
 
-C1 publicado em origin/main63ded7b (codecs91e90c8, runtime2b0ce51, diagnósticosCI63ded7b); push confirmado. CI34777466884 terminou: Linux e macOS Node passaram, Windows falhou na asserção exitCode da fixture de seeder; Go/desktop/iOS skipped. Correcção local337561c reforça o controlo offline com exitCode OU signalCode e porta TCP anteriormente acessível que passa a recusar ligações.6 testes Node/Go/serial afectados passaram41.055s; não houve alteração de runtime. Publicar esta correcção e observar o novo CI.
+URL HTTPS verificado: https://johnnypbelo.github.io/relayloom/browser/index.html
+Guia: docs/WEB-TWO-DEVICES.md. Abrir em dois dispositivos na mesma LAN alcançável, criar identidades diferentes, trocar cartões públicos e depois oferta/resposta em A rede → Ligar um par. Não há STUN/TURN/sinalização automática nem promessa de atravessar qualquer NAT.
 
-**C2 NÃO COMMITADO:** packages/groups/src/notices.ts, native/groupnotice/{notice,journal,notice_test}.go e tests/group-notices.test.ts. Codecs de avisos invitation/consent/leave, binding ao convite original, emissor/destinatário exactos e journal cifrado transaccional (64in/64out,8por emissor,256retirados). Não importados nos runtimes; nenhum transporte/inbox/UI C2 entregue. Node5 casos passaram6.402s após corrigir a fixture que usava .value indevidamente; Go5/race27.074s passou. Novo teste Node de falha de retirada e typecheck estão na sessão71943, logs .cache/group-notices/typecheck-final-local.log e node-six.log; recolher antes de repetir. Retire agora aborta a transacção se uma escrita após delete falhar. Go primeiro comando foi só compilação, com no test files; não o contar como teste.
+Publicação estática normal em codex/web-pages,ec3a3baa8ed39d103d9b9a4f7823be355bc9fd88. GitHub Pages configurado só neste repositório,https_enforced=true; CI34940021714 terminou success. Sem alterações a bridges/providers/autenticação/serviços alheios. O site distribui apenas código; identidades/dados/sinalização não são enviados a um backend RelayLoom. Independente do preview local; nenhum servidor local é necessário para este URL.
 
-Seguem vectores e ficheiros Node↔Go C2, restantes limites/falhas, integração atómica de intenções de convite na API, reconstrução de consentimento/saída sem reverter paragens, inbox sem auto-adesão, transporte e C3UI. Preservar tudo; sem novos agentes/configurações.
+## Gates concluídos desta etapa
 
-## C1 — gate final concluído
+- `node scripts/verify-public-web.mjs`: PASS,fontes e14artefactos estáveis;18 UI autónomos no build existente,24 no build público,1 percurso com processos Chromium/Firefox separados. Anexo63 488bytes exactos,recibos,autor fechado/receptor recarregado offline.
+- `node scripts/verify-ui.mjs`: PASSED,25Node169.496s+25Go156.282s;desktopLinux build/run/package/run. Fontes inalteradas.
+- `RELAYLOOM_LAUNCH_URL=https://johnnypbelo.github.io/relayloom node scripts/e2e.mjs --config tests/browser/launch.config.ts`:1pass14.5s noURL real.13ficheiros de execução conferidos byte/hash por HTTPS; .nojekyll é marcador de build.
+- Os controlos reproduziram o manifesto a apontar para assets/index.html e a eliminação indevida de cache de outra instalação. Corrigidos caminhos e scope de cache. Logs de falhas e observaçõesWebKit preservados.
 
-Base publicada adfd52a21e1e6ff3c5c6b02ca5971c2280943b0c. Marco C1 verificado localmente, com fonteSHA256 b43741ef070d437b224b69b396e4ddddc9bc251c35dbab79f72ef68d70ffd017. Confirmar git status/log/origin antes de assumir publicação. A árvore tem código de carriers, testes, documentos e evidência gerada a preservar.
+Evidência publicável: docs/evidence/web-launch. .cache/public-web/gate/report.json e .cache/ui-verification/report.json são os relatórios completos locais. Antes de publicar novamente,npm run web:verify;node scripts/publish-web.mjs mostra plano;--publish só aceita as fontes/artefactos verificados. O script usa índice Git temporário próprio e push normal;nunca a árvore ou os perfis. Não executar npmci nas worktrees/caches partilhadas.
 
-Sessão83929 terminou0: build6.056s;253 Node405.684s;161 testes principais Go/race711.420s (12 helpers exercitados pelos drivers);47 interoperabilidade480.894s;35 casos principais SQLite C283.498s;19 UI Node138.097s/19 Go128.687s;22 host iOS1.670s/estática0.031s. Sessão43358 terminou0: desktop Linux preparação0.319s/execução2.412s/pacote --dir7.260s/execução empacotada1.255s.62 Axe sem violações;326 fontes inalteradas. Root reviu Node320px, editor Node e conversa escura Go. Não é revisão independente. **Nenhum teste/build/preview conhecido activo.**
+43testes web locais+50UI nativa+1percursoHTTPS não substituem toda a matriz anterior ou dispositivos físicos. Viewport compacto não é telefone;WebKitWPE/Linux não é Safari real;PTY não é rádio;Axe não é revisão independente.
 
-Evidência pública pronta: docs/evidence/group-carriers/final (relatórios, logs, hashes, runners reproduzíveis e capturas) e adversarial (falhas antes/correcção). Scripts originais em .cache/group-carriers-final/{run,desktop}.py. Os comandos npm test, npm run test:native e npm run test:interop incluem os novos casos. O CLI Go actual foi compilado; não relançar gates por perda dos handles antigos, todos concluídos.
+## iOS e trabalho preservado
 
-C1 transporta automaticamente headers e snapshots privados por group-control nos sockets/inventário existentes. Certificados internos do criador conservam autoria; leitores podem re-encriptar e seeders opacos podem retransmitir bytes. Pedidos/respostas paginados, cartão comprometido por época, limites na fronteira de remoção, fork freeze, replay após unlock antes de novos envios e cache de alterações locais/avisos dirigidos de remoção. Não há auto-inscrição por carrier desconhecido.
+Mainf378 CI34916793582 terminou: todos os jobs excepto iOS passaram. Main continua a falhar ao fechar o teclado.
+WIPcodex/ios-keyboard-verification,496788baae0f8ec2b51900dd62ef681fb1914f29,worktree.cache/ik,CI34917778173 terminou: teclado/publicação/TCP/mensagem privada avançaram;Fototeca abriu. A imagem sintética está visível na captura,mas app.collectionViews.cells não a encontrou. Recolher a hierarquia acessível do picker e corrigir o selector; não repetir sem diagnóstico nem declarar ausência da imagem. Evidência docs/evidence/ios-keyboard-ci/attempt3. Anexo/resposta/retoma/relaunch continuam sem passe integral.
 
-Correcções comprovadas: tentativas falhadas consomem orçamento; respostas partilham quota auxiliar; substituição impossível conserva provas e a escrita precede limpeza; envelope público/oversized/TTL excessivo é recusado ANTES de armazenamento e trânsito, incluindo relay opaco. Máximos1MiB ciphertext/plaintext,2MiB bundle,1h+10ms duração;64 tentativas e4MiB/min; cache auxiliar8MiB ou1/4quota; estruturas/páginas limitadas. Expiração de carrier não apaga autoridade durável. Os stores não prometem transacção geral sobre quaisquer falhas físicas de I/O.
+Root preserva as alterações anteriores em RelayViewController.swift e NativeSimulatorTests.swift (não integradas na main),notas e capturas antigas. Os testes regeneraram capturas habituais; cópias anteriores estão em .cache/milestones/web-launch/preserved-evidence. Não usar git add-A,reset,force-push,nem substituir root por uma worktree. Nenhum processo de teste desta etapa ficou a meio; o painel aberto por open_in_codex respondeu apenas queued,sem alegar abertura visual.
 
-## Próxima implementação: C2 e C3
+## Continuação obrigatória
 
-1. Guardar/publicar o marco C1 apenas com o estado de git e a evidência efectivamente confirmados. README/STATUS/GROUP-CARRIERS distinguem o gate local e plataformas pendentes. Não afirmar macOS corrigido nem todas as plataformas testadas.
-2. C2: seguir .codex-delivery/GROUP-NOTICES-IMPLEMENTATION.md (nota de arquitectura, ainda NÃO implementada). Transporte durável de convites/consentimentos/saídas, inbox cifrada/limitada sem auto-adesão. Persistir cartão/material do convite junto da operação; consentimento e saída usam o checkpoint existente. Quota de rede não pode reverter close/leave/fences. Provar falhas/replays/partições/seeder/Node↔Go e recusa de convites obsoletos/consentimentos forjados.
-3. C3: UI Liquid Glass de criar/convidar/aceitar/recusar/gerir/sair/encerrar, audiência/época verificadas antes de compor/enviar, rascunhos, teclado/touch/contraste e E2E real. A UI existente ainda usa grupos fixos. Não activar messaging/outbound só por existir C1.
-4. Continuar pesquisa integral, keystore/rotação, restantes media/social/templates, notificações reais, plataformas e revisão independente. O contrato inteiro mantém-se. C1 não conclui o produto.
+1. Confirmar o push finalmain e recolher o novoCI sem o cancelar com outro push.
+2. Resolver o selector iOS a partir da hierarquia real; manter UIKit WIP separado até gate Apple.
+3. Integrar grupos dinâmicos na web: autoridade/IndexedDB,reserva4MiB,CAS/fences,carriers/outbox/replay,UI e todos os controlos. Certificados partilhados não são paridade de aplicação.
+4. Continuar backup/rotação/keystore,peeringdurável/WSS/NAT,embalagemRNS e política de trânsito por instalação,quotasglobais/SOS/escala,funcionalidades sociais/media/sites pendentes,dispositivos/rádios e revisão independente.
 
-## Plataformas e diagnóstico pendente
+Só /home/absint0o/projects/relayloom. Manter Astra/Copilot Ultra e recuperação sequencial: sem criar/retomar agentes,sem alterar bridges/modelos/configurações. Evidência histórica real de agentes em docs/AGENTS.md. Uma compilação pesada de cada vez,dependências/caches no projecto;22GiB livres no fim dos gates,mínimo15GiB. Sem root,pagamentos,serviços de outros projectos ou ficheiros pessoais. Commits/pushes normais autorizados,nunca merge dePR sem aprovação. Checkpoint de manutenção adicional cancelado.
 
-CI34765195200/adfd52a terminou: Node Windows/Linux e UI Linux passaram; macOS falhou fetch failed em group-event-seeding.ts285 no commit de remoção após reiniciar o autor; Go/desktop/iOS skipped. Logs reais em docs/evidence/ci-adfd52a. Helper HTTP isolado por processo e diagnóstico privado sem retry de mutações. Uma execução local anterior observou ECONNRESET com processo vivo; passes Linux posteriores NÃO demonstram causa/correcção macOS. Diagnósticos futuros em .cache/fixture-http-failures (sem corpo/capacidade); conservar e inspeccionar antes de alterar portas/limites/retries. Não houve novo408 nesta recuperação.
-
-Android APK136a5103/AAR9e2fb77f passou82 asserções anteriores, mas não contém C1 nem as alterações recentes; AVD/adb próprios parados/preservados. iOS93f24f1 passou arranque/fotografia e falhou no controlo do teclado antes do submit; ajuste XCTest adfd52a tem22 testes host/estática, mas foi skipped em Apple no último CI. Hardware/rádios, assinatura Apple, leitor de ecrã e revisão independente recente pendentes. PTY/Chromium móvel não são rádio nem dispositivo físico.
-
-Histórico preservado em history/RESUME-carrier-final-validation.md, history/RESUME-carrier-first-iterations.md e versões anteriores. .codex-delivery/GROUP-CARRIERS.md conserva as iterações. O checkpoint extra de manutenção foi cancelado pelo proprietário.
+Histórico preservado em history/RESUME-before-public-web-20260915.md; os estados “em curso” lá descritos são históricos.

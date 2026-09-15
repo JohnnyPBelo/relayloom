@@ -1,0 +1,50 @@
+
+Running 6 tests using 1 worker
+
+(node:99531) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/browser/public-distribution.checks.ts:6:1 › public build serves every integrity-pinned asset below its prefix, with no daemon entry (87ms)
+  ✓  2 [chromium] › tests/browser/public-distribution.checks.ts:50:1 › subpath offline installation preserves other installations' caches and uses no external runtime (807ms)
+(node:99718) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  3 [firefox] › tests/browser/public-distribution.checks.ts:6:1 › public build serves every integrity-pinned asset below its prefix, with no daemon entry (87ms)
+  ✓  4 [firefox] › tests/browser/public-distribution.checks.ts:50:1 › subpath offline installation preserves other installations' caches and uses no external runtime (2.4s)
+(node:100221) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  5 [webkit] › tests/browser/public-distribution.checks.ts:6:1 › public build serves every integrity-pinned asset below its prefix, with no daemon entry (86ms)
+  ✘  6 [webkit] › tests/browser/public-distribution.checks.ts:50:1 › subpath offline installation preserves other installations' caches and uses no external runtime (1.2s)
+
+
+  1) [webkit] › tests/browser/public-distribution.checks.ts:50:1 › subpath offline installation preserves other installations' caches and uses no external runtime
+
+    Error: page.reload: FetchEvent.respondWith received an error: Error: Application asset unavailable
+    Call log:
+      - waiting for navigation until "load"
+
+
+      87 |     ).toBe(host.url + "/browser/sw.js");
+      88 |     host.setUnavailable(true);
+    > 89 |     await page.reload();
+         |                ^
+      90 |     await expect(
+      91 |       page.getByRole("button", { name: "Criar identidade", exact: true }),
+      92 |     ).toBeVisible();
+        at /home/absint0o/projects/relayloom/tests/browser/public-distribution.checks.ts:89:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .cache/public-web/results/public-distribution.checks-9962b-nd-uses-no-external-runtime-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: .cache/public-web/results/public-distribution.checks-9962b-nd-uses-no-external-runtime-webkit/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    .cache/public-web/results/public-distribution.checks-9962b-nd-uses-no-external-runtime-webkit/trace.zip
+    Usage:
+
+        npx playwright show-trace .cache/public-web/results/public-distribution.checks-9962b-nd-uses-no-external-runtime-webkit/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [webkit] › tests/browser/public-distribution.checks.ts:50:1 › subpath offline installation preserves other installations' caches and uses no external runtime
+  5 passed (7.1s)

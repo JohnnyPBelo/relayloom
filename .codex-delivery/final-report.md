@@ -1,4 +1,34 @@
+# Entrega incremental — web HTTPS, 2026-09-15
+
+A versão web experimental está disponível em https://johnnypbelo.github.io/relayloom/browser/index.html; guia docs/WEB-TWO-DEVICES.md. Código ff2fb60,publicação ec3a3baa,Pages34940021714 success.43testes web locais,50UI Node/Go,desktopLinux e percursoHTTPS real passaram.13ficheiros HTTP com integridade exacta;63 488bytes de anexo entre browsers. Evidência docs/evidence/web-launch.
+
+O produto não está concluído. Dois dispositivos físicos,a paridade integral web,grupos dinâmicos no browser,gate iOS completo,hardware/radios/assinatura/keystores e revisão independente permanecem pendentes. iOSWIP abriu o picker com fotografia visível,mas o selector falhou;main conserva a falha de teclado. O contrato e a recuperação sequencial mantêm-se.
+
+O relatório abaixo é histórico e não substitui STATUS/RESUME actuais.
+
 # In-progress evidence report
+
+Checkpoint de implementação — 2026-09-15: mainf378e13 publicada,90browser/9UI-RNS/50UInativa/desktopLinux no incremento portável e281Node/Go-race/SQLiteC/58interop no gate integral anterior. Há uma observaçãoRTC não explicada, explicitamente aberta. iOSWIP496788b avança após confirmação real do teclado e da mensagem, com selectorFototeca corrigido e novoCIpendente. Autoridade eUI de gruposdinâmicosweb e restante contrato ainda não concluídos. Documentação corrente emREADME/STATUS, evidência emdocs/evidence/browser-matrix, retoma exacta emRESUME.md.
+
+Estado parcial actual: a49e4a4 publicou a aplicação autónoma; b514ead acrescentou o percurso real web/RNS e convites pela UI;2d4d12c corrigiu a fixture de persistência observada no CI. Evidência em docs/evidence/browser-application/milestone,docs/evidence/web-reticulum e docs/evidence/control-envelope-storage. O conjunto criptográfico seguinte ainda corre o gate integral (281Node passaram; restantes etapas pendentes). iOS em ramo WIP/CI próprio, sem passe Apple antecipado. O produto não está concluído e todos os requisitos do proprietário continuam em vigor.
+
+## Progresso: aplicaçãoweb autónoma funcional, ainda incompleta
+
+/browser/index.html já usa UIpartilhada eworker/IndexedDB/RTC/WS, comoutbox/recibos/social/sites ecacheoffline. Gate403fontes passou271Node,26browser,21UI pormotor eexecuçãodo pacoteLinux,72Axe semviolações. Preview local4174activo; evidência docs/evidence/browser-application. Gruposdinâmicos/paridade/plataformas/revisão/assinatura/backupintegral permanecempendentes. FontesGo foramcomparadas comoinalteradas; otestego/race anterior nãofoirepetido nestaetapa. Semnovocommit/push.
+
+## Progresso verificado: adaptador browser/nativo
+
+WebSocket Node/Go, ponteRTC/WS/TCP/serialPTY e autorização/expiração/revogação foram implementados.271Node/89Go de topo-race,18browser,21UI por motor e desktopLinux completo passaram na cadeia documentada;385fontes estáveis/66Axe sem violações.2helpers Go omitidos e falhas/correcções preservadas. Ver docs/evidence/browser-native. Nenhuma conclusão global: UI autónoma/paridade, C2/C3 adversarial/gates restantes, WSS/LAN, plataformas/hardware/keystore/rotação e revisão independente continuam pendentes. Código e evidência locais não commitados.
+
+## Progresso: encaminhamento autónomo no navegador, produto incompleto
+
+Router/Mesh RTC com armazenamento cifrado, inventário/pedidos, consentimento, exclusão entre separadores, prioridades/fairness, cancelamento de fragmentos e retoma por seeder foram implementados. Gate372fontes:22Node transporte+16núcleo+12Chromium, build/typecheck. Após ampliar os controlos e corrigir o destino de reporting,14Chromium passaram juntos29.652s, sem alteração de produção; typecheck final também passou. Evidência em docs/evidence/browser-routing.
+
+Continua por implementar a ponte de transporte browser↔nativo, UI autónoma/worker/PWA e autoridade de grupos/outbox, além de todos os restantes pendentes do contrato. Uma abertura RTC falhou15s antes de medir filas; os passes seguintes não identificaram a causa. Código novo e C2/C3 anteriores preservados localmente, sem commit/push novo. Não é conclusão do produto.
+
+## Progresso adicional: núcleo web autónomo, produto incompleto
+
+O requisito de paridade total sem instalação foi integrado no contrato. `node scripts/verify-browser.mjs` passou16Node+6Chromium e build/typecheck,366fontes estáveis. Cofres/bundles/IndexedDB e WebRTC foram executados realmente; aplicação autónoma/UI/rotas/grupos/outbox/PWA e plataformas continuam pendentes. Evidência em docs/evidence/browser-foundation e matriz docs/WEB.md. Nenhum novo commit/push; alterações prévias C2/C3 preservadas. Não é entrega final do contrato.
 
 The full contract is not complete. See `docs/STATUS.md`, `traceability.md`, `implementation-plan.md` and `docs/REMAINING-SCOPE.md`. This is a checkpoint, not a completed-product delivery.
 

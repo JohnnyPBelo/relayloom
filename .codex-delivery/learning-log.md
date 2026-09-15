@@ -371,3 +371,12 @@ Firefox28passou antes do port. WebKit precisou de cinco bibliotecas extraídas e
 A primeira falha grande tinha zero bytes enviados. Um teste isolado passou, mas o probe de ciclos pequenos reproduziu generateKey/importKeyX25519 e, depois de portarX, generateKeyEd25519 a falhar. Não atribuir a causa ao volume sem medição. CurvasNoble existentes resolvem esse caminho mantendov1 e RNGdo browser;512ciclos e operações nativas de curvas forçadas a falhar passaram. Os oráculos de um probe referiam a identidade anterior quando a geração seguinte falhava; rotulados explicitamente, sem os associar à geração inexistente.
 
 Uma falhaRTC posterior observou B-C fechado depois de entregarSOS. Dezrepetições,uma suite comdiagnóstico e todas as suites finais passaram. Não houve correcção de transporte identificada: a observação continua aberta. Instrumentação temporária foi arquivada e retirada antes do gatefinal. Gates finais:90browser,9RNSUI,50UInativa,desktopLinux;42Axe novos. Não confundir oUA Safari do WPE com uma máquinaApple.
+
+
+## Distribuição web por subcaminho — 2026-09-15
+
+O primeiro typecheck recusou import.meta.env sem os tipos Vite; acrescentada a declaração local. O build Vite reescreve o manifesto para assets/: start_url relativo ./index.html apontava para assets/index.html. O controlo sobre o manifesto realmente emitido falhou antes da correcção. Usar ../browser/ mantém a resolução correcta nas cópias browser e assets, na raiz e sob /relayloom/. Não testar apenas o manifesto fonte/copied.
+
+O controlo de cache inicial usou um documento SVG; o sentinel não sobreviveu à navegação em WebKit. Um segundo ensaio com unregister/reinstalação ficou sem o asset offline; estes resultados estão conservados, sem declarar correcção da gestão de armazenamento do browser. A fixture final mantém outro cliente HTML activo durante a instalação. O teste passa nos três motores; substituir temporariamente o prefixo de limpeza pelo prefixo global no SW compilado reproduz a eliminação indevida e falha exactamente no sentinel. Fonte original restaurada antes do gate.
+
+Gate web estável passou:18 UI na distribuição existente,24 na distribuição pública,1 percurso entre dois processos Chromium/Firefox,63 488 bytes de anexo exactos,recibos e recarga offline. Não são dois dispositivos físicos. O gate da UI Node/Go/pacote Linux terminou PASSED25+25;publicação e teste HTTPS também passaram. A publicação deve usar apenas os assets cujo hash foi verificado; nunca a árvore de trabalho ou os perfis locais.

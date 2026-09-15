@@ -1,0 +1,14 @@
+
+Running 3 tests using 1 worker
+
+(node:109218) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/browser/public-distribution.checks.ts:59:1 › subpath offline installation preserves other installations' caches and uses no external runtime (742ms)
+(node:109507) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  2 [firefox] › tests/browser/public-distribution.checks.ts:59:1 › subpath offline installation preserves other installations' caches and uses no external runtime (2.2s)
+(node:110133) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  3 [webkit] › tests/browser/public-distribution.checks.ts:59:1 › subpath offline installation preserves other installations' caches and uses no external runtime (1.3s)
+
+  3 passed (6.7s)
