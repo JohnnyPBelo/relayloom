@@ -21,7 +21,7 @@ test.afterAll(async () => {
   expect(harness.requests.some((path) => path.startsWith("/api/"))).toBe(false);
 });
 
-test("Chromium owns compatible identities/vaults/bundles: real Node and Go positive and negative controls", async ({
+test("Browser owns compatible identities/vaults/bundles: real Node and Go positive and negative controls", async ({
   page,
 }) => {
   test.setTimeout(150_000);
@@ -187,7 +187,7 @@ test("Chromium owns compatible identities/vaults/bundles: real Node and Go posit
     ".cache/browser-foundation/crypto-scope.json",
     JSON.stringify(
       {
-        browser: "Chromium actual Web Crypto",
+        browser: `${page.context().browser()!.browserType().name()} local crypto (Web Crypto symmetric/hash and noble portable curves)`,
         node: "bidirectional identity/vault/bundles",
         go: "Go executable consumed browser identity/vault/bundles and produced a reply decrypted in browser",
         canonicalNumberVectors: 1500,
@@ -598,7 +598,7 @@ test("real WebRTC transfers encrypted chunks and an offline author's reader seed
       ".cache/browser-foundation/rtc-scope.json",
       JSON.stringify(
         {
-          browser: "Chromium on Linux",
+          browser: `${browser.browserType().name()} on ${process.platform}`,
           peers: 3,
           separateBrowserContexts: true,
           dataChannel: "real ordered reliable SCTP/DTLS/ICE",

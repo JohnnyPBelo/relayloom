@@ -1,0 +1,14 @@
+{
+  "baseCommit": "f25598dae55d67c588291d1165e86ec57b514089",
+  "scope": "Portable browser curves and 30 browser tests; native production unchanged. One earlier WebKit RTC closure remains an open observation, not claimed fixed.",
+  "files": {
+    "scripts/verify-browser-matrix.mjs": "c976b803382bd8e171c8a1e50a1fc8c2f15857146ac26e05b4a83d67f052120b",
+    "scripts/webkit-host-deps.py": "ff36b946be9a841a9affac65b6b0e86c02da686518b9759b5e91df565b3b9035",
+    "scripts/webkit-host-deps-linux.json": "612afc3820fba8696f879eb5d94eb20fab2a9400bdeb16aba31532fbb096fc80",
+    "tests/browser/matrix.config.ts": "b33bc027ba07010c0f6a54b4ff39b99b65e128ecb82b5dea9d0a1785db8fbfbf",
+    "tests/browser/foundation.spec.ts": "17d79689b39b71404895675704735564c67845ad945f7c6121b8818bd6d5e727",
+    "tests/browser/group-certificates.spec.ts": "22467a8dba49d21251275ea439e3c74e23b2f480eaa2631097ad52b4da499b85",
+    "tests/browser/x25519.spec.ts": "cd7dc183d6eed73091c5e9d19ffe18410cd735d80c47d1e0fe1626e33086a244",
+    "packages/browser/src/crypto.ts": "07123949de8ff70401362943bd0ff83b70d100a445a07473f08140b34b7dc9a2"
+  }
+}

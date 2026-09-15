@@ -1,0 +1,156 @@
+{
+  "status": "EXTRACTED_NOT_BROWSER_TESTED",
+  "scriptSha256": "ff36b946be9a841a9affac65b6b0e86c02da686518b9759b5e91df565b3b9035",
+  "lockSha256": "612afc3820fba8696f879eb5d94eb20fab2a9400bdeb16aba31532fbb096fc80",
+  "scope": "Project-local test dependencies for this Ubuntu resolute x86_64 glibc2.43 host. Does not install OS packages. Not a portable Linux distribution bundle.",
+  "osPackagesInstalled": false,
+  "packageScriptsExecuted": false,
+  "records": [
+    {
+      "package": "libavif16",
+      "version": "1.3.0-1ubuntu4",
+      "archiveSha256": "cbc5fcbdf15d94e679b72198994e37b96b25ff3cded9a2cdae0564927a78e969",
+      "files": [
+        {
+          "name": "libavif.so.16.3.0",
+          "sha256": "a94925dd75deec3bea1e408fff9a926e5e0d0c3050d8e2941a8e6b2f938b81e3"
+        },
+        {
+          "name": "libavif.so.16",
+          "sha256": "a94925dd75deec3bea1e408fff9a926e5e0d0c3050d8e2941a8e6b2f938b81e3"
+        }
+      ]
+    },
+    {
+      "package": "libmanette-0.2-0",
+      "version": "0.2.13-1",
+      "archiveSha256": "2e68b011e47dd553c3142794f0f1ad86bff4924b1f4072ef2be2a447c5d69631",
+      "files": [
+        {
+          "name": "libmanette-0.2.so.0",
+          "sha256": "a45f64888087cbfc684e7e294d49cdb0ab65b1cb3ba13ad9d45986f6ce6ddd60"
+        }
+      ]
+    },
+    {
+      "package": "libgav1-2",
+      "version": "0.20.0-2build1",
+      "archiveSha256": "26c5dd6446f0007af9d939d56a1d0c376bcd152c4401b0b52f6d6d41233152de",
+      "files": [
+        {
+          "name": "libgav1.so.2",
+          "sha256": "4a06f995e40efc5a47f42cc7ba6712d4d5fbe29e8246a41ac7b23f991caf5eab"
+        },
+        {
+          "name": "libgav1.so.2.0.0",
+          "sha256": "4a06f995e40efc5a47f42cc7ba6712d4d5fbe29e8246a41ac7b23f991caf5eab"
+        }
+      ]
+    },
+    {
+      "package": "libyuv0",
+      "version": "0.0.1922.20260106-1",
+      "archiveSha256": "65cf0ddaf4728dbbd7d112960cc83c925283036f15b4f244900174aac3ccdd3c",
+      "files": [
+        {
+          "name": "libyuv.so.0.0.1922",
+          "sha256": "d71b97b26d8415269640bd94b88597fa1c33b6b72043d2cd4d117c2b28c2342f"
+        },
+        {
+          "name": "libyuv.so.0",
+          "sha256": "d71b97b26d8415269640bd94b88597fa1c33b6b72043d2cd4d117c2b28c2342f"
+        }
+      ]
+    },
+    {
+      "package": "libhidapi-hidraw0",
+      "version": "0.15.0-2",
+      "archiveSha256": "839f3b4156a1c86d0353dac4f92deb4c910833dec49608635fc6a6f5eaba5e3b",
+      "files": [
+        {
+          "name": "libhidapi-hidraw.so.0",
+          "sha256": "975eeac4e6c8d61c1e4964f9797010752bf0965c0e8ba209aea61d75c893dd7d"
+        },
+        {
+          "name": "libhidapi-hidraw.so.0.15.0",
+          "sha256": "975eeac4e6c8d61c1e4964f9797010752bf0965c0e8ba209aea61d75c893dd7d"
+        }
+      ]
+    }
+  ],
+  "browserRevision": "2359",
+  "addedBrowserLibraries": [
+    {
+      "path": "minibrowser-wpe/sys/lib/libgav1.so.2",
+      "sha256": "4a06f995e40efc5a47f42cc7ba6712d4d5fbe29e8246a41ac7b23f991caf5eab"
+    },
+    {
+      "path": "minibrowser-wpe/sys/lib/libhidapi-hidraw.so.0",
+      "sha256": "975eeac4e6c8d61c1e4964f9797010752bf0965c0e8ba209aea61d75c893dd7d"
+    },
+    {
+      "path": "minibrowser-wpe/sys/lib/libhidapi-hidraw.so.0.15.0",
+      "sha256": "975eeac4e6c8d61c1e4964f9797010752bf0965c0e8ba209aea61d75c893dd7d"
+    },
+    {
+      "path": "minibrowser-wpe/sys/lib/libmanette-0.2.so.0",
+      "sha256": "a45f64888087cbfc684e7e294d49cdb0ab65b1cb3ba13ad9d45986f6ce6ddd60"
+    },
+    {
+      "path": "minibrowser-wpe/sys/lib/libyuv.so.0.0.1922",
+      "sha256": "d71b97b26d8415269640bd94b88597fa1c33b6b72043d2cd4d117c2b28c2342f"
+    },
+    {
+      "path": "minibrowser-wpe/sys/lib/libgav1.so.2.0.0",
+      "sha256": "4a06f995e40efc5a47f42cc7ba6712d4d5fbe29e8246a41ac7b23f991caf5eab"
+    },
+    {
+      "path": "minibrowser-wpe/sys/lib/libyuv.so.0",
+      "sha256": "d71b97b26d8415269640bd94b88597fa1c33b6b72043d2cd4d117c2b28c2342f"
+    },
+    {
+      "path": "minibrowser-wpe/sys/lib/libavif.so.16.3.0",
+      "sha256": "a94925dd75deec3bea1e408fff9a926e5e0d0c3050d8e2941a8e6b2f938b81e3"
+    },
+    {
+      "path": "minibrowser-wpe/sys/lib/libavif.so.16",
+      "sha256": "a94925dd75deec3bea1e408fff9a926e5e0d0c3050d8e2941a8e6b2f938b81e3"
+    },
+    {
+      "path": "minibrowser-gtk/sys/lib/libgav1.so.2",
+      "sha256": "4a06f995e40efc5a47f42cc7ba6712d4d5fbe29e8246a41ac7b23f991caf5eab"
+    },
+    {
+      "path": "minibrowser-gtk/sys/lib/libhidapi-hidraw.so.0",
+      "sha256": "975eeac4e6c8d61c1e4964f9797010752bf0965c0e8ba209aea61d75c893dd7d"
+    },
+    {
+      "path": "minibrowser-gtk/sys/lib/libhidapi-hidraw.so.0.15.0",
+      "sha256": "975eeac4e6c8d61c1e4964f9797010752bf0965c0e8ba209aea61d75c893dd7d"
+    },
+    {
+      "path": "minibrowser-gtk/sys/lib/libmanette-0.2.so.0",
+      "sha256": "a45f64888087cbfc684e7e294d49cdb0ab65b1cb3ba13ad9d45986f6ce6ddd60"
+    },
+    {
+      "path": "minibrowser-gtk/sys/lib/libyuv.so.0.0.1922",
+      "sha256": "d71b97b26d8415269640bd94b88597fa1c33b6b72043d2cd4d117c2b28c2342f"
+    },
+    {
+      "path": "minibrowser-gtk/sys/lib/libgav1.so.2.0.0",
+      "sha256": "4a06f995e40efc5a47f42cc7ba6712d4d5fbe29e8246a41ac7b23f991caf5eab"
+    },
+    {
+      "path": "minibrowser-gtk/sys/lib/libyuv.so.0",
+      "sha256": "d71b97b26d8415269640bd94b88597fa1c33b6b72043d2cd4d117c2b28c2342f"
+    },
+    {
+      "path": "minibrowser-gtk/sys/lib/libavif.so.16.3.0",
+      "sha256": "a94925dd75deec3bea1e408fff9a926e5e0d0c3050d8e2941a8e6b2f938b81e3"
+    },
+    {
+      "path": "minibrowser-gtk/sys/lib/libavif.so.16",
+      "sha256": "a94925dd75deec3bea1e408fff9a926e5e0d0c3050d8e2941a8e6b2f938b81e3"
+    }
+  ]
+}

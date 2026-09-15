@@ -429,10 +429,9 @@ test("browser, Node and Go verify shared group certificates, fresh consents, rem
         {
           status: "PASSED",
           at: new Date().toISOString(),
-          scope:
-            "Actual Chromium sync group protocol, Node crypto and Go fixture; not dynamic group application/storage/UI",
+          scope: `Actual ${page.context().browser()!.browserType().name()} sync group protocol, Node crypto and Go fixture; not dynamic group application/storage/UI`,
           engines: [
-            "Chromium Web Crypto identity + noble/curves 2.4.0 strict Ed25519",
+            `${page.context().browser()!.browserType().name()} portable identity + noble/curves 2.4.0 strict Ed25519`,
             "Node OpenSSL",
             "Go crypto/ed25519",
           ],

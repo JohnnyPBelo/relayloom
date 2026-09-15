@@ -180,3 +180,8 @@ A correcção de teclado iOS foi publicada apenas no ramo WIP codex/ios-keyboard
 
 
 O gate criptográfico89503 terminou0:457fontes,281Node,Go/race16pacotes,SQLiteC5pacotes,58interop,28browser,50UI,desktopLinux. Evidência docs/evidence/group-certificate-profile. Os certificados estão verificados; autoridade/armazenamento/outbox/UI de grupos no browser continuam pendentes. Nenhum passe de hardware ou iOS foi inferido.
+
+
+## Matriz Linux e curvas portáveis — 2026-09-15
+
+FR-001/CON-003/FR-043/INT-009/ACC-014/INT-010:30testes browser por engine (Chromium153,Firefox155,WebKit26.6),3percursosUI-RNS por engine,25UI Node/25Go e pacoteLinux passaram. Evidência docs/evidence/browser-matrix. Geração/importação de curvas nativas do WebKit falhou nos controlos; curvasNoble preservamv1 e passaram512ciclos/RFC7748/interop. O fechoRTC anterior fica em aberto, não reclamado como corrigido. Autoridade/outbox/UI de gruposweb,dispositivos/Safari/radios e revisãoindependente continuam pendentes.

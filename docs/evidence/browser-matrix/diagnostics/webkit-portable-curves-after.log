@@ -1,0 +1,10 @@
+
+Running 3 tests using 1 worker
+
+(node:738613) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [webkit] › tests/browser/routing.spec.ts:269:1 › fragment scheduling preempts bulk with SOS, gives bulk a fair turn, and cancels relayed bytes without closing own traffic (2.7s)
+  ✓  2 [webkit] › tests/browser/x25519.spec.ts:5:1 › portable curves match RFC 7748, reject invalid reading keys and work when native curve operations fail (540ms)
+  ✓  3 [webkit] › tests/browser/x25519.spec.ts:134:1 › identity lifecycle remains valid across 512 generated and reimported signing/reading key pairs (1.6s)
+
+  3 passed (5.7s)

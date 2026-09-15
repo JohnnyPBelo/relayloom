@@ -59,6 +59,16 @@
             "docs/SIGNING-KEY-PROFILE.md"
           ],
           "notes": "457 stable sources:281 Node,16 Go race packages,5 C SQLite packages,58 interop,28 browser,25 UI per engine,Linux package execution. Shared certificates and key admission; dynamic group app authority/storage/UI and browser/device matrix remain open."
+        },
+        {
+          "kind": "browser-engine-matrix",
+          "command": "node scripts/verify-browser-matrix.mjs <engine>; node scripts/e2e.mjs --config tests/reticulum/ui.config.ts --browser <engine>; node scripts/verify-ui.mjs",
+          "result": "pass-scoped-with-open-rtc-observation",
+          "paths": [
+            "docs/evidence/browser-matrix",
+            "docs/evidence/browser-matrix/known-observations.json"
+          ],
+          "notes": "Chromium153/Firefox155/WebKit26.6 on Linux:30 tests and3 RNS UI each;50 native UI and Linux desktop. Portable noble Ed/X curves after native WebKit failures;512 lifecycle controls and public RFC vector. One prior WebKit RTC closure remains unexplained; no full parity/device/Safari/independent-review claim."
         }
       ]
     },
@@ -2884,6 +2894,16 @@
             "docs/SIGNING-KEY-PROFILE.md"
           ],
           "notes": "457 stable sources:281 Node,16 Go race packages,5 C SQLite packages,58 interop,28 browser,25 UI per engine,Linux package execution. Shared certificates and key admission; dynamic group app authority/storage/UI and browser/device matrix remain open."
+        },
+        {
+          "kind": "browser-engine-matrix",
+          "command": "node scripts/verify-browser-matrix.mjs <engine>; node scripts/e2e.mjs --config tests/reticulum/ui.config.ts --browser <engine>; node scripts/verify-ui.mjs",
+          "result": "pass-scoped-with-open-rtc-observation",
+          "paths": [
+            "docs/evidence/browser-matrix",
+            "docs/evidence/browser-matrix/known-observations.json"
+          ],
+          "notes": "Chromium153/Firefox155/WebKit26.6 on Linux:30 tests and3 RNS UI each;50 native UI and Linux desktop. Portable noble Ed/X curves after native WebKit failures;512 lifecycle controls and public RFC vector. One prior WebKit RTC closure remains unexplained; no full parity/device/Safari/independent-review claim."
         }
       ]
     },
@@ -3255,6 +3275,16 @@
             "docs/SIGNING-KEY-PROFILE.md"
           ],
           "notes": "457 stable sources:281 Node,16 Go race packages,5 C SQLite packages,58 interop,28 browser,25 UI per engine,Linux package execution. Shared certificates and key admission; dynamic group app authority/storage/UI and browser/device matrix remain open."
+        },
+        {
+          "kind": "browser-engine-matrix",
+          "command": "node scripts/verify-browser-matrix.mjs <engine>; node scripts/e2e.mjs --config tests/reticulum/ui.config.ts --browser <engine>; node scripts/verify-ui.mjs",
+          "result": "pass-scoped-with-open-rtc-observation",
+          "paths": [
+            "docs/evidence/browser-matrix",
+            "docs/evidence/browser-matrix/known-observations.json"
+          ],
+          "notes": "Chromium153/Firefox155/WebKit26.6 on Linux:30 tests and3 RNS UI each;50 native UI and Linux desktop. Portable noble Ed/X curves after native WebKit failures;512 lifecycle controls and public RFC vector. One prior WebKit RTC closure remains unexplained; no full parity/device/Safari/independent-review claim."
         }
       ]
     },
@@ -3338,6 +3368,16 @@
             "docs/SIGNING-KEY-PROFILE.md"
           ],
           "notes": "457 stable sources:281 Node,16 Go race packages,5 C SQLite packages,58 interop,28 browser,25 UI per engine,Linux package execution. Shared certificates and key admission; dynamic group app authority/storage/UI and browser/device matrix remain open."
+        },
+        {
+          "kind": "browser-engine-matrix",
+          "command": "node scripts/verify-browser-matrix.mjs <engine>; node scripts/e2e.mjs --config tests/reticulum/ui.config.ts --browser <engine>; node scripts/verify-ui.mjs",
+          "result": "pass-scoped-with-open-rtc-observation",
+          "paths": [
+            "docs/evidence/browser-matrix",
+            "docs/evidence/browser-matrix/known-observations.json"
+          ],
+          "notes": "Chromium153/Firefox155/WebKit26.6 on Linux:30 tests and3 RNS UI each;50 native UI and Linux desktop. Portable noble Ed/X curves after native WebKit failures;512 lifecycle controls and public RFC vector. One prior WebKit RTC closure remains unexplained; no full parity/device/Safari/independent-review claim."
         }
       ]
     },
@@ -3421,6 +3461,16 @@
             "docs/SIGNING-KEY-PROFILE.md"
           ],
           "notes": "457 stable sources:281 Node,16 Go race packages,5 C SQLite packages,58 interop,28 browser,25 UI per engine,Linux package execution. Shared certificates and key admission; dynamic group app authority/storage/UI and browser/device matrix remain open."
+        },
+        {
+          "kind": "browser-engine-matrix",
+          "command": "node scripts/verify-browser-matrix.mjs <engine>; node scripts/e2e.mjs --config tests/reticulum/ui.config.ts --browser <engine>; node scripts/verify-ui.mjs",
+          "result": "pass-scoped-with-open-rtc-observation",
+          "paths": [
+            "docs/evidence/browser-matrix",
+            "docs/evidence/browser-matrix/known-observations.json"
+          ],
+          "notes": "Chromium153/Firefox155/WebKit26.6 on Linux:30 tests and3 RNS UI each;50 native UI and Linux desktop. Portable noble Ed/X curves after native WebKit failures;512 lifecycle controls and public RFC vector. One prior WebKit RTC closure remains unexplained; no full parity/device/Safari/independent-review claim."
         }
       ]
     },
@@ -3468,6 +3518,16 @@
             "docs/evidence/web-reticulum/ui-verification/report.json"
           ],
           "notes": "b514ead runtime: actual browser worker/identity and WS/RNS TCP/serial PTY, 22000 bytes, partition/heal, relay consent and restarted seeder with browser author offline. 26 browser,25 UI per engine,Linux package. Dynamic group app parity and platform/radio limits remain open."
+        },
+        {
+          "kind": "browser-engine-matrix",
+          "command": "node scripts/verify-browser-matrix.mjs <engine>; node scripts/e2e.mjs --config tests/reticulum/ui.config.ts --browser <engine>; node scripts/verify-ui.mjs",
+          "result": "pass-scoped-with-open-rtc-observation",
+          "paths": [
+            "docs/evidence/browser-matrix",
+            "docs/evidence/browser-matrix/known-observations.json"
+          ],
+          "notes": "Chromium153/Firefox155/WebKit26.6 on Linux:30 tests and3 RNS UI each;50 native UI and Linux desktop. Portable noble Ed/X curves after native WebKit failures;512 lifecycle controls and public RFC vector. One prior WebKit RTC closure remains unexplained; no full parity/device/Safari/independent-review claim."
         }
       ]
     }

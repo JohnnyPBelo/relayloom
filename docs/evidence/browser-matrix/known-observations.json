@@ -1,0 +1,14 @@
+{
+  "webkitRTCClosure": {
+    "status": "OPEN_NOT_REPRODUCED_IN_FOLLOWUPS",
+    "firstRun": "history/webkit-portable-first-suite/report.json",
+    "observation": "The managed relay cancellation case delivered the own SOS, then observed the B-C link closed. Cause not established.",
+    "followups": "10 diagnostic repetitions passed, one full diagnostic suite passed, then 30-test clean suite and all three RNS UI flows passed. No production routing change claimed as a fix."
+  },
+  "iosKeyboard": {
+    "status": "WIP_NOT_VALIDATED",
+    "branch": "codex/ios-keyboard-verification",
+    "commit": "eec2806",
+    "firstAttempt": "Compiled and startup passed; Photos fixture timed out before functional test. Main f255 later imported the photo and reached the old keyboard failure. One targeted retry of the WIP iOS job was dispatched after that independent positive prerequisite control."
+  }
+}

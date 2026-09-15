@@ -363,7 +363,7 @@ for (const throughBrowserRelay of [false, true])
             rns: "1.5.4",
             stats,
             limits:
-              "Chromium/Linux with actual RNS and serial PTY; no physical radio, WAN/WSS, Safari/device or dynamic-group browser parity claim.",
+              `${browser.browserType().name()}/${process.platform} with actual RNS and serial PTY; no physical radio, WAN/WSS, Safari/device or dynamic-group browser parity claim.`,
           },
           null,
           2,

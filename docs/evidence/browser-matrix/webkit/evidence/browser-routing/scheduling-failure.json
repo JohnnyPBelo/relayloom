@@ -1,0 +1,102 @@
+[
+  {
+    "status": "fulfilled",
+    "value": {
+      "connection": "connected",
+      "ice": "connected",
+      "gathering": "complete",
+      "signalling": "stable",
+      "localDescription": "offer",
+      "remoteDescription": "answer",
+      "channel": "open",
+      "closed": false,
+      "counters": {
+        "sent": 0,
+        "received": 0,
+        "accepted": 0,
+        "rejected": 0
+      },
+      "resources": {
+        "outgoingBytes": 0,
+        "incomingBytes": 0,
+        "queuedBytes": 0,
+        "outgoing": 0,
+        "incoming": 0,
+        "completed": 0
+      },
+      "report": [
+        {
+          "type": "candidate-pair",
+          "state": "succeeded",
+          "nominated": true,
+          "bytesSent": 1128,
+          "bytesReceived": 1083
+        },
+        {
+          "type": "data-channel",
+          "state": "open",
+          "bytesSent": 0,
+          "bytesReceived": 0,
+          "messagesSent": 0,
+          "messagesReceived": 0
+        },
+        {
+          "type": "transport",
+          "bytesSent": 1128,
+          "bytesReceived": 1083,
+          "dtlsState": "connected"
+        }
+      ]
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "connection": "connected",
+      "ice": "connected",
+      "gathering": "complete",
+      "signalling": "stable",
+      "localDescription": "answer",
+      "remoteDescription": "offer",
+      "channel": "open",
+      "closed": false,
+      "counters": {
+        "sent": 0,
+        "received": 0,
+        "accepted": 0,
+        "rejected": 0
+      },
+      "resources": {
+        "outgoingBytes": 0,
+        "incomingBytes": 0,
+        "queuedBytes": 0,
+        "outgoing": 0,
+        "incoming": 0,
+        "completed": 0
+      },
+      "report": [
+        {
+          "type": "candidate-pair",
+          "state": "succeeded",
+          "nominated": true,
+          "bytesSent": 1083,
+          "bytesReceived": 1128
+        },
+        {
+          "type": "data-channel",
+          "state": "open",
+          "bytesSent": 0,
+          "bytesReceived": 0,
+          "messagesSent": 0,
+          "messagesReceived": 0
+        },
+        {
+          "type": "transport",
+          "bytesSent": 1083,
+          "bytesReceived": 1128,
+          "dtlsState": "connected"
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,49 @@
+diff --git a/packages/browser/src/rtc.ts b/packages/browser/src/rtc.ts
+index 1c9fcce..ffef0af 100644
+--- a/packages/browser/src/rtc.ts
++++ b/packages/browser/src/rtc.ts
+@@ -85,6 +85,7 @@ export class RtcMessageChannel<T> {
+   #controlStart = Date.now();
+   #controls = 0;
+   #timer: ReturnType<typeof setInterval>;
++  lastError?: string;
+   readonly counters = { sent: 0, received: 0, accepted: 0, rejected: 0 };
+   constructor(
+     readonly channel: ReliableMessageStream,
+@@ -104,7 +105,7 @@ export class RtcMessageChannel<T> {
+       throw new Error("É necessário um canal fiável e ordenado");
+     channel.bufferedAmountLowThreshold = 64 * 1024;
+     channel.addEventListener("close", () => this.close());
+-    channel.addEventListener("error", () => this.close());
++    channel.addEventListener("error", () => { this.lastError = "channel error event"; this.close(); });
+     channel.addEventListener("message", (event) => {
+       const frame = (event as MessageEvent).data;
+       if (
+@@ -122,7 +123,8 @@ export class RtcMessageChannel<T> {
+           if (this.#closed) return;
+           try {
+             await this.accept(JSON.parse(frame));
+-          } catch {
++          } catch (error) {
++            this.lastError = "receive: " + String(error);
+             this.counters.rejected++;
+             this.close();
+           }
+@@ -353,6 +355,7 @@ export class RtcMessageChannel<T> {
+           if (!next.allowed() && !this.#closed)
+             await this.write({ t: "drop", id: next.id });
+           else {
++            this.lastError = "pump: " + String(error);
+             this.close();
+             break;
+           }
+@@ -361,7 +364,8 @@ export class RtcMessageChannel<T> {
+         if (this.#turn % 8 === 0)
+           await new Promise((resolve) => setTimeout(resolve, 0));
+       }
+-    } catch {
++    } catch (error) {
++      this.lastError = "pump control: " + String(error);
+       this.close();
+     } finally {
+       this.#pumping = false;

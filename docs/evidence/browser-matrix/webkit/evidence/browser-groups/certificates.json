@@ -1,0 +1,26 @@
+{
+  "status": "PASSED",
+  "at": "2026-09-15T00:41:13.579Z",
+  "scope": "Actual webkit sync group protocol, Node crypto and Go fixture; not dynamic group application/storage/UI",
+  "engines": [
+    "webkit portable identity + noble/curves 2.4.0 strict Ed25519",
+    "Node OpenSSL",
+    "Go crypto/ed25519"
+  ],
+  "controls": [
+    "wrong signing private key",
+    "box private key is not signing authority",
+    "wrong creator",
+    "replayed old consent",
+    "wrong invitation reader",
+    "changed signed body",
+    "truncated signature",
+    "unknown field",
+    "oversized title",
+    "noncanonical DER"
+  ],
+  "consentRemovalReentry": true,
+  "unicodePreserved": true,
+  "removedReaderDenied": true,
+  "privateKeysInEvidence": false
+}

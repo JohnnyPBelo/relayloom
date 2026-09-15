@@ -1,0 +1,30 @@
+{
+  "browserContexts": 2,
+  "nativeProcesses": [
+    930446,
+    930473,
+    930501,
+    930983
+  ],
+  "media": [
+    "webrtc",
+    "websocket",
+    "tcp",
+    "serial-pty"
+  ],
+  "initialHops": 4,
+  "privateContent": true,
+  "opaqueMiddleReadersRejected": 2,
+  "serialTargetTCPDisabled": true,
+  "partitionNegativeMs": 2500,
+  "healedBytes": 62400,
+  "relayPauseNegative": true,
+  "authorContextClosed": true,
+  "firstNativeBridgeStopped": true,
+  "browserReaderReloaded": true,
+  "newEmptyGoBridge": true,
+  "automaticOfflineSeederTakeover": true,
+  "authorshipPreserved": true,
+  "physicalRadio": false,
+  "allOS": false
+}
