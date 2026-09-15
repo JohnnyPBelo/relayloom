@@ -172,6 +172,8 @@ test("shared Liquid Glass UI sends without choosing a medium over TCP and real R
       JSON.stringify(
         {
           result: "passed",
+          engine: browser.browserType().name(),
+          platform: process.platform,
           at: new Date().toISOString(),
           scope:
             "Shared native-backed UI over actual TCP plus reference RNS/serial PTY; identity/contact/send/read/reply, partition control and two Axe audits",

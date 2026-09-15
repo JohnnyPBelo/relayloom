@@ -1,0 +1,51 @@
+
+Running 1 test using 1 worker
+
+(node:689761) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [webkit] › tests/browser/x25519.spec.ts:5:1 › X25519 identity lifecycle remains valid across 512 generated and reimported key pairs (1.3s)
+
+
+  1) [webkit] › tests/browser/x25519.spec.ts:5:1 › X25519 identity lifecycle remains valid across 512 generated and reimported key pairs 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 2
+    + Received  + 6
+
+      Object {
+    -   "completed": 512,
+    -   "failure": undefined,
+    +   "completed": 102,
+    +   "failure": Object {
+    +     "message": "The operation failed for an operation-specific reason",
+    +     "name": "OperationError",
+    +     "stage": "create identity",
+    +   },
+      }
+
+      27 |       return { completed, failure, samples };
+      28 |     });
+    > 29 |     expect({ completed: result.completed, failure: result.failure }).toEqual({ completed: 512, failure: undefined });
+         |                                                                      ^
+      30 |     for (const identity of result.samples) {
+      31 |       const derived = createPublicKey(createPrivateKey({ key: Buffer.from(identity.boxSecret, "base64"), format: "der", type: "pkcs8" })).export({ format: "der", type: "spki" }).toString("base64");
+      32 |       expect(derived).toBe(identity.public.boxKey);
+        at /home/absint0o/projects/relayloom/tests/browser/x25519.spec.ts:29:70
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/x25519-X25519-identity-lif-a544c-ed-and-reimported-key-pairs-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/x25519-X25519-identity-lif-a544c-ed-and-reimported-key-pairs-webkit/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/x25519-X25519-identity-lif-a544c-ed-and-reimported-key-pairs-webkit/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/x25519-X25519-identity-lif-a544c-ed-and-reimported-key-pairs-webkit/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [webkit] › tests/browser/x25519.spec.ts:5:1 › X25519 identity lifecycle remains valid across 512 generated and reimported key pairs 

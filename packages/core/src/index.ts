@@ -56,6 +56,7 @@ import {
   fsyncSync,
 } from "node:fs";
 import { dirname, join } from "node:path";
+import { admittedSigningKey } from "./signing-key.js";
 
 const MAX_STORED_BUNDLE = 6 * 1024 * 1024;
 export function hash(data: string | Buffer): string {
@@ -114,6 +115,7 @@ export function validateIdentity(p: PublicIdentity): boolean {
       typeof p.name !== "string" ||
       p.name.length < 1 ||
       p.name.length > 64 ||
+      !admittedSigningKey(un64(p.signKey, 256)) ||
       p.id !== hash(un64(p.signKey, 256))
     )
       return false;

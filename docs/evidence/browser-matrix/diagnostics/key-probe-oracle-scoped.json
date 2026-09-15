@@ -1,0 +1,22 @@
+{
+  "engine": "26.6",
+  "completed": 120,
+  "stage": "create identity",
+  "call": {
+    "method": "generateKey",
+    "algorithm": "Ed25519",
+    "bytes": []
+  },
+  "failure": {
+    "method": "generateKey",
+    "algorithm": "Ed25519",
+    "bytes": [],
+    "name": "OperationError",
+    "message": "The operation failed for an operation-specific reason"
+  },
+  "error": "The operation failed for an operation-specific reason",
+  "elapsedMs": 1067,
+  "nativeCardValid": true,
+  "boxPublicSPKI": "MCowBQYDK2VuAyEAnAifbQMM0WOD97bH8uPT66iYs0uS2AyDFlb1hobuZnk=",
+  "boxPairMatchesNode": true
+}

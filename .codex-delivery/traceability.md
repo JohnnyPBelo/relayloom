@@ -4,7 +4,7 @@ Owner contract: `PROJECT-BRIEF.md`. “done” applies to the stated behavior wi
 
 | ID | Requirement | Status | Evidence / limits |
 | --- | --- | --- | --- |
-| FR-001 | Local cryptographic identity and proofs | done | `tests/core.test.ts`, `tests/native/native-interop.test.ts` — Identidades locais, provas e vectores Node↔Go. |
+| FR-001 | Local cryptographic identity and proofs | partial | `tests/core.test.ts`, `tests/native/native-interop.test.ts` — Identidades locais, provas e vectores Node↔Go. |
 | FR-002 | Encrypted key vault and native secure storage | partial | `tests/core.test.ts`, `docs/STATUS.md` — Cofres cifrados implementados; keychain nativa em falta. |
 | FR-003 | Identity export and recovery | done | `tests/e2e/flows.spec.ts`, `docs/evidence/android/documents-fa1481d3` — Exportação/recuperação no host e SAF Android finalfa1481d3; exportação iOS e restantes fluxos nativos ainda limitados. |
 | FR-004 | Signed updates and rotation/revocation limits | partial | `docs/ARCHITECTURE.md`, `docs/REMAINING-SCOPE.md` — Alterações assinadas implementadas; rotação/revogação completa em falta. |
@@ -168,3 +168,20 @@ Estado parcial: adaptador RNS1.5.4 real, configuração dedicada, envelopes assi
 ## Consolidação browser sobre 5e049f1 — 2026-09-14
 
 A sessão3463 terminou0. Gate `node scripts/verify-autonomous.mjs`:279 Node,26 browser,23 UI por motor e desktop Linux build/run/package/run,442 fontes estáveis. Evidência em docs/evidence/browser-application/milestone. A paridade dinâmica continua obrigatória e pendente. O CI5e049f1 passou Node3SO/Go/RNS/desktop e falhou iOS no fecho do teclado; incremento Apple preservado separadamente. Próximo: rota web autónoma↔Reticulum com controlos/UI, grupos dinâmicos e restante contrato.
+
+
+## Ponto de integração actual — 2026-09-14
+
+FR-043/INT-009/ACC-014/INT-010: o marco b514ead acrescenta a rota autónoma web → WS → RNS TCP/router → série PTY, envio/resposta pela UI, partição/heal, anexo22 000bytes e seeder reiniciado com autora offline. Gate:26browser/25UI por motor/RNS/desktopLinux. Evidência exacta em docs/evidence/web-reticulum; a paridade completa continua pendente.
+
+FR-001: controlo de chave Ed25519 degenerada falhou em Node e Go antes da correcção. Implementado filtro comum de admissão; controlos dirigidos passaram. Gate integral no candidato.cache/gc em curso, sem passe antecipado. O port de certificados ainda não é um registo de autoridade ou UI de grupos dinâmicos no browser.
+
+A correcção de teclado iOS foi publicada apenas no ramo WIP codex/ios-keyboard-verification, eec2806. CI34902268397 em curso; controlo Python local não compila Swift nem executa iOS. Nenhuma alteração de bridge/configuração/serviços externos ou novo agente.
+
+
+O gate criptográfico89503 terminou0:457fontes,281Node,Go/race16pacotes,SQLiteC5pacotes,58interop,28browser,50UI,desktopLinux. Evidência docs/evidence/group-certificate-profile. Os certificados estão verificados; autoridade/armazenamento/outbox/UI de grupos no browser continuam pendentes. Nenhum passe de hardware ou iOS foi inferido.
+
+
+## Matriz Linux e curvas portáveis — 2026-09-15
+
+FR-001/CON-003/FR-043/INT-009/ACC-014/INT-010:30testes browser por engine (Chromium153,Firefox155,WebKit26.6),3percursosUI-RNS por engine,25UI Node/25Go e pacoteLinux passaram. Evidência docs/evidence/browser-matrix. Geração/importação de curvas nativas do WebKit falhou nos controlos; curvasNoble preservamv1 e passaram512ciclos/RFC7748/interop. O fechoRTC anterior fica em aberto, não reclamado como corrigido. Autoridade/outbox/UI de gruposweb,dispositivos/Safari/radios e revisãoindependente continuam pendentes.

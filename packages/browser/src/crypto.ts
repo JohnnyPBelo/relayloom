@@ -1,5 +1,7 @@
 /** Browser-native implementation of the existing v1 wire format. No Node polyfills. */
 import { scryptAsync } from "@noble/hashes/scrypt.js";
+import { ed25519, x25519 } from "@noble/curves/ed25519.js";
+import { admittedSigningKey } from "../../core/src/signing-key";
 import {
   canonical,
   exactShape,
@@ -51,22 +53,127 @@ export async function hash(data: string | Uint8Array): Promise<string> {
     (b) => b.toString(16).padStart(2, "0"),
   ).join("");
 }
-const pub = (der: string, algorithm: "Ed25519" | "X25519") =>
-  crypto.subtle.importKey(
-    "spki",
-    un64(der, 256),
-    algorithm,
-    true,
-    algorithm === "Ed25519" ? ["verify"] : [],
-  );
-const secret = (der: string, algorithm: "Ed25519" | "X25519") =>
-  crypto.subtle.importKey(
-    "pkcs8",
-    un64(der, 256),
-    algorithm,
-    true,
-    algorithm === "Ed25519" ? ["sign"] : ["deriveBits"],
-  );
+// The v1 wire format uses fixed RFC 8410 wrappers. Maintained portable curve
+// operations avoid intermittent Ed25519/X25519 key generation and import
+// failures observed in the Linux WebKit Web Crypto backend.
+const boxPublicPrefix = Uint8Array.of(
+  0x30,
+  0x2a,
+  0x30,
+  5,
+  6,
+  3,
+  0x2b,
+  0x65,
+  0x6e,
+  3,
+  0x21,
+  0,
+);
+const boxSecretPrefix = Uint8Array.of(
+  0x30,
+  0x2e,
+  2,
+  1,
+  0,
+  0x30,
+  5,
+  6,
+  3,
+  0x2b,
+  0x65,
+  0x6e,
+  4,
+  0x22,
+  4,
+  0x20,
+);
+function boxRaw(value: string, privateKey = false): Uint8Array<ArrayBuffer> {
+  const der = un64(value, 256),
+    prefix = privateKey ? boxSecretPrefix : boxPublicPrefix;
+  if (
+    der.length !== prefix.length + 32 ||
+    prefix.some((byte, index) => der[index] !== byte)
+  )
+    throw new Error("Chave de leitura fora do formato canónico");
+  return der.slice(prefix.length);
+}
+function boxDER(raw: Uint8Array, privateKey = false): string {
+  if (raw.length !== 32) throw new Error("Chave de leitura inválida");
+  const prefix = privateKey ? boxSecretPrefix : boxPublicPrefix,
+    der = new Uint8Array(prefix.length + 32);
+  der.set(prefix);
+  der.set(raw, prefix.length);
+  return b64(der);
+}
+export function boxPublicKey(privateDER: string): string {
+  const raw = boxRaw(privateDER, true);
+  try {
+    return boxDER(x25519.getPublicKey(raw));
+  } finally {
+    raw.fill(0);
+  }
+}
+export function boxSharedSecret(
+  privateDER: string,
+  publicDER: string,
+): Uint8Array<ArrayBuffer> {
+  const raw = boxRaw(privateDER, true);
+  try {
+    return new Uint8Array(x25519.getSharedSecret(raw, boxRaw(publicDER)));
+  } finally {
+    raw.fill(0);
+  }
+}
+function createBox() {
+  const raw = random(32);
+  try {
+    return {
+      publicKey: boxDER(x25519.getPublicKey(raw)),
+      privateKey: boxDER(raw, true),
+    };
+  } finally {
+    raw.fill(0);
+  }
+}
+const signPublicPrefix = new Uint8Array(boxPublicPrefix);
+const signSecretPrefix = new Uint8Array(boxSecretPrefix);
+signPublicPrefix[8] = signSecretPrefix[11] = 0x70;
+function signingRaw(value: string, privateKey = false) {
+  const der = un64(value, 256),
+    prefix = privateKey ? signSecretPrefix : signPublicPrefix;
+  if (
+    der.length !== prefix.length + 32 ||
+    prefix.some((byte, index) => der[index] !== byte)
+  )
+    throw new Error("Chave de assinatura fora do formato canónico");
+  return der.slice(prefix.length);
+}
+function signingDER(raw: Uint8Array, privateKey = false) {
+  if (raw.length !== 32) throw new Error("Chave de assinatura inválida");
+  const prefix = privateKey ? signSecretPrefix : signPublicPrefix,
+    der = new Uint8Array(prefix.length + 32);
+  der.set(prefix);
+  der.set(raw, prefix.length);
+  return b64(der);
+}
+function signBytes(privateDER: string, bytes: Uint8Array) {
+  const raw = signingRaw(privateDER, true);
+  try {
+    return b64(ed25519.sign(bytes, raw));
+  } finally {
+    raw.fill(0);
+  }
+}
+function verifyBytes(publicDER: string, bytes: Uint8Array, signature: string) {
+  try {
+    return ed25519.verify(un64(signature, 128), bytes, signingRaw(publicDER), {
+      zip215: false,
+    });
+  } catch {
+    return false;
+  }
+}
 const publicBytes = ({
   id,
   name,
@@ -86,17 +193,12 @@ export async function validateIdentity(
       typeof p.name !== "string" ||
       p.name.length < 1 ||
       p.name.length > 64 ||
+      !admittedSigningKey(un64(p.signKey, 256)) ||
       p.id !== (await hash(un64(p.signKey, 256)))
     )
       return false;
-    const signing = await pub(p.signKey, "Ed25519");
-    await pub(p.boxKey, "X25519");
-    return await crypto.subtle.verify(
-      "Ed25519",
-      signing,
-      un64(p.proof, 128),
-      utf8(publicBytes(p)),
-    );
+    boxRaw(p.boxKey);
+    return verifyBytes(p.signKey, utf8(publicBytes(p)), p.proof);
   } catch {
     return false;
   }
@@ -104,33 +206,28 @@ export async function validateIdentity(
 export async function createIdentity(name: string): Promise<Identity> {
   if (typeof name !== "string" || !name.trim() || name.trim().length > 64)
     throw new Error("Nome inválido");
-  const signing = (await crypto.subtle.generateKey("Ed25519", true, [
-    "sign",
-    "verify",
-  ])) as CryptoKeyPair;
-  const boxing = (await crypto.subtle.generateKey("X25519", true, [
-    "deriveBits",
-  ])) as CryptoKeyPair;
-  const signKey = b64(await crypto.subtle.exportKey("spki", signing.publicKey));
+  const seed = random(32);
+  let signKey: string, signSecret: string;
+  try {
+    signKey = signingDER(ed25519.getPublicKey(seed));
+    signSecret = signingDER(seed, true);
+  } finally {
+    seed.fill(0);
+  }
+  const boxing = createBox();
   const p = {
     id: await hash(un64(signKey)),
     name: name.trim(),
     signKey,
-    boxKey: b64(await crypto.subtle.exportKey("spki", boxing.publicKey)),
+    boxKey: boxing.publicKey,
   };
   return {
     public: {
       ...p,
-      proof: b64(
-        await crypto.subtle.sign(
-          "Ed25519",
-          signing.privateKey,
-          utf8(publicBytes(p)),
-        ),
-      ),
+      proof: signBytes(signSecret, utf8(publicBytes(p))),
     },
-    signSecret: b64(await crypto.subtle.exportKey("pkcs8", signing.privateKey)),
-    boxSecret: b64(await crypto.subtle.exportKey("pkcs8", boxing.privateKey)),
+    signSecret,
+    boxSecret: boxing.privateKey,
   };
 }
 export async function checkIdentity(value: Identity): Promise<void> {
@@ -139,21 +236,15 @@ export async function checkIdentity(value: Identity): Promise<void> {
     !(await validateIdentity(value.public))
   )
     throw new Error("Identidade inválida");
-  for (const [privateDER, publicDER, alg] of [
-    [value.signSecret, value.public.signKey, "Ed25519"],
-    [value.boxSecret, value.public.boxKey, "X25519"],
-  ] as const) {
-    const privateJwk = await crypto.subtle.exportKey(
-      "jwk",
-      await secret(privateDER, alg),
-    );
-    const publicJwk = await crypto.subtle.exportKey(
-      "jwk",
-      await pub(publicDER, alg),
-    );
-    if (privateJwk.x !== publicJwk.x)
+  const seed = signingRaw(value.signSecret, true);
+  try {
+    if (signingDER(ed25519.getPublicKey(seed)) !== value.public.signKey)
       throw new Error("Chaves da identidade não correspondem");
+  } finally {
+    seed.fill(0);
   }
+  if (boxPublicKey(value.boxSecret) !== value.public.boxKey)
+    throw new Error("Chaves da identidade não correspondem");
 }
 export async function seal(
   data: Uint8Array,
@@ -295,28 +386,20 @@ async function wrap(
   key: Uint8Array,
   reader: PublicIdentity,
 ): Promise<KeyEnvelope> {
-  const ephemeral = (await crypto.subtle.generateKey("X25519", true, [
-    "deriveBits",
-  ])) as CryptoKeyPair;
-  const shared = new Uint8Array(
-    await crypto.subtle.deriveBits(
-      { name: "X25519", public: await pub(reader.boxKey, "X25519") },
-      ephemeral.privateKey,
-      256,
-    ),
-  );
-  const wrappingKey = await hkdf(shared, reader.id, "relayloom-reader-v1");
+  const ephemeral = random(32);
+  let shared: Uint8Array | undefined, wrappingKey: Uint8Array | undefined;
   try {
+    shared = x25519.getSharedSecret(ephemeral, boxRaw(reader.boxKey));
+    wrappingKey = await hkdf(shared, reader.id, "relayloom-reader-v1");
     return {
       reader: reader.id,
-      ephemeral: b64(
-        await crypto.subtle.exportKey("spki", ephemeral.publicKey),
-      ),
+      ephemeral: boxDER(x25519.getPublicKey(ephemeral)),
       ...(await seal(key, wrappingKey, reader.id)),
     };
   } finally {
-    shared.fill(0);
-    wrappingKey.fill(0);
+    ephemeral.fill(0);
+    shared?.fill(0);
+    wrappingKey?.fill(0);
   }
 }
 export async function createBundle(
@@ -381,13 +464,7 @@ export async function createBundle(
     };
     const encoded = canonical(body),
       id = await hash(encoded);
-    const signature = b64(
-      await crypto.subtle.sign(
-        "Ed25519",
-        await secret(owner.signSecret, "Ed25519"),
-        utf8(encoded),
-      ),
-    );
+    const signature = signBytes(owner.signSecret, utf8(encoded));
     return { manifest: { ...body, id, signature }, chunks };
   } finally {
     key.fill(0);
@@ -462,18 +539,13 @@ async function verifyManifestSnapshot(m: Manifest, now: number): Promise<void> {
       un64(e.data, 128).length !== 32
     )
       throw new Error("Envelope inválido");
-    await pub(e.ephemeral, "X25519");
+    boxRaw(e.ephemeral);
   }
   const { id, signature, ...body } = m,
     encoded = canonical(body);
   if (
     id !== (await hash(encoded)) ||
-    !(await crypto.subtle.verify(
-      "Ed25519",
-      await pub(m.author.signKey, "Ed25519"),
-      un64(signature, 128),
-      utf8(encoded),
-    ))
+    !verifyBytes(m.author.signKey, utf8(encoded), signature)
   )
     throw new Error("Assinatura inválida");
 }
@@ -515,13 +587,7 @@ export async function decryptBundle(
   else {
     const e = m.keys.find((k) => k.reader === who?.public.id);
     if (!e || !who) throw new Error("Sem autorização de leitura");
-    const shared = new Uint8Array(
-      await crypto.subtle.deriveBits(
-        { name: "X25519", public: await pub(e.ephemeral, "X25519") },
-        await secret(who.boxSecret, "X25519"),
-        256,
-      ),
-    );
+    const shared = boxSharedSecret(who.boxSecret, e.ephemeral);
     const wrapping = await hkdf(shared, who.public.id, "relayloom-reader-v1");
     try {
       key = await open(

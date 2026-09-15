@@ -171,7 +171,7 @@ func ValidateIdentity(p PublicIdentity) error {
 		return errors.New("nome inválido")
 	}
 	raw, err := decode64(p.SignKey, 256)
-	if err != nil || p.ID != Hash(raw) {
+	if err != nil || !admittedSigningKey(raw) || p.ID != Hash(raw) {
 		return errors.New("identidade inválida")
 	}
 	sp, err := publicSign(p)

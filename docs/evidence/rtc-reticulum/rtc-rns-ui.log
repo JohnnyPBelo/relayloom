@@ -1,0 +1,64 @@
+
+Running 2 tests using 1 worker
+
+(node:265202) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/reticulum/autonomous-ui.spec.ts:37:3 › autonomous web UI direct WS peer reaches native reader through reference RNS TCP and serial; partition, private reply and restarted seeder with browser author offline (39.5s)
+  ✘  2 tests/reticulum/autonomous-ui.spec.ts:37:3 › autonomous web UI through another consenting RTC browser reaches native reader through reference RNS TCP and serial; partition, private reply and restarted seeder with browser author offline (5.5s)
+
+
+  1) tests/reticulum/autonomous-ui.spec.ts:37:3 › autonomous web UI through another consenting RTC browser reaches native reader through reference RNS TCP and serial; partition, private reply and restarted seeder with browser author offline 
+
+    Error: locator.check: Clicking the checkbox did not change its state
+    Call log:
+      - waiting for getByRole('checkbox', { name: /Retransmitir conteúdo/ })
+        - locator resolved to <input type="checkbox"/>
+      - attempting click action
+        - waiting for element to be visible, enabled and stable
+        - element is visible, enabled and stable
+        - scrolling into view if needed
+        - done scrolling
+        - performing click action
+        - click action done
+        - waiting for scheduled navigations to finish
+        - navigations have finished
+
+
+      76 |         await d
+      77 |           .getByRole("checkbox", { name: /Retransmitir conteúdo/ })
+    > 78 |           .check();
+         |            ^
+      79 |         await expect(
+      80 |           d.getByRole("checkbox", { name: /Retransmitir conteúdo/ }),
+      81 |         ).toBeChecked();
+        at /home/absint0o/projects/relayloom/tests/reticulum/autonomous-ui.spec.ts:78:12
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/autonomous-ui-autonomous-w-62268-with-browser-author-offline/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/autonomous-ui-autonomous-w-62268-with-browser-author-offline/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/autonomous-ui-autonomous-w-62268-with-browser-author-offline/test-failed-3.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #4: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/autonomous-ui-autonomous-w-62268-with-browser-author-offline/test-failed-4.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/autonomous-ui-autonomous-w-62268-with-browser-author-offline/error-context.md
+
+    attachment #6: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/autonomous-ui-autonomous-w-62268-with-browser-author-offline/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/autonomous-ui-autonomous-w-62268-with-browser-author-offline/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/reticulum/autonomous-ui.spec.ts:37:3 › autonomous web UI through another consenting RTC browser reaches native reader through reference RNS TCP and serial; partition, private reply and restarted seeder with browser author offline 
+  1 passed (46.0s)

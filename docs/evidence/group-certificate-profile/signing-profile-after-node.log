@@ -1,0 +1,88 @@
+TAP version 13
+# Subtest: newcomer validates exact join consent from signed parent header without old snapshot keys
+ok 1 - newcomer validates exact join consent from signed parent header without old snapshot keys
+  ---
+  duration_ms: 61.633875
+  type: 'test'
+  ...
+# Subtest: permanent group anchor has real creator signature, exact schema and separate carrier identity
+ok 2 - permanent group anchor has real creator signature, exact schema and separate carrier identity
+  ---
+  duration_ms: 7.920486
+  type: 'test'
+  ...
+# Subtest: invitation and signed consent do not alter roster until the creator commits the exact parent
+ok 3 - invitation and signed consent do not alter roster until the creator commits the exact parent
+  ---
+  duration_ms: 28.580454
+  type: 'test'
+  ...
+# Subtest: newcomer reads real new ciphertext without obtaining historical keys; removed reader cannot read new content
+ok 4 - newcomer reads real new ciphertext without obtaining historical keys; removed reader cannot read new content
+  ---
+  duration_ms: 50.816584
+  type: 'test'
+  ...
+# Subtest: stale, substituted, missing or extra member consents cannot commit a roster
+ok 5 - stale, substituted, missing or extra member consents cannot commit a roster
+  ---
+  duration_ms: 59.434055
+  type: 'test'
+  ...
+# Subtest: removal and rejoin remain restrictive across the complete path even with identical final cards
+ok 6 - removal and rejoin remain restrictive across the complete path even with identical final cards
+  ---
+  duration_ms: 58.024365
+  type: 'test'
+  ...
+# Subtest: creator reading-card replacement preserves signing authority but requires fresh signed consent
+ok 7 - creator reading-card replacement preserves signing authority but requires fresh signed consent
+  ---
+  duration_ms: 43.741872
+  type: 'test'
+  ...
+# Subtest: signed schema tampering, roster duplication, invalid order and snapshot substitution fail
+ok 8 - signed schema tampering, roster duplication, invalid order and snapshot substitution fail
+  ---
+  duration_ms: 27.055036
+  type: 'test'
+  ...
+# Subtest: closure preserves the committed historical state and reserves the final epoch
+ok 9 - closure preserves the committed historical state and reserves the final epoch
+  ---
+  duration_ms: 37.97485
+  type: 'test'
+  ...
+# Subtest: a valid creator fork cannot masquerade as a contiguous successor or grant reader authority
+ok 10 - a valid creator fork cannot masquerade as a contiguous successor or grant reader authority
+  ---
+  duration_ms: 37.067029
+  type: 'test'
+  ...
+# Subtest: full 64-member roster is bounded; capacity and title failures do not mutate its parent
+ok 11 - full 64-member roster is bounded; capacity and title failures do not mutate its parent
+  ---
+  duration_ms: 504.68608
+  type: 'test'
+  ...
+# Subtest: member leave is a signed request with no direct roster effect and cannot replace creator closure
+ok 12 - member leave is a signed request with no direct roster effect and cannot replace creator closure
+  ---
+  duration_ms: 34.532613
+  type: 'test'
+  ...
+# Subtest: identity proof rejects small-order signing keys even when the underlying verifier accepts the equation
+ok 13 - identity proof rejects small-order signing keys even when the underlying verifier accepts the equation
+  ---
+  duration_ms: 19.204522
+  type: 'test'
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 13
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1151.259218

@@ -7,6 +7,13 @@ Root acrescentou um botão nativo acessível **Ocultar teclado**, junto ao `UIKe
 Ficheiros próprios: `apps/ios/RelayLoom/RelayViewController.swift` e `apps/ios/UITests/NativeSimulatorTests.swift`. Não foram copiados para o candidato RNS em validação. **Sem compilação UIKit ou execução Apple deste incremento ainda.** Não afirmar que corrigiu iOS antes de compilar/executar num runner Apple real. Não alterar permissões, runtime de bridge, políticas de origem ou segurança para fazer passar o teste. Fazer commit separado depois dos controlos disponíveis e publicar quando não cancelar CI em curso.
 
 
-## Ramo de validação Apple
+## CI Apple executado — eec2806
 
-Este ramo WIP assenta em2d4d12c e acrescenta só os dois ficheiros UIKit/XCTest acima e esta nota. Não contém o refactor posterior de certificados/perfil de chaves. O CI completo existente vai compilar e executar o simulador Apple; a validação está pendente. O controlo Python local verifica apenas consistência do projecto e políticas, nunca compilação Swift ou execução iOS. Não integrar como correcção comprovada antes de recolher o resultado Apple. Hardware físico e assinatura permanecem bloqueados.
+Ramo WIP codex/ios-keyboard-verification, CI34902268397. O novo UIKit/XCTest compilou e testStartupBeforeMedia passou25.409s. A preparação da fotografia excedeu o prazo antes do teste funcional; assetsd regista biblioteca em reconstrução/migração. Não se conclui que o teclado funciona. Evidência docs/evidence/ios-keyboard-ci. Não relançar o mesmo run nem aumentar prazos sem diagnóstico da prontidão da biblioteca no simulador criado pelo teste. Nenhum serviço/permissão alterado. A cópia root é preservada e ainda não integrada na main.
+
+
+## Tentativa Apple2 — teclado confirmado, selector localizado
+
+A tentativa2 doCI34902268397 importou a fotografia, fechou o teclado com relayloom.hide-keyboard e avançou por publicação/contacto/ligaçãoTCP/mensagem privada. O log confirma keyboard-dismissed e a captura mostra a mensagem recebida. O teste depois falhou em system Photo Library action: a captura ui-03.png mostra Fototeca, não Photo Library. Não se declara que todo o fluxo passou.
+
+O selector passa a aceitar as duas etiquetas nativas exactas. A confirmação de escolha conserva as etiquetas inglesas e acrescenta os equivalentes portugueses, sem remover a verificação de que o anexo chega ao compositor. Actualização ainda por compilar/executar emApple. O ramoWIP integra agora a mainf378e13 por merge normal, preservando a história; o único conflito foi esta nota, resolvido conservando o histórico. Não houve merge de PR,force-push ou alteração de sistema/permissões.

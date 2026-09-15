@@ -1,0 +1,14 @@
+{
+  "browser": "chromium on linux",
+  "peers": 3,
+  "separateBrowserContexts": true,
+  "dataChannel": "real ordered reliable SCTP/DTLS/ICE",
+  "mandatoryServers": [],
+  "payloadBytes": 256000,
+  "originalAuthorContextClosedBeforeSeederTransfer": true,
+  "exactAuthorPreserved": true,
+  "persistentReload": true,
+  "automaticRouting": false,
+  "nativeTransportAdapter": false,
+  "physicalRadio": false
+}

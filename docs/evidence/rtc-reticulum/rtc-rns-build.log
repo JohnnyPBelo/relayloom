@@ -1,0 +1,20 @@
+
+> relayloom@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 1613 modules transformed.
+rendering chunks...
+computing gzip size...
+../../dist/web/assets/manifest-BB5pAhn2.webmanifest         0.31 kB
+../../dist/web/index.html                                   0.83 kB │ gzip:   0.41 kB
+../../dist/web/browser/index.html                           1.21 kB │ gzip:   0.60 kB
+../../dist/web/browser/worker-B2HqbsLI.js                  65.22 kB
+../../dist/web/assets/main-DlKWjWzK.css                    12.15 kB │ gzip:   2.80 kB
+../../dist/web/assets/peers-DTS2Ukre.css                   57.80 kB │ gzip:  12.29 kB
+../../dist/web/assets/modulepreload-polyfill-B5Qt9EMX.js    0.71 kB │ gzip:   0.40 kB
+../../dist/web/assets/peers-DTZ2M8Fl.js                     1.05 kB │ gzip:   0.65 kB
+../../dist/web/assets/browser-ZO7UcpW3.js                  38.51 kB │ gzip:  12.47 kB
+../../dist/web/assets/main-B9cdVXOQ.js                    342.50 kB │ gzip: 105.68 kB
+✓ built in 1.74s

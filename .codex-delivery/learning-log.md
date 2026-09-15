@@ -353,3 +353,21 @@ A verificação sequencial sobre5e049f1 terminou sem falhas,279Node/26browser/46
 A UI nativa cria/revoga capacidades de transporte pela API autenticada, sem mostrar o URL de controlo. O token só fica no componente emissor e desaparece ao fechar/bloquear; a resposta tardia foi retida e entregue depois do bloqueio para testar essa garantia. Revogar fecha a ligação real e mantém a identidade utilizável. As expectativas iniciais do teste usavam uma contagem zero inexistente e pressupunham mudar para Conversas ao desbloquear: corrigidas após ler os estados reais, sem alterar o comportamento da aplicação.
 
 O novo percurso autónomo RNS passou com controlos de isolamento, partição/heal, leitura negada ao relay e seeder reiniciado com autora offline. A regressão final passou26browser/50UI/gateRNS/desktopLinux. Não alterar node_modules partilhado enquanto uma cópia de validação corre: a instalação da dependência criptográfica da fase seguinte foi adiada até o gate terminar.
+
+
+## Certificados partilhados e chaves degeneradas — 2026-09-14
+
+O port síncrono preserva18 operações de certificados e usa a mesma implementação das regras nos dois adaptadores. O import inicial de equalBytes foi corrigido para curves/utils após typecheck. O teste browser leu os vectores JSON pelo filesystem da fixture, pois o carregador Playwright exigia atributos de importação JSON. Falhas e passes dirigidos preservados em.cache/milestones/group-key-*.
+
+Um controlo adicional com Ed25519 neutro revelou que as primitivas OpenSSL e Go validavam uma prova de cartão degenerado; o modo estrito de noble recusava-a. Os testes de aplicação Node/Go falharam antes da correcção. Implementado filtro de admissão do formato e dos pontos públicos de pequena ordem em Node/browser/Go;48vectores, positivos de geração e imutabilidade dos bytes passaram nos controlos dirigidos. O filtro não substitui a verificação criptográfica nem demonstra falsificação de uma identidade normal. O gate integral ainda corre.
+
+No CIa49e4a4, o routerGo entregava ao destino antes de o consumidor da aplicação gravar o ficheiro. A fixture agora espera ambos os factos separadamente e revê os negativos depois de cada testemunho positivo; dois testes isolados passaram3.208s, commit2d4d12c. Prevenção: um ACK de transporte não é confirmação de persistência ou leitura.
+
+
+## Matriz WebKit e curvas — 2026-09-15
+
+Firefox28passou antes do port. WebKit precisou de cinco bibliotecas extraídas emcache com hashesAPT fixos. O wrapper substituíaLD_LIBRARY_PATH: mover apenas libs ausentes para os caminhos sys/lib do próprio bundle permitiu arrancar sem mudar binários,wrappers,OS ou sandbox. RegistarABI2.43 e não prometer esse lock noutrosLinux.
+
+A primeira falha grande tinha zero bytes enviados. Um teste isolado passou, mas o probe de ciclos pequenos reproduziu generateKey/importKeyX25519 e, depois de portarX, generateKeyEd25519 a falhar. Não atribuir a causa ao volume sem medição. CurvasNoble existentes resolvem esse caminho mantendov1 e RNGdo browser;512ciclos e operações nativas de curvas forçadas a falhar passaram. Os oráculos de um probe referiam a identidade anterior quando a geração seguinte falhava; rotulados explicitamente, sem os associar à geração inexistente.
+
+Uma falhaRTC posterior observou B-C fechado depois de entregarSOS. Dezrepetições,uma suite comdiagnóstico e todas as suites finais passaram. Não houve correcção de transporte identificada: a observação continua aberta. Instrumentação temporária foi arquivada e retirada antes do gatefinal. Gates finais:90browser,9RNSUI,50UInativa,desktopLinux;42Axe novos. Não confundir oUA Safari do WPE com uma máquinaApple.

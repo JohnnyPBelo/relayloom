@@ -110,6 +110,7 @@ jobs:
           path: |
             .cache/reticulum-verification
             .cache/reticulum-web
+            .cache/reticulum-web-rtc
             docs/evidence/reticulum/ui
             docs/evidence/reticulum/heterogeneous-node.json
             docs/evidence/reticulum/heterogeneous-native.json
@@ -148,6 +149,7 @@ jobs:
             .cache/browser-routing/scheduling-failure.json
             .cache/browser-application/ui
             .cache/browser-native/*-network*
+            .cache/browser-groups/*.json
           retention-days: 7
 
   desktop-package:

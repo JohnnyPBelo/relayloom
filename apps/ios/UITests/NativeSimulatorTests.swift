@@ -260,11 +260,13 @@ final class NativeSimulatorTests: XCTestCase {
         let controls = app.webViews.descendants(matching: .any).matching(identifier: "Anexar ficheiro")
         guard let control = controls.allElementsBoundByIndex.first(where: { $0.isHittable }) else { throw SmokeFailure.missing("file input") }
         control.tap()
-        let library = app.buttons["Photo Library"].firstMatch
+        // WKWebView's file menu follows the page language (pt), even when the
+        // simulator UI is English. Both exact native labels have been observed.
+        let library = app.buttons.matching(NSPredicate(format: "label == 'Photo Library' OR label == 'Fototeca'")).firstMatch
         try require(library, "system Photo Library action", timeout: 15); library.tap()
         let photo = app.collectionViews.cells.firstMatch
         try require(photo, "seeded synthetic photo", timeout: 20); photo.tap()
-        let add = app.buttons.matching(NSPredicate(format: "label == 'Add' OR label BEGINSWITH 'Add (' OR label == 'Done' OR label == 'Choose'")).firstMatch
+        let add = app.buttons.matching(NSPredicate(format: "label == 'Add' OR label BEGINSWITH 'Add (' OR label == 'Done' OR label == 'Choose' OR label == 'Adicionar' OR label BEGINSWITH 'Adicionar (' OR label == 'Concluído' OR label == 'Escolher'")).firstMatch
         try require(add, "confirm system photo selection", timeout: 15); add.tap()
         try require(app.webViews.buttons["Remover"].firstMatch, "photo selected into composer", timeout: 20)
     }

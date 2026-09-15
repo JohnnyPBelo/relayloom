@@ -1,0 +1,21 @@
+diff --git a/tests/browser/routing.spec.ts b/tests/browser/routing.spec.ts
+index 0afa92e..f88b23b 100644
+--- a/tests/browser/routing.spec.ts
++++ b/tests/browser/routing.spec.ts
+@@ -904,9 +904,13 @@ test("managed relay revocation cancels an in-flight forwarded packet and keeps a
+     expect(await b.evaluate(() => (window as any).mesh.router.relay)).toBe(
+       false,
+     );
+-    expect(
+-      await b.evaluate(() => (window as any).links.bc.peer.link.closed),
+-    ).toBe(false);
++    const diagnostics = await Promise.all([b,c].map(p => p.evaluate(() => {
++      const link=(window as any).links.bc.peer.link;
++      return {closed:link.closed,error:link.lastError,resources:link.resources,counters:link.counters,channel:link.channel.readyState};
++    })));
++    mkdirSync(".cache/browser-routing",{recursive:true});
++    writeFileSync(`.cache/browser-routing/relay-close-diagnostic-${test.info().repeatEachIndex}.json`,JSON.stringify(diagnostics,null,2));
++    expect(await b.evaluate(() => (window as any).links.bc.peer.link.closed), JSON.stringify(diagnostics)).toBe(false);
+     await expect
+       .poll(() =>
+         c.evaluate(() => (window as any).links.bc.peer.link.resources.incoming),
