@@ -1,0 +1,40 @@
+{
+  "status": "PASSED",
+  "throughBrowserRelay": true,
+  "started": "2026-09-15T21:22:38.741Z",
+  "finished": "2026-09-15T21:23:23.105Z",
+  "controls": [
+    "Browser identity/worker and local storage are autonomous; its static host receives no /api calls. B and C have no RelayLoom TCP listeners; C has only RNS and B has WS/RNS. Reference RNS path has two hops.",
+    "The sender has only a WebRTC peer and no native/control/WS endpoint. A separate consenting browser bridges RTC to WS; the native RNS bridge is only that intermediary's peer.",
+    "Partition negative control: B retained ciphertext while C remained empty and web outbox pending.",
+    "Heal positive control: exact 22000 attachment bytes and original author verified. Relay cannot decrypt or edit the private message.",
+    "The intermediary browser also refuses a direct UI request to read the private message it forwarded.",
+    "Both people composed, received and replied in the shared UI without choosing any communication medium.",
+    "Relay consent negative control: B reads the public post while relay is paused, and C cannot obtain it.",
+    "Browser author closed; B restarted with existing storage and subsequently seeded the unseen public post to C with Alice's authorship intact. Reference TCP and serial interface byte counters both moved."
+  ],
+  "rns": "1.5.4",
+  "stats": {
+    "interfaces": [
+      {
+        "type": "TCPServerInterface",
+        "name": "TCPServerInterface[TCP/127.0.0.1:39109]",
+        "tx": 195712,
+        "rx": 266464
+      },
+      {
+        "type": "TCPClientInterface",
+        "name": "TCPInterface[Client on TCP/127.0.0.1:43998]",
+        "tx": 124449,
+        "rx": 118182
+      },
+      {
+        "type": "SerialInterface",
+        "name": "SerialInterface[Serial]",
+        "tx": 271631,
+        "rx": 190156
+      }
+    ]
+  },
+  "limits": "chromium/linux with actual RNS and serial PTY; no physical radio, WAN/WSS, Safari/device or dynamic-group browser parity claim."
+}

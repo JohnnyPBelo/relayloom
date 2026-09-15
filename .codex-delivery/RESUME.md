@@ -1,41 +1,34 @@
 # RelayLoom — retoma activa, 2026-09-15
 
-Produto NÃO concluído. Preservar todo o PROJECT-BRIEF.md: Windows/Android/macOS/iOS/Linux e web com paridade integral, Liquid Glass, mensagens/social/sites declarativos seguros, autoria separada de leitura/seeding e transporte agnóstico com Reticulum real.
+Produto completo NÃO concluído. Preservar todo o PROJECT-BRIEF.md, incluindo todas as aplicações, paridade web integral, Liquid Glass, autoria separada de leitura/seeding e transporte agnóstico com Reticulum real. Só este projecto; manter Astra/Copilot Ultra e recuperação sequencial, sem criar/retomar agentes nem alterar bridges/modelos/configuração.
 
-## Marco actual e entrega web
+## Incremento actual
 
-Código ff2fb60 (main local; push do código e desta documentação é o último passo desta etapa). Origem antes desse push f378e130456d036315d9a0b432d65e71b22860a3. Confirmar `git status --short` e `git log -3 --oneline`; não assumir que a referência anterior ainda é HEAD.
+Código `9abbf20` commitado em main local. A documentação desta etapa ainda precisa do push final juntamente com o código; origin/main antes desse push é `2d06c7e`. Confirmar git status/log antes de agir.
 
-URL HTTPS verificado: https://johnnypbelo.github.io/relayloom/browser/index.html
-Guia: docs/WEB-TWO-DEVICES.md. Abrir em dois dispositivos na mesma LAN alcançável, criar identidades diferentes, trocar cartões públicos e depois oferta/resposta em A rede → Ligar um par. Não há STUN/TURN/sinalização automática nem promessa de atravessar qualquer NAT.
+Web actualizada e verificada: https://johnnypbelo.github.io/relayloom/browser/index.html
+Publicação `5bc5895bc944531c8ba761650528bb7ffd861ffb`, branch `codex/web-pages`; Pages `35025782233` terminou success, HTTPS obrigatório. Nenhum serviço local é necessário para abrir este URL. O site só distribui código.
 
-Publicação estática normal em codex/web-pages,ec3a3baa8ed39d103d9b9a4f7823be355bc9fd88. GitHub Pages configurado só neste repositório,https_enforced=true; CI34940021714 terminou success. Sem alterações a bridges/providers/autenticação/serviços alheios. O site distribui apenas código; identidades/dados/sinalização não são enviados a um backend RelayLoom. Independente do preview local; nenhum servidor local é necessário para este URL.
+O cartão verificado aparece imediatamente nas conversas, com endereço DM definitivo e sem mensagem fictícia. Destinatários ordenados mantêm o mesmo pedido quando a resposta se perde. Em A rede, Permitir retransmissão guarda consentimento/pausa e mostra falta de pares. Bluetooth directo e descoberta automática continuam ausentes. O browser precisa de perfil desbloqueado, separador activo e caminho entre pares; pode ser suspenso pelo sistema. Instruções: docs/WEB-TWO-DEVICES.md.
 
-## Gates concluídos desta etapa
+## Gates terminados
 
-- `node scripts/verify-public-web.mjs`: PASS,fontes e14artefactos estáveis;18 UI autónomos no build existente,24 no build público,1 percurso com processos Chromium/Firefox separados. Anexo63 488bytes exactos,recibos,autor fechado/receptor recarregado offline.
-- `node scripts/verify-ui.mjs`: PASSED,25Node169.496s+25Go156.282s;desktopLinux build/run/package/run. Fontes inalteradas.
-- `RELAYLOOM_LAUNCH_URL=https://johnnypbelo.github.io/relayloom node scripts/e2e.mjs --config tests/browser/launch.config.ts`:1pass14.5s noURL real.13ficheiros de execução conferidos byte/hash por HTTPS; .nojekyll é marcador de build.
-- Os controlos reproduziram o manifesto a apontar para assets/index.html e a eliminação indevida de cache de outra instalação. Corrigidos caminhos e scope de cache. Logs de falhas e observaçõesWebKit preservados.
+- `node scripts/verify-public-web.mjs`: PASS, fontes/artefactos estáveis. 2 oráculos; 24 UI no build existente, 30 no público, 1 percurso entre processos Chromium/Firefox — 55 casos web.
+- `node scripts/verify-ui.mjs`: PASSED, 25 Node/184,432 s e 25 Go/159,559 s, Linux build/run/package/run.
+- `node scripts/e2e.mjs --config tests/reticulum/ui.config.ts --browser <engine>`: 3 por engine Chromium/Firefox/WebKit (9), incluindo partição/retoma, resposta privada e seeder reiniciado com autora offline.
+- URL publicado: `RELAYLOOM_LAUNCH_URL=https://johnnypbelo.github.io/relayloom node scripts/e2e.mjs --config tests/browser/launch.config.ts`: 1 passe/16,7 s; com `--config tests/browser/browser.config.ts tests/browser/contact-relay.spec.ts`: 2 passes/50,2 s. Treze ficheiros HTTP conferidos por hash/tamanho.
 
-Evidência publicável: docs/evidence/web-launch. .cache/public-web/gate/report.json e .cache/ui-verification/report.json são os relatórios completos locais. Antes de publicar novamente,npm run web:verify;node scripts/publish-web.mjs mostra plano;--publish só aceita as fontes/artefactos verificados. O script usa índice Git temporário próprio e push normal;nunca a árvore ou os perfis. Não executar npmci nas worktrees/caches partilhadas.
+A cadeia A–B–C só cria A–B e B–C. Dois períodos em pausa bloqueiam a entrega; autorizar permite-a, os contadores avançam e a UI de B recusa leitura privada. O contacto persiste/reabre e a primeira mensagem/reply preserva o rascunho. A primeira candidata duplicava um envio com resposta perdida; foi reproduzido/corrigido antes de publicar. Todos os erros intermédios estão arquivados.
 
-43testes web locais+50UI nativa+1percursoHTTPS não substituem toda a matriz anterior ou dispositivos físicos. Viewport compacto não é telefone;WebKitWPE/Linux não é Safari real;PTY não é rádio;Axe não é revisão independente.
+Evidência: docs/evidence/contact-relay. Relatórios locais: .cache/public-web/gate/report.json, .cache/ui-verification/report.json e .cache/contact-relay/follow-on/report.json. Sessões37402/3226/52999/80080 terminaram; não repetir esses gates por perda de contexto. Nenhum teste desta etapa ficou a meio. open_in_codex anterior só devolveu queued; a tentativa de Browser nesta etapa não encontrou backend iab, sem alterar a sessão do utilizador.
 
-## iOS e trabalho preservado
+## Preservar e continuar
 
-Mainf378 CI34916793582 terminou: todos os jobs excepto iOS passaram. Main continua a falhar ao fechar o teclado.
-WIPcodex/ios-keyboard-verification,496788baae0f8ec2b51900dd62ef681fb1914f29,worktree.cache/ik,CI34917778173 terminou: teclado/publicação/TCP/mensagem privada avançaram;Fototeca abriu. A imagem sintética está visível na captura,mas app.collectionViews.cells não a encontrou. Recolher a hierarquia acessível do picker e corrigir o selector; não repetir sem diagnóstico nem declarar ausência da imagem. Evidência docs/evidence/ios-keyboard-ci/attempt3. Anexo/resposta/retoma/relaunch continuam sem passe integral.
+Root conserva o UIKit/XCTest WIP e notas/capturas anteriores não commitadas. Capturas anteriores aos testes: .cache/contact-relay/preserved-evidence. Não usar git add-A, reset, force-push nem substituir root por uma worktree. Dependências/caches no projecto; último disco18GiB, mínimo15GiB. Uma compilação pesada de cada vez; sem root, pagamentos, ficheiros pessoais ou outros projectos. Não cancelar CI main em curso com outro push. Commits/pushes normais autorizados; nenhum merge de PR sem aprovação.
 
-Root preserva as alterações anteriores em RelayViewController.swift e NativeSimulatorTests.swift (não integradas na main),notas e capturas antigas. Os testes regeneraram capturas habituais; cópias anteriores estão em .cache/milestones/web-launch/preserved-evidence. Não usar git add-A,reset,force-push,nem substituir root por uma worktree. Nenhum processo de teste desta etapa ficou a meio; o painel aberto por open_in_codex respondeu apenas queued,sem alegar abertura visual.
+1. Confirmar o push final main e recolher o novo CI sem o cancelar.
+2. iOS: CI34940755521 de2d06c7e terminou failure apenas nesse job. Arranque e importação de fotografia passaram; tentativa funcional abortada com timeout/exitnull, sem resultado integral. Artefacto em.cache/contact-relay/previous-main-ios. Não atribuir automaticamente a falha ao teclado. WIPcodex/ios-keyboard-verification/496788b continua separado: fechou teclado, enviou e abriu Fototeca; selector não encontrou a imagem visível. Recolher a hierarquia acessível e corrigir, mantendo todos os controlos.
+3. Grupos dinâmicos web: autoridade/IndexedDB, reserva4MiB, CAS/fences, carriers/outbox/replay e UI ainda obrigatórios; certificados partilhados não são paridade completa.
+4. Continuar backup/rotação/keystore, peering/WSS/NAT/descoberta, integração de meios/embalagem RNS e política de trânsito por instalação, quotas/SOS/escala, restantes funções sociais/media/sites, plataformas físicas e revisões independentes.
 
-## Continuação obrigatória
-
-1. Confirmar o push finalmain e recolher o novoCI sem o cancelar com outro push.
-2. Resolver o selector iOS a partir da hierarquia real; manter UIKit WIP separado até gate Apple.
-3. Integrar grupos dinâmicos na web: autoridade/IndexedDB,reserva4MiB,CAS/fences,carriers/outbox/replay,UI e todos os controlos. Certificados partilhados não são paridade de aplicação.
-4. Continuar backup/rotação/keystore,peeringdurável/WSS/NAT,embalagemRNS e política de trânsito por instalação,quotasglobais/SOS/escala,funcionalidades sociais/media/sites pendentes,dispositivos/rádios e revisão independente.
-
-Só /home/absint0o/projects/relayloom. Manter Astra/Copilot Ultra e recuperação sequencial: sem criar/retomar agentes,sem alterar bridges/modelos/configurações. Evidência histórica real de agentes em docs/AGENTS.md. Uma compilação pesada de cada vez,dependências/caches no projecto;22GiB livres no fim dos gates,mínimo15GiB. Sem root,pagamentos,serviços de outros projectos ou ficheiros pessoais. Commits/pushes normais autorizados,nunca merge dePR sem aprovação. Checkpoint de manutenção adicional cancelado.
-
-Histórico preservado em history/RESUME-before-public-web-20260915.md; os estados “em curso” lá descritos são históricos.
+WebKit WPE/Linux não é Safari/iOS; viewport compacto não é dispositivo; PTY não é rádio; Axe não é revisão independente. O checkpoint de manutenção adicional continua cancelado. Histórico integral anterior em history/RESUME-before-contact-relay-20260915.md.

@@ -1,0 +1,22 @@
+{
+  "sourceCommit": "9abbf20",
+  "deploymentCommit": "5bc5895bc944531c8ba761650528bb7ffd861ffb",
+  "pagesRun": 35025782233,
+  "pagesResult": "success",
+  "url": "https://johnnypbelo.github.io/relayloom/browser/index.html",
+  "httpsEnforced": true,
+  "commands": [
+    {
+      "command": "RELAYLOOM_LAUNCH_URL=https://johnnypbelo.github.io/relayloom node scripts/e2e.mjs --config tests/browser/launch.config.ts",
+      "passed": 1,
+      "seconds": 16.7
+    },
+    {
+      "command": "RELAYLOOM_LAUNCH_URL=https://johnnypbelo.github.io/relayloom node scripts/e2e.mjs --config tests/browser/browser.config.ts tests/browser/contact-relay.spec.ts",
+      "passed": 2,
+      "seconds": 50.2
+    }
+  ],
+  "physicalDevices": false,
+  "bluetoothDirectImplemented": false
+}

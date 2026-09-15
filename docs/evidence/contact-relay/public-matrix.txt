@@ -1,0 +1,41 @@
+
+Running 30 tests using 1 worker
+
+(node:3894253) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › tests/browser/application.spec.ts:74:1 › autonomous Liquid Glass UI owns identity and offline outbox, connects through real RTC, receives signed confirmations and survives reload (8.3s)
+  ✓   2 [chromium] › tests/browser/application.spec.ts:203:1 › autonomous social actions and safe signed site builder persist and remain viewable after author closes (13.3s)
+  ✓   3 [chromium] › tests/browser/application.spec.ts:358:1 › production worker keeps private keys out of replies and recovers an applied send after the UI response is lost (22.1s)
+  ✓   4 [chromium] › tests/browser/application.spec.ts:465:1 › a second tab cannot take ownership of a live application profile and an unknown or corrupt profile is never silently reset (1.6s)
+  ✓   5 [chromium] › tests/browser/application.spec.ts:522:1 › cached application code and encrypted profile reopen when the static host is unavailable, without installing the PWA (1.9s)
+  ✓   6 [chromium] › tests/browser/application.spec.ts:588:1 › corrupted cached worker is rejected offline and recovered only from verified available code (1.2s)
+  ✓   7 [chromium] › tests/browser/contact-relay.spec.ts:120:1 › imported contact immediately appears once, survives reload and becomes the first real DM without a duplicate (4.7s)
+  ✓   8 [chromium] › tests/browser/contact-relay.spec.ts:207:1 › relay consent through the UI gates a real A to B to C path and does not grant B private reading (32.1s)
+  ✓   9 [chromium] › tests/browser/public-distribution.checks.ts:6:1 › public build serves every integrity-pinned asset below its prefix, with no daemon entry (41ms)
+  ✓  10 [chromium] › tests/browser/public-distribution.checks.ts:59:1 › subpath offline installation preserves other installations' caches and uses no external runtime (631ms)
+(node:3902540) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  11 [firefox] › tests/browser/application.spec.ts:74:1 › autonomous Liquid Glass UI owns identity and offline outbox, connects through real RTC, receives signed confirmations and survives reload (9.8s)
+  ✓  12 [firefox] › tests/browser/application.spec.ts:203:1 › autonomous social actions and safe signed site builder persist and remain viewable after author closes (15.4s)
+  ✓  13 [firefox] › tests/browser/application.spec.ts:358:1 › production worker keeps private keys out of replies and recovers an applied send after the UI response is lost (24.4s)
+  ✓  14 [firefox] › tests/browser/application.spec.ts:465:1 › a second tab cannot take ownership of a live application profile and an unknown or corrupt profile is never silently reset (2.2s)
+  ✓  15 [firefox] › tests/browser/application.spec.ts:522:1 › cached application code and encrypted profile reopen when the static host is unavailable, without installing the PWA (2.6s)
+  ✓  16 [firefox] › tests/browser/application.spec.ts:588:1 › corrupted cached worker is rejected offline and recovered only from verified available code (1.8s)
+  ✓  17 [firefox] › tests/browser/contact-relay.spec.ts:120:1 › imported contact immediately appears once, survives reload and becomes the first real DM without a duplicate (8.5s)
+  ✓  18 [firefox] › tests/browser/contact-relay.spec.ts:207:1 › relay consent through the UI gates a real A to B to C path and does not grant B private reading (35.1s)
+  ✓  19 [firefox] › tests/browser/public-distribution.checks.ts:6:1 › public build serves every integrity-pinned asset below its prefix, with no daemon entry (53ms)
+  ✓  20 [firefox] › tests/browser/public-distribution.checks.ts:59:1 › subpath offline installation preserves other installations' caches and uses no external runtime (1.3s)
+(node:3917774) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  21 [webkit] › tests/browser/application.spec.ts:74:1 › autonomous Liquid Glass UI owns identity and offline outbox, connects through real RTC, receives signed confirmations and survives reload (11.1s)
+  ✓  22 [webkit] › tests/browser/application.spec.ts:203:1 › autonomous social actions and safe signed site builder persist and remain viewable after author closes (14.7s)
+  ✓  23 [webkit] › tests/browser/application.spec.ts:358:1 › production worker keeps private keys out of replies and recovers an applied send after the UI response is lost (24.0s)
+  ✓  24 [webkit] › tests/browser/application.spec.ts:465:1 › a second tab cannot take ownership of a live application profile and an unknown or corrupt profile is never silently reset (3.2s)
+  ✓  25 [webkit] › tests/browser/application.spec.ts:522:1 › cached application code and encrypted profile reopen when the static host is unavailable, without installing the PWA (3.1s)
+  ✓  26 [webkit] › tests/browser/application.spec.ts:588:1 › corrupted cached worker is rejected offline and recovered only from verified available code (1.9s)
+  ✓  27 [webkit] › tests/browser/contact-relay.spec.ts:120:1 › imported contact immediately appears once, survives reload and becomes the first real DM without a duplicate (6.8s)
+  ✓  28 [webkit] › tests/browser/contact-relay.spec.ts:207:1 › relay consent through the UI gates a real A to B to C path and does not grant B private reading (46.2s)
+  ✓  29 [webkit] › tests/browser/public-distribution.checks.ts:6:1 › public build serves every integrity-pinned asset below its prefix, with no daemon entry (48ms)
+  ✓  30 [webkit] › tests/browser/public-distribution.checks.ts:59:1 › subpath offline installation preserves other installations' caches and uses no external runtime (1.4s)
+
+  30 passed (5.0m)

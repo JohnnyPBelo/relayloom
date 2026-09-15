@@ -190,3 +190,8 @@ FR-001/CON-003/FR-043/INT-009/ACC-014/INT-010:30testes browser por engine (Chrom
 ## Distribuição web real por HTTPS — 2026-09-15
 
 Extensão web de PROJECT-BRIEF/ACC-010:ff2fb60 acrescenta build público sob /relayloom/,caminhos portáveis,cache por scope e publicação exacta verificada.43testes web locais,50UI nativa,Linux executado;URLHTTPS também testado com dois processos e63 488bytes de anexo exactos. docs/evidence/web-launch e docs/WEB-TWO-DEVICES.md. A paridade de todas as funcionalidades e a execução em dois dispositivos físicos permanecem pendentes; esta distribuição não fecha o contrato.
+
+
+## Contacto imediatamente utilizável e relay consentido — 2026-09-15
+
+`9abbf20` acrescenta entradas de contactos persistidos com endereço DM definitivo, sem objectos/mensagens fictícios. O teste de resposta perdida reproduziu uma duplicação na primeira candidata e passou após estabilizar endereço e destinatários. A área A rede controla consentimento/pausa e mostra capacidades/ausências reais. 2 oráculos, 55 web, 50 UI Node/Go, Linux e 9 UI-RNS passaram; 3 percursos HTTPS também passaram depois de publicar. Evidência: docs/evidence/contact-relay. Bluetooth, descoberta, hardware, paridade integral e todos os critérios restantes continuam abertos.

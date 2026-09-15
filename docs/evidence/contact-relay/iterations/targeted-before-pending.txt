@@ -1,0 +1,110 @@
+
+Running 2 tests using 1 worker
+
+(node:3628503) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/browser/contact-relay.spec.ts:99:1 › imported contact immediately appears once, survives reload and becomes the first real DM without a duplicate (3.2s)
+(node:3628801) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 tests/browser/contact-relay.spec.ts:184:1 › relay consent through the UI gates a real A to B to C path and does not grant B private reading (10.9s)
+
+
+  1) tests/browser/contact-relay.spec.ts:99:1 › imported contact immediately appears once, survives reload and becomes the first real DM without a duplicate
+
+    Error: locator.check: Clicking the checkbox did not change its state
+    Call log:
+      - waiting for getByRole('region', { name: 'Ajudar a rede', exact: true }).getByRole('checkbox', { name: 'Permitir retransmissão' })
+        - locator resolved to <input type="checkbox" aria-label="Permitir retransmissão"/>
+      - attempting click action
+        - waiting for element to be visible, enabled and stable
+        - element is visible, enabled and stable
+        - scrolling into view if needed
+        - done scrolling
+        - performing click action
+        - click action done
+        - waiting for scheduled navigations to finish
+        - navigations have finished
+
+
+      144 |     await help
+      145 |       .getByRole("checkbox", { name: "Permitir retransmissão" })
+    > 146 |       .check();
+          |        ^
+      147 |     await expect(help.getByRole("status")).toContainText("falta ligar pares");
+      148 |     await a
+      149 |       .getByText("Wi-Fi, Bluetooth e outros meios", { exact: true })
+        at /home/absint0o/projects/relayloom/tests/browser/contact-relay.spec.ts:146:8
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/contact-relay-imported-con-1e3a9-real-DM-without-a-duplicate/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/contact-relay-imported-con-1e3a9-real-DM-without-a-duplicate/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/contact-relay-imported-con-1e3a9-real-DM-without-a-duplicate/error-context.md
+
+    Error Context: test-results/contact-relay-imported-con-1e3a9-real-DM-without-a-duplicate/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/contact-relay-imported-con-1e3a9-real-DM-without-a-duplicate/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/contact-relay-imported-con-1e3a9-real-DM-without-a-duplicate/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) tests/browser/contact-relay.spec.ts:184:1 › relay consent through the UI gates a real A to B to C path and does not grant B private reading
+
+    Error: locator.check: Clicking the checkbox did not change its state
+    Call log:
+      - waiting for getByRole('region', { name: 'Ajudar a rede', exact: true }).getByRole('checkbox', { name: 'Permitir retransmissão' })
+        - locator resolved to <input type="checkbox" aria-label="Permitir retransmissão"/>
+      - attempting click action
+        - waiting for element to be visible, enabled and stable
+        - element is visible, enabled and stable
+        - scrolling into view if needed
+        - done scrolling
+        - performing click action
+        - click action done
+        - waiting for scheduled navigations to finish
+        - navigations have finished
+
+
+      234 |     await relay
+      235 |       .getByRole("checkbox", { name: "Permitir retransmissão" })
+    > 236 |       .check();
+          |        ^
+      237 |     await expect(
+      238 |       c.locator(".bubble").getByText(message, { exact: true }),
+      239 |     ).toBeVisible();
+        at /home/absint0o/projects/relayloom/tests/browser/contact-relay.spec.ts:236:8
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/contact-relay-relay-consen-8e155-not-grant-B-private-reading/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/contact-relay-relay-consen-8e155-not-grant-B-private-reading/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/contact-relay-relay-consen-8e155-not-grant-B-private-reading/test-failed-3.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/contact-relay-relay-consen-8e155-not-grant-B-private-reading/error-context.md
+
+    Error Context: test-results/contact-relay-relay-consen-8e155-not-grant-B-private-reading/error-context.md
+
+    attachment #6: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/contact-relay-relay-consen-8e155-not-grant-B-private-reading/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/contact-relay-relay-consen-8e155-not-grant-B-private-reading/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    tests/browser/contact-relay.spec.ts:99:1 › imported contact immediately appears once, survives reload and becomes the first real DM without a duplicate
+    tests/browser/contact-relay.spec.ts:184:1 › relay consent through the UI gates a real A to B to C path and does not grant B private reading

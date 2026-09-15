@@ -8,7 +8,7 @@ Use dois dispositivos na mesma rede Wi-Fi/LAN, com um browser actual, e mantenha
 
 1. Abra o endereço em ambos os dispositivos e crie **duas identidades diferentes**, por exemplo Alice e Bruno. Cada uma tem a sua frase-passe e cofre local.
 2. Em cada dispositivo, abra **Definições → Copiar cartão público**. Troque os cartões por um canal em que confie.
-3. Em **Conversas → Adicionar contacto**, cole o cartão da outra pessoa e escolha **Verificar e adicionar**. Faça isto nos dois lados. O cartão é público; não partilhe a frase-passe nem o ficheiro de recuperação do cofre.
+3. Em **Conversas → Adicionar contacto**, cole o cartão da outra pessoa e escolha **Verificar e adicionar**. Faça isto nos dois lados. O contacto passa a aparecer em Conversas, mesmo antes da primeira mensagem. O cartão é público; não partilhe a frase-passe nem o ficheiro de recuperação do cofre.
 
 ## Ligar os dois
 
@@ -18,9 +18,17 @@ Use dois dispositivos na mesma rede Wi-Fi/LAN, com um browser actual, e mantenha
 
 Não feche nem recarregue os separadores durante a troca. Os códigos estabelecem uma ligação desta sessão; não adicionam contactos nem dão acesso ao cofre. Se a ligação se perder após fechar ou suspender um browser, será necessário estabelecer um novo caminho.
 
+## Ajudar a retransmitir
+
+Depois de criar/desbloquear o perfil, abra **A rede** e active **Permitir retransmissão**. A mesma preferência continua disponível nas Definições. O estado distingue autorização guardada e falta de ligações: ainda é necessário **Ligar outro dispositivo**, trocando os códigos acima. Para testar trânsito A → B → C, ligue A a B e B a C e active a retransmissão em B; o destinatário continua a ser escolhido na conversa.
+
+Mantenha os separadores abertos e os perfis desbloqueados. O browser/OS pode suspendê-los em segundo plano. Pausar impede novo trânsito; a autorização fica guardada para a próxima sessão, mas os caminhos entre browsers ainda precisam de ser restabelecidos.
+
+**Wi-Fi, cabo ou dados móveis** podem fornecer a rede IP usada pelos pares, se existir um caminho alcançável. Não é necessário escolher o meio ao enviar cada mensagem. **Bluetooth directo ainda não está implementado**, e a simples abertura do HTML não descobre rádios ou pessoas próximas. A passagem para Reticulum/série requer uma app e adaptador compatíveis; portas série virtuais dos testes não são rádios físicos.
+
 ## Experimentar a aplicação
 
-Em **Conversas → Nova conversa**, escolha a outra pessoa e envie uma mensagem. Responda do segundo dispositivo e experimente um ficheiro pequeno pelo botão de anexar (até 2 MB na UI). O estado distingue **Em espera**, **Entregue** e **Lida**; a página estar aberta na Internet não prova que exista um caminho entre os pares.
+Em **Conversas**, toque no contacto guardado e envie uma mensagem. Também o encontra em **Nova conversa**. Responda do segundo dispositivo e experimente um ficheiro pequeno pelo botão de anexar (até 2 MB na UI). O estado distingue **Em espera**, **Entregue** e **Lida**; a página estar aberta na Internet não prova que exista um caminho entre os pares.
 
 Em **A praça**, publique uma história e veja-a no outro dispositivo. Em **A minha página**, edite os blocos, guarde o rascunho e publique. Conteúdo privado só é legível pelas identidades autorizadas; quem o guarda pode semear a cópia, mas não ganha a chave de autoria.
 

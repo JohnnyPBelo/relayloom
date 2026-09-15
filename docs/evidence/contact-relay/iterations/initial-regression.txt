@@ -1,0 +1,101 @@
+
+Running 8 tests using 1 worker
+
+(node:3648870) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [chromium] › tests/browser/application.spec.ts:74:1 › autonomous Liquid Glass UI owns identity and offline outbox, connects through real RTC, receives signed confirmations and survives reload (2.2s)
+(node:3649323) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  2 [chromium] › tests/browser/application.spec.ts:200:1 › autonomous social actions and safe signed site builder persist and remain viewable after author closes (13.8s)
+  ✘  3 [chromium] › tests/browser/application.spec.ts:355:1 › production worker keeps private keys out of replies and recovers an applied send after the UI response is lost (1.7s)
+(node:3650641) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  4 [chromium] › tests/browser/application.spec.ts:459:1 › a second tab cannot take ownership of a live application profile and an unknown or corrupt profile is never silently reset (1.9s)
+  ✓  5 [chromium] › tests/browser/application.spec.ts:516:1 › cached application code and encrypted profile reopen when the static host is unavailable, without installing the PWA (2.1s)
+  ✓  6 [chromium] › tests/browser/application.spec.ts:582:1 › corrupted cached worker is rejected offline and recovered only from verified available code (1.2s)
+  ✓  7 [chromium] › tests/browser/contact-relay.spec.ts:120:1 › imported contact immediately appears once, survives reload and becomes the first real DM without a duplicate (4.8s)
+  ✓  8 [chromium] › tests/browser/contact-relay.spec.ts:207:1 › relay consent through the UI gates a real A to B to C path and does not grant B private reading (22.1s)
+
+
+  1) [chromium] › tests/browser/application.spec.ts:74:1 › autonomous Liquid Glass UI owns identity and offline outbox, connects through real RTC, receives signed confirmations and survives reload
+
+    Error: locator.click: Error: strict mode violation: getByRole('button', { name: /Bruno autónomo/ }) resolved to 2 elements:
+        1) <button class="conversation ">…</button> aka getByRole('button', { name: 'Bruno autónomo Contacto' })
+        2) <button class="contact-choice">…</button> aka getByRole('button', { name: 'Bruno autónomo 88f0c00a…' })
+
+    Call log:
+      - waiting for getByRole('button', { name: /Bruno autónomo/ })
+
+
+      92 |     await contact(b, alice);
+      93 |     await a.getByRole("button", { name: "Nova conversa", exact: true }).click();
+    > 94 |     await a.getByRole("button", { name: /Bruno autónomo/ }).click();
+         |                                                             ^
+      95 |     await a
+      96 |       .getByLabel("Escrever mensagem")
+      97 |       .fill("Esta mensagem nasce no navegador, sem daemon.");
+        at /home/absint0o/projects/relayloom/tests/browser/application.spec.ts:94:61
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/application-autonomous-Liq-bf1f8-mations-and-survives-reload-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/application-autonomous-Liq-bf1f8-mations-and-survives-reload-chromium/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/application-autonomous-Liq-bf1f8-mations-and-survives-reload-chromium/error-context.md
+
+    Error Context: test-results/application-autonomous-Liq-bf1f8-mations-and-survives-reload-chromium/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/application-autonomous-Liq-bf1f8-mations-and-survives-reload-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/application-autonomous-Liq-bf1f8-mations-and-survives-reload-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [chromium] › tests/browser/application.spec.ts:355:1 › production worker keeps private keys out of replies and recovers an applied send after the UI response is lost
+
+    Error: locator.click: Error: strict mode violation: getByRole('button', { name: /Bruno de reserva/ }) resolved to 2 elements:
+        1) <button class="conversation ">…</button> aka getByRole('button', { name: 'Bruno de reserva Contacto' })
+        2) <button class="contact-choice">…</button> aka getByRole('button', { name: 'Bruno de reserva 85e70f8b…14ef' })
+
+    Call log:
+      - waiting for getByRole('button', { name: /Bruno de reserva/ })
+
+
+      404 |     await contact(a, recipient);
+      405 |     await a.getByRole("button", { name: "Nova conversa", exact: true }).click();
+    > 406 |     await a.getByRole("button", { name: /Bruno de reserva/ }).click();
+          |                                                               ^
+      407 |     await a
+      408 |       .getByLabel("Escrever mensagem")
+      409 |       .fill("Só uma publicação para este identificador.");
+        at /home/absint0o/projects/relayloom/tests/browser/application.spec.ts:406:63
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/application-production-wor-d6e45-ter-the-UI-response-is-lost-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/application-production-wor-d6e45-ter-the-UI-response-is-lost-chromium/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/application-production-wor-d6e45-ter-the-UI-response-is-lost-chromium/error-context.md
+
+    Error Context: test-results/application-production-wor-d6e45-ter-the-UI-response-is-lost-chromium/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/application-production-wor-d6e45-ter-the-UI-response-is-lost-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/application-production-wor-d6e45-ter-the-UI-response-is-lost-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    [chromium] › tests/browser/application.spec.ts:74:1 › autonomous Liquid Glass UI owns identity and offline outbox, connects through real RTC, receives signed confirmations and survives reload
+    [chromium] › tests/browser/application.spec.ts:355:1 › production worker keeps private keys out of replies and recovers an applied send after the UI response is lost
+  6 passed (52.2s)

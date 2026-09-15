@@ -1,0 +1,10 @@
+
+Running 3 tests using 1 worker
+
+(node:3717494) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/browser/application.spec.ts:358:1 › production worker keeps private keys out of replies and recovers an applied send after the UI response is lost (22.4s)
+  ✓  2 tests/browser/contact-relay.spec.ts:120:1 › imported contact immediately appears once, survives reload and becomes the first real DM without a duplicate (4.6s)
+  ✓  3 tests/browser/contact-relay.spec.ts:207:1 › relay consent through the UI gates a real A to B to C path and does not grant B private reading (22.4s)
+
+  3 passed (50.2s)

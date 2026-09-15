@@ -1,0 +1,22 @@
+TAP version 13
+# Subtest: contact rows use the established Node/Go DM reader-address wire format before the first send
+ok 1 - contact rows use the established Node/Go DM reader-address wire format before the first send
+  ---
+  duration_ms: 1.804593
+  type: 'test'
+  ...
+# Subtest: a repeated own reader remains one reader in the DM address
+ok 2 - a repeated own reader remains one reader in the DM address
+  ---
+  duration_ms: 0.248686
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 202.480908

@@ -17,6 +17,12 @@ Abrir `http://127.0.0.1:4174/browser/index.html`. Este processo serve apenas os 
 
 Só uma instância da aplicação detém o perfil por origem. Outro separador não termina nem assume o primeiro. Bloquear invalida trabalho pendente; recarregar exige novo desbloqueio. Worker não é protecção contra origem, extensão ouXSS comprometidos. Não há promessa de apagamento verificável de todas as cópias de memóriaJS.
 
+## Contactos e participação na rede
+
+Os cartões verificados aparecem logo na lista, mesmo sem mensagens. O endereço DM é o mesmo antes/depois do primeiro envio; o controlo de resposta perdida prova que repetir não publica uma segunda mensagem. Pesquisa, reabertura e rascunho ao receber a primeira mensagem foram exercitados.
+
+Em **A rede → Permitir retransmissão**, o utilizador pode autorizar ou pausar. A preferência fica guardada no perfil e a interface distingue consentimento e falta de pares. A cadeia A–B–C foi controlada pela UI: pausa antes/depois do primeiro positivo, retomada, contadores de pacotes e leitura privada recusada a B. Isto não cria descoberta automática nem um adaptador Bluetooth. [Instruções](WEB-TWO-DEVICES.md) e [evidência](evidence/contact-relay).
+
 ## Implementado e âmbito dos testes dirigidos
 
 | Função | Implementação actual | Evidência/pendente |

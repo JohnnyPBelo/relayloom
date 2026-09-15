@@ -1,5 +1,9 @@
 # Durable implementation plan
 
+## Contactos e relay — marco concluído, contrato integral aberto
+
+Código9abbf20 publicado na web (distribuição5bc5895), com2oráculos,55web,50UI Node/Go,Linux,9UI-RNS e3percursos HTTPS passados. Ver CONTACT-RELAY-UX.md e RESUME.md. Contactos visíveis, endereço DM estável e consentimento/pausa explícitos; não acrescenta Bluetooth ou descoberta. Continuar o resto do contrato.
+
 ## Prioridade actual — web em dois dispositivos, 2026-09-15
 
 Executar [WEB-LAUNCH-IMPLEMENTATION.md](WEB-LAUNCH-IMPLEMENTATION.md): build público HTTPS sob /relayloom/,43 testes web locais passados,regressão UI Node/Go/Linux25+25 passada; assets exactos publicados e URL HTTPS verificado. Depois continuar todos os alvos e a paridade de grupos web. O diagnóstico iOS actual é selector da fotografia visível no CI34917778173; não repetir a falha antiga como se fosse a última. Estados “em curso” abaixo são históricos e não substituem RESUME/STATUS.

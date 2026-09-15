@@ -1,0 +1,51 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "native-ui",
+      "args": [
+        "scripts/verify-ui.mjs"
+      ],
+      "exit": 0,
+      "elapsedMs": 372822
+    },
+    {
+      "name": "rns-chromium",
+      "args": [
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/reticulum/ui.config.ts",
+        "--browser",
+        "chromium"
+      ],
+      "exit": 0,
+      "elapsedMs": 105512
+    },
+    {
+      "name": "rns-firefox",
+      "args": [
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/reticulum/ui.config.ts",
+        "--browser",
+        "firefox"
+      ],
+      "exit": 0,
+      "elapsedMs": 115265
+    },
+    {
+      "name": "rns-webkit",
+      "args": [
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/reticulum/ui.config.ts",
+        "--browser",
+        "webkit"
+      ],
+      "exit": 0,
+      "elapsedMs": 113697
+    }
+  ],
+  "started": "2026-09-15T21:09:48.363Z",
+  "finished": "2026-09-15T21:27:28.034Z"
+}

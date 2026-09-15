@@ -1,0 +1,53 @@
+
+Running 1 test using 1 worker
+
+(node:3622313) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/browser/contact-relay.spec.ts:99:1 › imported contact immediately appears once, survives reload and becomes the first real DM without a duplicate (16.9s)
+
+
+  1) tests/browser/contact-relay.spec.ts:99:1 › imported contact immediately appears once, survives reload and becomes the first real DM without a duplicate
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('region', { name: 'Lista de conversas', exact: true }).getByRole('button', { name: /Bruno contacto/ })
+    Expected: visible
+    Timeout: 15000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('region', { name: 'Lista de conversas', exact: true }).getByRole('button', { name: /Bruno contacto/ }) with timeout 15000ms
+      - waiting for getByRole('region', { name: 'Lista de conversas', exact: true }).getByRole('button', { name: /Bruno contacto/ })
+
+
+      117 |     await contact(a, bruno);
+      118 |     const row = rows(a).getByRole("button", { name: /Bruno contacto/ });
+    > 119 |     await expect(row).toBeVisible();
+          |                       ^
+      120 |     await expect(row).toHaveCount(1);
+      121 |     await expect(row).toContainText("Contacto guardado");
+      122 |     await audit(a, out + "/contact-list");
+        at /home/absint0o/projects/relayloom/tests/browser/contact-relay.spec.ts:119:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/contact-relay-imported-con-1e3a9-real-DM-without-a-duplicate/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/contact-relay-imported-con-1e3a9-real-DM-without-a-duplicate/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/contact-relay-imported-con-1e3a9-real-DM-without-a-duplicate/error-context.md
+
+    Error Context: test-results/contact-relay-imported-con-1e3a9-real-DM-without-a-duplicate/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/contact-relay-imported-con-1e3a9-real-DM-without-a-duplicate/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/contact-relay-imported-con-1e3a9-real-DM-without-a-duplicate/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/browser/contact-relay.spec.ts:99:1 › imported contact immediately appears once, survives reload and becomes the first real DM without a duplicate

@@ -4,6 +4,12 @@ Actualizado em 2026-09-15. **Produto experimental em implementação; o contrato
 
 ## Código e verificação actual
 
+Actualização de contactos/relay em `9abbf20`: os contactos verificados aparecem imediatamente nas conversas, usando o endereço DM definitivo antes do primeiro envio. A ordenação dos destinatários mantém a repetição idempotente quando se perde a resposta. **A rede → Permitir retransmissão** grava o consentimento, permite pausar e distingue autorização de ligações disponíveis. Bluetooth directo e descoberta automática continuam por implementar; a interface indica-o.
+
+Gate desta alteração: 2 oráculos do endereço, 55 testes de browser (24 no build existente, 30 no build público e 1 entre processos), 25 UI Node e 25 Go, execução/empacotamento/execução Linux e 3 UI-RNS por engine (9), todos passados com fontes estáveis. [Evidência e falhas corrigidas](evidence/contact-relay). Não é execução em dispositivos físicos ou todos os SO.
+
+Publicação estática `5bc5895…`, Pages `35025782233` concluído com sucesso. Os três testes no URL actualizado passaram: mensagens/anexo/recuperação entre processos, contacto persistente na lista e autorização/pausa do relay A–B–C. Os ficheiros de execução foram novamente conferidos por hash e tamanho através de HTTPS. Os parágrafos seguintes registam o lançamento anterior e não substituem os resultados desta alteração.
+
 **Web experimental publicada:** https://johnnypbelo.github.io/relayloom/browser/index.html · [Testar em dois dispositivos](WEB-TWO-DEVICES.md). Marco de código `ff2fb60`, distribuição `ec3a3baa…` em `codex/web-pages`, Pages `34940021714` concluído com sucesso e HTTPS obrigatório. Treze ficheiros de execução verificados byte a byte depois da publicação; `.nojekyll` é apenas um marcador de build. GitHub Pages distribui código, sem backend RelayLoom para conteúdo, chaves ou sinalização.
 
 Este incremento passou 18 UI autónomos no build existente,24 no build público e um percurso entre processos Chromium/Firefox. A regressão adicional passou25 UI Node+25 Go e build/run/package/run Linux. O mesmo percurso no URL publicado também passou: mensagens nos dois sentidos,63 488 bytes exactos de anexo,recibo de leitura e recarga offline após fechar o emissor. **Dois dispositivos físicos ainda não foram testados.** [Comandos,hashes,capturas e falhas intermédias](evidence/web-launch). O restante contrato não foi reduzido.

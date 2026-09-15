@@ -1,0 +1,107 @@
+
+Running 2 tests using 1 worker
+
+(node:3634441) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/browser/contact-relay.spec.ts:99:1 › imported contact immediately appears once, survives reload and becomes the first real DM without a duplicate (19.2s)
+(node:3636889) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 tests/browser/contact-relay.spec.ts:184:1 › relay consent through the UI gates a real A to B to C path and does not grant B private reading (15.2s)
+
+
+  1) tests/browser/contact-relay.spec.ts:99:1 › imported contact immediately appears once, survives reload and becomes the first real DM without a duplicate
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('region', { name: 'Lista de conversas', exact: true }).getByText('Contacto guardado')
+    Expected: 0
+    Received: 1
+    Timeout:  15000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('region', { name: 'Lista de conversas', exact: true }).getByText('Contacto guardado') with timeout 15000ms
+      - waiting for getByRole('region', { name: 'Lista de conversas', exact: true }).getByText('Contacto guardado')
+        34 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+      168 |     await expect(
+      169 |       rows(a).getByText("Contacto guardado", { exact: false }),
+    > 170 |     ).toHaveCount(0);
+          |       ^
+      171 |     await a.reload();
+      172 |     await unlock(a);
+      173 |     await expect(row).toHaveCount(1);
+        at /home/absint0o/projects/relayloom/tests/browser/contact-relay.spec.ts:170:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/contact-relay-imported-con-1e3a9-real-DM-without-a-duplicate/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/contact-relay-imported-con-1e3a9-real-DM-without-a-duplicate/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/contact-relay-imported-con-1e3a9-real-DM-without-a-duplicate/error-context.md
+
+    Error Context: test-results/contact-relay-imported-con-1e3a9-real-DM-without-a-duplicate/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/contact-relay-imported-con-1e3a9-real-DM-without-a-duplicate/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/contact-relay-imported-con-1e3a9-real-DM-without-a-duplicate/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) tests/browser/contact-relay.spec.ts:184:1 › relay consent through the UI gates a real A to B to C path and does not grant B private reading
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('alert')
+    Expected substring: "não tem autorização para o ler"
+    Error: strict mode violation: getByRole('alert') resolved to 2 elements:
+        1) <div role="alert" class="error banner">…</div> aka locator('#main').getByText('Conteúdo disponível, mas esta')
+        2) <div role="alert" class="error">Conteúdo disponível, mas esta identidade não tem …</div> aka getByRole('dialog', { name: 'Obter conteúdo da rede' }).getByText('Conteúdo disponível, mas esta')
+
+    Call log:
+      - Expect "toContainText" getByRole('alert') with timeout 15000ms
+      - waiting for getByRole('alert')
+
+
+      263 |     await b.getByLabel("Endereço do conteúdo").fill(id);
+      264 |     await b.getByRole("button", { name: "Pedir aos pares" }).click();
+    > 265 |     await expect(b.getByRole("alert")).toContainText(
+          |                                        ^
+      266 |       "não tem autorização para o ler",
+      267 |     );
+      268 |     await b
+        at /home/absint0o/projects/relayloom/tests/browser/contact-relay.spec.ts:265:40
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/contact-relay-relay-consen-8e155-not-grant-B-private-reading/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/contact-relay-relay-consen-8e155-not-grant-B-private-reading/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/contact-relay-relay-consen-8e155-not-grant-B-private-reading/test-failed-3.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/contact-relay-relay-consen-8e155-not-grant-B-private-reading/error-context.md
+
+    Error Context: test-results/contact-relay-relay-consen-8e155-not-grant-B-private-reading/error-context.md
+
+    attachment #6: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/contact-relay-relay-consen-8e155-not-grant-B-private-reading/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/contact-relay-relay-consen-8e155-not-grant-B-private-reading/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    tests/browser/contact-relay.spec.ts:99:1 › imported contact immediately appears once, survives reload and becomes the first real DM without a duplicate
+    tests/browser/contact-relay.spec.ts:184:1 › relay consent through the UI gates a real A to B to C path and does not grant B private reading

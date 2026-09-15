@@ -1,0 +1,37 @@
+(node:3940668) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 25 tests using 1 worker
+
+(node:3941058) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/dynamic-groups.spec.ts:8:1 › a new group version preserves the draft, requires audience review, and lock removes the group dialog (6.2s)
+  ✓   2 tests/e2e/dynamic-groups.spec.ts:79:1 › Liquid Glass groups create, invite, consent, approve, message and leave through two real clients (13.5s)
+  ✓   3 tests/e2e/flows.spec.ts:58:1 › two live clients: identities, connection, message, attachment, reaction, group, social, safe site and offline recovery (22.7s)
+  ✓   4 tests/e2e/group-operation-recovery.spec.ts:23:1 › a committed group operation with a lost response survives dialog closure and recovers without a second mutation (3.1s)
+  ✓   5 tests/e2e/group-operation-recovery.spec.ts:83:1 › a late recovered group state cannot restore the pre-lock conversation draft (3.3s)
+(node:3941058) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+  ✓   6 tests/e2e/group-outbox.spec.ts:9:1 › real runtime group outbox shows proof pause and terminal stop with accessible recovery guidance (7.8s)
+  ✓   7 tests/e2e/liquid-glass.spec.ts:40:1 › command search uses real authorised peer messages, preserves drafts and forgets private queries on lock (4.5s)
+  ✓   8 tests/e2e/liquid-glass.spec.ts:187:1 › glass respects device effects, low power, contrast and keyboard access across responsive screens (11.3s)
+  ✓   9 tests/e2e/long-dialog.spec.ts:6:1 › a cached site dialog is visible and reachable after scrolling a long mobile contact list (2.9s)
+  ✓  10 tests/e2e/notifications.spec.ts:166:1 › notification stubs verify explicit opt-in, private filtering, coalescing, privacy and persistence (25.0s)
+  ✓  11 tests/e2e/notifications.spec.ts:303:1 › lock, identity switch and cancelled permission close notices and invalidate pending work (9.5s)
+  ✓  12 tests/e2e/notifications.spec.ts:406:1 › denied, unavailable and failed notification APIs remain honest inactive states (3.3s)
+  ✓  13 tests/e2e/onboarding-layout.spec.ts:8:1 › onboarding fits the native minimum window and intermediate widths with keyboard access (1.8s)
+  ✓  14 tests/e2e/outbox.spec.ts:64:1 › durable composer retries a lost response once, survives restart, and shows distinct real received/read states (13.2s)
+  ✓  15 tests/e2e/outbox.spec.ts:204:1 › expired pending sends remain visible without delivery, and locking clears the outbox UI (6.2s)
+  ✓  16 tests/e2e/outbox.spec.ts:253:1 › an absent record after an uncertain response requires an explicit new-send choice (1.7s)
+  ✓  17 tests/e2e/outbox.spec.ts:291:1 › legacy group read labels count unique recipients without retained outbox metadata (4.6s)
+  ✓  18 tests/e2e/privacy-history.spec.ts:6:1 › an earlier delayed state cannot restore private UI after identity lock (4.8s)
+  ✓  19 tests/e2e/privacy-history.spec.ts:70:1 › history page loads older verified posts without inflating the periodic snapshot (4.6s)
+  ✓  20 tests/e2e/social.spec.ts:6:1 › named private collections, followed feed, sharing reference and UI persistence (3.6s)
+  ✓  21 tests/e2e/web-invitation.spec.ts:15:1 › native invitation UI connects an autonomous browser, preserves identity authority and revokes the actual socket (7.7s)
+  ✓  22 tests/e2e/web-invitation.spec.ts:154:1 › late invitation response after closing and locking cannot disclose its capability on unlock (2.2s)
+(node:3980201) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  23 tests/e2e/media.spec.ts:207:1 › synthetic image, audio, video and fake-microphone voice arrive at a real peer (8.3s)
+  ✓  24 tests/e2e/media.spec.ts:381:1 › microphone denial and unsupported recording are explicit and do not add attachments (3.9s)
+  ✓  25 tests/e2e/media.spec.ts:434:1 › late permission, recording error, byte cap and virtual duration cap release synthetic tracks (6.1s)
+
+  25 passed (3.1m)

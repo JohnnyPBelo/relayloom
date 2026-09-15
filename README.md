@@ -12,7 +12,7 @@ A captura vem de um teste real: a autora tinha apenas outro navegador como par; 
 
 **[Abrir RelayLoom no browser](https://johnnypbelo.github.io/relayloom/browser/index.html)** · [Guia para testar em dois dispositivos](docs/WEB-TWO-DEVICES.md).
 
-Abra o endereço em dois dispositivos na mesma LAN alcançável, crie identidades diferentes, troque os cartões públicos e depois os códigos em **A rede → Ligar um par**. Escolha a pessoa em Conversas e envie. O alojamento fornece apenas o código; as mensagens seguem entre pares. Redes de convidados/NAT podem impedir o caminho directo. Não há instalação obrigatória.
+Abra o endereço em dois dispositivos na mesma LAN alcançável, crie identidades diferentes e troque os cartões públicos. O contacto aparece logo nas conversas. Para estabelecer o caminho, troque os códigos em **A rede → Ligar um par**. Escolha a pessoa em Conversas e envie. O alojamento fornece apenas o código; as mensagens seguem entre pares. Redes de convidados/NAT podem impedir o caminho directo. Não há instalação obrigatória.
 
 A publicação HTTPS passou um percurso com processos Chromium e Firefox independentes: mensagens nos dois sentidos, anexo de 63 488 bytes exactos, recibo de leitura e recuperação offline após fechar o emissor. **Não equivale a dois dispositivos físicos testados.** [Evidência do lançamento](docs/evidence/web-launch).
 
@@ -27,6 +27,8 @@ node node_modules/vite/bin/vite.js preview --host 127.0.0.1 --port 4174 --strict
 ```
 
 Abra `http://127.0.0.1:4174/browser/index.html`. O processo distribui apenas o código. Para gerar a distribuição pública separada, use `npm run web:build`; o resultado fica em `dist/public-web`. `npm run web:verify` valida os ficheiros antes de os publicar. O URL acima usa HTTPS obrigatório.
+
+Para ajudar a transportar conteúdo de outros pares, active **A rede → Permitir retransmissão** e ligue outros dispositivos. O estado mostra se ainda faltam pares; na web, mantenha o separador aberto e o perfil desbloqueado. Bluetooth directo e descoberta automática ainda não estão implementados.
 
 Em **A rede → Ligar um par**, troque os códigos de ligação com outro navegador. Também pode obter um convite em **A rede → Ligar um par → Usar a versão web neste dispositivo** na app instalada. Depois escolhe a pessoa e envia normalmente; o meio não é escolhido em cada mensagem.
 

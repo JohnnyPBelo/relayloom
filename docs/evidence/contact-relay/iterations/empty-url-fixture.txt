@@ -1,0 +1,37 @@
+
+Running 1 test using 1 worker
+
+(node:3835622) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/browser/launch.checks.ts:51:1 › two independent Chromium and Firefox processes exchange UI messages and exact attachment bytes, then reopen offline (2.3s)
+
+
+  1) tests/browser/launch.checks.ts:51:1 › two independent Chromium and Firefox processes exchange UI messages and exact attachment bytes, then reopen offline
+
+    Error: page.goto: Protocol error (Page.navigate): Cannot navigate to invalid URL
+    Call log:
+      - navigating to "/browser/index.html", waiting until "load"
+
+
+      14 | }
+      15 | async function enter(page: Page, url: string, name: string) {
+    > 16 |   await page.goto(url + "/browser/index.html");
+         |              ^
+      17 |   expect(await page.evaluate(() => isSecureContext)).toBe(true);
+      18 |   await page.getByLabel("Como te chamas?").fill(name);
+      19 |   await page.getByLabel("Frase-passe", { exact: true }).fill(passphrase);
+        at enter (/home/absint0o/projects/relayloom/tests/browser/launch.checks.ts:16:14)
+        at /home/absint0o/projects/relayloom/tests/browser/launch.checks.ts:81:11
+
+    Error Context: .cache/public-web/launch-results/launch.checks.ts-two-indep-d0895-t-bytes-then-reopen-offline/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    .cache/public-web/launch-results/launch.checks.ts-two-indep-d0895-t-bytes-then-reopen-offline/trace.zip
+    Usage:
+
+        npx playwright show-trace .cache/public-web/launch-results/launch.checks.ts-two-indep-d0895-t-bytes-then-reopen-offline/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/browser/launch.checks.ts:51:1 › two independent Chromium and Firefox processes exchange UI messages and exact attachment bytes, then reopen offline

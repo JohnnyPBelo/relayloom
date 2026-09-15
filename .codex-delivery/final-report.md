@@ -1,3 +1,11 @@
+# Contactos e relay — incremento publicado, 2026-09-15
+
+A web agora apresenta os contactos verificados na lista de conversas e permite autorizar/pausar a retransmissão em A rede. Endereço DM estável e destinatários ordenados evitam duplicar o envio quando a resposta se perde. Código `9abbf20`, publicação `5bc5895…`, Pages `35025782233` com sucesso. 2 oráculos, 55 web, 50 UI Node/Go, Linux, 9 UI-RNS e 3 percursos no URL publicado passaram. Comandos, hashes e falhas corrigidas em docs/evidence/contact-relay.
+
+Bluetooth directo e descoberta automática continuam ausentes. O browser precisa de um perfil desbloqueado e de pares ligados; pode ser suspenso pelo sistema. O produto completo, a paridade integral e a matriz física permanecem por concluir. Nenhum modelo/bridge/configuração ou dado pessoal foi alterado; o trabalho iOS anterior foi preservado.
+
+O restante relatório abaixo é histórico.
+
 # Entrega incremental — web HTTPS, 2026-09-15
 
 A versão web experimental está disponível em https://johnnypbelo.github.io/relayloom/browser/index.html; guia docs/WEB-TWO-DEVICES.md. Código ff2fb60,publicação ec3a3baa,Pages34940021714 success.43testes web locais,50UI Node/Go,desktopLinux e percursoHTTPS real passaram.13ficheiros HTTP com integridade exacta;63 488bytes de anexo entre browsers. Evidência docs/evidence/web-launch.
