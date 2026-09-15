@@ -89,6 +89,7 @@ try {
         "tests/browser/matrix.config.ts",
         "tests/browser/application.spec.ts",
         "tests/browser/contact-relay.spec.ts",
+        "tests/browser/connectivity.spec.ts",
       ],
       { RELAYLOOM_MATRIX_ENGINE: engine },
     );

@@ -1,15 +1,96 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ArrowRight, Copy, Link2, ShieldCheck } from "lucide-react";
+import type { RtcTransportPeer } from "../../../../packages/browser/src/rtc";
 import type { API } from "../api";
 import "./peers.css";
 export function BrowserPeerPanel({ api }: { api: API }) {
-  const [tab, setTab] = useState<"offer" | "answer" | "native">("offer"),
-    [input, setInput] = useState(""),
-    [output, setOutput] = useState(""),
-    [handle, setHandle] = useState(""),
+  type Mode = "offer" | "answer" | "native";
+  type Draft = {
+    input: string;
+    output: string;
+    handle: string;
+    status: string;
+  };
+  const empty = (): Draft => ({
+    input: "",
+    output: "",
+    handle: "",
+    status: "",
+  });
+  const [tab, setTab] = useState<Mode>("offer"),
+    [drafts, setDrafts] = useState<Record<Mode, Draft>>({
+      offer: empty(),
+      answer: empty(),
+      native: empty(),
+    }),
     [busy, setBusy] = useState(false),
     [error, setError] = useState(""),
-    [status, setStatus] = useState("");
+    [diagnostic, setDiagnostic] = useState<
+      | (Partial<RtcTransportPeer<unknown>["diagnostics"]> & {
+          unavailable?: boolean;
+        })
+      | null
+    >(null),
+    [copied, setCopied] = useState(false);
+  const mounted = useRef(true),
+    pendingHandles = useRef(new Set<string>());
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+      for (const handle of pendingHandles.current)
+        void api("peer-close-pending", { handle }).catch(() => {});
+      pendingHandles.current.clear();
+    };
+  }, [api]);
+  const { input, output, handle, status } = drafts[tab];
+  const update = (value: Partial<Draft>) =>
+    setDrafts((old) => ({ ...old, [tab]: { ...old[tab], ...value } }));
+  const setInput = (input: string) => update({ input });
+  const setOutput = (output: string) => update({ output });
+  const setHandle = (handle: string) => {
+    if (!mounted.current) {
+      void api("peer-close-pending", { handle }).catch(() => {});
+      return;
+    }
+    pendingHandles.current.add(handle);
+    update({ handle });
+  };
+  const setStatus = (status: string) => update({ status });
+  useEffect(() => {
+    setDiagnostic(null);
+    setCopied(false);
+    if (!handle || tab === "native") return;
+    let active = true;
+    let timer: ReturnType<typeof setTimeout>;
+    async function poll() {
+      try {
+        const value = await api("peer-status", { handle });
+        if (active) setDiagnostic(value);
+      } catch {
+        if (active) setDiagnostic({ unavailable: true });
+      }
+      if (active) timer = setTimeout(() => void poll(), 1000);
+    }
+    void poll();
+    return () => {
+      active = false;
+      clearTimeout(timer);
+    };
+  }, [api, handle, tab]);
+  const connected = diagnostic?.channel === "open" && !diagnostic?.closed;
+  const ended = diagnostic?.closed || diagnostic?.unavailable;
+  const connectionStatus = connected
+    ? "Ligação estabelecida. Já podem trocar conteúdo."
+    : ended
+      ? "A ligação terminou. As mensagens em espera continuam guardadas; cria uma nova ligação."
+      : diagnostic?.signalling === "have-local-offer"
+        ? "À espera da resposta do outro dispositivo. Falta concluir a ligação aqui."
+        : handle && tab === "answer"
+          ? "Resposta criada. Falta colá-la no primeiro dispositivo e concluir a ligação."
+          : handle && diagnostic?.ice === "checking"
+            ? "A procurar um caminho entre os dispositivos…"
+            : status;
   async function run(fn: () => Promise<void>) {
     setBusy(true);
     setError("");
@@ -24,9 +105,27 @@ export function BrowserPeerPanel({ api }: { api: API }) {
   return (
     <div className="browser-peer-panel">
       <p>
-        Abre um caminho directo para outro dispositivo. Troca os códigos por um
-        canal em que confies.
+        Liga os dois dispositivos com um código e uma resposta. Mantém as
+        páginas abertas e partilha os códigos por um canal de confiança.
       </p>
+      <details className="peer-guide">
+        <summary>Como ligar em três passos</summary>
+        <p>Começa na mesma rede Wi-Fi, sem isolamento entre dispositivos.</p>
+        <ol className="peer-steps">
+          <li>
+            <strong>Primeiro dispositivo</strong> — cria e partilha o código de
+            ligação.
+          </li>
+          <li>
+            <strong>Segundo dispositivo</strong> — abre Receber código, cola-o e
+            cria a resposta.
+          </li>
+          <li>
+            <strong>Primeiro dispositivo</strong> — cola a resposta e conclui.
+            Aguarda a confirmação nos dois.
+          </li>
+        </ol>
+      </details>
       <div className="peer-tabs" role="tablist" aria-label="Tipo de ligação">
         <button
           role="tab"
@@ -62,6 +161,30 @@ export function BrowserPeerPanel({ api }: { api: API }) {
           App instalada
         </button>
       </div>
+      {output && (
+        <section className="peer-code">
+          <label>
+            Código para partilhar
+            <textarea
+              readOnly
+              value={output}
+              onFocus={(e) => e.currentTarget.select()}
+            />
+          </label>
+          <button
+            className="secondary"
+            onClick={() =>
+              void run(async () => {
+                await navigator.clipboard.writeText(output);
+                setCopied(true);
+              })
+            }
+          >
+            <Copy size={16} />
+            Copiar código
+          </button>
+        </section>
+      )}
       {tab === "offer" && (
         <>
           {!handle ? (
@@ -82,11 +205,11 @@ export function BrowserPeerPanel({ api }: { api: API }) {
             </button>
           ) : (
             <p className="muted">
-              Partilha o código abaixo. Depois cola a resposta recebida para
+              Partilha este código. Depois cola a resposta recebida para
               concluir.
             </p>
           )}
-          {handle && (
+          {handle && !connected && !ended && (
             <form
               onSubmit={(event) => {
                 event.preventDefault();
@@ -119,6 +242,7 @@ export function BrowserPeerPanel({ api }: { api: API }) {
             event.preventDefault();
             void run(async () => {
               const result = await api("peer-answer", { signal: input });
+              setHandle(result.handle);
               setOutput(result.signal);
               setStatus("Devolve esta resposta a quem criou a ligação.");
             });
@@ -133,7 +257,7 @@ export function BrowserPeerPanel({ api }: { api: API }) {
               maxLength={64000}
             />
           </label>
-          <button className="primary full" disabled={busy}>
+          <button className="primary full" disabled={busy || !!handle}>
             Criar resposta
           </button>
         </form>
@@ -168,35 +292,49 @@ export function BrowserPeerPanel({ api }: { api: API }) {
           </button>
         </form>
       )}
-      {output && (
-        <section className="peer-code">
-          <label>
-            Código para partilhar
-            <textarea
-              readOnly
-              value={output}
-              onFocus={(e) => e.currentTarget.select()}
-            />
-          </label>
+      {copied && <p role="status">Código copiado.</p>}
+      {connectionStatus && (
+        <p className="peer-status" role="status">
+          <ShieldCheck size={16} />
+          {connectionStatus}
+        </p>
+      )}
+      {handle && tab !== "native" && !connected && (
+        <button
+          className="secondary"
+          disabled={busy}
+          onClick={() =>
+            void run(async () => {
+              await api("peer-close", { handle });
+              pendingHandles.current.delete(handle);
+              update(empty());
+              setDiagnostic(null);
+            })
+          }
+        >
+          Recomeçar ligação
+        </button>
+      )}
+      {diagnostic && (
+        <details className="peer-diagnostic">
+          <summary>Diagnóstico desta ligação</summary>
+          <p>Sem mensagens, chaves, códigos de ligação ou endereços de rede.</p>
+          <pre aria-label="Diagnóstico sem dados pessoais">
+            {JSON.stringify({ version: 1, ...diagnostic }, null, 2)}
+          </pre>
           <button
             className="secondary"
             onClick={() =>
               void run(async () => {
-                await navigator.clipboard.writeText(output);
-                setStatus("Código copiado.");
+                await navigator.clipboard.writeText(
+                  JSON.stringify({ version: 1, ...diagnostic }, null, 2),
+                );
               })
             }
           >
-            <Copy size={16} />
-            Copiar código
+            <Copy size={16} /> Copiar diagnóstico
           </button>
-        </section>
-      )}
-      {status && (
-        <p className="peer-status" role="status">
-          <ShieldCheck size={16} />
-          {status}
-        </p>
+        </details>
       )}
       {error && (
         <p className="error" role="alert">
@@ -205,8 +343,9 @@ export function BrowserPeerPanel({ api }: { api: API }) {
       )}
       <p className="muted">
         Um código de rede não adiciona contactos nem dá acesso ao cofre. Uma
-        ligação pode precisar de um caminho compatível entre redes; não existe
-        um servidor de sinalização obrigatório.
+        ligação precisa de um caminho compatível. Nesta versão, redes diferentes
+        ou Wi-Fi com isolamento podem impedir a ligação: ainda não há travessia
+        automática de NAT. Bluetooth directo entre browsers não está disponível.
       </p>
     </div>
   );

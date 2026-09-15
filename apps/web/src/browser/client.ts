@@ -32,6 +32,15 @@ export async function browserAPI() {
     }
   >();
   const offers = new Map<string, RtcTransportPeer<Packet>>();
+  function remember(id: string, peer: RtcTransportPeer<Packet>) {
+    // Keep only a bounded history for diagnostics; live links are bounded by the router.
+    if (offers.size >= 24) {
+      const old = [...offers].find(([, p]) => p.diagnostics.closed);
+      if (old) offers.delete(old[0]);
+      else throw new Error("Conclui ou cancela as ligações em curso");
+    }
+    offers.set(id, peer);
+  }
   let error = "";
   const request = (
     domain: string,
@@ -107,14 +116,18 @@ export async function browserAPI() {
     await networkReady;
     if (!mesh || !context.identity)
       throw new Error("Desbloqueia a identidade para ligar a rede");
+    if (operation === "peer-status") {
+      const peer = offers.get(body.handle);
+      return peer ? peer.diagnostics : { unavailable: true };
+    }
     if (operation === "relay") await mesh.setRelay(body.value);
     else if (operation === "low-power") await mesh.setLowPower(body.value);
     else if (operation === "block") await mesh.setBlocked(body.id, body.value);
     else if (operation === "request") await mesh.request(body.id);
     else if (operation === "peer-offer") {
       const entry = mesh.router.newPeer();
-      offers.set(entry.id, entry.peer);
       try {
+        remember(entry.id, entry.peer);
         return { handle: entry.id, signal: await entry.peer.offer() };
       } catch (e) {
         offers.delete(entry.id);
@@ -123,8 +136,8 @@ export async function browserAPI() {
       }
     } else if (operation === "peer-answer") {
       const entry = mesh.router.newPeer();
-      offers.set(entry.id, entry.peer);
       try {
+        remember(entry.id, entry.peer);
         return {
           handle: entry.id,
           signal: await entry.peer.answer(body.signal),
@@ -149,7 +162,18 @@ export async function browserAPI() {
         mesh.router.disconnect(entry.id);
         throw e;
       }
-    } else if (operation === "peer-close") {
+    } else if (
+      operation === "peer-close" ||
+      operation === "peer-close-pending"
+    ) {
+      const peer = offers.get(body.handle);
+      if (
+        operation === "peer-close-pending" &&
+        peer?.link?.channel.readyState === "open" &&
+        !peer.link.closed
+      )
+        return { ok: true };
+
       offers.delete(body.handle);
       mesh.router.disconnect(body.handle);
     } else throw new Error("Operação de rede não disponível no navegador");

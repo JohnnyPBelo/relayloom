@@ -1587,8 +1587,10 @@ function App() {
                       !state.peers.some((p) => p.connected) && (
                         <div className="conversation-route-note" role="status">
                           <p>
-                            Podes escrever já. A entrega começa quando existir
-                            um caminho entre os dispositivos.
+                            Sem dispositivos ligados. As mensagens ficam em
+                            espera até haver um caminho. Guardar o cartão
+                            adiciona o contacto; falta trocar o código de
+                            ligação e a resposta em A rede.
                           </p>
                           <button
                             className="text-button"

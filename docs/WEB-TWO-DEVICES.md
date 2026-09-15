@@ -14,7 +14,7 @@ Use dois dispositivos na mesma rede Wi-Fi/LAN, com um browser actual, e mantenha
 
 1. No primeiro dispositivo: **A rede → Ligar um par → Criar código de ligação**. Copie o código completo e passe-o ao segundo dispositivo. Mantenha este diálogo aberto.
 2. No segundo: **A rede → Ligar um par → Receber código**. Cole o código, escolha **Criar resposta** e devolva a resposta completa ao primeiro.
-3. No primeiro: cole em **Resposta do outro dispositivo** e escolha **Concluir ligação**. Aguarde **Ligação estabelecida. Já podem trocar conteúdo.**
+3. No primeiro: cole em **Resposta do outro dispositivo** e escolha **Concluir ligação**. Aguarde **Ligação estabelecida. Já podem trocar conteúdo.** nos dois dispositivos.
 
 Não feche nem recarregue os separadores durante a troca. Os códigos estabelecem uma ligação desta sessão; não adicionam contactos nem dão acesso ao cofre. Se a ligação se perder após fechar ou suspender um browser, será necessário estabelecer um novo caminho.
 
@@ -28,13 +28,19 @@ Mantenha os separadores abertos e os perfis desbloqueados. O browser/OS pode sus
 
 ## Experimentar a aplicação
 
-Em **Conversas**, toque no contacto guardado e envie uma mensagem. Também o encontra em **Nova conversa**. Responda do segundo dispositivo e experimente um ficheiro pequeno pelo botão de anexar (até 2 MB na UI). O estado distingue **Em espera**, **Entregue** e **Lida**; a página estar aberta na Internet não prova que exista um caminho entre os pares.
+Em **Conversas**, toque no contacto guardado e envie uma mensagem. Também o encontra em **Nova conversa**. Responda do segundo dispositivo e experimente um ficheiro pequeno pelo botão de anexar (até 2 MB na UI). O estado distingue **Em espera**, **Recebida** e **Lida**; a página estar aberta na Internet não prova que exista um caminho entre os pares.
 
 Em **A praça**, publique uma história e veja-a no outro dispositivo. Em **A minha página**, edite os blocos, guarde o rascunho e publique. Conteúdo privado só é legível pelas identidades autorizadas; quem o guarda pode semear a cópia, mas não ganha a chave de autoria.
 
 Depois de consultar uma conversa, feche o emissor e volte a abrir a página no receptor sem rede. Se os ficheiros da aplicação já estiverem em cache e o browser conservar o armazenamento, deve poder desbloquear o perfil e ler o conteúdo guardado. Novo conteúdo só chegará quando voltar a existir um caminho. A cache offline não substitui um backup.
 
 ## Se não ligar
+
+Se aparecer **Em espera** nos dois, veja **A rede → Pares ligados**. Com zero ligações, os cartões foram guardados mas ainda falta abrir o caminho pelos três passos acima. Com uma ligação activa, o destinatário ainda precisa de receber/verificar o conteúdo para emitir a confirmação; um relay intermédio não confirma a entrega em seu nome.
+
+No painel de ligação, **Diagnóstico desta ligação** permite copiar estados e contadores sem mensagens, chaves, códigos ou endereços. A resposta acompanha o estado automaticamente. **Recomeçar ligação** cancela uma tentativa ainda não ligada e permite outra sem apagar a outbox. Os percursos Criar/Receber guardam os seus próprios campos. Fechar um convite ainda por concluir cancela essa tentativa, incluindo se o código só terminar de ser criado depois do fecho; canais já abertos mantêm-se ligados.
+
+Uma página já aberta pode continuar a executar uma versão antiga. Termine primeiro operações em curso; recarregue e desbloqueie o mesmo perfil, mantendo o armazenamento do site. Recarregar encerra ligações WebRTC e requer novos códigos; não é necessário apagar dados nem criar outra identidade.
 
 Confirme que os códigos pertencem à mesma tentativa, estão completos e os dois separadores continuam abertos. Experimente uma LAN que permita comunicação entre clientes. Não desactive a segurança do browser, não ignore certificados e não abra portas de controlo da app.
 

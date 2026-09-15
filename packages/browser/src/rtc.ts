@@ -39,6 +39,16 @@ export interface RtcCodec<T> {
   expires?(value: T): number;
 }
 export class RtcCapacityError extends Error {}
+export type RtcCloseReason =
+  | "local"
+  | "remote"
+  | "channel-error"
+  | "invalid-frame"
+  | "incomplete-transfer"
+  | "heartbeat-timeout"
+  | "receipt-timeout"
+  | "connection-failed"
+  | "signalling-error";
 const bundleCodec: RtcCodec<Bundle> = {
   protocol: "relayloom-bundles-v1",
   verified: verifiedBundle,
@@ -76,6 +86,7 @@ export class RtcMessageChannel<T> {
   #queuedBytes = 0;
   #chain = Promise.resolve();
   #closed = false;
+  closeReason?: RtcCloseReason;
   #preparing = 0;
   #preparingBytes = 0;
   #pumping = false;
@@ -103,8 +114,8 @@ export class RtcMessageChannel<T> {
     )
       throw new Error("É necessário um canal fiável e ordenado");
     channel.bufferedAmountLowThreshold = 64 * 1024;
-    channel.addEventListener("close", () => this.close());
-    channel.addEventListener("error", () => this.close());
+    channel.addEventListener("close", () => this.close("remote"));
+    channel.addEventListener("error", () => this.close("channel-error"));
     channel.addEventListener("message", (event) => {
       const frame = (event as MessageEvent).data;
       if (
@@ -113,7 +124,7 @@ export class RtcMessageChannel<T> {
         this.#queuedBytes + frame.length > RTC_LIMITS.pending
       ) {
         this.counters.rejected++;
-        this.close();
+        this.close("invalid-frame");
         return;
       }
       this.#queuedBytes += frame.length;
@@ -124,7 +135,7 @@ export class RtcMessageChannel<T> {
             await this.accept(JSON.parse(frame));
           } catch {
             this.counters.rejected++;
-            this.close();
+            this.close("invalid-frame");
           }
         })
         .finally(() => {
@@ -139,7 +150,11 @@ export class RtcMessageChannel<T> {
         [...this.#assemblies.values()].some((a) => a.deadline <= now) ||
         (this.#ping && this.#ping.deadline <= now)
       ) {
-        this.close();
+        this.close(
+          this.#ping && this.#ping.deadline <= now
+            ? "heartbeat-timeout"
+            : "incomplete-transfer",
+        );
         return;
       }
       if (
@@ -169,8 +184,9 @@ export class RtcMessageChannel<T> {
       completed: this.#completed.size,
     };
   }
-  close(): void {
+  close(reason: RtcCloseReason = "local"): void {
     if (this.#closed) return;
+    this.closeReason = reason;
     this.#closed = true;
     clearInterval(this.#timer);
     for (const p of this.#pending.values())
@@ -288,7 +304,7 @@ export class RtcMessageChannel<T> {
       let settled = false;
       const timer = setTimeout(() => {
         finish(new Error("Confirmação de armazenamento em falta"));
-        this.close();
+        this.close("receipt-timeout");
       }, RTC_LIMITS.transferMs);
       finish = (error) => {
         if (settled) return;
@@ -517,6 +533,21 @@ export class RtcTransportPeer<T> {
   readonly connection = new RTCPeerConnection({ iceServers: [] });
   link?: RtcMessageChannel<T>;
   #closed = false;
+  #reason?: RtcCloseReason;
+  /** Deliberately excludes SDP, candidates, addresses, keys and content. */
+  get diagnostics() {
+    return {
+      connection: this.connection.connectionState,
+      ice: this.connection.iceConnectionState,
+      gathering: this.connection.iceGatheringState,
+      signalling: this.connection.signalingState,
+      channel: this.link?.channel.readyState ?? "absent",
+      closed: this.#closed || this.link?.closed === true,
+      reason: this.#reason ?? this.link?.closeReason ?? null,
+      sent: this.link?.counters.sent ?? 0,
+      received: this.link?.counters.received ?? 0,
+    };
+  }
   constructor(
     private receive: (value: T) => Promise<void>,
     private codec: RtcCodec<T>,
@@ -539,7 +570,7 @@ export class RtcTransportPeer<T> {
         );
       } catch {
         event.channel.close();
-        this.close();
+        this.close("connection-failed");
       }
     };
     this.connection.onconnectionstatechange = () => {
@@ -547,13 +578,18 @@ export class RtcTransportPeer<T> {
         this.connection.connectionState === "failed" ||
         this.connection.connectionState === "closed"
       )
-        this.close();
+        this.close(
+          this.connection.connectionState === "failed"
+            ? "connection-failed"
+            : "remote",
+        );
     };
   }
-  close(): void {
+  close(reason: RtcCloseReason = "local"): void {
     if (this.#closed) return;
+    this.#reason = this.link?.closeReason ?? reason;
     this.#closed = true;
-    this.link?.close();
+    this.link?.close(reason);
     this.connection.close();
   }
   private remote(
@@ -562,7 +598,20 @@ export class RtcTransportPeer<T> {
   ): RTCSessionDescriptionInit {
     if (typeof signal !== "string" || signal.length > RTC_LIMITS.signalBytes)
       throw new Error("Convite de ligação demasiado grande");
-    const value = JSON.parse(signal);
+    let value: any;
+    try {
+      value = JSON.parse(signal);
+    } catch {
+      throw new Error(
+        "Código inválido. Copia o código completo, incluindo as chavetas.",
+      );
+    }
+    if (value?.type !== type)
+      throw new Error(
+        type === "offer"
+          ? "É necessário um código de ligação, criado em A rede. Um cartão de contacto não abre uma ligação."
+          : "É necessária a resposta criada no outro dispositivo, em Receber código.",
+      );
     if (
       !exactShape(value, ["type", "sdp"]) ||
       value.type !== type ||
@@ -623,7 +672,7 @@ export class RtcTransportPeer<T> {
       );
       return await this.gather();
     } catch (error) {
-      this.close();
+      this.close("signalling-error");
       throw error;
     }
   }
@@ -642,7 +691,7 @@ export class RtcTransportPeer<T> {
       );
       return await this.gather();
     } catch (error) {
-      this.close();
+      this.close("signalling-error");
       throw error;
     }
   }
@@ -656,7 +705,7 @@ export class RtcTransportPeer<T> {
     try {
       await this.connection.setRemoteDescription(this.remote(signal, "answer"));
     } catch (error) {
-      this.close();
+      this.close("signalling-error");
       throw error;
     }
   }

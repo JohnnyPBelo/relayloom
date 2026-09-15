@@ -8,6 +8,7 @@ export default defineConfig({
   testMatch: [
     "application.spec.ts",
     "contact-relay.spec.ts",
+    "connectivity.spec.ts",
     "public-distribution.checks.ts",
   ],
   projects: ["chromium", "firefox", "webkit"].map((name) => ({
