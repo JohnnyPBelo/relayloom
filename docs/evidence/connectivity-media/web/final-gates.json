@@ -1,0 +1,63 @@
+{
+  "status": "PASS",
+  "started": "2026-09-15T22:41:22.578Z",
+  "checks": [
+    {
+      "name": "public-web",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "scripts/verify-public-web.mjs"
+      ],
+      "started": "2026-09-15T22:41:22.578Z",
+      "pid": 424453,
+      "exit": 0,
+      "finished": "2026-09-15T22:54:31.092Z"
+    },
+    {
+      "name": "rns-ui-chromium",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/reticulum/ui.config.ts",
+        "--browser",
+        "chromium"
+      ],
+      "started": "2026-09-15T22:54:31.093Z",
+      "pid": 573013,
+      "exit": 0,
+      "finished": "2026-09-15T22:56:20.785Z"
+    },
+    {
+      "name": "rns-ui-firefox",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/reticulum/ui.config.ts",
+        "--browser",
+        "firefox"
+      ],
+      "started": "2026-09-15T22:56:20.785Z",
+      "pid": 604677,
+      "exit": 0,
+      "finished": "2026-09-15T22:58:17.422Z"
+    },
+    {
+      "name": "rns-ui-webkit",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/reticulum/ui.config.ts",
+        "--browser",
+        "webkit"
+      ],
+      "started": "2026-09-15T22:58:17.423Z",
+      "pid": 630403,
+      "exit": 0,
+      "finished": "2026-09-15T23:00:20.334Z"
+    }
+  ],
+  "finished": "2026-09-15T23:00:20.334Z"
+}

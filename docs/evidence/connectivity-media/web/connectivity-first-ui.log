@@ -1,0 +1,53 @@
+
+Running 1 test using 1 worker
+
+(node:138618) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/browser/connectivity.spec.ts:120:1 › both pending outboxes deliver after completing signalling; modes stay separate and diagnostics contain no secrets (22.0s)
+
+
+  1) tests/browser/connectivity.spec.ts:120:1 › both pending outboxes deliver after completing signalling; modes stay separate and diagnostics contain no secrets 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'Estado do envio: Entregue' })
+    Expected: visible
+    Timeout: 15000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('button', { name: 'Estado do envio: Entregue' }) with timeout 15000ms
+      - waiting for getByRole('button', { name: 'Estado do envio: Entregue' })
+
+
+      230 |       await expect(
+      231 |         p.getByRole("button", { name: "Estado do envio: Entregue" }),
+    > 232 |       ).toBeVisible();
+          |         ^
+      233 |       await expect(p.getByText(/Sem dispositivos ligados/)).toHaveCount(0);
+      234 |     }
+      235 |     // Explicit restart of an unfinished attempt releases its resources.
+        at /home/absint0o/projects/relayloom/tests/browser/connectivity.spec.ts:232:9
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/connectivity-both-pending--e5c22-gnostics-contain-no-secrets/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/connectivity-both-pending--e5c22-gnostics-contain-no-secrets/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/connectivity-both-pending--e5c22-gnostics-contain-no-secrets/error-context.md
+
+    Error Context: test-results/connectivity-both-pending--e5c22-gnostics-contain-no-secrets/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/connectivity-both-pending--e5c22-gnostics-contain-no-secrets/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/connectivity-both-pending--e5c22-gnostics-contain-no-secrets/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/browser/connectivity.spec.ts:120:1 › both pending outboxes deliver after completing signalling; modes stay separate and diagnostics contain no secrets 

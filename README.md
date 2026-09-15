@@ -10,11 +10,13 @@ A captura vem de um teste real: a autora tinha apenas outro navegador como par; 
 
 ## Usar a web sem instalar a aplicação
 
-**[Abrir RelayLoom no browser](https://johnnypbelo.github.io/relayloom/browser/index.html)** · [Guia para testar em dois dispositivos](docs/WEB-TWO-DEVICES.md).
+**[Abrir RelayLoom no browser](https://johnnypbelo.github.io/relayloom/)** · [Guia para testar em dois dispositivos](docs/WEB-TWO-DEVICES.md).
 
-Abra o endereço em dois dispositivos na mesma LAN alcançável, crie identidades diferentes e troque os cartões públicos. O contacto aparece logo nas conversas. Para estabelecer o caminho, troque os códigos em **A rede → Ligar um par**. Escolha a pessoa em Conversas e envie. O alojamento fornece apenas o código; as mensagens seguem entre pares. Redes de convidados/NAT podem impedir o caminho directo. Não há instalação obrigatória.
+Abra o endereço em dois dispositivos na mesma LAN alcançável, crie identidades diferentes e troque os cartões públicos. O contacto aparece logo nas conversas. Para estabelecer o caminho, troque o código **e a resposta** em **A rede → Ligar um par**, aguardando a confirmação nos dois lados. Escolha a pessoa em Conversas e envie. O alojamento fornece apenas o código; as mensagens seguem entre pares. Redes de convidados/NAT podem impedir o caminho directo. Não há instalação obrigatória.
 
-A publicação HTTPS passou um percurso com processos Chromium e Firefox independentes: mensagens nos dois sentidos, anexo de 63 488 bytes exactos, recibo de leitura e recuperação offline após fechar o emissor. **Não equivale a dois dispositivos físicos testados.** [Evidência do lançamento](docs/evidence/web-launch).
+O gate local da correcção de ligação passou 67 casos web e nove percursos UI através de Reticulum. O painel acompanha a ligação, permite diagnóstico sem dados privados e liberta tentativas abandonadas. [Evidência](docs/evidence/connectivity-media/web). A publicação foi verificada por hash e por três testes HTTPS, incluindo mensagens/anexo entre processos. A verificação física nos dispositivos do proprietário permanece pendente. Se aparecer a versão antiga, feche todos os separadores RelayLoom e reabra o endereço acima, sem apagar os dados do site.
+
+A publicação HTTPS anterior passou um percurso com processos Chromium e Firefox independentes: mensagens nos dois sentidos, anexo de 63 488 bytes exactos, recibo de leitura e recuperação offline após fechar o emissor. **Não equivale a dois dispositivos físicos testados.** [Evidência do lançamento](docs/evidence/web-launch).
 
 A entrada `/browser/index.html` possui identidade, cofre, worker e armazenamento IndexedDB cifrado próprios. Não usa a API de um daemon para guardar dados ou assinar mensagens. A instalação PWA é opcional e não desbloqueia funcionalidades exclusivas.
 

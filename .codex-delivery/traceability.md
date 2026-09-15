@@ -195,3 +195,12 @@ Extensão web de PROJECT-BRIEF/ACC-010:ff2fb60 acrescenta build público sob /re
 ## Contacto imediatamente utilizável e relay consentido — 2026-09-15
 
 `9abbf20` acrescenta entradas de contactos persistidos com endereço DM definitivo, sem objectos/mensagens fictícios. O teste de resposta perdida reproduziu uma duplicação na primeira candidata e passou após estabilizar endereço e destinatários. A área A rede controla consentimento/pausa e mostra capacidades/ausências reais. 2 oráculos, 55 web, 50 UI Node/Go, Linux e 9 UI-RNS passaram; 3 percursos HTTPS também passaram depois de publicar. Evidência: docs/evidence/contact-relay. Bluetooth, descoberta, hardware, paridade integral e todos os critérios restantes continuam abertos.
+
+
+## Incremento de conectividade/meios, 2026-09-15 — validação em curso
+
+FR-006/012/013: dois envios previamente pendentes recebem confirmações após sinalização real; cartões não criam ligações automaticamente. Novo diagnóstico de conexão não exporta SDP/endereços/chaves. Teste `tests/browser/connectivity.spec.ts`, gate integral ainda em curso em `.cache/connectivity/gates/report.json`.
+
+FR-030/031/032/034, INT-Reticulum e paridade web: catálogo upstream completo de configurações internas, adaptadores UDP/Backbone/KISS/AX25 exercitados no host e BLE Nordic UART Linux com PTY/GATT simulado. Hardware, outras plataformas e acesso Bluetooth directo web não estão fechados. Resultados e ocorrência de timeout BLE em `.codex-delivery/CONNECTIVITY-MEDIA.md`; guia `docs/RETICULUM-MEDIA.md`. Configuração aceite não equivale a driver testado em rádio.
+
+Fecho do incremento (não do produto), 2026-09-16: gate final web 67+2 e UI-RNS 9 passaram, assim como 3 testes HTTPS e conferência dos 13 ficheiros publicados. Códigos 7d3bceb/359d652, Pages eafa109. Convites abandonados/resultados tardios agora são libertados; perfis e canais abertos preservados. Evidência: docs/evidence/connectivity-media. O caso físico, rádio, iOS e paridade completa permanecem pendentes.

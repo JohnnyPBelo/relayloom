@@ -1,0 +1,51 @@
+
+Running 1 test using 1 worker
+
+(node:372842) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 .cache/connectivity/orphan.checks.ts:97:1 › closing an unfinished invitation releases its pending peer (5.7s)
+
+
+  1) .cache/connectivity/orphan.checks.ts:97:1 › closing an unfinished invitation releases its pending peer 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('.peer-row:not(.head)')
+    Expected: 0
+    Received: 1
+    Timeout:  3000ms
+
+    Call log:
+      - Expect "toHaveCount" locator('.peer-row:not(.head)') with timeout 3000ms
+      - waiting for locator('.peer-row:not(.head)')
+        10 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+      104 |   await expect(page.locator(".peer-row:not(.head)")).toHaveCount(1);
+      105 |   await page.getByRole("dialog").getByRole("button",{name:"Fechar",exact:true}).click();
+    > 106 |   await expect(page.locator(".peer-row:not(.head)")).toHaveCount(0,{timeout:3000});
+          |                                                      ^
+      107 |  } finally {await context.close();}
+      108 | });
+      109 |
+        at /home/absint0o/projects/relayloom/.cache/connectivity/orphan.checks.ts:106:54
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .cache/connectivity/orphan-results/orphan.checks.ts-closing-a-3a6ad-n-releases-its-pending-peer/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: .cache/connectivity/orphan-results/orphan.checks.ts-closing-a-3a6ad-n-releases-its-pending-peer/error-context.md
+
+    Error Context: .cache/connectivity/orphan-results/orphan.checks.ts-closing-a-3a6ad-n-releases-its-pending-peer/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    .cache/connectivity/orphan-results/orphan.checks.ts-closing-a-3a6ad-n-releases-its-pending-peer/trace.zip
+    Usage:
+
+        npx playwright show-trace .cache/connectivity/orphan-results/orphan.checks.ts-closing-a-3a6ad-n-releases-its-pending-peer/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    .cache/connectivity/orphan.checks.ts:97:1 › closing an unfinished invitation releases its pending peer 

@@ -389,3 +389,19 @@ O contacto existia no cofre mas a lista era derivada apenas de mensagens/grupos;
 O checkbox controlado voltava ao valor anterior durante a gravação: acrescentado estado de escolha pendente e confirmação explícita, com interacção desactivada enquanto grava. Os testes aguardam a pausa efectivamente confirmada antes do controlo negativo. Selectores de contacto tiveram de ser limitados ao diálogo porque a mesma pessoa aparece agora também na lista; o placeholder exacto evita coincidir com texto de mensagem. Erros de leitura podem aparecer no diálogo e no fundo; a asserção foi limitada ao diálogo, sem retirar a recusa.
 
 A cadeia UI A–B–C tem apenas A–B e B–C. Duas janelas de observação em pausa, entrega após consentimento, contadores reais, leitura privada recusada ao relay e rascunho/reply preservados passaram nos controlos dirigidos. Gates completos finais passaram: 2 oráculos, 55 web, 50 UI nativa, pacote Linux e 9 UI-RNS; depois passaram os 3 percursos publicados. A opção vazia de URL da fixture foi normalizada antes do gate final. Bluetooth directo continua ausente e está indicado na interface.
+
+
+## Ligações e meios — 2026-09-15
+
+Cartão identifica o leitor; oferta/resposta estabelece um caminho. UI partilhava estado entre papéis e não observava a conexão no lado respondente: separação e polling de diagnóstico finito. Relato físico continua por confirmar; tab observado era versão antiga e sem pares/contactos. Teste real com duas outboxes pendentes passou após sinalização. Não atribuir causa física a teste no host.
+
+As fixtures novas tiveram dois erros: expectativa Entregue quando a UI usa Recebida; esperar que o relay exibisse plaintext privado que correctamente não consegue ler. Usar estados públicos do produto e separar contagem de armazenamento cifrado da lista de conteúdo legível. Pedido nativo de obtenção chama-se retrieve, não request.
+
+BLE simulado: uma partição excedeu 45 s no anexo; execução instrumentada passou sem fix runtime. Preservar essa incerteza, recolher estado da falha e não aumentar prazos nem declarar rádio validado sem evidência. RNS upstream não fornece Bluetooth browser↔browser. Respeitar a matriz de capacidades e o contrato de paridade ainda aberto.
+
+
+## Convite abandonado e apresentação compacta — 2026-09-15
+
+O gate funcional inicial passou, mas a revisão do lifecycle encontrou tentativas RTC sem limpeza ao fechar o diálogo. Um reproducer real observou 1 par pendente após fechar, quando esperava 0. Adicionado peer-close-pending, que conserva canais abertos; o painel acompanha handles próprios e elimina também resultados recebidos depois do unmount. Reproducer passou após correcção e novo teste cobre criação atrasada de 2 s, sem substituir RTC/cripto. Ambas as mensagens pendentes continuam a chegar e as confirmações permanecem assinadas.
+
+A captura de 390 px mostrou a resposta antes do código a partilhar. Código/cópia movidos para cima e ajuda em três passos recolhível. Repetição integral web e UI-RNS em curso com fontes estáveis; não usar o passe da primeira candidata como evidência desta alteração final. Contrato completo, hardware e revisão independente continuam abertos.

@@ -1,0 +1,88 @@
+{
+  "status": "PASS",
+  "started": "2026-09-15T22:11:12.908Z",
+  "checks": [
+    {
+      "name": "public-web",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "scripts/verify-public-web.mjs"
+      ],
+      "started": "2026-09-15T22:11:12.909Z",
+      "pid": 241598,
+      "exit": 0,
+      "finished": "2026-09-15T22:23:04.977Z"
+    },
+    {
+      "name": "rtc-chromium",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "tests/browser/foundation.spec.ts",
+        "--grep",
+        "WebRTC"
+      ],
+      "started": "2026-09-15T22:23:04.978Z",
+      "pid": 311978,
+      "exit": 0,
+      "finished": "2026-09-15T22:23:16.728Z"
+    },
+    {
+      "name": "rtc-firefox",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "tests/browser/foundation.spec.ts",
+        "--grep",
+        "WebRTC"
+      ],
+      "started": "2026-09-15T22:23:16.729Z",
+      "pid": 312676,
+      "exit": 0,
+      "finished": "2026-09-15T22:23:26.585Z"
+    },
+    {
+      "name": "rtc-webkit",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "tests/browser/foundation.spec.ts",
+        "--grep",
+        "WebRTC"
+      ],
+      "started": "2026-09-15T22:23:26.585Z",
+      "pid": 313714,
+      "exit": 0,
+      "finished": "2026-09-15T22:23:35.373Z"
+    },
+    {
+      "name": "reticulum",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "scripts/verify-reticulum.mjs"
+      ],
+      "started": "2026-09-15T22:23:35.373Z",
+      "pid": 315358,
+      "exit": 0,
+      "finished": "2026-09-15T22:29:25.669Z"
+    },
+    {
+      "name": "shared-ui",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "scripts/verify-ui.mjs"
+      ],
+      "started": "2026-09-15T22:29:25.669Z",
+      "pid": 343295,
+      "exit": 0,
+      "finished": "2026-09-15T22:35:18.266Z"
+    }
+  ],
+  "finished": "2026-09-15T22:35:18.266Z"
+}

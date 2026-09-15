@@ -1,8 +1,12 @@
 # RelayLoom — estado verificável
 
-Actualizado em 2026-09-15. **Produto experimental em implementação; o contrato completo não está concluído.** Não é infraestrutura validada para catástrofes. O âmbito autorizado continua em [PROJECT-BRIEF.md](../PROJECT-BRIEF.md).
+Actualizado em 2026-09-16 (Lisboa). **Produto experimental em implementação; o contrato completo não está concluído.** Não é infraestrutura validada para catástrofes. O âmbito autorizado continua em [PROJECT-BRIEF.md](../PROJECT-BRIEF.md).
 
 ## Código e verificação actual
+
+Correcção web em `359d652`: os papéis Criar/Receber mantêm campos separados, ambas as pontas acompanham o estado real, o diagnóstico omite SDP/chaves/IP/conteúdo e convites pendentes são libertados ao fechar o diálogo, incluindo resultados tardios. Canais abertos são preservados. O código para partilhar aparece antes da resposta no ecrã compacto. Gate final: **67 casos web + 2 oráculos**, fontes/artefactos estáveis, e **9 UI-RNS** nos três motores. [Evidência e reproducer antes/depois](evidence/connectivity-media/web).
+
+O relato dos dois dispositivos físicos ainda não foi confirmado: o IAB observado estava numa versão anterior e sem pares/contactos. Actualizar a página preservou o perfil. Publicação `eafa109…`, Pages `35033701343` concluído com sucesso e HTTPS obrigatório: 13 ficheiros de execução verificados por hash. No URL publicado passaram o percurso entre processos e os dois testes de ligação (3 casos). No IAB, recarregar manteve a versão antiga da cache offline; navegar pela página inicial activou a nova e o perfil continuou inicializado. Para actualizar, feche os separadores antigos e reabra a página inicial, conforme o guia. Não atribuir a causa física dos dois dispositivos apenas aos testes do host.
 
 Incremento de meios no host: o catálogo RNS reconhece todas as 14 interfaces internas da referência 1.5.4, com isolamento e opt-in local adicional para Pipe. UDP/Backbone passaram integração real; KISS/AX25 passaram com PTY; Bluetooth Nordic UART Linux passou com GATT simulado e PTY. Configuração de Auto/I2P/RNode/Weave aceite não equivale a teste de hardware. A integração directa é no nó Node; RNS ainda não está embebido em todas as apps. [Matriz e uso](RETICULUM-MEDIA.md) · [Gate, fontes e falhas](evidence/connectivity-media/reticulum). Uma ocorrência BLE excedeu o prazo de heal e não se repetiu nas duas execuções seguintes; investigação ainda aberta. Bluetooth directo web e rádios físicos continuam pendentes.
 
@@ -81,3 +85,6 @@ Houve um fecho RTC após entrega do SOS num primeiro gate WebKit. Dez repetiçõ
 Os próximos marcos incluem autoridade/armazenamento/outbox/UI de grupos web, backup/rotação/keystore, peering/WSS/NAT, orçamento global e escala, embalagem RNS, todos os dispositivos e revisão independente. O trabalho continua sequencial por instrução do proprietário; a evidência histórica de agentes reais está em [AGENTS.md](AGENTS.md).
 
 [Histórico integral dos estados e falhas anteriores](history/STATUS-before-browser-matrix-2026-09-15.md). Os resultados históricos identificam a sua própria versão e não substituem os gates actuais.
+
+
+CI anterior `35026722736`, source `4e4fcc7`, terminou com falha apenas em iOS. Node nos três hosts, Go, pacotes desktop, RNS e browser passaram. Em iOS/Xcode 26.6, o simulador 26.4.1 arrancou, a app foi compilada/instalada e o teste de arranque passou; o percurso funcional saiu 65. Capturas mostram criação de identidade, sem asserção XCTest suficiente para diagnosticar a causa. O WIP UIKit/XCTest continua local e separado deste incremento. Não equivale a execução física ou produto iOS concluído.

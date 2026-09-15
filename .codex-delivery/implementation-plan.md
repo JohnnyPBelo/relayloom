@@ -105,3 +105,8 @@ Build6.056s;253 Node405.684s;161 Go principais/race711.420s (12 helpers pelos dr
 ## Marco da aplicação autónoma verificado
 
 `node scripts/verify-autonomous.mjs` terminou0:271Node/26browser/21UI pormotor/desktopLinuxbuild+run+package+run,403fontesestáveis,72Axe semviolações. Evidência docs/evidence/browser-application. SemAPIde daemon no cliente/browser/index.html; worker/IndexedDB/RTC/WS/SW reais. FonteGo não mudou desdepasse89race anterior. Gruposdinâmicos e toda arestanteparidade/gates dehardware/revisão continuam obrigatórios. Previewestáticolocal4174activosessão49020; nenhumcommit/pushnovo.
+
+
+## Conectividade e meios, 2026-09-15
+
+Milestone activo documentado em CONNECTIVITY-MEDIA.md: corrigir mistura de códigos entre papéis e acompanhar ligação nas duas pontas; preservar duas outboxes pendentes; expandir interfaces internas Reticulum e adaptar BLE Nordic UART no Linux; executar gates sequenciais, rever e publicar web depois de passar. Contrato completo continua aberto. Não activar novos agentes durante recuperação sequencial. Bloqueios: estado dos dois dispositivos do proprietário ainda não observado; hardware rádio/GATT real, paridade web e restantes plataformas continuam pendentes.

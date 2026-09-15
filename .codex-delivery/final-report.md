@@ -100,3 +100,12 @@ Sem agentes novos/retomados. Eventos, carriers, UI dinâmica, artefactos móveis
 ## C1 — gate final concluído, contrato incompleto
 
 Build6.056s;253 Node405.684s;161 Go principais/race711.420s (12 helpers pelos drivers);47 interoperabilidade480.894s;35 SQLite C283.498s;19 UI Node138.097s/19 Go128.687s. Desktop Linux preparação0.319s/execução2.412s/pacote --dir7.260s/execução empacotada1.255s.62 Axe sem violações;326 fontes inalteradas. Sessões83929 e43358 terminaram0. Evidência em docs/evidence/group-carriers/final, falhas em adversarial. Root reviu as capturas; revisão independente e plataformas actuais pendentes. C2/C3 e todo o resto de PROJECT-BRIEF continuam activos; não marcar produto completo.
+
+
+## Incremento de conectividade/meios — 16 de Setembro de 2026
+
+Produto completo **não concluído**. RNS/meios em `7d3bceb`; web em `359d652`; publicação estática `eafa109…`, Pages `35033701343` success e HTTPS obrigatório. Treze ficheiros conferidos por hash e três testes do URL passaram. Evidência em `docs/evidence/connectivity-media`.
+
+O gate final web passou 67 casos + 2 oráculos e nove percursos UI por Reticulum. O gate RNS e a regressão dos backends passaram; os relatórios distinguem fontes e versões. Reproducer de convite abandonado falhou antes e passou depois. Um episódio de demora BLE durante heal continua sem causa confirmada; os passes seguintes não o apagam.
+
+No IAB real, a cache offline mantinha código antigo após reload. Entrar pela raiz activou o script publicado e preservou o perfil. Não houve observação dos dois dispositivos físicos. Hardware BLE/radios, Bluetooth directo web, incorporação RNS em todos os pacotes, iOS funcional e os restantes requisitos continuam abertos. Nenhum agente novo, modelo/provider/bridge/serviço alterado. RESUME.md contém estado e instruções de continuação.

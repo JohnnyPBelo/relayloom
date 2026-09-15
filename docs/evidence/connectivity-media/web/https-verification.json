@@ -1,0 +1,106 @@
+{
+  "status": "PASS",
+  "started": "2026-09-15T23:02:13.780Z",
+  "sourceCommit": "359d652613c8664480f3cdce86ce5a5bbbc640ab",
+  "deploymentCommit": "eafa109dd1639dc2a595b38ba7061a934d84c463",
+  "files": [
+    {
+      "name": "assets/browser-BLtN8NLC.js",
+      "status": 200,
+      "bytes": 64952,
+      "sha256": "baf4e42ae84b33a72324171b60741748d1e9c42d45c6fc71c4d8c106e5f01bfa",
+      "match": true
+    },
+    {
+      "name": "assets/main-7NLt88tZ.js",
+      "status": 200,
+      "bytes": 350437,
+      "sha256": "1426e4181f1e2743b911e09fe14432406b7ab852b45e80b271f78810738572f8",
+      "match": true
+    },
+    {
+      "name": "assets/main-DEi_Xkk3.css",
+      "status": 200,
+      "bytes": 13872,
+      "sha256": "46f13f96e5f5ac7e0004b1463f8db8639f0ebcf13dcfed004b085215b91a3453",
+      "match": true
+    },
+    {
+      "name": "assets/manifest-BWKlX33v.webmanifest",
+      "status": 200,
+      "bytes": 319,
+      "sha256": "19128cfd05183584671ce8d8697e44011315a35bfb2425b920511bc6b56a9cee",
+      "match": true
+    },
+    {
+      "name": "assets/peers-B7OoITN2.js",
+      "status": 200,
+      "bytes": 13143,
+      "sha256": "8875276a52ac2edde9474cf0acbb8de8c32bbf8b9b6d549a5a05084f0cdcfa52",
+      "match": true
+    },
+    {
+      "name": "assets/peers-DaN9CLLY.css",
+      "status": 200,
+      "bytes": 58175,
+      "sha256": "5e5cdcfe2966477813feb5658ce629cd7ea912d7e01fafa01255a620811c134a",
+      "match": true
+    },
+    {
+      "name": "browser/assets.json",
+      "status": 200,
+      "bytes": 1597,
+      "sha256": "47b4e0fc0a395d2767e5e0ccd23da0a490cb48a03517aa06d21c93e72f8b1fa0",
+      "match": true
+    },
+    {
+      "name": "browser/icon.svg",
+      "status": 200,
+      "bytes": 364,
+      "sha256": "e07d4044578707df6661e170be9e819ad252a9e6654a60858600de2963a4b35e",
+      "match": true
+    },
+    {
+      "name": "browser/index.html",
+      "status": 200,
+      "bytes": 1155,
+      "sha256": "b5a83a9051be5fe423d860ab7e3f749a3bcf0eccb4d90c2141e1e77ed5608430",
+      "match": true
+    },
+    {
+      "name": "browser/manifest.webmanifest",
+      "status": 200,
+      "bytes": 319,
+      "sha256": "19128cfd05183584671ce8d8697e44011315a35bfb2425b920511bc6b56a9cee",
+      "match": true
+    },
+    {
+      "name": "browser/sw.js",
+      "status": 200,
+      "bytes": 3915,
+      "sha256": "bf37b7bd7a440d9395e3d074a72371832b74909bdb019cb638964e5052bb6762",
+      "match": true
+    },
+    {
+      "name": "browser/worker-DYwqrPOP.js",
+      "status": 200,
+      "bytes": 98538,
+      "sha256": "5563ed93f9ce0d8d0edc47974828a9456a12b5de7223310d6558ad13cc23b108",
+      "match": true
+    },
+    {
+      "name": "index.html",
+      "status": 200,
+      "bytes": 385,
+      "sha256": "39566836f8abf04e2e7ce51a8e5dc7a0ed6533bdb35ce32c2399a82f0e1c0dfe",
+      "match": true
+    }
+  ],
+  "release": {
+    "sourceCommit": "359d652613c8664480f3cdce86ce5a5bbbc640ab",
+    "gateFinished": "2026-09-15T22:54:31.086Z",
+    "artifactManifestSha256": "7b47ca8eba6b719aa5384edf2f1e1428ee2b6e82140aeacf27ef8d9132e2cb22",
+    "experimental": true
+  },
+  "finished": "2026-09-15T23:02:16.273Z"
+}

@@ -1,0 +1,17 @@
+
+Running 10 tests using 1 worker
+
+(node:426960) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › tests/browser/application.spec.ts:74:1 › autonomous Liquid Glass UI owns identity and offline outbox, connects through real RTC, receives signed confirmations and survives reload (8.5s)
+  ✓   2 [chromium] › tests/browser/application.spec.ts:203:1 › autonomous social actions and safe signed site builder persist and remain viewable after author closes (13.8s)
+  ✓   3 [chromium] › tests/browser/application.spec.ts:358:1 › production worker keeps private keys out of replies and recovers an applied send after the UI response is lost (22.3s)
+  ✓   4 [chromium] › tests/browser/application.spec.ts:465:1 › a second tab cannot take ownership of a live application profile and an unknown or corrupt profile is never silently reset (1.7s)
+  ✓   5 [chromium] › tests/browser/application.spec.ts:522:1 › cached application code and encrypted profile reopen when the static host is unavailable, without installing the PWA (2.1s)
+  ✓   6 [chromium] › tests/browser/application.spec.ts:588:1 › corrupted cached worker is rejected offline and recovered only from verified available code (1.3s)
+  ✓   7 [chromium] › tests/browser/connectivity.spec.ts:97:1 › both pending outboxes deliver after completing signalling; modes stay separate and diagnostics contain no secrets (13.3s)
+  ✓   8 [chromium] › tests/browser/connectivity.spec.ts:241:1 › closing while a code is being generated releases the late pending peer (4.6s)
+  ✓   9 [chromium] › tests/browser/contact-relay.spec.ts:120:1 › imported contact immediately appears once, survives reload and becomes the first real DM without a duplicate (5.0s)
+  ✓  10 [chromium] › tests/browser/contact-relay.spec.ts:207:1 › relay consent through the UI gates a real A to B to C path and does not grant B private reading (32.9s)
+
+  10 passed (1.8m)
