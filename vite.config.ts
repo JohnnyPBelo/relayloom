@@ -1,4 +1,4 @@
-import { defineConfig, type Plugin } from "vite";
+import { defineConfig, type Plugin, type ResolvedConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { resolve, join } from "node:path";
 import {
@@ -10,11 +10,19 @@ import {
 } from "node:fs";
 import { createHash } from "node:crypto";
 function browserOffline(): Plugin {
+  let config: ResolvedConfig;
   return {
     name: "relayloom-offline-assets",
     apply: "build",
+    configResolved(value) {
+      config = value;
+      if (!/^\/(?:[A-Za-z0-9_-]+\/)*$/.test(value.base))
+        throw new Error(
+          "Use an absolute local base path, for example /relayloom/",
+        );
+    },
     closeBundle() {
-      const root = resolve("dist/web"),
+      const root = resolve(config.root, config.build.outDir),
         browser = join(root, "browser");
       mkdirSync(browser, { recursive: true });
       for (const name of ["icon.svg", "manifest.webmanifest"])
@@ -31,7 +39,7 @@ function browserOffline(): Plugin {
           .map((name) => "assets/" + name),
       ].sort();
       const assets = paths.map((path) => ({
-        path: "/" + path,
+        path: config.base + path,
         sha256: createHash("sha256")
           .update(readFileSync(join(root, path)))
           .digest("hex"),
@@ -51,10 +59,19 @@ function browserOffline(): Plugin {
         join(browser, "assets.json"),
         JSON.stringify({ version, assets }, null, 2),
       );
+      if (config.mode === "public-web") {
+        // The public root never loads the native daemon/control client.
+        writeFileSync(
+          join(root, "index.html"),
+          `<!doctype html>
+<html lang="pt-PT"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'"><meta http-equiv="refresh" content="0;url=./browser/index.html"><title>RelayLoom</title></head><body><a href="./browser/index.html">Abrir RelayLoom</a></body></html>\n`,
+        );
+        writeFileSync(join(root, ".nojekyll"), "");
+      }
     },
   };
 }
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   root: "apps/web",
   plugins: [react(), browserOffline()],
   worker: {
@@ -67,14 +84,16 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: "../../dist/web",
+    outDir: mode === "public-web" ? "../../dist/public-web" : "../../dist/web",
     emptyOutDir: true,
     rollupOptions: {
       input: {
-        app: resolve("apps/web/index.html"),
+        ...(mode === "public-web"
+          ? {}
+          : { app: resolve("apps/web/index.html") }),
         browser: resolve("apps/web/browser/index.html"),
       },
     },
   },
   server: { host: "127.0.0.1" },
-});
+}));

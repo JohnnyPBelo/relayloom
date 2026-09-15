@@ -33,7 +33,10 @@ addEventListener("pageshow", (event) => {
 
 if ("serviceWorker" in navigator) {
   void navigator.serviceWorker
-    .register("/browser/sw.js", { scope: "/browser/", updateViaCache: "none" })
+    .register(import.meta.env.BASE_URL + "browser/sw.js", {
+      scope: import.meta.env.BASE_URL + "browser/",
+      updateViaCache: "none",
+    })
     .then(() => navigator.serviceWorker.ready)
     .then(() => {
       document.documentElement.dataset.offlineAssets = "ready";

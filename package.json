@@ -9,6 +9,9 @@
   "scripts": {
     "dev": "tsx apps/node/src/cli.ts",
     "build": "tsc --noEmit && vite build",
+    "web:build": "tsc --noEmit && vite build --mode public-web --base /relayloom/",
+    "web:verify": "node scripts/verify-public-web.mjs",
+    "web:publish": "node scripts/publish-web.mjs --publish",
     "typecheck": "tsc --noEmit",
     "test": "tsx --test --test-concurrency=1 tests/*.test.ts",
     "test:e2e": "node scripts/e2e.mjs",

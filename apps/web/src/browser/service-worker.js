@@ -1,6 +1,12 @@
 /* Build-time asset integrity detects corruption; trust still depends on the serving origin. */
 const ASSETS = __RELAYLOOM_ASSETS__;
-const CACHE = "relayloom-browser-assets-" + __RELAYLOOM_VERSION__;
+// Several installations can share a host (for example project Pages sites).
+// An update must only evict this installation's old code caches.
+const PREFIX =
+  "relayloom-browser-assets-" +
+  encodeURIComponent(self.registration.scope) +
+  "-";
+const CACHE = PREFIX + __RELAYLOOM_VERSION__;
 const allowed = new Map(
   ASSETS.map((asset) => [
     new URL(asset.path, self.location.origin).href,
@@ -47,8 +53,7 @@ self.addEventListener("activate", (event) =>
   event.waitUntil(
     (async () => {
       for (const key of await caches.keys())
-        if (key.startsWith("relayloom-browser-assets-") && key !== CACHE)
-          await caches.delete(key);
+        if (key.startsWith(PREFIX) && key !== CACHE) await caches.delete(key);
       await self.clients.claim();
     })(),
   ),

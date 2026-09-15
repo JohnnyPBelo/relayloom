@@ -563,9 +563,12 @@ test("cached application code and encrypted profile reopen when the static host 
       }
       return result;
     });
+    const prefix = new URL(host.url).pathname.replace(/\/$/, "");
     expect(
       cached.every(
-        (path) => path.startsWith("/assets/") || path.startsWith("/browser/"),
+        (path) =>
+          path.startsWith(prefix + "/assets/") ||
+          path.startsWith(prefix + "/browser/"),
       ),
     ).toBe(true);
     expect(cached.some((path) => path.startsWith("/api/"))).toBe(false);
