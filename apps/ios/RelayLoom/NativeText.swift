@@ -23,7 +23,7 @@ enum NativeText {
             default: continue
             }
         }
-        return "en-GB"
+        return "pt-PT"
     }
 
     static func language(core: URL, preferred: [String]) -> String {

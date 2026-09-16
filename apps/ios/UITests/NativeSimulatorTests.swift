@@ -178,9 +178,32 @@ final class NativeSimulatorTests: XCTestCase {
         guard XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: absent, object: nil)], timeout: 30) == .completed else { throw SmokeFailure.missing(label) }
     }
     @MainActor private func navigate(_ app: XCUIApplication, to label: String) throws {
-        let destination = app.webViews.buttons.matching(identifier: label).firstMatch
-        if !destination.isHittable { try tap(app, "Open navigation") }
-        try require(destination, "navigation " + label); destination.tap()
+        func target() -> XCUIElement {
+            app.webViews.descendants(matching: .any).matching(identifier: "Main navigation").firstMatch.buttons.matching(identifier: label).firstMatch
+        }
+        // The compact dock and sidebar share page names. Resolve the actual
+        // navigation landmark again after opening it; never retain a query to
+        // a removed dock control or tap a merely existing, hidden sidebar row.
+        if !target().exists || !target().isHittable { try tap(app, "Open navigation") }
+        let destination = target()
+        let visible = NSPredicate { _, _ in destination.exists && destination.isHittable }
+        guard XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: visible, object: destination)], timeout: 30) == .completed else {
+            navigationEvidence(app, label: label, phase: "not-hittable")
+            throw SmokeFailure.missing("visible main navigation " + label)
+        }
+        navigationEvidence(app, label: label, phase: "before-tap")
+        destination.tap()
+        navigationEvidence(app, label: label, phase: "after-tap")
+    }
+    @MainActor private func navigationEvidence(_ app: XCUIApplication, label: String, phase: String) {
+        // Only fixture navigation labels/geometry, never form values or cards.
+        let candidates: [[String: Any]] = app.webViews.buttons.matching(identifier: label).allElementsBoundByIndex.prefix(6).map { element in
+            let frame = element.frame
+            return ["identifier": element.identifier, "hittable": element.isHittable, "enabled": element.isEnabled,
+                    "x": frame.origin.x, "y": frame.origin.y, "width": frame.width, "height": frame.height]
+        }
+        if let data = try? JSONSerialization.data(withJSONObject: ["phase": phase, "destination": label, "candidates": candidates], options: [.sortedKeys]),
+           let text = String(data: data, encoding: .utf8) { print("IOS_SIMULATOR_NAVIGATION " + text) }
     }
     @MainActor private func chooseRecipient(_ app: XCUIApplication, name: String) throws {
         let composer = app.webViews.textViews["Write a message"].firstMatch

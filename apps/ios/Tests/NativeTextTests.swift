@@ -11,7 +11,7 @@ enum NativeTextTests {
         check(NativeText.fallback(["fr-FR", "es-MX"]) == "es-ES", "First supported OS language")
         check(NativeText.fallback(["pt_BR", "en-US"]) == "pt-PT", "Portuguese variants")
         check(NativeText.fallback(["en-US", "es-ES"]) == "en-GB", "English variants")
-        check(NativeText.fallback(["fr-FR"]) == "en-GB", "Unsupported OS fallback")
+        check(NativeText.fallback(["fr-FR"]) == "pt-PT", "Unsupported OS fallback")
         check(NativeText.translate("Ocultar teclado", language: "en-GB") == "Hide keyboard", "English keyboard label")
         check(NativeText.translate("Tentar novamente", language: "es-ES") == "Volver a intentar", "Spanish native retry")
         check(NativeText.translate("A iniciar a rede neste dispositivo…", language: "pt-PT") == "A iniciar a rede neste dispositivo…", "Portuguese native source")
