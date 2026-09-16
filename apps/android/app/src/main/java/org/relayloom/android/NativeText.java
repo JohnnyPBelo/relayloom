@@ -35,7 +35,7 @@ final class NativeText {
             if (base.equals("en")) return "en-GB";
             if (base.equals("es")) return "es-ES";
         }
-        return "en-GB";
+        return "pt-PT";
     }
 
     static String language(File core, List<String> preferred) {

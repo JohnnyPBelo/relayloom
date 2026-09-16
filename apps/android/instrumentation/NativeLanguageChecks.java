@@ -35,7 +35,7 @@ final class NativeLanguageChecks {
         File file = new File(directory, "ui-preferences.json"), target = new File(directory, "target.json"), link = new File(directory, "core-link");
         int checks = 0;
         try {
-            String[][] choices = {{"fr-FR", "es-MX", "es-ES"}, {"pt_BR", "en-US", "pt-PT"}, {"en-US", "es-ES", "en-GB"}, {"fr-FR", "de-DE", "en-GB"}};
+            String[][] choices = {{"fr-FR", "es-MX", "es-ES"}, {"pt_BR", "en-US", "pt-PT"}, {"en-US", "es-ES", "en-GB"}, {"fr-FR", "de-DE", "pt-PT"}};
             for (String[] choice : choices) {
                 if (!choice[2].equals(fallback.invoke(null, Arrays.asList(choice[0], choice[1])))) throw new AssertionError("Locale fallback order");
                 checks++;

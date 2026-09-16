@@ -87,6 +87,102 @@ public final class NativeSmoke extends Instrumentation {
     private boolean portOpen(int port) {
         try (Socket socket = new Socket()) { socket.connect(new InetSocketAddress("127.0.0.1", port), 500); return true; } catch (Exception expected) { return false; }
     }
+    private void clickUI(String label) throws Exception {
+        String selector = "Array.from(document.querySelectorAll('button')).find(b=>b.getClientRects().length&&!b.disabled&&(b.getAttribute('aria-label')===" + JSONObject.quote(label) + "||b.textContent.trim()===" + JSONObject.quote(label) + "))";
+        awaitCondition("Boolean(" + selector + ")", "UI control " + label);
+        require(Boolean.TRUE.equals(js("(()=>{const b=" + selector + ";b.click();return true})()")), "Enabled UI control invoked: " + label);
+    }
+    private void inputUI(String selector, String value) throws Exception {
+        awaitCondition("Boolean(document.querySelector(" + JSONObject.quote(selector) + "))", "visible editor field");
+        js("(()=>{const input=document.querySelector(" + JSONObject.quote(selector) + ");Object.getOwnPropertyDescriptor(input.tagName==='TEXTAREA'?HTMLTextAreaElement.prototype:HTMLInputElement.prototype,'value').set.call(input," + JSONObject.quote(value) + ");input.dispatchEvent(new Event('input',{bubbles:true}));return true})()");
+    }
+    private boolean sameJSON(Object a, Object b) throws Exception {
+        if (a instanceof JSONObject && b instanceof JSONObject) {
+            JSONObject x = (JSONObject) a, y = (JSONObject) b; if (x.length() != y.length()) return false;
+            java.util.Iterator<String> keys = x.keys();
+            while (keys.hasNext()) { String key = keys.next(); if (!y.has(key) || !sameJSON(x.get(key), y.get(key))) return false; }
+            return true;
+        }
+        if (a instanceof JSONArray && b instanceof JSONArray) {
+            JSONArray x = (JSONArray) a, y = (JSONArray) b; if (x.length() != y.length()) return false;
+            for (int i = 0; i < x.length(); i++) if (!sameJSON(x.get(i), y.get(i))) return false;
+            return true;
+        }
+        return a == null ? b == null : a.equals(b);
+    }
+    private void openEditor() throws Exception {
+        awaitCondition("Boolean(document.querySelector('button[aria-label=\"Abrir navegação\"]'))", "navigation toggle");
+        js("document.querySelector('button[aria-label=\"Abrir navegação\"]').click()");
+        clickUI("A minha página");
+        awaitCondition("Boolean(document.querySelector('.studio-page-meta'))", "page editor loaded");
+    }
+    private JSONObject pageFlow(JSONObject identity, JSONObject host, String password) throws Exception {
+        Object previous = api("site-draft-load", new JSONObject());
+        boolean previousDraft = previous instanceof JSONObject;
+        try {
+            api("contact", new JSONObject().put("contact", host));
+            JSONObject state = (JSONObject) api("state", null);
+            phase("native-port-ready", new JSONObject().put("tcpPort", state.getInt("tcpPort")));
+            openEditor(); clickUI("Modelos");
+            awaitCondition("Array.from(document.querySelectorAll('.studio-templates button')).some(b=>b.textContent.includes('Portefólio visual'))", "portfolio template");
+            js("Array.from(document.querySelectorAll('.studio-templates button')).find(b=>b.textContent.includes('Portefólio visual')).click()");
+            clickUI("Avançado");
+            JSONObject original = new JSONObject((String) js("document.querySelector('textarea.studio-code').value")).getJSONObject("site");
+            require(original.getJSONArray("pages").length() == 2, "Template has two authored pages");
+            js("Array.from(document.querySelectorAll('.studio-pages > button')).find(b=>b.textContent.includes('Sobre')).click()");
+            clickUI("Duplicar página seleccionada");
+            awaitCondition("document.querySelectorAll('.studio-pages > button').length===3", "copied page visible");
+            inputUI(".studio-page-meta input", "Arquivo Android " + arguments.getString("nonce"));
+            inputUI("input[aria-label=\"Título do bloco 1\"]", "Página Android " + arguments.getString("nonce"));
+            clickUI("Mover página para cima"); clickUI("Mover página para cima");
+            awaitCondition("document.querySelector('.studio-page-position')?.textContent.trim()==='Página 1 de 3'", "copied page moved to first position");
+            clickUI("Guardar rascunho"); awaitText("Rascunho cifrado");
+            JSONObject saved = ((JSONObject) api("site-draft-load", new JSONObject())).getJSONObject("site");
+            JSONArray pages = saved.getJSONArray("pages");
+            require(pages.length() == 3 && saved.getString("home").equals(original.getString("home")), "Copy preserves the home identity");
+            require(sameJSON(pages.getJSONObject(2), original.getJSONArray("pages").getJSONObject(1)), "Original page content and node identities remain unchanged");
+            require(!pages.getJSONObject(0).getString("id").equals(pages.getJSONObject(2).getString("id")), "Copied page has a separate identity");
+            clickUI("Publicar página"); awaitText("Página assinada");
+            state = (JSONObject) api("state", null); JSONObject published = null;
+            JSONArray objects = state.getJSONArray("objects");
+            for (int i = 0; i < objects.length(); i++) {
+                JSONObject object = objects.getJSONObject(i);
+                if ("site".equals(object.getString("kind")) && identity.getString("id").equals(object.getJSONObject("author").getString("id")) && sameJSON(object.getJSONObject("content").opt("site"), saved)) { published = object; break; }
+            }
+            require(published != null && published.getBoolean("public"), "UI published the exact new document with the Android owner");
+            phase("pages-published", new JSONObject().put("siteId", published.getString("id")).put("authorId", identity.getString("id")).put("site", saved));
+            boolean acknowledged = false;
+            for (int i = 0; i < 150; i++) {
+                objects = ((JSONObject) api("state", null)).getJSONArray("objects");
+                for (int j = 0; j < objects.length(); j++) {
+                    JSONObject object = objects.getJSONObject(j);
+                    if (host.getString("id").equals(object.getJSONObject("author").getString("id")) && ("Host verified Android pages " + arguments.getString("nonce")).equals(object.getJSONObject("content").optString("text"))) { require(!object.getBoolean("public"), "Host acknowledgement is private"); acknowledged = true; break; }
+                }
+                if (acknowledged) break; Thread.sleep(100);
+            }
+            require(acknowledged, "Actual host peer verified the complete signed page document");
+            int oldHttp = new java.net.URI((String) js("location.origin")).getPort(), oldTcp = state.getInt("tcpPort");
+            runOnMainSync(() -> activity.moveTaskToBack(true));
+            for (int i = 0; i < 50 && (portOpen(oldHttp) || portOpen(oldTcp)); i++) Thread.sleep(100);
+            require(!portOpen(oldHttp) && !portOpen(oldTcp), "Page test closes actual core listeners in the background");
+            resumeActivity(); unlock(password); openEditor();
+            require(sameJSON(((JSONObject) api("site-draft-load", new JSONObject())).get("site"), saved), "Reorganised encrypted draft survives native core restart");
+            require(identity.getString("id").equals(((JSONObject) api("state", null)).getJSONObject("identity").getString("id")), "Native editor restart preserves the owner identity");
+            awaitCondition("document.querySelector('.studio-pages > button')?.textContent.includes('Arquivo Android')", "saved page order restored through UI");
+            android.graphics.Bitmap image = renderedScreenshot();
+            if (image != null) try (FileOutputStream out = new FileOutputStream(new File(getTargetContext().getFilesDir(), "android-instrumentation-pages.png"))) { image.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, out); }
+            return new JSONObject().put("kind", "ANDROID_PAGE_EDITOR_INSTRUMENTATION").put("runtime", "Go inside actual APK process").put("identity", identity).put("siteId", published.getString("id")).put("pages", 3).put("originalPageUnchanged", true).put("homePreserved", true).put("copiedPageSeparateIdentity", true).put("nativeDraftRecovered", true).put("hostAcknowledgedExactDocument", true).put("editorUsesDOMEvents", true).put("previousDraftPresent", previousDraft).put("previousDraftRestored", previousDraft).put("assertions", assertions).put("physicalDeviceTested", false);
+        } finally {
+            if (previousDraft) {
+                JSONObject prior = (JSONObject) previous, restore = new JSONObject();
+                for (String field : new String[]{"blocks", "theme", "site", "attachments"}) if (prior.has(field)) restore.put(field, prior.get(field));
+                api("site-draft", restore);
+                JSONObject restored = (JSONObject) api("site-draft-load", new JSONObject());
+                restored.remove("savedAt"); prior.remove("savedAt");
+                require(sameJSON(restored, prior), "Existing synthetic draft restored after editor verification");
+            }
+        }
+    }
     private void phase(String name, JSONObject details) throws Exception {
         Bundle event = new Bundle(); event.putString("event", new JSONObject().put("phase", name).put("details", details).toString()); sendStatus(1, event);
     }
@@ -196,7 +292,7 @@ public final class NativeSmoke extends Instrumentation {
                 require("Go".equals(before.optString("nativeRuntime")), "The on-device state is served by Go");
                 require(before.getBoolean("initialized"), "UIAutomator previously created persistent Android identity");
                 int languageChecks = 0;
-                if (!"relay".equals(arguments.getString("mode"))) {
+                if (!"relay".equals(arguments.getString("mode")) && !"pages".equals(arguments.getString("mode"))) {
                     byte[] priorVault = NativeLanguageChecks.vaultDigest(activity);
                     languageChecks = NativeLanguageChecks.run(activity); assertions += languageChecks;
                     String[][] languages = {{"es-ES", "Volver a intentar"}, {"en-GB", "Try again"}, {"pt-PT", "Tentar novamente"}};
@@ -220,6 +316,12 @@ public final class NativeSmoke extends Instrumentation {
                 require("Go".equals(state.getString("nativeRuntime")) && !state.getBoolean("locked"), "Persistent vault unlocked through real web UI");
                 int rejected = ((Number) async("fetch('/api/state').then(r=>r.status)")).intValue(); require(rejected == 401, "Local API denies missing capability");
                 JSONObject host = new JSONObject(new String(android.util.Base64.decode(arguments.getString("hostCard"), android.util.Base64.DEFAULT), StandardCharsets.UTF_8));
+                if ("pages".equals(arguments.getString("mode"))) {
+                    JSONObject pages = pageFlow(identity, host, password); pages.put("assertions", assertions);
+                    File evidence = new File(getTargetContext().getFilesDir(), "android-pages-report.json");
+                    try (FileOutputStream stream = new FileOutputStream(evidence)) { stream.write(pages.toString(2).getBytes(StandardCharsets.UTF_8)); }
+                    result.putString("stream", "Android page instrumentation passed " + assertions + " assertions\n"); finish(Activity.RESULT_OK, result); return;
+                }
                 if ("relay".equals(arguments.getString("mode"))) {
                     JSONObject reader = new JSONObject(new String(android.util.Base64.decode(arguments.getString("readerCard"), android.util.Base64.DEFAULT), StandardCharsets.UTF_8));
                     relayFlow(identity, host, reader); result.putString("stream", "Android relay instrumentation passed " + assertions + " assertions\n"); finish(Activity.RESULT_OK, result); return;
