@@ -1,6 +1,31 @@
 import { createServer } from "node:http";
 import { readFileSync, existsSync } from "node:fs";
 import { resolve, extname, sep } from "node:path";
+
+/** UI journeys may explicitly target a published application. Fixture-only
+ * transport/cache tests keep using appHost and its local failure controls. */
+export async function uiHost(): Promise<{
+  url: string;
+  close: () => Promise<void>;
+}> {
+  const external = process.env.RELAYLOOM_LAUNCH_URL?.trim();
+  if (!external) return appHost();
+  const url = new URL(external);
+  if (
+    url.protocol !== "https:" ||
+    url.username ||
+    url.password ||
+    url.search ||
+    url.hash
+  )
+    throw new Error(
+      "Published UI checks require a clean HTTPS application base URL",
+    );
+  const base = url.href.replace(/\/+$/, "");
+  console.log("RelayLoom UI target: " + base);
+  return { url: base, close: async () => {} };
+}
+
 export async function appHost(options: { cacheProbe?: boolean } = {}) {
   const publicBuild = process.env.RELAYLOOM_PUBLIC_BUILD === "1",
     prefix = publicBuild ? "/relayloom" : "",

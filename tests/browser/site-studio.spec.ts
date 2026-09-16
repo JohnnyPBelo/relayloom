@@ -1,12 +1,11 @@
 import { test, expect, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { mkdirSync, writeFileSync } from "node:fs";
-import { appHost } from "./app-host";
-let host: Pick<Awaited<ReturnType<typeof appHost>>, "url" | "close">;
+import { uiHost } from "./app-host";
+let host: Awaited<ReturnType<typeof uiHost>>;
 const password = "frase sintética do estúdio de sites";
 test.beforeAll(async () => {
-  const external = process.env.RELAYLOOM_LAUNCH_URL?.trim().replace(/\/$/, "");
-  host = external ? { url: external, close: async () => {} } : await appHost();
+  host = await uiHost();
 });
 test.afterAll(async () => {
   await host.close();

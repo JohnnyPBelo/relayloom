@@ -1,10 +1,10 @@
 import { test, expect, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { mkdirSync, writeFileSync } from "node:fs";
-import { appHost } from "./app-host";
-let host: Awaited<ReturnType<typeof appHost>>;
+import { uiHost } from "./app-host";
+let host: Awaited<ReturnType<typeof uiHost>>;
 test.beforeAll(async () => {
-  host = await appHost();
+  host = await uiHost();
 });
 test.afterAll(async () => {
   await host.close();
@@ -60,6 +60,7 @@ const es = {
 };
 async function enter(p: Page, name: string, w: typeof en) {
   await p.goto(host.url + "/browser/index.html");
+  await expect(p).toHaveURL(host.url + "/browser/index.html");
   await p.getByRole("button", { name: w.start, exact: true }).click();
   await p.getByLabel(w.name, { exact: true }).fill(name);
   await p.getByLabel(w.pass, { exact: true }).fill(pass);
@@ -351,6 +352,7 @@ test("three multilingual identities edit signed pages, preserve original text an
       JSON.stringify(
         {
           status: "PASS",
+          applicationURL: host.url,
           pages: 3,
           invalidImportRejected: true,
           languages: ["en-GB", "es-ES"],

@@ -1,10 +1,10 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { mkdirSync, writeFileSync } from "node:fs";
-import { appHost } from "./app-host";
-let host: Awaited<ReturnType<typeof appHost>>;
+import { uiHost } from "./app-host";
+let host: Awaited<ReturnType<typeof uiHost>>;
 test.beforeAll(async () => {
-  host = await appHost();
+  host = await uiHost();
 });
 test.afterAll(async () => {
   await host.close();
@@ -182,6 +182,7 @@ test("English and Spanish identities exchange encrypted messages and files witho
   };
   const enter = async (page: typeof a, words: typeof en, name: string) => {
     await page.goto(host.url + "/browser/index.html");
+    await expect(page).toHaveURL(host.url + "/browser/index.html");
     await page.getByRole("button", { name: words.start, exact: true }).click();
     await page.getByLabel(words.name, { exact: true }).fill(name);
     await page.getByLabel(words.pass, { exact: true }).fill(phrase);
@@ -342,6 +343,7 @@ test("English and Spanish identities exchange encrypted messages and files witho
       JSON.stringify(
         {
           status: "PASS",
+          applicationURL: host.url,
           languages: ["en-GB", "es-ES"],
           transport: "real WebRTC",
           authoredTextUnchanged: true,
