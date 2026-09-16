@@ -2,6 +2,14 @@
 
 **O produto completo não está concluído.** Preservar todo o PROJECT-BRIEF.md, incluindo todas as aplicações, paridade web, Liquid Glass, autoria separada de leitura/seeding e transporte agnóstico. Só este projecto. Manter Astra/Copilot Ultra e recuperação sequencial: sem novos agentes, alterações a modelos, bridges, autenticação ou serviços. O checkpoint extra de manutenção foi cancelado.
 
+## Incremento activo: estúdio de sites
+
+Prioridade actual do proprietário: liberdade de criação inspirada no ZeroNet, com limites. Código local novo em `apps/web/src/site`, `packages/content/src/site.ts` e `native/app/site.go`; APIs/rascunhos integrados nos três motores. Guia `docs/SITE-STUDIO.md`, plano e detalhes `.codex-delivery/SITE-STUDIO.md`.
+
+**Não commitado nem publicado.** Gate sequencial `node scripts/verify-site-studio.mjs`, sessão **74379**, terminou FAIL em Firefox após Node323/Go-race/interop60/Chromium36 passarem. Tentativa preservada em `.cache/site-studio/baseline-final`; não a relançar como operação pendente. A imagem sintética tinha CRC IDAT inválido; o scroll isolado não resolveu. PNG corrigido: Firefox 2/2 passou; teste ampliado com terceiro browser e consentimento também passou 2/2 (37,0 s). URLs TS/Go agora partilham política lexical após controlos que falhavam; 55 testes TS e Go dirigidos passaram. Publicação passa a guardar primeiro o rascunho e a memória de imagens durante edição foi melhorada. UI de gravação ao publicar passou em Node/Go; WebKit dirigido também passou 2/2. **Sessão 66100 terminou FAIL na UI Node**: Node338/Go-race/C-SQLite/interop60/browser108 passaram; UI Node25/26 falhou por overflow a720px. Resultados em `.cache/site-studio/domain-final`; não tratar logs UI Go antigos como passes actuais. Corrigidas larguras/colunas e contraste; os testes dirigidos de geometria passaram. Teste de contraste final passou1/9,7 s em seis combinações de cores. **Terminou FAIL na UI Go (locator ambíguo de role=status, correcção e teste dirigido1/18,3s passaram):** `node .cache/site-studio/verify-layout-final.mjs`, relatório `.cache/site-studio/layout-final/report.json`, consola `.cache/site-studio/layout-final-console.log`. Exige domínios com fontes idênticas e repete todos os gates de UI/publicação afectados; só os dois CSS e o teste browser diferem. Gate68777 terminou FAIL: WebKit44/45 na candidata pública encontrou diagnóstico connecting após texto de sucesso; UI Node26/Go26 e pacote Linux passaram. Corrigido o estado do painel; teste dirigido24607 passou2/21,7s (81333 só falhou parsing de argumentos, sem executar testes). Runner `.cache/site-studio/verify-publish-final.mjs`, sessão43274, terminou PASS. Relatório `publish-final/report.json`; todas as fontes estáveis, build explícito e hashes dos assets na matriz. Evidência em docs/evidence/site-studio. Próximo: commit local explícito, publicação exacta, verificação HTTPS e push da fonte/docs. Não repetir gates concluídos sem alterações. Suplemento built-browser-final não executado/deixa de ser necessário. Detalhes em `.codex-delivery/SITE-STUDIO.md`. Não recriar agentes. Nenhum processo de rádio novo foi iniciado.
+
+CI anterior `35034984024` terminou com sucesso em Node/Go/RNS/web/pacotes desktop e falha em UI iOS. O WIP UIKit/XCTest continua separado e preservado; este estúdio não o declara resolvido. Base main continua `e4a39f0`. Preservar as alterações anteriores e usar apenas staging explícito.
+
 ## Código e publicação
 
 - `7d3bceb`: RNS/meios, validado e commitado em ficheiros explícitos.
@@ -9,7 +17,7 @@
 - Publicação `eafa109dd1639dc2a595b38ba7061a934d84c463`, branch `codex/web-pages`, source `359d652613c8664480f3cdce86ce5a5bbbc640ab`.
 - Pages `35033701343`: success, HTTPS obrigatório. Os 13 ficheiros de execução coincidem por hash/tamanho; 3 testes no URL passaram.
 - URL de entrada: https://johnnypbelo.github.io/relayloom/ (encaminha para browser/index.html).
-- Confirmar HEAD/origin/main e o CI depois do push dos commits; não cancelar um CI activo com outro push.
+- Push confirmado: HEAD e origin/main `e4a39f03915bf656292115857c6879980eefee93`. Novo CI `35034984024` observado queued; recolher resultado sem o cancelar. Esta confirmação fica local para não provocar outro push/CI.
 
 ## Correcções e observação real
 

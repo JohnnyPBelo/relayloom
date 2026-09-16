@@ -15,6 +15,7 @@ export interface SiteBlock {
   url?: string;
 }
 export interface Content {
+  site?: import("./site").SiteDocument;
   type: string;
   text?: string;
   title?: string;

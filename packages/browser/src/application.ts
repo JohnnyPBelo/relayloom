@@ -1,3 +1,4 @@
+import { draftSummary } from "../../content/src/site";
 import { canonical } from "../../core/src/protocol";
 import type { Bundle, PublicIdentity } from "../../core/src/protocol";
 import type {
@@ -45,11 +46,7 @@ type Data = {
   saved: string[];
   reports: { target: string; reason: string; at: number }[];
   collections: Collection[];
-  siteDraft: {
-    blocks: Content["blocks"];
-    theme: string;
-    savedAt: number;
-  } | null;
+  siteDraft: import("../../content/src/site").SiteDraft | null;
   outbox: Outbox;
   mutations: Record<string, Mutation>;
   receipts: Record<string, { delivery?: string; receipt?: string }>;
@@ -168,6 +165,10 @@ export class BrowserApplication {
         type: "site",
         blocks: d.siteDraft.blocks,
         theme: d.siteDraft.theme,
+        ...(d.siteDraft.site !== undefined ? { site: d.siteDraft.site } : {}),
+        ...(d.siteDraft.attachments !== undefined
+          ? { attachments: d.siteDraft.attachments }
+          : {}),
       });
     return d;
   }
@@ -460,7 +461,7 @@ export class BrowserApplication {
       saved: data.saved,
       reports: data.reports,
       collections: data.collections,
-      siteDraft: data.siteDraft,
+      siteDraft: draftSummary(data.siteDraft),
       ...this.page(objects),
       followedPostIds: followedFeed(objects, data.following).map((o) => o.id),
       outbox: Object.values(data.outbox).map((e) =>
@@ -976,16 +977,26 @@ export class BrowserApplication {
       await this.network.command("request", { id: body.id });
       return { status: "requested", id: body.id };
     }
+    if (path === "site-draft-load")
+      return structuredClone((await this.data()).siteDraft);
     if (path === "site-draft") {
       validateContentShape({
         type: "site",
         blocks: body.blocks,
         theme: body.theme,
+        ...(body.site !== undefined ? { site: body.site } : {}),
+        ...(body.attachments !== undefined
+          ? { attachments: body.attachments }
+          : {}),
       });
       await this.update((d) => {
         d.siteDraft = {
           blocks: body.blocks,
           theme: body.theme,
+          ...(body.site !== undefined ? { site: body.site } : {}),
+          ...(body.attachments !== undefined
+            ? { attachments: body.attachments }
+            : {}),
           savedAt: Date.now(),
         };
       });

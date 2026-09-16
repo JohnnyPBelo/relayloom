@@ -229,7 +229,9 @@ test("two live clients: identities, connection, message, attachment, reaction, g
     await pa
       .getByRole("button", { name: "Guardar rascunho", exact: true })
       .click();
-    await expect(pa.getByRole("status")).toContainText("Rascunho cifrado");
+    await expect(
+      pa.getByRole("status").filter({ hasText: "Rascunho cifrado" }),
+    ).toBeVisible();
     await pa.reload();
     await pa
       .getByRole("button", { name: "A minha página", exact: true })
@@ -241,7 +243,9 @@ test("two live clients: identities, connection, message, attachment, reaction, g
     await pa
       .getByRole("button", { name: "Publicar página", exact: true })
       .click();
-    await expect(pa.getByRole("status")).toContainText("Página assinada");
+    await expect(
+      pa.getByRole("status").filter({ hasText: "Página assinada" }),
+    ).toBeVisible();
     await until(
       () => b.call("state"),
       (s) => s.objects.some((o: any) => o.kind === "site"),

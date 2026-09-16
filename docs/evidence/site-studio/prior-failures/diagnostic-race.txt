@@ -1,0 +1,97 @@
+
+Running 45 tests using 1 worker
+
+(node:3693800) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › tests/browser/application.spec.ts:74:1 › autonomous Liquid Glass UI owns identity and offline outbox, connects through real RTC, receives signed confirmations and survives reload (8.2s)
+  ✓   2 [chromium] › tests/browser/application.spec.ts:203:1 › autonomous social actions and safe signed site builder persist and remain viewable after author closes (15.3s)
+  ✓   3 [chromium] › tests/browser/application.spec.ts:358:1 › production worker keeps private keys out of replies and recovers an applied send after the UI response is lost (22.1s)
+  ✓   4 [chromium] › tests/browser/application.spec.ts:465:1 › a second tab cannot take ownership of a live application profile and an unknown or corrupt profile is never silently reset (1.6s)
+  ✓   5 [chromium] › tests/browser/application.spec.ts:522:1 › cached application code and encrypted profile reopen when the static host is unavailable, without installing the PWA (3.2s)
+  ✓   6 [chromium] › tests/browser/application.spec.ts:588:1 › corrupted cached worker is rejected offline and recovered only from verified available code (1.1s)
+  ✓   7 [chromium] › tests/browser/connectivity.spec.ts:97:1 › both pending outboxes deliver after completing signalling; modes stay separate and diagnostics contain no secrets (12.9s)
+  ✓   8 [chromium] › tests/browser/connectivity.spec.ts:241:1 › closing while a code is being generated releases the late pending peer (4.5s)
+  ✓   9 [chromium] › tests/browser/contact-relay.spec.ts:120:1 › imported contact immediately appears once, survives reload and becomes the first real DM without a duplicate (4.4s)
+  ✓  10 [chromium] › tests/browser/contact-relay.spec.ts:207:1 › relay consent through the UI gates a real A to B to C path and does not grant B private reading (22.1s)
+  ✓  11 [chromium] › tests/browser/public-distribution.checks.ts:6:1 › public build serves every integrity-pinned asset below its prefix, with no daemon entry (53ms)
+  ✓  12 [chromium] › tests/browser/public-distribution.checks.ts:59:1 › subpath offline installation preserves other installations' caches and uses no external runtime (617ms)
+  ✓  13 [chromium] › tests/browser/site-studio.spec.ts:77:1 › multipage studio saves encrypted draft, rejects executable imports and a consenting reader seeds it to a new browser after author closes (21.6s)
+  ✓  14 [chromium] › tests/browser/site-studio.spec.ts:351:1 › studio keyboard navigation, nested drag, duplicate, reparent and page references stay editable on a narrow screen (2.9s)
+  ✓  15 [chromium] › tests/browser/site-studio.spec.ts:425:1 › dense three-level compositions keep all controls inside their blocks and preserve contrast across palettes and app themes (8.4s)
+(node:3702258) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  16 [firefox] › tests/browser/application.spec.ts:74:1 › autonomous Liquid Glass UI owns identity and offline outbox, connects through real RTC, receives signed confirmations and survives reload (11.7s)
+  ✓  17 [firefox] › tests/browser/application.spec.ts:203:1 › autonomous social actions and safe signed site builder persist and remain viewable after author closes (18.0s)
+  ✓  18 [firefox] › tests/browser/application.spec.ts:358:1 › production worker keeps private keys out of replies and recovers an applied send after the UI response is lost (24.6s)
+  ✓  19 [firefox] › tests/browser/application.spec.ts:465:1 › a second tab cannot take ownership of a live application profile and an unknown or corrupt profile is never silently reset (2.3s)
+  ✓  20 [firefox] › tests/browser/application.spec.ts:522:1 › cached application code and encrypted profile reopen when the static host is unavailable, without installing the PWA (4.2s)
+  ✓  21 [firefox] › tests/browser/application.spec.ts:588:1 › corrupted cached worker is rejected offline and recovered only from verified available code (1.9s)
+  ✓  22 [firefox] › tests/browser/connectivity.spec.ts:97:1 › both pending outboxes deliver after completing signalling; modes stay separate and diagnostics contain no secrets (16.1s)
+  ✓  23 [firefox] › tests/browser/connectivity.spec.ts:241:1 › closing while a code is being generated releases the late pending peer (4.7s)
+  ✓  24 [firefox] › tests/browser/contact-relay.spec.ts:120:1 › imported contact immediately appears once, survives reload and becomes the first real DM without a duplicate (7.1s)
+  ✓  25 [firefox] › tests/browser/contact-relay.spec.ts:207:1 › relay consent through the UI gates a real A to B to C path and does not grant B private reading (36.8s)
+  ✓  26 [firefox] › tests/browser/public-distribution.checks.ts:6:1 › public build serves every integrity-pinned asset below its prefix, with no daemon entry (53ms)
+  ✓  27 [firefox] › tests/browser/public-distribution.checks.ts:59:1 › subpath offline installation preserves other installations' caches and uses no external runtime (1.2s)
+  ✓  28 [firefox] › tests/browser/site-studio.spec.ts:77:1 › multipage studio saves encrypted draft, rejects executable imports and a consenting reader seeds it to a new browser after author closes (27.8s)
+  ✓  29 [firefox] › tests/browser/site-studio.spec.ts:351:1 › studio keyboard navigation, nested drag, duplicate, reparent and page references stay editable on a narrow screen (3.8s)
+  ✓  30 [firefox] › tests/browser/site-studio.spec.ts:425:1 › dense three-level compositions keep all controls inside their blocks and preserve contrast across palettes and app themes (10.9s)
+(node:3757833) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  31 [webkit] › tests/browser/application.spec.ts:74:1 › autonomous Liquid Glass UI owns identity and offline outbox, connects through real RTC, receives signed confirmations and survives reload (11.0s)
+  ✓  32 [webkit] › tests/browser/application.spec.ts:203:1 › autonomous social actions and safe signed site builder persist and remain viewable after author closes (15.9s)
+  ✓  33 [webkit] › tests/browser/application.spec.ts:358:1 › production worker keeps private keys out of replies and recovers an applied send after the UI response is lost (24.2s)
+  ✓  34 [webkit] › tests/browser/application.spec.ts:465:1 › a second tab cannot take ownership of a live application profile and an unknown or corrupt profile is never silently reset (3.1s)
+  ✓  35 [webkit] › tests/browser/application.spec.ts:522:1 › cached application code and encrypted profile reopen when the static host is unavailable, without installing the PWA (3.7s)
+  ✓  36 [webkit] › tests/browser/application.spec.ts:588:1 › corrupted cached worker is rejected offline and recovered only from verified available code (1.9s)
+  ✘  37 [webkit] › tests/browser/connectivity.spec.ts:97:1 › both pending outboxes deliver after completing signalling; modes stay separate and diagnostics contain no secrets (11.8s)
+(node:3768087) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  38 [webkit] › tests/browser/connectivity.spec.ts:241:1 › closing while a code is being generated releases the late pending peer (5.2s)
+  ✓  39 [webkit] › tests/browser/contact-relay.spec.ts:120:1 › imported contact immediately appears once, survives reload and becomes the first real DM without a duplicate (6.9s)
+  ✓  40 [webkit] › tests/browser/contact-relay.spec.ts:207:1 › relay consent through the UI gates a real A to B to C path and does not grant B private reading (46.2s)
+  ✓  41 [webkit] › tests/browser/public-distribution.checks.ts:6:1 › public build serves every integrity-pinned asset below its prefix, with no daemon entry (63ms)
+  ✓  42 [webkit] › tests/browser/public-distribution.checks.ts:59:1 › subpath offline installation preserves other installations' caches and uses no external runtime (1.2s)
+  ✓  43 [webkit] › tests/browser/site-studio.spec.ts:77:1 › multipage studio saves encrypted draft, rejects executable imports and a consenting reader seeds it to a new browser after author closes (30.7s)
+  ✓  44 [webkit] › tests/browser/site-studio.spec.ts:351:1 › studio keyboard navigation, nested drag, duplicate, reparent and page references stay editable on a narrow screen (4.0s)
+  ✓  45 [webkit] › tests/browser/site-studio.spec.ts:425:1 › dense three-level compositions keep all controls inside their blocks and preserve contrast across palettes and app themes (10.0s)
+
+
+  1) [webkit] › tests/browser/connectivity.spec.ts:97:1 › both pending outboxes deliver after completing signalling; modes stay separate and diagnostics contain no secrets
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "open"
+    Received: "connecting"
+
+      185 |         ].sort(),
+      186 |       );
+    > 187 |       expect(value.channel).toBe("open");
+          |                             ^
+      188 |       expect(value.closed).toBe(false);
+      189 |       writeFileSync(
+      190 |         out + `/diagnostic-${p === a ? "a" : "b"}.json`,
+        at <repo>/tests/browser/connectivity.spec.ts:187:29
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .cache/public-web/results/connectivity-both-pending--e5c22-gnostics-contain-no-secrets-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .cache/public-web/results/connectivity-both-pending--e5c22-gnostics-contain-no-secrets-webkit/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: .cache/public-web/results/connectivity-both-pending--e5c22-gnostics-contain-no-secrets-webkit/error-context.md
+
+    Error Context: .cache/public-web/results/connectivity-both-pending--e5c22-gnostics-contain-no-secrets-webkit/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    .cache/public-web/results/connectivity-both-pending--e5c22-gnostics-contain-no-secrets-webkit/trace.zip
+    Usage:
+
+        npx playwright show-trace .cache/public-web/results/connectivity-both-pending--e5c22-gnostics-contain-no-secrets-webkit/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [webkit] › tests/browser/connectivity.spec.ts:97:1 › both pending outboxes deliver after completing signalling; modes stay separate and diagnostics contain no secrets
+  44 passed (8.0m)

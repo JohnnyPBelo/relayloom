@@ -14,7 +14,9 @@ export function webSources() {
     .split("\0")
     .filter(
       (file) =>
-        /^(apps\/web\/|packages\/|tests\/browser\/|scripts\/)/.test(file) ||
+        /^(apps\/web\/|packages\/|tests\/browser\/|scripts\/|docs\/licenses\/site-studio\/)/.test(
+          file,
+        ) ||
         /^(package.*\.json|.*config\.ts|tests\/conversation-id\.test\.ts)$/.test(
           file,
         ),
@@ -40,7 +42,7 @@ export function webArtifacts() {
       }
       if (
         !stat.isFile() ||
-        !/^(index\.html|\.nojekyll|browser\/(index\.html|icon\.svg|manifest\.webmanifest|sw\.js|assets\.json|worker[-\w]+\.js)|assets\/[\w-]+\.(js|css|svg|png|woff2?|webmanifest))$/.test(
+        !/^(index\.html|\.nojekyll|browser\/(index\.html|icon\.svg|manifest\.webmanifest|sw\.js|assets\.json|worker[-\w]+\.js)|assets\/site-studio-notices\.txt|assets\/[\w-]+\.(js|css|svg|png|woff2?|webmanifest))$/.test(
           file,
         )
       )

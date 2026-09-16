@@ -105,7 +105,13 @@ func parsePrivate(value any, owner string) (PrivateState, error) {
 		if err != nil {
 			return p, err
 		}
-		if err = validateContent(Content{"type": "site", "blocks": draft["blocks"], "theme": draft["theme"]}); err != nil {
+		content := Content{"type": "site", "blocks": draft["blocks"], "theme": draft["theme"]}
+		for _, key := range []string{"site", "attachments"} {
+			if value, exists := draft[key]; exists {
+				content[key] = value
+			}
+		}
+		if err = validateContent(content); err != nil {
 			return p, err
 		}
 		if _, err = number(draft["savedAt"]); err != nil {

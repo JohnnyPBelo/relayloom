@@ -1,7 +1,13 @@
+import { initialSite, type StudioValue } from "./site/model";
+import {
+  legacySite,
+  siteFallback,
+  type SiteDraft,
+} from "../../../packages/content/src/site";
 import { api } from "./api";
 import { BrowserPeerPanel } from "./browser/peers";
 import { WebInvitation, type WebPeerState } from "./web-invitation";
-import React, { useEffect, useRef, useState } from "react";
+import React, { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   MessageCircle,
@@ -70,6 +76,12 @@ import { GroupManager, groupStatus, useGroupWorkspace } from "./groups";
 import { RelayParticipation } from "./relay-participation";
 import { directConversationId } from "./conversation-id";
 
+const SiteStudio = lazy(() =>
+  import("./site/studio").then((m) => ({ default: m.SiteStudio })),
+);
+const SiteReader = lazy(() =>
+  import("./site/renderer").then((m) => ({ default: m.SiteReader })),
+);
 type State = {
   capabilities?: { autonomous?: boolean; dynamicGroups?: boolean };
   nativeRuntime?: string;
@@ -97,7 +109,7 @@ type State = {
   reports: unknown[];
   collections: Collection[];
   followedPostIds: string[];
-  siteDraft: { blocks: SiteBlock[]; theme: string; savedAt: number } | null;
+  siteDraft: SiteDraft | null;
   objects: DisplayObject[];
   outbox?: OutboxItem[];
   history: {
@@ -275,23 +287,12 @@ function App() {
   const pendingSend = useRef<
     Record<string, { signature: string; operationId: string }>
   >({});
-  const [blocks, setBlocks] = useState<SiteBlock[]>([
-      {
-        id: "hero",
-        type: "hero",
-        title: "Um lugar para estar perto.",
-        body: "Bem-vindo ao meu pequeno espaço na rede.",
-      },
-      {
-        id: "about",
-        type: "text",
-        title: "Sobre mim",
-        body: "As histórias, as pessoas e os lugares que nos ligam.",
-      },
-    ]),
-    [theme, setTheme] = useState("sand"),
-    [preview, setPreview] = useState(false),
-    [drag, setDrag] = useState<number>();
+  const [studioValue, setStudioValue] = useState<StudioValue>(() =>
+    initialSite(""),
+  );
+  const [siteLoading, setSiteLoading] = useState(false),
+    [siteLoadError, setSiteLoadError] = useState(""),
+    [siteLoadVersion, setSiteLoadVersion] = useState(0);
   const loadedSite = useRef(""),
     viewed = useRef(new Set<string>()),
     drafts = useRef<
@@ -471,6 +472,9 @@ function App() {
     setGroupManager(false);
     setReviewedEpochs({});
     setViewSite(undefined);
+    loadedSite.current = "";
+    setStudioValue(initialSite(""));
+    setSiteLoadError("");
     setModal("");
     setCommandsOpen(false);
     setMessageToFocus("");
@@ -486,6 +490,7 @@ function App() {
             collections: [],
             reports: [],
             outbox: [],
+            siteDraft: null,
           }
         : current,
     );
@@ -668,21 +673,54 @@ function App() {
         }
   }, [selection, page, objects.length]);
   useEffect(() => {
-    if (state?.siteDraft && loadedSite.current !== me?.id) {
-      loadedSite.current = me!.id;
-      setBlocks(state.siteDraft.blocks);
-      setTheme(state.siteDraft.theme);
+    if (!me) {
+      loadedSite.current = "";
+      setStudioValue(initialSite(""));
       return;
     }
-    const latest = objects
-      .filter((o) => o.kind === "site" && o.author.id === me?.id)
-      .at(-1);
-    if (latest && loadedSite.current !== me?.id) {
-      loadedSite.current = me!.id;
-      setBlocks(latest.content.blocks ?? []);
-      setTheme(latest.content.theme ?? "sand");
-    }
-  }, [me?.id, objects.length]);
+    if (page !== "site" || loadedSite.current === me.id) return;
+    const owner = me.id,
+      generation = privacyGeneration.current;
+    let active = true,
+      resolved = false;
+    loadedSite.current = owner;
+    setSiteLoading(true);
+    setSiteLoadError("");
+    void (async () => {
+      const latest = objects
+        .filter((o) => o.kind === "site" && o.author.id === owner)
+        .at(-1);
+      const data = state?.siteDraft
+        ? await api("site-draft-load", {})
+        : latest
+          ? (await api("view", { id: latest.id })).content
+          : null;
+      if (!active || generation !== privacyGeneration.current) return;
+      setStudioValue(
+        data
+          ? {
+              site: data.site ?? legacySite(data.blocks ?? [], me.name),
+              theme: data.theme ?? "sand",
+              attachments: data.attachments ?? [],
+            }
+          : initialSite(me.name),
+      );
+      resolved = true;
+    })()
+      .catch((e) => {
+        if (active) {
+          setSiteLoadError((e as Error).message);
+          loadedSite.current = "";
+        }
+      })
+      .finally(() => {
+        if (active) setSiteLoading(false);
+      });
+    return () => {
+      active = false;
+      if (!resolved && loadedSite.current === owner) loadedSite.current = "";
+    };
+  }, [me?.id, page, siteLoadVersion]);
   useEffect(() => {
     if (nearBottom.current) {
       messageScroll.current?.scrollTo({
@@ -933,14 +971,6 @@ function App() {
         return [...current, ...next];
       });
     });
-  }
-  function reorder(from: number, to: number) {
-    if (to < 0 || to >= blocks.length) return;
-    const next = [...blocks],
-      [block] = next.splice(from, 1);
-    next.splice(to, 0, block);
-    setBlocks(next);
-    setNotice("Ordem dos blocos alterada");
   }
   const nav = [
     { id: "messages", label: "Conversas", icon: MessageCircle },
@@ -2169,255 +2199,68 @@ function App() {
               </aside>
             </div>
           )}
-          {page === "site" && (
-            <>
-              <div className="builder-toolbar">
-                <div className="segmented">
-                  <button
-                    className={!preview ? "active" : ""}
-                    aria-pressed={!preview}
-                    onClick={() => setPreview(false)}
-                  >
-                    <Pencil size={16} /> Editar
-                  </button>
-                  <button
-                    className={preview ? "active" : ""}
-                    aria-pressed={preview}
-                    onClick={() => setPreview(true)}
-                  >
-                    <Eye size={16} /> Pré-visualizar
-                  </button>
-                </div>
-                <label className="inline-label">
-                  Paleta
-                  <select
-                    aria-label="Paleta da página"
-                    value={theme}
-                    onChange={(e) => setTheme(e.target.value)}
-                  >
-                    <option value="sand">Areia</option>
-                    <option value="forest">Floresta</option>
-                    <option value="ink">Tinta</option>
-                  </select>
-                </label>
+          {page === "site" &&
+            (siteLoading ? (
+              <section className="card" role="status">
+                A abrir o teu projecto cifrado…
+              </section>
+            ) : siteLoadError ? (
+              <section className="card">
+                <p role="alert">{siteLoadError}</p>
                 <button
                   className="secondary"
-                  disabled={busy}
-                  onClick={() =>
-                    run(
-                      () => api("site-draft", { blocks, theme }),
-                      "Rascunho cifrado guardado neste dispositivo",
-                    )
-                  }
+                  onClick={() => setSiteLoadVersion((v) => v + 1)}
                 >
-                  <Bookmark size={16} /> Guardar rascunho
+                  Voltar a carregar rascunho
                 </button>
-                <button
-                  className="primary"
-                  disabled={busy}
-                  onClick={() =>
-                    run(
-                      () => publish({ type: "site", blocks, theme }, "public"),
-                      "Página assinada e publicada no armazenamento P2P",
+              </section>
+            ) : (
+              <Suspense fallback={<p role="status">A abrir o estúdio…</p>}>
+                <SiteStudio
+                  key={me!.id}
+                  value={studioValue}
+                  onChange={setStudioValue}
+                  owner={me!.name}
+                  posts={objects
+                    .filter(
+                      (o) =>
+                        o.kind === "post" &&
+                        o.author.id === me!.id &&
+                        !o.deleted,
                     )
-                  }
-                >
-                  <Globe2 size={17} /> Publicar página
-                </button>
-              </div>
-              <div className={"builder " + (preview ? "preview-only" : "")}>
-                {!preview && (
-                  <aside className="block-panel">
-                    <div className="eyebrow">A TUA COMPOSIÇÃO</div>
-                    <h3>
-                      Pequenos blocos.
-                      <br />
-                      Um mundo teu.
-                    </h3>
-                    <p>
-                      Arrasta para reordenar ou usa as setas. As setas também
-                      funcionam por toque e teclado.
-                    </p>
-                    <div className="block-palette">
-                      {(["hero", "text", "links", "callout"] as const).map(
-                        (type) => (
-                          <button
-                            key={type}
-                            disabled={blocks.length >= 24}
-                            onClick={() =>
-                              setBlocks([
-                                ...blocks,
-                                {
-                                  id: crypto.randomUUID(),
-                                  type,
-                                  title:
-                                    type === "hero"
-                                      ? "Olá, mundo."
-                                      : type === "text"
-                                        ? "Uma nova história"
-                                        : type === "links"
-                                          ? "Vamos explorar"
-                                          : "Fica por perto",
-                                  body: "",
-                                  ...(type === "links"
-                                    ? { url: "https://example.org" }
-                                    : {}),
-                                },
-                              ])
-                            }
-                          >
-                            <Plus size={17} />
-                            {
-                              {
-                                hero: "Capa",
-                                text: "Texto",
-                                links: "Ligação",
-                                callout: "Destaque",
-                              }[type]
-                            }
-                          </button>
-                        ),
-                      )}
-                    </div>
-                    <div className="safe-note">
-                      <ShieldCheck size={20} />
-                      <span>
-                        Constrói a tua página com texto, destaques e ligações.
-                        Escolhe os blocos e dá-lhes a tua voz.
-                      </span>
-                    </div>
-                  </aside>
-                )}
-                <div className={"site-canvas " + theme}>
-                  <div className="site-masthead">
-                    <strong>{me!.name}</strong>
-                    <span>Página pessoal · RelayLoom</span>
-                  </div>
-                  {blocks.map((block, i) => (
-                    <section
-                      key={block.id}
-                      className={
-                        "site-block " +
-                        block.type +
-                        (!preview ? " editable" : "")
-                      }
-                      draggable={!preview}
-                      onDragStart={() => setDrag(i)}
-                      onDragOver={(e) => e.preventDefault()}
-                      onDrop={(e) => {
-                        e.preventDefault();
-                        if (drag !== undefined) reorder(drag, i);
-                        setDrag(undefined);
-                      }}
-                    >
-                      {!preview && (
-                        <div className="block-controls">
-                          <span>
-                            <GripVertical size={15} />
-                            {
-                              {
-                                hero: "Capa",
-                                text: "Texto",
-                                links: "Ligação",
-                                callout: "Destaque",
-                              }[block.type]
-                            }
-                          </span>
-                          <button
-                            aria-label={`Mover bloco ${i + 1} para cima`}
-                            disabled={i === 0}
-                            onClick={() => reorder(i, i - 1)}
-                          >
-                            <ArrowUp size={15} />
-                          </button>
-                          <button
-                            aria-label={`Mover bloco ${i + 1} para baixo`}
-                            disabled={i === blocks.length - 1}
-                            onClick={() => reorder(i, i + 1)}
-                          >
-                            <ArrowDown size={15} />
-                          </button>
-                          <button
-                            aria-label={`Eliminar bloco ${i + 1}`}
-                            onClick={() =>
-                              setBlocks(blocks.filter((_, at) => at !== i))
-                            }
-                          >
-                            <Trash2 size={15} />
-                          </button>
-                        </div>
-                      )}
-                      {preview ? (
-                        <>
-                          <h2>{block.title}</h2>
-                          <p>{block.body}</p>
-                          {block.url && (
-                            <a
-                              href={block.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              Explorar <ArrowUpRight size={17} />
-                            </a>
-                          )}
-                        </>
-                      ) : (
-                        <>
-                          <input
-                            aria-label={`Título do bloco ${i + 1}`}
-                            value={block.title}
-                            maxLength={120}
-                            onChange={(e) =>
-                              setBlocks(
-                                blocks.map((b, at) =>
-                                  at === i
-                                    ? { ...b, title: e.target.value }
-                                    : b,
-                                ),
-                              )
-                            }
-                          />
-                          <textarea
-                            aria-label={`Texto do bloco ${i + 1}`}
-                            value={block.body}
-                            placeholder="Escreve algo que seja teu…"
-                            maxLength={4000}
-                            onChange={(e) =>
-                              setBlocks(
-                                blocks.map((b, at) =>
-                                  at === i ? { ...b, body: e.target.value } : b,
-                                ),
-                              )
-                            }
-                          />
-                          {block.type === "links" && (
-                            <input
-                              aria-label={`Endereço do bloco ${i + 1}`}
-                              type="url"
-                              value={block.url ?? ""}
-                              onChange={(e) =>
-                                setBlocks(
-                                  blocks.map((b, at) =>
-                                    at === i
-                                      ? { ...b, url: e.target.value }
-                                      : b,
-                                  ),
-                                )
-                              }
-                            />
-                          )}
-                        </>
-                      )}
-                    </section>
-                  ))}
-                  <div className="site-footer">
-                    Um pequeno espaço numa rede de pessoas.{" "}
-                    <span>feito com relayloom</span>
-                  </div>
-                </div>
-              </div>
-            </>
-          )}
+                    .sort((a, b) => b.created - a.created)}
+                  busy={busy}
+                  onSave={async (v) => {
+                    await api("site-draft", {
+                      blocks: siteFallback(v.site),
+                      theme: v.theme,
+                      site: v.site,
+                      attachments: v.attachments,
+                    });
+                    await refresh();
+                  }}
+                  onPublish={async (v) => {
+                    await api("site-draft", {
+                      blocks: siteFallback(v.site),
+                      theme: v.theme,
+                      site: v.site,
+                      attachments: v.attachments,
+                    });
+                    await publish(
+                      {
+                        type: "site",
+                        blocks: siteFallback(v.site),
+                        theme: v.theme,
+                        site: v.site,
+                        attachments: v.attachments,
+                      },
+                      "public",
+                    );
+                    await refresh();
+                  }}
+                />
+              </Suspense>
+            ))}
           {page === "network" && (
             <>
               <div className="network-hero">
@@ -3419,23 +3262,43 @@ function App() {
           title={`Página de ${viewSite.author.name}`}
           close={() => setViewSite(undefined)}
         >
-          <div className={"site-canvas " + viewSite.content.theme}>
-            <div className="site-masthead">
-              <strong>{viewSite.author.name}</strong>
-              <ShieldCheck size={18} />
+          {viewSite.content.site ? (
+            <Suspense fallback={<p role="status">A abrir o site…</p>}>
+              <SiteReader
+                key={viewSite.id}
+                contentId={viewSite.id}
+                site={viewSite.content.site}
+                theme={viewSite.content.theme ?? "sand"}
+                assets={viewSite.content.attachments ?? []}
+                posts={objects
+                  .filter(
+                    (o) =>
+                      o.kind === "post" &&
+                      o.author.id === viewSite.author.id &&
+                      !o.deleted,
+                  )
+                  .sort((a, b) => b.created - a.created)}
+              />
+            </Suspense>
+          ) : (
+            <div className={"site-canvas " + viewSite.content.theme}>
+              <div className="site-masthead">
+                <strong>{viewSite.author.name}</strong>
+                <ShieldCheck size={18} />
+              </div>
+              {viewSite.content.blocks?.map((b) => (
+                <section className={"site-block " + b.type} key={b.id}>
+                  <h2>{b.title}</h2>
+                  <p>{b.body}</p>
+                  {b.url && /^https:\/\//.test(b.url) && (
+                    <a href={b.url} target="_blank" rel="noopener noreferrer">
+                      Explorar <ArrowUpRight size={16} />
+                    </a>
+                  )}
+                </section>
+              ))}
             </div>
-            {viewSite.content.blocks?.map((b) => (
-              <section className={"site-block " + b.type} key={b.id}>
-                <h2>{b.title}</h2>
-                <p>{b.body}</p>
-                {b.url && /^https:\/\//.test(b.url) && (
-                  <a href={b.url} target="_blank" rel="noopener noreferrer">
-                    Explorar <ArrowUpRight size={16} />
-                  </a>
-                )}
-              </section>
-            ))}
-          </div>
+          )}
           <p className="small-note">
             Assinatura verificada. Página lida a partir do armazenamento local;
             pode ser servida por este nó mesmo com o autor desligado.

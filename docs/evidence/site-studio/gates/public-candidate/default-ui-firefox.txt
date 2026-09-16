@@ -1,0 +1,20 @@
+
+Running 13 tests using 1 worker
+
+(node:3946503) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [firefox] › tests/browser/application.spec.ts:74:1 › autonomous Liquid Glass UI owns identity and offline outbox, connects through real RTC, receives signed confirmations and survives reload (12.5s)
+  ✓   2 [firefox] › tests/browser/application.spec.ts:203:1 › autonomous social actions and safe signed site builder persist and remain viewable after author closes (18.3s)
+  ✓   3 [firefox] › tests/browser/application.spec.ts:358:1 › production worker keeps private keys out of replies and recovers an applied send after the UI response is lost (25.9s)
+  ✓   4 [firefox] › tests/browser/application.spec.ts:465:1 › a second tab cannot take ownership of a live application profile and an unknown or corrupt profile is never silently reset (2.8s)
+  ✓   5 [firefox] › tests/browser/application.spec.ts:522:1 › cached application code and encrypted profile reopen when the static host is unavailable, without installing the PWA (4.7s)
+  ✓   6 [firefox] › tests/browser/application.spec.ts:588:1 › corrupted cached worker is rejected offline and recovered only from verified available code (2.0s)
+  ✓   7 [firefox] › tests/browser/connectivity.spec.ts:97:1 › both pending outboxes deliver after completing signalling; modes stay separate and diagnostics contain no secrets (16.4s)
+  ✓   8 [firefox] › tests/browser/connectivity.spec.ts:241:1 › closing while a code is being generated releases the late pending peer (4.7s)
+  ✓   9 [firefox] › tests/browser/contact-relay.spec.ts:120:1 › imported contact immediately appears once, survives reload and becomes the first real DM without a duplicate (6.9s)
+  ✓  10 [firefox] › tests/browser/contact-relay.spec.ts:207:1 › relay consent through the UI gates a real A to B to C path and does not grant B private reading (37.0s)
+  ✓  11 [firefox] › tests/browser/site-studio.spec.ts:77:1 › multipage studio saves encrypted draft, rejects executable imports and a consenting reader seeds it to a new browser after author closes (29.8s)
+  ✓  12 [firefox] › tests/browser/site-studio.spec.ts:351:1 › studio keyboard navigation, nested drag, duplicate, reparent and page references stay editable on a narrow screen (4.0s)
+  ✓  13 [firefox] › tests/browser/site-studio.spec.ts:425:1 › dense three-level compositions keep all controls inside their blocks and preserve contrast across palettes and app themes (11.9s)
+
+  13 passed (3.0m)

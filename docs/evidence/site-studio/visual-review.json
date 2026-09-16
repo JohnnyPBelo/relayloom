@@ -1,0 +1,50 @@
+{
+  "at": "2026-09-16T10:00:26.185Z",
+  "reviewer": "root implementation agent",
+  "independent": false,
+  "observations": [
+    "Earlier composition labels split words because of a 70px cap; rebuilt Chromium capture keeps COLUNAS and DESTAQUE whole.",
+    "Buttons remain visible while wrapping inside a three-level mobile composition; dense geometry and colour checks run separately.",
+    "Reviewed actual editor, site preview and Node shared-UI capture. No physical screen-reader, touch device or Apple review claimed."
+  ],
+  "images": [
+    {
+      "path": ".cache/site-studio/layout-final/browser-chromium/editor-viewport.png",
+      "sha256": "d8ad407b6d7b0c02e9e377738899a041426c383c87485687d2bd86530c0fcd81"
+    },
+    {
+      "path": ".cache/site-studio/layout-final/browser-chromium/preview-viewport.png",
+      "sha256": "fd4ec746c5855448e375507218dc40ebaa47314c0cb512ee4f47ce634ebe05d0"
+    },
+    {
+      "path": ".cache/site-studio/layout-final/browser-chromium/dense-light-ink-viewport.png",
+      "sha256": "19ee89368c2f87150338c333b06ea9ecc6d77bba18f433b8b9bac7731c2dfa31"
+    },
+    {
+      "path": ".cache/site-studio/ui-chromium/dense-light-ink-viewport.png",
+      "sha256": "098727471ee9faa49c45624bbf102d214243f1dfd4b6df325709e8d9a4f6bcf3"
+    },
+    {
+      "path": "docs/evidence/ui/site-editor.png",
+      "sha256": "5a206f5a60dfb445a3098085d12c6f33f1a3d7dc8050a7d82bfe95b500df868c"
+    }
+  ],
+  "finalMatrixReview": {
+    "at": "2026-09-16T10:43:49.102Z",
+    "independent": false,
+    "observations": [
+      "Actual final WebKit editor capture: whole block labels, reachable controls and two-column composition.",
+      "Actual final WebKit 390px preview: navigation, save/publish and site contents remain within the viewport."
+    ],
+    "images": [
+      {
+        "path": ".cache/site-studio/publish-final/browser-webkit/editor-viewport.png",
+        "sha256": "19e563521044fb7889390b72787ca5620b0f8df04b7fa7d2132f104a7f558a46"
+      },
+      {
+        "path": ".cache/site-studio/publish-final/browser-webkit/mobile-preview-viewport.png",
+        "sha256": "5bd13dcdc6acb7fbb48e95b15f107f9d97634a5775ac211757e71d0beabfa49a"
+      }
+    ]
+  }
+}

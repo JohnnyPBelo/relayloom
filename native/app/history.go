@@ -49,6 +49,9 @@ func summaryContent(content Content) Content {
 		}
 	}
 	if text(content["type"]) == "site" {
+		if site, exists := content["site"]; exists {
+			result["site"] = site
+		}
 		if theme, ok := content["theme"].(string); ok {
 			result["theme"] = theme
 		}

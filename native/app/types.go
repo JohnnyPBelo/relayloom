@@ -314,6 +314,11 @@ func validateContent(c Content) error {
 		}
 	}
 	if kind == "site" {
+		if site, exists := c["site"]; exists {
+			if err := validateSite(site, c["attachments"]); err != nil {
+				return err
+			}
+		}
 		blocks, ok := c["blocks"].([]any)
 		theme := "sand"
 		if value, exists := c["theme"]; exists && value != nil {

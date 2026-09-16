@@ -114,8 +114,15 @@ export async function serve(
             case "/api/reticulum-connect":
               node.connectReticulum(body.destination);
               return json(200, { ok: true });
+            case "/api/site-draft-load":
+              return json(200, node.loadDraft());
             case "/api/site-draft":
-              node.saveDraft(body.blocks, body.theme);
+              node.saveDraft(
+                body.blocks,
+                body.theme,
+                body.site,
+                body.attachments,
+              );
               break;
             case "/api/collection":
               return json(200, node.collection(body));

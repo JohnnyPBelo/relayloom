@@ -1693,7 +1693,7 @@
       "id": "FR-038",
       "type": "functional",
       "title": "Responsive drag/drop personal site builder",
-      "statement": "Responsive drag/drop personal site builder",
+      "statement": "Responsive multipage drag/drop personal site builder with expressive, bounded declarative compositions inspired by ZeroNet, preserving author signing and reader seeding.",
       "status": "partial",
       "inferred": false,
       "source": {
@@ -1704,9 +1704,17 @@
       },
       "validation": {
         "evidence_paths": [
-          "tests/e2e/flows.spec.ts"
+          "tests/e2e/flows.spec.ts",
+          "tests/site-document.test.ts",
+          "native/app/site_test.go",
+          "tests/native/site-studio.test.ts",
+          "tests/browser/site-studio.spec.ts",
+          "tests/e2e/site-studio.spec.ts",
+          "docs/SITE-STUDIO.md",
+          "docs/evidence/site-studio/gates/final.json",
+          "docs/evidence/site-studio/manifest.json"
         ],
-        "limits": "Drag/drop real, setas/teclado, paletas e quatro blocos; mais templates/media e toque físico pendentes."
+        "limits": "Estúdio multipágina validado em Node/Go/web no host, com rascunho cifrado, controlo de autoria/corrupção e seeder reiniciado. Publicação HTTPS no passo seguinte. Revisão independente e plataformas/toque físicos pendentes. Sem interoperabilidade ZeroNet, scripts/HTML/SQL arbitrários, contribuições multiutilizador ou ficheiros opcionais."
       },
       "evidence": [
         {
@@ -1716,6 +1724,18 @@
             "tests/e2e/flows.spec.ts"
           ],
           "notes": "Drag/drop real, setas/teclado, paletas e quatro blocos; mais templates/media e toque físico pendentes."
+        },
+        {
+          "kind": "host-integration-and-browser-gate",
+          "result": "pass",
+          "command": "node .cache/site-studio/verify-publish-final.mjs",
+          "finished": "2026-09-16T10:54:22.257Z",
+          "paths": [
+            "docs/evidence/site-studio/gates/final.json",
+            "docs/evidence/site-studio/gates/domain-attempt.json",
+            "docs/evidence/site-studio/manifest.json"
+          ],
+          "notes": "Clean complete reproduction: node scripts/verify-site-studio.mjs. Domain results inherited only with checked source hashes; final UI/build matrix rerun. Not full product/platform completion."
         }
       ]
     },
@@ -1737,9 +1757,17 @@
           "docs/evidence/verification.json",
           "tests/core.test.ts",
           "tests/e2e/flows.spec.ts",
-          "docs/STATUS.md"
+          "docs/STATUS.md",
+          "tests/site-document.test.ts",
+          "native/app/site_test.go",
+          "tests/native/site-studio.test.ts",
+          "tests/browser/site-studio.spec.ts",
+          "tests/e2e/site-studio.spec.ts",
+          "docs/SITE-STUDIO.md",
+          "docs/evidence/site-studio/gates/final.json",
+          "docs/evidence/site-studio/manifest.json"
         ],
-        "limits": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
+        "limits": "Estúdio multipágina validado em Node/Go/web no host, com rascunho cifrado, controlo de autoria/corrupção e seeder reiniciado. Publicação HTTPS no passo seguinte. Revisão independente e plataformas/toque físicos pendentes. Sem interoperabilidade ZeroNet, scripts/HTML/SQL arbitrários, contribuições multiutilizador ou ficheiros opcionais."
       },
       "evidence": [
         {
@@ -1752,6 +1780,18 @@
             "docs/STATUS.md"
           ],
           "notes": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
+        },
+        {
+          "kind": "host-integration-and-browser-gate",
+          "result": "pass",
+          "command": "node .cache/site-studio/verify-publish-final.mjs",
+          "finished": "2026-09-16T10:54:22.257Z",
+          "paths": [
+            "docs/evidence/site-studio/gates/final.json",
+            "docs/evidence/site-studio/gates/domain-attempt.json",
+            "docs/evidence/site-studio/manifest.json"
+          ],
+          "notes": "Clean complete reproduction: node scripts/verify-site-studio.mjs. Domain results inherited only with checked source hashes; final UI/build matrix rerun. Not full product/platform completion."
         }
       ]
     },
@@ -1773,9 +1813,17 @@
           "docs/evidence/verification.json",
           "tests/core.test.ts",
           "tests/e2e/flows.spec.ts",
-          "docs/STATUS.md"
+          "docs/STATUS.md",
+          "tests/site-document.test.ts",
+          "native/app/site_test.go",
+          "tests/native/site-studio.test.ts",
+          "tests/browser/site-studio.spec.ts",
+          "tests/e2e/site-studio.spec.ts",
+          "docs/SITE-STUDIO.md",
+          "docs/evidence/site-studio/gates/final.json",
+          "docs/evidence/site-studio/manifest.json"
         ],
-        "limits": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
+        "limits": "Estúdio multipágina validado em Node/Go/web no host, com rascunho cifrado, controlo de autoria/corrupção e seeder reiniciado. Publicação HTTPS no passo seguinte. Revisão independente e plataformas/toque físicos pendentes. Sem interoperabilidade ZeroNet, scripts/HTML/SQL arbitrários, contribuições multiutilizador ou ficheiros opcionais."
       },
       "evidence": [
         {
@@ -1788,6 +1836,18 @@
             "docs/STATUS.md"
           ],
           "notes": "Implementação e testes do host; limites de plataforma continuam na matriz STATUS."
+        },
+        {
+          "kind": "host-integration-and-browser-gate",
+          "result": "pass",
+          "command": "node .cache/site-studio/verify-publish-final.mjs",
+          "finished": "2026-09-16T10:54:22.257Z",
+          "paths": [
+            "docs/evidence/site-studio/gates/final.json",
+            "docs/evidence/site-studio/gates/domain-attempt.json",
+            "docs/evidence/site-studio/manifest.json"
+          ],
+          "notes": "Clean complete reproduction: node scripts/verify-site-studio.mjs. Domain results inherited only with checked source hashes; final UI/build matrix rerun. Not full product/platform completion."
         }
       ]
     },

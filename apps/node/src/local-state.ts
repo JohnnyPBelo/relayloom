@@ -17,7 +17,10 @@ import { validateOutbox, type Outbox } from "./outbox.js";
 export interface PrivateState {
   outbox?: Outbox;
   collections?: Collection[];
-  siteDraft?: { blocks: unknown[]; theme: string; savedAt: number };
+  siteDraft?: Omit<
+    import("../../../packages/content/src/site").SiteDraft,
+    "blocks"
+  > & { blocks: unknown[] };
   mutations: Record<
     string,
     {
@@ -160,6 +163,12 @@ export function parsePrivateState(
       type: "site",
       blocks: state.siteDraft.blocks,
       theme: state.siteDraft.theme,
+      ...(state.siteDraft.site !== undefined
+        ? { site: state.siteDraft.site }
+        : {}),
+      ...(state.siteDraft.attachments !== undefined
+        ? { attachments: state.siteDraft.attachments }
+        : {}),
     } as Content);
   }
   if (state.outbox !== undefined)

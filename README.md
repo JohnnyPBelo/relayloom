@@ -36,6 +36,12 @@ Em **A rede → Ligar um par**, troque os códigos de ligação com outro navega
 
 Mensagens/outbox, leitores fixos, social, colecções, páginas e recuperação têm percursos funcionais. **A autoridade, persistência/outbox e UI dos grupos dinâmicos ainda não estão integradas no browser.** Toda a paridade nativa continua obrigatória. [Uso e limites da web](docs/WEB-APPLICATION.md).
 
+## Estúdio de páginas pessoais
+
+O novo estúdio foi implementado e validado no host; a publicação HTTPS deste incremento está no passo seguinte. Em **A minha página**, permite criar um site com várias páginas, 13 tipos de bloco, colunas aninhadas, galerias, estilos, três modelos e Markdown seguro. Inclui pré-visualização móvel, desfazer/refazer e importação/exportação declarativa. O rascunho é cifrado; publicar guarda o projecto actual e assina o conteúdo, que os leitores podem distribuir sem adquirir autoria.
+
+Esta adaptação inspira-se nos sites distribuídos do ZeroNet, com execução limitada a blocos seguros. Os limites actuais são 12 páginas, 128 blocos, três níveis e quatro imagens com até 2 MiB no total. Contribuições multiutilizador, ficheiros opcionais e endereços permanentes com revisões ainda não estão implementados. [Como criar e limites exactos](docs/SITE-STUDIO.md).
+
 ## Meios através de Reticulum
 
 O nó Node no Linux integra a referência RNS 1.5.4 e aceita as suas 14 famílias de interfaces internas, com política de isolamento. UDP/Backbone foram exercitados com processos reais; KISS/AX25 com portas série virtuais. O adaptador opcional Bluetooth Nordic UART tem testes com GATT simulado, ainda sem validação de rádio físico. Isto não disponibiliza Bluetooth directo entre browsers nem embebe RNS em todas as apps. [Meios, instalação e limites](docs/RETICULUM-MEDIA.md).
@@ -110,9 +116,11 @@ node scripts/verify-browser-matrix.mjs webkit
 
 O WebKit deste host precisou de bibliotecas de teste locais verificadas. `python3 scripts/webkit-host-deps.py` prepara-as sem instalar pacotes no SO; o lock é específico de Ubuntu resolute/glibc 2.43. Noutro ambiente, os requisitos têm de ser verificados. Preserve pelo menos 15 GiB livres e execute os builds/gates pesados em sequência.
 
-O incremento actual passou **30 testes por engine (90), três UI-RNS por engine (nove), 25 UI Node e 25 UI Go, e execução do pacote Linux**. O gate integral anterior passou 281 Node, Go/race, SQLite C e 58 testes de interoperabilidade. [Comandos, hashes, capturas e limites](docs/evidence/browser-matrix).
+O marco anterior f378e13 passou **30 testes por engine (90), três UI-RNS por engine (nove), 25 UI Node e 25 UI Go, e execução do pacote Linux**. O gate integral anterior passou 281 Node, Go/race, SQLite C e 58 testes de interoperabilidade. [Comandos, hashes, capturas e limites](docs/evidence/browser-matrix).
 
 Uma observação de fecho RTC no WebKit ainda não tem causa estabelecida; os gates seguintes passaram, mas não se afirma correcção. [Observações abertas](docs/evidence/browser-matrix/known-observations.json).
+
+O gate do novo estúdio passou: 338 testes Node; 16 pacotes Go com race (app executada, restantes cacheados); 5 pacotes SQLite C do host; 60 testes de interoperabilidade; 37 casos por motor Chromium/Firefox/WebKit (111); 26 UI Node e26 UI Go; build/execução/pacote/execução Linux; 85 casos do gate web público e2 oráculos; 9 percursos UI-RNS. Os domínios foram conservados após comparação de fontes; a matriz final teve build explícito e hashes dos assets. [Resultados, comandos e falhas corrigidas](docs/evidence/site-studio). Não é validação física nem revisão independente.
 
 ## Segurança e continuidade
 

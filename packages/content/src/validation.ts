@@ -1,4 +1,5 @@
 import { canonical } from "../../core/src/protocol";
+import { validateSite } from "./site";
 import type { Content } from "./types";
 export function validateContentShape(content: Content) {
   if (
@@ -63,6 +64,8 @@ export function validateContentShape(content: Content) {
         throw new Error("Anexo inválido ou demasiado grande");
   }
   if (content.type === "site") {
+    if (content.site !== undefined)
+      validateSite(content.site, content.attachments);
     if (
       !Array.isArray(content.blocks) ||
       content.blocks.length > 24 ||

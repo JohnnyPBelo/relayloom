@@ -405,3 +405,40 @@ BLE simulado: uma partição excedeu 45 s no anexo; execução instrumentada pas
 O gate funcional inicial passou, mas a revisão do lifecycle encontrou tentativas RTC sem limpeza ao fechar o diálogo. Um reproducer real observou 1 par pendente após fechar, quando esperava 0. Adicionado peer-close-pending, que conserva canais abertos; o painel acompanha handles próprios e elimina também resultados recebidos depois do unmount. Reproducer passou após correcção e novo teste cobre criação atrasada de 2 s, sem substituir RTC/cripto. Ambas as mensagens pendentes continuam a chegar e as confirmações permanecem assinadas.
 
 A captura de 390 px mostrou a resposta antes do código a partilhar. Código/cópia movidos para cima e ajuda em três passos recolhível. Repetição integral web e UI-RNS em curso com fontes estáveis; não usar o passe da primeira candidata como evidência desta alteração final. Contrato completo, hardware e revisão independente continuam abertos.
+
+
+## Estúdio multipágina — 2026-09-16
+
+O primeiro E2E não localizava o select de tipografia devido ao nome acessível implícito incluir as opções. Foram atribuídos nomes explícitos. Uma segunda execução tentava navegar antes de o desbloqueio terminar; a fixture agora espera o ecrã de conversas, sem alterar o prazo nem o produto. O percurso completo passou antes da revisão adicional.
+
+A revisão encontrou texto de posts editados ignorado no widget, imagens repetidas descodificadas por instância e cálculo aproximado de bytes de imagens com padding base64. O renderer passou a respeitar editedText, partilhar/libertar URLs por anexo e as validações TS/Go contam bytes descodificados. O controlo exacto 2MiB/+1byte passa em ambos os motores; o terceiro nível vazio tem um vector positivo. A importação mantém validação estrita em ambos os motores, sem delegar apenas na UI.
+
+Os testes adicionais exercitam teclado, drag/drop para colunas e saída para a raiz, protecção de páginas referenciadas, restauração cifrada, leitura bloqueada, corrupção no disco e seeder reiniciado com autor terminando de facto. Não chamar simples encerramento de separador prova de tomada de seeding por terceiro: o gate entre processos cria um leitor novo e comprova ausência antes de permitir a transmissão.
+
+Os passes dirigidos estão registados em SITE-STUDIO.md; gate integral em curso com fontes estáveis. Recuperação sequencial pedida pelo proprietário mantém revisão independente pendente. Não substituir esse requisito por auto-revisão/Axe.
+
+
+## PNG do estúdio e conformidade de URLs — 2026-09-16
+
+O primeiro gate integral passou Node323, Go-race, interop60 e Chromium36, mas Firefox deixou a imagem sintética com naturalWidth=0. Fazer scroll não resolveu. A verificação dos chunks com zlib detectou CRC IDAT inválido no PNG copiado; foi substituído por um PNG 1x1 RGBA gerado com CRCs válidos. Firefox passou mantendo naturalWidth=1 e o prazo. Não presumir portabilidade de uma imagem de teste porque um decoder a tolera.
+
+Os controlos novos de URL confirmaram diferenças entre WHATWG URL e Go net/url: escapes malformados, whitespace, aliases numéricos e hosts inválidos tinham resultados diferentes. Política lexical partilhada, 51 vectores e limites explícitos corrigiram os dois motores. Validar a política do protocolo com vectores idênticos, em vez de assumir equivalência entre parsers de cada linguagem.
+
+O primeiro ensaio com terceiro browser mantinha o receptor sem consentimento de sincronização de inventários. A implementação existente exige esse consentimento; a fixture passou a representar um novo nó consentido, mantendo B em pausa para o negativo. Nenhuma política foi relaxada. Firefox e WebKit passaram o site recebido por C depois de Alice fechar, só após B activar a retransmissão.
+
+Gravar antes de publicar evita reabrir um rascunho anterior à publicação. Os dois motores de aplicação passaram o controlo UI com texto alterado depois da gravação manual. O gate integral final está novamente em curso com fontes estáveis; a primeira tentativa e todos os erros foram conservados.
+
+
+## Mensagens de estado do estúdio — 2026-09-16
+
+O gate Go25/26 falhou porque getByRole(status) assumia um único live region: o indicador de rascunho e um toast são ambos legítimos. Localizar a confirmação pelo conteúdo permite esperar pela gravação sem remover estados acessíveis. Teste funcional dirigido Go passou1/18,3s após a correcção. Preservar sempre o relatório da execução falhada antes de repetir; este erro não prova falha de persistência. A revisão visual também detectou uma quebra de palavra causada por max-width70px no rótulo de bloco. Retirado o limite, mantendo wrapping dos botões; gate visual ainda pendente.
+
+
+## Proveniência de assets no follow-up visual — 2026-09-16
+
+O script local de retoma repetia a matriz antes do build de verify-ui. appHost usa dist/web estático; por isso comparar hashes das fontes não prova que o browser executou o CSS actual. A captura ainda continha a palavra partida e confirmou a falha de procedimento. Não interromper os testes em curso; conservar o registo, reconstruir explicitamente e repetir a matriz com hashes dos assets. O gate completo scripts/verify-site-studio.mjs já começa por build; o erro foi do follow-up local. Nenhum passe deste controlo preliminar é usado como evidência da correcção visual final.
+
+
+## Feedback RTC e snapshot do diagnóstico — 2026-09-16
+
+O gate público WebKit falhou44/45: texto de ligação estabelecida com snapshot channel=connecting. A operação real aguardava ready(), mas o feedback manual adiantava-se ao polling. O painel passa a derivar o sucesso apenas do mesmo diagnóstico open/não fechado que exibe; resposta aceite é um estado intermédio. As asserções estritas, prazos e transmissão real permanecem intactos. Não resolver inconsistências entre duas fontes de estado esperando mais no teste; usar uma fonte coerente no produto. Resultado dirigido ainda pendente.

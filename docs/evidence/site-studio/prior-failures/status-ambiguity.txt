@@ -1,0 +1,85 @@
+(node:1806419) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 26 tests using 1 worker
+
+(node:1806469) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/dynamic-groups.spec.ts:8:1 › a new group version preserves the draft, requires audience review, and lock removes the group dialog (5.5s)
+  ✓   2 tests/e2e/dynamic-groups.spec.ts:79:1 › Liquid Glass groups create, invite, consent, approve, message and leave through two real clients (10.8s)
+  ✘   3 tests/e2e/flows.spec.ts:58:1 › two live clients: identities, connection, message, attachment, reaction, group, social, safe site and offline recovery (14.3s)
+(node:1807960) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   4 tests/e2e/group-operation-recovery.spec.ts:23:1 › a committed group operation with a lost response survives dialog closure and recovers without a second mutation (2.0s)
+  ✓   5 tests/e2e/group-operation-recovery.spec.ts:83:1 › a late recovered group state cannot restore the pre-lock conversation draft (2.3s)
+(node:1807960) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+  ✓   6 tests/e2e/group-outbox.spec.ts:9:1 › real runtime group outbox shows proof pause and terminal stop with accessible recovery guidance (6.7s)
+  ✓   7 tests/e2e/liquid-glass.spec.ts:40:1 › command search uses real authorised peer messages, preserves drafts and forgets private queries on lock (4.1s)
+  ✓   8 tests/e2e/liquid-glass.spec.ts:187:1 › glass respects device effects, low power, contrast and keyboard access across responsive screens (10.1s)
+  ✓   9 tests/e2e/long-dialog.spec.ts:6:1 › a cached site dialog is visible and reachable after scrolling a long mobile contact list (1.8s)
+  ✓  10 tests/e2e/notifications.spec.ts:166:1 › notification stubs verify explicit opt-in, private filtering, coalescing, privacy and persistence (24.2s)
+  ✓  11 tests/e2e/notifications.spec.ts:303:1 › lock, identity switch and cancelled permission close notices and invalidate pending work (8.9s)
+  ✓  12 tests/e2e/notifications.spec.ts:406:1 › denied, unavailable and failed notification APIs remain honest inactive states (2.7s)
+  ✓  13 tests/e2e/onboarding-layout.spec.ts:8:1 › onboarding fits the native minimum window and intermediate widths with keyboard access (1.3s)
+  ✓  14 tests/e2e/outbox.spec.ts:64:1 › durable composer retries a lost response once, survives restart, and shows distinct real received/read states (10.9s)
+  ✓  15 tests/e2e/outbox.spec.ts:204:1 › expired pending sends remain visible without delivery, and locking clears the outbox UI (5.5s)
+  ✓  16 tests/e2e/outbox.spec.ts:253:1 › an absent record after an uncertain response requires an explicit new-send choice (1.0s)
+  ✓  17 tests/e2e/outbox.spec.ts:291:1 › legacy group read labels count unique recipients without retained outbox metadata (3.6s)
+  ✓  18 tests/e2e/privacy-history.spec.ts:6:1 › an earlier delayed state cannot restore private UI after identity lock (4.5s)
+  ✓  19 tests/e2e/privacy-history.spec.ts:70:1 › history page loads older verified posts without inflating the periodic snapshot (3.9s)
+  ✓  20 tests/e2e/site-studio.spec.ts:7:1 › native site studio restores full draft, renders edited posts and publishes verified pages to another process (2.3s)
+  ✓  21 tests/e2e/social.spec.ts:6:1 › named private collections, followed feed, sharing reference and UI persistence (2.5s)
+  ✓  22 tests/e2e/web-invitation.spec.ts:15:1 › native invitation UI connects an autonomous browser, preserves identity authority and revokes the actual socket (4.9s)
+  ✓  23 tests/e2e/web-invitation.spec.ts:154:1 › late invitation response after closing and locking cannot disclose its capability on unlock (1.6s)
+(node:1814629) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  24 tests/e2e/media.spec.ts:207:1 › synthetic image, audio, video and fake-microphone voice arrive at a real peer (7.9s)
+  ✓  25 tests/e2e/media.spec.ts:381:1 › microphone denial and unsupported recording are explicit and do not add attachments (3.2s)
+  ✓  26 tests/e2e/media.spec.ts:434:1 › late permission, recording error, byte cap and virtual duration cap release synthetic tracks (5.3s)
+
+
+  1) tests/e2e/flows.spec.ts:58:1 › two live clients: identities, connection, message, attachment, reaction, group, social, safe site and offline recovery
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('status')
+    Expected substring: "Rascunho cifrado"
+    Error: strict mode violation: getByRole('status') resolved to 2 elements:
+        1) <span role="status">…</span> aka getByText('Alterações por guardar')
+        2) <div class="toast" role="status">…</div> aka getByText('Publicação assinada e guardada')
+
+    Call log:
+      - Expect "toContainText" getByRole('status') with timeout 15000ms
+      - waiting for getByRole('status')
+
+
+      230 |       .getByRole("button", { name: "Guardar rascunho", exact: true })
+      231 |       .click();
+    > 232 |     await expect(pa.getByRole("status")).toContainText("Rascunho cifrado");
+          |                                          ^
+      233 |     await pa.reload();
+      234 |     await pa
+      235 |       .getByRole("button", { name: "A minha página", exact: true })
+        at <repo>/tests/e2e/flows.spec.ts:232:42
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/flows-two-live-clients-ide-23306-e-site-and-offline-recovery/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/flows-two-live-clients-ide-23306-e-site-and-offline-recovery/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/flows-two-live-clients-ide-23306-e-site-and-offline-recovery/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/flows-two-live-clients-ide-23306-e-site-and-offline-recovery/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/flows-two-live-clients-ide-23306-e-site-and-offline-recovery/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/e2e/flows.spec.ts:58:1 › two live clients: identities, connection, message, attachment, reaction, group, social, safe site and offline recovery
+  25 passed (2.6m)

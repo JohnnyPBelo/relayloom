@@ -919,7 +919,7 @@ func (n *Node) stateLocked() (map[string]any, error) {
 	}
 	counters := n.Router.Counters()
 	counters.Rejected += n.rejected
-	return map[string]any{"initialized": n.initialized(), "locked": n.identity == nil, "identity": identity, "tcpPort": n.TCPPort, "peers": n.Router.Peers(), "webPeer": n.webPeerStateLocked(), "counters": counters, "storage": n.Store.Stats(), "settings": map[string]any{"relay": n.config.Relay, "lowPower": n.config.LowPower}, "contacts": contacts, "blocked": blocked, "following": following, "saved": saved, "reports": reports, "groupContent": n.groupContentStateLocked(), "objects": page.Objects, "outbox": n.outboxItemsLocked(outboxAt, manifests), "outboxPolicy": outboxPolicy(), "history": page.History, "followedPostIds": followed, "collections": collections, "siteDraft": draft, "transportError": n.lastTransportError, "now": outboxAt, "nativeRuntime": "Go"}, nil
+	return map[string]any{"initialized": n.initialized(), "locked": n.identity == nil, "identity": identity, "tcpPort": n.TCPPort, "peers": n.Router.Peers(), "webPeer": n.webPeerStateLocked(), "counters": counters, "storage": n.Store.Stats(), "settings": map[string]any{"relay": n.config.Relay, "lowPower": n.config.LowPower}, "contacts": contacts, "blocked": blocked, "following": following, "saved": saved, "reports": reports, "groupContent": n.groupContentStateLocked(), "objects": page.Objects, "outbox": n.outboxItemsLocked(outboxAt, manifests), "outboxPolicy": outboxPolicy(), "history": page.History, "followedPostIds": followed, "collections": collections, "siteDraft": siteDraftSummary(draft), "transportError": n.lastTransportError, "now": outboxAt, "nativeRuntime": "Go"}, nil
 }
 
 func (n *Node) Publish(content Content, recipients any, ttlMS int64) (DisplayObject, error) {
@@ -1362,12 +1362,23 @@ func (n *Node) Handle(operation string, body map[string]any) (any, error) {
 		}
 		n.Router.SetRelay(next.Relay)
 		n.Router.SetLowPower(next.LowPower)
+	case "site-draft-load":
+		copied, err := copyPrivate(n.private, n.identity.Public.ID)
+		if err != nil {
+			return nil, err
+		}
+		return copied.SiteDraft, nil
 	case "site-draft":
 		theme, err := fieldString(body, "theme")
 		if err != nil {
 			return nil, err
 		}
 		content := Content{"type": "site", "blocks": body["blocks"], "theme": theme}
+		for _, key := range []string{"site", "attachments"} {
+			if value, exists := body[key]; exists {
+				content[key] = value
+			}
+		}
 		if err := validateContent(content); err != nil {
 			return nil, err
 		}
@@ -1376,6 +1387,11 @@ func (n *Node) Handle(operation string, body map[string]any) (any, error) {
 			return nil, err
 		}
 		next.SiteDraft = map[string]any{"blocks": body["blocks"], "theme": body["theme"], "savedAt": time.Now().UnixMilli()}
+		for _, key := range []string{"site", "attachments"} {
+			if value, exists := content[key]; exists {
+				next.SiteDraft[key] = value
+			}
+		}
 		if err = n.persistPrivateLocked(next); err != nil {
 			return nil, err
 		}

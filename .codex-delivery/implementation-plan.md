@@ -110,3 +110,12 @@ Build6.056s;253 Node405.684s;161 Go principais/race711.420s (12 helpers pelos dr
 ## Conectividade e meios, 2026-09-15
 
 Milestone activo documentado em CONNECTIVITY-MEDIA.md: corrigir mistura de códigos entre papéis e acompanhar ligação nas duas pontas; preservar duas outboxes pendentes; expandir interfaces internas Reticulum e adaptar BLE Nordic UART no Linux; executar gates sequenciais, rever e publicar web depois de passar. Contrato completo continua aberto. Não activar novos agentes durante recuperação sequencial. Bloqueios: estado dos dois dispositivos do proprietário ainda não observado; hardware rádio/GATT real, paridade web e restantes plataformas continuam pendentes.
+
+
+## Estúdio de sites — incremento de 16 de Setembro de 2026
+
+FR-038/039/040: estúdio multipágina, composição aninhada, imagens, Markdown seguro, modelos, importação/exportação e rascunho cifrado implementados em Node/Go/web. Fonte e limites em docs/SITE-STUDIO.md; evidência local/registo em .codex-delivery/SITE-STUDIO.md. Gate corrente68777 ainda activo; a primeira matriz usou assets anteriores à correcção de rótulos e será substituída por matriz precedida de build explícito. O estudo de ZeroNet não implica execução de scripts, compatibilidade de protocolo nem disponibiliza já permissões para contribuidores.
+
+Concluir em ordem: recolher UI Node/Go/desktop e public-web/Reticulum; executar .cache/site-studio/verify-built-browser-final.mjs; rever capturas finais; conservar evidência sanitizada; commit/push explícito sem UIKit/XCTest WIP; publicar exactamente os assets aprovados; verificar hashes HTTPS e percursos no URL. Não fechar P3/P5/P6/P7 ou o contrato integral.
+
+Depois deste marco, priorizar liberdade funcional dos sites (endereços/revisões estáveis, módulos de dados e contribuições assinadas com permissões e orçamentos), sem misturar autoria e leitura. Estes itens são trabalho pendente, não compromissos implementados por este documento. Continuam também paridade de grupos web, backup/rotação/keystore, embalagem de meios em todas as apps, dispositivos/rádios físicos e revisão independente.

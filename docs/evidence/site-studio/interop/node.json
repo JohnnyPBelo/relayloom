@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "authorRuntime": "node",
+  "seedRuntime": "go",
+  "controls": [
+    "Draft and image absent from plaintext disk; invalid save is atomic; restart and locked/unauthenticated reads tested.",
+    "Original author terminated with TCP refusal; new reader never connected to author and cannot retrieve without a path. Reader edit/delete and manifest substitution rejected.",
+    "Corrupted stored site refused after restart; exact bytes restore reading. Paused seed does not serve, consenting restarted seed serves full pages/images with original author and address."
+  ],
+  "cleanupErrors": [],
+  "scope": "Real Linux Node/Go processes over TCP; no radio or physical mobile claim."
+}

@@ -25,6 +25,10 @@ function browserOffline(): Plugin {
       const root = resolve(config.root, config.build.outDir),
         browser = join(root, "browser");
       mkdirSync(browser, { recursive: true });
+      copyFileSync(
+        resolve("docs/licenses/site-studio/NOTICE.txt"),
+        join(root, "assets/site-studio-notices.txt"),
+      );
       for (const name of ["icon.svg", "manifest.webmanifest"])
         copyFileSync(resolve("apps/web/browser", name), join(browser, name));
       const paths = [
@@ -35,7 +39,9 @@ function browserOffline(): Plugin {
           .filter((name) => /^worker.*\.js$/.test(name))
           .map((name) => "browser/" + name),
         ...readdirSync(join(root, "assets"))
-          .filter((name) => /\.(js|css|woff2?|svg|png|webmanifest)$/.test(name))
+          .filter((name) =>
+            /\.(js|css|woff2?|svg|png|webmanifest|txt)$/.test(name),
+          )
           .map((name) => "assets/" + name),
       ].sort();
       const assets = paths.map((path) => ({

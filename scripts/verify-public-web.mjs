@@ -90,6 +90,7 @@ try {
         "tests/browser/application.spec.ts",
         "tests/browser/contact-relay.spec.ts",
         "tests/browser/connectivity.spec.ts",
+        "tests/browser/site-studio.spec.ts",
       ],
       { RELAYLOOM_MATRIX_ENGINE: engine },
     );

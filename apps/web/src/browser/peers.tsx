@@ -215,7 +215,7 @@ export function BrowserPeerPanel({ api }: { api: API }) {
                 event.preventDefault();
                 void run(async () => {
                   await api("peer-accept", { handle, signal: input });
-                  setStatus("Ligação estabelecida. Já podem trocar conteúdo.");
+                  setStatus("Resposta aceite. A confirmar o estado da ligação…");
                 });
               }}
             >

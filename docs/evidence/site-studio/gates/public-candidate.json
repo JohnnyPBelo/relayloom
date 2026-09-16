@@ -1,0 +1,335 @@
+{
+  "status": "PASS",
+  "started": "2026-09-16T10:32:16.837Z",
+  "baseCommit": "e4a39f03915bf656292115857c6879980eefee93",
+  "sources": {
+    "apps/web/browser/icon.svg": "e07d4044578707df6661e170be9e819ad252a9e6654a60858600de2963a4b35e",
+    "apps/web/browser/index.html": "55eeb90dcb5618d714b3cb45dc032fde13992ada6b02f86ced06f3a6169ff895",
+    "apps/web/browser/manifest.webmanifest": "19128cfd05183584671ce8d8697e44011315a35bfb2425b920511bc6b56a9cee",
+    "apps/web/index.html": "e978bf65269a8b04c1b98744cf7d07e94bf5f22b1a433a51278e33f4a82ebc03",
+    "apps/web/src/api.ts": "88a96ff53e80d50f537e7f70e14febd7d7a365bc5bc5d978147789484ed2d4f9",
+    "apps/web/src/appearance.ts": "37be3b863697fd2328d2e0c67ae148342b3b8f05492100b52939a5b55f466438",
+    "apps/web/src/browser/client.ts": "9b9ce3836876c700559889fc5dee951ac7319b215faef028d6dd71df3f79edc2",
+    "apps/web/src/browser/entry.ts": "2d3487d8ed553a5ae550bf5661b8bbd0c766fe452116017c826488d90c638607",
+    "apps/web/src/browser/peers.css": "e71aa2a6562b90bb8bb8fd133a5ac15a205618deb3a3a8c85b1fe8491a31b10e",
+    "apps/web/src/browser/peers.tsx": "6db6480b606282fa93a40789c0426343261ed4be95337db25272288359e99dc4",
+    "apps/web/src/browser/service-worker.js": "c8ad4424e5845694b22d0c6baf2cfa3d2660214d1378527fe0869d34c3a104e9",
+    "apps/web/src/browser/worker.ts": "b57873bb3cf6b76fb3a8fa2942c5064295db94ace0c3c3084bf7add3cc916596",
+    "apps/web/src/collections.tsx": "9570e3aede296db417829fd0956abe715a878961c578f2a6595a6afe0b993e15",
+    "apps/web/src/commands.tsx": "d436ff85f463616cc63f0dc3ac1dbeb30573cba3f07a2ee35edeecc7f7db49c4",
+    "apps/web/src/conversation-id.ts": "43d636e0d7dda63702ae597871572af79697e729266dd8692fd9bbca0dcd5b39",
+    "apps/web/src/groups.css": "ef04947a85e2a92927a0d64475ce4e4b5652305ec12e572cdea3c7b3cc2100f4",
+    "apps/web/src/groups.tsx": "0c81065d01067f737dee8db9e67898baa73a643a8ee0961b1889bb2dd2b36325",
+    "apps/web/src/liquid-glass.css": "8c6051ad9c01a76848bd6dfbdd7cc81d4dff49b8722d6985ef7f02e7074de420",
+    "apps/web/src/main.tsx": "c54d7f0c15767528bf3abc27ed2978ff098e6ce15e05334f15bd2f4e447b0930",
+    "apps/web/src/media.css": "30c3a0bcd086fffc72f7e7d22109048033cd92b176c152b9ead0c7829df727fc",
+    "apps/web/src/media.tsx": "c08a0409c312703db433ade5eee34731d387d0be892758a7449f55d34d95e453",
+    "apps/web/src/notifications.css": "cdbc683ff118f070e391c902f06e31232d60aede5857a61343f96e7e5694ea15",
+    "apps/web/src/notifications.tsx": "2277c1975250f2b90ab5591c3565deb2a03c6abfb367b09e8d101014d2c981b4",
+    "apps/web/src/outbox.css": "775ec5167560a63ffb9ae5b3bfcbf60bb6623fdda06feef19c9db659f0da1adc",
+    "apps/web/src/outbox.tsx": "c44182731521886d389a411657ad0922564029be0360bf3458253adc3483dcc2",
+    "apps/web/src/relay-participation.css": "feaee3ca738f99cee81eabb787a65e4558631ca2dcab9e26266060b78b0c3c34",
+    "apps/web/src/relay-participation.tsx": "74c41bba1a1fe73ef661f1575983dbf7c8a1155b4dba52faa0fa93e7e55edae5",
+    "apps/web/src/site/model.ts": "b03fd502c8aff8ab060c97f403fc148ba6372d048de2b6703d277fbfbae0ffa5",
+    "apps/web/src/site/renderer.tsx": "1fb57e9bfcae339dfdf88a1331bcf4da0a174d9279781ff096c3452761cd1cb9",
+    "apps/web/src/site/studio.css": "1895bd86d3fcc400849ab878c3257b9a86cf08deb59f679db24a69cbb52ee45d",
+    "apps/web/src/site/studio.tsx": "bfdd15f81fec6148e8570f816efbd0befa8657e5dbb3b06785a62bebef13502e",
+    "apps/web/src/style.css": "46b0e55f4342d3a93a0cdfa707c1cab459d69940579672cb71586161efce1f1a",
+    "apps/web/src/vite-env.d.ts": "65996936fbb042915f7b74a200fcdde7e410f32a669b1ab9597cfaa4b0faddb5",
+    "apps/web/src/web-invitation.tsx": "81df3fe0ca06dac52d33097bc9f94ed17359378f8cddd6cc6b241fa55fa69e94",
+    "docs/licenses/site-studio/NOTICE.txt": "75c009a409459b4fb9f62c1838d32a86e2d16805c8e8f6db930761b8615eccbb",
+    "docs/licenses/site-studio/manifest.json": "4b6f7dbf033fecfa7a7463790aea34fc2780d7b5777c1848bffc4427140de1dc",
+    "package-lock.json": "b7e14f1f5b3a754ae5bca349f2abb9dc3e4e82c75f81e4e46050d4536c72ccd8",
+    "package.json": "602a1cdcff30c6206123f2f1326a23d4310b48094e6b2f198f7cb6b785b89e2e",
+    "packages/browser/src/application.ts": "d877860865f2d666007396ad03f6c138a5b2ccec9b93d7cfc9c60a150bf4c90e",
+    "packages/browser/src/crypto.ts": "07123949de8ff70401362943bd0ff83b70d100a445a07473f08140b34b7dc9a2",
+    "packages/browser/src/group-certificates.ts": "a4967fa5d70d78ae95965fd46d95d23ef3eeb78f527a4ba34bbb6ae97d980400",
+    "packages/browser/src/mesh.ts": "6a9e7b80bb92cf3eea6fc65d493cb779e8591397f1408af8a2a3a6c515734652",
+    "packages/browser/src/packet.ts": "be9bfd0cc55784a0a79c0f77f9ac05e3e2a2646db4d1215cf2f501e91aba717f",
+    "packages/browser/src/profile.ts": "7ed65c504fed9b098457be2276ba998f4dde1d5244b7c919c7ea9cf4bd0ccaad",
+    "packages/browser/src/router.ts": "81adb105555dc6f42604492635ece08e8a82f861d7953dcf9cbe61ee4d4ba2d4",
+    "packages/browser/src/rtc.ts": "41e3e3ae031c5c2a810bdd5d1a111c0445d7542087086753f3db15e6bd97bc99",
+    "packages/browser/src/websocket.ts": "3bdaf0602505363ba355539a65f1f8115216828d3c2e530f06fba7424728b0c9",
+    "packages/content/src/outbox.ts": "317e7cbe64541dc926423f777c3ae1204c8097d67ab93fb521c3e653547764a1",
+    "packages/content/src/site.ts": "8f27ccc40b7867014c2af56490fd887dfc4c96aa8c144618da0023d3aef3c07f",
+    "packages/content/src/types.ts": "608114942909c6d65ddc6aa8d1d7fe5330481e87ee35ad82279b733f4fd2fac2",
+    "packages/content/src/validation.ts": "550fd31ff6f337a98563bec5705fe0d73ecb9e9c14dd1604c1c813048dae75fb",
+    "packages/core/src/index.ts": "543d58852e1b15d7bbe4e6c7707024005081cf093301c0a0282e7603b6ed7909",
+    "packages/core/src/protocol.ts": "b10709bce07d8ad10175fec74032d48d10b9d785bcecb6a9fdc430bbb9f4ab67",
+    "packages/core/src/signing-key.ts": "54f3089142d35f45a2567ea08463cb9bc30b5bcbbe40050250a06b2c9c0db93a",
+    "packages/groups/src/access.ts": "a22c6fef920a1e73172fe7cc90f7c9953132a62090e21213429436d8401de267",
+    "packages/groups/src/carriers.ts": "d2c600c1366cd5ad0fc51628188c7692d66b79da8d1236244e652bc12ccac616",
+    "packages/groups/src/certificate-protocol.ts": "325d7db519799f17c35453333cc690a36ce767a643b1d7abf9d0f4b3638b2be7",
+    "packages/groups/src/certificates.ts": "0d9242b9038dd16ccafa6c8bc17ee1bd48814b31fb406c0762885b23bfe228b4",
+    "packages/groups/src/ledger.ts": "4a70aa9c35f86362be71fb7dd1d280518c05ac060e3699902643220ef37787a5",
+    "packages/groups/src/notices.ts": "5804fb81a01d56f27cd3c414fe97312cb2aff778e94d6ee52995fcce30f65a8f",
+    "packages/groups/src/registry.ts": "83883bb39d7eab69e0ea2a1d12e856d7cc9ee693247359cfd0570fac9b58f924",
+    "packages/groups/src/storage.ts": "71ad563cb74866f05a07c1831e6eadd1bffddd6015a98f77e1a8a23299024566",
+    "packages/profile/src/binding.ts": "892b0d623ba00b2d5cf63622080d0ecff4416fb9ce527f46fd73a90fb669e80a",
+    "packages/profile/src/database.ts": "e7e7780c4403a3cc8cdf08daede15b926e8a975625f455b301cf1ee1aafe33e2",
+    "packages/profile/src/ownership.ts": "dd812d422b797c34a32e5a6437fc948d1f3e54ff6e9b8f114025b05b6c06746b",
+    "packages/profile/src/state.ts": "09db151f681789f03aeba05b1198ed952b28fb612ea9348b56dde8171fb35312",
+    "packages/simulation/src/index.ts": "93f206d68a7375644d49ff8a7c1796d5b82270cd4e9fa093fcd8380228dc37b3",
+    "packages/simulation/src/scenarios.ts": "e175c37794d27dcb174ecc6d2b04fd19b52bd8f4b25382ff90ef40b8551d6fe5",
+    "packages/transport/src/index.ts": "b5ecf9052193d3eb86c5a3d250133e25a027a9b3b8e5e28c9d205b0d78b676e9",
+    "packages/transport/src/protocol.ts": "fc7e95e7f5d3347055958d8bb9ddf56c61b34876784076de3cba4d5029eb8cbb",
+    "packages/transport/src/reticulum.ts": "4d3de97454bde89758f416aec075f81bb4844c327c0b86482de7f576502c3a78",
+    "packages/transport/src/serial.ts": "1cefb0b1154cbaa55676bc0057858ee894f2ad938048b9000fe7639c66ee5357",
+    "packages/transport/src/websocket.ts": "1037def24f77b1163cd905268ed3499ea9275acd5c31d5f324a6a2ecb174521b",
+    "playwright.config.ts": "813eda6b7338af63f31c2878e864af7e7a251062a6460e591001c52d49450563",
+    "scripts/android-bind.mjs": "2d3c9608856b053d28da6008fa9bca1106f8a5194f149028f3189c7c4f39e030",
+    "scripts/android-build.py": "a275f393991632db4408aba5da658566eda2b93966fb8a3356b6a72d87538ab4",
+    "scripts/android-documents.mjs": "17d0ff911b6c56369a8d1841deddc47fd26710f9fec13fed2ef33071a3ed1098",
+    "scripts/android-emulator.py": "e14905a86c4920c0492f60a61dbf89986795ea378a7f822a85bffcea7148ae41",
+    "scripts/android-evidence.mjs": "11ebcfde33e8a28b0de33f818a7c2299afa7a3b3eb7d4836125bd019ec0e7c72",
+    "scripts/android-instrumentation.py": "a175250ae0b203aada6a1e2cfd1de701d0ef75745fb0bd4de656e23ff09e1338",
+    "scripts/android-private-profile.mjs": "91e0a23123ac766b9ae38f60bfd3419457a60ee821576438d1e6900c88f55deb",
+    "scripts/android-relay.mjs": "1b754c431aa3bb7b378cc41e68fa52d5ba295e7064bf32e88b580863a59aed0a",
+    "scripts/android-smoke.mjs": "2055e2b92bfa8b2cbc205596a3cb571c7092204d1ac21388d67a393909955b2e",
+    "scripts/android-toolchain.py": "f42dccf9b21a2b93e0d0e81cf8e51316e9475c32435dee3f9afa4adcd2f4afc1",
+    "scripts/android-ui.py": "1889c7b0c2bb6651b6a04f847437cb8abb33de2a77446a7abc0ba495804578e9",
+    "scripts/desktop-build.mjs": "e3eceb876dab3a9478f66a756683a150c87b6c9505a9f5bd770479a12eb0bde6",
+    "scripts/desktop-package.mjs": "7d61d2f22b2cd0ac2e75aa4f4a7e8fce63ce188393a6421dcbe64b558529dc33",
+    "scripts/desktop-packaged-smoke.mjs": "14af2ff05e3d0b53c97f00b0285f9f889eada85e3bb10d64bd6170da5b8e735f",
+    "scripts/desktop-run.mjs": "bbdb35c3eb6f4ee7e015535651d35cdf4f8d08ca5732e5dc063df7d14b74f6bd",
+    "scripts/e2e.mjs": "e7a72c3b5d92aefd5ecd2cefae9f68feeb8ec61c5fcf2249be9d9d283fa38e9f",
+    "scripts/go.mjs": "b14be8de761bbbf842052ac10ba7e7b7fa7b1a74f1537eab9ed2d2df606e306e",
+    "scripts/ios-build.mjs": "dc710edaaa5bd6496c2bc5843b0e0d8291c2c2a836d1d8b214303856a0d38a53",
+    "scripts/ios-simulator.d.mts": "de421e3a9a725d48378b2a31b8cbda14885780995eb11f988f8c2faa90580e79",
+    "scripts/ios-simulator.mjs": "4361ae329a59ada8ba4b87ccc03fe38fc70b885ef1f842a52a3c7d72021822a5",
+    "scripts/ios-static-check.py": "f9459eeb506d3fb91b8c84eef1ffd6e9b82d944a625b17aebdb300769e611c89",
+    "scripts/native-build.mjs": "40a3eb3118f6766b2a6b92fa70abe925255823b5e54616576b8e2882d7a28865",
+    "scripts/native-interop.ts": "955fa74f33547216a3dd1f42a9413c2601035f82a21b571d8750e6ce3d2af1d3",
+    "scripts/pty-bridge.py": "3e125721028a3bcfae1e85a5c7142f698651cd4f9935d81e47004f9f7861210f",
+    "scripts/publish-web.mjs": "6cba16e8e530eb0cefb11e54beba1c6dd152c03512420f5c0cc63c9251fb61be",
+    "scripts/reticulum-setup.py": "2d690710c0533c334cc1c0caed6f5df2db72b12bb7c47c86b42c777f8d19d29f",
+    "scripts/simulate.ts": "e603f65a72c85fc3173fee07b14ec98527b9263117005c324495ea8017e17133",
+    "scripts/site-notices.mjs": "09e7f34b89327e0eef2be05ba80699a98843397637c7e9174397b587c21fdbd0",
+    "scripts/verify-autonomous.mjs": "8bf08bf7e70febc13646b80e03d4cb195e6bc8a60f439fb6bd927a231ca393e5",
+    "scripts/verify-browser-matrix.mjs": "c976b803382bd8e171c8a1e50a1fc8c2f15857146ac26e05b4a83d67f052120b",
+    "scripts/verify-browser-native.mjs": "27910e87ebb15765a0b2e2d4923cd33f9d62178902aea38aa1938445af29267c",
+    "scripts/verify-browser.mjs": "a0974a5ab2656f77e012da7a2ebc9d788322904d648903d93b035d96c0b894af",
+    "scripts/verify-group-browser.mjs": "6b05189e6041c1d2a375579896bb67edc194513f003c9cc22fbb07f59e30cc5d",
+    "scripts/verify-public-web.mjs": "34927a23e37361cb009b0b27401233e4c7312b5352edc441790b92ab1313895f",
+    "scripts/verify-reticulum.mjs": "6584071c3aecefc035a0e898fca0ad5a4a57c41bc44e236b44926fa61115e4f2",
+    "scripts/verify-site-studio.mjs": "e7ef4fc733e82aa4bc96b94f4d007224458275b81fcfcecc369cca1644b72881",
+    "scripts/verify-ui.mjs": "4bc0b05390cd97ba80d88e77937f01592f389695c0c9fff8566e77e99f5f5ba6",
+    "scripts/verify.mjs": "0f33af171100a83b31066ccf012698659c888e47f5fe40d505116385259e8ac4",
+    "scripts/web-artifact.mjs": "9e260edbdd40a36b80cc6bcb977287915f61fa36f109249398b2b2dbac38bf27",
+    "scripts/webkit-host-deps-linux.json": "612afc3820fba8696f879eb5d94eb20fab2a9400bdeb16aba31532fbb096fc80",
+    "scripts/webkit-host-deps.py": "ff36b946be9a841a9affac65b6b0e86c02da686518b9759b5e91df565b3b9035",
+    "tests/browser/app-host.ts": "7630d6683a8bf94de549008ec8dba73de27cda4d57dccf1ce36030cfdd5452cd",
+    "tests/browser/application-api.spec.ts": "1188e5b0d00c3de7fdc43ff8a8963284014e0cddf61633578ad91fa89075f55b",
+    "tests/browser/application.spec.ts": "22cdf399dbd291ddebd3265f1b358f7e56659cf5446a087a79fc26770289fe21",
+    "tests/browser/browser.config.ts": "079f3e228c80e06f02db81f0b2763e1ad8715bc0323e43f8c1c519724e8156e0",
+    "tests/browser/connectivity.spec.ts": "a41f1908e0f1b09cef1113b963376fdc9e47b01402c9b21fdb76776295203c5a",
+    "tests/browser/contact-relay.spec.ts": "dbd7b72da5b657f431b16b325dc04397a2863a681e37d4a0f66da1f6957e1f7a",
+    "tests/browser/foundation.spec.ts": "17d79689b39b71404895675704735564c67845ad945f7c6121b8818bd6d5e727",
+    "tests/browser/group-certificates.spec.ts": "22467a8dba49d21251275ea439e3c74e23b2f480eaa2631097ad52b4da499b85",
+    "tests/browser/harness.ts": "f9982d6ebcca440622145bd2a60870510a317ac4f09e85f6de51441958e2762d",
+    "tests/browser/launch.checks.ts": "39ddd9faa0dafd3e315687618823a273de49d6be881399f346ff3db66067dde9",
+    "tests/browser/launch.config.ts": "ff6142d32e724491004b00692dff050fc48d908eb1b889537be4e4e2416c4ee7",
+    "tests/browser/matrix.config.ts": "b33bc027ba07010c0f6a54b4ff39b99b65e128ecb82b5dea9d0a1785db8fbfbf",
+    "tests/browser/native-transport.spec.ts": "dfca78964315945cb9a22475f8e2cb51061052d0e9045ee8bd820036e3b1c4c0",
+    "tests/browser/public-distribution.checks.ts": "3b5ce24b1b1034132c8469638be06e9d691849a9170a8623670ee920ef817f5e",
+    "tests/browser/public.config.ts": "b159651caef0e27c6319f889dd96fcaeba9e09b98192b144452449a689b7e2e9",
+    "tests/browser/routing.spec.ts": "9208e64c8672a030d00f96331e08f568c18157359dbba19a4941e839f6d362ac",
+    "tests/browser/site-studio.spec.ts": "77f1b282ed1e3971fe4043ce73a390d978562f879092500ab77dda84196f813c",
+    "tests/browser/static-harness.ts": "8c8de403074678290d9e16cd82071ee2f7eb8ed0d376ee61daf75747328db10d",
+    "tests/browser/x25519.spec.ts": "cd7dc183d6eed73091c5e9d19ffe18410cd735d80c47d1e0fe1626e33086a244",
+    "tests/conversation-id.test.ts": "0b07012db0aaa61a8e86f1d440f53cda0d65abe0515ffd8d557ae0196b5e3a63",
+    "tests/reticulum/ui.config.ts": "fdab8b78ecc9f05469b281ab7a77074066c6c370f8bef3d38e6fa86c35731a15",
+    "vite.config.ts": "fff9fdf5b3f40084f290ec2e6edaf5a0cf6ee34a46e5dd82e083615e6f3e9ff0"
+  },
+  "checks": [
+    {
+      "name": "typecheck",
+      "command": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit"
+      ],
+      "exitCode": 0,
+      "durationMs": 6645
+    },
+    {
+      "name": "conversation-address",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "tests/conversation-id.test.ts"
+      ],
+      "exitCode": 0,
+      "durationMs": 166
+    },
+    {
+      "name": "default-build",
+      "command": [
+        "node",
+        "node_modules/vite/bin/vite.js",
+        "build"
+      ],
+      "exitCode": 0,
+      "durationMs": 2767
+    },
+    {
+      "name": "default-ui-chromium",
+      "command": [
+        "node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "tests/browser/application.spec.ts",
+        "tests/browser/contact-relay.spec.ts",
+        "tests/browser/connectivity.spec.ts",
+        "tests/browser/site-studio.spec.ts"
+      ],
+      "exitCode": 0,
+      "durationMs": 145045
+    },
+    {
+      "name": "default-ui-firefox",
+      "command": [
+        "node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "tests/browser/application.spec.ts",
+        "tests/browser/contact-relay.spec.ts",
+        "tests/browser/connectivity.spec.ts",
+        "tests/browser/site-studio.spec.ts"
+      ],
+      "exitCode": 0,
+      "durationMs": 179466
+    },
+    {
+      "name": "default-ui-webkit",
+      "command": [
+        "node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "tests/browser/application.spec.ts",
+        "tests/browser/contact-relay.spec.ts",
+        "tests/browser/connectivity.spec.ts",
+        "tests/browser/site-studio.spec.ts"
+      ],
+      "exitCode": 0,
+      "durationMs": 175698
+    },
+    {
+      "name": "public-build",
+      "command": [
+        "node",
+        "node_modules/vite/bin/vite.js",
+        "build",
+        "--mode",
+        "public-web",
+        "--base",
+        "/relayloom/"
+      ],
+      "exitCode": 0,
+      "durationMs": 2792
+    },
+    {
+      "name": "public-matrix",
+      "command": [
+        "node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/public.config.ts"
+      ],
+      "exitCode": 0,
+      "durationMs": 469888
+    },
+    {
+      "name": "two-processes",
+      "command": [
+        "node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/launch.config.ts"
+      ],
+      "exitCode": 0,
+      "durationMs": 14080
+    }
+  ],
+  "scope": "Build/default UI + public subpath UI Chromium/Firefox/WebKit on Linux; separate Chromium/Firefox processes. No physical-device or complete-product claim.",
+  "artifacts": {
+    ".nojekyll": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "assets/browser-DaamxPVL.js": {
+      "sha256": "89a6f9db2dc2de0298513657f7c676ad21353c1dac4ef2d5c3217d03bf6efb3a",
+      "bytes": 63167
+    },
+    "assets/main-BsPYHxig.js": {
+      "sha256": "dd12d3291bc872abf45f80e4a40c645234c20f0dcf6d8951017eefb4d9d44fd1",
+      "bytes": 356358
+    },
+    "assets/main-DEi_Xkk3.css": {
+      "sha256": "46f13f96e5f5ac7e0004b1463f8db8639f0ebcf13dcfed004b085215b91a3453",
+      "bytes": 13872
+    },
+    "assets/manifest-BWKlX33v.webmanifest": {
+      "sha256": "19128cfd05183584671ce8d8697e44011315a35bfb2425b920511bc6b56a9cee",
+      "bytes": 319
+    },
+    "assets/peers-BbhE-K_a.js": {
+      "sha256": "6e485459690551e494df7dd3ea02664f0ff643acc6589d87cd70f515a7bbd291",
+      "bytes": 15010
+    },
+    "assets/peers-CVYQJxt3.css": {
+      "sha256": "fa18bfd5c84245c9785a878344e0478b0c9085c821e0e57022b3613cf7f74c7f",
+      "bytes": 58173
+    },
+    "assets/renderer-YCexiCJr.js": {
+      "sha256": "0b26cff58104fae07e448f6ad7a9d34730e45f1c60b96ca488273366800795a0",
+      "bytes": 124031
+    },
+    "assets/renderer-o1cZhAso.css": {
+      "sha256": "fbc3a93352ecfd5268ead4a6b32083030e07168d82296c084b4e07eafb67965b",
+      "bytes": 12284
+    },
+    "assets/site-studio-notices.txt": {
+      "sha256": "75c009a409459b4fb9f62c1838d32a86e2d16805c8e8f6db930761b8615eccbb",
+      "bytes": 97684
+    },
+    "assets/studio-CJLW_nY_.js": {
+      "sha256": "1a07b879ea10c514d8f59b21af4c1a23451decb6380458c3cad84cde527beddd",
+      "bytes": 24228
+    },
+    "browser/assets.json": {
+      "sha256": "f0ba52b1397417183cf31044be711ba7cf1596ba2ffdbcde099de0eb8bcd61a2",
+      "bytes": 2207
+    },
+    "browser/icon.svg": {
+      "sha256": "e07d4044578707df6661e170be9e819ad252a9e6654a60858600de2963a4b35e",
+      "bytes": 364
+    },
+    "browser/index.html": {
+      "sha256": "4d7cafecb8a2382882ba81f4acbf8110c03e516d933648c635375738b20f69b8",
+      "bytes": 1155
+    },
+    "browser/manifest.webmanifest": {
+      "sha256": "19128cfd05183584671ce8d8697e44011315a35bfb2425b920511bc6b56a9cee",
+      "bytes": 319
+    },
+    "browser/sw.js": {
+      "sha256": "9186d7a97a9f39d9954f1084263d9ef47b6010fda4b7d7ebe5cf7dfeb6bbc198",
+      "bytes": 4421
+    },
+    "browser/worker-y40Xh36O.js": {
+      "sha256": "f7d823d2935ac500f3ff23f6fd7276a7f1fde238f28e55f2d621471cd6fad56b",
+      "bytes": 103116
+    },
+    "index.html": {
+      "sha256": "39566836f8abf04e2e7ce51a8e5dc7a0ed6533bdb35ce32c2399a82f0e1c0dfe",
+      "bytes": 385
+    }
+  },
+  "finished": "2026-09-16T10:48:53.450Z"
+}

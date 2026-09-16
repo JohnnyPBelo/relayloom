@@ -1,0 +1,9 @@
+
+> relayloom@0.1.0 test:native:cgo-storage
+> node scripts/go.mjs test -race -p=1 -tags relayloom_sqlite_cgo,sqlite_omit_load_extension ./sqlitedriver ./groupstore ./profilelock ./profiledb ./profilestate
+
+ok  	github.com/JohnnyPBelo/relayloom/native/sqlitedriver	1.013s
+ok  	github.com/JohnnyPBelo/relayloom/native/groupstore	1.275s
+ok  	github.com/JohnnyPBelo/relayloom/native/profilelock	1.029s
+ok  	github.com/JohnnyPBelo/relayloom/native/profiledb	1.329s
+ok  	github.com/JohnnyPBelo/relayloom/native/profilestate	6.430s

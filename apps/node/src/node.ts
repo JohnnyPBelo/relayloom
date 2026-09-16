@@ -1,3 +1,4 @@
+import { draftSummary } from "../../../packages/content/src/site";
 import { commitGroupSendIntent } from "./group-send.js";
 import { ReticulumAdapter } from "../../../packages/transport/src/reticulum.js";
 import {
@@ -155,11 +156,15 @@ export class LoomNode extends EventEmitter {
   async startReticulum(python: string, config: string) {
     this.requireRunning();
     if (this.reticulum) throw new Error("Reticulum já iniciado");
-    this.reticulum = await ReticulumAdapter.start(this.router, { python, config });
+    this.reticulum = await ReticulumAdapter.start(this.router, {
+      python,
+      config,
+    });
   }
   connectReticulum(destination: string) {
     this.requireIdentity();
-    if (!this.reticulum) throw new Error("Reticulum não está configurado nesta instalação");
+    if (!this.reticulum)
+      throw new Error("Reticulum não está configurado nesta instalação");
     this.reticulum.connect(destination);
   }
   inviteWeb(origin: string) {
@@ -695,12 +700,33 @@ export class LoomNode extends EventEmitter {
     ]);
     this.groupHolds = held;
   }
-  saveDraft(blocks: SiteBlock[], theme: string) {
+  loadDraft() {
     this.requireIdentity();
-    validateContent({ type: "site", blocks, theme });
+    return structuredClone(this.privateState.siteDraft ?? null);
+  }
+  saveDraft(
+    blocks: SiteBlock[],
+    theme: string,
+    site?: Content["site"],
+    attachments?: Content["attachments"],
+  ) {
+    this.requireIdentity();
+    validateContent({
+      type: "site",
+      blocks,
+      theme,
+      ...(site !== undefined ? { site } : {}),
+      ...(attachments !== undefined ? { attachments } : {}),
+    });
     const next = {
       ...this.privateState,
-      siteDraft: { blocks, theme, savedAt: Date.now() },
+      siteDraft: {
+        blocks,
+        theme,
+        ...(site !== undefined ? { site } : {}),
+        ...(attachments !== undefined ? { attachments } : {}),
+        savedAt: Date.now(),
+      },
     };
     this.persistPrivate(next);
   }
@@ -1764,6 +1790,7 @@ export class LoomNode extends EventEmitter {
       if (content[field] !== undefined) out[field] = content[field];
     if (content.type === "site") {
       if (content.theme !== undefined) out.theme = content.theme;
+      if (content.site !== undefined) out.site = content.site;
       out.blocks = content.blocks!.map((b) => ({
         id: b.id,
         type: b.type,
@@ -1774,7 +1801,7 @@ export class LoomNode extends EventEmitter {
     }
     if (
       content.attachments &&
-      ["message", "post", "alert"].includes(content.type)
+      ["message", "post", "alert", "site"].includes(content.type)
     )
       out.attachments = content.attachments.map((a) => ({
         name: a.name,
@@ -2114,7 +2141,9 @@ export class LoomNode extends EventEmitter {
             this.identity.public.id,
           )
         : [],
-      siteDraft: this.identity ? (this.privateState.siteDraft ?? null) : null,
+      siteDraft: this.identity
+        ? draftSummary(this.privateState.siteDraft)
+        : null,
       outbox: this.identity
         ? Object.values(this.privateState.outbox ?? {}).map((e) =>
             outboxItem(

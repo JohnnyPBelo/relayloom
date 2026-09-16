@@ -60,3 +60,8 @@ These are actual returned files/reports, not task-creation evidence. The owner t
 - `/root/security_review/group_epoch_adversary` was already complete before root's single test. Its final source-only Android deadline review found no remaining concrete defect and ran no Android/device tests. Earlier protocol/design findings are attributed in the relevant reports, separately from root's test execution.
 
 Root updated README, STATUS, the durable plan and acceptance traceability to reflect these version boundaries. `.codex-delivery/SEQUENTIAL-CHECK.md` records the one subsequent test and its exact outcome. No bridge/provider/authentication/safety settings were changed.
+
+
+## Site studio — 2026-09-16
+
+The owner continues to require sequential recovery without new/resumed agents. Root implemented and reviewed the multipage studio and ran actual tests; no collaboration task was dispatched for this increment. Prior agent evidence above is unchanged. Root's rendered-image review, parser conformance controls and Axe results are not independent review. That requirement remains open for the site increment. Provider, model, bridge and authentication settings were not changed. Detailed execution records: `.codex-delivery/SITE-STUDIO.md`.

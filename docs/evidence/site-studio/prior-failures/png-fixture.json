@@ -1,0 +1,32 @@
+{
+  "old": [
+    {
+      "chunk": "IHDR",
+      "crcValid": true
+    },
+    {
+      "chunk": "IDAT",
+      "crcValid": false
+    },
+    {
+      "chunk": "IEND",
+      "crcValid": true
+    }
+  ],
+  "replacement": [
+    {
+      "chunk": "IHDR",
+      "crcValid": true
+    },
+    {
+      "chunk": "IDAT",
+      "crcValid": true
+    },
+    {
+      "chunk": "IEND",
+      "crcValid": true
+    }
+  ],
+  "replacementBase64": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGNQqCr4DwAD0gIKZKEF0gAAAABJRU5ErkJggg==",
+  "scope": "Synthetic 1x1 RGBA PNG generated with Python standard zlib and checksummed chunks. No user photo."
+}

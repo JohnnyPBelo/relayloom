@@ -1,4 +1,6 @@
 # Dependency notices
+
+O estúdio usa `react-markdown` 10.1.0 (MIT), fixado com integridade. O renderer desactiva HTML, imagens remotas e URLs fora da política do site. As 85 entradas do grafo instalado, incluindo dependências/peers, têm licenças MIT/ISC preservadas em [site-studio](licenses/site-studio/manifest.json) e no NOTICE.txt copiado para os assets web e para os pacotes que os incluem. `node scripts/site-notices.mjs` regenera os avisos sem descarregar código. As 77 novas entradas da lockfile não mudaram versões nem integridades das dependências preexistentes.
 O port dos certificados de grupo acrescenta `@noble/curves` 2.4.0 (MIT), fixado na lockfile com integridade e scripts de instalação desactivados. O browser usa Ed25519 em modo estrito e X25519 desta biblioteca; as regras dos certificados são partilhadas com Node. O filtro de admissão de chaves usa os vectores públicos de pequena ordem dessa versão. [Proveniência](licenses/noble-curves/manifest.json) e [perfil de chaves](SIGNING-KEY-PROFILE.md). Ainda não activa grupos dinâmicos no motor da aplicação browser.
 
 
