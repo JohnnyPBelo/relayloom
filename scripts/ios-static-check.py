@@ -18,7 +18,7 @@ definitions = re.findall(r'^\s*([A-F0-9]{24}) = \{', project, re.M)
 assert len(definitions) == len(set(definitions))
 references = set(re.findall(r'\b[A-F0-9]{24}\b', project))
 assert references == set(definitions)
-for filename in ['AppDelegate.swift', 'RelayViewController.swift', 'OriginPolicy.swift', 'RuntimeCoordinator.swift', 'NativeBridge.m', 'NativeBridge.h', 'RelayLoom-Bridging-Header.h', 'Info.plist']:
+for filename in ['AppDelegate.swift', 'RelayViewController.swift', 'OriginPolicy.swift', 'RuntimeCoordinator.swift', 'NativeText.swift', 'NativeBridge.m', 'NativeBridge.h', 'RelayLoom-Bridging-Header.h', 'Info.plist']:
     assert (ios / 'RelayLoom' / filename).is_file() and filename in project
 assert 'Mobile.xcframework' in project and '../../.cache/ios/stage/web' in project
 ET.parse(ios / 'RelayLoom.xcodeproj/xcshareddata/xcschemes/RelayLoom.xcscheme')

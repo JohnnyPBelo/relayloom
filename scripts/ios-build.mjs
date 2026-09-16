@@ -25,7 +25,7 @@ function files(directory) { return readdirSync(directory, { withFileTypes: true 
 const xcode = run('xcodebuild', ['-version'], root, true);
 if (args.has('--policy-test')) {
   const binary = join(cache, 'policy-tests');
-  run('xcrun', ['swiftc', '-swift-version', '5', '-o', binary, 'apps/ios/RelayLoom/OriginPolicy.swift', 'apps/ios/RelayLoom/RuntimeCoordinator.swift', 'apps/ios/Tests/PolicyTests.swift']);
+  run('xcrun', ['swiftc', '-swift-version', '5', '-o', binary, 'apps/ios/RelayLoom/OriginPolicy.swift', 'apps/ios/RelayLoom/RuntimeCoordinator.swift', 'apps/ios/RelayLoom/NativeText.swift', 'apps/ios/Tests/NativeTextTests.swift', 'apps/ios/Tests/PolicyTests.swift']);
   const output = run(binary, [], root, true);
   writeFileSync(join(cache, 'policy-report.json'), JSON.stringify({ kind: 'IOS_HOST_POLICY_TEST', xcode, output, iosDevice: 'not executed', webView: 'not executed' }, null, 2));
   console.log(output);

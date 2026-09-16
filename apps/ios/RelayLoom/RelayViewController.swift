@@ -21,11 +21,65 @@ final class RelayViewController: UIViewController, WKNavigationDelegate, WKUIDel
     private var backgroundTask: UIBackgroundTaskIdentifier = .invalid
     private var microphonePrompt = false
     private var pendingMediaDecision: OnceCompletion<WKPermissionDecision>?
+    private let keyboardDismissButton = UIButton(type: .system)
+    private var keyboardDismissConstraints: [NSLayoutConstraint] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(red: 0.96, green: 0.96, blue: 0.94, alpha: 1)
+        var keyboardStyle = UIButton.Configuration.tinted()
+        keyboardStyle.title = NativeText.text("Ocultar teclado")
+        keyboardStyle.image = UIImage(systemName: "keyboard.chevron.compact.down")
+        keyboardStyle.imagePadding = 8
+        keyboardStyle.cornerStyle = .capsule
+        keyboardStyle.baseForegroundColor = .label
+        keyboardStyle.baseBackgroundColor = .secondarySystemBackground
+        keyboardStyle.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12)
+        keyboardDismissButton.configuration = keyboardStyle
+        keyboardDismissButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        keyboardDismissButton.titleLabel?.numberOfLines = 0
+        keyboardDismissButton.accessibilityIdentifier = "relayloom.hide-keyboard"
+        updateKeyboardLanguage()
+        keyboardDismissButton.addTarget(self, action: #selector(hideKeyboard), for: .touchUpInside)
+        keyboardDismissButton.isHidden = true
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardFrameChanged(_:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
         showStatus("A preparar o teu nó neste dispositivo…", retry: false)
+    }
+
+    deinit { NotificationCenter.default.removeObserver(self) }
+
+    @objc private func hideKeyboard() {
+        guard foreground, web != nil else { return }
+        view.endEditing(true)
+    }
+
+    @objc private func keyboardFrameChanged(_ notification: Notification) {
+        guard isViewLoaded, let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+        updateKeyboardLanguage()
+        let localFrame = view.convert(frame, from: nil)
+        keyboardDismissButton.isHidden = !foreground || web == nil || localFrame.height <= 0 || localFrame.minY >= view.bounds.maxY || !view.bounds.intersects(localFrame)
+    }
+
+    private func updateKeyboardLanguage() {
+        let title = NativeText.text("Ocultar teclado")
+        keyboardDismissButton.configuration?.title = title
+        keyboardDismissButton.accessibilityLabel = title
+        keyboardDismissButton.accessibilityHint = NativeText.text("Termina a escrita sem enviar o formulário.")
+    }
+
+    private func installKeyboardDismissButton() {
+        NSLayoutConstraint.deactivate(keyboardDismissConstraints)
+        keyboardDismissButton.translatesAutoresizingMaskIntoConstraints = false
+        keyboardDismissButton.isHidden = true
+        view.addSubview(keyboardDismissButton)
+        view.keyboardLayoutGuide.followsUndockedKeyboard = true
+        keyboardDismissConstraints = [
+            keyboardDismissButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            keyboardDismissButton.leadingAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            keyboardDismissButton.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor, constant: -8),
+            keyboardDismissButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 44)
+        ]
+        NSLayoutConstraint.activate(keyboardDismissConstraints)
     }
 
     func startForeground() {
@@ -75,6 +129,10 @@ final class RelayViewController: UIViewController, WKNavigationDelegate, WKUIDel
     }
 
     private func disposeWeb() {
+        keyboardDismissButton.isHidden = true
+        NSLayoutConstraint.deactivate(keyboardDismissConstraints)
+        keyboardDismissConstraints = []
+        keyboardDismissButton.removeFromSuperview()
         if let web {
             web.stopLoading()
             web.pauseAllMediaPlayback(completionHandler: nil)
@@ -116,6 +174,7 @@ final class RelayViewController: UIViewController, WKNavigationDelegate, WKUIDel
                     self.view.addSubview(web)
                     NSLayoutConstraint.activate([web.leadingAnchor.constraint(equalTo: self.view.leadingAnchor), web.trailingAnchor.constraint(equalTo: self.view.trailingAnchor), web.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor), web.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)])
                     self.web = web; web.load(URLRequest(url: policy.launchURL))
+                    self.installKeyboardDismissButton()
                 }
             }
         } catch { Self.runtime.stop(current); lease = 0; endpoint = nil; showStatus("Sessão local inválida.", retry: true) }
@@ -127,8 +186,8 @@ final class RelayViewController: UIViewController, WKNavigationDelegate, WKUIDel
         if trusted(webView) && action.shouldPerformDownload {
             decisionHandler(.cancel)
             if presentedViewController == nil {
-                let alert = UIAlertController(title: "Guardar ficheiro indisponível", message: "A exportação de ficheiros ainda não está implementada nesta versão iOS. Nenhum ficheiro foi guardado.", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "Compreendi", style: .default))
+                let alert = UIAlertController(title: NativeText.text("Guardar ficheiro indisponível"), message: NativeText.text("A exportação de ficheiros ainda não está implementada nesta versão iOS. Nenhum ficheiro foi guardado."), preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: NativeText.text("Compreendi"), style: .default))
                 present(alert, animated: true)
             }
             return
@@ -156,13 +215,13 @@ final class RelayViewController: UIViewController, WKNavigationDelegate, WKUIDel
         webView.evaluateJavaScript("navigator.userActivation.isActive") { [weak self] value, error in
             guard let self else { request.finish(.deny); return }
             guard error == nil, value as? Bool == true, self.trusted(webView), Self.runtime.isCurrent(current) else { self.finishMediaDecision(.deny, requestID: requestID); return }
-            let alert = UIAlertController(title: "Gravar mensagem de voz", message: "Permitir o microfone para esta gravação? A câmara continua bloqueada.", preferredStyle: .alert)
+            let alert = UIAlertController(title: NativeText.text("Gravar mensagem de voz"), message: NativeText.text("Permitir o microfone para esta gravação? A câmara continua bloqueada."), preferredStyle: .alert)
             let finish: (Bool) -> Void = { [weak self] allow in
                 guard let self else { request.finish(.deny); return }
                 self.finishMediaDecision(allow && self.trusted(webView) && Self.runtime.isCurrent(current) ? .grant : .deny, requestID: requestID)
             }
-            alert.addAction(UIAlertAction(title: "Não permitir", style: .cancel) { _ in finish(false) })
-            alert.addAction(UIAlertAction(title: "Permitir microfone", style: .default) { _ in finish(true) })
+            alert.addAction(UIAlertAction(title: NativeText.text("Não permitir"), style: .cancel) { _ in finish(false) })
+            alert.addAction(UIAlertAction(title: NativeText.text("Permitir microfone"), style: .default) { _ in finish(true) })
             self.present(alert, animated: true)
         }
     }
@@ -179,11 +238,11 @@ final class RelayViewController: UIViewController, WKNavigationDelegate, WKUIDel
         loadViewIfNeeded()
         view.subviews.forEach { $0.removeFromSuperview() }
         let panel = UIStackView(); panel.axis = .vertical; panel.alignment = .center; panel.spacing = 20; panel.translatesAutoresizingMaskIntoConstraints = false
-        let label = UILabel(); label.numberOfLines = 0; label.textAlignment = .center; label.font = .preferredFont(forTextStyle: .headline); label.adjustsFontForContentSizeCategory = true; label.text = message
+        let label = UILabel(); label.numberOfLines = 0; label.textAlignment = .center; label.font = .preferredFont(forTextStyle: .headline); label.adjustsFontForContentSizeCategory = true; label.text = NativeText.text(message)
         panel.addArrangedSubview(label); status = label
-        if retry { let button = UIButton(type: .system); button.setTitle("Tentar novamente", for: .normal); button.addTarget(self, action: #selector(retryStart), for: .touchUpInside); panel.addArrangedSubview(button) }
+        if retry { let button = UIButton(type: .system); button.setTitle(NativeText.text("Tentar novamente"), for: .normal); button.addTarget(self, action: #selector(retryStart), for: .touchUpInside); panel.addArrangedSubview(button) }
         else { let progress = UIActivityIndicatorView(style: .medium); progress.startAnimating(); panel.addArrangedSubview(progress) }
-        let limits = UILabel(); limits.numberOfLines = 0; limits.textAlignment = .center; limits.font = .preferredFont(forTextStyle: .footnote); limits.adjustsFontForContentSizeCategory = true; limits.text = "Rede experimental. A retransmissão pára em segundo plano."; panel.addArrangedSubview(limits)
+        let limits = UILabel(); limits.numberOfLines = 0; limits.textAlignment = .center; limits.font = .preferredFont(forTextStyle: .footnote); limits.adjustsFontForContentSizeCategory = true; limits.text = NativeText.text("Rede experimental. A retransmissão pára em segundo plano."); panel.addArrangedSubview(limits)
         view.addSubview(panel); NSLayoutConstraint.activate([panel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 28), panel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -28), panel.centerYAnchor.constraint(equalTo: view.centerYAnchor)])
     }
     @objc private func retryStart() { startForeground() }

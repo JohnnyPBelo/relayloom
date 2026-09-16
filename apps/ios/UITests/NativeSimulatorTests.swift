@@ -32,7 +32,8 @@ final class NativeSimulatorTests: XCTestCase {
         let app = launchOwnedApp()
         defer { app.terminate() }
         try requireStartup(app)
-        try require(app.webViews.buttons["Criar identidade"].firstMatch, "new identity form")
+        try tap(app, "Get started")
+        try require(app.webViews.buttons["Create identity"].firstMatch, "new identity form")
         capture(app, "relayloom-00-startup-ready")
         print("IOS_SIMULATOR_PHASE app-startup-checked")
     }
@@ -60,7 +61,7 @@ final class NativeSimulatorTests: XCTestCase {
         let fixtures = try JSONDecoder().decode(SimulatorFixtures.self, from: Data(contentsOf: url))
         XCTAssertLessThan(fixtures.recipientCard.utf8.count, 2048)
         // Locale overrides apply only to this test application process. The
-        // shared web UI remains Portuguese; Apple picker buttons use English.
+        // shared web UI follows English here; Apple picker buttons also use English.
         let app = launchOwnedApp()
         var completed = false
         defer {
@@ -71,45 +72,46 @@ final class NativeSimulatorTests: XCTestCase {
             app.terminate()
         }
         try requireStartup(app)
-        try require(app.webViews.buttons["Criar identidade"].firstMatch, "new identity form")
+        try tap(app, "Get started")
+        try require(app.webViews.buttons["Create identity"].firstMatch, "new identity form")
         capture(app, "relayloom-01-onboarding")
 
         let name = app.webViews.textFields.firstMatch
         try require(name, "identity name"); name.tap(); name.typeText(fixtures.senderName)
         let secret = app.webViews.secureTextFields.firstMatch
         try require(secret, "identity passphrase"); secret.tap(); secret.typeText(fixtures.passphrase)
-        try dismissKeyboard(app, anchor: "Um novo fio na rede.")
-        try tap(app, "Criar identidade")
-        try require(app.webViews.buttons["Pesquisar e navegar"].firstMatch, "identity created by UI", timeout: 45)
+        try dismissKeyboard(app, anchor: "Your place in the network.")
+        try tap(app, "Create identity")
+        try require(app.webViews.buttons["Search and navigate"].firstMatch, "identity created by UI", timeout: 45)
         print("IOS_SIMULATOR_PHASE identity-created")
 
-        try navigate(app, to: "A praça")
-        try tap(app, "Partilhar algo")
+        try navigate(app, to: "Community")
+        try tap(app, "Share something")
         let post = app.webViews.textViews.firstMatch
         try require(post, "post composer"); post.tap(); post.typeText(fixtures.post)
-        try dismissKeyboard(app, anchor: "Uma história para partilhar")
-        try tap(app, "Publicar")
-        try vanished(app.webViews.buttons["Publicar"].firstMatch, "post form completed")
+        try dismissKeyboard(app, anchor: "A story to share")
+        try tap(app, "Publish")
+        try vanished(app.webViews.buttons["Publish"].firstMatch, "post form completed")
         try require(app.webViews.staticTexts[fixtures.post].firstMatch, "signed post visible")
         print("IOS_SIMULATOR_PHASE post-published")
 
-        try navigate(app, to: "Conversas")
-        try tap(app, "Adicionar contacto")
+        try navigate(app, to: "Conversations")
+        try tap(app, "Add contact")
         let card = app.webViews.textViews.firstMatch
         try require(card, "recipient card field"); card.tap(); card.typeText(fixtures.recipientCard)
-        try dismissKeyboard(app, anchor: "Adicionar uma pessoa")
-        try tap(app, "Verificar e adicionar")
-        try vanished(app.webViews.buttons["Verificar e adicionar"].firstMatch, "contact form completed")
+        try dismissKeyboard(app, anchor: "Add a person")
+        try tap(app, "Verify and add")
+        try vanished(app.webViews.buttons["Verify and add"].firstMatch, "contact form completed")
 
-        try navigate(app, to: "A rede")
-        try tap(app, "Ligar um par")
+        try navigate(app, to: "Network")
+        try tap(app, "Connect a peer")
         let port = app.webViews.textFields.element(boundBy: 1)
         try require(port, "synthetic peer TCP port"); port.tap(); port.typeText(String(fixtures.peerTCPPort))
-        try dismissKeyboard(app, anchor: "Ligar um par")
-        try tap(app, "Ligar por TCP")
-        try vanished(app.webViews.buttons["Ligar por TCP"].firstMatch, "peer form completed")
-        try navigate(app, to: "Conversas")
-        try tap(app, "Nova conversa")
+        try dismissKeyboard(app, anchor: "Connect a peer")
+        try tap(app, "Connect via TCP")
+        try vanished(app.webViews.buttons["Connect via TCP"].firstMatch, "peer form completed")
+        try navigate(app, to: "Conversations")
+        try tap(app, "New conversation")
         try chooseRecipient(app, name: fixtures.recipientName)
         try send(app, text: fixtures.message)
         capture(app, "relayloom-02-private-message")
@@ -152,7 +154,7 @@ final class NativeSimulatorTests: XCTestCase {
         try require(app.webViews.staticTexts[fixtures.reply].firstMatch, "Node reply survives process relaunch")
         if fixtures.photoAttachment { try require(app.webViews.staticTexts[fixtures.attachmentMessage].firstMatch, "attachment survives process relaunch") }
         capture(app, "relayloom-05-after-relaunch")
-        try navigate(app, to: "A praça")
+        try navigate(app, to: "Community")
         try require(app.webViews.staticTexts[fixtures.post].firstMatch, "post survives process relaunch")
         print("IOS_SIMULATOR_PHASE process-relaunch-recovered")
 
@@ -177,16 +179,16 @@ final class NativeSimulatorTests: XCTestCase {
     }
     @MainActor private func navigate(_ app: XCUIApplication, to label: String) throws {
         let destination = app.webViews.buttons.matching(identifier: label).firstMatch
-        if !destination.isHittable { try tap(app, "Abrir navegação") }
+        if !destination.isHittable { try tap(app, "Open navigation") }
         try require(destination, "navigation " + label); destination.tap()
     }
     @MainActor private func chooseRecipient(_ app: XCUIApplication, name: String) throws {
-        let composer = app.webViews.textViews["Escrever mensagem"].firstMatch
+        let composer = app.webViews.textViews["Write a message"].firstMatch
         let heading = app.webViews.staticTexts[name].firstMatch
         // A restored compact conversation hides the list. Verify its actual
         // recipient instead of requiring an unrelated, hidden list control.
         if composer.exists && composer.isHittable && heading.exists && heading.isHittable { return }
-        let back = app.webViews.buttons["Voltar às conversas"].firstMatch
+        let back = app.webViews.buttons["Back to conversations"].firstMatch
         if back.exists && back.isHittable { back.tap() }
         let recipient = app.webViews.buttons.matching(NSPredicate(format: "label CONTAINS %@", name)).firstMatch
         try require(recipient, "synthetic recipient conversation"); recipient.tap()
@@ -195,31 +197,35 @@ final class NativeSimulatorTests: XCTestCase {
         XCTAssertTrue(heading.isHittable, "Expected recipient must be visible before composing")
     }
     @MainActor private func send(_ app: XCUIApplication, text: String) throws {
-        let composer = app.webViews.textViews["Escrever mensagem"].firstMatch
+        let composer = app.webViews.textViews["Write a message"].firstMatch
         try require(composer, "message composer"); composer.tap(); composer.typeText(text)
-        try tap(app, "Enviar mensagem")
+        try tap(app, "Send message")
         try require(app.webViews.staticTexts[text].firstMatch, "saved message visible")
         // Tapping the fixed privacy note blurs the composer without a host hook.
-        try dismissKeyboard(app, anchor: "Uma ligação só vossa")
+        try dismissKeyboard(app, anchor: "A connection of your own")
     }
     @MainActor private func unlock(_ app: XCUIApplication, fixtures: SimulatorFixtures) throws {
-        try require(app.webViews.buttons["Entrar na minha rede"].firstMatch, "persisted identity is locked", timeout: 45)
-        XCTAssertFalse(app.webViews.buttons["Criar identidade"].firstMatch.exists)
+        try require(app.webViews.buttons["Enter my network"].firstMatch, "persisted identity is locked", timeout: 45)
+        XCTAssertFalse(app.webViews.buttons["Create identity"].firstMatch.exists)
         let secret = app.webViews.secureTextFields.firstMatch
         try require(secret, "unlock passphrase"); secret.tap(); secret.typeText(fixtures.passphrase)
-        try dismissKeyboard(app, anchor: "Bom ter-te de volta.")
-        try tap(app, "Entrar na minha rede")
-        try require(app.webViews.buttons["Pesquisar e navegar"].firstMatch, "recovered native identity", timeout: 45)
+        try dismissKeyboard(app, anchor: "Welcome back.")
+        try tap(app, "Enter my network")
+        try require(app.webViews.buttons["Search and navigate"].firstMatch, "recovered native identity", timeout: 45)
     }
     @MainActor private func dismissKeyboard(_ app: XCUIApplication, anchor: String) throws {
         guard app.keyboards.firstMatch.exists else { return }
         do {
+            let nativeDismiss = app.buttons["relayloom.hide-keyboard"]
             // The iOS input accessory can be a button or a key. These exact
             // semantic labels never select Return or submit the form.
             let labels = ["Done", "Hide keyboard", "Dismiss keyboard"] as NSArray
             let predicate = NSPredicate(format: "identifier IN[c] %@ OR label IN[c] %@", labels, labels)
             let candidates = app.buttons.matching(predicate).allElementsBoundByIndex + app.keys.matching(predicate).allElementsBoundByIndex
-            if let done = candidates.first(where: { $0.isHittable }) {
+            if nativeDismiss.exists && nativeDismiss.isHittable {
+                XCTAssertEqual(nativeDismiss.label, "Hide keyboard", "Native keyboard control follows the English app interface")
+                nativeDismiss.tap()
+            } else if let done = candidates.first(where: { $0.isHittable }) {
                 done.tap()
             } else {
                 let text = app.webViews.staticTexts[anchor].firstMatch
@@ -254,16 +260,18 @@ final class NativeSimulatorTests: XCTestCase {
         }
     }
     @MainActor private func attachPhoto(_ app: XCUIApplication) throws {
-        let controls = app.webViews.descendants(matching: .any).matching(identifier: "Anexar ficheiro")
+        let controls = app.webViews.descendants(matching: .any).matching(identifier: "Attach file")
         guard let control = controls.allElementsBoundByIndex.first(where: { $0.isHittable }) else { throw SmokeFailure.missing("file input") }
         control.tap()
-        let library = app.buttons["Photo Library"].firstMatch
+        // WKWebView's file menu follows the page language (pt), even when the
+        // simulator UI is English. Both exact native labels have been observed.
+        let library = app.buttons.matching(NSPredicate(format: "label == 'Photo Library' OR label == 'Fototeca'")).firstMatch
         try require(library, "system Photo Library action", timeout: 15); library.tap()
         let photo = app.collectionViews.cells.firstMatch
         try require(photo, "seeded synthetic photo", timeout: 20); photo.tap()
-        let add = app.buttons.matching(NSPredicate(format: "label == 'Add' OR label BEGINSWITH 'Add (' OR label == 'Done' OR label == 'Choose'")).firstMatch
+        let add = app.buttons.matching(NSPredicate(format: "label == 'Add' OR label BEGINSWITH 'Add (' OR label == 'Done' OR label == 'Choose' OR label == 'Adicionar' OR label BEGINSWITH 'Adicionar (' OR label == 'Concluído' OR label == 'Escolher'")).firstMatch
         try require(add, "confirm system photo selection", timeout: 15); add.tap()
-        try require(app.webViews.buttons["Remover"].firstMatch, "photo selected into composer", timeout: 20)
+        try require(app.webViews.buttons["Remove"].firstMatch, "photo selected into composer", timeout: 20)
     }
     @MainActor private func capture(_ app: XCUIApplication, _ name: String) {
         let screenshot = XCTAttachment(screenshot: app.screenshot())

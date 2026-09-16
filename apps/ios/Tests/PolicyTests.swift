@@ -33,6 +33,8 @@ private final class RuleCompilationResult {
 enum PolicyTests {
     @MainActor static func main() throws {
         var assertions = 0
+        let languageAssertions = try NativeTextTests.run()
+        print("Native language preferences: \(languageAssertions) assertions passed (macOS host; no iOS UI execution)")
         func check(_ value: Bool, _ label: String) {
             assertions += 1
             if !value { fatalError(label) }
