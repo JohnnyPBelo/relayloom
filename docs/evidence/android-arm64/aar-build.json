@@ -1,0 +1,32 @@
+{
+  "kind": "ANDROID_AAR_BUILD",
+  "status": "BUILT_NOT_DEVICE_TESTED",
+  "target": "android/arm64",
+  "abi": "arm64-v8a",
+  "minApi": 24,
+  "go": "go1.26.8",
+  "xMobile": "v0.0.0-20260908204917-8b95e45f8d3e",
+  "aar": ".cache/android/artifacts/relayloom-core-arm64.aar",
+  "sha256": "694df3a3d54c7cf7d27981f2f8a2d7e476b9ce0376b7de0bc00e460b5f71e59f",
+  "bytes": 9365018,
+  "toolMetadata": {
+    "gomobile": "[PROJECT]/.cache/go/bin/gomobile: go1.26.8\n\tpath\tgolang.org/x/mobile/cmd/gomobile\n\tmod\tgolang.org/x/mobile\tv0.0.0-20260908204917-8b95e45f8d3e\th1:zYnHsDmxfxKH/x9DjYNAdoIdMsP8enB1Ncb10b3pdHk=\n\tdep\tgolang.org/x/mod\tv0.41.0\th1:qJmnOUb4YB+FsEuM3HcWucdZASCPGhsX6uljO6pog0c=\n\tdep\tgolang.org/x/sync\tv0.23.0\th1:KameEIfc1IkluZyXWLn39Wd4tURc6GbCiISGiZm2bQk=\n\tdep\tgolang.org/x/tools\tv0.50.0\th1:c2ifzfcuY7L90lZ2aKd8S4K2NpASF08SZx9ZuJkHmSU=\n\tbuild\t-buildmode=exe\n\tbuild\t-compiler=gc\n\tbuild\tCGO_ENABLED=1\n\tbuild\tCGO_CFLAGS=\n\tbuild\tCGO_CPPFLAGS=\n\tbuild\tCGO_CXXFLAGS=\n\tbuild\tCGO_LDFLAGS=\n\tbuild\tGOARCH=amd64\n\tbuild\tGOOS=linux\n\tbuild\tGOAMD64=v1",
+    "gobind": "[PROJECT]/.cache/go/bin/gobind: go1.26.8\n\tpath\tgolang.org/x/mobile/cmd/gobind\n\tmod\tgolang.org/x/mobile\tv0.0.0-20260908204917-8b95e45f8d3e\th1:zYnHsDmxfxKH/x9DjYNAdoIdMsP8enB1Ncb10b3pdHk=\n\tdep\tgolang.org/x/mod\tv0.41.0\th1:qJmnOUb4YB+FsEuM3HcWucdZASCPGhsX6uljO6pog0c=\n\tdep\tgolang.org/x/sync\tv0.23.0\th1:KameEIfc1IkluZyXWLn39Wd4tURc6GbCiISGiZm2bQk=\n\tdep\tgolang.org/x/tools\tv0.50.0\th1:c2ifzfcuY7L90lZ2aKd8S4K2NpASF08SZx9ZuJkHmSU=\n\tbuild\t-buildmode=exe\n\tbuild\t-compiler=gc\n\tbuild\tCGO_ENABLED=1\n\tbuild\tCGO_CFLAGS=\n\tbuild\tCGO_CPPFLAGS=\n\tbuild\tCGO_CXXFLAGS=\n\tbuild\tCGO_LDFLAGS=\n\tbuild\tGOARCH=amd64\n\tbuild\tGOOS=linux\n\tbuild\tGOAMD64=v1"
+  },
+  "resourceBefore": {
+    "freeBytes": 66720907264,
+    "androidAllocatedBytes": 11678334976,
+    "maxAndroidBytes": 26843545600,
+    "minimumFreeBytes": 16106127360
+  },
+  "command": [
+    "gomobile",
+    "bind",
+    "-tags=sqlite_omit_load_extension",
+    "-target=android/arm64",
+    "-androidapi=24",
+    "-o",
+    ".cache/android/artifacts/relayloom-core-arm64.aar",
+    "./mobile"
+  ]
+}

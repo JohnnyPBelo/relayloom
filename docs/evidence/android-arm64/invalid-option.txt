@@ -1,0 +1,11 @@
+file://[PROJECT]/scripts/android-bind.mjs:17
+if (options.length > 1 || options.some(value => !['--abi=x86_64', '--abi=arm64-v8a'].includes(value))) throw new Error('Usage: node scripts/android-bind.mjs [--abi=x86_64|--abi=arm64-v8a]');
+                                                                                                             ^
+
+Error: Usage: node scripts/android-bind.mjs [--abi=x86_64|--abi=arm64-v8a]
+    at file://[PROJECT]/scripts/android-bind.mjs:17:110
+    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:681:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+
+Node.js v22.22.3

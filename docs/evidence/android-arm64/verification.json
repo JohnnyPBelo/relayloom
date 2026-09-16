@@ -1,0 +1,27 @@
+{
+  "status": "BUILD_VERIFIED_NOT_DEVICE_TESTED",
+  "apk": ".cache/android/artifacts/relayloom-android-arm64-v8a-debug.apk",
+  "apkSha256": "812339a7d716db41ab8fe26b1f4a83033575210547ad666b7c33abc507d83ed8",
+  "apkBytes": 16841791,
+  "aarSha256": "694df3a3d54c7cf7d27981f2f8a2d7e476b9ce0376b7de0bc00e460b5f71e59f",
+  "abi": "arm64-v8a",
+  "elfLibraries": [
+    {
+      "name": "libgojni.so",
+      "sha256": "ddde28aa6b83ab775d6f71a7769cebfbc35b65e4070525ab9c8179944589645e",
+      "loadAlignments": [
+        "0x4000",
+        "0x4000",
+        "0x4000",
+        "0x4000"
+      ],
+      "elfMachine": 183
+    }
+  ],
+  "zipAlignmentPassed": true,
+  "x86ArtifactsUnchanged": true,
+  "sameWebAssetsAsVerifiedX86": true,
+  "sameDevelopmentCertificate": true,
+  "arm64Execution": false,
+  "physicalDeviceTested": false
+}

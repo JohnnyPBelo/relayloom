@@ -1,0 +1,49 @@
+{
+  "kind": "ANDROID_NATIVE_BUILD",
+  "status": "APK_BUILT_NOT_DEVICE_TESTED",
+  "abi": "arm64-v8a",
+  "minApi": 24,
+  "targetApi": 36,
+  "aar": ".cache/android/artifacts/relayloom-core-arm64.aar",
+  "aarSha256": "694df3a3d54c7cf7d27981f2f8a2d7e476b9ce0376b7de0bc00e460b5f71e59f",
+  "apk": ".cache/android/artifacts/relayloom-android-arm64-v8a-debug.apk",
+  "apkSha256": "812339a7d716db41ab8fe26b1f4a83033575210547ad666b7c33abc507d83ed8",
+  "apkBytes": 16841791,
+  "elfLibraries": [
+    {
+      "name": "libgojni.so",
+      "sha256": "ddde28aa6b83ab775d6f71a7769cebfbc35b65e4070525ab9c8179944589645e",
+      "loadAlignments": [
+        "0x4000",
+        "0x4000",
+        "0x4000",
+        "0x4000"
+      ],
+      "elfMachine": 183
+    }
+  ],
+  "apk16KiBZipAlignmentPassed": true,
+  "signatureVerification": "Verifies\nVerified using v1 scheme (JAR signing): false\nVerified using v2 scheme (APK Signature Scheme v2): true\nVerified using v3 scheme (APK Signature Scheme v3): true\nVerified using v3.1 scheme (APK Signature Scheme v3.1): false\nVerified using v4 scheme (APK Signature Scheme v4): false\nVerified for SourceStamp: false\nNumber of signers: 1\nSigner #1 certificate DN: CN=RelayLoom Debug, O=Development Only, C=PT\nSigner #1 certificate SHA-256 digest: 2228ad54be98becb1841c9f907e5e1117b89a7e4d5de2531c803081b478e8b2e\nSigner #1 certificate SHA-1 digest: 9a6200d944ab441573bfee4ed4244fedda05f730\nSigner #1 certificate MD5 digest: d29714da7c7bffb63938d0131cad5866\nSigner #1 key algorithm: RSA\nSigner #1 key size (bits): 2048\nSigner #1 public key SHA-256 digest: 83f5b1aec7fcb2d505f7b4e020129783590a4e5e505645b98296d7880c9915e6\nSigner #1 public key SHA-1 digest: cb3f2eae2a58d0a048074fbb50df123fef78ba23\nSigner #1 public key MD5 digest: c64f893738f7f0f733c6cf8336f8d2dd\nPicked up JAVA_TOOL_OPTIONS: -Djava.util.prefs.userRoot=[PROJECT]/.cache/android/java-prefs -Djava.util.prefs.systemRoot=[PROJECT]/.cache/android/java-system-prefs -Xmx1024m",
+  "manifestBadging": "package: name='org.relayloom.android' versionCode='1' versionName='0.1.0-experimental' platformBuildVersionName='16' platformBuildVersionCode='36' compileSdkVersion='36' compileSdkVersionCodename='16'\nminSdkVersion:'24'\ntargetSdkVersion:'36'\nuses-permission: name='android.permission.INTERNET'\nuses-permission: name='android.permission.ACCESS_NETWORK_STATE'\nuses-permission: name='android.permission.RECORD_AUDIO'\nuses-permission: name='android.permission.POST_NOTIFICATIONS'\napplication-label:'RelayLoom experimental'\napplication-icon-160:'res/drawable/ic_relayloom.xml'\napplication: label='RelayLoom experimental' icon='res/drawable/ic_relayloom.xml'\napplication-debuggable\nlaunchable-activity: name='org.relayloom.android.MainActivity'  label='' icon=''\nfeature-group: label=''\n  uses-feature-not-required: name='android.hardware.microphone'\n  uses-feature: name='android.hardware.faketouch'\n  uses-implied-feature: name='android.hardware.faketouch' reason='default feature for all apps'\nmain\nsupports-screens: 'small' 'normal' 'large' 'xlarge'\nsupports-any-density: 'true'\nlocales: '--_--'\ndensities: '160'\nnative-code: 'arm64-v8a'",
+  "webSource": "dist/web",
+  "bundledWebManifestSha256": "068d59f102f4a0c587331d5975cc533b855a6c2d42661bb645dfa64cf35e29a5",
+  "bundledAssetCount": 30,
+  "hostPolicyTest": "OriginPolicy: 21 boundary assertions passed (host JVM; not WebView/device testing)\nPicked up JAVA_TOOL_OPTIONS: -Djava.util.prefs.userRoot=[PROJECT]/.cache/android/java-prefs -Djava.util.prefs.systemRoot=[PROJECT]/.cache/android/java-system-prefs -Xmx1024m\nRuntimeLeaseCoordinator: 7 lifecycle assertions passed (host JVM fake backend; not Activity/device testing)\nPicked up JAVA_TOOL_OPTIONS: -Djava.util.prefs.userRoot=[PROJECT]/.cache/android/java-prefs -Djava.util.prefs.systemRoot=[PROJECT]/.cache/android/java-system-prefs -Xmx1024m\nDocumentPolicy/Session: 28 boundary/lifecycle assertions passed (host JVM; no SAF device result implied)\nPicked up JAVA_TOOL_OPTIONS: -Djava.util.prefs.userRoot=[PROJECT]/.cache/android/java-prefs -Djava.util.prefs.systemRoot=[PROJECT]/.cache/android/java-system-prefs -Xmx1024m\nAndroidHostAdapterTest: 6 synthetic capture/suspension assertions passed (no device media exercised)\n....\n----------------------------------------------------------------------\nRan 4 tests in 0.002s\n\nOK",
+  "before": {
+    "freeBytes": 66709282816,
+    "androidAllocatedBytes": 11687727104,
+    "maxAndroidBytes": 26843545600,
+    "minimumFreeBytes": 16106127360
+  },
+  "after": {
+    "freeBytes": 66640502784,
+    "androidAllocatedBytes": 11756314624,
+    "maxAndroidBytes": 26843545600,
+    "minimumFreeBytes": 16106127360
+  },
+  "limitations": [
+    "Host cross-compilation and archive/signature/alignment checks only; no emulator or physical device run is implied.",
+    "Debug signing is local development only; no store upload or release signing.",
+    "16 KiB ELF/APK alignment does not establish physical ARM64 16 KiB device compatibility."
+  ]
+}

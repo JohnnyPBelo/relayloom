@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build one x86_64 debug APK using official SDK tools and an actual gomobile AAR."""
+"""Build one explicit 64-bit Android ABI with official tools and a real gomobile AAR."""
 from pathlib import Path
 import argparse
 import fcntl
@@ -10,6 +10,7 @@ import re
 import runpy
 import shutil
 import subprocess
+import sys
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -46,6 +47,7 @@ def policy_test():
     run([JDK / 'bin/javac', '--release', '17', '-d', target, *[SOURCE / ('java/org/relayloom/android/' + name + '.java') for name in names], *[ROOT / ('apps/android/tests/' + name + '.java') for name in tests]])
     results = [run([JDK / 'bin/java', '-cp', target, 'org.relayloom.android.' + name], capture=True) for name in tests]
     results.append(run(['node', ROOT / 'apps/android/tests/AndroidHostAdapterTest.mjs'], capture=True))
+    results.append(run([sys.executable, ROOT / 'apps/android/tests/BuildTargetsTest.py'], capture=True))
     return '\n'.join(results)
 
 def prepare_web(source, stage):
@@ -86,24 +88,36 @@ def prepare_web(source, stage):
     (stage / 'assets/web-manifest.json').write_text(json.dumps(entries, separators=(',', ':')))
     return entries
 
-def build(aar, web):
+def elf_machine(library, abi):
+    expected = {'x86_64': 62, 'arm64-v8a': 183}.get(abi)
+    if expected is None: raise RuntimeError('Unsupported Android ABI')
+    with library.open('rb') as source: header = source.read(20)
+    if len(header) != 20 or header[:6] != b'\x7fELF\x02\x01' or int.from_bytes(header[16:18], 'little') != 3:
+        raise RuntimeError('Expected a 64-bit little-endian ELF shared library')
+    actual = int.from_bytes(header[18:20], 'little')
+    if actual != expected: raise RuntimeError(f'ELF machine {actual} does not match Android ABI {abi}')
+    return actual
+
+def build(aar, web, abi='x86_64'):
+    if abi not in ['x86_64', 'arm64-v8a']: raise RuntimeError('Unsupported Android ABI')
     if not aar.is_file(): raise RuntimeError('A real, successfully compiled gomobile AAR is required first')
     before = TOOLS['check_space'](2 * 1024 ** 3)
-    stage = CACHE / 'apk-build'; fresh_directory(stage)
+    stage = CACHE / ('apk-build' if abi == 'x86_64' else 'apk-build-' + abi); fresh_directory(stage)
     extracted = stage / 'aar'; TOOLS['safe_zip'](aar, extracted)
     classes = extracted / 'classes.jar'
     if not classes.is_file(): raise RuntimeError('AAR lacks Java bindings')
     with zipfile.ZipFile(classes) as jar:
         for name in ['mobile/Mobile.class', 'go/Seq.class']:
             if name not in jar.namelist(): raise RuntimeError(f'AAR has no required binding {name}')
-    libraries = list((extracted / 'jni/x86_64').glob('*.so'))
-    if not libraries or not any(p.name == 'libgojni.so' for p in libraries): raise RuntimeError('AAR lacks the real x86_64 Go JNI runtime')
+    libraries = list((extracted / 'jni' / abi).glob('*.so'))
+    if not libraries or not any(p.name == 'libgojni.so' for p in libraries): raise RuntimeError(f'AAR lacks the real {abi} Go JNI runtime')
     elf = SDK / 'ndk/28.2.13676358/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-readelf'
     alignments = []
     for library in libraries:
+        machine = elf_machine(library, abi)
         output = run([elf, '-lW', library], capture=True); loads = [line.split()[-1] for line in output.splitlines() if line.strip().startswith('LOAD ')]
         if not loads or any(int(value, 16) < 16384 for value in loads): raise RuntimeError(f'{library.name} lacks 16 KiB ELF LOAD alignment')
-        alignments.append({'name': library.name, 'sha256': sha(library), 'loadAlignments': loads})
+        alignments.append({'name': library.name, 'sha256': sha(library), 'loadAlignments': loads, 'elfMachine': machine})
     assets = prepare_web(web, stage)
     generated = stage / 'generated'; generated.mkdir()
     compiled = stage / 'resources.zip'
@@ -120,7 +134,7 @@ def build(aar, web):
     run([BUILD_TOOLS / 'd8', '--release', '--min-api', '24', '--lib', ANDROID_JAR, '--output', dex, wrapper_jar, classes])
     with zipfile.ZipFile(unsigned, 'a') as apk:
         for file in sorted(dex.glob('classes*.dex')): apk.write(file, file.name, compress_type=zipfile.ZIP_DEFLATED)
-        for library in libraries: apk.write(library, 'lib/x86_64/' + library.name, compress_type=zipfile.ZIP_STORED)
+        for library in libraries: apk.write(library, 'lib/' + abi + '/' + library.name, compress_type=zipfile.ZIP_STORED)
     aligned = stage / 'aligned.apk'; run([BUILD_TOOLS / 'zipalign', '-P', '16', '-f', '4', unsigned, aligned])
     key = CACHE / 'debug.keystore'
     if not key.exists():
@@ -128,23 +142,24 @@ def build(aar, web):
         run([JDK / 'bin/keytool', '-genkeypair', '-keystore', key, '-storepass', 'android', '-keypass', 'android', '-alias', 'androiddebugkey', '-keyalg', 'RSA', '-keysize', '2048', '-validity', '3650', '-dname', 'CN=RelayLoom Debug,O=Development Only,C=PT'])
         key.chmod(0o600)
     artifacts = CACHE / 'artifacts'; artifacts.mkdir(exist_ok=True)
-    apk = artifacts / 'relayloom-android-x86_64-debug.apk'
+    apk = artifacts / ('relayloom-android-' + abi + '-debug.apk')
     run([BUILD_TOOLS / 'apksigner', 'sign', '--ks', key, '--ks-key-alias', 'androiddebugkey', '--ks-pass', 'pass:android', '--key-pass', 'pass:android', '--out', apk, aligned])
     signing = run([BUILD_TOOLS / 'apksigner', 'verify', '--verbose', '--print-certs', apk], capture=True)
     zip_alignment = run([BUILD_TOOLS / 'zipalign', '-c', '-P', '16', '-v', '4', apk], capture=True)
     manifest = run([BUILD_TOOLS / 'aapt2', 'dump', 'badging', apk], capture=True)
     with zipfile.ZipFile(apk) as archive:
         names = archive.namelist()
-        if 'lib/x86_64/libgojni.so' not in names or 'classes.dex' not in names or 'assets/web/index.html' not in names: raise RuntimeError('APK contents do not contain the native runtime and bundled app')
-    report = {'kind': 'ANDROID_NATIVE_BUILD', 'status': 'APK_BUILT_NOT_DEVICE_TESTED', 'abi': 'x86_64', 'minApi': 24, 'targetApi': 36, 'aar': str(aar.relative_to(ROOT)), 'aarSha256': sha(aar), 'apk': str(apk.relative_to(ROOT)), 'apkSha256': sha(apk), 'apkBytes': apk.stat().st_size, 'elfLibraries': alignments, 'apk16KiBZipAlignmentPassed': True, 'signatureVerification': signing, 'manifestBadging': manifest, 'webSource': str(web.relative_to(ROOT)), 'bundledWebManifestSha256': sha(stage / 'assets/web-manifest.json'), 'bundledAssetCount': len(assets), 'hostPolicyTest': policy_test(), 'before': before, 'after': TOOLS['check_space'](), 'limitations': ['Host cross-compilation and archive/signature/alignment checks only; no emulator or physical device run is implied.', 'Debug signing is local development only; no store upload or release signing.', '16 KiB ELF/APK alignment does not establish physical ARM64 16 KiB device compatibility.']}
-    (CACHE / 'build-report.json').write_text(json.dumps(report, indent=2) + '\n')
-    (CACHE / 'zipalign-report.txt').write_text(zip_alignment + '\n')
+        if 'lib/' + abi + '/libgojni.so' not in names or 'classes.dex' not in names or 'assets/web/index.html' not in names: raise RuntimeError('APK contents do not contain the native runtime and bundled app')
+    report = {'kind': 'ANDROID_NATIVE_BUILD', 'status': 'APK_BUILT_NOT_DEVICE_TESTED', 'abi': abi, 'minApi': 24, 'targetApi': 36, 'aar': str(aar.relative_to(ROOT)), 'aarSha256': sha(aar), 'apk': str(apk.relative_to(ROOT)), 'apkSha256': sha(apk), 'apkBytes': apk.stat().st_size, 'elfLibraries': alignments, 'apk16KiBZipAlignmentPassed': True, 'signatureVerification': signing, 'manifestBadging': manifest, 'webSource': str(web.relative_to(ROOT)), 'bundledWebManifestSha256': sha(stage / 'assets/web-manifest.json'), 'bundledAssetCount': len(assets), 'hostPolicyTest': policy_test(), 'before': before, 'after': TOOLS['check_space'](), 'limitations': ['Host cross-compilation and archive/signature/alignment checks only; no emulator or physical device run is implied.', 'Debug signing is local development only; no store upload or release signing.', '16 KiB ELF/APK alignment does not establish physical ARM64 16 KiB device compatibility.']}
+    report_suffix = '' if abi == 'x86_64' else '-' + abi
+    (CACHE / ('build-report' + report_suffix + '.json')).write_text(json.dumps(report, indent=2) + '\n')
+    (CACHE / ('zipalign-report' + report_suffix + '.txt')).write_text(zip_alignment + '\n')
     print(json.dumps({k: report[k] for k in ['kind', 'status', 'apk', 'apkSha256', 'apkBytes', 'apk16KiBZipAlignmentPassed']}, indent=2))
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(); parser.add_argument('--aar', default='.cache/android/artifacts/relayloom-core.aar'); parser.add_argument('--web', default='dist/web'); parser.add_argument('--policy-test', action='store_true'); args = parser.parse_args()
+    parser = argparse.ArgumentParser(); parser.add_argument('--abi', choices=['x86_64', 'arm64-v8a'], default='x86_64'); parser.add_argument('--aar'); parser.add_argument('--web', default='dist/web'); parser.add_argument('--policy-test', action='store_true'); args = parser.parse_args()
     CACHE.mkdir(parents=True, exist_ok=True)
     with (CACHE / 'native-build.lock').open('w') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         if args.policy_test: print(policy_test())
-        else: build(project_path(args.aar), project_path(args.web))
+        else: build(project_path(args.aar or ('.cache/android/artifacts/relayloom-core-arm64.aar' if args.abi == 'arm64-v8a' else '.cache/android/artifacts/relayloom-core.aar')), project_path(args.web), args.abi)
