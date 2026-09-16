@@ -66,6 +66,8 @@ export async function serve(
         if (limit.n > 60)
           return json(429, { error: "Demasiados pedidos; tente novamente" });
         try {
+          if (req.method === "GET" && url.pathname === "/api/ui-preferences")
+            return json(200, node.loadUIPreferences());
           if (req.method === "GET" && url.pathname === "/api/state")
             return json(200, node.state());
           if (req.method !== "POST")
@@ -85,6 +87,8 @@ export async function serve(
           }
           const body = JSON.parse(Buffer.concat(chunks).toString("utf8"));
           switch (url.pathname) {
+            case "/api/ui-preferences":
+              return json(200, node.updateUIPreferences(body));
             case "/api/setup":
               return json(
                 200,

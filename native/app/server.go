@@ -132,6 +132,15 @@ func StartWithOptions(dataDir, assetsPath string, options Options) (*Service, er
 				return
 			}
 			operation := strings.TrimPrefix(requestPath, "/api/")
+			if r.Method == http.MethodGet && operation == "ui-preferences" {
+				prefs, err := node.UIPreferences()
+				if err != nil {
+					respond(w, 400, map[string]any{"error": err.Error()})
+				} else {
+					respond(w, 200, prefs)
+				}
+				return
+			}
 			if r.Method == http.MethodGet && operation == "state" {
 				state, err := node.State()
 				if err != nil {
@@ -170,7 +179,7 @@ func StartWithOptions(dataDir, assetsPath string, options Options) (*Service, er
 				respond(w, 400, map[string]any{"error": err.Error()})
 				return
 			}
-			if !contains([]string{"setup", "unlock", "lock", "export", "contact", "connect", "web-peer", "web-peer-stop", "serial", "site-draft", "site-draft-load", "collection", "retrieve", "publish", "send", "outbox-retry", "group-command", "action", "settings", "view", "history", "attachment"}, operation) {
+			if !contains([]string{"ui-preferences", "setup", "unlock", "lock", "export", "contact", "connect", "web-peer", "web-peer-stop", "serial", "site-draft", "site-draft-load", "collection", "retrieve", "publish", "send", "outbox-retry", "group-command", "action", "settings", "view", "history", "attachment"}, operation) {
 				respond(w, 404, map[string]any{"error": "operação desconhecida"})
 				return
 			}

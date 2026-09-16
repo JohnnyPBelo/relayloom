@@ -1,3 +1,4 @@
+import { readUIPreferences, saveUIPreferences } from "./ui-preferences";
 import { draftSummary } from "../../../packages/content/src/site";
 import { commitGroupSendIntent } from "./group-send.js";
 import { ReticulumAdapter } from "../../../packages/transport/src/reticulum.js";
@@ -358,6 +359,14 @@ export class LoomNode extends EventEmitter {
       }
     })();
     return this.stopping;
+  }
+  loadUIPreferences() {
+    this.requireRunning();
+    return readUIPreferences(this.dir);
+  }
+  updateUIPreferences(patch: unknown) {
+    this.requireRunning();
+    return saveUIPreferences(this.dir, patch);
   }
   private requireRunning() {
     if (this.stopped) throw new Error("Nó encerrado");

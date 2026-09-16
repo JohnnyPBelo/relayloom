@@ -1138,6 +1138,8 @@ func (n *Node) Handle(operation string, body map[string]any) (any, error) {
 		return n.stateLocked()
 	}
 	switch operation {
+	case "ui-preferences":
+		return n.saveUIPreferencesLocked(body)
 	case "setup":
 		if n.initialized() {
 			return nil, errors.New("já existe uma identidade neste nó")
