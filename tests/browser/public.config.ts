@@ -12,6 +12,8 @@ export default defineConfig({
     "site-studio.spec.ts",
     "onboarding-language.spec.ts",
     "site-language.spec.ts",
+    "site-pages.spec.ts",
+    "mobile-navigation.spec.ts",
     "public-distribution.checks.ts",
   ],
   projects: ["chromium", "firefox", "webkit"].map((name) => ({

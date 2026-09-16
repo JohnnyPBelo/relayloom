@@ -49,9 +49,11 @@ import type {
 import {
   cloneNode,
   countBlocks,
+  duplicatePage,
   flatten,
   labels,
   mapNodes,
+  movePage,
   newBlock,
   templateSite,
   validateStudio,
@@ -143,7 +145,8 @@ export function SiteStudio({
     value.site.pages.find((p) => p.id === value.site.home)!;
   const tree = flatten(page.blocks),
     chosen = tree.find((x) => x.node.id === selected),
-    disabled = busy || working;
+    disabled = busy || working,
+    pageIndex = value.site.pages.findIndex((entry) => entry.id === page.id);
   function change(next: StudioValue, record = true) {
     if (record) {
       history.current.past.push(value);
@@ -340,6 +343,22 @@ export function SiteStudio({
     });
     setPage(value.site.home);
     setSelected("");
+  }
+  function duplicateSelectedPage() {
+    if (disabled) return;
+    try {
+      const next = duplicatePage(value, page.id);
+      change(next.value);
+      setPage(next.pageId);
+      setSelected("");
+    } catch (error) {
+      setError((error as Error).message);
+    }
+  }
+  function moveSelectedPage(direction: -1 | 1) {
+    if (disabled) return;
+    const site = movePage(value.site, page.id, direction);
+    if (site !== value.site) change({ ...value, site });
   }
   async function action(kind: "save" | "publish") {
     setError("");
@@ -966,6 +985,7 @@ export function SiteStudio({
                   {t("Nome da página")}
                   <input
                     value={page.title}
+                    disabled={disabled}
                     maxLength={80}
                     onChange={(e) =>
                       editDoc((s) => {
@@ -979,6 +999,7 @@ export function SiteStudio({
                   {t("Endereço da página")}
                   <input
                     value={page.slug}
+                    disabled={disabled}
                     maxLength={40}
                     onChange={(e) =>
                       editDoc((s) => {
@@ -988,25 +1009,76 @@ export function SiteStudio({
                     }
                   />
                 </label>
-                <button
-                  className="text-button"
-                  disabled={page.id === value.site.home}
-                  onClick={() =>
-                    editDoc((s) => {
-                      s.home = page.id;
-                    })
-                  }
+                <div
+                  className="studio-page-actions"
+                  role="group"
+                  aria-label={t("Organizar página")}
                 >
-                  {t("Usar como início")}
-                </button>
-                <button
-                  className="icon"
-                  aria-label={t("Eliminar página seleccionada")}
-                  disabled={page.id === value.site.home}
-                  onClick={deletePage}
-                >
-                  <Trash2 size={17} />
-                </button>
+                  <div className="studio-page-summary">
+                    <span className="studio-page-position">
+                      {t("Página {index} de {total}", {
+                        index: pageIndex + 1,
+                        total: value.site.pages.length,
+                      })}
+                    </span>
+                    <button
+                      className="text-button"
+                      disabled={disabled || page.id === value.site.home}
+                      onClick={() =>
+                        editDoc((s) => {
+                          s.home = page.id;
+                        })
+                      }
+                    >
+                      {t("Usar como início")}
+                    </button>
+                  </div>
+                  <div className="studio-page-buttons">
+                    <button
+                      className="icon"
+                      aria-label={t("Mover página para cima")}
+                      title={t("Mover página para cima")}
+                      disabled={disabled || pageIndex === 0}
+                      onClick={() => moveSelectedPage(-1)}
+                    >
+                      <ArrowUp size={17} />
+                    </button>
+                    <button
+                      className="icon"
+                      aria-label={t("Mover página para baixo")}
+                      title={t("Mover página para baixo")}
+                      disabled={
+                        disabled || pageIndex === value.site.pages.length - 1
+                      }
+                      onClick={() => moveSelectedPage(1)}
+                    >
+                      <ArrowDown size={17} />
+                    </button>
+                    <button
+                      className="icon"
+                      aria-label={t("Duplicar página seleccionada")}
+                      title={t("Duplicar página seleccionada")}
+                      disabled={
+                        disabled ||
+                        value.site.pages.length >= SITE_LIMITS.pages ||
+                        countBlocks(value.site) + tree.length >
+                          SITE_LIMITS.blocks
+                      }
+                      onClick={duplicateSelectedPage}
+                    >
+                      <Copy size={17} />
+                    </button>
+                    <button
+                      className="icon"
+                      aria-label={t("Eliminar página seleccionada")}
+                      title={t("Eliminar página seleccionada")}
+                      disabled={disabled || page.id === value.site.home}
+                      onClick={deletePage}
+                    >
+                      <Trash2 size={17} />
+                    </button>
+                  </div>
+                </div>
               </div>
             )}
             <SiteSurface

@@ -267,6 +267,7 @@
 }
 .studio-page-meta {
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
   align-items: end;
   margin-bottom: 14px;
@@ -282,6 +283,37 @@
 .studio-page-meta .text-button {
   font-size: 11px;
   min-height: 44px;
+}
+.studio-page-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  flex: 1 0 100%;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+.studio-page-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 0 160px;
+}
+.studio-page-buttons {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+}
+.studio-page-actions .icon {
+  min-width: 44px;
+  min-height: 44px;
+}
+.studio-page-position {
+  flex: 1;
+  min-width: 82px;
+  color: var(--muted);
+  font-size: 12px;
 }
 .studio-surface {
   --site-paper: #faf7f0;

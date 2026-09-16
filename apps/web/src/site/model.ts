@@ -125,6 +125,68 @@ export function cloneNode(node: SiteNode): SiteNode {
 export function countBlocks(site: SiteDocument) {
   return site.pages.reduce((n, p) => n + flatten(p.blocks).length, 0);
 }
+export function duplicatePage(value: StudioValue, pageId: string) {
+  const source = value.site.pages.find((page) => page.id === pageId);
+  if (!source) throw new Error("Página não encontrada.");
+  if (value.site.pages.length >= SITE_LIMITS.pages)
+    throw new Error("Limite de 12 páginas atingido.");
+  if (
+    countBlocks(value.site) + flatten(source.blocks).length >
+    SITE_LIMITS.blocks
+  )
+    throw new Error("Limite de 128 blocos atingido.");
+  const site = structuredClone(value.site),
+    id = crypto.randomUUID();
+  const suffix = t(" (cópia)");
+  let title = "";
+  for (const character of source.title) {
+    if (title.length + character.length > 80 - suffix.length) break;
+    title += character;
+  }
+  let slug = "";
+  for (let index = 2; index <= SITE_LIMITS.pages + 1; index++) {
+    const end = "-" + index;
+    const candidate = source.slug.slice(0, 40 - end.length) + end;
+    if (!site.pages.some((page) => page.slug === candidate)) {
+      slug = candidate;
+      break;
+    }
+  }
+  // New node/page identities keep edits independent. A self-link follows the
+  // copied page; links to other pages and references to shared images stay intact.
+  const copy = (node: SiteNode): SiteNode => ({
+    ...structuredClone(node),
+    id: crypto.randomUUID(),
+    ...(node.url === "page:" + pageId ? { url: "page:" + id } : {}),
+    ...(node.children ? { children: node.children.map(copy) } : {}),
+  });
+  const at = site.pages.findIndex((page) => page.id === pageId);
+  site.pages.splice(at + 1, 0, {
+    ...structuredClone(source),
+    id,
+    title: title.trimEnd() + suffix,
+    slug,
+    blocks: source.blocks.map(copy),
+  });
+  const next = { ...value, site };
+  validateStudio(next);
+  return { value: next, pageId: id };
+}
+export function movePage(
+  site: SiteDocument,
+  pageId: string,
+  direction: -1 | 1,
+) {
+  if (direction !== -1 && direction !== 1)
+    throw new Error("Direcção de página inválida.");
+  const at = site.pages.findIndex((page) => page.id === pageId);
+  if (at < 0) throw new Error("Página não encontrada.");
+  const target = at + direction;
+  if (target < 0 || target >= site.pages.length) return site;
+  const pages = [...site.pages];
+  [pages[at], pages[target]] = [pages[target], pages[at]];
+  return { ...site, pages };
+}
 export function validateStudio(value: StudioValue) {
   if (
     !value ||

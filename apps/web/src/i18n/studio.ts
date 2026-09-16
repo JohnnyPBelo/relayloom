@@ -274,4 +274,29 @@ export const studio = [
     "Block {index} address",
     "Dirección del bloque {index}",
   ],
+  [" (cópia)", " (copy)", " (copia)"],
+  ["Página não encontrada.", "Page not found.", "Página no encontrada."],
+  [
+    "Limite de 12 páginas atingido.",
+    "The 12-page limit has been reached.",
+    "Se ha alcanzado el límite de 12 páginas.",
+  ],
+  [
+    "Direcção de página inválida.",
+    "Invalid page direction.",
+    "Dirección de página no válida.",
+  ],
+  [
+    "Duplicar página seleccionada",
+    "Duplicate selected page",
+    "Duplicar página seleccionada",
+  ],
+  ["Mover página para cima", "Move page up", "Mover página hacia arriba"],
+  ["Mover página para baixo", "Move page down", "Mover página hacia abajo"],
+  [
+    "Página {index} de {total}",
+    "Page {index} of {total}",
+    "Página {index} de {total}",
+  ],
+  ["Organizar página", "Organise page", "Organizar página"],
 ] as const;
