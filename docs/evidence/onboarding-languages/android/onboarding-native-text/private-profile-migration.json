@@ -1,0 +1,23 @@
+{
+  "kind": "ANDROID_PRIVATE_PROFILE_MIGRATION",
+  "status": "PASSED",
+  "apkSha256": "d2dd1ab1fddbf3b25ecc7145d9ef8552229330adee7e5a4d261313d77f274016",
+  "aarSha256": "9c81c716454f6d7a064699690eb4cad8f0461241e94f35427243e4a5e2fea23b",
+  "databaseSha256": "d3fcf541e312fa35ea826046a760b912c0d554f17f56c5d9b3fe4c9905b03a8f",
+  "bindingSha256": "d5bbed1d3716a9ee936ec46a2885668c987f8cbf525fdecae8295218250159e9",
+  "databaseBytes": 28672,
+  "identityVaultUnchanged": true,
+  "legacyCiphertextUnchanged": true,
+  "beganWithoutBinding": true,
+  "committedBindingVerifiedByNode": true,
+  "androidSQLiteAuthenticatedByNode": true,
+  "actualPrivatePreviewPresentAfterDecryption": true,
+  "actualPrivatePreviewAbsentFromCiphertext": true,
+  "serial": "emulator-5580",
+  "physicalDevice": false,
+  "limitations": [
+    "synthetic profile in the existing API36x86_64 emulator, followed by host inspection of its copied encrypted SQLite",
+    "no physical power-loss, ARM64 hardware, radio, or complete-valid-backup rollback protection"
+  ],
+  "noPrivateKeysOrContentInReport": true
+}

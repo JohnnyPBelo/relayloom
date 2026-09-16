@@ -1,0 +1,26 @@
+
+Running 19 tests using 1 worker
+
+(node:2329375) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › tests/browser/application.spec.ts:75:1 › autonomous Liquid Glass UI owns identity and offline outbox, connects through real RTC, receives signed confirmations and survives reload (7.8s)
+  ✓   2 [chromium] › tests/browser/application.spec.ts:204:1 › autonomous social actions and safe signed site builder persist and remain viewable after author closes (14.6s)
+  ✓   3 [chromium] › tests/browser/application.spec.ts:359:1 › production worker keeps private keys out of replies and recovers an applied send after the UI response is lost (22.3s)
+  ✓   4 [chromium] › tests/browser/application.spec.ts:466:1 › a second tab cannot take ownership of a live application profile and an unknown or corrupt profile is never silently reset (1.8s)
+  ✓   5 [chromium] › tests/browser/application.spec.ts:523:1 › cached application code and encrypted profile reopen when the static host is unavailable, without installing the PWA (3.7s)
+  ✓   6 [chromium] › tests/browser/application.spec.ts:589:1 › corrupted cached worker is rejected offline and recovered only from verified available code (1.3s)
+  ✓   7 [chromium] › tests/browser/connectivity.spec.ts:98:1 › both pending outboxes deliver after completing signalling; modes stay separate and diagnostics contain no secrets (13.0s)
+  ✓   8 [chromium] › tests/browser/connectivity.spec.ts:242:1 › closing while a code is being generated releases the late pending peer (4.6s)
+  ✓   9 [chromium] › tests/browser/contact-relay.spec.ts:121:1 › imported contact immediately appears once, survives reload and becomes the first real DM without a duplicate (4.6s)
+  ✓  10 [chromium] › tests/browser/contact-relay.spec.ts:208:1 › relay consent through the UI gates a real A to B to C path and does not grant B private reading (32.4s)
+  ✓  11 [chromium] › tests/browser/onboarding-language.spec.ts:13:1 › initial language, product guide and appearance work without altering identity form values (1.9s)
+  ✓  12 [chromium] › tests/browser/onboarding-language.spec.ts:133:1 › English and Spanish identities exchange encrypted messages and files without translating authored text (9.7s)
+  ✓  13 [chromium] › tests/browser/onboarding-language.spec.ts:363:1 › a blocked tab can change UI language while the owning identity remains intact (1.3s)
+  ✓  14 [chromium] › tests/browser/onboarding-language.spec.ts:453:1 › unavailable preference storage and localized form validation never reset a profile (1.2s)
+  ✓  15 [chromium] › tests/browser/onboarding-language.spec.ts:532:1 › saving one preference does not hide a different unsaved preference (697ms)
+  ✓  16 [chromium] › tests/browser/site-language.spec.ts:114:1 › three multilingual identities edit signed pages, preserve original text and seed to a new reader after author closes (19.3s)
+  ✓  17 [chromium] › tests/browser/site-studio.spec.ts:78:1 › multipage studio saves encrypted draft, rejects executable imports and a consenting reader seeds it to a new browser after author closes (21.7s)
+  ✓  18 [chromium] › tests/browser/site-studio.spec.ts:352:1 › studio keyboard navigation, nested drag, duplicate, reparent and page references stay editable on a narrow screen (3.0s)
+  ✓  19 [chromium] › tests/browser/site-studio.spec.ts:426:1 › dense three-level compositions keep all controls inside their blocks and preserve contrast across palettes and app themes (8.4s)
+
+  19 passed (2.9m)

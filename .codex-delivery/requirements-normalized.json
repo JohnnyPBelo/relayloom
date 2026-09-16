@@ -3629,6 +3629,74 @@
           "notes": "Chromium153/Firefox155/WebKit26.6 on Linux:30 tests and3 RNS UI each;50 native UI and Linux desktop. Portable noble Ed/X curves after native WebKit failures;512 lifecycle controls and public RFC vector. One prior WebKit RTC closure remains unexplained; no full parity/device/Safari/independent-review claim."
         }
       ]
+    },
+    {
+      "id": "FR-044",
+      "type": "functional",
+      "title": "Initial explanation and setup",
+      "statement": "The first-run experience explains identity, encryption, peer connections, relay/seeding and authorship, and supports initial configuration.",
+      "status": "partial",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md",
+        "section": "Owner extension 2026-09-16"
+      },
+      "implementation": {
+        "milestone": "Product completion"
+      },
+      "validation": {
+        "evidence_paths": [
+          "tests/browser/onboarding-language.spec.ts",
+          ".codex-delivery/ONBOARDING-LANGUAGES.md"
+        ],
+        "limits": "Shared UI/browser/Node/Go and Android emulator exercised. New Swift/iOS, native system permission descriptions, physical devices and independent review remain unverified or pending; public deployment separate."
+      },
+      "evidence": [
+        {
+          "kind": "integration-and-ui",
+          "command": "node scripts/verify-onboarding-languages.mjs; Android commands in docs/evidence/onboarding-languages/README.md",
+          "result": "pass-scoped",
+          "paths": [
+            "docs/evidence/onboarding-languages",
+            "docs/SETUP-LANGUAGES.md"
+          ],
+          "notes": "Local complete gate and Android execution; no physical radio, Apple execution or completed-product claim."
+        }
+      ]
+    },
+    {
+      "id": "FR-045",
+      "type": "functional",
+      "title": "Selectable application languages",
+      "statement": "The user can select multiple interface languages before identity creation and in Settings, with persistent preferences, localized messages and dates; authored messages/sites remain unchanged.",
+      "status": "partial",
+      "inferred": false,
+      "source": {
+        "file": "PROJECT-BRIEF.md",
+        "section": "Owner extension 2026-09-16"
+      },
+      "implementation": {
+        "milestone": "Product completion"
+      },
+      "validation": {
+        "evidence_paths": [
+          "tests/browser/onboarding-language.spec.ts",
+          ".codex-delivery/ONBOARDING-LANGUAGES.md"
+        ],
+        "limits": "Shared UI/browser/Node/Go and Android emulator exercised. New Swift/iOS, native system permission descriptions, physical devices and independent review remain unverified or pending; public deployment separate."
+      },
+      "evidence": [
+        {
+          "kind": "integration-and-ui",
+          "command": "node scripts/verify-onboarding-languages.mjs; Android commands in docs/evidence/onboarding-languages/README.md",
+          "result": "pass-scoped",
+          "paths": [
+            "docs/evidence/onboarding-languages",
+            "docs/SETUP-LANGUAGES.md"
+          ],
+          "notes": "Local complete gate and Android execution; no physical radio, Apple execution or completed-product claim."
+        }
+      ]
     }
   ]
 }

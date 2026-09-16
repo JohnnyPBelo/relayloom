@@ -447,3 +447,12 @@ O gate público WebKit falhou44/45: texto de ligação estabelecida com snapshot
 ## Estúdio publicado — 2026-09-16
 
 Gate final com build explícito,111 browsers,52 UI Node/Go, pacote Linux,85 casos web e9UI-RNS passou. Quatro gates de domínio foram conservados só após comparação dos hashes. Publicação86cb0c3 da fonte11d52be verificada em17 ficheiros HTTP e4 casos UI no URL. As falhas anteriores foram preservadas; não houve relaxamento de asserções, limites ou prazos. Logs públicos são cópias sanitizadas em.txt com hashes originais; perfis/traces privados ficam locais. Continuar contrato e validar plataformas/rádios/independência sem converter testes do host em aprovação física.
+
+
+## Localização nativa e confirmação Android — 2026-09-16
+
+O dump UI inicial coincidiu com o arranque da WebView; o seguinte mostrou a UI completa, sem alteração de runtime. Não transformar uma leitura inicial vazia em diagnóstico de falha. A preferência nativa resolve o alias de sistema /data/user/0 antes de verificar que core e ficheiro não são links; os32controlos de leitura e3línguas passaram noAndroid. O ficheiro nunca é escrito pelo helper nem dá autoridade sobre a identidade.
+
+Uma captura mostrava mensagem Em espera apesar de a resposta já existir: a fixture suspendia imediatamente e não aguardava a confirmação assinada. Exigir Recebida antes/depois do restart passou sem alterar transporte ou prazo. Receber uma resposta não prova a persistência de uma confirmação; testar ambos explicitamente. Android final57/38/15/13 e inspecção do perfil passaram.
+
+O colector local de evidência usou inicialmente um caminho relativo com um nível a mais; falhou no import antes de criar ficheiros. Corrigido para ../../scripts. Conservar hashes de originais/sanitizados e nunca substituir os relatórios anteriores. iOS novo continua sem compilação/execuçãoApple; estática/runnerLinux não são substitutos.

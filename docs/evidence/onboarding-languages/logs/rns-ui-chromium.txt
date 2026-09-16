@@ -1,0 +1,10 @@
+
+Running 3 tests using 1 worker
+
+(node:2437945) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/reticulum/autonomous-ui.spec.ts:38:3 › autonomous web UI direct WS peer reaches native reader through reference RNS TCP and serial; partition, private reply and restarted seeder with browser author offline (41.3s)
+  ✓  2 [chromium] › tests/reticulum/autonomous-ui.spec.ts:38:3 › autonomous web UI through another consenting RTC browser reaches native reader through reference RNS TCP and serial; partition, private reply and restarted seeder with browser author offline (47.7s)
+  ✓  3 [chromium] › tests/reticulum/shared-ui.spec.ts:32:1 › shared Liquid Glass UI sends without choosing a medium over TCP and real RNS serial, recovers a partition and receives a reply (14.8s)
+
+  3 passed (1.7m)

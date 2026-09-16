@@ -204,3 +204,8 @@ FR-006/012/013: dois envios previamente pendentes recebem confirmações após s
 FR-030/031/032/034, INT-Reticulum e paridade web: catálogo upstream completo de configurações internas, adaptadores UDP/Backbone/KISS/AX25 exercitados no host e BLE Nordic UART Linux com PTY/GATT simulado. Hardware, outras plataformas e acesso Bluetooth directo web não estão fechados. Resultados e ocorrência de timeout BLE em `.codex-delivery/CONNECTIVITY-MEDIA.md`; guia `docs/RETICULUM-MEDIA.md`. Configuração aceite não equivale a driver testado em rádio.
 
 Fecho do incremento (não do produto), 2026-09-16: gate final web 67+2 e UI-RNS 9 passaram, assim como 3 testes HTTPS e conferência dos 13 ficheiros publicados. Códigos 7d3bceb/359d652, Pages eafa109. Convites abandonados/resultados tardios agora são libertados; perfis e canais abertos preservados. Evidência: docs/evidence/connectivity-media. O caso físico, rádio, iOS e paridade completa permanecem pendentes.
+
+
+## Setup e idiomas, 2026-09-16
+
+FR-044/045 parcialmente realizados: gate geral345Node/Go-race+SQLiteC/62interop/129browser/60UI/Linux/121candidataweb+2oráculos/9RNS passou. Android57smoke(inclui32reader e3línguas)/38documentos/15prazo/13relay + perfil privado passaram no APKd2dd1ab1. docs/evidence/onboarding-languages e docs/SETUP-LANGUAGES.md. Conteúdo de autoria não traduzido, preferências não alteram cofre/relay. iOS novo somente preparação+estática/22runner noLinux; Apple, dispositivos e revisão independente pendentes. Sem publicação nova nem conclusão integral antecipada.

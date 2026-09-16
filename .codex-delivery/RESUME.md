@@ -2,7 +2,29 @@
 
 **O produto completo não está concluído.** Preservar todo o PROJECT-BRIEF.md, incluindo todas as aplicações, paridade web, Liquid Glass, autoria separada de leitura/seeding e transporte agnóstico. Só este projecto. Manter Astra/Copilot Ultra e recuperação sequencial: sem novos agentes, alterações a modelos, bridges, autenticação ou serviços. O checkpoint extra de manutenção foi cancelado.
 
-## Incremento activo: estúdio de sites
+## Candidata guardada — branch de integração
+
+Branch actual `codex/setup-languages`: backend37e0cde, UI/setup/idiomasf799539, Androidc2d6fb0 e iOS preparadoea2ee98. Os WIP anteriores UIKit/XCTest foram conservados na candidata iOS, sem os apresentar como testados em Apple; os backups continuam em .cache/onboarding-i18n/mobile-before e native-before. Restantes WIP e evidência anteriores fora destes marcos permanecem na árvore.
+
+**Gate público actual em execução:** `node scripts/verify-public-web.mjs`, sessão36287, consola .cache/onboarding-i18n/public-final-console.log, relatório .cache/public-web/gate/report.json. A verificação anterior foi conservada em docs/evidence/onboarding-languages/public-candidate. Esta repetição satisfaz o guard de proveniência do publicador depois das alterações dos scripts Apple; não há alteração do runtime web/Node/Go. Fontes de packages/apps-web/tests-browser/scripts congeladas durante o gate. Não publicar nem repetir enquanto RUNNING.
+
+Próximo: recolher gate36287; guardar relatório novo sem substituir o anterior; publicar só os assets exactos se PASS. A distribuição activa ainda é86cb0c3/11d52be. Push da candidata de integração e CI Apple ainda por confirmar nesta nota; conferir git/remoto e .cache/onboarding-i18n/post-push.json antes de repetir. Sem merge de PR/forcepush ou configuração externa. Produto completo continua por concluir.
+
+## Incremento activo: setup e idiomas
+
+WIP local ainda não publicado. Plano/detalhes em .codex-delivery/ONBOARDING-LANGUAGES.md.1031 entradas PT-PT/en-GB/es-ES; setup explicativo, campos conservados entre etapas/línguas, preferências persistentes no perfil Node/Go, UI/data de autoria separados. Mensagens, grupos e sites em várias contas passaram testes dirigidos; não equivalem ao produto completo.
+
+**Gate integral concluído PASS:** node scripts/verify-onboarding-languages.mjs, sessão56541 terminada/recolhida. Relatório .cache/onboarding-i18n/final/report.json, terminado2026-09-16T18:02:00.870Z, sourcesUnchanged=true. Build/runner iOS host,345 Node,Go-race/SQLiteC,62interop,43 casos em cada Chromium/Firefox/WebKit(129),30 UI Node+30 Go, desktop Linux build/run/package/run, candidata public-web e9 UI-RNS. Não repetir sem alterações relevantes. Isto não é execução iOS nem hardware físico.
+
+Android final: APKd2dd1ab1fddbf3b25ecc7145d9ef8552229330adee7e5a4d261313d77f274016 (18029628bytes), AAR9c81c716454f6d7a064699690eb4cad8f0461241e94f35427243e4a5e2fea23b. Instalado e hash instalado comprovado pelo gate privado. Emulador PID2598300, emulator-5580, adb5047; sem wipe. Testes terminados: smoke57 asserções (32reader,3línguas, UI/DOM, cofre intacto, troca e confirmação Recebida antes/depois de restart); SAF38 com16121bytes exactos e cofre recuperado; deadline15 aos120691ms; relay13, A–Android–C, negativo4s,12052bytes, autora offline; private-profile PASS sobre baseline histórico preservado (não foi nova migração). Relatórios em .cache/android/evidence/onboarding-{initial,native-text,delivery,relay}, documents-29c87e2fd0dd e documents-aecaac6d630c. Logs .cache/onboarding-i18n/android-*.log. Todas as sessões desta etapa foram recolhidas. A aplicação foi reaberta após a inspecção privada; emulador fica activo.
+
+Localização nativa Android implementada em NativeText.java, MainActivity e limites de apresentação do DocumentController. Só lê ui-preferences.json até4096bytes, com fallback ao SO; não altera conteúdo/autoria/relay/permissões. iOS NativeText.swift e testes preparados, teclado/alertas/arranque traduzidos; preserva todo o WIP UIKit/XCTest. ios-static-check e22testes do runner passaram no Linux, mas Swift/iOS novos ainda NÃO compilados/executados. Necessário CI Apple; descrições Info.plist dos pedidos do sistema ainda PT.
+
+CI35088386689 iOS: startup1/1 passou, addmedia expirou60340ms; artefacto .cache/onboarding-i18n/prior-ios. Biblioteca prep-accessible e pedido de inserção de1asset, sem conclusão/causa demonstrada. PNG128×128,336bytes validado por CRC localmente; não prova importação Apple. Não modificar permissões, bridge ou serviços.
+
+Próximo: conservar evidência sanitizada dos gates concluídos e revisão de UI; diagnóstico Apple/CI real; actualizar README/STATUS/traceabilidade e commits/push/publicação precisos. Continuar sites com revisões/endereços estáveis, contribuições assinadas/permissões e ficheiros opcionais; grupos dinâmicos web, backup/rotação, quotas/escala, restantes funções/apps/rádios e revisão independente. Produto não concluído. Recuperação sequencial sem novos agentes/modelos/bridges/serviços externos. Disco68GiB.
+
+## Estúdio de sites — marco publicado
 
 Fonte do estúdio e evidência local: **11d52bed4c6712c5af90d1aecd828e572d9d54cf**. A referência de entrega da main e o CI são confirmados em .cache/site-studio/post-push.json; conferir git log e remoto antes de repetir qualquer push. A recuperação continua sequencial, sem agentes novos. UIKit/XCTest e GROUP-NOTICES WIP permanecem intactos e fora do commit; hashes de protecção em .cache/site-studio/protected-wip.json.
 

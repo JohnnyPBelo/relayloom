@@ -1,0 +1,11 @@
+INSTRUMENTATION_STATUS: event={"phase":"unlocked","details":{}}
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: event={"phase":"native-port-ready","details":{"tcpPort":36199}}
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: event={"phase":"fixture-root-chosen","details":{}}
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: event={"phase":"bounded-handoff-waiting","details":{"maximumMs":120000}}
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: event={"phase":"bounded-handoff-expired","details":{"observedMs":120691}}
+INSTRUMENTATION_STATUS_CODE: 1
+Android SAF instrumentation passed 15 assertions

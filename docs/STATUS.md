@@ -1,5 +1,13 @@
 # RelayLoom — estado verificável
 
+## Setup e idiomas — candidata local verificada
+
+A interface inclui apresentação inicial, configuração guiada, PT-PT/en-GB/es-ES e preferências persistentes no perfil Node/Go ou no browser. Nomes, mensagens e sites conservam o conteúdo do autor. No Android, arranque/avisos nativos também seguem a língua escolhida. **Ainda não publicado neste incremento; iOS novo preparado mas não compilado/executado.**
+
+Gate geral PASS:345Node,Go/race/SQLiteC,62interop,129browser,60UI Node/Go,Linux executado/empacotado,121casos da candidata pública+2oráculos e9UI-RNS. Android APKd2dd1ab1…:57asserções de mensagens/idiomas,38SAF,15prazo,13relay e inspecção privada PASS. O autor offline e a retransmissão por terceiro foram exercitados; não é hardware de rádio. [Provas e comandos exactos](evidence/onboarding-languages) · [Guia de arranque](SETUP-LANGUAGES.md).
+
+iOS:22testes do runner e verificação estática passam no Linux; Swift/UI Apple pendentes. CI anterior falhou na importação da fotografia sintética após60s, sem causa provada. Não há dispensa de cobertura ou declaração de produto concluído. Os marcos publicados abaixo continuam a descrever o URL activo.
+
 Actualizado em 2026-09-16 (Lisboa). **Produto experimental em implementação; o contrato completo não está concluído.** Não é infraestrutura validada para catástrofes. O âmbito autorizado continua em [PROJECT-BRIEF.md](../PROJECT-BRIEF.md).
 
 ## Código e verificação actual

@@ -8,6 +8,8 @@ Um mensageiro cifrado entre pares, uma rede social e páginas pessoais feitas co
 
 A captura vem de um teste real: a autora tinha apenas outro navegador como par; a rota continuava por WebSocket, Reticulum TCP e série PTY. O intermediário não conseguia ler a mensagem. PTY não é rádio físico.
 
+O setup guiado e os idiomas português europeu, inglês e espanhol estão verificados na candidata local, incluindo preferências entre reinícios e mensagens/ficheiros no emulador Android. A publicação deste incremento e a validação iOS continuam pendentes. [Guia e âmbito](docs/SETUP-LANGUAGES.md) · [Testes executados](docs/evidence/onboarding-languages).
+
 ## Usar a web sem instalar a aplicação
 
 **[Abrir RelayLoom no browser](https://johnnypbelo.github.io/relayloom/)** · [Guia para testar em dois dispositivos](docs/WEB-TWO-DEVICES.md).

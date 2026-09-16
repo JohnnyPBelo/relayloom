@@ -1,0 +1,536 @@
+{
+  "collectedAt": "2026-09-16T18:47:29.453Z",
+  "artifacts": [
+    {
+      "source": ".cache/onboarding-i18n/final/report.json",
+      "path": "local-gate.json",
+      "originalSha256": "ad99c20b62e9abecd1968d93d28e2eebb236cb2f32b10abfc38e3ede8c232368",
+      "sha256": "88ecc23220d0174a6ee995606b73c0125c46778aab8c3a21525258a0105dc0d9",
+      "bytes": 61575
+    },
+    {
+      "source": ".cache/onboarding-i18n/final/browser-chromium.log",
+      "path": "logs/browser-chromium.txt",
+      "originalSha256": "a5a7b6bf9f5f25e82978161f7d50718dff1d4536d0e7f93da323885e13911daa",
+      "sha256": "a5a7b6bf9f5f25e82978161f7d50718dff1d4536d0e7f93da323885e13911daa",
+      "bytes": 8116
+    },
+    {
+      "source": ".cache/onboarding-i18n/final/browser-firefox.log",
+      "path": "logs/browser-firefox.txt",
+      "originalSha256": "bceeb68f9cc587ed4c5c23a8db82234d06d77514586429f40062fb3ee96af614",
+      "sha256": "bceeb68f9cc587ed4c5c23a8db82234d06d77514586429f40062fb3ee96af614",
+      "bytes": 8069
+    },
+    {
+      "source": ".cache/onboarding-i18n/final/browser-webkit.log",
+      "path": "logs/browser-webkit.txt",
+      "originalSha256": "99fcc2cb31565fb8ae67a28ee95ed6ad387098e5581f21fd0b90ed06458c8d83",
+      "sha256": "99fcc2cb31565fb8ae67a28ee95ed6ad387098e5581f21fd0b90ed06458c8d83",
+      "bytes": 8029
+    },
+    {
+      "source": ".cache/onboarding-i18n/final/build.log",
+      "path": "logs/build.txt",
+      "originalSha256": "11e972ac54020e42133345f872b5df28c06bec7a36555fa8429f9967398d3b00",
+      "sha256": "11e972ac54020e42133345f872b5df28c06bec7a36555fa8429f9967398d3b00",
+      "bytes": 1325
+    },
+    {
+      "source": ".cache/onboarding-i18n/final/interop-all.log",
+      "path": "logs/interop-all.txt",
+      "originalSha256": "35a74f5837cb01fcdc6742420bafb55ffea9ac3cbf70401e38a7c051564c521a",
+      "sha256": "35a74f5837cb01fcdc6742420bafb55ffea9ac3cbf70401e38a7c051564c521a",
+      "bytes": 19454
+    },
+    {
+      "source": ".cache/onboarding-i18n/final/ios-runner-contract.log",
+      "path": "logs/ios-runner-contract.txt",
+      "originalSha256": "0068b5b3603ac3339d4939c6cb085553fc04dda493f1179339a5b271b5c9e48a",
+      "sha256": "0068b5b3603ac3339d4939c6cb085553fc04dda493f1179339a5b271b5c9e48a",
+      "bytes": 5477
+    },
+    {
+      "source": ".cache/onboarding-i18n/final/native-build.log",
+      "path": "logs/native-build.txt",
+      "originalSha256": "3ac064230880f9200889d5cd559082dea8fda0269451d3792404f4f783660cee",
+      "sha256": "3ac064230880f9200889d5cd559082dea8fda0269451d3792404f4f783660cee",
+      "bytes": 104
+    },
+    {
+      "source": ".cache/onboarding-i18n/final/native-cgo-storage.log",
+      "path": "logs/native-cgo-storage.txt",
+      "originalSha256": "018fc226580e3a4bacd2430b9a165ed40a1ffb3b8660430a85910e935d1b47bc",
+      "sha256": "018fc226580e3a4bacd2430b9a165ed40a1ffb3b8660430a85910e935d1b47bc",
+      "bytes": 534
+    },
+    {
+      "source": ".cache/onboarding-i18n/final/native-race.log",
+      "path": "logs/native-race.txt",
+      "originalSha256": "8b935b7e465c188b0bebaf05a3ba5118cc347c781a654f33d03aaa776baccc24",
+      "sha256": "8b935b7e465c188b0bebaf05a3ba5118cc347c781a654f33d03aaa776baccc24",
+      "bytes": 1310
+    },
+    {
+      "source": ".cache/onboarding-i18n/final/node-all.log",
+      "path": "logs/node-all.txt",
+      "originalSha256": "a6951e560ae28f4974bc4acf342b255bf29e895c6fcf0e6bc267ba6e11f13d04",
+      "sha256": "a6951e560ae28f4974bc4acf342b255bf29e895c6fcf0e6bc267ba6e11f13d04",
+      "bytes": 84291
+    },
+    {
+      "source": ".cache/onboarding-i18n/final/public-web.log",
+      "path": "logs/public-web.txt",
+      "originalSha256": "3778b1cd696e945eac8dd8758ba3380e1f65070b0aee82a2b290f024917ae246",
+      "sha256": "3778b1cd696e945eac8dd8758ba3380e1f65070b0aee82a2b290f024917ae246",
+      "bytes": 170
+    },
+    {
+      "source": ".cache/onboarding-i18n/final/rns-ui-chromium.log",
+      "path": "logs/rns-ui-chromium.txt",
+      "originalSha256": "9ca93f8c4fdaaaf994278d86c16e49b6493af3afdccca53323fcabfc4f0c14b7",
+      "sha256": "9ca93f8c4fdaaaf994278d86c16e49b6493af3afdccca53323fcabfc4f0c14b7",
+      "bytes": 936
+    },
+    {
+      "source": ".cache/onboarding-i18n/final/rns-ui-firefox.log",
+      "path": "logs/rns-ui-firefox.txt",
+      "originalSha256": "ed0ee78e5115fef6bce42c7f632fc5e8ba8c8d35447654872d855562374869fd",
+      "sha256": "ed0ee78e5115fef6bce42c7f632fc5e8ba8c8d35447654872d855562374869fd",
+      "bytes": 933
+    },
+    {
+      "source": ".cache/onboarding-i18n/final/rns-ui-webkit.log",
+      "path": "logs/rns-ui-webkit.txt",
+      "originalSha256": "68fea1190ac640a862f73d1b7357ad4c74c01f8d99ddc3c697c2c5176ef169fd",
+      "sha256": "68fea1190ac640a862f73d1b7357ad4c74c01f8d99ddc3c697c2c5176ef169fd",
+      "bytes": 930
+    },
+    {
+      "source": ".cache/onboarding-i18n/final/shared-ui-and-desktop.log",
+      "path": "logs/shared-ui-and-desktop.txt",
+      "originalSha256": "f2becb4fd0f058c161979884b4b5adbd349215ca36d6f49a322c5953f3145683",
+      "sha256": "8f1e336db7c820fd0038b38b50541d4694fa135f8546d903effff2646c2fe98e",
+      "bytes": 299
+    },
+    {
+      "source": ".cache/public-web/gate/report.json",
+      "path": "public-candidate/report.json",
+      "originalSha256": "afdaf16a8a7d7b73918efcae5c506c99dac498ab11fd58284814696f5a9eb70d",
+      "sha256": "f7d6fcbe36ba3a4f0f784d41889496010fd6e35f768dbe8f8628be2039b93bc3",
+      "bytes": 22949
+    },
+    {
+      "source": ".cache/public-web/gate/conversation-address.log",
+      "path": "public-candidate/conversation-address.txt",
+      "originalSha256": "1ad4909a16cad9364aa6f8448889c16838ab08d8c9957eb15e46b1a3853ffd42",
+      "sha256": "1ad4909a16cad9364aa6f8448889c16838ab08d8c9957eb15e46b1a3853ffd42",
+      "bytes": 561
+    },
+    {
+      "source": ".cache/public-web/gate/default-build.log",
+      "path": "public-candidate/default-build.txt",
+      "originalSha256": "ba1eae83fdbd40bfc217200487c82c54db4913a3050cf92ab40bf2af52abee38",
+      "sha256": "ba1eae83fdbd40bfc217200487c82c54db4913a3050cf92ab40bf2af52abee38",
+      "bytes": 1270
+    },
+    {
+      "source": ".cache/public-web/gate/default-ui-chromium.log",
+      "path": "public-candidate/default-ui-chromium.txt",
+      "originalSha256": "9faff618f77a59b09acf899cb73c7232e753d2ab7718cec830f8781492c41a41",
+      "sha256": "9faff618f77a59b09acf899cb73c7232e753d2ab7718cec830f8781492c41a41",
+      "bytes": 3700
+    },
+    {
+      "source": ".cache/public-web/gate/default-ui-firefox.log",
+      "path": "public-candidate/default-ui-firefox.txt",
+      "originalSha256": "5a229128f5ef254a017630a977e116427968a6df7ee87eb042247ad76f74b86c",
+      "sha256": "5a229128f5ef254a017630a977e116427968a6df7ee87eb042247ad76f74b86c",
+      "bytes": 3684
+    },
+    {
+      "source": ".cache/public-web/gate/default-ui-webkit.log",
+      "path": "public-candidate/default-ui-webkit.txt",
+      "originalSha256": "8aca95438a368e71a7cc4a5a5a0753e6b5303f908b156beaef36dde3b625d0af",
+      "sha256": "8aca95438a368e71a7cc4a5a5a0753e6b5303f908b156beaef36dde3b625d0af",
+      "bytes": 3664
+    },
+    {
+      "source": ".cache/public-web/gate/public-build.log",
+      "path": "public-candidate/public-build.txt",
+      "originalSha256": "27d878bb3daed852ff7af47493d27543cf7206cf2e54670298a06157ddd614cc",
+      "sha256": "27d878bb3daed852ff7af47493d27543cf7206cf2e54670298a06157ddd614cc",
+      "bytes": 1116
+    },
+    {
+      "source": ".cache/public-web/gate/public-matrix.log",
+      "path": "public-candidate/public-matrix.txt",
+      "originalSha256": "c7001c8f32b612df5f1ee84340ff96b80983be38912debeca22ebc4837ed0ac7",
+      "sha256": "c7001c8f32b612df5f1ee84340ff96b80983be38912debeca22ebc4837ed0ac7",
+      "bytes": 11994
+    },
+    {
+      "source": ".cache/public-web/gate/two-processes.log",
+      "path": "public-candidate/two-processes.txt",
+      "originalSha256": "0df775700894d29480c8885dabacf1e9becdf61116c530cbaa8fa2343b06dc29",
+      "sha256": "0df775700894d29480c8885dabacf1e9becdf61116c530cbaa8fa2343b06dc29",
+      "bytes": 391
+    },
+    {
+      "source": ".cache/public-web/gate/typecheck.log",
+      "path": "public-candidate/typecheck.txt",
+      "originalSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "bytes": 1,
+      "normalization": "Trailing blank lines removed; original hash retained."
+    },
+    {
+      "source": ".cache/native-mixed/ui-preferences-node.json",
+      "path": "preferences/node-interop.json",
+      "originalSha256": "0e3e68eb47f9adb9b87baed80895967605bbc634a82d2a45b015d16f98b89679",
+      "sha256": "54613526e89805b9239b4d4e1f200557b8e6d0bb9d18df942bf97c9abb7d5fe8",
+      "bytes": 300
+    },
+    {
+      "source": ".cache/onboarding-i18n/preferences-node/report.json",
+      "path": "preferences/node-ui.json",
+      "originalSha256": "f6a0d3af39db2d35d1743753293b9525375287a80db32cb61b305a9f790ce3ab",
+      "sha256": "cdd189bd2412cd73b846a2f4d9edae25d5c80b5b303d26e59838e230c457b873",
+      "bytes": 217
+    },
+    {
+      "source": ".cache/onboarding-i18n/groups-node/report.json",
+      "path": "groups/node-ui.json",
+      "originalSha256": "9edbd826c966a534ad699b593bc2d8f5dbc24ce7711fba68000a6cf7275cc947",
+      "sha256": "ae39c68ec1ba078c304d5482119b2765ae92b90ac94978013a823887c22d8ac8",
+      "bytes": 242
+    },
+    {
+      "source": ".cache/native-mixed/ui-preferences-go.json",
+      "path": "preferences/go-interop.json",
+      "originalSha256": "c193360a96f2fa276a7aef3e32dd71af9c859d95a268aa534967e58a16f53766",
+      "sha256": "811e3f0861d4ddb5ca03ae08e22cef71b7a1d7703502ea7b3ef215485ed96376",
+      "bytes": 298
+    },
+    {
+      "source": ".cache/onboarding-i18n/preferences-go/report.json",
+      "path": "preferences/go-ui.json",
+      "originalSha256": "18f81a7627d7d77d58ca4cd0568384f857d6905621ae87b43080c619843f3729",
+      "sha256": "beaa390b545f33cb790739f53a5821635cbdad91b139b55aa27afaa468daa2b3",
+      "bytes": 215
+    },
+    {
+      "source": ".cache/onboarding-i18n/groups-go/report.json",
+      "path": "groups/go-ui.json",
+      "originalSha256": "fb6bd66ab54a501205987911fa235946fc2e4f7d4be875d0a5c8e7a29e2d880b",
+      "sha256": "8f1f5024f79e1309a11a8d8e5e1d1dde98391077a312c829151310ecbd78e0ad",
+      "bytes": 240
+    },
+    {
+      "source": ".cache/onboarding-i18n/chromium/two-identities.json",
+      "path": "ui/chromium/two-identities.json",
+      "originalSha256": "f595cb7eedd7d993a2c3c3e25df4c290c507eb0a7fa4d6b8ab2751614dca9bae",
+      "sha256": "286fd8740aa78d7ed12e1a88ca2de8d9fba9f5c1e70d80cb5f0e4345e38f3d53",
+      "bytes": 232
+    },
+    {
+      "source": ".cache/onboarding-i18n/chromium/setup-axe.json",
+      "path": "ui/chromium/setup-axe.json",
+      "originalSha256": "6a0ebbe5d428845a6957a4b5253689208f682e81d63d66cd53ad17bd7774bace",
+      "sha256": "9ad8ae2170dc9c7b85b72458ab599ff21279efa923d3ac83a1780957bca81a82",
+      "bytes": 39
+    },
+    {
+      "source": ".cache/onboarding-i18n/chromium/intro-en-desktop.png",
+      "path": "ui/chromium/intro-en-desktop.png",
+      "originalSha256": "f1af836438a52bb3b868dab4f092dc8bc8e5629daa6ffc76b7a5545f2a26763b",
+      "sha256": "f1af836438a52bb3b868dab4f092dc8bc8e5629daa6ffc76b7a5545f2a26763b",
+      "bytes": 455593
+    },
+    {
+      "source": ".cache/onboarding-i18n/chromium/intro-en-mobile.png",
+      "path": "ui/chromium/intro-en-mobile.png",
+      "originalSha256": "c7598e0ef9c8106b81cef018723740bcfaa1fe0535382c78b386b50713d95b56",
+      "sha256": "c7598e0ef9c8106b81cef018723740bcfaa1fe0535382c78b386b50713d95b56",
+      "bytes": 257732
+    },
+    {
+      "source": ".cache/onboarding-i18n/chromium/setup-es-390.png",
+      "path": "ui/chromium/setup-es-390.png",
+      "originalSha256": "0a667841c1ae0d9b56880dfdc7d705aafbeb00a760d1c5120acfed02c2455d79",
+      "sha256": "0a667841c1ae0d9b56880dfdc7d705aafbeb00a760d1c5120acfed02c2455d79",
+      "bytes": 70103
+    },
+    {
+      "source": ".cache/onboarding-i18n/sites-chromium/report.json",
+      "path": "sites/chromium/report.json",
+      "originalSha256": "5f6095911f912e794fb42d5f58a434e464c5f7164660cacd199f8a932d71a0cf",
+      "sha256": "d415be8e459f1155b3438d1f53d4f950162e0cf1b5ac114468fa0c826683c593",
+      "bytes": 317
+    },
+    {
+      "source": ".cache/onboarding-i18n/sites-chromium/spanish-editor-390.png",
+      "path": "sites/chromium/spanish-editor-390.png",
+      "originalSha256": "070b7011820e21e5bd21eaf7c1b7e5a899abf5d61e56001ee3374b85cc099934",
+      "sha256": "070b7011820e21e5bd21eaf7c1b7e5a899abf5d61e56001ee3374b85cc099934",
+      "bytes": 234295
+    },
+    {
+      "source": ".cache/onboarding-i18n/sites-chromium/third-reader.png",
+      "path": "sites/chromium/third-reader.png",
+      "originalSha256": "be3fca305c174670ce4b99955e0e86854dfb13ab4467230a3b06e8e9b8250986",
+      "sha256": "be3fca305c174670ce4b99955e0e86854dfb13ab4467230a3b06e8e9b8250986",
+      "bytes": 226946
+    },
+    {
+      "source": ".cache/onboarding-i18n/firefox/two-identities.json",
+      "path": "ui/firefox/two-identities.json",
+      "originalSha256": "f595cb7eedd7d993a2c3c3e25df4c290c507eb0a7fa4d6b8ab2751614dca9bae",
+      "sha256": "286fd8740aa78d7ed12e1a88ca2de8d9fba9f5c1e70d80cb5f0e4345e38f3d53",
+      "bytes": 232
+    },
+    {
+      "source": ".cache/onboarding-i18n/firefox/setup-axe.json",
+      "path": "ui/firefox/setup-axe.json",
+      "originalSha256": "6a0ebbe5d428845a6957a4b5253689208f682e81d63d66cd53ad17bd7774bace",
+      "sha256": "9ad8ae2170dc9c7b85b72458ab599ff21279efa923d3ac83a1780957bca81a82",
+      "bytes": 39
+    },
+    {
+      "source": ".cache/onboarding-i18n/firefox/intro-en-desktop.png",
+      "path": "ui/firefox/intro-en-desktop.png",
+      "originalSha256": "44fa826a9fcf2bc3267c2d2ce6311fc1ae190834198aa4586800c498e15c8173",
+      "sha256": "44fa826a9fcf2bc3267c2d2ce6311fc1ae190834198aa4586800c498e15c8173",
+      "bytes": 338223
+    },
+    {
+      "source": ".cache/onboarding-i18n/firefox/intro-en-mobile.png",
+      "path": "ui/firefox/intro-en-mobile.png",
+      "originalSha256": "ded4458bfe79cd3e9396bc6026693a9714ceb9bfcd1fe7068095bec44e9e2d43",
+      "sha256": "ded4458bfe79cd3e9396bc6026693a9714ceb9bfcd1fe7068095bec44e9e2d43",
+      "bytes": 206424
+    },
+    {
+      "source": ".cache/onboarding-i18n/firefox/setup-es-390.png",
+      "path": "ui/firefox/setup-es-390.png",
+      "originalSha256": "c1b342f506066cb1f24a632cee12f88fa8a325646b3bd6dcfa9956f2e07a0c5e",
+      "sha256": "c1b342f506066cb1f24a632cee12f88fa8a325646b3bd6dcfa9956f2e07a0c5e",
+      "bytes": 79455
+    },
+    {
+      "source": ".cache/onboarding-i18n/sites-firefox/report.json",
+      "path": "sites/firefox/report.json",
+      "originalSha256": "5f6095911f912e794fb42d5f58a434e464c5f7164660cacd199f8a932d71a0cf",
+      "sha256": "d415be8e459f1155b3438d1f53d4f950162e0cf1b5ac114468fa0c826683c593",
+      "bytes": 317
+    },
+    {
+      "source": ".cache/onboarding-i18n/sites-firefox/spanish-editor-390.png",
+      "path": "sites/firefox/spanish-editor-390.png",
+      "originalSha256": "133516350e3b92d0e16f2936f6b41f05a50e62e8e6676aab1ec12e9721531de4",
+      "sha256": "133516350e3b92d0e16f2936f6b41f05a50e62e8e6676aab1ec12e9721531de4",
+      "bytes": 188507
+    },
+    {
+      "source": ".cache/onboarding-i18n/sites-firefox/third-reader.png",
+      "path": "sites/firefox/third-reader.png",
+      "originalSha256": "f2f502b364d8f31f72d25a2f26262a18ad65a77c8ff285d2d9dbf6d78b4a37ed",
+      "sha256": "f2f502b364d8f31f72d25a2f26262a18ad65a77c8ff285d2d9dbf6d78b4a37ed",
+      "bytes": 257370
+    },
+    {
+      "source": ".cache/onboarding-i18n/webkit/two-identities.json",
+      "path": "ui/webkit/two-identities.json",
+      "originalSha256": "f595cb7eedd7d993a2c3c3e25df4c290c507eb0a7fa4d6b8ab2751614dca9bae",
+      "sha256": "286fd8740aa78d7ed12e1a88ca2de8d9fba9f5c1e70d80cb5f0e4345e38f3d53",
+      "bytes": 232
+    },
+    {
+      "source": ".cache/onboarding-i18n/webkit/setup-axe.json",
+      "path": "ui/webkit/setup-axe.json",
+      "originalSha256": "6a0ebbe5d428845a6957a4b5253689208f682e81d63d66cd53ad17bd7774bace",
+      "sha256": "9ad8ae2170dc9c7b85b72458ab599ff21279efa923d3ac83a1780957bca81a82",
+      "bytes": 39
+    },
+    {
+      "source": ".cache/onboarding-i18n/webkit/intro-en-desktop.png",
+      "path": "ui/webkit/intro-en-desktop.png",
+      "originalSha256": "596026a919ca5fc94072f869790bb3af016c24873c9a03af3cdc7822553a0fb2",
+      "sha256": "596026a919ca5fc94072f869790bb3af016c24873c9a03af3cdc7822553a0fb2",
+      "bytes": 558375
+    },
+    {
+      "source": ".cache/onboarding-i18n/webkit/intro-en-mobile.png",
+      "path": "ui/webkit/intro-en-mobile.png",
+      "originalSha256": "38623112ec1813d3e8c17c1873523be25f5b9a24557fb5c7217a6c4b4315d56b",
+      "sha256": "38623112ec1813d3e8c17c1873523be25f5b9a24557fb5c7217a6c4b4315d56b",
+      "bytes": 260766
+    },
+    {
+      "source": ".cache/onboarding-i18n/webkit/setup-es-390.png",
+      "path": "ui/webkit/setup-es-390.png",
+      "originalSha256": "8b346ff9af935593e2e1d187f689ac5312570837cb8a7b54c2cc54381a13f588",
+      "sha256": "8b346ff9af935593e2e1d187f689ac5312570837cb8a7b54c2cc54381a13f588",
+      "bytes": 75280
+    },
+    {
+      "source": ".cache/onboarding-i18n/sites-webkit/report.json",
+      "path": "sites/webkit/report.json",
+      "originalSha256": "5f6095911f912e794fb42d5f58a434e464c5f7164660cacd199f8a932d71a0cf",
+      "sha256": "d415be8e459f1155b3438d1f53d4f950162e0cf1b5ac114468fa0c826683c593",
+      "bytes": 317
+    },
+    {
+      "source": ".cache/onboarding-i18n/sites-webkit/spanish-editor-390.png",
+      "path": "sites/webkit/spanish-editor-390.png",
+      "originalSha256": "03fccf75718300655acbafbaf605e043804f3b4fad1a3608ce346751da450354",
+      "sha256": "03fccf75718300655acbafbaf605e043804f3b4fad1a3608ce346751da450354",
+      "bytes": 207324
+    },
+    {
+      "source": ".cache/onboarding-i18n/sites-webkit/third-reader.png",
+      "path": "sites/webkit/third-reader.png",
+      "originalSha256": "25f6d731df7798c1fa13583de9f90769bca4cb6a3e776068dffde10985b0830c",
+      "sha256": "25f6d731df7798c1fa13583de9f90769bca4cb6a3e776068dffde10985b0830c",
+      "bytes": 323537
+    },
+    {
+      "source": ".cache/android/evidence/onboarding-delivery/android-native-peer-exchange.json",
+      "path": "android/onboarding-delivery/android-native-peer-exchange.json",
+      "originalSha256": "ce35a10d74ece4db44f408a20d1a4f428d86f35288cf37497f662833311109a1",
+      "sha256": "ce35a10d74ece4db44f408a20d1a4f428d86f35288cf37497f662833311109a1",
+      "bytes": 1264
+    },
+    {
+      "source": ".cache/android/evidence/onboarding-delivery/android-peer-messenger.png",
+      "path": "android/onboarding-delivery/android-peer-messenger.png",
+      "originalSha256": "742666d9d88b7b2c097cd0c12c18142b712727214ae3f3b5b379ec2b135b0f8f",
+      "sha256": "742666d9d88b7b2c097cd0c12c18142b712727214ae3f3b5b379ec2b135b0f8f",
+      "bytes": 572778
+    },
+    {
+      "source": ".cache/android/evidence/onboarding-delivery/instrumentation-output.txt",
+      "path": "android/onboarding-delivery/instrumentation-output.txt",
+      "originalSha256": "f18fc1d57fa686aded645e57b3a96f3681abff9505475793def8a11d80098223",
+      "sha256": "af828e87a8a17ce9ec0d0d7388d23cc262b0ad3184e00f71ca151a8fa5cdcef5",
+      "bytes": 316,
+      "normalization": "Trailing blank lines removed; original hash retained."
+    },
+    {
+      "source": ".cache/android/evidence/onboarding-relay/android-multihop-seed.json",
+      "path": "android/onboarding-relay/android-multihop-seed.json",
+      "originalSha256": "eb9c32d01c27a3eb59a8de812b5408d424fde6e620de78ef644bf5760fefe618",
+      "sha256": "eb9c32d01c27a3eb59a8de812b5408d424fde6e620de78ef644bf5760fefe618",
+      "bytes": 2070
+    },
+    {
+      "source": ".cache/android/evidence/onboarding-relay/android-offline-site.png",
+      "path": "android/onboarding-relay/android-offline-site.png",
+      "originalSha256": "2a40b1dded18e5af736c759c956eae8a37917006976068ec773af1eb8f23f1b5",
+      "sha256": "2a40b1dded18e5af736c759c956eae8a37917006976068ec773af1eb8f23f1b5",
+      "bytes": 336700
+    },
+    {
+      "source": ".cache/android/evidence/onboarding-relay/relay-instrumentation-output.txt",
+      "path": "android/onboarding-relay/relay-instrumentation-output.txt",
+      "originalSha256": "a2aa701c693c77843cec103041b21bb8f0c84e65994499f36cfb7a33f63a234f",
+      "sha256": "d55ad463d43611792a50b683aa3cabd679e905f2570e048fdf414824f6268707",
+      "bytes": 1103,
+      "normalization": "Trailing blank lines removed; original hash retained."
+    },
+    {
+      "source": ".cache/android/evidence/documents-29c87e2fd0dd/android-documents.json",
+      "path": "android/documents-29c87e2fd0dd/android-documents.json",
+      "originalSha256": "e089a91dda403e94bf511e210cb18af5c853c011270bef5d57f7622c1a85bc90",
+      "sha256": "e089a91dda403e94bf511e210cb18af5c853c011270bef5d57f7622c1a85bc90",
+      "bytes": 1161
+    },
+    {
+      "source": ".cache/android/evidence/documents-29c87e2fd0dd/android-documents.png",
+      "path": "android/documents-29c87e2fd0dd/android-documents.png",
+      "originalSha256": "5073230e65da9690f5b89d8007779e79eda9b0629f0287c96a9f87de3318d243",
+      "sha256": "5073230e65da9690f5b89d8007779e79eda9b0629f0287c96a9f87de3318d243",
+      "bytes": 568523
+    },
+    {
+      "source": ".cache/android/evidence/documents-29c87e2fd0dd/instrumentation-output.txt",
+      "path": "android/documents-29c87e2fd0dd/instrumentation-output.txt",
+      "originalSha256": "8c7f1e4c58af4be63287a660dc31fda7836280ff0db410a2be7ff601193f5386",
+      "sha256": "34e6e2053fb2b5a1a506a63ede7528c703524d3c3e5197280469572f1f5129c6",
+      "bytes": 1055,
+      "normalization": "Trailing blank lines removed; original hash retained."
+    },
+    {
+      "source": ".cache/android/evidence/documents-aecaac6d630c/android-document-deadline.json",
+      "path": "android/documents-aecaac6d630c/android-document-deadline.json",
+      "originalSha256": "59ba81e64e03585c69ae22663783cc39e8d028a81870b4e0aa3356b4da5264f1",
+      "sha256": "59ba81e64e03585c69ae22663783cc39e8d028a81870b4e0aa3356b4da5264f1",
+      "bytes": 661
+    },
+    {
+      "source": ".cache/android/evidence/documents-aecaac6d630c/instrumentation-output.txt",
+      "path": "android/documents-aecaac6d630c/instrumentation-output.txt",
+      "originalSha256": "14afae1f56a18df15a5f3ab4cf1e4c0400667b188337d5051e97ed6bb4dbaf38",
+      "sha256": "d52477485d8fd65d7feeac95a036c5b6137c5fa516075d14610128d0b6dc0709",
+      "bytes": 626,
+      "normalization": "Trailing blank lines removed; original hash retained."
+    },
+    {
+      "source": ".cache/android/evidence/onboarding-native-text/private-profile-migration.json",
+      "path": "android/onboarding-native-text/private-profile-migration.json",
+      "originalSha256": "19413b6c5793da1eff8520739226f73ccb9fab5b10d362d051477b530d359e50",
+      "sha256": "19413b6c5793da1eff8520739226f73ccb9fab5b10d362d051477b530d359e50",
+      "bytes": 1075
+    },
+    {
+      "source": ".cache/android/evidence/onboarding-native-text/profile-before.json",
+      "path": "android/onboarding-native-text/profile-before.json",
+      "originalSha256": "5a3ff92f0b11234f2cbc527843174fd487004ef9417634452cfbabf450270b9d",
+      "sha256": "5a3ff92f0b11234f2cbc527843174fd487004ef9417634452cfbabf450270b9d",
+      "bytes": 311
+    },
+    {
+      "source": ".cache/android/evidence/onboarding-native-text/profile-baseline-origin.json",
+      "path": "android/onboarding-native-text/profile-baseline-origin.json",
+      "originalSha256": "cb2b624c9b0229a6b9834f954ca82dad3a09a055d763879169b235dc22c61c7a",
+      "sha256": "cb2b624c9b0229a6b9834f954ca82dad3a09a055d763879169b235dc22c61c7a",
+      "bytes": 289
+    },
+    {
+      "source": ".cache/onboarding-i18n/android-native-text-build.log",
+      "path": "logs/android-native-text-build.txt",
+      "originalSha256": "245db4c44705e0dc32cca0424f6ce3dfc668fe511e8477a2ea4f200e4056de8d",
+      "sha256": "cf2f1e7a6c66c26a5e9c3833538066dea3e600dcad19798a97319c2c7052cdb0",
+      "bytes": 1343
+    },
+    {
+      "source": ".cache/onboarding-i18n/android-native-text-install.log",
+      "path": "logs/android-native-text-install.txt",
+      "originalSha256": "a307b56de6f9b6a8621e0efa89f8d352c6335ad5e94e33226594aad4f55c4ac3",
+      "sha256": "a307b56de6f9b6a8621e0efa89f8d352c6335ad5e94e33226594aad4f55c4ac3",
+      "bytes": 196
+    },
+    {
+      "source": ".cache/onboarding-i18n/android-delivery-tests-build.log",
+      "path": "logs/android-delivery-tests-build.txt",
+      "originalSha256": "963bea61e07494803288e378787c78a7f446a586d0e68bb00b6e30817ab8ec52",
+      "sha256": "68595b164e9de8a9626e8c2b30206506a28e05d90c590a128d1d8ca484f66ab8",
+      "bytes": 1086
+    },
+    {
+      "source": ".cache/onboarding-i18n/ios-native-text-static.log",
+      "path": "logs/ios-native-text-static.txt",
+      "originalSha256": "e01b4cc78419a1c5a06eefffe9d7d138282fac1972904367379b0a4f5f75e6ac",
+      "sha256": "e01b4cc78419a1c5a06eefffe9d7d138282fac1972904367379b0a4f5f75e6ac",
+      "bytes": 178
+    },
+    {
+      "source": ".cache/onboarding-i18n/ios-native-text-runner.log",
+      "path": "logs/ios-native-text-runner.txt",
+      "originalSha256": "32176db61e88463e665b5b82c41cf6ab6f397c9df2325cd6e548b82ba6102c39",
+      "sha256": "32176db61e88463e665b5b82c41cf6ab6f397c9df2325cd6e548b82ba6102c39",
+      "bytes": 5484
+    }
+  ],
+  "totalBytes": 5490307
+}

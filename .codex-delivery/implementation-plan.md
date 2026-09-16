@@ -119,3 +119,8 @@ FR-038/039/040: estúdio multipágina, composição aninhada, imagens, Markdown 
 Concluídos: UI Node/Go/desktop, public-web, Reticulum, revisão das capturas, evidência sanitizada, fonte e publicação exacta com testes HTTPS. O suplemento built-browser-final não foi necessário: verify-publish-final.mjs reconstruiu antes da matriz completa. Conferir .cache/site-studio/post-push.json/git antes de repetir entrega. UIKit/XCTest WIP continua separado. Não fechar P3/P5/P6/P7 ou o contrato integral.
 
 Depois deste marco, priorizar liberdade funcional dos sites (endereços/revisões estáveis, módulos de dados e contribuições assinadas com permissões e orçamentos), sem misturar autoria e leitura. Estes itens são trabalho pendente, não compromissos implementados por este documento. Continuam também paridade de grupos web, backup/rotação/keystore, embalagem de meios em todas as apps, dispositivos/rádios físicos e revisão independente.
+
+
+## Setup/idiomas — gates Linux e Android concluídos
+
+FR-044/045: apresentação/configuração guiada,1031entradas emPT/EN/ES, preferências perfil/browser e separação de conteúdo de autoria implementadas. Gate geral completo PASS; Android finald2dd1ab1 executado com57smoke/38documentos/15prazo/13relay e perfil cifrado autenticado. Evidência docs/evidence/onboarding-languages. iOS nativo/XCTest é uma candidata ainda por compilar/executar emApple; manter WIP e limites. Guardar marcos separados de backend/UI/Android e branch de integração Apple; publicar só assets exactos do gate público. Antes de repetir gate, conservar o relatório anterior. Continuar depois sites: endereços/revisões, permissões de contribuição assinada e ficheiros opcionais. Todos os restantes requisitos mantêm-se.

@@ -1,0 +1,20 @@
+
+> relayloom@0.1.0 test:native
+> node scripts/go.mjs test -race -p=2 ./core ./transport ./webpeer ./app ./groups ./groupstore ./groupauthority ./groupaccess ./groupcontrol ./groupnotice ./groupledger ./profilelock ./profilestate ./profilebinding ./profiledb ./sqlitedriver
+
+ok  	github.com/JohnnyPBelo/relayloom/native/core	(cached)
+ok  	github.com/JohnnyPBelo/relayloom/native/transport	(cached)
+ok  	github.com/JohnnyPBelo/relayloom/native/webpeer	(cached)
+ok  	github.com/JohnnyPBelo/relayloom/native/app	416.176s
+ok  	github.com/JohnnyPBelo/relayloom/native/groups	(cached)
+ok  	github.com/JohnnyPBelo/relayloom/native/groupstore	(cached)
+ok  	github.com/JohnnyPBelo/relayloom/native/groupauthority	(cached)
+ok  	github.com/JohnnyPBelo/relayloom/native/groupaccess	(cached)
+ok  	github.com/JohnnyPBelo/relayloom/native/groupcontrol	(cached)
+ok  	github.com/JohnnyPBelo/relayloom/native/groupnotice	(cached)
+ok  	github.com/JohnnyPBelo/relayloom/native/groupledger	(cached)
+ok  	github.com/JohnnyPBelo/relayloom/native/profilelock	(cached)
+ok  	github.com/JohnnyPBelo/relayloom/native/profilestate	(cached)
+ok  	github.com/JohnnyPBelo/relayloom/native/profilebinding	(cached)
+ok  	github.com/JohnnyPBelo/relayloom/native/profiledb	(cached)
+ok  	github.com/JohnnyPBelo/relayloom/native/sqlitedriver	(cached)
