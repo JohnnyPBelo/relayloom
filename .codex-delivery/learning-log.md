@@ -442,3 +442,8 @@ O script local de retoma repetia a matriz antes do build de verify-ui. appHost u
 ## Feedback RTC e snapshot do diagnóstico — 2026-09-16
 
 O gate público WebKit falhou44/45: texto de ligação estabelecida com snapshot channel=connecting. A operação real aguardava ready(), mas o feedback manual adiantava-se ao polling. O painel passa a derivar o sucesso apenas do mesmo diagnóstico open/não fechado que exibe; resposta aceite é um estado intermédio. As asserções estritas, prazos e transmissão real permanecem intactos. Não resolver inconsistências entre duas fontes de estado esperando mais no teste; usar uma fonte coerente no produto. Resultado dirigido ainda pendente.
+
+
+## Estúdio publicado — 2026-09-16
+
+Gate final com build explícito,111 browsers,52 UI Node/Go, pacote Linux,85 casos web e9UI-RNS passou. Quatro gates de domínio foram conservados só após comparação dos hashes. Publicação86cb0c3 da fonte11d52be verificada em17 ficheiros HTTP e4 casos UI no URL. As falhas anteriores foram preservadas; não houve relaxamento de asserções, limites ou prazos. Logs públicos são cópias sanitizadas em.txt com hashes originais; perfis/traces privados ficam locais. Continuar contrato e validar plataformas/rádios/independência sem converter testes do host em aprovação física.

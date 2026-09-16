@@ -1,0 +1,10 @@
+
+Running 3 tests using 1 worker
+
+(node:4092802) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/browser/site-studio.spec.ts:77:1 › multipage studio saves encrypted draft, rejects executable imports and a consenting reader seeds it to a new browser after author closes (21.8s)
+  ✓  2 tests/browser/site-studio.spec.ts:351:1 › studio keyboard navigation, nested drag, duplicate, reparent and page references stay editable on a narrow screen (3.0s)
+  ✓  3 tests/browser/site-studio.spec.ts:425:1 › dense three-level compositions keep all controls inside their blocks and preserve contrast across palettes and app themes (8.5s)
+
+  3 passed (34.0s)

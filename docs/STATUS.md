@@ -4,7 +4,22 @@ Actualizado em 2026-09-16 (Lisboa). **Produto experimental em implementação; o
 
 ## Código e verificação actual
 
-Estúdio multipágina novo **validado no host, ainda não publicado**: 13 tipos de bloco, páginas/navegação, colunas aninhadas, estilos, Markdown seguro, imagens incluídas, publicações do autor, undo/redo e importação/exportação declarativa. Rascunho completo cifrado em Node/Go/browser e resumos sem bytes dos anexos. Controlos dirigidos de UI, corrupção, autoria e seeder reiniciado passaram. A UI final passou26 casos Node e26 Go, com execução e empacotamento Linux. O gate público e a matriz reconstruída passaram. 338 testes Node; 16 pacotes Go com race (app executada, restantes cacheados); 5 pacotes SQLite C do host; 60 testes de interoperabilidade; 37 casos por motor Chromium/Firefox/WebKit (111); 26 UI Node e26 UI Go; build/execução/pacote/execução Linux; 85 casos do gate web público e2 oráculos; 9 percursos UI-RNS. [Evidência](evidence/site-studio). [Guia, referência ZeroNet e limites](SITE-STUDIO.md). Não é compatível com aplicações/protocolo ZeroNet.
+O novo estúdio multipágina está **publicado na web**: 13 tipos de bloco, navegação entre páginas, colunas aninhadas, estilos, Markdown seguro, imagens, publicações do autor, desfazer/refazer e importação/exportação declarativa. O rascunho completo é cifrado em Node, Go e browser; os resumos não repetem os bytes das imagens. [Guia, referência ZeroNet e limites](SITE-STUDIO.md).
+
+Fonte `11d52be`, distribuição `86cb0c3` e Pages `35087757274`, concluído com sucesso e HTTPS obrigatório. Os 17 ficheiros de execução publicados coincidem por hash e tamanho. O painel de ligação passou a confirmar o sucesso a partir do mesmo diagnóstico que apresenta.
+
+| Verificação deste incremento | Resultado |
+| --- | --- |
+| Domínios Node e Go | 338 testes Node; 16 pacotes Go com race (app executada, restantes cacheados); 5 pacotes SQLite C do host |
+| Interoperabilidade | 60 testes, incluindo site entre Node/Go, seeder reiniciado, autorização e corrupção |
+| Matriz autónoma final | 37 casos por motor Chromium, Firefox e WebKit: 111, com build explícito e hashes dos assets estáveis |
+| UI partilhada e Linux | 26 casos Node e 26 Go; build, execução, pacote e execução do pacote Linux |
+| Candidata pública e Reticulum | 85 casos web e 2 oráculos; 9 percursos UI-RNS |
+| URL publicado | 3 testes do estúdio e 1 entre processos Chromium/Firefox, incluindo 63 488 bytes de anexo e recuperação offline |
+
+[Comandos, hashes e falhas corrigidas](evidence/site-studio) · [Evidência HTTPS](evidence/site-studio/live). Os resultados de domínio foram conservados apenas após comparar as fontes; os gates de UI afectados foram repetidos. A confirmação nos dois dispositivos físicos do proprietário, a revisão independente e o CI multiplataforma desta fonte continuam pendentes. Não há interoperabilidade de protocolo com ZeroNet; restantes limites mantêm-se abaixo.
+
+## Marcos anteriores
 
 Correcção web em `359d652`: os papéis Criar/Receber mantêm campos separados, ambas as pontas acompanham o estado real, o diagnóstico omite SDP/chaves/IP/conteúdo e convites pendentes são libertados ao fechar o diálogo, incluindo resultados tardios. Canais abertos são preservados. O código para partilhar aparece antes da resposta no ecrã compacto. Gate final: **67 casos web + 2 oráculos**, fontes/artefactos estáveis, e **9 UI-RNS** nos três motores. [Evidência e reproducer antes/depois](evidence/connectivity-media/web).
 
@@ -44,7 +59,7 @@ Os testes de browser incluem identidade/cofre, IndexedDB cifrado, recuperação,
 | Grupos no browser | Leitores fixos operacionais; protocolo de certificados partilhado e verificado contra Node/Go | O verificador não activa grupos dinâmicos nem reduz o requisito de paridade |
 | Anexos e voz | Bytes cifrados, ficheiros, renderização imagem/áudio/vídeo; gravação com MediaRecorder e entrada sintética nos testes | Microfones/câmaras reais, codecs/dispositivos e integração completa dos pickers/exportação de todos os SO. UI até 2 MB/anexo; conteúdo até 4 MiB |
 | Social | Posts públicos/privados, seguir como preferência local, feed local verificado, comentários/reacções, guardados e colecções cifradas | Relações/followers públicos assinados, colecções partilhadas, gestão mais rica de comentários, descoberta e moderação distribuída |
-| Páginas pessoais | Estúdio local multipágina com 13 blocos, composições, imagens e Markdown; rascunho cifrado, publicação assinada e leitura/seeding verificados. Gate local concluído; publicação HTTPS pendente | Revisão independente, toque físico, deep links externos, ficheiros opcionais e contribuições multiutilizador; não há interoperabilidade ZeroNet |
+| Páginas pessoais | Estúdio local multipágina com 13 blocos, composições, imagens e Markdown; rascunho cifrado, publicação assinada e leitura/seeding verificados. Gate local e verificação HTTPS concluídos | Revisão independente, toque físico, deep links externos, ficheiros opcionais e contribuições multiutilizador; não há interoperabilidade ZeroNet |
 | Armazenamento | Conteúdo endereçado por hash, verificado antes de guardar/mostrar, pin/unpin, quota, TTL/evicção; leitor não adquire autoria | Orçamento global incluindo todos os metadados, escala/churn prolongado, políticas de energia/banda e cópias de segurança completas |
 | Emergência | Estado da rede real, pares, alertas assinados com distinção entre autoria e exactidão, prioridade SOS e baixo consumo | Rádio/alcance/consumo reais, avaliação em campo e validação independente; sem promessa de prontidão para catástrofes |
 | Notificações e moderação | Adesão explícita, avisos genéricos, bloqueio e denúncias locais, tombstones assinados | Notificações OS reais e em segundo plano, federação de denúncias; não é possível recolher todas as cópias remotas |

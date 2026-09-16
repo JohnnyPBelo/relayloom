@@ -1,6 +1,6 @@
 # Estúdio de sites
 
-Incremento de 16 de Setembro de 2026 validado no host. O produto completo e a paridade física de plataformas continuam abertos em [STATUS](STATUS.md). A publicação HTTPS deste incremento é o passo seguinte.
+Incremento de 16 de Setembro de 2026 validado no host. O produto completo e a paridade física de plataformas continuam abertos em [STATUS](STATUS.md). Já está disponível em https://johnnypbelo.github.io/relayloom/ ; 17 ficheiros verificados por hash e 4 testes no URL real passaram. [Evidência](evidence/site-studio/live).
 
 ## Criar e publicar
 
@@ -56,7 +56,7 @@ Um leitor não pode falsificar o autor, editar ou eliminar a publicação origin
 
 Gate sequencial completo desta etapa: `node scripts/verify-site-studio.mjs`. Estado corrente, comandos, tempos e hashes ficam em `.cache/site-studio/final/report.json`; não converter RUNNING em PASS. O gate verifica fontes estáveis e a reserva de 15 GiB livres.
 
-Gate final local concluído: 338 testes Node; 16 pacotes Go com race (app executada, restantes cacheados); 5 pacotes SQLite C do host; 60 testes de interoperabilidade; 37 casos por motor Chromium/Firefox/WebKit (111); 26 UI Node e26 UI Go; build/execução/pacote/execução Linux; 85 casos do gate web público e2 oráculos; 9 percursos UI-RNS. [Relatórios e proveniência](evidence/site-studio). As tentativas falhadas foram preservadas; o follow-up final começa por build e verifica hashes dos assets durante a matriz. Os testes de domínio só foram conservados porque os respectivos inputs não mudaram.
+Gate final local concluído: 338 testes Node; 16 pacotes Go com race (app executada, restantes cacheados); 5 pacotes SQLite C do host; 60 testes de interoperabilidade; 37 casos por motor Chromium/Firefox/WebKit (111); 26 UI Node e 26 UI Go; build/execução/pacote/execução Linux; 85 casos do gate web público e 2 oráculos; 9 percursos UI-RNS. [Relatórios e proveniência](evidence/site-studio). As tentativas falhadas foram preservadas; o follow-up final começa por build e verifica hashes dos assets durante a matriz. Os testes de domínio só foram conservados porque os respectivos inputs não mudaram.
 
 Controlos dirigidos já concluídos: esquema TypeScript/Go; dois percursos Node→Go→Node e Go→Node→Go; estúdio autónomo com três identidades e RTC; drag/drop aninhado e teclado; interface sobre Node/Go com publicação editada e imagem descodificada. O teste entre processos prova origem terminada e porta recusada, ausência sem caminho, pausa do seeder, recuperação do consentimento, corrupção no armazenamento e bytes idênticos recebidos por um novo leitor.
 

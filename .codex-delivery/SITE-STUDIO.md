@@ -109,3 +109,11 @@ Matriz final43274 concluída com assets estáveis: browser-chromium37/195252ms, 
 ## Gate final local PASS
 
 Terminou em 2026-09-16T10:54:22.257Z. 338 testes Node; 16 pacotes Go com race (app executada, restantes cacheados); 5 pacotes SQLite C do host; 60 testes de interoperabilidade; 37 casos por motor Chromium/Firefox/WebKit (111); 26 UI Node e26 UI Go; build/execução/pacote/execução Linux; 85 casos do gate web público e2 oráculos; 9 percursos UI-RNS. Evidência sanitizada em docs/evidence/site-studio, incluindo a falha de locator, a corrida no feedback RTC, o PNG inválido e a proveniência dos builds. Nenhuma dessas falhas foi omitida nem convertida em passe. A execução final inclui build anterior à matriz e hashes de assets estáveis; as antigas matrizes sobre CSS anterior não são usadas como passe final. Revisão independente e todos os restantes requisitos do contrato continuam abertos. Próximo: commit local explícito, publicar assets exactos, validar HTTPS, guardar evidência e push normal único da fonte/documentação sem cancelar CI.
+
+## Fonte e pedido de publicação
+
+Fonte local11d52bed4c6712c5af90d1aecd828e572d9d54cf criada depois de conferir37 hashes das fontes staged contra o gate.168 ficheiros seleccionados explicitamente; WIP iOS/GroupNotices preservado. node scripts/publish-web.mjs --publish terminou com DEPLOYMENT_REQUESTED:86cb0c37713a2ec978ce1844654517c69e8ab1ce, Pages35087757274 em curso. O push da main fica para depois da verificação HTTPS/documentação, sem cancelar CI entre dois commits.
+
+## Publicação e HTTPS PASS
+
+Pages35087757274 terminou success. Fonte11d52be; distribuição86cb0c3. node .cache/site-studio/verify-live.mjs terminou PASS (sessão10200):17 assets HTTP coincidem por hash/tamanho;3 testes do estúdio/34,0s e1 percurso de processosChromium/Firefox/14,5s. Evidência pública em docs/evidence/site-studio/live. Fonte/documentação serão enviadas num push normal da main, sem alterar o WIP iOS ou encerrar outros serviços. Produto completo, dispositivos/radios e revisão independente continuam abertos.

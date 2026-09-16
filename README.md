@@ -38,7 +38,9 @@ Mensagens/outbox, leitores fixos, social, colecções, páginas e recuperação 
 
 ## Estúdio de páginas pessoais
 
-O novo estúdio foi implementado e validado no host; a publicação HTTPS deste incremento está no passo seguinte. Em **A minha página**, permite criar um site com várias páginas, 13 tipos de bloco, colunas aninhadas, galerias, estilos, três modelos e Markdown seguro. Inclui pré-visualização móvel, desfazer/refazer e importação/exportação declarativa. O rascunho é cifrado; publicar guarda o projecto actual e assina o conteúdo, que os leitores podem distribuir sem adquirir autoria.
+O novo estúdio já está disponível na [versão web](https://johnnypbelo.github.io/relayloom/). Em **A minha página**, permite criar um site com várias páginas, 13 tipos de bloco, colunas aninhadas, galerias, estilos, três modelos e Markdown seguro. Inclui pré-visualização móvel, desfazer/refazer e importação/exportação declarativa. O rascunho é cifrado; publicar guarda o projecto actual e assina o conteúdo, que os leitores podem distribuir sem adquirir autoria.
+
+A publicação foi conferida por hash e passou quatro testes no URL real, incluindo seeding do site com a autora offline e troca de mensagens/anexo entre processos. [Evidência pública](docs/evidence/site-studio/live). Guarde o rascunho, feche os separadores RelayLoom antigos e reabra a página inicial para actualizar, sem apagar os dados.
 
 Esta adaptação inspira-se nos sites distribuídos do ZeroNet, com execução limitada a blocos seguros. Os limites actuais são 12 páginas, 128 blocos, três níveis e quatro imagens com até 2 MiB no total. Contribuições multiutilizador, ficheiros opcionais e endereços permanentes com revisões ainda não estão implementados. [Como criar e limites exactos](docs/SITE-STUDIO.md).
 
@@ -120,7 +122,7 @@ O marco anterior f378e13 passou **30 testes por engine (90), três UI-RNS por en
 
 Uma observação de fecho RTC no WebKit ainda não tem causa estabelecida; os gates seguintes passaram, mas não se afirma correcção. [Observações abertas](docs/evidence/browser-matrix/known-observations.json).
 
-O gate do novo estúdio passou: 338 testes Node; 16 pacotes Go com race (app executada, restantes cacheados); 5 pacotes SQLite C do host; 60 testes de interoperabilidade; 37 casos por motor Chromium/Firefox/WebKit (111); 26 UI Node e26 UI Go; build/execução/pacote/execução Linux; 85 casos do gate web público e2 oráculos; 9 percursos UI-RNS. Os domínios foram conservados após comparação de fontes; a matriz final teve build explícito e hashes dos assets. [Resultados, comandos e falhas corrigidas](docs/evidence/site-studio). Não é validação física nem revisão independente.
+O gate do novo estúdio passou: 338 testes Node; 16 pacotes Go com race (app executada, restantes cacheados); 5 pacotes SQLite C do host; 60 testes de interoperabilidade; 37 casos por motor Chromium/Firefox/WebKit (111); 26 UI Node e 26 UI Go; build/execução/pacote/execução Linux; 85 casos do gate web público e 2 oráculos; 9 percursos UI-RNS. Os domínios foram conservados após comparação de fontes; a matriz final teve build explícito e hashes dos assets. [Resultados, comandos e falhas corrigidas](docs/evidence/site-studio). Não é validação física nem revisão independente.
 
 ## Segurança e continuidade
 

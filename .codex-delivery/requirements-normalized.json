@@ -1712,9 +1712,10 @@
           "tests/e2e/site-studio.spec.ts",
           "docs/SITE-STUDIO.md",
           "docs/evidence/site-studio/gates/final.json",
-          "docs/evidence/site-studio/manifest.json"
+          "docs/evidence/site-studio/manifest.json",
+          "docs/evidence/site-studio/live/report.json"
         ],
-        "limits": "Estúdio multipágina validado em Node/Go/web no host, com rascunho cifrado, controlo de autoria/corrupção e seeder reiniciado. Publicação HTTPS no passo seguinte. Revisão independente e plataformas/toque físicos pendentes. Sem interoperabilidade ZeroNet, scripts/HTML/SQL arbitrários, contribuições multiutilizador ou ficheiros opcionais."
+        "limits": "Estúdio multipágina validado em Node/Go/web no host, com rascunho cifrado, controlo de autoria/corrupção e seeder reiniciado. Publicação HTTPS verificada por hash e quatro testes no URL real. Revisão independente e plataformas/toque físicos pendentes. Sem interoperabilidade ZeroNet, scripts/HTML/SQL arbitrários, contribuições multiutilizador ou ficheiros opcionais."
       },
       "evidence": [
         {
@@ -1736,6 +1737,18 @@
             "docs/evidence/site-studio/manifest.json"
           ],
           "notes": "Clean complete reproduction: node scripts/verify-site-studio.mjs. Domain results inherited only with checked source hashes; final UI/build matrix rerun. Not full product/platform completion."
+        },
+        {
+          "kind": "published-https-e2e",
+          "result": "pass",
+          "command": "node .cache/site-studio/verify-live.mjs",
+          "finished": "2026-09-16T11:00:07.389Z",
+          "sourceCommit": "11d52bed4c6712c5af90d1aecd828e572d9d54cf",
+          "paths": [
+            "docs/evidence/site-studio/live/report.json",
+            "docs/evidence/site-studio/live/manifest.json"
+          ],
+          "notes": "17 runtime assets match; 3 studio tests + 1 independent Chromium/Firefox process test. Not physical devices or complete product parity."
         }
       ]
     },
@@ -1765,9 +1778,10 @@
           "tests/e2e/site-studio.spec.ts",
           "docs/SITE-STUDIO.md",
           "docs/evidence/site-studio/gates/final.json",
-          "docs/evidence/site-studio/manifest.json"
+          "docs/evidence/site-studio/manifest.json",
+          "docs/evidence/site-studio/live/report.json"
         ],
-        "limits": "Estúdio multipágina validado em Node/Go/web no host, com rascunho cifrado, controlo de autoria/corrupção e seeder reiniciado. Publicação HTTPS no passo seguinte. Revisão independente e plataformas/toque físicos pendentes. Sem interoperabilidade ZeroNet, scripts/HTML/SQL arbitrários, contribuições multiutilizador ou ficheiros opcionais."
+        "limits": "Estúdio multipágina validado em Node/Go/web no host, com rascunho cifrado, controlo de autoria/corrupção e seeder reiniciado. Publicação HTTPS verificada por hash e quatro testes no URL real. Revisão independente e plataformas/toque físicos pendentes. Sem interoperabilidade ZeroNet, scripts/HTML/SQL arbitrários, contribuições multiutilizador ou ficheiros opcionais."
       },
       "evidence": [
         {
@@ -1792,6 +1806,18 @@
             "docs/evidence/site-studio/manifest.json"
           ],
           "notes": "Clean complete reproduction: node scripts/verify-site-studio.mjs. Domain results inherited only with checked source hashes; final UI/build matrix rerun. Not full product/platform completion."
+        },
+        {
+          "kind": "published-https-e2e",
+          "result": "pass",
+          "command": "node .cache/site-studio/verify-live.mjs",
+          "finished": "2026-09-16T11:00:07.389Z",
+          "sourceCommit": "11d52bed4c6712c5af90d1aecd828e572d9d54cf",
+          "paths": [
+            "docs/evidence/site-studio/live/report.json",
+            "docs/evidence/site-studio/live/manifest.json"
+          ],
+          "notes": "17 runtime assets match; 3 studio tests + 1 independent Chromium/Firefox process test. Not physical devices or complete product parity."
         }
       ]
     },
@@ -1821,9 +1847,10 @@
           "tests/e2e/site-studio.spec.ts",
           "docs/SITE-STUDIO.md",
           "docs/evidence/site-studio/gates/final.json",
-          "docs/evidence/site-studio/manifest.json"
+          "docs/evidence/site-studio/manifest.json",
+          "docs/evidence/site-studio/live/report.json"
         ],
-        "limits": "Estúdio multipágina validado em Node/Go/web no host, com rascunho cifrado, controlo de autoria/corrupção e seeder reiniciado. Publicação HTTPS no passo seguinte. Revisão independente e plataformas/toque físicos pendentes. Sem interoperabilidade ZeroNet, scripts/HTML/SQL arbitrários, contribuições multiutilizador ou ficheiros opcionais."
+        "limits": "Estúdio multipágina validado em Node/Go/web no host, com rascunho cifrado, controlo de autoria/corrupção e seeder reiniciado. Publicação HTTPS verificada por hash e quatro testes no URL real. Revisão independente e plataformas/toque físicos pendentes. Sem interoperabilidade ZeroNet, scripts/HTML/SQL arbitrários, contribuições multiutilizador ou ficheiros opcionais."
       },
       "evidence": [
         {
@@ -1848,6 +1875,18 @@
             "docs/evidence/site-studio/manifest.json"
           ],
           "notes": "Clean complete reproduction: node scripts/verify-site-studio.mjs. Domain results inherited only with checked source hashes; final UI/build matrix rerun. Not full product/platform completion."
+        },
+        {
+          "kind": "published-https-e2e",
+          "result": "pass",
+          "command": "node .cache/site-studio/verify-live.mjs",
+          "finished": "2026-09-16T11:00:07.389Z",
+          "sourceCommit": "11d52bed4c6712c5af90d1aecd828e572d9d54cf",
+          "paths": [
+            "docs/evidence/site-studio/live/report.json",
+            "docs/evidence/site-studio/live/manifest.json"
+          ],
+          "notes": "17 runtime assets match; 3 studio tests + 1 independent Chromium/Firefox process test. Not physical devices or complete product parity."
         }
       ]
     },
