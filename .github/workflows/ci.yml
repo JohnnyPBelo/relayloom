@@ -44,8 +44,8 @@ jobs:
   native-go:
     needs: native-node
     runs-on: ubuntu-latest
-    # Run34750795247 completed its checks but hit15m during final teardown.
-    # Keep the full serial test/interop/UI gate and bounded cleanup headroom.
+    # Domain/race/interop retain their existing bounds. Run35150603062 passed
+    # these checks, then reached25m during UI; the UI now runs in a dependent job.
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
@@ -63,6 +63,33 @@ jobs:
       - name: C SQLite storage contract on the host (not Android execution)
         run: npm run test:native:cgo-storage
       - run: npm run test:interop
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: native-go-evidence
+          path: |
+            .cache/native-mixed/*.json
+            .cache/native-interop/*/report.json
+            .cache/fixture-http-failures/*.json
+            .cache/web-invitation
+          retention-days: 7
+
+  native-ui:
+    needs: native-go
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.26.8"
+          cache: false
+      - run: npm ci --ignore-scripts
+      - run: npm run build
+      - run: npm run native:build
       - name: Real UI against the native Go application
         run: node scripts/e2e.mjs --output=.cache/native-ui-e2e
         env:
@@ -71,17 +98,16 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: native-go-evidence
+          name: native-ui-evidence
           path: |
-            .cache/native-mixed/*.json
-            .cache/native-interop/*/report.json
             .cache/native-ui-e2e
             .cache/fixture-http-failures/*.json
             .cache/web-invitation
+            test-results/e2e.json
           retention-days: 7
 
   reticulum-reference:
-    needs: native-go
+    needs: native-ui
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -153,7 +179,7 @@ jobs:
           retention-days: 7
 
   desktop-package:
-    needs: native-go
+    needs: native-ui
     strategy:
       max-parallel: 1
       fail-fast: false
@@ -199,7 +225,7 @@ jobs:
           retention-days: 7
 
   ios-simulator-build:
-    needs: native-go
+    needs: native-ui
     runs-on: macos-latest
     timeout-minutes: 40
     steps:
