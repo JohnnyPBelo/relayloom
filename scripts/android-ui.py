@@ -35,8 +35,38 @@ def visible(node):
 def screenshot(name):
     output = EVIDENCE/(name+'.png'); output.write_bytes(adb('exec-out','screencap','-p',binary=True)); return str(output.relative_to(ROOT))
 
+def select_portuguese():
+    """Use the application's visible selector; never alter Android system locale."""
+    root = dump()
+    selected = next((n for n in root.iter('node') if visible(n) and n.attrib.get('text') in ('Português (Portugal)', 'English', 'Español')), None)
+    if selected is None: raise RuntimeError('Application language selector is not visible')
+    if selected.attrib.get('text') != 'Português (Portugal)':
+        tap(selected)
+        for _ in range(8):
+            root = dump()
+            option = next((n for n in root.iter('node') if visible(n) and n.attrib.get('text') == 'Português (Portugal)'), None)
+            if option is not None: tap(option); break
+            time.sleep(.25)
+        else: raise RuntimeError('Portuguese application language option not visible')
+    # The native preference API writes outside the changing HTTP origin.
+    for _ in range(12):
+        root = dump()
+        if any(visible(n) and n.attrib.get('text') == 'Português (Portugal)' for n in root.iter('node')):
+            time.sleep(.5); return
+        time.sleep(.25)
+    raise RuntimeError('Application language selection did not update')
+
+def begin_setup():
+    select_portuguese()
+    for _ in range(7):
+        root = dump()
+        start = next((n for n in root.iter('node') if visible(n) and n.attrib.get('text') == 'Começar'), None)
+        if start is not None: tap(start); return
+        adb('shell','input','swipe','540','1650','540','650','350')
+    raise RuntimeError('Initial setup action was not available')
+
 def create_identity():
-    image = screenshot('android-onboarding-before'); root = dump()
+    image = screenshot('android-onboarding-before'); begin_setup(); root = dump()
     for i in range(7):
         inputs = [n for n in root.iter('node') if n.attrib.get('class')=='android.widget.EditText' and n.attrib.get('enabled')=='true' and visible(n)]
         name = next((n for n in inputs if n.attrib.get('password')=='false'),None)
@@ -65,8 +95,9 @@ def create_identity():
     (EVIDENCE/'uiautomator-identity.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2))
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('action',choices=['dump','screenshot','create-identity']);args=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('action',choices=['dump','screenshot','create-identity','select-language']);args=p.parse_args()
     if args.action=='create-identity':create_identity()
+    elif args.action=='select-language':select_portuguese()
     elif args.action=='screenshot':print(screenshot('android-current'))
     else:
         for n in dump().iter('node'):

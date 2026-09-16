@@ -232,7 +232,7 @@ final class DocumentController {
         if (item.writing && !"saved".equals(status)) text = "A gravação foi interrompida. O destino pode conter um ficheiro incompleto.";
         ValueCallback<Uri[]> callback = item.callback; item.callback = null;
         if (callback != null) callback.onReceiveValue(values);
-        final String messageText = text;
+        final String messageText = NativeText.text(activity, text);
         WebView view = host.web();
         if (view != null && host.current()) view.evaluateJavascript("window.__relayloomDocumentResult && window.__relayloomDocumentResult(" + JSONObject.quote(String.valueOf(item.ticket.id)) + "," + JSONObject.quote(status) + "," + JSONObject.quote(messageText) + ")", null);
         if (view != null && host.current() && host.foreground()) view.evaluateJavascript("window.__relayloomResumeFromDocument && window.__relayloomResumeFromDocument()", null);
@@ -242,6 +242,6 @@ final class DocumentController {
     void clearSnapshots() { SelectedDocumentProvider.clear(this); }
     void cancel(String reason) { Work item = work; if (item != null) finish(item, null, "cancelled", reason); }
     void destroy() { cancel("Escolha cancelada porque a aplicação fechou."); io.shutdownNow(); clearSnapshots(); }
-    private void message(String text) { main.post(() -> { if (activeToast != null) activeToast.cancel(); activeToast = Toast.makeText(activity, text, Toast.LENGTH_LONG); activeToast.show(); }); }
-    private String response(boolean ok, String id, String error) { try { return new JSONObject().put("ok", ok).put("id", id == null ? JSONObject.NULL : id).put("error", error == null ? JSONObject.NULL : error).toString(); } catch (Exception impossible) { return "{\"ok\":false}"; } }
+    private void message(String text) { main.post(() -> { if (activeToast != null) activeToast.cancel(); activeToast = Toast.makeText(activity, NativeText.text(activity, text), Toast.LENGTH_LONG); activeToast.show(); }); }
+    private String response(boolean ok, String id, String error) { try { return new JSONObject().put("ok", ok).put("id", id == null ? JSONObject.NULL : id).put("error", error == null ? JSONObject.NULL : NativeText.text(activity, error)).toString(); } catch (Exception impossible) { return "{\"ok\":false}"; } }
 }

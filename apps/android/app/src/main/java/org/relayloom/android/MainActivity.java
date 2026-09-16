@@ -145,9 +145,9 @@ public final class MainActivity extends Activity {
     }
     private void showStatus(String text, boolean retry) {
         content.removeAllViews(); LinearLayout panel = new LinearLayout(this); panel.setOrientation(LinearLayout.VERTICAL); panel.setGravity(Gravity.CENTER); panel.setPadding(32, 32, 32, 32);
-        TextView label = new TextView(this); label.setText(text); label.setTextSize(18); label.setTextColor(Color.rgb(38, 59, 52)); label.setGravity(Gravity.CENTER); panel.addView(label);
-        if (retry) { Button button = new Button(this); button.setText("Tentar novamente"); button.setOnClickListener(view -> startCore()); panel.addView(button); } else panel.addView(new ProgressBar(this));
-        TextView limits = new TextView(this); limits.setText("Rede experimental. A retransmissão pára quando esta aplicação deixa de estar visível."); limits.setTextSize(13); limits.setPadding(0, 28, 0, 0); limits.setGravity(Gravity.CENTER); panel.addView(limits);
+        TextView label = new TextView(this); label.setText(NativeText.text(this, text)); label.setTextSize(18); label.setTextColor(Color.rgb(38, 59, 52)); label.setGravity(Gravity.CENTER); panel.addView(label);
+        if (retry) { Button button = new Button(this); button.setText(NativeText.text(this, "Tentar novamente")); button.setOnClickListener(view -> startCore()); panel.addView(button); } else panel.addView(new ProgressBar(this));
+        TextView limits = new TextView(this); limits.setText(NativeText.text(this, "Rede experimental. A retransmissão pára quando esta aplicação deixa de estar visível.")); limits.setTextSize(13); limits.setPadding(0, 28, 0, 0); limits.setGravity(Gravity.CENTER); panel.addView(limits);
         content.addView(panel, new FrameLayout.LayoutParams(-1, -1));
     }
     private void disposeWeb() {
@@ -169,7 +169,7 @@ public final class MainActivity extends Activity {
             @Override public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 OriginPolicy policy = CORE.isCurrent(coreLease) ? endpoint : null;
                 if (policy != null && policy.sameOrigin(request.getUrl().toString())) return false;
-                Toast.makeText(MainActivity.this, "Esta aplicação abre apenas a sua rede local.", Toast.LENGTH_SHORT).show(); return true;
+                Toast.makeText(MainActivity.this, NativeText.text(MainActivity.this, "Esta aplicação abre apenas a sua rede local."), Toast.LENGTH_SHORT).show(); return true;
             }
             @Override public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
                 OriginPolicy policy = CORE.isCurrent(coreLease) ? endpoint : null;
@@ -237,11 +237,11 @@ public final class MainActivity extends Activity {
             final int request = generation;
             runOnUiThread(() -> {
                 if (!owner(token) || request != generation) return;
-                if (Build.VERSION.SDK_INT >= 26) { NotificationChannel channel = new NotificationChannel(CHANNEL, "Mensagens privadas", NotificationManager.IMPORTANCE_LOW); channel.setDescription("Avisos genéricos, sem nomes ou conteúdo de mensagens"); manager().createNotificationChannel(channel); }
+                if (Build.VERSION.SDK_INT >= 26) { NotificationChannel channel = new NotificationChannel(CHANNEL, NativeText.text(MainActivity.this, "Mensagens privadas"), NotificationManager.IMPORTANCE_LOW); channel.setDescription(NativeText.text(MainActivity.this, "Avisos genéricos, sem nomes ou conteúdo de mensagens")); manager().createNotificationChannel(channel); }
                 Intent open = new Intent(MainActivity.this, MainActivity.class); open.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 PendingIntent intent = PendingIntent.getActivity(MainActivity.this, PRIVATE_NOTIFICATION, open, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
                 Notification.Builder builder = Build.VERSION.SDK_INT >= 26 ? new Notification.Builder(MainActivity.this, CHANNEL) : new Notification.Builder(MainActivity.this);
-                builder.setSmallIcon(R.drawable.ic_relayloom).setContentTitle("RelayLoom").setContentText("Tens novas mensagens privadas. Abre o RelayLoom para as ler.").setContentIntent(intent).setAutoCancel(true).setOnlyAlertOnce(true).setVisibility(Notification.VISIBILITY_PRIVATE);
+                builder.setSmallIcon(R.drawable.ic_relayloom).setContentTitle("RelayLoom").setContentText(NativeText.text(MainActivity.this, "Tens novas mensagens privadas. Abre o RelayLoom para as ler.")).setContentIntent(intent).setAutoCancel(true).setOnlyAlertOnce(true).setVisibility(Notification.VISIBILITY_PRIVATE);
                 try { manager().notify(PRIVATE_NOTIFICATION, builder.build()); } catch (SecurityException ignored) {}
             }); return true;
         }

@@ -195,6 +195,24 @@ public final class NativeSmoke extends Instrumentation {
                 JSONObject before = (JSONObject) api("state", null);
                 require("Go".equals(before.optString("nativeRuntime")), "The on-device state is served by Go");
                 require(before.getBoolean("initialized"), "UIAutomator previously created persistent Android identity");
+                int languageChecks = 0;
+                if (!"relay".equals(arguments.getString("mode"))) {
+                    byte[] priorVault = NativeLanguageChecks.vaultDigest(activity);
+                    languageChecks = NativeLanguageChecks.run(activity); assertions += languageChecks;
+                    String[][] languages = {{"es-ES", "Volver a intentar"}, {"en-GB", "Try again"}, {"pt-PT", "Tentar novamente"}};
+                    for (String[] choice : languages) {
+                        js("(()=>{const s=document.querySelector('.language-picker select');s.value=" + JSONObject.quote(choice[0]) + ";s.dispatchEvent(new Event('change',{bubbles:true}));return true})()");
+                        awaitCondition("document.documentElement.lang===" + JSONObject.quote(choice[0]), "visible language update");
+                        for (int i = 0; i < 50; i++) {
+                            if (choice[0].equals(((JSONObject) api("ui-preferences", null)).optString("language"))) break;
+                            Thread.sleep(100);
+                        }
+                        require(choice[0].equals(((JSONObject) api("ui-preferences", null)).optString("language")), "UI choice persisted to native profile");
+                        require(choice[1].equals(NativeLanguageChecks.text(activity, "Tentar novamente")), "Native text follows the current UI choice");
+                    }
+                    require(java.util.Arrays.equals(priorVault, NativeLanguageChecks.vaultDigest(activity)), "Language changes preserve the existing encrypted vault bytes");
+                    phase("native-language-checked", new JSONObject().put("readerControls", languageChecks).put("uiLanguages", 3));
+                }
                 String password = arguments.getString("password", "relayloom android test passphrase");
                 // Actual UI form interaction and React event path, not an API unlock substitute.
                 unlock(password);
@@ -216,6 +234,10 @@ public final class NativeSmoke extends Instrumentation {
                 Thread.sleep(100); js("document.querySelector('button[aria-label=\"Enviar mensagem\"]').click()"); awaitText(outgoing);
                 String incoming = "Host reply to actual Android core " + arguments.getString("nonce");
                 awaitText(incoming);
+                // Receiving a reply does not prove our signed delivery acknowledgement arrived.
+                // Observe it before deliberately closing the transport in the lifecycle step.
+                awaitCondition("Boolean(document.querySelector('button[aria-label=\"Estado do envio: Recebida\"]'))", "signed delivery visible before background");
+                require(Boolean.TRUE.equals(js("Boolean(document.querySelector('button[aria-label=\"Estado do envio: Recebida\"]'))")), "Outgoing message displays verified delivery");
                 state = (JSONObject) api("state", null); JSONArray objects = state.getJSONArray("objects");
                 boolean found = false; String receivedId = null;
                 for (int i = 0; i < objects.length(); i++) { JSONObject object = objects.getJSONObject(i); if (incoming.equals(object.getJSONObject("content").optString("text"))) { require(!object.getBoolean("public"), "Incoming peer message remains private"); require(object.getJSONObject("author").getString("id").equals(host.getString("id")), "Incoming author matches real host peer"); receivedId = object.getString("id"); found = true; } }
@@ -237,7 +259,10 @@ public final class NativeSmoke extends Instrumentation {
                 for (int i = 0; i < objects.length(); i++) if (incoming.equals(objects.getJSONObject(i).getJSONObject("content").optString("text"))) found = true;
                 require(found, "Private message survives native core stop/restart");
                 js("Array.from(document.querySelectorAll('button.conversation')).find(b=>b.textContent.includes(" + JSONObject.quote(host.getString("name")) + ")).click()"); awaitText(incoming);
+                awaitCondition("Boolean(document.querySelector('button[aria-label=\"Estado do envio: Recebida\"]'))", "signed delivery survives restart");
+                require(Boolean.TRUE.equals(js("Boolean(document.querySelector('button[aria-label=\"Estado do envio: Recebida\"]'))")), "Delivered state is preserved after restart");
                 report.put("kind", "ANDROID_EMULATOR_INSTRUMENTATION").put("runtime", "Go inside actual APK process").put("nativeRuntime", state.getString("nativeRuntime")).put("identity", identity).put("tcpPort", state.getInt("tcpPort")).put("uiUnlockAndComposerExecuted", true).put("missingCapabilityStatus", rejected).put("privatePeerExchange", true).put("encryptedDeviceBundleChecked", true).put("actualBackgroundListenersClosed", true).put("actualResumeIdentityAndMessageRecovered", true).put("assertions", assertions).put("physicalDeviceTested", false).put("microphoneCameraAccessed", false).put("notificationDisplayTested", false);
+                report.put("nativeLanguageReaderControls", languageChecks).put("uiAndNativeLanguagesChecked", 3).put("languageSelectionUsesWebViewDOMEvents", true).put("verifiedDeliveryBeforeAndAfterRestart", true);
                 File evidence = new File(getTargetContext().getFilesDir(), "android-instrumentation-report.json");
                 try (FileOutputStream stream = new FileOutputStream(evidence)) { stream.write(report.toString(2).getBytes(StandardCharsets.UTF_8)); }
                 android.graphics.Bitmap screenshot = renderedScreenshot();
