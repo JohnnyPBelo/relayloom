@@ -456,3 +456,19 @@ O dump UI inicial coincidiu com o arranque da WebView; o seguinte mostrou a UI c
 Uma captura mostrava mensagem Em espera apesar de a resposta já existir: a fixture suspendia imediatamente e não aguardava a confirmação assinada. Exigir Recebida antes/depois do restart passou sem alterar transporte ou prazo. Receber uma resposta não prova a persistência de uma confirmação; testar ambos explicitamente. Android final57/38/15/13 e inspecção do perfil passaram.
 
 O colector local de evidência usou inicialmente um caminho relativo com um nível a mais; falhou no import antes de criar ficheiros. Corrigido para ../../scripts. Conservar hashes de originais/sanitizados e nunca substituir os relatórios anteriores. iOS novo continua sem compilação/execuçãoApple; estática/runnerLinux não são substitutos.
+
+
+## Âmbito do driver HTTPS e falhas de interacção — 2026-09-16
+
+Os novos testes de idiomas usavam appHost local e ignoravamRELAYLOOM_LAUNCH_URL; o script de retoma assumira o comportamento externo que só site-studio possuía. O traceHTTP127.0.0.1 demonstrou a lacuna. uiHost agora escolhe/loga/valida oHTTPS, preservando appHostpara controlos locais; os relatórios incluemapplicationURL e a navegação é conferida. Typecheck e controlospos/negpassaram. Exigir prova de origem real; uma variáveldeambiente no comando não demonstra queo teste aconsumiu.
+
+O novo dirigido atingiu oHTTPS e trocoumensagens/anexo, mas ultrapassou90s antesdefinalizar. Pressãodememória elevada foiobservada,semcausademonstrada. Guardarfalhas; nãoconverterumreportPASS antigofixoem.resultadonovo,seotestenovonãoterminou. A capturabrancaeradeumsegundoseparadorvazio; a captura dotracecorrectomostravaaUI. Registar estafronteira emvezdeinventarfalhadedados/transporteeiniciarloops.
+
+
+## Cópia de páginas e execução móvel — 2026-09-16
+
+A cópia precisa de IDs próprios em todos os descendentes e de remapear apenas as ligações à própria página; trocar todos os destinos alteraria outras páginas. O início é um ID, não a primeira posição do array. Testes de limites, Unicode, não mutação, UI/undo/persistência e envio assinado a outro processo passaram. A revisão da captura compacta levou a agrupar a acção de início com a posição, deixando os campos mais largos; a matriz dirigida voltou a passar.
+
+O emulador anterior desapareceu após interrupção. Confirmar /proc e adb antes de arquivar o registo e retomar o mesmoAVD; nunca reiniciar só por uma observação lenta. O primeiro Androidpages começou sem rascunho; é necessária uma segunda passagem final para exercitar a restauração do rascunho existente.
+
+No iOS, addmedia passou nesta execução; o erro passou a ser navegação. A captura mostra o menu aberto com a página anterior seleccionada. O XCTest reutilizava uma consulta global definida antes de abrir a gaveta. Nova consulta ao landmark após abertura, condição hittable e diagnóstico de geometria foram preparados; o teste de toqueWebKit passou, mas não valida essa correcção no iOS. Não atribuir a falha actual à fototeca nem fazer um segundo toque automático para mascarar o comportamento.

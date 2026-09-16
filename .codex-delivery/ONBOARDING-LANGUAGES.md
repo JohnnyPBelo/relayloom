@@ -103,3 +103,8 @@ iOS NativeText.swift/localização do teclado/avisos preparada, mantendo WIP UIK
 Android finald2dd1ab1:57smoke com confirmaçãoRecebida persistente (sessão86546exit0);38SAF(s54408exit0);15prazo aos120691ms(s86906exit0);13relay(s13580exit0);private-profileexit0 com hash instalado confirmado e cofre/legacyintactos face ao baselinehistórico. Não é nova migração. Emulador2598300conservado; app reaberta.
 
 75artefactos sanitizados,5,49MB, em docs/evidence/onboarding-languages, com hashes originais/finais e comparação de fontes. Capturas de introdesktop/estúdioES390/Android recebida inspeccionadas; Axe não equivale a revisãoindependente. Branchdeintegração codex/setup-languages separa37e0cdebackend,f799539UI,c2d6fb0Android,ea2ee98iOSpendenteApple. Novo gatepúblico36287ainda emexecução; detalhes correntesemRESUME.md. Nenhum passe anterior foi substituído ou usado como passeApple.
+
+
+## Falha posterior à publicação — conservar, não promover
+
+Novo gatepúblico36287PASS(121+2), relatório preservadopublic-final. Pages35139489431success, fonte02188da/distribuiçãoeff7e9b9,17hashesHTTPPASS. O driverHTTPS40761FAIL(3clicktimeouts/6passes) incluía porerro6casos novos queusaramlocalhost. Corrigidosapp-host/uiHost e3ficheiros. Typecheck+controlosPASS; dirigido20801noHTTPSrealFAIL90sdepoisdetrocamensagens/anexo, antesdeconcluirmudançalíngua/retoma. Pressãomemóriafullavg300~33%observada,nãocausademonstrada. docs/evidence/onboarding-languages/live eRESUME guardamâmbito,traceslocais,comandos ependentes. Nenhumaalteraçãodeapp/transporte paraestafalha,nenhumaumentodeprazos,nenhumprocessoexternoparado. VerificadorWIPnãocommitado; nãochamarpublicaçãototalmentevalidada.

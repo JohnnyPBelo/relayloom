@@ -1749,6 +1749,15 @@
             "docs/evidence/site-studio/live/manifest.json"
           ],
           "notes": "17 runtime assets match; 3 studio tests + 1 independent Chromium/Firefox process test. Not physical devices or complete product parity."
+        },
+        {
+          "kind": "page-organisation-ui",
+          "result": "pass-directed-and-shared-ui",
+          "command": "Commands in docs/evidence/page-organisation/README.md",
+          "paths": [
+            "docs/evidence/page-organisation"
+          ],
+          "notes": "Copy/order, original/home/assets/links preservation, keyboard/touch and Node/Go/browser/Android journeys. Complete browser and final mobile gates still pending; revisions, contributor permissions and optional files remain required."
         }
       ]
     },
@@ -1826,7 +1835,7 @@
       "type": "functional",
       "title": "Signed site publication and offline cached foreign site",
       "statement": "Signed site publication and offline cached foreign site",
-      "status": "done",
+      "status": "partial",
       "inferred": false,
       "source": {
         "file": "PROJECT-BRIEF.md"
@@ -1887,6 +1896,15 @@
             "docs/evidence/site-studio/live/manifest.json"
           ],
           "notes": "17 runtime assets match; 3 studio tests + 1 independent Chromium/Firefox process test. Not physical devices or complete product parity."
+        },
+        {
+          "kind": "page-organisation-ui",
+          "result": "pass-directed-and-shared-ui",
+          "command": "Commands in docs/evidence/page-organisation/README.md",
+          "paths": [
+            "docs/evidence/page-organisation"
+          ],
+          "notes": "Copy/order, original/home/assets/links preservation, keyboard/touch and Node/Go/browser/Android journeys. Complete browser and final mobile gates still pending; revisions, contributor permissions and optional files remain required."
         }
       ]
     },
@@ -3695,6 +3713,14 @@
             "docs/SETUP-LANGUAGES.md"
           ],
           "notes": "Local complete gate and Android execution; no physical radio, Apple execution or completed-product claim."
+        },
+        {
+          "kind": "published-https-ui",
+          "result": "pass-scoped",
+          "paths": [
+            "docs/evidence/onboarding-languages/live/final"
+          ],
+          "notes": "17 exact HTTP assets,9 published UI journeys and1 independent Chromium/Firefox-process journey. Earlier timeouts retained; actual URL selection fixed. No whole-product or physical-device claim."
         }
       ]
     }

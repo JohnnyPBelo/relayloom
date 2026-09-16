@@ -1,0 +1,142 @@
+
+Running 9 tests using 1 worker
+
+(node:2835888) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/browser/onboarding-language.spec.ts:13:1 › initial language, product guide and appearance work without altering identity form values (15.1s)
+  ✘  2 tests/browser/onboarding-language.spec.ts:133:1 › English and Spanish identities exchange encrypted messages and files without translating authored text (56.2s)
+(node:2839173) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  3 tests/browser/onboarding-language.spec.ts:363:1 › a blocked tab can change UI language while the owning identity remains intact (6.5s)
+  ✘  4 tests/browser/onboarding-language.spec.ts:453:1 › unavailable preference storage and localized form validation never reset a profile (21.5s)
+(node:2841940) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  5 tests/browser/onboarding-language.spec.ts:532:1 › saving one preference does not hide a different unsaved preference (6.2s)
+  ✘  6 tests/browser/site-language.spec.ts:114:1 › three multilingual identities edit signed pages, preserve original text and seed to a new reader after author closes (1.2m)
+(node:2849039) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  7 tests/browser/site-studio.spec.ts:78:1 › multipage studio saves encrypted draft, rejects executable imports and a consenting reader seeds it to a new browser after author closes (45.7s)
+  ✓  8 tests/browser/site-studio.spec.ts:352:1 › studio keyboard navigation, nested drag, duplicate, reparent and page references stay editable on a narrow screen (6.1s)
+  ✓  9 tests/browser/site-studio.spec.ts:426:1 › dense three-level compositions keep all controls inside their blocks and preserve contrast across palettes and app themes (23.5s)
+
+
+  1) tests/browser/onboarding-language.spec.ts:133:1 › English and Spanish identities exchange encrypted messages and files without translating authored text
+
+    TimeoutError: locator.click: Timeout 12000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Get started', exact: true })
+        - locator resolved to <button type="button" class="primary full" data-action="setup-start">…</button>
+      - attempting click action
+        - waiting for element to be visible, enabled and stable
+
+
+      183 |   const enter = async (page: typeof a, words: typeof en, name: string) => {
+      184 |     await page.goto(host.url + "/browser/index.html");
+    > 185 |     await page.getByRole("button", { name: words.start, exact: true }).click();
+          |                                                                        ^
+      186 |     await page.getByLabel(words.name, { exact: true }).fill(name);
+      187 |     await page.getByLabel(words.pass, { exact: true }).fill(phrase);
+      188 |     await page.getByRole("button", { name: words.create, exact: true }).click();
+        at enter ([PROJECT]/tests/browser/onboarding-language.spec.ts:185:72)
+        at [PROJECT]/tests/browser/onboarding-language.spec.ts:198:19
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/onboarding-language-Englis-3bff6-t-translating-authored-text/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/onboarding-language-Englis-3bff6-t-translating-authored-text/error-context.md
+
+    Error Context: test-results/onboarding-language-Englis-3bff6-t-translating-authored-text/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/onboarding-language-Englis-3bff6-t-translating-authored-text/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/onboarding-language-Englis-3bff6-t-translating-authored-text/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) tests/browser/onboarding-language.spec.ts:453:1 › unavailable preference storage and localized form validation never reset a profile
+
+    TimeoutError: locator.click: Timeout 12000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Empezar', exact: true })
+        - locator resolved to <button type="button" class="primary full" data-action="setup-start">…</button>
+      - attempting click action
+        - waiting for element to be visible, enabled and stable
+        - element is visible, enabled and stable
+        - scrolling into view if needed
+        - done scrolling
+        - performing click action
+
+
+      476 |       "no ha permitido guardar la preferencia",
+      477 |     );
+    > 478 |     await page.getByRole("button", { name: "Empezar", exact: true }).click();
+          |                                                                      ^
+      479 |     await page
+      480 |       .getByRole("button", { name: "Crear identidad", exact: true })
+      481 |       .click();
+        at [PROJECT]/tests/browser/onboarding-language.spec.ts:478:70
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/onboarding-language-unavai-92093-ation-never-reset-a-profile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/onboarding-language-unavai-92093-ation-never-reset-a-profile/error-context.md
+
+    Error Context: test-results/onboarding-language-unavai-92093-ation-never-reset-a-profile/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/onboarding-language-unavai-92093-ation-never-reset-a-profile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/onboarding-language-unavai-92093-ation-never-reset-a-profile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) tests/browser/site-language.spec.ts:114:1 › three multilingual identities edit signed pages, preserve original text and seed to a new reader after author closes
+
+    TimeoutError: locator.click: Timeout 12000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Completar conexión', exact: true })
+        - locator resolved to <button class="primary full">…</button>
+      - attempting click action
+        - waiting for element to be visible, enabled and stable
+        - element is visible, enabled and stable
+        - scrolling into view if needed
+        - done scrolling
+        - performing click action
+
+
+       99 |     .getByLabel(aw.answer, { exact: true })
+      100 |     .fill(await b.getByLabel(bw.share, { exact: true }).inputValue());
+    > 101 |   await a.getByRole("button", { name: aw.complete, exact: true }).click();
+          |                                                                   ^
+      102 |   for (const [p, w] of [
+      103 |     [a, aw],
+      104 |     [b, bw],
+        at connect ([PROJECT]/tests/browser/site-language.spec.ts:101:67)
+        at [PROJECT]/tests/browser/site-language.spec.ts:250:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/site-language-three-multil-6b44b--reader-after-author-closes/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/site-language-three-multil-6b44b--reader-after-author-closes/error-context.md
+
+    Error Context: test-results/site-language-three-multil-6b44b--reader-after-author-closes/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/site-language-three-multil-6b44b--reader-after-author-closes/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/site-language-three-multil-6b44b--reader-after-author-closes/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3 failed
+    tests/browser/onboarding-language.spec.ts:133:1 › English and Spanish identities exchange encrypted messages and files without translating authored text
+    tests/browser/onboarding-language.spec.ts:453:1 › unavailable preference storage and localized form validation never reset a profile
+    tests/browser/site-language.spec.ts:114:1 › three multilingual identities edit signed pages, preserve original text and seed to a new reader after author closes
+  6 passed (4.3m)

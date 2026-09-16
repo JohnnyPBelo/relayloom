@@ -209,3 +209,10 @@ Fecho do incremento (não do produto), 2026-09-16: gate final web 67+2 e UI-RNS 
 ## Setup e idiomas, 2026-09-16
 
 FR-044/045 parcialmente realizados: gate geral345Node/Go-race+SQLiteC/62interop/129browser/60UI/Linux/121candidataweb+2oráculos/9RNS passou. Android57smoke(inclui32reader e3línguas)/38documentos/15prazo/13relay + perfil privado passaram no APKd2dd1ab1. docs/evidence/onboarding-languages e docs/SETUP-LANGUAGES.md. Conteúdo de autoria não traduzido, preferências não alteram cofre/relay. iOS novo somente preparação+estática/22runner noLinux; Apple, dispositivos e revisão independente pendentes. Sem publicação nova nem conclusão integral antecipada.
+
+
+## Organização de páginas — candidata em verificação
+
+FR-038/FR-040: duplicação/ordem com IDs novos, ligação à própria cópia, início e anexos preservados. 64domínio, Node/Go/3browsers dirigidos,31UI Node+31Go e Linux build/run/package/run passaram; Android25asserções com documento exacto recebido porNode e rascunho recuperado. Matriz integral e gatesAndroidfinais ainda em curso/pendentes. docs/evidence/page-organisation; não encerra sites nem o produto.
+
+FR-045: HTTPS02188da/eff7e9b9 verificado em17assets e10percursosUI, docs/evidence/onboarding-languages/live/final. iOS02188da compilado/startup executado, falha funcional na navegação; correcçãoXCTest e fallbackPT ainda aguardam novoCI.

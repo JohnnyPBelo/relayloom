@@ -1,0 +1,38 @@
+
+Running 1 test using 1 worker
+
+(node:2881867) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+RelayLoom UI target: https://johnnypbelo.github.io/relayloom
+  ✘  1 [chromium] › tests/browser/onboarding-language.spec.ts:133:1 › English and Spanish identities exchange encrypted messages and files without translating authored text (1.6m)
+
+
+  1) [chromium] › tests/browser/onboarding-language.spec.ts:133:1 › English and Spanish identities exchange encrypted messages and files without translating authored text
+
+    Test timeout of 90000ms exceeded.
+
+    Error: apiRequestContext._wrapApiCall: Target page, context or browser has been closed
+
+    Error: browserContext.close: Protocol error (Target.disposeBrowserContext): Failed to find context with id 5E1E2EAAF8668ABA39DB9F0965954A22
+
+      359 |   } finally {
+      360 |     await aContext.close();
+    > 361 |     await bContext.close();
+          |     ^
+      362 |   }
+      363 | });
+      364 |
+        at [PROJECT]/tests/browser/onboarding-language.spec.ts:361:5
+
+    Error Context: test-results/onboarding-language-Englis-3bff6-t-translating-authored-text-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/onboarding-language-Englis-3bff6-t-translating-authored-text-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/onboarding-language-Englis-3bff6-t-translating-authored-text-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › tests/browser/onboarding-language.spec.ts:133:1 › English and Spanish identities exchange encrypted messages and files without translating authored text

@@ -8,7 +8,7 @@ Um mensageiro cifrado entre pares, uma rede social e páginas pessoais feitas co
 
 A captura vem de um teste real: a autora tinha apenas outro navegador como par; a rota continuava por WebSocket, Reticulum TCP e série PTY. O intermediário não conseguia ler a mensagem. PTY não é rádio físico.
 
-O setup guiado e os idiomas português europeu, inglês e espanhol estão verificados na candidata local, incluindo preferências entre reinícios e mensagens/ficheiros no emulador Android. A publicação deste incremento e a validação iOS continuam pendentes. [Guia e âmbito](docs/SETUP-LANGUAGES.md) · [Testes executados](docs/evidence/onboarding-languages).
+O setup guiado e os idiomas português europeu, inglês e espanhol já estão no URL público. Os gates locais e Android passaram. A verificação final conferiu17ficheirosHTTP e passou10percursosUI, incluindo dois processos independentes. Os timeouts anteriores e a correcção da escolha dehost do verificador ficaram documentados. A validação iOS permanece pendente. [Evidência e falhas](docs/evidence/onboarding-languages/live). [Guia e âmbito](docs/SETUP-LANGUAGES.md) · [Testes executados](docs/evidence/onboarding-languages).
 
 ## Usar a web sem instalar a aplicação
 
@@ -45,6 +45,8 @@ O novo estúdio já está disponível na [versão web](https://johnnypbelo.githu
 A publicação foi conferida por hash e passou quatro testes no URL real, incluindo seeding do site com a autora offline e troca de mensagens/anexo entre processos. [Evidência pública](docs/evidence/site-studio/live). Guarde o rascunho, feche os separadores RelayLoom antigos e reabra a página inicial para actualizar, sem apagar os dados.
 
 Esta adaptação inspira-se nos sites distribuídos do ZeroNet, com execução limitada a blocos seguros. Os limites actuais são 12 páginas, 128 blocos, três níveis e quatro imagens com até 2 MiB no total. Contribuições multiutilizador, ficheiros opcionais e endereços permanentes com revisões ainda não estão implementados. [Como criar e limites exactos](docs/SITE-STUDIO.md).
+
+Na candidata de integração, já pode duplicar páginas completas e alterar a sua ordem. A cópia conserva ligações, imagens e a página inicial, com desfazer/refazer e controlos por teclado/toque. Os testes dirigidos Node/Go/browser e Android passaram; os controlos novos ainda não estão publicados. [Evidência e pendentes](docs/evidence/page-organisation).
 
 ## Meios através de Reticulum
 

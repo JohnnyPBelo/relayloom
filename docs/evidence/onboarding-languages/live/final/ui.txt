@@ -1,0 +1,19 @@
+
+Running 9 tests using 1 worker
+
+(node:2935373) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+RelayLoom UI target: https://johnnypbelo.github.io/relayloom
+  ✓  1 tests/browser/onboarding-language.spec.ts:13:1 › initial language, product guide and appearance work without altering identity form values (2.5s)
+  ✓  2 tests/browser/onboarding-language.spec.ts:133:1 › English and Spanish identities exchange encrypted messages and files without translating authored text (10.2s)
+  ✓  3 tests/browser/onboarding-language.spec.ts:365:1 › a blocked tab can change UI language while the owning identity remains intact (1.5s)
+  ✓  4 tests/browser/onboarding-language.spec.ts:455:1 › unavailable preference storage and localized form validation never reset a profile (1.4s)
+  ✓  5 tests/browser/onboarding-language.spec.ts:534:1 › saving one preference does not hide a different unsaved preference (856ms)
+RelayLoom UI target: https://johnnypbelo.github.io/relayloom
+  ✓  6 tests/browser/site-language.spec.ts:115:1 › three multilingual identities edit signed pages, preserve original text and seed to a new reader after author closes (19.6s)
+RelayLoom UI target: https://johnnypbelo.github.io/relayloom
+  ✓  7 tests/browser/site-studio.spec.ts:77:1 › multipage studio saves encrypted draft, rejects executable imports and a consenting reader seeds it to a new browser after author closes (24.7s)
+  ✓  8 tests/browser/site-studio.spec.ts:351:1 › studio keyboard navigation, nested drag, duplicate, reparent and page references stay editable on a narrow screen (3.2s)
+  ✓  9 tests/browser/site-studio.spec.ts:425:1 › dense three-level compositions keep all controls inside their blocks and preserve contrast across palettes and app themes (8.5s)
+
+  9 passed (1.2m)

@@ -1,0 +1,25 @@
+{
+  "status": "PASS",
+  "started": "2026-09-16T19:36:26.934Z",
+  "sourceCommit": "02188da77359f3d7bae8c9489070eb15c9676884",
+  "command": "node",
+  "args": [
+    "scripts/e2e.mjs",
+    "--config",
+    "tests/browser/matrix.config.ts",
+    "tests/browser/onboarding-language.spec.ts",
+    "--grep",
+    "English and Spanish identities"
+  ],
+  "env": {
+    "RELAYLOOM_LAUNCH_URL": "https://johnnypbelo.github.io/relayloom",
+    "RELAYLOOM_MATRIX_ENGINE": "chromium"
+  },
+  "scope": "One unchanged full multilingual UI journey on HTTPS, with read-only host memory/pressure observations. No timeouts extended or service/process stopped.",
+  "pid": 2915049,
+  "exitCode": 0,
+  "finished": "2026-09-16T19:36:39.173Z",
+  "samples": 14,
+  "minAvailableBytes": 2312888320,
+  "maxFullAvg10": 0.26
+}

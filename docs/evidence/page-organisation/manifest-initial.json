@@ -1,0 +1,243 @@
+{
+  "scope": "Directed and shared UI checks already completed. Complete browser matrix and final Android regressions still pending at collection. No overall-product completion claim.",
+  "artifacts": [
+    {
+      "source": ".cache/onboarding-i18n/page-domain.log",
+      "path": "logs/page-domain.txt",
+      "originalSha256": "55010c13150da2e22bdc7441ce0844b13e2171c82a2583023e7c833d2df5b22e",
+      "sha256": "55010c13150da2e22bdc7441ce0844b13e2171c82a2583023e7c833d2df5b22e",
+      "bytes": 10367
+    },
+    {
+      "source": ".cache/onboarding-i18n/page-ui-node.log",
+      "path": "logs/page-ui-node.txt",
+      "originalSha256": "c24ff6e329c0adba30106f6cf705e9d186b5d38c0c7698057ad77c81c45249f0",
+      "sha256": "c24ff6e329c0adba30106f6cf705e9d186b5d38c0c7698057ad77c81c45249f0",
+      "bytes": 376
+    },
+    {
+      "source": ".cache/onboarding-i18n/page-ui-go.log",
+      "path": "logs/page-ui-go.txt",
+      "originalSha256": "4409514ed83aaf0605c30dfb74c236a9d419c98708b32336209208b43e35d031",
+      "sha256": "4409514ed83aaf0605c30dfb74c236a9d419c98708b32336209208b43e35d031",
+      "bytes": 376
+    },
+    {
+      "source": ".cache/onboarding-i18n/page-ui-chromium.log",
+      "path": "logs/page-ui-chromium.txt",
+      "originalSha256": "b670189f8ea4e1dec0c7802888cb0935b3aa6eae6bf738dba922abd21d48b032",
+      "sha256": "b670189f8ea4e1dec0c7802888cb0935b3aa6eae6bf738dba922abd21d48b032",
+      "bytes": 412
+    },
+    {
+      "source": ".cache/onboarding-i18n/page-ui-firefox.log",
+      "path": "logs/page-ui-firefox.txt",
+      "originalSha256": "cb9268389f67de05e330eecdcaaa8bc50bd87c418bcc3cfa89d111f3a9142e5e",
+      "sha256": "cb9268389f67de05e330eecdcaaa8bc50bd87c418bcc3cfa89d111f3a9142e5e",
+      "bytes": 411
+    },
+    {
+      "source": ".cache/onboarding-i18n/page-ui-webkit.log",
+      "path": "logs/page-ui-webkit.txt",
+      "originalSha256": "bbb93dcd5f4ba971e18e4edad286cd29d690764d72ac903b7a105326d879a5dc",
+      "sha256": "bbb93dcd5f4ba971e18e4edad286cd29d690764d72ac903b7a105326d879a5dc",
+      "bytes": 410
+    },
+    {
+      "source": ".cache/onboarding-i18n/touch-webkit.log",
+      "path": "logs/touch-webkit.txt",
+      "originalSha256": "f90e8be43a11f5ce985d32decfb2204f9eaefcbc51ff3f79ce4eed837797a15d",
+      "sha256": "f90e8be43a11f5ce985d32decfb2204f9eaefcbc51ff3f79ce4eed837797a15d",
+      "bytes": 391
+    },
+    {
+      "source": ".cache/onboarding-i18n/page-ios-runner.log",
+      "path": "logs/page-ios-runner.txt",
+      "originalSha256": "bbebb739ceec45219efc89166cde682f07dfae3c7317e0c49f98b193977582e3",
+      "sha256": "bbebb739ceec45219efc89166cde682f07dfae3c7317e0c49f98b193977582e3",
+      "bytes": 5482
+    },
+    {
+      "source": ".cache/onboarding-i18n/page-ios-static.log",
+      "path": "logs/page-ios-static.txt",
+      "originalSha256": "e01b4cc78419a1c5a06eefffe9d7d138282fac1972904367379b0a4f5f75e6ac",
+      "sha256": "e01b4cc78419a1c5a06eefffe9d7d138282fac1972904367379b0a4f5f75e6ac",
+      "bytes": 178
+    },
+    {
+      "source": ".cache/page-organisation/preserved/shared-ui-report.json",
+      "path": "shared-ui/report.json",
+      "originalSha256": "4b1d86f5d95da8c566f5c479920cdeaa7fdb81f213759b810d7075cf73240dad",
+      "sha256": "1c5b92a54d8b64cb7da9a66fd7c7691adc14f50160451b591c7310c2cc513bc4",
+      "bytes": 57145
+    },
+    {
+      "source": ".cache/page-organisation/preserved/ui-node.log",
+      "path": "shared-ui/node.txt",
+      "originalSha256": "d18389a9fe43366818f697898f52bc39b871b1e76a5d9f9dcd288813f0f3d1aa",
+      "sha256": "d18389a9fe43366818f697898f52bc39b871b1e76a5d9f9dcd288813f0f3d1aa",
+      "bytes": 5277
+    },
+    {
+      "source": ".cache/page-organisation/preserved/ui-go.log",
+      "path": "shared-ui/go.txt",
+      "originalSha256": "3a31809fad766eeb5ff1ea333106fa56c24235004c9643827b58dc10da70b27a",
+      "sha256": "3a31809fad766eeb5ff1ea333106fa56c24235004c9643827b58dc10da70b27a",
+      "bytes": 5276
+    },
+    {
+      "source": ".cache/page-organisation/node/report.json",
+      "path": "ui/node/report.json",
+      "originalSha256": "79b6e02d9bef0943eb258fa80423be677c973337cd40fd915abe870be3de63fc",
+      "sha256": "79b6e02d9bef0943eb258fa80423be677c973337cd40fd915abe870be3de63fc",
+      "bytes": 250
+    },
+    {
+      "source": ".cache/page-organisation/node/editor-390-viewport.png",
+      "path": "ui/node/editor-390.png",
+      "originalSha256": "56212bb55695b624cf177c4d43c55d778554c987bbe9f19be9812dbaddeaf395",
+      "sha256": "56212bb55695b624cf177c4d43c55d778554c987bbe9f19be9812dbaddeaf395",
+      "bytes": 82337
+    },
+    {
+      "source": ".cache/page-organisation/node/axe-390.json",
+      "path": "ui/node/axe-390.json",
+      "originalSha256": "9547681c9f5f1e3ffbe6a198625ae308aad1d1ec5685642a28e84bf9dce6fad4",
+      "sha256": "9547681c9f5f1e3ffbe6a198625ae308aad1d1ec5685642a28e84bf9dce6fad4",
+      "bytes": 39
+    },
+    {
+      "source": ".cache/page-organisation/native/report.json",
+      "path": "ui/native/report.json",
+      "originalSha256": "c9f7f8b0ab046c1d4916b26d3d270060db97f4b422735e0a0ba1c2d6212c37e7",
+      "sha256": "c9f7f8b0ab046c1d4916b26d3d270060db97f4b422735e0a0ba1c2d6212c37e7",
+      "bytes": 252
+    },
+    {
+      "source": ".cache/page-organisation/native/editor-390-viewport.png",
+      "path": "ui/native/editor-390.png",
+      "originalSha256": "56212bb55695b624cf177c4d43c55d778554c987bbe9f19be9812dbaddeaf395",
+      "sha256": "56212bb55695b624cf177c4d43c55d778554c987bbe9f19be9812dbaddeaf395",
+      "bytes": 82337
+    },
+    {
+      "source": ".cache/page-organisation/native/axe-390.json",
+      "path": "ui/native/axe-390.json",
+      "originalSha256": "9547681c9f5f1e3ffbe6a198625ae308aad1d1ec5685642a28e84bf9dce6fad4",
+      "sha256": "9547681c9f5f1e3ffbe6a198625ae308aad1d1ec5685642a28e84bf9dce6fad4",
+      "bytes": 39
+    },
+    {
+      "source": ".cache/page-organisation/browser-chromium/report.json",
+      "path": "ui/browser-chromium/report.json",
+      "originalSha256": "75e9142692bfc54ce9ebbeb6b796999be4e7a060e771808890d30cd01832d84a",
+      "sha256": "75e9142692bfc54ce9ebbeb6b796999be4e7a060e771808890d30cd01832d84a",
+      "bytes": 283
+    },
+    {
+      "source": ".cache/page-organisation/browser-chromium/editor-390-viewport.png",
+      "path": "ui/browser-chromium/editor-390.png",
+      "originalSha256": "56212bb55695b624cf177c4d43c55d778554c987bbe9f19be9812dbaddeaf395",
+      "sha256": "56212bb55695b624cf177c4d43c55d778554c987bbe9f19be9812dbaddeaf395",
+      "bytes": 82337
+    },
+    {
+      "source": ".cache/page-organisation/browser-chromium/axe-390.json",
+      "path": "ui/browser-chromium/axe-390.json",
+      "originalSha256": "9547681c9f5f1e3ffbe6a198625ae308aad1d1ec5685642a28e84bf9dce6fad4",
+      "sha256": "9547681c9f5f1e3ffbe6a198625ae308aad1d1ec5685642a28e84bf9dce6fad4",
+      "bytes": 39
+    },
+    {
+      "source": ".cache/page-organisation/browser-firefox/report.json",
+      "path": "ui/browser-firefox/report.json",
+      "originalSha256": "87ad59b4a9efd61eb442c89cb562e3bbee1e6daff75f959d6cb34668f95ad948",
+      "sha256": "87ad59b4a9efd61eb442c89cb562e3bbee1e6daff75f959d6cb34668f95ad948",
+      "bytes": 283
+    },
+    {
+      "source": ".cache/page-organisation/browser-firefox/editor-390-viewport.png",
+      "path": "ui/browser-firefox/editor-390.png",
+      "originalSha256": "12ac9e341ef527036c4129c158e8c05e5fd3016545b0c49ac87612abc787d223",
+      "sha256": "12ac9e341ef527036c4129c158e8c05e5fd3016545b0c49ac87612abc787d223",
+      "bytes": 74170
+    },
+    {
+      "source": ".cache/page-organisation/browser-firefox/axe-390.json",
+      "path": "ui/browser-firefox/axe-390.json",
+      "originalSha256": "9547681c9f5f1e3ffbe6a198625ae308aad1d1ec5685642a28e84bf9dce6fad4",
+      "sha256": "9547681c9f5f1e3ffbe6a198625ae308aad1d1ec5685642a28e84bf9dce6fad4",
+      "bytes": 39
+    },
+    {
+      "source": ".cache/page-organisation/browser-webkit/report.json",
+      "path": "ui/browser-webkit/report.json",
+      "originalSha256": "1aa67a458424442a2b6616a6567c12b89c201fabf5ff55137e4e4118bed2dd10",
+      "sha256": "1aa67a458424442a2b6616a6567c12b89c201fabf5ff55137e4e4118bed2dd10",
+      "bytes": 283
+    },
+    {
+      "source": ".cache/page-organisation/browser-webkit/editor-390-viewport.png",
+      "path": "ui/browser-webkit/editor-390.png",
+      "originalSha256": "703d8d1f21dcb59be83259d5403d4947114e2bed1ee46f24f014f64c10c752b1",
+      "sha256": "703d8d1f21dcb59be83259d5403d4947114e2bed1ee46f24f014f64c10c752b1",
+      "bytes": 78517
+    },
+    {
+      "source": ".cache/page-organisation/browser-webkit/axe-390.json",
+      "path": "ui/browser-webkit/axe-390.json",
+      "originalSha256": "9547681c9f5f1e3ffbe6a198625ae308aad1d1ec5685642a28e84bf9dce6fad4",
+      "sha256": "9547681c9f5f1e3ffbe6a198625ae308aad1d1ec5685642a28e84bf9dce6fad4",
+      "bytes": 39
+    },
+    {
+      "source": ".cache/page-organisation/touch-webkit/report.json",
+      "path": "ui/touch-webkit/report.json",
+      "originalSha256": "c319dea9e1c30e4f01d3a39bee12fa59ff8ca6303d5798c50786d9b738502d0e",
+      "sha256": "c319dea9e1c30e4f01d3a39bee12fa59ff8ca6303d5798c50786d9b738502d0e",
+      "bytes": 265
+    },
+    {
+      "source": ".cache/android/evidence/page-organisation/android-native-pages.json",
+      "path": "android/first-pages.json",
+      "originalSha256": "cf32ac16f5fe882f6eb38e0a267937298ad8122736cf1ba74e92662d0db53a86",
+      "sha256": "cf32ac16f5fe882f6eb38e0a267937298ad8122736cf1ba74e92662d0db53a86",
+      "bytes": 1060
+    },
+    {
+      "source": ".cache/android/evidence/page-organisation/android-pages.png",
+      "path": "android/first-pages.png",
+      "originalSha256": "57a9c7bc550379ebebd0fa0256b48599b845393e3cff9febb298a0d6318d376d",
+      "sha256": "57a9c7bc550379ebebd0fa0256b48599b845393e3cff9febb298a0d6318d376d",
+      "bytes": 416814
+    },
+    {
+      "source": ".cache/onboarding-i18n/ci-02188/evidence/d5515c08-5223-4d32-89d4-06fc83530ce0/simulator-report.json",
+      "path": "ios/prior-simulator-report.json",
+      "originalSha256": "616ac8ac09870873bbd3746fce9cf5e94ef5555193558a49e157ba39cb422692",
+      "sha256": "616ac8ac09870873bbd3746fce9cf5e94ef5555193558a49e157ba39cb422692",
+      "bytes": 4843
+    },
+    {
+      "source": ".cache/onboarding-i18n/ci-02188/evidence/d5515c08-5223-4d32-89d4-06fc83530ce0/14-execute-ui-test.log",
+      "path": "ios/prior-ui.txt",
+      "originalSha256": "39577041ab824d2a7f2ea3e614162cc8c90e46575d4c33370d78240f4fbcfa58",
+      "sha256": "7880910ca6a6d6c6df30a470e7d46f479e46ddd1da7e79cb5b542b18b4948cb4",
+      "bytes": 29708
+    },
+    {
+      "source": ".cache/onboarding-i18n/ci-02188/evidence/d5515c08-5223-4d32-89d4-06fc83530ce0/ui-01.png",
+      "path": "ios/navigation-failure.png",
+      "originalSha256": "31cc2e0ce30fedfde88423d20a0330dfa5f62408ea729f1316b1a9caf219bbcc",
+      "sha256": "31cc2e0ce30fedfde88423d20a0330dfa5f62408ea729f1316b1a9caf219bbcc",
+      "bytes": 204699
+    },
+    {
+      "source": ".cache/onboarding-i18n/ci-02188/build/policy-report.json",
+      "path": "ios/prior-policy.json",
+      "originalSha256": "a6c8939030b46ce6c54526806125fd4aed44865046961ec7cf37cd2cdc069ee4",
+      "sha256": "d80aae6e23bcc47955dfc1cafaa3f3c945430ce2a06714b27e12f456f5ebf0d5",
+      "bytes": 551
+    }
+  ]
+}

@@ -1,0 +1,394 @@
+TAP version 13
+# Subtest: language variants resolve to supported choices and invalid selection preserves the current language
+ok 1 - language variants resolve to supported choices and invalid selection preserves the current language
+  ---
+  duration_ms: 0.789711
+  type: 'test'
+  ...
+# Subtest: context and interpolation preserve raw names without recursively translating parameters
+ok 2 - context and interpolation preserve raw names without recursively translating parameters
+  ---
+  duration_ms: 0.256641
+  type: 'test'
+  ...
+# Subtest: every catalog entry is unique, nonempty and retains all named parameters in both languages
+ok 3 - every catalog entry is unique, nonempty and retains all named parameters in both languages
+  ---
+  duration_ms: 5.579449
+  type: 'test'
+  ...
+# Subtest: literal UI lookups and state-label maps all have catalog entries
+ok 4 - literal UI lookups and state-label maps all have catalog entries
+  ---
+  duration_ms: 129.905599
+  type: 'test'
+  ...
+# Subtest: site schema: multipage with nested media and local navigation
+ok 5 - site schema: multipage with nested media and local navigation
+  ---
+  duration_ms: 2.57653
+  type: 'test'
+  ...
+# Subtest: site schema: literal HTML is data, never a block program
+ok 6 - site schema: literal HTML is data, never a block program
+  ---
+  duration_ms: 0.484578
+  type: 'test'
+  ...
+# Subtest: site schema: exact UTF-16 title boundary
+ok 7 - site schema: exact UTF-16 title boundary
+  ---
+  duration_ms: 0.333936
+  type: 'test'
+  ...
+# Subtest: site schema: unknown version
+ok 8 - site schema: unknown version
+  ---
+  duration_ms: 0.227837
+  type: 'test'
+  ...
+# Subtest: site schema: script property
+ok 9 - site schema: script property
+  ---
+  duration_ms: 0.097172
+  type: 'test'
+  ...
+# Subtest: site schema: arbitrary CSS
+ok 10 - site schema: arbitrary CSS
+  ---
+  duration_ms: 0.081953
+  type: 'test'
+  ...
+# Subtest: site schema: CSS URL injection
+ok 11 - site schema: CSS URL injection
+  ---
+  duration_ms: 0.157836
+  type: 'test'
+  ...
+# Subtest: site schema: duplicate pages
+ok 12 - site schema: duplicate pages
+  ---
+  duration_ms: 0.094287
+  type: 'test'
+  ...
+# Subtest: site schema: duplicate slugs
+ok 13 - site schema: duplicate slugs
+  ---
+  duration_ms: 0.237786
+  type: 'test'
+  ...
+# Subtest: site schema: duplicate nested node IDs
+ok 14 - site schema: duplicate nested node IDs
+  ---
+  duration_ms: 0.355246
+  type: 'test'
+  ...
+# Subtest: site schema: path traversal
+ok 15 - site schema: path traversal
+  ---
+  duration_ms: 0.130565
+  type: 'test'
+  ...
+# Subtest: site schema: missing home
+ok 16 - site schema: missing home
+  ---
+  duration_ms: 0.081092
+  type: 'test'
+  ...
+# Subtest: site schema: missing internal target
+ok 17 - site schema: missing internal target
+  ---
+  duration_ms: 0.104015
+  type: 'test'
+  ...
+# Subtest: site schema: javascript URL
+ok 18 - site schema: javascript URL
+  ---
+  duration_ms: 0.096481
+  type: 'test'
+  ...
+# Subtest: site schema: credentials in URL
+ok 19 - site schema: credentials in URL
+  ---
+  duration_ms: 0.087634
+  type: 'test'
+  ...
+# Subtest: site schema: HTTP URL
+ok 20 - site schema: HTTP URL
+  ---
+  duration_ms: 0.086061
+  type: 'test'
+  ...
+# Subtest: site schema: invalid high port
+ok 21 - site schema: invalid high port
+  ---
+  duration_ms: 0.273362
+  type: 'test'
+  ...
+# Subtest: site schema: query URL
+ok 22 - site schema: query URL
+  ---
+  duration_ms: 0.47442
+  type: 'test'
+  ...
+# Subtest: site schema: 13 pages
+ok 23 - site schema: 13 pages
+  ---
+  duration_ms: 0.081172
+  type: 'test'
+  ...
+# Subtest: site schema: 25 siblings
+ok 24 - site schema: 25 siblings
+  ---
+  duration_ms: 0.103595
+  type: 'test'
+  ...
+# Subtest: site schema: four levels
+ok 25 - site schema: four levels
+  ---
+  duration_ms: 0.100348
+  type: 'test'
+  ...
+# Subtest: site schema: 144 total nodes
+ok 26 - site schema: 144 total nodes
+  ---
+  duration_ms: 0.440576
+  type: 'test'
+  ...
+# Subtest: site schema: children on text
+ok 27 - site schema: children on text
+  ---
+  duration_ms: 0.076644
+  type: 'test'
+  ...
+# Subtest: site schema: body limit
+ok 28 - site schema: body limit
+  ---
+  duration_ms: 0.0695
+  type: 'test'
+  ...
+# Subtest: site schema: UTF-16 title overflow
+ok 29 - site schema: UTF-16 title overflow
+  ---
+  duration_ms: 0.061676
+  type: 'test'
+  ...
+# Subtest: site schema: fractional columns
+ok 30 - site schema: fractional columns
+  ---
+  duration_ms: 0.074069
+  type: 'test'
+  ...
+# Subtest: site schema: bad alignment
+ok 31 - site schema: bad alignment
+  ---
+  duration_ms: 0.079279
+  type: 'test'
+  ...
+# Subtest: site schema: missing media
+ok 32 - site schema: missing media
+  ---
+  duration_ms: 0.098905
+  type: 'test'
+  ...
+# Subtest: site schema: out of bounds media
+ok 33 - site schema: out of bounds media
+  ---
+  duration_ms: 0.089738
+  type: 'test'
+  ...
+# Subtest: site schema: SVG media
+ok 34 - site schema: SVG media
+  ---
+  duration_ms: 0.046897
+  type: 'test'
+  ...
+# Subtest: site schema: remote media field
+ok 35 - site schema: remote media field
+  ---
+  duration_ms: 0.109155
+  type: 'test'
+  ...
+# Subtest: site schema: fractional posts limit
+ok 36 - site schema: fractional posts limit
+  ---
+  duration_ms: 0.102683
+  type: 'test'
+  ...
+# Subtest: site schema: large document
+ok 37 - site schema: large document
+  ---
+  duration_ms: 1.784054
+  type: 'test'
+  ...
+# Subtest: site schema: empty composition at third level
+ok 38 - site schema: empty composition at third level
+  ---
+  duration_ms: 0.228068
+  type: 'test'
+  ...
+# Subtest: site schema: unreferenced executable attachment
+ok 39 - site schema: unreferenced executable attachment
+  ---
+  duration_ms: 0.146244
+  type: 'test'
+  ...
+# Subtest: site schema: invalid image base64 length
+ok 40 - site schema: invalid image base64 length
+  ---
+  duration_ms: 0.074179
+  type: 'test'
+  ...
+# Subtest: site schema: valid HTTPS escaped path
+ok 41 - site schema: valid HTTPS escaped path
+  ---
+  duration_ms: 0.232606
+  type: 'test'
+  ...
+# Subtest: site schema: valid HTTPS local IPv4
+ok 42 - site schema: valid HTTPS local IPv4
+  ---
+  duration_ms: 0.321713
+  type: 'test'
+  ...
+# Subtest: site schema: valid HTTPS international path
+ok 43 - site schema: valid HTTPS international path
+  ---
+  duration_ms: 0.151083
+  type: 'test'
+  ...
+# Subtest: site schema: invalid HTTPS percent escape
+ok 44 - site schema: invalid HTTPS percent escape
+  ---
+  duration_ms: 0.08001
+  type: 'test'
+  ...
+# Subtest: site schema: invalid HTTPS dangling percent
+ok 45 - site schema: invalid HTTPS dangling percent
+  ---
+  duration_ms: 0.064952
+  type: 'test'
+  ...
+# Subtest: site schema: invalid HTTPS Unicode whitespace
+ok 46 - site schema: invalid HTTPS Unicode whitespace
+  ---
+  duration_ms: 0.061375
+  type: 'test'
+  ...
+# Subtest: site schema: invalid HTTPS control character
+ok 47 - site schema: invalid HTTPS control character
+  ---
+  duration_ms: 0.060623
+  type: 'test'
+  ...
+# Subtest: site schema: invalid HTTPS IPv4 range
+ok 48 - site schema: invalid HTTPS IPv4 range
+  ---
+  duration_ms: 0.067016
+  type: 'test'
+  ...
+# Subtest: site schema: invalid HTTPS abbreviated IPv4
+ok 49 - site schema: invalid HTTPS abbreviated IPv4
+  ---
+  duration_ms: 0.061956
+  type: 'test'
+  ...
+# Subtest: site schema: invalid HTTPS numeric final DNS label
+ok 50 - site schema: invalid HTTPS numeric final DNS label
+  ---
+  duration_ms: 0.104216
+  type: 'test'
+  ...
+# Subtest: site schema: invalid HTTPS hexadecimal IP alias
+ok 51 - site schema: invalid HTTPS hexadecimal IP alias
+  ---
+  duration_ms: 0.111288
+  type: 'test'
+  ...
+# Subtest: site schema: invalid HTTPS octal IP alias
+ok 52 - site schema: invalid HTTPS octal IP alias
+  ---
+  duration_ms: 0.12818
+  type: 'test'
+  ...
+# Subtest: site schema: valid HTTPS local hostname
+ok 53 - site schema: valid HTTPS local hostname
+  ---
+  duration_ms: 0.207068
+  type: 'test'
+  ...
+# Subtest: site schema: invalid HTTPS hostname label
+ok 54 - site schema: invalid HTTPS hostname label
+  ---
+  duration_ms: 0.14395
+  type: 'test'
+  ...
+# Subtest: site schema: valid HTTPS IDN ASCII hostname
+ok 55 - site schema: valid HTTPS IDN ASCII hostname
+  ---
+  duration_ms: 0.19779
+  type: 'test'
+  ...
+# Subtest: templates satisfy the same wire contract and produce unique block identities
+ok 56 - templates satisfy the same wire contract and produce unique block identities
+  ---
+  duration_ms: 1.864996
+  type: 'test'
+  ...
+# Subtest: site input rejects getters without invoking them
+ok 57 - site input rejects getters without invoking them
+  ---
+  duration_ms: 0.274184
+  type: 'test'
+  ...
+# Subtest: site total image budget is enforced outside the editor
+ok 58 - site total image budget is enforced outside the editor
+  ---
+  duration_ms: 5.796546
+  type: 'test'
+  ...
+# Subtest: image limit counts decoded bytes, including padding at the exact boundary
+ok 59 - image limit counts decoded bytes, including padding at the exact boundary
+  ---
+  duration_ms: 9.108244
+  type: 'test'
+  ...
+# Subtest: page duplication preserves the source, shared assets and external links while remapping nested self-links
+ok 60 - page duplication preserves the source, shared assets and external links while remapping nested self-links
+  ---
+  duration_ms: 4.362939
+  type: 'test'
+  ...
+# Subtest: duplicate names/slugs remain bounded and unique with Unicode and the exact page cap
+ok 61 - duplicate names/slugs remain bounded and unique with Unicode and the exact page cap
+  ---
+  duration_ms: 5.135748
+  type: 'test'
+  ...
+# Subtest: page copying accepts exactly 128 nodes and refuses the next node without changing the draft
+ok 62 - page copying accepts exactly 128 nodes and refuses the next node without changing the draft
+  ---
+  duration_ms: 3.292742
+  type: 'test'
+  ...
+# Subtest: reordering preserves page identities, home and links and has no history-changing boundary step
+ok 63 - reordering preserves page identities, home and links and has no history-changing boundary step
+  ---
+  duration_ms: 0.861996
+  type: 'test'
+  ...
+# Subtest: copying is explicit authored content creation in the selected language and never mutates an invalid source
+ok 64 - copying is explicit authored content creation in the selected language and never mutates an invalid source
+  ---
+  duration_ms: 0.916589
+  type: 'test'
+  ...
+1..64
+# tests 64
+# suites 0
+# pass 64
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 908.997714

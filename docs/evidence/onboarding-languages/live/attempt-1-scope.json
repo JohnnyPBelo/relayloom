@@ -1,0 +1,11 @@
+{
+  "status": "FAILED_MIXED_SCOPE_DO_NOT_PROMOTE",
+  "verifiedHTTPSFiles": 17,
+  "threeExistingSiteStudioTestsUsedPublishedURL": true,
+  "newOnboardingAndSiteLanguageTestsUsedLocalFixture": true,
+  "clickFailures": 3,
+  "transportFailureEstablished": false,
+  "hostPressureObserved": "memory full avg300 33.20%, swap full; not sufficient to prove causation",
+  "testHarnessFix": "uiHost explicitly chooses and logs HTTPS base; language reports record applicationURL; local-only fixture controls keep appHost",
+  "next": "One directed English/Spanish exchange on real HTTPS with unchanged deadlines, then remaining affected verification."
+}

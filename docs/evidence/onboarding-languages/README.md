@@ -1,6 +1,6 @@
 # Setup, idiomas e preferências — evidência de integração
 
-O produto completo não está concluído. Esta evidência descreve a candidata de código local; a publicação HTTPS continua a ser o marco anterior até ser verificada separadamente.
+O produto completo não está concluído. Esta evidência descreve os gates locais e Android. A distribuiçãoeff7e9b9 foi posteriormente publicada; a [verificação HTTPS](live) está incompleta e conserva falhas e uma correcção do verificador.
 
 ## Gate geral concluído
 

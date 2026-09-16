@@ -1,6 +1,6 @@
 # Primeiro arranque e idiomas
 
-Esta funcionalidade está em integração local. A versão pública anterior não recebe estas alterações até terminar a validação e a publicação dos assets correspondentes. O produto completo continua experimental e por concluir.
+Esta funcionalidade já foi publicada na web. Os assetsHTTP foram conferidos; a execução final de10percursosUI noHTTPS passou, mantendo documentadas as falhas anteriores. O produto completo continua experimental e por concluir.
 
 ## Entrar na rede
 
@@ -32,4 +32,4 @@ O gate completo está em `scripts/verify-onboarding-languages.mjs`; o estado cor
 
 A execução nova iOS dos testes móveis adaptados, rádios físicos, assinatura Apple, revisão independente e o restante contrato em PROJECT-BRIEF.md continuam obrigatórios. Não há afirmação de perfeição, prontidão para catástrofes ou validação em todos os dispositivos.
 
-O gate completo terminou PASS e o Android actualizado passou mensagens, documentos, prazo, relay e verificação do perfil cifrado. [Comandos, hashes, capturas e limites exactos](evidence/onboarding-languages). A versão pública ainda usa o marco anterior.
+O gate completo terminou PASS e o Android actualizado passou mensagens, documentos, prazo, relay e verificação do perfil cifrado. [Comandos, hashes, capturas e limites exactos](evidence/onboarding-languages). A versão pública usa a fonte02188da; [a verificação HTTPS e os seus bloqueios](evidence/onboarding-languages/live) estão documentados.

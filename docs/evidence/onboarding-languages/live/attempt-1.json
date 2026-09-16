@@ -1,0 +1,138 @@
+{
+  "status": "FAIL",
+  "started": "2026-09-16T19:18:14.513Z",
+  "sourceCommit": "02188da77359f3d7bae8c9489070eb15c9676884",
+  "deploymentCommit": "eff7e9b9ed8e476f9ad13900d2ecc34f804856e9",
+  "checks": [
+    {
+      "name": "studio",
+      "command": "node",
+      "args": [
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/browser.config.ts",
+        "tests/browser/onboarding-language.spec.ts",
+        "tests/browser/site-language.spec.ts",
+        "tests/browser/site-studio.spec.ts"
+      ],
+      "env": {
+        "RELAYLOOM_LAUNCH_URL": "https://johnnypbelo.github.io/relayloom"
+      },
+      "exitCode": 1,
+      "durationMs": 260962
+    }
+  ],
+  "files": [
+    {
+      "path": "assets/browser-C-37YlA4.js",
+      "sha256": "7404ee49b97724793d9d8a42cb3d54f8b1ce3328a55b6c5a3cbe12b24a4c01ae",
+      "bytes": 63416,
+      "pass": true
+    },
+    {
+      "path": "assets/main-DEi_Xkk3.css",
+      "sha256": "46f13f96e5f5ac7e0004b1463f8db8639f0ebcf13dcfed004b085215b91a3453",
+      "bytes": 13872,
+      "pass": true
+    },
+    {
+      "path": "assets/main-DEn8GZLA.js",
+      "sha256": "5a0157cfef6b8c04564cc98ca0feb08783dac785824ba9645043a5e2943ab86b",
+      "bytes": 140841,
+      "pass": true
+    },
+    {
+      "path": "assets/manifest-BWKlX33v.webmanifest",
+      "sha256": "19128cfd05183584671ce8d8697e44011315a35bfb2425b920511bc6b56a9cee",
+      "bytes": 319,
+      "pass": true
+    },
+    {
+      "path": "assets/peers-DZsMHYJ_.js",
+      "sha256": "a3e39cc914e74715b4b78c36255cc248b4b6f43448b556b7ca1d0a542b8eedb7",
+      "bytes": 359194,
+      "pass": true
+    },
+    {
+      "path": "assets/peers-zdFnw8Ii.css",
+      "sha256": "e05138d7e12b9cad8dd98db964a3cbed83a7c4dc6f718de67e756e92b723dd04",
+      "bytes": 61705,
+      "pass": true
+    },
+    {
+      "path": "assets/renderer-BBLiJtR3.css",
+      "sha256": "476519e7584fbf6e65c6874a59875a727473d56dff1011efbf7f02326fae3c45",
+      "bytes": 12399,
+      "pass": true
+    },
+    {
+      "path": "assets/renderer-CLixUSZB.js",
+      "sha256": "c6991bfedf96a568455c2a16f931b95bcb12d2f36ebdf98c5a8d30153978283a",
+      "bytes": 124089,
+      "pass": true
+    },
+    {
+      "path": "assets/site-studio-notices.txt",
+      "sha256": "75c009a409459b4fb9f62c1838d32a86e2d16805c8e8f6db930761b8615eccbb",
+      "bytes": 97684,
+      "pass": true
+    },
+    {
+      "path": "assets/studio-J06u9bW-.js",
+      "sha256": "6e842d405de83cdc6aa189de3de9e8d1d5f0a9839f4dba6f8cabcc9717477e38",
+      "bytes": 26701,
+      "pass": true
+    },
+    {
+      "path": "browser/assets.json",
+      "sha256": "b8df9c5365e73a0978e762025d4222051732b7d947f8e7a8ee5b5609ffb6a02d",
+      "bytes": 2207,
+      "pass": true
+    },
+    {
+      "path": "browser/icon.svg",
+      "sha256": "e07d4044578707df6661e170be9e819ad252a9e6654a60858600de2963a4b35e",
+      "bytes": 364,
+      "pass": true
+    },
+    {
+      "path": "browser/index.html",
+      "sha256": "ae7f229d4f08fb46b0d6819b1aee04deed84cf4c56cbdbec4bce6e3744e1d2a9",
+      "bytes": 1115,
+      "pass": true
+    },
+    {
+      "path": "browser/manifest.webmanifest",
+      "sha256": "19128cfd05183584671ce8d8697e44011315a35bfb2425b920511bc6b56a9cee",
+      "bytes": 319,
+      "pass": true
+    },
+    {
+      "path": "browser/sw.js",
+      "sha256": "bfebae0b391e2ddf9155789185eba031ec3538d19cf1dc12979e32f281798475",
+      "bytes": 4421,
+      "pass": true
+    },
+    {
+      "path": "browser/worker-y40Xh36O.js",
+      "sha256": "f7d823d2935ac500f3ff23f6fd7276a7f1fde238f28e55f2d621471cd6fad56b",
+      "bytes": 103116,
+      "pass": true
+    },
+    {
+      "path": "index.html",
+      "sha256": "39566836f8abf04e2e7ce51a8e5dc7a0ed6533bdb35ce32c2399a82f0e1c0dfe",
+      "bytes": 385,
+      "pass": true
+    }
+  ],
+  "scope": "Published HTTPS static bytes and independent synthetic browser profiles on this Linux host. Not two physical devices.",
+  "release": {
+    "sourceCommit": "02188da77359f3d7bae8c9489070eb15c9676884",
+    "gateFinished": "2026-09-16T19:14:15.063Z",
+    "artifactManifestSha256": "011e7b8de492e4e293b6bfb4a8e562f75a5b26889f144e6a423589a99d41c1f6",
+    "experimental": true
+  },
+  "error": "Failed studio",
+  "finished": "2026-09-16T19:22:38.942Z"
+}
