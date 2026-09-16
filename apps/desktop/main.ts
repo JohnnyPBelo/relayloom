@@ -354,16 +354,31 @@ async function smokeCheck(view: BrowserWindow, ready: DaemonReady) {
     );
   });
   const deadline = Date.now() + 15_000;
-  let renderer: { require: string; process: string; text: string } | undefined;
+  let renderer:
+    | {
+        require: string;
+        process: string;
+        identityForm: boolean;
+        language: string;
+      }
+    | undefined;
   while (Date.now() < deadline) {
     renderer = await view.webContents.executeJavaScript(
-      `({ require: typeof window.require, process: typeof window.process, text: document.body.innerText })`,
+      `(() => {
+        const start = document.querySelector('.welcome [data-action="setup-start"]');
+        if (start instanceof HTMLElement && start.getBoundingClientRect().height > 0) start.click();
+        const submit = document.querySelector('.welcome [data-action="identity-submit"]');
+        return { require: typeof window.require, process: typeof window.process,
+          identityForm: submit instanceof HTMLElement && submit.getBoundingClientRect().height > 0,
+          language: document.documentElement.lang };
+      })()`,
     );
-    if (renderer?.text.includes("Criar identidade")) break;
+    if (renderer?.identityForm) break;
     await new Promise((resolveWait) => setTimeout(resolveWait, 100));
   }
   if (
-    !renderer?.text.includes("Criar identidade") ||
+    !renderer?.identityForm ||
+    !["pt-PT", "en-GB", "es-ES"].includes(renderer.language) ||
     renderer.require !== "undefined" ||
     renderer.process !== "undefined"
   )

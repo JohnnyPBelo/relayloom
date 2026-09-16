@@ -1,9 +1,25 @@
+import {
+  readDevicePreference,
+  recordPreference,
+  registerPreferenceConsumer,
+} from "./device-preferences";
 import { useEffect, useState } from "react";
 
 /** Device preferences only. Never stores identity or message content. */
 export function useAppearance(lowPower: boolean, highContrast: boolean) {
-  const [glass, setGlass] = useState(
-    () => localStorage.getItem("relayloom-glass") !== "false",
+  const [glass, setGlassInternal] = useState(
+    () => readDevicePreference("glass") ?? true,
+  );
+  const setGlass = (value: boolean) => {
+    recordPreference("glass", value);
+    setGlassInternal(value);
+  };
+  useEffect(
+    () =>
+      registerPreferenceConsumer("glass", (value) =>
+        setGlassInternal(value ?? true),
+      ),
+    [],
   );
   useEffect(() => {
     const transparency = matchMedia("(prefers-reduced-transparency: reduce)");
@@ -21,7 +37,6 @@ export function useAppearance(lowPower: boolean, highContrast: boolean) {
           : "reduced";
     };
     update();
-    localStorage.setItem("relayloom-glass", String(glass));
     const preferences = [transparency, contrast, forced];
     preferences.forEach((p) => p.addEventListener("change", update));
     return () =>

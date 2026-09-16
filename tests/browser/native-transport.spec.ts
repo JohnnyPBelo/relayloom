@@ -52,8 +52,8 @@ for (const backend of ["node", "native"] as const)
     browser,
   }) => {
     const native = await launch(undefined, 0, 0, backend),
-      ca = await browser.newContext(),
-      cb = await browser.newContext(),
+      ca = await browser.newContext({ locale: "pt-PT" }),
+      cb = await browser.newContext({ locale: "pt-PT" }),
       a = await ca.newPage(),
       b = await cb.newPage();
     let ui: Page | undefined;
@@ -108,7 +108,7 @@ for (const backend of ["node", "native"] as const)
       expect(
         await b.evaluate(() => (window as any).wsLink.peer.link.closed),
       ).toBe(false);
-      uiContext = await browser.newContext({
+      uiContext = await browser.newContext({ locale: "pt-PT",
         viewport: { width: 1440, height: 1000 },
       });
       ui = await uiContext.newPage();
@@ -200,8 +200,8 @@ test("private four-medium route WebRTC-WebSocket-TCP-serial, partition/heal and 
   const { join } = await import("node:path");
   const pty = await startPTY(),
     clients: Awaited<ReturnType<typeof launch>>[] = [];
-  const ca = await browser.newContext(),
-    cb = await browser.newContext(),
+  const ca = await browser.newContext({ locale: "pt-PT" }),
+    cb = await browser.newContext({ locale: "pt-PT" }),
     a = await ca.newPage(),
     b = await cb.newPage();
   let success = false;
@@ -420,7 +420,7 @@ test("late native ACK cannot leave an orphan retry assembly or close an otherwis
   browser,
 }) => {
   const native = await launch(undefined, 0, 0, "node"),
-    context = await browser.newContext(),
+    context = await browser.newContext({ locale: "pt-PT" }),
     page = await context.newPage();
   try {
     await native.call("setup", { name: "Late ACK sender", password });

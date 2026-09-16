@@ -1,8 +1,12 @@
+import { getLanguage } from "../i18n/core";
+import { showStartupFailure } from "../startup";
+import "../onboarding.css";
 import { browserAPI } from "./client";
 import { useLocalAPI } from "../api";
 import "../style.css";
 import "../liquid-glass.css";
 import "./peers.css";
+document.documentElement.lang = getLanguage();
 try {
   const api = await browserAPI();
   useLocalAPI(api);
@@ -11,22 +15,9 @@ try {
   root.removeAttribute("aria-live");
   await import("../main");
 } catch (error) {
-  const root = document.getElementById("root")!;
-  root.replaceChildren();
-  root.className = "browser-startup-error";
-  const heading = document.createElement("h1");
-  heading.textContent = "Não foi possível abrir este perfil";
-  const message = document.createElement("p");
-  message.textContent =
-    error instanceof Error
-      ? error.message
-      : "Tenta abrir novamente o teu espaço.";
-  const button = document.createElement("button");
-  button.className = "primary";
-  button.textContent = "Tentar novamente";
-  button.onclick = () => location.reload();
-  root.append(heading, message, button);
+  showStartupFailure(document.getElementById("root")!, error);
 }
+
 addEventListener("pageshow", (event) => {
   if ((event as PageTransitionEvent).persisted) location.reload();
 });

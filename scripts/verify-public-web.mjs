@@ -91,6 +91,8 @@ try {
         "tests/browser/contact-relay.spec.ts",
         "tests/browser/connectivity.spec.ts",
         "tests/browser/site-studio.spec.ts",
+        "tests/browser/onboarding-language.spec.ts",
+        "tests/browser/site-language.spec.ts",
       ],
       { RELAYLOOM_MATRIX_ENGINE: engine },
     );

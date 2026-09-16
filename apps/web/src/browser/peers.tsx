@@ -1,3 +1,4 @@
+import { t, getLanguage } from "../i18n/core";
 import React, { useEffect, useRef, useState } from "react";
 import { ArrowRight, Copy, Link2, ShieldCheck } from "lucide-react";
 import type { RtcTransportPeer } from "../../../../packages/browser/src/rtc";
@@ -81,15 +82,21 @@ export function BrowserPeerPanel({ api }: { api: API }) {
   const connected = diagnostic?.channel === "open" && !diagnostic?.closed;
   const ended = diagnostic?.closed || diagnostic?.unavailable;
   const connectionStatus = connected
-    ? "Ligação estabelecida. Já podem trocar conteúdo."
+    ? t("Ligação estabelecida. Já podem trocar conteúdo.")
     : ended
-      ? "A ligação terminou. As mensagens em espera continuam guardadas; cria uma nova ligação."
+      ? t(
+          "A ligação terminou. As mensagens em espera continuam guardadas; cria uma nova ligação.",
+        )
       : diagnostic?.signalling === "have-local-offer"
-        ? "À espera da resposta do outro dispositivo. Falta concluir a ligação aqui."
+        ? t(
+            "À espera da resposta do outro dispositivo. Falta concluir a ligação aqui.",
+          )
         : handle && tab === "answer"
-          ? "Resposta criada. Falta colá-la no primeiro dispositivo e concluir a ligação."
+          ? t(
+              "Resposta criada. Falta colá-la no primeiro dispositivo e concluir a ligação.",
+            )
           : handle && diagnostic?.ice === "checking"
-            ? "A procurar um caminho entre os dispositivos…"
+            ? t("A procurar um caminho entre os dispositivos…")
             : status;
   async function run(fn: () => Promise<void>) {
     setBusy(true);
@@ -105,28 +112,35 @@ export function BrowserPeerPanel({ api }: { api: API }) {
   return (
     <div className="browser-peer-panel">
       <p>
-        Liga os dois dispositivos com um código e uma resposta. Mantém as
-        páginas abertas e partilha os códigos por um canal de confiança.
+        {t(
+          "Liga os dois dispositivos com um código e uma resposta. Mantém as páginas abertas e partilha os códigos por um canal de confiança.",
+        )}
       </p>
       <details className="peer-guide">
-        <summary>Como ligar em três passos</summary>
-        <p>Começa na mesma rede Wi-Fi, sem isolamento entre dispositivos.</p>
+        <summary>{t("Como ligar em três passos")}</summary>
+        <p>
+          {t("Começa na mesma rede Wi-Fi, sem isolamento entre dispositivos.")}
+        </p>
         <ol className="peer-steps">
           <li>
-            <strong>Primeiro dispositivo</strong> — cria e partilha o código de
-            ligação.
+            <strong>{t("Primeiro dispositivo")}</strong>{" "}
+            {t("— cria e partilha o código de ligação.")}
           </li>
           <li>
-            <strong>Segundo dispositivo</strong> — abre Receber código, cola-o e
-            cria a resposta.
+            <strong>{t("Segundo dispositivo")}</strong>{" "}
+            {t("— abre Receber código, cola-o e cria a resposta.")}
           </li>
           <li>
-            <strong>Primeiro dispositivo</strong> — cola a resposta e conclui.
-            Aguarda a confirmação nos dois.
+            <strong>{t("Primeiro dispositivo")}</strong>{" "}
+            {t("— cola a resposta e conclui. Aguarda a confirmação nos dois.")}
           </li>
         </ol>
       </details>
-      <div className="peer-tabs" role="tablist" aria-label="Tipo de ligação">
+      <div
+        className="peer-tabs"
+        role="tablist"
+        aria-label={t("Tipo de ligação")}
+      >
         <button
           role="tab"
           aria-selected={tab === "offer"}
@@ -136,7 +150,7 @@ export function BrowserPeerPanel({ api }: { api: API }) {
             setError("");
           }}
         >
-          Criar ligação
+          {t("Criar ligação")}
         </button>
         <button
           role="tab"
@@ -147,7 +161,7 @@ export function BrowserPeerPanel({ api }: { api: API }) {
             setError("");
           }}
         >
-          Receber código
+          {t("Receber código")}
         </button>
         <button
           role="tab"
@@ -158,17 +172,18 @@ export function BrowserPeerPanel({ api }: { api: API }) {
             setError("");
           }}
         >
-          App instalada
+          {t("App instalada")}
         </button>
       </div>
       {output && (
         <section className="peer-code">
           <label>
-            Código para partilhar
+            {t("Código para partilhar")}
             <textarea
               readOnly
               value={output}
               onFocus={(e) => e.currentTarget.select()}
+              aria-label={t("Código para partilhar")}
             />
           </label>
           <button
@@ -181,7 +196,7 @@ export function BrowserPeerPanel({ api }: { api: API }) {
             }
           >
             <Copy size={16} />
-            Copiar código
+            {t("Copiar código")}
           </button>
         </section>
       )}
@@ -201,12 +216,13 @@ export function BrowserPeerPanel({ api }: { api: API }) {
               }
             >
               <Link2 size={17} />
-              Criar código de ligação
+              {t("Criar código de ligação")}
             </button>
           ) : (
             <p className="muted">
-              Partilha este código. Depois cola a resposta recebida para
-              concluir.
+              {t(
+                "Partilha este código. Depois cola a resposta recebida para concluir.",
+              )}
             </p>
           )}
           {handle && !connected && !ended && (
@@ -215,22 +231,25 @@ export function BrowserPeerPanel({ api }: { api: API }) {
                 event.preventDefault();
                 void run(async () => {
                   await api("peer-accept", { handle, signal: input });
-                  setStatus("Resposta aceite. A confirmar o estado da ligação…");
+                  setStatus(
+                    "Resposta aceite. A confirmar o estado da ligação…",
+                  );
                 });
               }}
             >
               <label>
-                Resposta do outro dispositivo
+                {t("Resposta do outro dispositivo")}
                 <textarea
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   required
                   maxLength={64000}
+                  aria-label={t("Resposta do outro dispositivo")}
                 />
               </label>
               <button className="primary full" disabled={busy}>
                 <ArrowRight size={17} />
-                Concluir ligação
+                {t("Concluir ligação")}
               </button>
             </form>
           )}
@@ -249,16 +268,17 @@ export function BrowserPeerPanel({ api }: { api: API }) {
           }}
         >
           <label>
-            Código de ligação recebido
+            {t("Código de ligação recebido")}
             <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
               required
               maxLength={64000}
+              aria-label={t("Código de ligação recebido")}
             />
           </label>
           <button className="primary full" disabled={busy || !!handle}>
-            Criar resposta
+            {t("Criar resposta")}
           </button>
         </form>
       )}
@@ -273,30 +293,32 @@ export function BrowserPeerPanel({ api }: { api: API }) {
           }}
         >
           <p className="muted">
-            O convite é emitido pela app instalada para esta página:{" "}
-            <strong>{location.origin}</strong>. Na app instalada neste
-            dispositivo, abre A rede → Ligar um par → Usar a versão web neste
-            dispositivo.
+            {t("O convite é emitido pela app instalada para esta página:")}{" "}
+            <strong>{location.origin}</strong>
+            {t(
+              ". Na app instalada neste dispositivo, abre A rede → Ligar um par → Usar a versão web neste dispositivo.",
+            )}
           </p>
           <label>
-            Convite da aplicação instalada
+            {t("Convite da aplicação instalada")}
             <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
               required
               maxLength={8192}
+              aria-label={t("Convite da aplicação instalada")}
             />
           </label>
           <button className="primary full" disabled={busy}>
-            Ligar ao nó
+            {t("Ligar ao nó")}
           </button>
         </form>
       )}
-      {copied && <p role="status">Código copiado.</p>}
+      {copied && <p role="status">{t("Código copiado.")}</p>}
       {connectionStatus && (
         <p className="peer-status" role="status">
           <ShieldCheck size={16} />
-          {connectionStatus}
+          {t(connectionStatus)}
         </p>
       )}
       {handle && tab !== "native" && !connected && (
@@ -312,14 +334,18 @@ export function BrowserPeerPanel({ api }: { api: API }) {
             })
           }
         >
-          Recomeçar ligação
+          {t("Recomeçar ligação")}
         </button>
       )}
       {diagnostic && (
         <details className="peer-diagnostic">
-          <summary>Diagnóstico desta ligação</summary>
-          <p>Sem mensagens, chaves, códigos de ligação ou endereços de rede.</p>
-          <pre aria-label="Diagnóstico sem dados pessoais">
+          <summary>{t("Diagnóstico desta ligação")}</summary>
+          <p>
+            {t(
+              "Sem mensagens, chaves, códigos de ligação ou endereços de rede.",
+            )}
+          </p>
+          <pre aria-label={t("Diagnóstico sem dados pessoais")}>
             {JSON.stringify({ version: 1, ...diagnostic }, null, 2)}
           </pre>
           <button
@@ -332,20 +358,19 @@ export function BrowserPeerPanel({ api }: { api: API }) {
               })
             }
           >
-            <Copy size={16} /> Copiar diagnóstico
+            <Copy size={16} /> {t("Copiar diagnóstico")}
           </button>
         </details>
       )}
       {error && (
         <p className="error" role="alert">
-          {error}
+          {t(error)}
         </p>
       )}
       <p className="muted">
-        Um código de rede não adiciona contactos nem dá acesso ao cofre. Uma
-        ligação precisa de um caminho compatível. Nesta versão, redes diferentes
-        ou Wi-Fi com isolamento podem impedir a ligação: ainda não há travessia
-        automática de NAT. Bluetooth directo entre browsers não está disponível.
+        {t(
+          "Um código de rede não adiciona contactos nem dá acesso ao cofre. Uma ligação precisa de um caminho compatível. Nesta versão, redes diferentes ou Wi-Fi com isolamento podem impedir a ligação: ainda não há travessia automática de NAT. Bluetooth directo entre browsers não está disponível.",
+        )}
       </p>
     </div>
   );

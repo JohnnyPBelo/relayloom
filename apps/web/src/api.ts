@@ -5,6 +5,7 @@ export type API = (
 ) => Promise<any>;
 let localAPI: API | undefined;
 let initialised = false;
+export const usesLocalAPI = () => localAPI !== undefined;
 export function useLocalAPI(api: API) {
   if (initialised || localAPI) throw new Error("Motor já configurado");
   localAPI = api;

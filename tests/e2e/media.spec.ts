@@ -72,8 +72,8 @@ async function observeCapture(page: Page) {
 async function boot(browser: Browser) {
   const a = await launch(),
     b = await launch();
-  const ca = await browser.newContext(),
-    cb = await browser.newContext();
+  const ca = await browser.newContext({ locale: "pt-PT" }),
+    cb = await browser.newContext({ locale: "pt-PT" });
   const pa = await ca.newPage(),
     pb = await cb.newPage();
   try {

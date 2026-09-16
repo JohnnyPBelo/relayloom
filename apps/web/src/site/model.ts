@@ -1,3 +1,4 @@
+import { t } from "../i18n/core";
 import {
   legacySite,
   SITE_LIMITS,
@@ -33,19 +34,19 @@ export function newBlock(type: SiteNodeType): SiteNode {
     type,
     title: (
       {
-        hero: "Um lugar para as tuas ideias.",
-        text: "Uma nova história",
-        links: "Vamos explorar",
-        callout: "Fica por perto",
-        heading: "Um novo capítulo",
-        quote: "Há histórias que merecem ficar.",
-        button: "Descobrir",
+        hero: t("Um lugar para as tuas ideias."),
+        text: t("Uma nova história"),
+        links: t("Vamos explorar"),
+        callout: t("Fica por perto"),
+        heading: t("Um novo capítulo"),
+        quote: t("Há histórias que merecem ficar."),
+        button: t("Descobrir"),
         image: "",
-        gallery: "Uma história em imagens",
+        gallery: t("Uma história em imagens"),
         divider: "",
         spacer: "",
         columns: "",
-        posts: "Do meu diário",
+        posts: t("Do meu diário"),
       } as const
     )[type],
     body: "",
@@ -60,20 +61,20 @@ export function newBlock(type: SiteNodeType): SiteNode {
   };
 }
 export function initialSite(name: string): StudioValue {
-  return {
+  const value: StudioValue = {
     site: legacySite(
       [
         {
           id: "hero",
           type: "hero",
-          title: "Um lugar para estar perto.",
-          body: "Bem-vindo ao meu pequeno espaço na rede.",
+          title: t("Um lugar para estar perto."),
+          body: t("Bem-vindo ao meu pequeno espaço na rede."),
         },
         {
           id: "about",
           type: "text",
-          title: "Sobre mim",
-          body: "As histórias, as pessoas e os lugares que nos ligam.",
+          title: t("Sobre mim"),
+          body: t("As histórias, as pessoas e os lugares que nos ligam."),
         },
       ],
       name,
@@ -81,6 +82,9 @@ export function initialSite(name: string): StudioValue {
     theme: "sand",
     attachments: [],
   };
+  value.site.pages[0].title = t("Início");
+  value.site.description = t("Um lugar teu na rede.");
+  return value;
 }
 export function flatten(
   nodes: SiteNode[],
@@ -159,49 +163,53 @@ export function templateSite(
   const about = {
     id: crypto.randomUUID(),
     slug: "sobre",
-    title: "Sobre",
+    title: t("Sobre"),
     blocks: [
       n(
         "hero",
-        "O que me move.",
-        "Um pouco da história por detrás deste espaço.",
+        t("O que me move."),
+        t("Um pouco da história por detrás deste espaço."),
       ),
       n(
         "text",
-        "As minhas raízes",
-        "Escreve sobre o teu percurso e o que queres partilhar.",
+        t("As minhas raízes"),
+        t("Escreve sobre o teu percurso e o que queres partilhar."),
       ),
     ],
   };
   const home = start.site.pages[0];
   start.site.design.font = kind === "journal" ? "serif" : "sans";
   if (kind === "journal") {
-    start.site.title = "Caderno de " + name;
+    start.site.title = t("Caderno de ") + name;
     home.blocks = [
       n(
         "hero",
-        "Notas de um mundo em comum.",
-        "Pequenas observações. Histórias compridas. Um espaço para pensar em voz alta.",
+        t("Notas de um mundo em comum."),
+        t(
+          "Pequenas observações. Histórias compridas. Um espaço para pensar em voz alta.",
+        ),
       ),
       {
         ...n(
           "text",
-          "Uma nota de boas-vindas",
-          "**Este caderno é meu, mas a conversa é nossa.**\n\n- Histórias do dia-a-dia\n- Pessoas que inspiram\n- Ideias para experimentar",
+          t("Uma nota de boas-vindas"),
+          t(
+            "**Este caderno é meu, mas a conversa é nossa.**\n\n- Histórias do dia-a-dia\n- Pessoas que inspiram\n- Ideias para experimentar",
+          ),
         ),
         format: "markdown",
       },
-      n("posts", "Entradas recentes"),
+      n("posts", t("Entradas recentes")),
     ];
   }
   if (kind === "portfolio") {
-    start.site.title = "Estúdio " + name;
+    start.site.title = t("Estúdio ") + name;
     start.site.design.width = "wide";
     home.blocks = [
       n(
         "hero",
-        "Ideias que ganham forma.",
-        "Design, fotografias e projectos com história.",
+        t("Ideias que ganham forma."),
+        t("Design, fotografias e projectos com história."),
       ),
       {
         ...n("columns", ""),
@@ -209,28 +217,28 @@ export function templateSite(
         children: [
           n(
             "callout",
-            "Projecto 01",
-            "Um espaço para apresentar o teu trabalho.",
+            t("Projecto 01"),
+            t("Um espaço para apresentar o teu trabalho."),
           ),
           n(
             "callout",
-            "Projecto 02",
-            "Mostra o processo, os detalhes e o resultado.",
+            t("Projecto 02"),
+            t("Mostra o processo, os detalhes e o resultado."),
           ),
         ],
       },
-      n("gallery", "Uma selecção visual"),
-      { ...n("button", "Conhece o meu percurso"), url: "page:" + about.id },
+      n("gallery", t("Uma selecção visual")),
+      { ...n("button", t("Conhece o meu percurso")), url: "page:" + about.id },
     ];
   }
   if (kind === "community") {
     start.theme = "forest";
-    start.site.title = "O nosso bairro";
+    start.site.title = t("O nosso bairro");
     home.blocks = [
       n(
         "hero",
-        "Há lugar para toda a gente.",
-        "Um ponto de encontro para quem faz parte deste lugar.",
+        t("Há lugar para toda a gente."),
+        t("Um ponto de encontro para quem faz parte deste lugar."),
       ),
       {
         ...n("columns", ""),
@@ -238,18 +246,22 @@ export function templateSite(
         children: [
           n(
             "callout",
-            "Pontos de encontro",
-            "Onde nos encontramos e partilhamos ideias.",
+            t("Pontos de encontro"),
+            t("Onde nos encontramos e partilhamos ideias."),
           ),
           n(
             "callout",
-            "Recursos úteis",
-            "Informação para o dia-a-dia da comunidade.",
+            t("Recursos úteis"),
+            t("Informação para o dia-a-dia da comunidade."),
           ),
-          n("callout", "Como participar", "Cada pessoa traz algo de novo."),
+          n(
+            "callout",
+            t("Como participar"),
+            t("Cada pessoa traz algo de novo."),
+          ),
         ],
       },
-      n("posts", "Novidades da comunidade"),
+      n("posts", t("Novidades da comunidade")),
     ];
   }
   start.site.pages.push(about);

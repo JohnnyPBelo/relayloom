@@ -1,0 +1,171 @@
+export const participation = [
+  [
+    "{count} ligação disponível. Os pacotes só avançam quando existe um caminho até ao destino.",
+    "{count} connection available. Packets travel only when a path to the destination exists.",
+    "{count} conexión disponible. Los paquetes solo avanzan cuando existe un camino hasta el destino.",
+  ],
+  [
+    "{count} ligações disponíveis. Os pacotes só avançam quando existe um caminho até ao destino.",
+    "{count} connections available. Packets travel only when a path to the destination exists.",
+    "{count} conexiones disponibles. Los paquetes solo avanzan cuando existe un camino hasta el destino.",
+  ],
+  ["Ajudar a rede", "Help the network", "Ayudar a la red"],
+  [
+    "O TEU DISPOSITIVO, MAIS UM CAMINHO",
+    "YOUR DEVICE, ANOTHER CONNECTION",
+    "TU DISPOSITIVO, OTRO CAMINO",
+  ],
+  [
+    "Ajuda a manter a rede ligada",
+    "Help keep the network connected",
+    "Ayuda a mantener la red conectada",
+  ],
+  [
+    "Permite a passagem de pacotes entre outros dispositivos. O conteúdo privado continua cifrado para as pessoas autorizadas.",
+    "Allow packets to pass between other devices. Private content remains encrypted for authorised people.",
+    "Permite el paso de paquetes entre otros dispositivos. El contenido privado sigue cifrado para las personas autorizadas.",
+  ],
+  ["Permitir retransmissão", "Allow relaying", "Permitir retransmisión"],
+  [
+    "Podes pausar quando quiseres. A tua escolha fica guardada neste perfil.",
+    "You can pause whenever you like. Your choice is saved in this profile.",
+    "Puedes pausar cuando quieras. Tu elección se guarda en este perfil.",
+  ],
+  ["A guardar a tua escolha…", "Saving your choice…", "Guardando tu elección…"],
+  ["Retransmissão em pausa", "Relaying paused", "Retransmisión en pausa"],
+  [
+    "Pronto para retransmitir · falta ligar pares",
+    "Ready to relay · connect peers first",
+    "Listo para retransmitir · faltan pares conectados",
+  ],
+  ["Retransmissão permitida", "Relaying enabled", "Retransmisión permitida"],
+  [
+    "Ainda não há dispositivos ligados. Troca um código para abrir o primeiro caminho.",
+    "No devices are connected yet. Exchange a code to open the first connection.",
+    "Todavía no hay dispositivos conectados. Intercambia un código para abrir el primer camino.",
+  ],
+  ["ligação disponível", "available connection", "conexión disponible"],
+  ["ligações disponíveis", "available connections", "conexiones disponibles"],
+  [
+    "Mantém este separador aberto e o perfil desbloqueado. O browser ou o sistema podem suspender a rede em segundo plano.",
+    "Keep this tab open and the profile unlocked. The browser or system may suspend networking in the background.",
+    "Mantén esta pestaña abierta y el perfil desbloqueado. El navegador o el sistema pueden suspender la red en segundo plano.",
+  ],
+  [
+    "Mantém a aplicação em execução. O sistema pode limitar a actividade em segundo plano.",
+    "Keep the app running. The system may limit background activity.",
+    "Mantén la aplicación en ejecución. El sistema puede limitar la actividad en segundo plano.",
+  ],
+  [
+    "Adicionar um cartão guarda um contacto; a ligação à rede é feita separadamente.",
+    "Adding a card saves a contact; the network connection is established separately.",
+    "Añadir una tarjeta guarda un contacto; la conexión a la red se establece por separado.",
+  ],
+  [
+    "Wi-Fi, Bluetooth e outros meios",
+    "Wi-Fi, Bluetooth and other media",
+    "Wi-Fi, Bluetooth y otros medios",
+  ],
+  [
+    "Wi-Fi, cabo ou dados móveis",
+    "Wi-Fi, cable or mobile data",
+    "Wi-Fi, cable o datos móviles",
+  ],
+  [
+    "A aplicação usa a rede disponível através dos pares ligados. O destinatário é escolhido na conversa; o percurso pode passar por vários dispositivos. Ainda não há descoberta automática nem garantia de atravessar qualquer rede.",
+    "The app uses the available network through connected peers. Choose the recipient in the conversation; the route may cross several devices. Automatic discovery and guaranteed traversal of every network are not available yet.",
+    "La aplicación usa la red disponible a través de los pares conectados. El destinatario se elige en la conversación; el recorrido puede pasar por varios dispositivos. Todavía no hay descubrimiento automático ni garantía de atravesar cualquier red.",
+  ],
+  [
+    "Bluetooth directo · por implementar",
+    "Direct Bluetooth · not implemented yet",
+    "Bluetooth directo · por implementar",
+  ],
+  [
+    "Abrir esta página não transforma o browser num relay Bluetooth. Os browsers também não oferecem as mesmas capacidades de rádio em todos os sistemas.",
+    "Opening this page does not turn the browser into a Bluetooth relay. Browsers also do not offer the same radio capabilities on every system.",
+    "Abrir esta página no convierte el navegador en un relay Bluetooth. Los navegadores tampoco ofrecen las mismas capacidades de radio en todos los sistemas.",
+  ],
+  [
+    "Esta versão ainda não tem um adaptador Bluetooth directo validado.",
+    "This version does not yet have a validated direct Bluetooth adapter.",
+    "Esta versión todavía no tiene un adaptador Bluetooth directo validado.",
+  ],
+  [
+    "Outros meios através de pares compatíveis",
+    "Other media through compatible peers",
+    "Otros medios a través de pares compatibles",
+  ],
+  [
+    "A integração Reticulum pode ligar percursos por TCP e série com adaptadores configurados numa aplicação instalada. Os testes com portas série virtuais não validam rádios físicos.",
+    "Reticulum integration can connect TCP and serial routes using adapters configured in an installed app. Tests with virtual serial ports do not validate physical radios.",
+    "La integración Reticulum puede conectar recorridos TCP y serie con adaptadores configurados en una aplicación instalada. Las pruebas con puertos serie virtuales no validan radios físicas.",
+  ],
+  [
+    "O convite expirou. Cria outro para voltar a ligar.",
+    "The invitation expired. Create another to reconnect.",
+    "La invitación ha caducado. Crea otra para volver a conectar.",
+  ],
+  [
+    "Não foi possível concluir a operação.",
+    "The operation could not be completed.",
+    "No se ha podido completar la operación.",
+  ],
+  [
+    "Usar a versão web neste dispositivo",
+    "Use the web version on this device",
+    "Usar la versión web en este dispositivo",
+  ],
+  [
+    "Abre o RelayLoom no navegador deste dispositivo e partilha este convite entre as duas aplicações. As mensagens podem seguir pela rede dos teus pares, sem escolheres um meio em cada envio.",
+    "Open RelayLoom in this device's browser and share this invitation between the two apps. Messages can travel through your peers' network without choosing a medium for every send.",
+    "Abre RelayLoom en el navegador de este dispositivo y comparte esta invitación entre las dos aplicaciones. Los mensajes pueden viajar por la red de tus pares sin elegir un medio en cada envío.",
+  ],
+  [
+    "Introduz o endereço completo da versão web.",
+    "Enter the web version's full address.",
+    "Introduce la dirección completa de la versión web.",
+  ],
+  [
+    "Usa um endereço web sem credenciais.",
+    "Use a web address without credentials.",
+    "Usa una dirección web sin credenciales.",
+  ],
+  [
+    "Convite criado. Cola-o em Ligar um par, na versão web.",
+    "Invitation created. Paste it into Connect a peer in the web version.",
+    "Invitación creada. Pégala en Conectar un par, en la versión web.",
+  ],
+  [
+    "Endereço da versão web",
+    "Web version address",
+    "Dirección de la versión web",
+  ],
+  ["Renovar convite", "Renew invitation", "Renovar invitación"],
+  ["Criar convite", "Create invitation", "Crear invitación"],
+  ["Permitido para", "Allowed for", "Permitido para"],
+  ["até", "until", "hasta"],
+  [
+    ". Renovar fecha as ligações do convite anterior.",
+    ". Renewing closes the previous invitation's connections.",
+    ". Renovar cierra las conexiones de la invitación anterior.",
+  ],
+  [
+    "Convite para a versão web",
+    "Invitation for the web version",
+    "Invitación para la versión web",
+  ],
+  ["Convite copiado.", "Invitation copied.", "Invitación copiada."],
+  ["Copiar convite", "Copy invitation", "Copiar invitación"],
+  [
+    "Convite revogado. As ligações que o usavam foram fechadas.",
+    "Invitation revoked. Connections using it were closed.",
+    "Invitación revocada. Las conexiones que la usaban se han cerrado.",
+  ],
+  ["Revogar convite", "Revoke invitation", "Revocar invitación"],
+  [
+    "Este convite permite transportar conteúdo cifrado; não dá acesso à tua identidade nem acrescenta contactos. Bloquear a identidade mantém a ajuda à rede que autorizaste. Para fechar este caminho, revoga o convite. A ligação directa actual está limitada a este dispositivo.",
+    "This invitation allows encrypted content to travel; it does not grant access to your identity or add contacts. Locking the identity preserves the network participation you authorised. Revoke the invitation to close this path. The current direct connection is limited to this device.",
+    "Esta invitación permite transportar contenido cifrado; no da acceso a tu identidad ni añade contactos. Bloquear la identidad mantiene la participación en la red que autorizaste. Para cerrar este camino, revoca la invitación. La conexión directa actual está limitada a este dispositivo.",
+  ],
+] as const;

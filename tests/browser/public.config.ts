@@ -10,6 +10,8 @@ export default defineConfig({
     "contact-relay.spec.ts",
     "connectivity.spec.ts",
     "site-studio.spec.ts",
+    "onboarding-language.spec.ts",
+    "site-language.spec.ts",
     "public-distribution.checks.ts",
   ],
   projects: ["chromium", "firefox", "webkit"].map((name) => ({

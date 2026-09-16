@@ -41,6 +41,7 @@ async function enter(p: Page, name: string) {
     requests.push({ url: request.url(), method: request.method() }),
   );
   await p.goto(url + "/browser/index.html");
+  await p.getByRole("button", { name: "Começar", exact: true }).click();
   await p.getByLabel("Como te chamas?").fill(name);
   await p.getByLabel("Frase-passe", { exact: true }).fill(password);
   await p
@@ -120,10 +121,10 @@ async function audit(p: Page, path: string) {
 test("imported contact immediately appears once, survives reload and becomes the first real DM without a duplicate", async ({
   browser,
 }, info) => {
-  const ca = await browser.newContext({
+  const ca = await browser.newContext({ locale: "pt-PT",
       viewport: { width: 390, height: 844 },
     }),
-    cb = await browser.newContext();
+    cb = await browser.newContext({ locale: "pt-PT" });
   const a = await ca.newPage(),
     b = await cb.newPage();
   const out = `.cache/contact-relay/${info.project.name || "chromium"}/${process.env.RELAYLOOM_PUBLIC_BUILD === "1" ? "public" : "default"}`;
@@ -208,7 +209,7 @@ test("relay consent through the UI gates a real A to B to C path and does not gr
   browser,
 }, info) => {
   const contexts = [];
-  for (let i = 0; i < 3; i++) contexts.push(await browser.newContext());
+  for (let i = 0; i < 3; i++) contexts.push(await browser.newContext({ locale: "pt-PT" }));
   const [a, b, c] = await Promise.all(
     contexts.map((context) => context.newPage()),
   );

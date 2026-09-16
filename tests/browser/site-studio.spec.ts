@@ -21,6 +21,7 @@ async function nav(p: Page, name: string) {
 }
 async function enter(p: Page, name: string) {
   await p.goto(host.url + "/browser/index.html");
+  await p.getByRole("button", { name: "Começar", exact: true }).click();
   await p.getByLabel("Como te chamas?").fill(name);
   await p.getByLabel("Frase-passe", { exact: true }).fill(password);
   await p
@@ -77,9 +78,9 @@ async function audit(p: Page, path: string) {
 test("multipage studio saves encrypted draft, rejects executable imports and a consenting reader seeds it to a new browser after author closes", async ({
   browser,
 }, info) => {
-  const ca = await browser.newContext(),
-    cb = await browser.newContext(),
-    cc = await browser.newContext();
+  const ca = await browser.newContext({ locale: "pt-PT" }),
+    cb = await browser.newContext({ locale: "pt-PT" }),
+    cc = await browser.newContext({ locale: "pt-PT" });
   const a = await ca.newPage(),
     b = await cb.newPage(),
     c = await cc.newPage();

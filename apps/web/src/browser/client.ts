@@ -1,3 +1,4 @@
+import { t } from "../i18n/core";
 import {
   BrowserMesh,
   type MeshProfile,
@@ -106,7 +107,9 @@ export async function browserAPI() {
           mesh?.router.peers.map((p) => ({
             ...p,
             address:
-              p.medium === "webrtc" ? "Par de navegador" : "Par WebSocket",
+              p.medium === "webrtc"
+                ? t("Par de navegador")
+                : t("Par WebSocket"),
           })) ?? [],
         counters: mesh?.router.counters ?? {},
         error: error || mesh?.lastError || "",
@@ -282,7 +285,7 @@ export async function browserAPI() {
       if (root) {
         root.replaceChildren();
         const message = document.createElement("p");
-        message.textContent = "O teu espaço está bloqueado.";
+        message.textContent = t("O teu espaço está bloqueado.");
         root.append(message);
       }
       clearInterval(ticker);

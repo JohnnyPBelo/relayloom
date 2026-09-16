@@ -15,6 +15,7 @@ async function nav(page: Page, name: string) {
 async function enter(page: Page, url: string, name: string) {
   await page.goto(url + "/browser/index.html");
   expect(await page.evaluate(() => isSecureContext)).toBe(true);
+  await page.getByRole("button", { name: "Começar", exact: true }).click();
   await page.getByLabel("Como te chamas?").fill(name);
   await page.getByLabel("Frase-passe", { exact: true }).fill(passphrase);
   await page
@@ -66,10 +67,10 @@ test("two independent Chromium and Firefox processes exchange UI messages and ex
     requests: { method: string; url: string }[] = [];
   try {
     bBrowser = await firefox.launch();
-    const ca = await aBrowser.newContext({
+    const ca = await aBrowser.newContext({ locale: "pt-PT",
       viewport: { width: 1440, height: 1000 },
     });
-    const cb = await bBrowser.newContext({
+    const cb = await bBrowser.newContext({ locale: "pt-PT",
       viewport: { width: 390, height: 844 },
     });
     for (const context of [ca, cb])

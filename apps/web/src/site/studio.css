@@ -45,13 +45,13 @@
 }
 .studio-workspace {
   display: grid;
-  grid-template-columns: 240px minmax(0, 1fr);
+  grid-template-columns: 248px minmax(0, 1fr);
   gap: 18px;
   align-items: start;
   min-width: 0;
 }
 .studio-workspace:has(.studio-inspector) {
-  grid-template-columns: 220px minmax(0, 1fr) 210px;
+  grid-template-columns: 248px minmax(0, 1fr) 210px;
 }
 .studio-sidebar,
 .studio-inspector {
@@ -135,14 +135,17 @@
 }
 .studio-palette {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 100px), 1fr));
   gap: 7px;
 }
 .studio-palette > button {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 6px;
-  padding: 11px 8px;
+  justify-content: center;
+  min-width: 0;
+  gap: 8px;
+  padding: 12px 6px;
   border: 1px solid var(--line);
   border-radius: 11px;
   background: var(--bg);
@@ -690,7 +693,7 @@
 }
 @media (max-width: 1250px) {
   .studio-workspace:has(.studio-inspector) {
-    grid-template-columns: 210px minmax(0, 1fr);
+    grid-template-columns: 248px minmax(0, 1fr);
   }
   .studio-inspector {
     grid-column: 1/-1;
@@ -717,7 +720,7 @@
     min-height: 44px;
   }
   .studio-palette {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 100px), 1fr));
   }
   .studio-tool-tabs {
     grid-template-columns: repeat(4, minmax(0, 1fr));

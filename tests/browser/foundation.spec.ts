@@ -449,7 +449,7 @@ test("lock during unlock cannot resurrect keys; missing authenticated state is n
 test("real WebRTC transfers encrypted chunks and an offline author's reader seeds identical bytes to a new reader", async ({
   browser,
 }) => {
-  const contexts = await Promise.all([0, 1, 2].map(() => browser.newContext()));
+  const contexts = await Promise.all([0, 1, 2].map(() => browser.newContext({ locale: "pt-PT" })));
   const pages = await Promise.all(contexts.map((c) => c.newPage()));
   const [a, b, c] = pages;
   const pair = async (
@@ -624,8 +624,8 @@ test("WebRTC rejects a correctly framed corrupt bundle before storage and reject
   browser,
 }) => {
   for (const mode of ["corrupt", "quota", "frame"] as const) {
-    const ca = await browser.newContext(),
-      cb = await browser.newContext(),
+    const ca = await browser.newContext({ locale: "pt-PT" }),
+      cb = await browser.newContext({ locale: "pt-PT" }),
       a = await ca.newPage(),
       b = await cb.newPage();
     try {

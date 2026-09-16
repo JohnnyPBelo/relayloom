@@ -1,3 +1,4 @@
+import { t } from "./i18n/core";
 import React, { useEffect, useId, useRef, useState } from "react";
 import { Mic, Square, X, AudioLines } from "lucide-react";
 import type { Attachment } from "../../node/src/node";
@@ -171,7 +172,7 @@ export function VoiceRecorder({
     setStatus("A preparar o anexo de voz neste dispositivo…");
     try {
       if (!session.recorder || session.recorder.state === "inactive") {
-        fail(session, "A gravação terminou sem áudio. Tenta novamente.");
+        fail(session, t("A gravação terminou sem áudio. Tenta novamente."));
         return;
       }
       session.recorder.stop();
@@ -180,7 +181,7 @@ export function VoiceRecorder({
     } catch {
       fail(
         session,
-        "Não foi possível terminar a gravação. O microfone foi desligado.",
+        t("Não foi possível terminar a gravação. O microfone foi desligado."),
       );
     }
   }
@@ -205,20 +206,24 @@ export function VoiceRecorder({
     if (!extension) {
       fail(
         session,
-        "O formato gravado não é suportado. Podes anexar outro ficheiro de áudio.",
+        t(
+          "O formato gravado não é suportado. Podes anexar outro ficheiro de áudio.",
+        ),
       );
       return;
     }
     const blob = new Blob(session.parts, { type: mime });
     session.parts = [];
     if (!blob.size) {
-      fail(session, "A gravação ficou vazia. Tenta novamente.");
+      fail(session, t("A gravação ficou vazia. Tenta novamente."));
       return;
     }
     if (blob.size > session.byteLimit) {
       fail(
         session,
-        "A gravação excedeu o limite do anexo e foi descartada. Grava uma mensagem mais curta.",
+        t(
+          "A gravação excedeu o limite do anexo e foi descartada. Grava uma mensagem mais curta.",
+        ),
       );
       return;
     }
@@ -253,7 +258,7 @@ export function VoiceRecorder({
           session,
           e instanceof Error && e.message
             ? e.message
-            : "Não foi possível adicionar a gravação aos anexos.",
+            : t("Não foi possível adicionar a gravação aos anexos."),
         );
     }
   }
@@ -292,7 +297,9 @@ export function VoiceRecorder({
             if (current(session) && !session.ending)
               fail(
                 session,
-                "O microfone foi desligado. A gravação foi descartada; podes tentar novamente.",
+                t(
+                  "O microfone foi desligado. A gravação foi descartada; podes tentar novamente.",
+                ),
               );
           },
           { once: true },
@@ -303,7 +310,9 @@ export function VoiceRecorder({
       if (!mimeType) {
         fail(
           session,
-          "Este navegador não tem um formato de gravação de voz suportado. Podes anexar um ficheiro de áudio.",
+          t(
+            "Este navegador não tem um formato de gravação de voz suportado. Podes anexar um ficheiro de áudio.",
+          ),
         );
         return;
       }
@@ -315,8 +324,9 @@ export function VoiceRecorder({
         if (!current(session) || !event.data.size) return;
         session.bytes += event.data.size;
         if (session.bytes > session.byteLimit) {
-          session.failure =
-            "A gravação excedeu o limite do anexo e foi descartada. Grava uma mensagem mais curta.";
+          session.failure = t(
+            "A gravação excedeu o limite do anexo e foi descartada. Grava uma mensagem mais curta.",
+          );
           session.parts = [];
           stop(session);
           return;
@@ -326,7 +336,9 @@ export function VoiceRecorder({
       recorder.onerror = () =>
         fail(
           session,
-          "A gravação falhou. O microfone foi desligado e o áudio foi descartado.",
+          t(
+            "A gravação falhou. O microfone foi desligado e o áudio foi descartado.",
+          ),
         );
       recorder.onstop = () => {
         void finish(session);
@@ -367,9 +379,9 @@ export function VoiceRecorder({
           void start();
         }}
         disabled={disabled || phase !== "idle" || !!unavailable}
-        aria-label="Gravar mensagem de voz"
+        aria-label={t("Gravar mensagem de voz")}
         aria-describedby={unavailable ? statusId + "-support" : undefined}
-        title="Gravar mensagem de voz"
+        title={t("Gravar mensagem de voz")}
       >
         <Mic size={21} aria-hidden="true" />
       </button>
@@ -383,23 +395,23 @@ export function VoiceRecorder({
         </span>
       )}
       {open && (
-        <section className="voice-panel" aria-label="Gravação de voz">
+        <section className="voice-panel" aria-label={t("Gravação de voz")}>
           <div className="voice-panel-heading">
             <AudioLines size={19} aria-hidden="true" />
             <strong>
               {phase === "recording"
-                ? "A tua voz, por perto."
+                ? t("A tua voz, por perto.")
                 : phase === "requesting"
-                  ? "Ligar o microfone"
+                  ? t("Ligar o microfone")
                   : phase === "finishing"
-                    ? "Preparar a gravação"
-                    : "Mensagem de voz"}
+                    ? t("Preparar a gravação")
+                    : t("Mensagem de voz")}
             </strong>
             {phase === "idle" && (
               <button
                 type="button"
                 className="voice-dismiss"
-                aria-label="Fechar informação da gravação"
+                aria-label={t("Fechar informação da gravação")}
                 onClick={() => {
                   setStatus("");
                   setError("");
@@ -410,18 +422,18 @@ export function VoiceRecorder({
             )}
           </div>
           <p id={statusId} role="status" aria-live="polite" aria-atomic="true">
-            {status}
+            {t(status)}
           </p>
           {error && (
             <p id={errorId} role="alert" className="voice-error">
-              {error}
+              {t(error)}
             </p>
           )}
           {phase === "recording" && (
             <>
               <output
                 className="voice-duration"
-                aria-label="Duração da gravação"
+                aria-label={t("Duração da gravação")}
                 aria-live="off"
               >
                 {length(seconds)}{" "}
@@ -430,8 +442,8 @@ export function VoiceRecorder({
                 </span>
               </output>
               <p className="voice-limit">
-                Até {Math.round(byteLimit / 1000)} KB. Pára automaticamente ao
-                atingir o limite.
+                {t("Até")} {Math.round(byteLimit / 1000)}{" "}
+                {t("KB. Pára automaticamente ao atingir o limite.")}
               </p>
             </>
           )}
@@ -446,11 +458,11 @@ export function VoiceRecorder({
                     if (active.current) stop(active.current);
                   }}
                 >
-                  <Square size={14} aria-hidden="true" /> Parar e anexar
+                  <Square size={14} aria-hidden="true" /> {t("Parar e anexar")}
                 </button>
               )}
               <button type="button" className="voice-cancel" onClick={cancel}>
-                <X size={16} aria-hidden="true" /> Cancelar gravação
+                <X size={16} aria-hidden="true" /> {t("Cancelar gravação")}
               </button>
             </div>
           )}

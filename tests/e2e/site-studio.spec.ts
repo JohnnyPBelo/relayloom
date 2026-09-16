@@ -9,8 +9,8 @@ test("native site studio restores full draft, renders edited posts and publishes
 }) => {
   const a = await launch(),
     b = await launch();
-  const ca = await browser.newContext(),
-    cb = await browser.newContext();
+  const ca = await browser.newContext({ locale: "pt-PT" }),
+    cb = await browser.newContext({ locale: "pt-PT" });
   try {
     const alice = await a.call("setup", {
       name: "Alice páginas nativas",

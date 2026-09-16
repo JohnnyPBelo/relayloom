@@ -1,3 +1,4 @@
+import { t, tc } from "../i18n/core";
 import React, { useEffect, useId, useRef, useState } from "react";
 import {
   ArrowDown,
@@ -5,6 +6,17 @@ import {
   Bookmark,
   Check,
   Code2,
+  Link2,
+  MessageSquare,
+  Heading,
+  Quote,
+  MousePointer2,
+  Images,
+  Minus,
+  MoveVertical,
+  Columns3,
+  Newspaper,
+  type LucideIcon,
   Copy,
   Download,
   Eye,
@@ -47,6 +59,21 @@ import {
 } from "./model";
 import { SiteNodeView, SiteSurface, nodeClass } from "./renderer";
 import "./studio.css";
+const blockIcons: Record<SiteNodeType, LucideIcon> = {
+  hero: LayoutTemplate,
+  text: Pencil,
+  links: Link2,
+  callout: MessageSquare,
+  heading: Heading,
+  quote: Quote,
+  button: MousePointer2,
+  image: ImagePlus,
+  gallery: Images,
+  divider: Minus,
+  spacer: MoveVertical,
+  columns: Columns3,
+  posts: Newspaper,
+};
 export function SiteStudio({
   value,
   onChange,
@@ -289,7 +316,7 @@ export function SiteStudio({
       s.pages.push({
         id,
         slug: "pagina-" + count,
-        title: "Nova página",
+        title: t("Nova página"),
         blocks:
           countBlocks(value.site) < SITE_LIMITS.blocks
             ? [newBlock("hero")]
@@ -419,12 +446,12 @@ export function SiteStudio({
   return (
     <section
       className="site-studio"
-      aria-label="Estúdio do site"
+      aria-label={t("Estúdio do site")}
       data-revision={revision}
     >
       <fieldset
         className="studio-controls"
-        aria-label="Controlos do estúdio"
+        aria-label={t("Controlos do estúdio")}
         disabled={disabled}
         aria-busy={working}
       >
@@ -436,7 +463,7 @@ export function SiteStudio({
               onClick={() => setPreview(false)}
             >
               <Pencil size={16} />
-              Editar
+              {t("Editar")}
             </button>
             <button
               aria-pressed={preview}
@@ -444,13 +471,13 @@ export function SiteStudio({
               onClick={() => setPreview(true)}
             >
               <Eye size={16} />
-              Pré-visualizar
+              {t("Pré-visualizar")}
             </button>
           </div>
           <div className="studio-history">
             <button
               className="icon"
-              aria-label="Desfazer alteração do site"
+              aria-label={t("Desfazer alteração do site")}
               disabled={!canUndo || disabled}
               onClick={() => {
                 const old = history.current.past.pop()!;
@@ -462,7 +489,7 @@ export function SiteStudio({
             </button>
             <button
               className="icon"
-              aria-label="Refazer alteração do site"
+              aria-label={t("Refazer alteração do site")}
               disabled={!canRedo || disabled}
               onClick={() => {
                 const next = history.current.future.pop()!;
@@ -476,7 +503,7 @@ export function SiteStudio({
           <div className="studio-viewports">
             <button
               className="icon"
-              aria-label="Pré-visualização larga"
+              aria-label={t("Pré-visualização larga")}
               aria-pressed={viewport === "desktop"}
               onClick={() => setViewport("desktop")}
             >
@@ -484,7 +511,7 @@ export function SiteStudio({
             </button>
             <button
               className="icon"
-              aria-label="Pré-visualização móvel"
+              aria-label={t("Pré-visualização móvel")}
               aria-pressed={viewport === "mobile"}
               onClick={() => setViewport("mobile")}
             >
@@ -492,15 +519,15 @@ export function SiteStudio({
             </button>
           </div>
           <label className="inline-label">
-            Paleta
+            {t("Paleta")}
             <select
-              aria-label="Paleta da página"
+              aria-label={t("Paleta da página")}
               value={value.theme}
               onChange={(e) => change({ ...value, theme: e.target.value })}
             >
-              <option value="sand">Areia</option>
-              <option value="forest">Floresta</option>
-              <option value="ink">Tinta</option>
+              <option value="sand">{t("Areia")}</option>
+              <option value="forest">{t("Floresta")}</option>
+              <option value="ink">{t("Tinta")}</option>
             </select>
           </label>
           <button
@@ -509,7 +536,7 @@ export function SiteStudio({
             onClick={() => void action("save")}
           >
             <Bookmark size={16} />
-            Guardar rascunho
+            {t("Guardar rascunho")}
           </button>
           <button
             className="primary"
@@ -517,31 +544,32 @@ export function SiteStudio({
             onClick={() => void action("publish")}
           >
             <Globe2 size={16} />
-            Publicar página
+            {t("Publicar página")}
           </button>
         </div>
         <div className="studio-feedback">
           {feedback && (
             <span role="status">
               <Check size={15} />
-              {feedback}
+              {t(feedback)}
             </span>
           )}
           {error && (
             <span className="error" role="alert">
-              {error}
+              {t(error)}
             </span>
           )}
           <small>
-            {value.site.pages.length}/12 páginas · {countBlocks(value.site)}/128
-            blocos ·{" "}
+            {value.site.pages.length}
+            {t("/12 páginas ·")} {countBlocks(value.site)}
+            {t("/128 blocos ·")}{" "}
             {Math.ceil(
               value.attachments.reduce(
                 (n, a) => n + (a.data.length * 3) / 4,
                 0,
               ) / 1024,
             )}{" "}
-            KB de imagens
+            {t("KB de imagens")}
           </small>
         </div>
         <div
@@ -550,19 +578,21 @@ export function SiteStudio({
           {!preview && (
             <aside
               className="studio-sidebar"
-              aria-label="Estrutura e ferramentas do site"
+              aria-label={t("Estrutura e ferramentas do site")}
             >
               <div className="studio-sidebar-heading">
-                <span className="eyebrow">O TEU PEQUENO UNIVERSO</span>
-                <h2>Uma ideia. Muitas páginas.</h2>
-                <p>Organiza, compõe e publica. Cada detalhe tem lugar.</p>
+                <span className="eyebrow">{t("O TEU PEQUENO UNIVERSO")}</span>
+                <h2>{t("Uma ideia. Muitas páginas.")}</h2>
+                <p>
+                  {t("Organiza, compõe e publica. Cada detalhe tem lugar.")}
+                </p>
               </div>
               <div className="studio-pages">
                 <div className="section-heading">
-                  <h3>Páginas</h3>
+                  <h3>{tc("studio", "Páginas")}</h3>
                   <button
                     className="icon"
-                    aria-label="Adicionar página ao site"
+                    aria-label={t("Adicionar página ao site")}
                     disabled={value.site.pages.length >= 12 || disabled}
                     onClick={addPage}
                   >
@@ -581,7 +611,7 @@ export function SiteStudio({
                   >
                     <span>{p.title}</span>
                     <small>
-                      {p.id === value.site.home ? "Início" : "/" + p.slug}
+                      {p.id === value.site.home ? t("Início") : "/" + p.slug}
                     </small>
                   </button>
                 ))}
@@ -589,7 +619,7 @@ export function SiteStudio({
               <div
                 className="studio-tool-tabs"
                 role="tablist"
-                aria-label="Ferramentas do estúdio"
+                aria-label={t("Ferramentas do estúdio")}
                 onKeyDown={(e) => {
                   const at = panels.indexOf(panel);
                   const next =
@@ -612,23 +642,23 @@ export function SiteStudio({
                   ).focus();
                 }}
               >
-                {panels.map((t) => (
+                {panels.map((choice) => (
                   <button
                     role="tab"
-                    id={tabsId + "-" + t}
+                    id={tabsId + "-" + choice}
                     aria-controls={tabsId + "-panel"}
-                    tabIndex={panel === t ? 0 : -1}
-                    aria-selected={panel === t}
-                    key={t}
-                    onClick={() => choosePanel(t)}
+                    tabIndex={panel === choice ? 0 : -1}
+                    aria-selected={panel === choice}
+                    key={choice}
+                    onClick={() => choosePanel(choice)}
                   >
                     {
                       {
-                        blocks: "Blocos",
-                        design: "Estilo",
-                        templates: "Modelos",
-                        code: "Avançado",
-                      }[t]
+                        blocks: t("Blocos"),
+                        design: t("Estilo"),
+                        templates: t("Modelos"),
+                        code: t("Avançado"),
+                      }[choice]
                     }
                   </button>
                 ))}
@@ -640,34 +670,37 @@ export function SiteStudio({
               >
                 {panel === "blocks" && (
                   <div className="studio-palette">
-                    {SITE_BLOCKS.map((t) => (
-                      <button
-                        key={t}
-                        onClick={() =>
-                          insert(
-                            t,
-                            chosen?.node.type === "columns"
-                              ? chosen.node.id
-                              : undefined,
-                          )
-                        }
-                        disabled={disabled || countBlocks(value.site) >= 128}
-                      >
-                        <Plus size={16} />
-                        {labels[t]}
-                      </button>
-                    ))}
+                    {SITE_BLOCKS.map((choice) => {
+                      const Icon = blockIcons[choice];
+                      return (
+                        <button
+                          key={choice}
+                          onClick={() =>
+                            insert(
+                              choice,
+                              chosen?.node.type === "columns"
+                                ? chosen.node.id
+                                : undefined,
+                            )
+                          }
+                          disabled={disabled || countBlocks(value.site) >= 128}
+                        >
+                          <Icon size={20} aria-hidden="true" />
+                          {t(labels[choice])}
+                        </button>
+                      );
+                    })}
                     <p className="small-note">
-                      Selecciona uma composição para inserir dentro dela.
-                      Arrasta para ordenar; as setas funcionam por toque e
-                      teclado.
+                      {t(
+                        "Selecciona uma composição para inserir dentro dela. Arrasta para ordenar; as setas funcionam por toque e teclado.",
+                      )}
                     </p>
                   </div>
                 )}
                 {panel === "design" && (
                   <div className="studio-fields">
                     <label>
-                      Nome do site
+                      {t("Nome do site")}
                       <input
                         value={value.site.title}
                         maxLength={120}
@@ -679,7 +712,7 @@ export function SiteStudio({
                       />
                     </label>
                     <label>
-                      Descrição curta
+                      {t("Descrição curta")}
                       <textarea
                         value={value.site.description}
                         maxLength={500}
@@ -688,13 +721,14 @@ export function SiteStudio({
                             s.description = e.target.value;
                           })
                         }
+                        aria-label={t("Descrição curta")}
                       />
                     </label>
 
                     <label>
-                      Tipografia
+                      {t("Tipografia")}
                       <select
-                        aria-label="Tipografia"
+                        aria-label={t("Tipografia")}
                         value={value.site.design.font}
                         onChange={(e) =>
                           editDoc((s) => {
@@ -702,15 +736,15 @@ export function SiteStudio({
                           })
                         }
                       >
-                        <option value="sans">Contemporânea</option>
-                        <option value="serif">Editorial</option>
-                        <option value="mono">Monoespaçada</option>
+                        <option value="sans">{t("Contemporânea")}</option>
+                        <option value="serif">{t("Editorial")}</option>
+                        <option value="mono">{t("Monoespaçada")}</option>
                       </select>
                     </label>
                     <label>
-                      Largura do conteúdo
+                      {t("Largura do conteúdo")}
                       <select
-                        aria-label="Largura do conteúdo"
+                        aria-label={t("Largura do conteúdo")}
                         value={value.site.design.width}
                         onChange={(e) =>
                           editDoc((s) => {
@@ -718,15 +752,15 @@ export function SiteStudio({
                           })
                         }
                       >
-                        <option value="compact">Concentrada</option>
-                        <option value="standard">Equilibrada</option>
-                        <option value="wide">Ampla</option>
+                        <option value="compact">{t("Concentrada")}</option>
+                        <option value="standard">{t("Equilibrada")}</option>
+                        <option value="wide">{t("Ampla")}</option>
                       </select>
                     </label>
                     <label>
-                      Cantos
+                      {t("Cantos")}
                       <select
-                        aria-label="Cantos"
+                        aria-label={t("Cantos")}
                         value={value.site.design.radius}
                         onChange={(e) =>
                           editDoc((s) => {
@@ -734,13 +768,13 @@ export function SiteStudio({
                           })
                         }
                       >
-                        <option value="sharp">Rectos</option>
-                        <option value="soft">Suaves</option>
-                        <option value="round">Redondos</option>
+                        <option value="sharp">{t("Rectos")}</option>
+                        <option value="soft">{t("Suaves")}</option>
+                        <option value="round">{t("Redondos")}</option>
                       </select>
                     </label>
                     <label>
-                      Cor de detalhe
+                      {t("Cor de detalhe")}
                       <input
                         type="color"
                         value={value.site.design.accent}
@@ -756,15 +790,16 @@ export function SiteStudio({
                 {panel === "templates" && (
                   <div className="studio-templates">
                     <p>
-                      Aplicar um modelo substitui a composição. Podes desfazer
-                      antes de guardar.
+                      {t(
+                        "Aplicar um modelo substitui a composição. Podes desfazer antes de guardar.",
+                      )}
                     </p>
                     {(["journal", "portfolio", "community"] as const).map(
-                      (t) => (
+                      (choice) => (
                         <button
-                          key={t}
+                          key={choice}
                           onClick={() => {
-                            const next = templateSite(t, owner);
+                            const next = templateSite(choice, owner);
                             change(next);
                             setPage(next.site.home);
                             setSelected("");
@@ -774,13 +809,13 @@ export function SiteStudio({
                           <strong>
                             {
                               {
-                                journal: "Caderno editorial",
-                                portfolio: "Portefólio visual",
-                                community: "Casa da comunidade",
-                              }[t]
+                                journal: t("Caderno editorial"),
+                                portfolio: t("Portefólio visual"),
+                                community: t("Casa da comunidade"),
+                              }[choice]
                             }
                           </strong>
-                          <span>Duas páginas · composição editável</span>
+                          <span>{t("Duas páginas · composição editável")}</span>
                         </button>
                       ),
                     )}
@@ -789,14 +824,15 @@ export function SiteStudio({
                 {panel === "code" && (
                   <div className="studio-fields">
                     <p className="small-note">
-                      Edita a estrutura completa em JSON. Apenas blocos, estilos
-                      e dados suportados: sem scripts, HTML executável ou CSS
-                      arbitrário.
+                      {t(
+                        "Edita a estrutura completa em JSON. Apenas blocos, estilos e dados suportados: sem scripts, HTML executável ou CSS arbitrário.",
+                      )}
                     </p>
                     <label>
-                      Projecto declarativo
+                      {t("Projecto declarativo")}
                       <textarea
                         className="studio-code"
+                        aria-label={t("Projecto declarativo")}
                         value={code}
                         maxLength={3_500_000}
                         spellCheck={false}
@@ -839,7 +875,7 @@ export function SiteStudio({
                       }}
                     >
                       <Code2 size={16} />
-                      Validar e aplicar
+                      {t("Validar e aplicar")}
                     </button>
                     <button
                       className="secondary"
@@ -852,23 +888,24 @@ export function SiteStudio({
                       }}
                     >
                       <Download size={16} />
-                      Exportar projecto
+                      {t("Exportar projecto")}
                     </button>
                   </div>
                 )}
               </div>
               <div className="studio-assets">
-                <h3>Imagens do site</h3>
+                <h3>{t("Imagens do site")}</h3>
                 <p>
-                  Até quatro imagens e 2 MB no total. Podes reutilizá-las em
-                  várias páginas.
+                  {t(
+                    "Até quatro imagens e 2 MB no total. Podes reutilizá-las em várias páginas.",
+                  )}
                 </p>
                 <button
                   className="secondary"
                   onClick={() => upload.current?.click()}
                   disabled={disabled}
                 >
-                  <ImagePlus size={17} /> Adicionar imagens
+                  <ImagePlus size={17} /> {t("Adicionar imagens")}
                 </button>
                 <input
                   hidden
@@ -876,7 +913,7 @@ export function SiteStudio({
                   type="file"
                   accept="image/png,image/jpeg,image/webp,image/gif"
                   multiple
-                  aria-label="Adicionar imagens ao site"
+                  aria-label={t("Adicionar imagens ao site")}
                   onChange={(e) => void files(e.target.files)}
                   disabled={disabled}
                 />
@@ -885,7 +922,7 @@ export function SiteStudio({
                     <span>{a.name}</span>
                     <button
                       className="icon"
-                      aria-label={`Remover imagem ${i + 1}`}
+                      aria-label={t("Remover imagem {index}", { index: i + 1 })}
                       onClick={() => {
                         const next = structuredClone(value);
                         next.attachments.splice(i, 1);
@@ -926,7 +963,7 @@ export function SiteStudio({
             {!preview && (
               <div className="studio-page-meta">
                 <label>
-                  Nome da página
+                  {t("Nome da página")}
                   <input
                     value={page.title}
                     maxLength={80}
@@ -939,7 +976,7 @@ export function SiteStudio({
                   />
                 </label>
                 <label>
-                  Endereço da página
+                  {t("Endereço da página")}
                   <input
                     value={page.slug}
                     maxLength={40}
@@ -960,11 +997,11 @@ export function SiteStudio({
                     })
                   }
                 >
-                  Usar como início
+                  {t("Usar como início")}
                 </button>
                 <button
                   className="icon"
-                  aria-label="Eliminar página seleccionada"
+                  aria-label={t("Eliminar página seleccionada")}
                   disabled={page.id === value.site.home}
                   onClick={deletePage}
                 >
@@ -988,7 +1025,7 @@ export function SiteStudio({
                   onClick={() => insert("hero")}
                 >
                   <Plus size={24} />
-                  Começa esta página com uma capa
+                  {t("Começa esta página com uma capa")}
                 </button>
               )}
             </SiteSurface>
@@ -996,13 +1033,13 @@ export function SiteStudio({
           {!preview && chosen && (
             <aside
               className="studio-inspector"
-              aria-label="Propriedades do bloco"
+              aria-label={t("Propriedades do bloco")}
             >
               <div className="section-heading">
-                <h3>{labels[chosen.node.type]}</h3>
+                <h3>{t(labels[chosen.node.type])}</h3>
                 <button
                   className="icon"
-                  aria-label="Fechar propriedades do bloco"
+                  aria-label={t("Fechar propriedades do bloco")}
                   onClick={() => setSelected("")}
                 >
                   <X size={16} />
@@ -1010,15 +1047,15 @@ export function SiteStudio({
               </div>
               <div className="studio-fields">
                 <label>
-                  Mover para composição
+                  {t("Mover para composição")}
                   <select
-                    aria-label="Mover para composição"
+                    aria-label={t("Mover para composição")}
                     value={chosen.parent ?? ""}
                     onChange={(e) =>
                       reparent(selected, e.target.value || undefined)
                     }
                   >
-                    <option value="">Raiz da página</option>
+                    <option value="">{t("Raiz da página")}</option>
                     {tree
                       .filter(
                         (x) =>
@@ -1030,7 +1067,7 @@ export function SiteStudio({
                       .map((x) => (
                         <option key={x.node.id} value={x.node.id}>
                           {x.node.title ||
-                            "Composição " +
+                            t("Composição ") +
                               (tree.findIndex((n) => n.node.id === x.node.id) +
                                 1)}
                         </option>
@@ -1038,9 +1075,9 @@ export function SiteStudio({
                   </select>
                 </label>
                 <label>
-                  Alinhamento
+                  {t("Alinhamento")}
                   <select
-                    aria-label="Alinhamento"
+                    aria-label={t("Alinhamento")}
                     value={chosen.node.style?.align ?? "left"}
                     onChange={(e) =>
                       updateNode(selected, {
@@ -1051,15 +1088,15 @@ export function SiteStudio({
                       })
                     }
                   >
-                    <option value="left">À esquerda</option>
-                    <option value="center">Ao centro</option>
-                    <option value="right">À direita</option>
+                    <option value="left">{t("À esquerda")}</option>
+                    <option value="center">{t("Ao centro")}</option>
+                    <option value="right">{t("À direita")}</option>
                   </select>
                 </label>
                 <label>
-                  Fundo do bloco
+                  {t("Fundo do bloco")}
                   <select
-                    aria-label="Fundo do bloco"
+                    aria-label={t("Fundo do bloco")}
                     value={chosen.node.style?.tone ?? "surface"}
                     onChange={(e) =>
                       updateNode(selected, {
@@ -1070,15 +1107,15 @@ export function SiteStudio({
                       })
                     }
                   >
-                    <option value="surface">Natural</option>
-                    <option value="soft">Suave</option>
-                    <option value="accent">Com detalhe</option>
+                    <option value="surface">{t("Natural")}</option>
+                    <option value="soft">{t("Suave")}</option>
+                    <option value="accent">{t("Com detalhe")}</option>
                   </select>
                 </label>
                 <label>
-                  Espaçamento
+                  {t("Espaçamento")}
                   <select
-                    aria-label="Espaçamento"
+                    aria-label={t("Espaçamento")}
                     value={chosen.node.style?.space ?? "normal"}
                     onChange={(e) =>
                       updateNode(selected, {
@@ -1089,29 +1126,29 @@ export function SiteStudio({
                       })
                     }
                   >
-                    <option value="compact">Compacto</option>
-                    <option value="normal">Equilibrado</option>
-                    <option value="large">Amplo</option>
+                    <option value="compact">{t("Compacto")}</option>
+                    <option value="normal">{t("Equilibrado")}</option>
+                    <option value="large">{t("Amplo")}</option>
                   </select>
                 </label>
                 <label>
-                  Formato do texto
+                  {t("Formato do texto")}
                   <select
-                    aria-label="Formato do texto"
+                    aria-label={t("Formato do texto")}
                     value={chosen.node.format ?? "plain"}
                     onChange={(e) =>
                       updateNode(selected, { format: e.target.value as any })
                     }
                   >
-                    <option value="plain">Texto simples</option>
-                    <option value="markdown">Markdown seguro</option>
+                    <option value="plain">{t("Texto simples")}</option>
+                    <option value="markdown">{t("Markdown seguro")}</option>
                   </select>
                 </label>
                 {["columns", "gallery"].includes(chosen.node.type) && (
                   <label>
-                    Número de colunas
+                    {t("Número de colunas")}
                     <select
-                      aria-label="Número de colunas"
+                      aria-label={t("Número de colunas")}
                       value={chosen.node.style?.columns ?? 2}
                       onChange={(e) =>
                         updateNode(selected, {
@@ -1134,9 +1171,9 @@ export function SiteStudio({
                   chosen.node.type,
                 ) && (
                   <label>
-                    Ligar a uma página
+                    {t("Ligar a uma página")}
                     <select
-                      aria-label="Ligar a uma página"
+                      aria-label={t("Ligar a uma página")}
                       value={
                         chosen.node.url?.startsWith("page:")
                           ? chosen.node.url
@@ -1146,7 +1183,7 @@ export function SiteStudio({
                         updateNode(selected, { url: e.target.value })
                       }
                     >
-                      <option value="">Sem ligação interna</option>
+                      <option value="">{t("Sem ligação interna")}</option>
                       {value.site.pages.map((p) => (
                         <option key={p.id} value={"page:" + p.id}>
                           {p.title}
@@ -1157,7 +1194,7 @@ export function SiteStudio({
                 )}
                 {chosen.node.type === "posts" && (
                   <label>
-                    Publicações visíveis
+                    {t("Publicações visíveis")}
                     <input
                       type="number"
                       min={1}
@@ -1172,8 +1209,9 @@ export function SiteStudio({
                 {["image", "gallery"].includes(chosen.node.type) && (
                   <>
                     <p className="small-note">
-                      Selecciona imagens incluídas neste site. Os bytes seguem
-                      com a publicação assinada.
+                      {t(
+                        "Selecciona imagens incluídas neste site. Os bytes seguem com a publicação assinada.",
+                      )}
                     </p>
                     {value.attachments.map((a, i) => (
                       <label className="studio-asset-choice" key={i}>
@@ -1204,7 +1242,7 @@ export function SiteStudio({
                     ))}
                     {chosen.node.media?.map((m, i) => (
                       <label key={i}>
-                        Descrição da imagem {i + 1}
+                        {t("Descrição da imagem")} {i + 1}
                         <input
                           value={m.alt}
                           maxLength={300}
@@ -1225,11 +1263,13 @@ export function SiteStudio({
                   onClick={() => duplicate(selected)}
                 >
                   <Copy size={16} />
-                  Duplicar bloco
+                  {t("Duplicar bloco")}
                 </button>
                 <p className="small-note">
-                  {chosen.depth} de {SITE_LIMITS.depth} níveis de composição. A
-                  posição pode ser alterada com as setas junto ao bloco.
+                  {chosen.depth} {t("de")} {SITE_LIMITS.depth}{" "}
+                  {t(
+                    "níveis de composição. A posição pode ser alterada com as setas junto ao bloco.",
+                  )}
                 </p>
               </div>
             </aside>
@@ -1272,10 +1312,12 @@ export function SiteStudio({
             <div className="block-controls">
               <span>
                 <GripVertical size={15} />
-                {labels[node.type]}
+                {t(labels[node.type])}
               </span>
               <button
-                aria-label={`Mover bloco ${index} para cima`}
+                aria-label={t("Mover bloco {index} para cima", {
+                  index: index,
+                })}
                 disabled={at === 0}
                 onClick={(e) => {
                   e.stopPropagation();
@@ -1285,7 +1327,9 @@ export function SiteStudio({
                 <ArrowUp size={15} />
               </button>
               <button
-                aria-label={`Mover bloco ${index} para baixo`}
+                aria-label={t("Mover bloco {index} para baixo", {
+                  index: index,
+                })}
                 disabled={at === nodes.length - 1}
                 onClick={(e) => {
                   e.stopPropagation();
@@ -1295,7 +1339,7 @@ export function SiteStudio({
                 <ArrowDown size={15} />
               </button>
               <button
-                aria-label={`Duplicar bloco ${index}`}
+                aria-label={t("Duplicar bloco {index}", { index: index })}
                 onClick={(e) => {
                   e.stopPropagation();
                   duplicate(node.id);
@@ -1304,7 +1348,7 @@ export function SiteStudio({
                 <Copy size={15} />
               </button>
               <button
-                aria-label={`Eliminar bloco ${index}`}
+                aria-label={t("Eliminar bloco {index}", { index: index })}
                 onClick={(e) => {
                   e.stopPropagation();
                   removeNode(node.id);
@@ -1326,23 +1370,23 @@ export function SiteStudio({
               {!["divider", "spacer"].includes(node.type) && (
                 <>
                   <input
-                    aria-label={`Título do bloco ${index}`}
+                    aria-label={t("Título do bloco {index}", { index: index })}
                     value={node.title}
                     maxLength={120}
-                    placeholder="Título (opcional)"
+                    placeholder={t("Título (opcional)")}
                     onChange={(e) =>
                       updateNode(node.id, { title: e.target.value })
                     }
                   />
                   {node.type !== "columns" && (
                     <textarea
-                      aria-label={`Texto do bloco ${index}`}
+                      aria-label={t("Texto do bloco {index}", { index: index })}
                       value={node.body}
                       maxLength={4000}
                       placeholder={
                         node.format === "markdown"
-                          ? "Escreve em **Markdown**…"
-                          : "Escreve algo que seja teu…"
+                          ? t("Escreve em **Markdown**…")
+                          : t("Escreve algo que seja teu…")
                       }
                       onChange={(e) =>
                         updateNode(node.id, { body: e.target.value })
@@ -1353,9 +1397,11 @@ export function SiteStudio({
               )}
               {["links", "button"].includes(node.type) && (
                 <input
-                  aria-label={`Endereço do bloco ${index}`}
+                  aria-label={t("Endereço do bloco {index}", { index: index })}
                   value={node.url ?? ""}
-                  placeholder="https://… ou escolhe uma página nas propriedades"
+                  placeholder={t(
+                    "https://… ou escolhe uma página nas propriedades",
+                  )}
                   maxLength={2000}
                   onChange={(e) => updateNode(node.id, { url: e.target.value })}
                 />
@@ -1379,7 +1425,7 @@ export function SiteStudio({
                       }}
                     >
                       <Plus size={18} />
-                      Adicionar dentro da composição
+                      {t("Adicionar dentro da composição")}
                     </button>
                   )}
                 </div>

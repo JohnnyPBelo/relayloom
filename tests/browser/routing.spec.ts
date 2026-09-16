@@ -84,7 +84,7 @@ test("automatic A-B-C mesh: consent controls, own sends while paused, partition/
   browser,
 }) => {
   const contexts = await Promise.all(
-    [0, 1, 2, 3].map(() => browser.newContext()),
+    [0, 1, 2, 3].map(() => browser.newContext({ locale: "pt-PT" })),
   );
   const [a, b, c, d] = await Promise.all(contexts.map((ctx) => ctx.newPage()));
   try {
@@ -269,8 +269,8 @@ test("one network owner per profile and concurrent consent/preferences do not re
 test("fragment scheduling preempts bulk with SOS, gives bulk a fair turn, and cancels relayed bytes without closing own traffic", async ({
   browser,
 }) => {
-  const ca = await browser.newContext(),
-    cb = await browser.newContext(),
+  const ca = await browser.newContext({ locale: "pt-PT" }),
+    cb = await browser.newContext({ locale: "pt-PT" }),
     a = await ca.newPage(),
     b = await cb.newPage();
   try {
@@ -745,7 +745,7 @@ test("browser routing packets cross real native TCP routers; native packet bytes
 test("opaque packet corruption is rejected by the browser mesh before storage or forwarding, with valid controls on both sides", async ({
   browser,
 }) => {
-  const contexts = await Promise.all([0, 1, 2].map(() => browser.newContext()));
+  const contexts = await Promise.all([0, 1, 2].map(() => browser.newContext({ locale: "pt-PT" })));
   const [a, b, c] = await Promise.all(contexts.map((ctx) => ctx.newPage()));
   try {
     await a.goto(harness.url);
@@ -828,7 +828,7 @@ test("opaque packet corruption is rejected by the browser mesh before storage or
 test("managed relay revocation cancels an in-flight forwarded packet and keeps an authored SOS on that same open link", async ({
   browser,
 }) => {
-  const contexts = await Promise.all([0, 1, 2].map(() => browser.newContext()));
+  const contexts = await Promise.all([0, 1, 2].map(() => browser.newContext({ locale: "pt-PT" })));
   const [a, b, c] = await Promise.all(contexts.map((ctx) => ctx.newPage()));
   try {
     const cards = [];

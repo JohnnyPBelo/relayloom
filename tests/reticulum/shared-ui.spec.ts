@@ -8,6 +8,7 @@ import { launch, password, until, type Client } from "../helpers";
 
 async function enter(page: Page, client: Client, name: string) {
   await page.goto(client.url + "/#token=" + client.token);
+  await page.getByRole("button", { name: "Começar", exact: true }).click();
   await page.getByLabel("Como te chamas?").fill(name);
   await page.getByLabel("Frase-passe", { exact: true }).fill(password);
   await page
@@ -39,8 +40,8 @@ test("shared Liquid Glass UI sends without choosing a medium over TCP and real R
     writeFileSync(join(work, "pty.stderr"), b, { flag: "a" }),
   );
   const clients: Client[] = [];
-  const ca = await browser.newContext(),
-    cc = await browser.newContext();
+  const ca = await browser.newContext({ locale: "pt-PT" }),
+    cc = await browser.newContext({ locale: "pt-PT" });
   const pa = await ca.newPage(),
     pc = await cc.newPage(),
     errors: string[] = [];

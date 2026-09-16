@@ -1,3 +1,4 @@
+import { t, getLanguage } from "../i18n/core";
 import { api } from "../api";
 import React, {
   useCallback,
@@ -134,7 +135,7 @@ function Media({
   ) : (
     <div className="studio-media-placeholder">
       <ImageIcon aria-hidden="true" />
-      <span>{error || "Imagem guardada no site"}</span>
+      <span>{error ? t(error) : t("Imagem guardada no site")}</span>
     </div>
   );
 }
@@ -228,7 +229,7 @@ export function SiteNodeView({
         ) : (
           <div className="studio-media-placeholder">
             <ImageIcon aria-hidden="true" />
-            <span>Ainda sem imagens</span>
+            <span>{t("Ainda sem imagens")}</span>
           </div>
         ))}
       {node.type === "posts" &&
@@ -237,24 +238,27 @@ export function SiteNodeView({
             {posts.slice(0, node.limit ?? 6).map((post) => (
               <article key={post.id}>
                 <small>
-                  {new Date(post.created).toLocaleDateString("pt-PT")}
+                  {new Date(post.created).toLocaleDateString(getLanguage())}
                 </small>
                 <h3>{post.content.title || post.author.name}</h3>
                 <p>
                   {(post.editedText ?? post.content.text)?.slice(0, 600) ||
-                    "Publicação sem texto"}
+                    t("Publicação sem texto")}
                 </p>
               </article>
             ))}
           </div>
         ) : (
           <p className="studio-note">
-            As publicações deste autor disponíveis neste dispositivo aparecem
-            aqui.
+            {t(
+              "As publicações deste autor disponíveis neste dispositivo aparecem aqui.",
+            )}
           </p>
         ))}
       {node.url &&
-        link(node.type === "button" ? node.title || "Continuar" : "Explorar")}
+        link(
+          node.type === "button" ? node.title || t("Continuar") : t("Explorar"),
+        )}
     </>
   );
 }
@@ -280,7 +284,7 @@ export function SiteSurface({
     >
       <header className="studio-masthead">
         <strong>{site.title}</strong>
-        <nav aria-label="Páginas do site">
+        <nav aria-label={t("Páginas do site")}>
           {site.pages.map((page) => (
             <button
               key={page.id}
@@ -295,7 +299,7 @@ export function SiteSurface({
       {children}
       <footer className="studio-footer">
         <span>{site.description}</span>
-        <span>Feito com RelayLoom · guardado por pessoas</span>
+        <span>{t("Feito com RelayLoom · guardado por pessoas")}</span>
       </footer>
     </div>
   );
@@ -363,10 +367,10 @@ export function SiteReader({
   if (readError)
     return (
       <p role="alert" className="error">
-        {readError}
+        {t(readError)}
       </p>
     );
-  if (!verified) return <p role="status">A verificar e abrir o site…</p>;
+  if (!verified) return <p role="status">{t("A verificar e abrir o site…")}</p>;
   return (
     <SiteSurface
       site={site}

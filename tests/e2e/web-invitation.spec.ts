@@ -17,14 +17,15 @@ test("native invitation UI connects an autonomous browser, preserves identity au
 }) => {
   const host = await appHost(),
     native = await launch(),
-    aContext = await browser.newContext(),
-    bContext = await browser.newContext(),
+    aContext = await browser.newContext({ locale: "pt-PT" }),
+    bContext = await browser.newContext({ locale: "pt-PT" }),
     a = await aContext.newPage(),
     b = await bContext.newPage();
   try {
     await native.call("setup", { name: "App instalada", password });
     await a.goto(native.url + "/#token=" + native.token);
     await b.goto(host.url + "/browser/index.html");
+    await b.getByRole("button", { name: "Começar", exact: true }).click();
     await b.getByLabel("Como te chamas?").fill("Pessoa no navegador");
     await b.getByLabel("Frase-passe", { exact: true }).fill(password);
     await b

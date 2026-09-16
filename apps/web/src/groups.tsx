@@ -1,3 +1,4 @@
+import { t } from "./i18n/core";
 import React, { useEffect, useRef, useState } from "react";
 import {
   Pencil,
@@ -166,6 +167,9 @@ export function GroupManager({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  const [awaitingAdmission, setAwaitingAdmission] = useState<string | null>(
+    null,
+  );
   const [pending, setPending] = useState<Pending>();
   const [chosen, setChosen] = useState<string[]>([]);
   const [confirm, setConfirm] = useState<"leave" | "close" | string>("");
@@ -194,9 +198,11 @@ export function GroupManager({
   const own = group?.creator.id === identity.id;
   const active = group?.status === "active" && !!snapshot;
   useEffect(() => {
-    if (active && !own && message.includes("aguardar aprovação"))
+    if (active && !own && awaitingAdmission === selected) {
       setMessage("Entrada aprovada. Já podes conversar com os membros.");
-  }, [active, own]);
+      setAwaitingAdmission(null);
+    }
+  }, [active, own, awaitingAdmission, selected]);
   useEffect(() => {
     setChosen([]);
     setConfirm("");
@@ -315,22 +321,27 @@ export function GroupManager({
     >
       <header className="gm-header">
         <div>
-          <span className="eyebrow">AS PESSOAS, COM ESCOLHA</span>
-          <h2 id="groups-title">Grupos e convites</h2>
+          <span className="eyebrow">{t("AS PESSOAS, COM ESCOLHA")}</span>
+          <h2 id="groups-title">{t("Grupos e convites")}</h2>
         </div>
-        <button className="icon" aria-label="Fechar grupos" onClick={close}>
+        <button
+          className="icon"
+          aria-label={t("Fechar grupos")}
+          onClick={close}
+        >
           <X />
         </button>
       </header>
-      <div className="gm-tabs" role="group" aria-label="Área de grupos">
+      <div className="gm-tabs" role="group" aria-label={t("Área de grupos")}>
         <button
           aria-pressed={tab === "groups"}
           onClick={() => setTab("groups")}
         >
-          <Users size={17} /> Os meus grupos
+          <Users size={17} /> {t("Os meus grupos")}
         </button>
         <button aria-pressed={tab === "inbox"} onClick={() => setTab("inbox")}>
-          <Mail size={17} /> Convites <span>{workspace.inbox.length}</span>
+          <Mail size={17} /> {t("Convites")}{" "}
+          <span>{workspace.inbox.length}</span>
         </button>
       </div>
       {(error || workspace.error) && (
@@ -340,18 +351,19 @@ export function GroupManager({
       )}
       {message && (
         <p className="gm-status" role="status">
-          <Check size={16} /> {message}
+          <Check size={16} /> {t(message)}
         </p>
       )}
       {pending && (
         <section className="gm-recovery">
-          <strong>Vamos confirmar o resultado</strong>
+          <strong>{t("Vamos confirmar o resultado")}</strong>
           <p>
-            A resposta pode ter-se perdido. Verifica a alteração antes de a
-            repetir.
+            {t(
+              "A resposta pode ter-se perdido. Verifica a alteração antes de a repetir.",
+            )}
           </p>
           <button disabled={busy} onClick={() => void recover()}>
-            Verificar alteração
+            {t("Verificar alteração")}
           </button>
           <button
             disabled={busy}
@@ -361,7 +373,7 @@ export function GroupManager({
               workspace.refresh();
             }}
           >
-            Voltar a rever o grupo
+            {t("Voltar a rever o grupo")}
           </button>
         </section>
       )}
@@ -370,10 +382,11 @@ export function GroupManager({
           {!workspace.inbox.length && (
             <div className="gm-empty">
               <Mail size={32} />
-              <h3>Quando alguém te convidar, aparece aqui.</h3>
+              <h3>{t("Quando alguém te convidar, aparece aqui.")}</h3>
               <p>
-                Receber um convite não te adiciona ao grupo. A entrada depende
-                da tua escolha.
+                {t(
+                  "Receber um convite não te adiciona ao grupo. A entrada depende da tua escolha.",
+                )}
               </p>
             </div>
           )}
@@ -396,30 +409,35 @@ export function GroupManager({
                 <div className="gm-invitation-body">
                   <span className="eyebrow">
                     {invited
-                      ? "CONVITE PRIVADO"
+                      ? t("CONVITE PRIVADO")
                       : n.kind === "consent"
-                        ? "PEDIDO DE ENTRADA"
-                        : "PEDIDO DE SAÍDA"}
+                        ? t("PEDIDO DE ENTRADA")
+                        : t("PEDIDO DE SAÍDA")}
                   </span>
                   <h3>
                     {invited
-                      ? `Convite de ${n.anchor.body.creator.name}`
+                      ? t("Convite de {name}", {
+                          name: n.anchor.body.creator.name,
+                        })
                       : n.member.name}
                   </h3>
                   <p>
-                    {view?.title || `Grupo de ${n.anchor.body.creator.name}`}
+                    {view?.title ||
+                      t("Grupo de {name}", {
+                        name: n.anchor.body.creator.name,
+                      })}
                   </p>
                   <small>
-                    <ShieldCheck size={13} /> Identidade assinada ·{" "}
+                    <ShieldCheck size={13} /> {t("Identidade assinada ·")}{" "}
                     {n.anchor.body.creator.id.slice(0, 12)}
                   </small>
                   {invited && (
                     <p className="muted">
                       {n.parent.body.members.length}{" "}
                       {n.parent.body.members.length === 1
-                        ? "membro nesta versão"
-                        : "membros nesta versão"}
-                      . A entrada não dá acesso às mensagens anteriores.
+                        ? t("membro nesta versão")
+                        : t("membros nesta versão")}
+                      {t(". A entrada não dá acesso às mensagens anteriores.")}
                     </p>
                   )}
                   <div className="gm-actions">
@@ -439,6 +457,7 @@ export function GroupManager({
                                 },
                                 () => {
                                   select(n.anchor.id);
+                                  setAwaitingAdmission(n.anchor.id);
                                   setMessage(
                                     "Convite aceite. A aguardar aprovação do criador.",
                                   );
@@ -456,12 +475,14 @@ export function GroupManager({
                               );
                           }}
                         >
-                          {ready ? "Aceitar convite" : "Verificar convite"}
+                          {ready
+                            ? t("Aceitar convite")
+                            : t("Verificar convite")}
                         </button>
                       )}
                     {view?.pendingConsent && invited && (
                       <span className="gm-status">
-                        <Clock3 size={15} /> A aguardar aprovação
+                        <Clock3 size={15} /> {t("A aguardar aprovação")}
                       </span>
                     )}
                     <button
@@ -471,7 +492,7 @@ export function GroupManager({
                         setTab("groups");
                       }}
                     >
-                      Ver grupo
+                      {t("Ver grupo")}
                     </button>
                     <button
                       disabled={busy}
@@ -480,8 +501,8 @@ export function GroupManager({
                       {invited &&
                       !view?.pendingConsent &&
                       view?.status !== "active"
-                        ? "Recusar convite"
-                        : "Arquivar aviso"}
+                        ? t("Recusar convite")
+                        : t("Arquivar aviso")}
                     </button>
                   </div>
                 </div>
@@ -500,7 +521,7 @@ export function GroupManager({
               }}
               disabled={busy || !!pending}
             >
-              <Plus size={17} /> Criar grupo
+              <Plus size={17} /> {t("Criar grupo")}
             </button>
             {workspace.groups.map((g) => (
               <button
@@ -512,19 +533,21 @@ export function GroupManager({
                 }}
               >
                 <span>
-                  <strong>{g.title || `Grupo de ${g.creator.name}`}</strong>
-                  <small>{groupStatus[g.status]}</small>
+                  <strong>
+                    {g.title || t("Grupo de {name}", { name: g.creator.name })}
+                  </strong>
+                  <small>{t(groupStatus[g.status])}</small>
                 </span>
                 <ChevronRight size={16} />
               </button>
             ))}
             {!workspace.groups.length && (
               <p className="muted">
-                O teu próximo ponto de encontro começa aqui.
+                {t("O teu próximo ponto de encontro começa aqui.")}
               </p>
             )}
             <button className="text-button gm-legacy" onClick={legacy}>
-              Lista de leitores fixos
+              {t("Lista de leitores fixos")}
             </button>
           </aside>
           <section className="gm-detail">
@@ -541,36 +564,40 @@ export function GroupManager({
                   });
                 }}
               >
-                <span className="eyebrow">UM NOVO PONTO DE ENCONTRO</span>
-                <h3>Quem queres ter por perto?</h3>
+                <span className="eyebrow">
+                  {t("UM NOVO PONTO DE ENCONTRO")}
+                </span>
+                <h3>{t("Quem queres ter por perto?")}</h3>
                 <p>
-                  Cria o grupo e envia convites privados. Cada pessoa escolhe
-                  entrar; depois aprovas os membros desta versão.
+                  {t(
+                    "Cria o grupo e envia convites privados. Cada pessoa escolhe entrar; depois aprovas os membros desta versão.",
+                  )}
                 </p>
                 <label>
-                  Nome do novo grupo
+                  {t("Nome do novo grupo")}
                   <input
                     required
                     maxLength={80}
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    placeholder="Pessoas por perto"
+                    placeholder={t("Pessoas por perto")}
                   />
                 </label>
                 <button
                   className="primary"
                   disabled={busy || !!pending || !title.trim()}
                 >
-                  <Plus size={17} /> Criar e convidar
+                  <Plus size={17} /> {t("Criar e convidar")}
                 </button>
               </form>
             ) : !group ? (
               <div className="gm-empty">
                 <Users size={36} />
-                <h3>Um espaço escolhido por todos.</h3>
+                <h3>{t("Um espaço escolhido por todos.")}</h3>
                 <p>
-                  Selecciona um grupo para rever os membros, ou abre os teus
-                  convites.
+                  {t(
+                    "Selecciona um grupo para rever os membros, ou abre os teus convites.",
+                  )}
                 </p>
               </div>
             ) : (
@@ -579,13 +606,15 @@ export function GroupManager({
                   <div>
                     <span className="eyebrow">
                       {own
-                        ? "CRIADO POR TI"
-                        : `CRIADO POR ${group.creator.name.toUpperCase()}`}
+                        ? t("CRIADO POR TI")
+                        : t("CRIADO POR {name}", {
+                            name: group.creator.name.toUpperCase(),
+                          })}
                     </span>
-                    <h3>{group.title || "Grupo privado"}</h3>
+                    <h3>{group.title || t("Grupo privado")}</h3>
                   </div>
                   <span className={`gm-state ${active ? "active" : ""}`}>
-                    {groupStatus[group.status]}
+                    {t(groupStatus[group.status])}
                   </span>
                 </div>
                 {canEdit && (
@@ -594,7 +623,7 @@ export function GroupManager({
                     disabled={busy}
                     onClick={() => setRename(snapshot!.title)}
                   >
-                    <Pencil size={14} /> Editar nome do grupo
+                    <Pencil size={14} /> {t("Editar nome do grupo")}
                   </button>
                 )}
                 {rename !== null && canEdit && (
@@ -605,7 +634,7 @@ export function GroupManager({
                     }}
                   >
                     <label>
-                      Novo nome do grupo
+                      {t("Novo nome do grupo")}
                       <input
                         required
                         maxLength={80}
@@ -618,14 +647,14 @@ export function GroupManager({
                         className="primary"
                         disabled={busy || !rename.trim()}
                       >
-                        Guardar nome
+                        {t("Guardar nome")}
                       </button>
                       <button
                         type="button"
                         disabled={busy}
                         onClick={() => setRename(null)}
                       >
-                        Cancelar
+                        {t("Cancelar")}
                       </button>
                     </div>
                   </form>
@@ -633,24 +662,34 @@ export function GroupManager({
                 <p className="gm-version">
                   <ShieldCheck size={15} />{" "}
                   {group.head
-                    ? `Versão ${group.head.body.number} verificada neste dispositivo`
-                    : "À espera das provas do grupo"}
+                    ? t("Versão {number} verificada neste dispositivo", {
+                        number: group.head.body.number,
+                      })
+                    : t("À espera das provas do grupo")}
                 </p>
                 {!active && (
                   <p className="gm-explainer">
                     {group.status === "joining"
-                      ? "A tua escolha está assinada. O criador ainda precisa de aprovar a entrada."
+                      ? t(
+                          "A tua escolha está assinada. O criador ainda precisa de aprovar a entrada.",
+                        )
                       : group.status === "closed"
-                        ? "Este grupo foi encerrado. O histórico já recebido continua sujeito à tua retenção local."
+                        ? t(
+                            "Este grupo foi encerrado. O histórico já recebido continua sujeito à tua retenção local.",
+                          )
                         : group.status === "left" || group.status === "removed"
-                          ? "Não são enviados novos conteúdos em teu nome neste grupo."
-                          : "A composição fica disponível quando os membros e a versão estiverem verificados."}
+                          ? t(
+                              "Não são enviados novos conteúdos em teu nome neste grupo.",
+                            )
+                          : t(
+                              "A composição fica disponível quando os membros e a versão estiverem verificados.",
+                            )}
                   </p>
                 )}
                 {snapshot && (
                   <>
                     <div className="gm-section-title">
-                      <h4>Membros desta versão</h4>
+                      <h4>{t("Membros desta versão")}</h4>
                       <span>{snapshot.members.length}</span>
                     </div>
                     <ul className="gm-members">
@@ -662,11 +701,11 @@ export function GroupManager({
                           <div>
                             <strong>
                               {member.name}
-                              {member.id === identity.id ? " · Tu" : ""}
+                              {member.id === identity.id ? t(" · Tu") : ""}
                             </strong>
                             <small>
                               {member.id === group.creator.id
-                                ? "Criador · assina as alterações"
+                                ? t("Criador · assina as alterações")
                                 : member.id.slice(0, 12)}
                             </small>
                           </div>
@@ -676,7 +715,7 @@ export function GroupManager({
                               disabled={busy}
                               onClick={() => setConfirm(member.id)}
                             >
-                              Remover
+                              {t("Remover")}
                             </button>
                           )}
                         </li>
@@ -711,13 +750,15 @@ export function GroupManager({
                       }}
                     >
                       <label>
-                        Convidar uma pessoa
+                        {t("Convidar uma pessoa")}
                         <select
                           name="contact"
                           required
                           disabled={busy || !!pending}
                         >
-                          <option value="">Escolher contacto verificado</option>
+                          <option value="">
+                            {t("Escolher contacto verificado")}
+                          </option>
                           {contacts
                             .filter(
                               (c) =>
@@ -732,20 +773,28 @@ export function GroupManager({
                         </select>
                       </label>
                       <button className="primary" disabled={busy || !!pending}>
-                        <UserPlus size={16} /> Enviar convite
+                        <UserPlus size={16} /> {t("Enviar convite")}
                       </button>
                     </form>
                     <p className="muted">
                       {outgoing.length
-                        ? `${outgoing.length} ${outgoing.length === 1 ? "convite" : "convites"} à espera de resposta nesta versão.`
-                        : "Os convites usam o cartão público que verificaste no contacto."}
+                        ? t(
+                            outgoing.length === 1
+                              ? t("{count} convite à espera de resposta nesta versão.")
+                              : t("{count} convites à espera de resposta nesta versão."),
+                            { count: outgoing.length },
+                          )
+                        : t(
+                            "Os convites usam o cartão público que verificaste no contacto.",
+                          )}
                     </p>
                     {!!approvals.length && (
                       <section className="gm-approvals">
-                        <h4>Pessoas que aceitaram</h4>
+                        <h4>{t("Pessoas que aceitaram")}</h4>
                         <p>
-                          Revê as entradas em conjunto. Uma alteração de membros
-                          requer convites da nova versão.
+                          {t(
+                            "Revê as entradas em conjunto. Uma alteração de membros requer convites da nova versão.",
+                          )}
                         </p>
                         {approvals.map((e) => (
                           <label
@@ -784,7 +833,7 @@ export function GroupManager({
                             );
                           }}
                         >
-                          Aprovar entradas
+                          {t("Aprovar entradas")}
                         </button>
                       </section>
                     )}
@@ -794,18 +843,19 @@ export function GroupManager({
                   <section
                     className="gm-confirm"
                     role="group"
-                    aria-label="Confirmar alteração"
+                    aria-label={t("Confirmar alteração")}
                   >
                     <strong>
                       {confirm === "close"
-                        ? "Encerrar este grupo?"
+                        ? t("Encerrar este grupo?")
                         : confirm === "leave"
-                          ? "Sair deste grupo?"
-                          : "Remover esta pessoa?"}
+                          ? t("Sair deste grupo?")
+                          : t("Remover esta pessoa?")}
                     </strong>
                     <p>
-                      As chaves e cópias já entregues não podem ser recolhidas.
-                      A alteração afecta novos envios.
+                      {t(
+                        "As chaves e cópias já entregues não podem ser recolhidas. A alteração afecta novos envios.",
+                      )}
                     </p>
                     <button
                       disabled={busy || !!pending}
@@ -840,15 +890,15 @@ export function GroupManager({
                           );
                       }}
                     >
-                      Confirmar{" "}
+                      {t("Confirmar")}{" "}
                       {confirm === "close"
-                        ? "encerramento"
+                        ? t("encerramento")
                         : confirm === "leave"
-                          ? "saída"
-                          : "remoção"}
+                          ? t("saída")
+                          : t("remoção")}
                     </button>
                     <button disabled={busy} onClick={() => setConfirm("")}>
-                      Cancelar
+                      {t("Cancelar")}
                     </button>
                   </section>
                 )}
@@ -862,7 +912,7 @@ export function GroupManager({
                         close();
                       }}
                     >
-                      <Check size={16} /> Usar membros actuais
+                      <Check size={16} /> {t("Usar membros actuais")}
                     </button>
                   )}
                   {own && group.status === "active" && (
@@ -870,7 +920,7 @@ export function GroupManager({
                       disabled={busy || !!pending}
                       onClick={() => setConfirm("close")}
                     >
-                      Encerrar grupo
+                      {t("Encerrar grupo")}
                     </button>
                   )}
                   {!own && !group.locallyLeft && group.status !== "closed" && (
@@ -878,7 +928,7 @@ export function GroupManager({
                       disabled={busy || !!pending}
                       onClick={() => setConfirm("leave")}
                     >
-                      Sair do grupo
+                      {t("Sair do grupo")}
                     </button>
                   )}
                 </div>
@@ -888,8 +938,10 @@ export function GroupManager({
         </div>
       )}
       <footer className="gm-footer">
-        <LockKeyhole size={14} /> Convites privados. Entrada escolhida.
-        Alterações assinadas pelo criador.
+        <LockKeyhole size={14} />{" "}
+        {t(
+          "Convites privados. Entrada escolhida. Alterações assinadas pelo criador.",
+        )}
       </footer>
     </dialog>
   );

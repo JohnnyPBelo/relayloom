@@ -41,6 +41,7 @@ async function enter(p: Page, name: string) {
     requests.push({ url: request.url(), method: request.method() }),
   );
   await p.goto(url + "/browser/index.html");
+  await p.getByRole("button", { name: "Começar", exact: true }).click();
   await p.getByLabel("Como te chamas?").fill(name);
   await p.getByLabel("Frase-passe", { exact: true }).fill(password);
   await p
@@ -97,10 +98,10 @@ async function audit(p: Page, path: string) {
 test("both pending outboxes deliver after completing signalling; modes stay separate and diagnostics contain no secrets", async ({
   browser,
 }, info) => {
-  const ca = await browser.newContext({
+  const ca = await browser.newContext({ locale: "pt-PT",
     viewport: { width: 390, height: 844 },
   });
-  const cb = await browser.newContext();
+  const cb = await browser.newContext({ locale: "pt-PT" });
   const a = await ca.newPage(),
     b = await cb.newPage();
   const out = `.cache/connectivity/${info.project.name || "chromium"}`;
@@ -241,7 +242,7 @@ test("both pending outboxes deliver after completing signalling; modes stay sepa
 test("closing while a code is being generated releases the late pending peer", async ({
   browser,
 }) => {
-  const context = await browser.newContext();
+  const context = await browser.newContext({ locale: "pt-PT" });
   await context.addInitScript(() => {
     const create = RTCPeerConnection.prototype.createOffer;
     RTCPeerConnection.prototype.createOffer = async function (this: RTCPeerConnection, ...args: any[]) {

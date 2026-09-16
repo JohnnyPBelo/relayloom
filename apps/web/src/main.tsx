@@ -1,10 +1,22 @@
+import {
+  configureNativePreferences,
+  ensureNativePreferences,
+  readDevicePreference,
+  recordPreference,
+  registerPreferenceConsumer,
+} from "./device-preferences";
+import { WelcomeScreen } from "./welcome";
+import { t, getLanguage } from "./i18n/core";
+import { LanguageSelector, useLanguage } from "./i18n/selector";
+import { WelcomeGuide } from "./onboarding";
+import "./onboarding.css";
 import { initialSite, type StudioValue } from "./site/model";
 import {
   legacySite,
   siteFallback,
   type SiteDraft,
 } from "../../../packages/content/src/site";
-import { api } from "./api";
+import { api, usesLocalAPI } from "./api";
 import { BrowserPeerPanel } from "./browser/peers";
 import { WebInvitation, type WebPeerState } from "./web-invitation";
 import React, { lazy, Suspense, useEffect, useRef, useState } from "react";
@@ -76,6 +88,12 @@ import { GroupManager, groupStatus, useGroupWorkspace } from "./groups";
 import { RelayParticipation } from "./relay-participation";
 import { directConversationId } from "./conversation-id";
 
+if (!usesLocalAPI())
+  configureNativePreferences(
+    () => api("ui-preferences"),
+    (patch) => api("ui-preferences", patch),
+  );
+
 const SiteStudio = lazy(() =>
   import("./site/studio").then((m) => ({ default: m.SiteStudio })),
 );
@@ -131,7 +149,7 @@ const bytes = (n: number) =>
       ? `${(n / 1024).toFixed(1)} KB`
       : `${(n / 1024 ** 2).toFixed(1)} MB`;
 const date = (t: number) =>
-  new Intl.DateTimeFormat("pt-PT", {
+  new Intl.DateTimeFormat(getLanguage(), {
     hour: "2-digit",
     minute: "2-digit",
   }).format(t);
@@ -199,7 +217,7 @@ function Modal({
       const target = before?.isConnected
         ? before
         : (document.querySelector<HTMLElement>(
-            'button[aria-label="Estado dos envios"]',
+            'button[data-action="outbox"]',
           ) ?? document.querySelector<HTMLElement>("#main"));
       target?.focus();
     };
@@ -215,7 +233,7 @@ function Modal({
     >
       <div className="modal-head">
         <h2>{title}</h2>
-        <button className="icon" onClick={close} aria-label="Fechar">
+        <button className="icon" onClick={close} aria-label={t("Fechar")}>
           <X />
         </button>
       </div>
@@ -224,14 +242,15 @@ function Modal({
   );
 }
 function App() {
+  useLanguage();
   const [state, setState] = useState<State>(),
     [page, setPage] = useState<Page>("messages"),
     [error, setError] = useState(""),
     [notice, setNotice] = useState(""),
     [busy, setBusy] = useState(false),
     [offline, setOffline] = useState(false),
-    [dark, setDark] = useState(
-      localStorage.getItem("relayloom-theme") === "dark",
+    [dark, setDarkInternal] = useState(
+      readDevicePreference("theme") === "dark",
     ),
     [modal, setModal] = useState(""),
     [selection, setSelection] = useState(""),
@@ -304,12 +323,38 @@ function App() {
     messageScroll = useRef<HTMLDivElement>(null),
     nearBottom = useRef(true);
   const [newMessages, setNewMessages] = useState(false);
-  const [largeText, setLargeText] = useState(
-      localStorage.getItem("relayloom-large-text") === "true",
+  const [largeText, setLargeTextInternal] = useState(
+      readDevicePreference("largeText") ?? false,
     ),
-    [highContrast, setHighContrast] = useState(
-      localStorage.getItem("relayloom-high-contrast") === "true",
+    [highContrast, setHighContrastInternal] = useState(
+      readDevicePreference("highContrast") ?? false,
     );
+  const setDark = (value: boolean) => {
+    recordPreference("theme", value ? "dark" : "light");
+    setDarkInternal(value);
+  };
+  const setLargeText = (value: boolean) => {
+    recordPreference("largeText", value);
+    setLargeTextInternal(value);
+  };
+  const setHighContrast = (value: boolean) => {
+    recordPreference("highContrast", value);
+    setHighContrastInternal(value);
+  };
+  useEffect(() => {
+    const remove = [
+      registerPreferenceConsumer("theme", (value) =>
+        setDarkInternal(value === "dark"),
+      ),
+      registerPreferenceConsumer("largeText", (value) =>
+        setLargeTextInternal(value ?? false),
+      ),
+      registerPreferenceConsumer("highContrast", (value) =>
+        setHighContrastInternal(value ?? false),
+      ),
+    ];
+    return () => remove.forEach((fn) => fn());
+  }, []);
   const { glass, setGlass } = useAppearance(
     state?.settings.lowPower ?? false,
     highContrast,
@@ -358,8 +403,6 @@ function App() {
     document.documentElement.dataset.contrast = highContrast
       ? "high"
       : "normal";
-    localStorage.setItem("relayloom-large-text", String(largeText));
-    localStorage.setItem("relayloom-high-contrast", String(highContrast));
   }, [largeText, highContrast]);
   const [feedMode, setFeedMode] = useState("all"),
     [selectedCollection, setSelectedCollection] = useState("");
@@ -390,6 +433,7 @@ function App() {
       generation = privacyGeneration.current;
     try {
       const snapshot: State = await api("state");
+      await ensureNativePreferences();
       if (
         sequence !== requestSequence.current ||
         generation !== privacyGeneration.current
@@ -514,7 +558,6 @@ function App() {
   }, []);
   useEffect(() => {
     document.documentElement.dataset.theme = dark ? "dark" : "light";
-    localStorage.setItem("relayloom-theme", dark ? "dark" : "light");
   }, [dark]);
   useEffect(() => {
     if (notice) {
@@ -562,12 +605,12 @@ function App() {
     const count = legacyReadCount(object),
       total = object.readers.filter((id) => id !== object.author.id).length;
     return !total
-      ? "Guardada localmente"
+      ? t("Guardada localmente")
       : count === total
-        ? "Lida"
+        ? t("Lida")
         : count
-          ? `Lida por ${count} de ${total}`
-          : "Em espera";
+          ? t("Lida por {count} de {total}", { count, total })
+          : t("Em espera");
   };
   const deleted = (id: string) =>
     objects.find((o) => o.id === id)?.deleted ||
@@ -601,7 +644,9 @@ function App() {
         members,
         name:
           authority?.title ??
-          (authority ? `Grupo de ${authority.creator.name}` : undefined) ??
+          (authority
+            ? t("Grupo de {name}", { name: authority.creator.name })
+            : undefined) ??
           group?.content.title ??
           members
             .filter((m) => m.id !== me?.id)
@@ -973,67 +1018,67 @@ function App() {
     });
   }
   const nav = [
-    { id: "messages", label: "Conversas", icon: MessageCircle },
-    { id: "feed", label: "A praça", icon: Globe2 },
-    { id: "site", label: "A minha página", icon: Layers3 },
-    { id: "saved", label: "Guardados", icon: Bookmark },
-    { id: "network", label: "A rede", icon: Radio },
+    { id: "messages", label: t("Conversas"), icon: MessageCircle },
+    { id: "feed", label: t("A praça"), icon: Globe2 },
+    { id: "site", label: t("A minha página"), icon: Layers3 },
+    { id: "saved", label: t("Guardados"), icon: Bookmark },
+    { id: "network", label: t("A rede"), icon: Radio },
   ] as const;
   const commands: Command[] = commandsOpen
     ? [
         ...nav.map((item) => ({
           id: `page-${item.id}`,
           label: item.label,
-          detail: "Ir para esta área",
+          detail: t("Ir para esta área"),
           icon: item.icon,
           run: () => changePage(item.id),
         })),
         {
           id: "settings",
-          label: "Definições",
-          detail: "Aparência, privacidade e recursos",
+          label: t("Definições"),
+          detail: t("Aparência, privacidade e recursos"),
           icon: Settings2,
           run: () => changePage("settings"),
         },
         {
           id: "new",
-          label: "Nova conversa",
-          detail: "Escolher uma pessoa",
+          label: t("Nova conversa"),
+          detail: t("Escolher uma pessoa"),
           icon: Plus,
           run: () => setModal("conversation"),
         },
         {
           id: "post",
-          label: "Partilhar algo",
-          detail: "Escrever uma publicação na praça",
+          label: t("Partilhar algo"),
+          detail: t("Escrever uma publicação na praça"),
           icon: Pencil,
           run: () => setModal("post"),
         },
         {
           id: "peer",
-          label: "Ligar um par",
-          detail: "Adicionar uma ligação à rede",
+          label: t("Ligar um par"),
+          detail: t("Adicionar uma ligação à rede"),
           icon: Radio,
           run: () => setModal("peer"),
         },
         {
           id: "outbox",
-          label: "Estado dos envios",
-          detail: "Entrega, tentativas e prazo de validade",
+          label: t("Estado dos envios"),
+          detail: t("Entrega, tentativas e prazo de validade"),
           icon: Send,
           run: () => setModal("outbox"),
         },
         {
           id: "theme",
-          label: dark ? "Usar tema claro" : "Usar tema escuro",
-          detail: "Aparência deste dispositivo",
+          label: dark ? t("Usar tema claro") : t("Usar tema escuro"),
+          detail: t("Aparência deste dispositivo"),
           icon: dark ? Sun : Moon,
           run: () => setDark(!dark),
         },
         {
           id: "lock",
-          label: "Bloquear identidade",
-          detail: "Fechar o acesso ao teu espaço privado",
+          label: t("Bloquear identidade"),
+          detail: t("Fechar o acesso ao teu espaço privado"),
           icon: LockKeyhole,
           run: () => {
             void lockIdentity();
@@ -1041,8 +1086,8 @@ function App() {
         },
         ...allConversations.map((c) => ({
           id: `conversation-${c.id}`,
-          label: c.name || "Conversa",
-          detail: "Abrir conversa",
+          label: c.name || t("Conversa"),
+          detail: t("Abrir conversa"),
           icon: MessageCircle,
           run: () => {
             changePage("messages");
@@ -1057,7 +1102,7 @@ function App() {
             id: m.id,
             label: renderedText(m)!,
             icon: MessageCircle,
-            detail: `${allConversations.find((c) => c.id === m.content.conversation)?.name || "Conversa"} · ${m.author.name}`,
+            detail: `${allConversations.find((c) => c.id === m.content.conversation)?.name || t("Conversa")} · ${m.author.name}`,
             run: () => {
               changePage("messages");
               chooseConversation(m.content.conversation!);
@@ -1069,159 +1114,31 @@ function App() {
     : [];
   if (!state || state.locked)
     return (
-      <div className="welcome">
-        <header>
-          <Logo />
-          <button
-            className="icon"
-            onClick={() => setDark(!dark)}
-            aria-label="Alternar tema"
-          >
-            {dark ? <Sun /> : <Moon />}
-          </button>
-        </header>
-        <main className="welcome-grid">
-          <section>
-            <div className="eyebrow">
-              <span className="live-dot" /> LIGAÇÕES QUE FICAM
-            </div>
-            <h1>
-              Sempre
-              <br />
-              entre <em>nós.</em>
-            </h1>
-            <p className="welcome-copy">
-              As tuas conversas. A tua comunidade.
-              <br />
-              Uma rede feita pelas pessoas que a usam.
-            </p>
-            <div className="weave" aria-hidden="true">
-              <div />
-              <div />
-              <div />
-              <span />
-              <span />
-              <span />
-            </div>
-            <div className="welcome-note">
-              <ShieldCheck size={20} />
-              <p>
-                Identidade local. Conteúdo cifrado.
-                <br />
-                <strong>Sem um servidor central obrigatório.</strong>
-              </p>
-            </div>
-          </section>
-          <section className="onboarding">
-            <div className="eyebrow">O TEU PONTO DE PARTIDA</div>
-            <h2>
-              {state?.initialized
-                ? "Bom ter-te de volta."
-                : "Um novo fio na rede."}
-            </h2>
-            <p>
-              {state?.initialized
-                ? "Desbloqueia a tua identidade neste dispositivo."
-                : "Cria uma identidade. A tua chave fica num cofre cifrado neste dispositivo."}
-            </p>
-            {error && (
-              <div className="error" role="alert">
-                {error}
-              </div>
-            )}
-            {!state ? (
-              <button className="primary" onClick={refresh}>
-                <RefreshCw size={18} /> Voltar a ligar ao nó
-              </button>
-            ) : (
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  const data = new FormData(e.currentTarget);
-                  void run(() =>
-                    api(state.initialized ? "unlock" : "setup", {
-                      name: data.get("name"),
-                      password: data.get("password"),
-                      ...(data.get("recovery")
-                        ? { recovery: data.get("recovery") }
-                        : {}),
-                    }),
-                  );
-                }}
-              >
-                {!state.initialized && (
-                  <label>
-                    Como te chamas?
-                    <input
-                      name="name"
-                      placeholder="O teu nome"
-                      maxLength={64}
-                      required
-                      autoComplete="nickname"
-                    />
-                  </label>
-                )}
-                <label>
-                  Frase-passe
-                  <input
-                    name="password"
-                    type="password"
-                    placeholder="Pelo menos 12 caracteres"
-                    minLength={12}
-                    maxLength={1024}
-                    required
-                    autoComplete={
-                      state.initialized ? "current-password" : "new-password"
-                    }
-                  />
-                </label>
-                {!state.initialized && (
-                  <details>
-                    <summary>Já tenho uma cópia de recuperação</summary>
-                    <label>
-                      Cofre exportado
-                      <textarea
-                        name="recovery"
-                        placeholder="Cola aqui o conteúdo do teu cofre cifrado"
-                      />
-                    </label>
-                  </details>
-                )}
-                <button className="primary full" disabled={busy}>
-                  {busy
-                    ? "A proteger a identidade…"
-                    : state.initialized
-                      ? "Entrar na minha rede"
-                      : "Criar identidade"}
-                  <ArrowUpRight size={19} />
-                </button>
-                <div className="small-note">
-                  <LockKeyhole size={14} /> A frase-passe não sai deste nó
-                  local.
-                </div>
-              </form>
-            )}
-            <div className="experimental">
-              <AlertTriangle size={17} />
-              <p>
-                Rede experimental. Não é infraestrutura de emergência validada
-                nem substitui os serviços de emergência.
-              </p>
-            </div>
-          </section>
-        </main>
-        <footer>
-          RELAYLOOM <span>Conversar é criar caminhos.</span>
-          <span>Construído para aproximar.</span>
-        </footer>
-      </div>
+      <WelcomeScreen
+        logo={<Logo />}
+        ready={!!state}
+        initialized={!!state?.initialized}
+        busy={busy}
+        error={t(error)}
+        dark={dark}
+        setDark={setDark}
+        largeText={largeText}
+        setLargeText={setLargeText}
+        highContrast={highContrast}
+        setHighContrast={setHighContrast}
+        onReconnect={refresh}
+        onAuthenticate={(values) => {
+          void run(() => api(state?.initialized ? "unlock" : "setup", values));
+        }}
+      />
     );
+
   return (
     <div
       className={`shell ${page !== "messages" || !selection ? "has-mobile-dock" : ""}`}
     >
       <a className="skip" href="#main">
-        Saltar para o conteúdo
+        {t("Saltar para o conteúdo")}
       </a>
       <aside
         id="primary-sidebar"
@@ -1231,12 +1148,12 @@ function App() {
         <div className="workspace">
           <span className="workspace-icon">L</span>
           <div>
-            <strong>O meu espaço</strong>
-            <span>Rede pessoal · Experimental</span>
+            <strong>{t("O meu espaço")}</strong>
+            <span>{t("Rede pessoal · Experimental")}</span>
           </div>
         </div>
-        <div className="nav-label">O QUE NOS LIGA</div>
-        <nav aria-label="Navegação principal">
+        <div className="nav-label">{t("O QUE NOS LIGA")}</div>
+        <nav aria-label={t("Navegação principal")}>
           {nav.map((n) => (
             <button
               key={n.id}
@@ -1244,7 +1161,12 @@ function App() {
               aria-label={n.label}
               aria-description={
                 n.id === "messages" && conversations.length > 0
-                  ? `${conversations.length} conversas`
+                  ? t(
+                      conversations.length === 1
+                        ? t("{count} conversa")
+                        : t("{count} conversas"),
+                      { count: conversations.length },
+                    )
                   : undefined
               }
               aria-current={page === n.id ? "page" : undefined}
@@ -1266,16 +1188,20 @@ function App() {
           </div>
           <strong>
             {state.settings.relay
-              ? "Também és um caminho."
-              : "A retransmissão está em pausa."}
+              ? t("Também és um caminho.")
+              : t("A retransmissão está em pausa.")}
           </strong>
           <p>
             {state.settings.relay
-              ? "Este dispositivo ajuda conteúdos a chegar mais longe quando existe uma ligação."
-              : "Activa a tua participação em A rede e liga outros dispositivos."}
+              ? t(
+                  "Este dispositivo ajuda conteúdos a chegar mais longe quando existe uma ligação.",
+                )
+              : t(
+                  "Activa a tua participação em A rede e liga outros dispositivos.",
+                )}
           </p>
           <button onClick={() => changePage("network")}>
-            Conhecer a minha rede <ArrowUpRight size={15} />
+            {t("Conhecer a minha rede")} <ArrowUpRight size={15} />
           </button>
         </div>
         <div className="sidebar-bottom">
@@ -1283,17 +1209,17 @@ function App() {
             className="settings-nav"
             onClick={() => changePage("settings")}
           >
-            <Settings2 size={19} /> Definições
+            <Settings2 size={19} /> {t("Definições")}
           </button>
           <div className="account">
             <Avatar name={me!.name} small />
             <div>
               <strong>{me!.name}</strong>
-              <span>Identidade local</span>
+              <span>{t("Identidade local")}</span>
             </div>
             <button
               className="icon"
-              aria-label="Bloquear identidade"
+              aria-label={t("Bloquear identidade")}
               onClick={() => void lockIdentity()}
             >
               <LogOut size={17} />
@@ -1305,7 +1231,7 @@ function App() {
         <header className="topbar">
           <button
             className="icon mobile-only"
-            aria-label="Abrir navegação"
+            aria-label={t("Abrir navegação")}
             aria-controls="primary-sidebar"
             aria-expanded={mobileMenu}
             onClick={() => setMobileMenu(!mobileMenu)}
@@ -1313,25 +1239,26 @@ function App() {
             <Menu />
           </button>
           <div className="breadcrumbs">
-            O meu espaço <span>/</span>
+            {t("O meu espaço")} <span>/</span>
             <strong>
-              {nav.find((n) => n.id === page)?.label ?? "Definições"}
+              {nav.find((n) => n.id === page)?.label ?? t("Definições")}
             </strong>
           </div>
           <button
             className="command-trigger"
             onClick={() => setCommandsOpen(true)}
-            aria-label="Pesquisar e navegar"
+            aria-label={t("Pesquisar e navegar")}
             aria-keyshortcuts="Control+k Meta+k"
           >
             <Search size={17} />
-            <span>Pesquisar</span>
+            <span>{t("Pesquisar")}</span>
             <kbd>⌘ / Ctrl K</kbd>
           </button>
           {page === "messages" && selection && (
             <button
               className="icon compact-outbox"
-              aria-label="Estado dos envios"
+              data-action="outbox"
+              aria-label={t("Estado dos envios")}
               onClick={() => setModal("outbox")}
             >
               <Send size={18} />
@@ -1340,15 +1267,15 @@ function App() {
           <div className={"connection-badge " + (offline ? "warning" : "")}>
             <span className="live-dot" />
             {offline
-              ? "Nó desligado"
+              ? t("Nó desligado")
               : state.peers.some((p) => p.connected)
-                ? `${state.peers.filter((p) => p.connected).length} ${state.peers.filter((p) => p.connected).length === 1 ? "ligação activa" : "ligações activas"}`
-                : "À espera de pares"}
+                ? `${state.peers.filter((p) => p.connected).length} ${state.peers.filter((p) => p.connected).length === 1 ? t("ligação activa") : t("ligações activas")}`
+                : t("À espera de pares")}
           </div>
           <button
             className="icon"
             onClick={() => setDark(!dark)}
-            aria-label="Alternar tema"
+            aria-label={t("Alternar tema")}
           >
             {dark ? <Sun size={19} /> : <Moon size={19} />}
           </button>
@@ -1356,10 +1283,10 @@ function App() {
         <main id="main" tabIndex={-1}>
           {error && (
             <div className="error banner" role="alert">
-              {error}
+              {t(error)}
               <button
                 className="icon"
-                aria-label="Fechar erro"
+                aria-label={t("Fechar erro")}
                 onClick={() => setError("")}
               >
                 <X size={16} />
@@ -1368,37 +1295,38 @@ function App() {
           )}
           {offline && (
             <div className="offline-banner" role="status">
-              O nó local está indisponível. A vista fica em memória; volta a
-              arrancar o nó para continuar.
+              {t(
+                "O nó local está indisponível. A vista fica em memória; volta a arrancar o nó para continuar.",
+              )}
             </div>
           )}
           <div className="page-heading">
             <div>
               <div className="eyebrow">
                 {page === "messages"
-                  ? "CADA CONVERSA, UMA LIGAÇÃO"
+                  ? t("CADA CONVERSA, UMA LIGAÇÃO")
                   : page === "feed"
-                    ? "HISTÓRIAS QUE NOS APROXIMAM"
+                    ? t("HISTÓRIAS QUE NOS APROXIMAM")
                     : page === "site"
-                      ? "UM CANTO DA REDE, TODO TEU"
+                      ? t("UM CANTO DA REDE, TODO TEU")
                       : page === "network"
-                        ? "FEITA POR PESSOAS, ENTRE PESSOAS"
+                        ? t("FEITA POR PESSOAS, ENTRE PESSOAS")
                         : page === "saved"
-                          ? "O QUE QUERES TER POR PERTO"
-                          : "AO TEU RITMO"}
+                          ? t("O QUE QUERES TER POR PERTO")
+                          : t("AO TEU RITMO")}
               </div>
               <h1>
                 {page === "messages"
-                  ? "As tuas conversas"
+                  ? t("As tuas conversas")
                   : page === "feed"
-                    ? "Encontramo-nos na praça."
+                    ? t("Encontramo-nos na praça.")
                     : page === "site"
-                      ? "A tua presença, à tua maneira."
+                      ? t("A tua presença, à tua maneira.")
                       : page === "network"
-                        ? "Somos o caminho."
+                        ? t("Somos o caminho.")
                         : page === "saved"
-                          ? "Vale a pena guardar."
-                          : "Cuida do teu espaço."}
+                          ? t("Vale a pena guardar.")
+                          : t("Cuida do teu espaço.")}
                 <span className="title-dot">.</span>
               </h1>
             </div>
@@ -1408,8 +1336,8 @@ function App() {
                   className="secondary"
                   aria-label={
                     state.capabilities?.dynamicGroups === false
-                      ? "Grupos de leitores fixos"
-                      : "Grupos e convites"
+                      ? t("Grupos de leitores fixos")
+                      : t("Grupos e convites")
                   }
                   aria-describedby={
                     groupWorkspace.noticeCount > 0
@@ -1420,13 +1348,18 @@ function App() {
                 >
                   <Users size={16} />{" "}
                   {state.capabilities?.dynamicGroups === false
-                    ? "Leitores fixos"
-                    : "Grupos e convites"}
+                    ? t("Leitores fixos")
+                    : t("Grupos e convites")}
                   {groupWorkspace.noticeCount > 0 && (
                     <span
                       className="count"
                       id="group-notice-count"
-                      aria-label={`${groupWorkspace.noticeCount} avisos de grupo por verificar`}
+                      aria-label={t(
+                        groupWorkspace.noticeCount === 1
+                          ? t("{count} aviso de grupo por verificar")
+                          : t("{count} avisos de grupo por verificar"),
+                        { count: groupWorkspace.noticeCount },
+                      )}
                     >
                       {groupWorkspace.noticeCount}
                     </span>
@@ -1434,10 +1367,10 @@ function App() {
                 </button>
                 <button
                   className="secondary"
-                  aria-label="Estado dos envios"
+                  aria-label={t("Estado dos envios")}
                   onClick={() => setModal("outbox")}
                 >
-                  <Send size={16} /> Envios
+                  <Send size={16} /> {t("Envios")}
                   {(state.outbox ?? []).filter((o) =>
                     ["pending", "blocked"].includes(o.status),
                   ).length > 0 && (
@@ -1454,18 +1387,18 @@ function App() {
                   className="primary"
                   onClick={() => setModal("conversation")}
                 >
-                  <Plus size={18} /> Nova conversa
+                  <Plus size={18} /> {t("Nova conversa")}
                 </button>
               </div>
             )}
             {page === "feed" && (
               <button className="primary" onClick={() => setModal("post")}>
-                <Plus size={18} /> Partilhar algo
+                <Plus size={18} /> {t("Partilhar algo")}
               </button>
             )}
             {page === "network" && (
               <button className="primary" onClick={() => setModal("peer")}>
-                <Plus size={18} /> Ligar um par
+                <Plus size={18} /> {t("Ligar um par")}
               </button>
             )}
           </div>
@@ -1477,11 +1410,11 @@ function App() {
                   disabled={busy}
                   onClick={loadHistory}
                 >
-                  <ArrowUp size={16} /> Carregar histórico anterior
+                  <ArrowUp size={16} /> {t("Carregar histórico anterior")}
                 </button>
                 <span>
-                  {objects.length} de {state.history.total} objectos autorizados
-                  disponíveis
+                  {objects.length} {t("de")} {state.history.total}{" "}
+                  {t("objectos autorizados disponíveis")}
                 </span>
               </div>
             )}
@@ -1494,15 +1427,15 @@ function App() {
             >
               <section
                 className="conversation-list"
-                aria-label="Lista de conversas"
+                aria-label={t("Lista de conversas")}
               >
                 <div className="list-top">
                   <h2>
-                    Mensagens <span>{conversations.length}</span>
+                    {t("Mensagens")} <span>{conversations.length}</span>
                   </h2>
                   <button
                     className="icon"
-                    aria-label="Adicionar contacto"
+                    aria-label={t("Adicionar contacto")}
                     onClick={() => setModal("contact")}
                   >
                     <Plus size={19} />
@@ -1511,16 +1444,16 @@ function App() {
                 <label className="search">
                   <Search size={17} />
                   <input
-                    aria-label="Pesquisar conversas e mensagens"
-                    placeholder="Procurar uma ligação…"
+                    aria-label={t("Pesquisar conversas e mensagens")}
+                    placeholder={t("Procurar uma ligação…")}
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                   />
                 </label>
                 <div className="list-tabs">
-                  <span className="active">Todas</span>
+                  <span className="active">{t("Todas")}</span>
                   <button onClick={openGroups}>
-                    Novo grupo <Users size={14} />
+                    {t("Novo grupo")} <Users size={14} />
                   </button>
                 </div>
                 {conversations.map((c) => (
@@ -1545,13 +1478,13 @@ function App() {
                       <p>
                         {c.last
                           ? deleted(c.last.id)
-                            ? "Mensagem eliminada"
-                            : renderedText(c.last) || "Anexo"
+                            ? t("Mensagem eliminada")
+                            : renderedText(c.last) || t("Anexo")
                           : c.authority
-                            ? groupStatus[c.authority.status]
+                            ? t(groupStatus[c.authority.status])
                             : c.group
-                              ? "O início de uma conversa"
-                              : "Contacto guardado · começar conversa"}
+                              ? t("O início de uma conversa")
+                              : t("Contacto guardado · começar conversa")}
                       </p>
                     </div>
                   </button>
@@ -1560,31 +1493,31 @@ function App() {
                   <div className="list-empty">
                     <MessageCircle size={25} />
                     <p>
-                      Uma boa conversa começa
+                      {t("Uma boa conversa começa")}
                       <br />
-                      com um primeiro olá.
+                      {t("com um primeiro olá.")}
                     </p>
                     <button
                       className="text-button"
                       onClick={() => setModal("contact")}
                     >
-                      Adicionar um contacto
+                      {t("Adicionar um contacto")}
                     </button>
                   </div>
                 )}
                 <div className="list-footer">
-                  <LockKeyhole size={13} /> As conversas são cifradas entre
-                  identidades.
+                  <LockKeyhole size={13} />{" "}
+                  {t("As conversas são cifradas entre identidades.")}
                 </div>
               </section>
-              <section className="chat" aria-label="Conversa activa">
+              <section className="chat" aria-label={t("Conversa activa")}>
                 {selected || activeContact ? (
                   <>
                     <header className="chat-header">
                       <button
                         className="icon mobile-only"
                         onClick={() => setSelection("")}
-                        aria-label="Voltar às conversas"
+                        aria-label={t("Voltar às conversas")}
                       >
                         <ArrowDown />
                       </button>
@@ -1595,15 +1528,16 @@ function App() {
                       <div>
                         <h2>{selected?.name || activeContact?.name}</h2>
                         <span>
-                          <ShieldCheck size={13} /> Assinaturas verificadas ·{" "}
+                          <ShieldCheck size={13} />{" "}
+                          {t("Assinaturas verificadas ·")}{" "}
                           {selectedAuthority?.head?.body.members.length ??
                             members.length}{" "}
-                          participantes
+                          {t("participantes")}
                         </span>
                       </div>
                       <button
                         className="icon"
-                        aria-label="Ver participantes"
+                        aria-label={t("Ver participantes")}
                         onClick={() =>
                           selectedAuthority
                             ? setGroupManager(true)
@@ -1617,16 +1551,15 @@ function App() {
                       !state.peers.some((p) => p.connected) && (
                         <div className="conversation-route-note" role="status">
                           <p>
-                            Sem dispositivos ligados. As mensagens ficam em
-                            espera até haver um caminho. Guardar o cartão
-                            adiciona o contacto; falta trocar o código de
-                            ligação e a resposta em A rede.
+                            {t(
+                              "Sem dispositivos ligados. As mensagens ficam em espera até haver um caminho. Guardar o cartão adiciona o contacto; falta trocar o código de ligação e a resposta em A rede.",
+                            )}
                           </p>
                           <button
                             className="text-button"
                             onClick={() => setModal("peer")}
                           >
-                            Ligar outro dispositivo
+                            {t("Ligar outro dispositivo")}
                           </button>
                         </div>
                       )}
@@ -1634,18 +1567,22 @@ function App() {
                       <div className="group-epoch-review" role="status">
                         <span>
                           {selectedAuthority.status !== "active"
-                            ? groupStatus[selectedAuthority.status]
+                            ? t(groupStatus[selectedAuthority.status])
                             : (groupSnapshot?.members.length ?? 0) < 2
-                              ? "Convida alguém e aguarda a entrada para começar a conversar."
-                              : "A versão do grupo mudou. O teu rascunho foi preservado; revê os destinatários."}
+                              ? t(
+                                  "Convida alguém e aguarda a entrada para começar a conversar.",
+                                )
+                              : t(
+                                  "A versão do grupo mudou. O teu rascunho foi preservado; revê os destinatários.",
+                                )}
                         </span>
-                        <button onClick={openGroups}>Rever grupo</button>
+                        <button onClick={openGroups}>{t("Rever grupo")}</button>
                       </div>
                     )}
                     <div
                       className="message-scroll"
                       role="log"
-                      aria-label="Histórico de mensagens"
+                      aria-label={t("Histórico de mensagens")}
                       aria-live="polite"
                       aria-relevant="additions text"
                       ref={messageScroll}
@@ -1657,12 +1594,13 @@ function App() {
                       }}
                     >
                       <div className="day-divider">
-                        <span>Uma ligação só vossa</span>
+                        <span>{t("Uma ligação só vossa")}</span>
                       </div>
                       <div className="privacy-note">
-                        <LockKeyhole size={14} /> Só as identidades
-                        destinatárias podem ler. Os pares podem retransmitir o
-                        conteúdo cifrado.
+                        <LockKeyhole size={14} />{" "}
+                        {t(
+                          "Só as identidades destinatárias podem ler. Os pares podem retransmitir o conteúdo cifrado.",
+                        )}
                       </div>
                       {activeMessages.map((o) => (
                         <article
@@ -1690,7 +1628,7 @@ function App() {
                             )}
                             <p>
                               {deleted(o.id) ? (
-                                <em>Mensagem eliminada pelo autor</em>
+                                <em>{t("Mensagem eliminada pelo autor")}</em>
                               ) : (
                                 renderedText(o)
                               )}
@@ -1706,7 +1644,7 @@ function App() {
                               ))}
                             <div className="message-meta">
                               {eventsFor(o.id, "edit").length > 0 && (
-                                <span>editada</span>
+                                <span>{t("editada")}</span>
                               )}
                               <time>{date(o.created)}</time>
                               {o.author.id === me?.id &&
@@ -1723,8 +1661,9 @@ function App() {
                                 o.author.id === me?.id && (
                                   <span
                                     title={
-                                      "Confirmações verificadas no histórico carregado: " +
-                                      legacyReadCount(o)
+                                      t(
+                                        "Confirmações verificadas no histórico carregado: ",
+                                      ) + legacyReadCount(o)
                                     }
                                   >
                                     {legacyReadCount(o) ? (
@@ -1745,13 +1684,15 @@ function App() {
                           {!deleted(o.id) && (
                             <div className="message-actions">
                               <button
-                                aria-label={`Responder a ${o.author.name}`}
+                                aria-label={t("Responder a {name}", {
+                                  name: o.author.name,
+                                })}
                                 onClick={() => setReply(o)}
                               >
                                 <Reply size={14} />
                               </button>
                               <button
-                                aria-label="Reagir à mensagem"
+                                aria-label={t("Reagir à mensagem")}
                                 aria-pressed={
                                   !!eventsFor(o.id, "reaction")
                                     .filter((r) => r.author.id === me?.id)
@@ -1765,13 +1706,13 @@ function App() {
                               {o.author.id === me?.id && (
                                 <>
                                   <button
-                                    aria-label="Editar mensagem"
+                                    aria-label={t("Editar mensagem")}
                                     onClick={() => setModal("edit:" + o.id)}
                                   >
                                     <Pencil size={14} />
                                   </button>
                                   <button
-                                    aria-label="Eliminar mensagem"
+                                    aria-label={t("Eliminar mensagem")}
                                     onClick={() =>
                                       run(() =>
                                         publish(
@@ -1801,7 +1742,7 @@ function App() {
                           setNewMessages(false);
                         }}
                       >
-                        Novas mensagens <ArrowDown size={14} />
+                        {t("Novas mensagens")} <ArrowDown size={14} />
                       </button>
                     )}
                     <form className="composer" onSubmit={submitMessage}>
@@ -1810,7 +1751,7 @@ function App() {
                           uncertainOperation && (
                           <div className="reply-preview">
                             <AlertTriangle size={16} />
-                            <span>Envio anterior por confirmar.</span>
+                            <span>{t("Envio anterior por confirmar.")}</span>
                             <button
                               type="button"
                               className="secondary"
@@ -1820,7 +1761,7 @@ function App() {
                                 setError("");
                               }}
                             >
-                              Preparar um novo envio
+                              {t("Preparar um novo envio")}
                             </button>
                           </div>
                         )}
@@ -1831,7 +1772,7 @@ function App() {
                           <button
                             type="button"
                             className="icon"
-                            aria-label="Cancelar resposta"
+                            aria-label={t("Cancelar resposta")}
                             onClick={() => setReply(undefined)}
                           >
                             <X size={15} />
@@ -1850,21 +1791,21 @@ function App() {
                             type="button"
                             onClick={() => setAttachments([])}
                           >
-                            Remover
+                            {t("Remover")}
                           </button>
                         </div>
                       )}
                       <div className="composer-row">
                         <label
                           className="icon file-picker"
-                          aria-label="Anexar ficheiro"
+                          aria-label={t("Anexar ficheiro")}
                         >
                           <Paperclip size={21} />
                           <input
                             type="file"
                             disabled={busy}
                             multiple
-                            aria-label="Anexar ficheiro"
+                            aria-label={t("Anexar ficheiro")}
                             onChange={(e) => {
                               void addFiles(e.target.files);
                               e.target.value = "";
@@ -1872,8 +1813,8 @@ function App() {
                           />
                         </label>
                         <textarea
-                          aria-label="Escrever mensagem"
-                          placeholder="Escreve uma mensagem…"
+                          aria-label={t("Escrever mensagem")}
+                          placeholder={t("Escreve uma mensagem…")}
                           value={text}
                           onChange={(e) => setText(e.target.value)}
                           maxLength={12000}
@@ -1895,7 +1836,7 @@ function App() {
                         />
                         <button
                           className="send"
-                          aria-label="Enviar mensagem"
+                          aria-label={t("Enviar mensagem")}
                           disabled={
                             busy ||
                             offline ||
@@ -1908,23 +1849,25 @@ function App() {
                       </div>
                       <div className="composer-hint">
                         <span>
-                          <ShieldCheck size={12} /> Cifrada e assinada no teu
-                          dispositivo
+                          <ShieldCheck size={12} />{" "}
+                          {t("Cifrada e assinada no teu dispositivo")}
                         </span>
                         <label className="expiry-choice">
-                          Prazo
+                          {t("Prazo")}
                           <select
-                            aria-label="Prazo da mensagem"
+                            aria-label={t("Prazo da mensagem")}
                             value={messageTTL}
                             onChange={(e) =>
                               setMessageTTL(Number(e.target.value))
                             }
                           >
-                            <option value={30 * 86400_000}>30 dias</option>
-                            <option value={7 * 86400_000}>7 dias</option>
-                            <option value={86400_000}>1 dia</option>
-                            <option value={3600_000}>1 hora</option>
-                            <option value={300_000}>5 minutos</option>
+                            <option value={30 * 86400_000}>
+                              {t("30 dias")}
+                            </option>
+                            <option value={7 * 86400_000}>{t("7 dias")}</option>
+                            <option value={86400_000}>{t("1 dia")}</option>
+                            <option value={3600_000}>{t("1 hora")}</option>
+                            <option value={300_000}>{t("5 minutos")}</option>
                           </select>
                         </label>
                       </div>
@@ -1932,21 +1875,23 @@ function App() {
                   </>
                 ) : (
                   <Empty
-                    title="Perto, mesmo à distância."
-                    text="Escolhe uma conversa ou cria uma nova ligação. As mensagens ficam guardadas no teu dispositivo e seguem quando houver caminho."
+                    title={t("Perto, mesmo à distância.")}
+                    text={t(
+                      "Escolhe uma conversa ou cria uma nova ligação. As mensagens ficam guardadas no teu dispositivo e seguem quando houver caminho.",
+                    )}
                   >
                     <button
                       className="primary"
                       onClick={() => setModal("conversation")}
                     >
-                      <Plus size={17} /> Começar uma conversa
+                      <Plus size={17} /> {t("Começar uma conversa")}
                     </button>
                     <div className="empty-footer">
                       <span>
-                        <LockKeyhole size={14} /> Privada por natureza
+                        <LockKeyhole size={14} /> {t("Privada por natureza")}
                       </span>
                       <span>
-                        <Radio size={14} /> Entre pares
+                        <Radio size={14} /> {t("Entre pares")}
                       </span>
                     </div>
                   </Empty>
@@ -1965,29 +1910,29 @@ function App() {
                         aria-pressed={feedMode === "all"}
                         onClick={() => setFeedMode("all")}
                       >
-                        Na minha rede
+                        {t("Na minha rede")}
                       </button>
                       <button
                         className={feedMode === "following" ? "active" : ""}
                         aria-pressed={feedMode === "following"}
                         onClick={() => setFeedMode("following")}
                       >
-                        A seguir
+                        {t("A seguir")}
                       </button>
                     </div>
                   ) : (
                     <span className="active">
                       {state.collections.find(
                         (c) => c.id === selectedCollection,
-                      )?.title ?? "Todos os guardados"}
+                      )?.title ?? t("Todos os guardados")}
                     </span>
                   )}
                   {page === "feed" && (
                     <span>
                       {objects.filter((o) => o.kind === "post").length}{" "}
                       {objects.filter((o) => o.kind === "post").length === 1
-                        ? "publicação em cache"
-                        : "publicações em cache"}
+                        ? t("publicação em cache")
+                        : t("publicações em cache")}
                     </span>
                   )}
                 </div>
@@ -1996,7 +1941,7 @@ function App() {
                     className="import-content"
                     onClick={() => setModal("retrieve")}
                   >
-                    <Download size={15} /> Obter conteúdo por endereço
+                    <Download size={15} /> {t("Obter conteúdo por endereço")}
                   </button>
                 </div>
                 {objects
@@ -2010,18 +1955,20 @@ function App() {
                           <strong>{o.author.name}</strong>
                           <span>
                             {date(o.created)} ·{" "}
-                            {o.public ? "Público" : "Destinatários escolhidos"}
+                            {o.public
+                              ? t("Público")
+                              : t("Destinatários escolhidos")}
                           </span>
                         </div>
                         <ShieldCheck
                           size={17}
-                          aria-label="Assinatura verificada"
+                          aria-label={t("Assinatura verificada")}
                         />
                       </header>
                       {o.kind === "alert" && (
                         <div className="alert-provenance">
-                          <AlertTriangle size={18} /> Alerta assinado ·
-                          Exactidão não confirmada
+                          <AlertTriangle size={18} />{" "}
+                          {t("Alerta assinado · Exactidão não confirmada")}
                         </div>
                       )}
                       <p className="post-text">{renderedText(o)}</p>
@@ -2036,7 +1983,7 @@ function App() {
                       <div className="post-actions">
                         <button
                           onClick={() => reaction(o)}
-                          aria-label="Gostar da publicação"
+                          aria-label={t("Gostar da publicação")}
                           aria-pressed={
                             !!eventsFor(o.id, "reaction")
                               .filter((r) => r.author.id === me?.id)
@@ -2044,14 +1991,14 @@ function App() {
                           }
                         >
                           <Heart size={18} />
-                          {hearts(o) || "Gosto"}
+                          {hearts(o) || t("Gosto")}
                         </button>
                         <button onClick={() => setModal("comment:" + o.id)}>
                           <MessageCircle size={18} />
-                          {eventsFor(o.id, "comment").length || "Comentar"}
+                          {eventsFor(o.id, "comment").length || t("Comentar")}
                         </button>
                         <button
-                          aria-label="Guardar publicação"
+                          aria-label={t("Guardar publicação")}
                           aria-pressed={state.saved.includes(o.id)}
                           className={state.saved.includes(o.id) ? "chosen" : ""}
                           onClick={() =>
@@ -2063,7 +2010,7 @@ function App() {
                           <Bookmark size={18} />
                         </button>
                         <button
-                          aria-label="Mais opções da publicação"
+                          aria-label={t("Mais opções da publicação")}
                           onClick={() => setModal("post-options:" + o.id)}
                         >
                           <MoreHorizontal size={19} />
@@ -2082,13 +2029,17 @@ function App() {
                       icon={page === "saved" ? Bookmark : Globe2}
                       title={
                         page === "saved"
-                          ? "Histórias para voltar a ler."
-                          : "Há espaço para a tua história."
+                          ? t("Histórias para voltar a ler.")
+                          : t("Há espaço para a tua história.")
                       }
                       text={
                         page === "saved"
-                          ? "Guarda publicações na praça para as reunir aqui. Fixar no armazenamento protege-as da limpeza automática."
-                          : "Partilha a primeira publicação com os teus pares. A praça mostra conteúdo realmente recebido e verificado."
+                          ? t(
+                              "Guarda publicações na praça para as reunir aqui. Fixar no armazenamento protege-as da limpeza automática.",
+                            )
+                          : t(
+                              "Partilha a primeira publicação com os teus pares. A praça mostra conteúdo realmente recebido e verificado.",
+                            )
                       }
                     >
                       <button
@@ -2100,8 +2051,8 @@ function App() {
                         }
                       >
                         {page === "saved"
-                          ? "Visitar a praça"
-                          : "Escrever uma publicação"}
+                          ? t("Visitar a praça")
+                          : t("Escrever uma publicação")}
                         <ArrowUpRight size={16} />
                       </button>
                     </Empty>
@@ -2125,22 +2076,24 @@ function App() {
                   </div>
                 )}
                 <div className="editorial-card">
-                  <div className="eyebrow">UMA REDE COM RAÍZES</div>
+                  <div className="eyebrow">{t("UMA REDE COM RAÍZES")}</div>
                   <h2>
-                    O que lemos
+                    {t("O que lemos")}
                     <br />
-                    pode ir <em>mais longe.</em>
+                    {t("pode ir")} <em>{t("mais longe.")}</em>
                   </h2>
                   <p>
-                    O conteúdo recebido fica disponível neste nó para outros
-                    pares. A assinatura continua sempre a ser do autor.
+                    {t(
+                      "O conteúdo recebido fica disponível neste nó para outros pares. A assinatura continua sempre a ser do autor.",
+                    )}
                   </p>
                   <span>
-                    <Leaf size={16} /> Partilhar o caminho, preservar a autoria.
+                    <Leaf size={16} />{" "}
+                    {t("Partilhar o caminho, preservar a autoria.")}
                   </span>
                 </div>
                 <div className="card compact">
-                  <h3>Pessoas e páginas</h3>
+                  <h3>{t("Pessoas e páginas")}</h3>
                   {contacts.length ? (
                     contacts.map((c) => (
                       <div className="person" key={c.id}>
@@ -2160,8 +2113,8 @@ function App() {
                             }
                           >
                             {state.following.includes(c.id)
-                              ? "A seguir"
-                              : "Seguir localmente"}
+                              ? t("A seguir")
+                              : t("Seguir localmente")}
                           </button>
                         </div>
                         {objects.some(
@@ -2169,7 +2122,9 @@ function App() {
                         ) && (
                           <button
                             className="icon"
-                            aria-label={`Ver página de ${c.name}`}
+                            aria-label={t("Ver página de {name}", {
+                              name: c.name,
+                            })}
                             onClick={() => {
                               setViewSite(
                                 objects
@@ -2187,13 +2142,15 @@ function App() {
                       </div>
                     ))
                   ) : (
-                    <p className="muted">Os teus contactos aparecem aqui.</p>
+                    <p className="muted">
+                      {t("Os teus contactos aparecem aqui.")}
+                    </p>
                   )}
                   <button
                     className="text-button"
                     onClick={() => setModal("contact")}
                   >
-                    <Plus size={14} /> Adicionar contacto
+                    <Plus size={14} /> {t("Adicionar contacto")}
                   </button>
                 </div>
               </aside>
@@ -2202,7 +2159,7 @@ function App() {
           {page === "site" &&
             (siteLoading ? (
               <section className="card" role="status">
-                A abrir o teu projecto cifrado…
+                {t("A abrir o teu projecto cifrado…")}
               </section>
             ) : siteLoadError ? (
               <section className="card">
@@ -2211,11 +2168,13 @@ function App() {
                   className="secondary"
                   onClick={() => setSiteLoadVersion((v) => v + 1)}
                 >
-                  Voltar a carregar rascunho
+                  {t("Voltar a carregar rascunho")}
                 </button>
               </section>
             ) : (
-              <Suspense fallback={<p role="status">A abrir o estúdio…</p>}>
+              <Suspense
+                fallback={<p role="status">{t("A abrir o estúdio…")}</p>}
+              >
                 <SiteStudio
                   key={me!.id}
                   value={studioValue}
@@ -2268,23 +2227,24 @@ function App() {
                   <div className="eyebrow">
                     <span className="live-dot" />{" "}
                     {state.settings.relay
-                      ? "RETRANSMISSÃO PERMITIDA"
-                      : "RETRANSMISSÃO EM PAUSA"}
+                      ? t("RETRANSMISSÃO PERMITIDA")
+                      : t("RETRANSMISSÃO EM PAUSA")}
                   </div>
                   <h2>
-                    Cada pessoa é<br />
-                    uma nova possibilidade.
+                    {t("Cada pessoa é")}
+                    <br />
+                    {t("uma nova possibilidade.")}
                   </h2>
                   <p>
-                    As ligações abaixo são reais. A disponibilidade depende de
-                    um caminho entre pares e de dispositivos que mantenham o
-                    conteúdo.
+                    {t(
+                      "As ligações abaixo são reais. A disponibilidade depende de um caminho entre pares e de dispositivos que mantenham o conteúdo.",
+                    )}
                   </p>
                   <button
                     className="light-button"
                     onClick={() => setModal("peer")}
                   >
-                    Abrir um novo caminho <ArrowUpRight size={17} />
+                    {t("Abrir um novo caminho")} <ArrowUpRight size={17} />
                   </button>
                 </div>
                 <div className="network-emblem" aria-hidden="true">
@@ -2304,63 +2264,66 @@ function App() {
               />
               <div className="metrics">
                 <div>
-                  <span>Pares ligados</span>
+                  <span>{t("Pares ligados")}</span>
                   <strong>
                     {state.peers.filter((p) => p.connected).length}
                     <Radio size={22} />
                   </strong>
-                  <small>Ligações entre dispositivos</small>
+                  <small>{t("Ligações entre dispositivos")}</small>
                 </div>
                 <div>
-                  <span>Conteúdos neste nó</span>
+                  <span>{t("Conteúdos neste nó")}</span>
                   <strong>
                     {state.storage.count}
                     <Layers3 size={22} />
                   </strong>
-                  <small>{state.storage.pinned} fixados no armazenamento</small>
+                  <small>
+                    {state.storage.pinned} {t("fixados no armazenamento")}
+                  </small>
                 </div>
                 <div>
-                  <span>Armazenamento utilizado</span>
+                  <span>{t("Armazenamento utilizado")}</span>
                   <strong>
                     {bytes(state.storage.bytes)}
                     <Leaf size={22} />
                   </strong>
                   <small>
-                    de {bytes(state.storage.quota)} disponíveis para a rede
+                    {t("de")} {bytes(state.storage.quota)}{" "}
+                    {t("disponíveis para a rede")}
                   </small>
                 </div>
                 <div>
-                  <span>Pacotes encaminhados</span>
+                  <span>{t("Pacotes encaminhados")}</span>
                   <strong>
                     {state.counters.forwarded}
                     <ArrowUpRight size={22} />
                   </strong>
-                  <small>Contagem real desde o arranque</small>
+                  <small>{t("Contagem real desde o arranque")}</small>
                 </div>
               </div>
               <section className="card">
                 <div className="section-heading">
-                  <h2>Ligações deste dispositivo</h2>
+                  <h2>{t("Ligações deste dispositivo")}</h2>
                   <span className="pill">
                     {state.capabilities?.autonomous
-                      ? "Neste navegador"
-                      : `TCP local: ${state.tcpPort}`}
+                      ? t("Neste navegador")
+                      : t("TCP local: {port}", { port: state.tcpPort })}
                   </span>
                 </div>
                 {state.peers.length ? (
                   <div className="peer-table">
                     <div className="peer-row head">
-                      <span>Par / endereço</span>
-                      <span>Meio</span>
-                      <span>Transferência</span>
-                      <span>Estado</span>
+                      <span>{t("Par / endereço")}</span>
+                      <span>{t("Meio")}</span>
+                      <span>{t("Transferência")}</span>
+                      <span>{t("Estado")}</span>
                     </div>
                     {state.peers.map((p) => (
                       <div className="peer-row" key={p.id}>
                         <strong>{p.address}</strong>
                         <span>
                           {p.medium === "serial"
-                            ? "Série"
+                            ? t("Série")
                             : p.medium === "webrtc"
                               ? "WebRTC"
                               : p.medium === "websocket"
@@ -2373,7 +2336,7 @@ function App() {
                           ↑ {bytes(p.sent)} · ↓ {bytes(p.received)}
                         </span>
                         <span className="pill">
-                          {p.connected ? "Ligado" : "Desligado"}
+                          {p.connected ? t("Ligado") : t("Desligado")}
                         </span>
                       </div>
                     ))}
@@ -2381,17 +2344,21 @@ function App() {
                 ) : (
                   <Empty
                     icon={Radio}
-                    title="O próximo caminho começa aqui."
+                    title={t("O próximo caminho começa aqui.")}
                     text={
                       state.capabilities?.autonomous
-                        ? "Usa Ligar um par para trocar códigos com outro navegador ou aceitar um convite de uma app instalada. Adicionar o cartão de uma pessoa não estabelece esta ligação."
-                        : "Troca o endereço de transporte com outro nó ou liga um dispositivo série suportado. Não há descoberta nem servidor de arranque obrigatório."
+                        ? t(
+                            "Usa Ligar um par para trocar códigos com outro navegador ou aceitar um convite de uma app instalada. Adicionar o cartão de uma pessoa não estabelece esta ligação.",
+                          )
+                        : t(
+                            "Troca o endereço de transporte com outro nó ou liga um dispositivo série suportado. Não há descoberta nem servidor de arranque obrigatório.",
+                          )
                     }
                   />
                 )}
                 {state.transportError && (
                   <p role="alert" className="error">
-                    {state.transportError}
+                    {t(state.transportError)}
                   </p>
                 )}
               </section>
@@ -2399,18 +2366,18 @@ function App() {
                 <ShieldCheck />
                 <p>
                   <strong>
-                    Uma rede experimental, com limites transparentes.
+                    {t("Uma rede experimental, com limites transparentes.")}
                   </strong>
                   <br />
-                  TCP usa sockets reais. Série pode usar dispositivos ou PTYs de
-                  teste. BLE, Wi-Fi Direct e rádios físicos ainda não foram
-                  validados. Não substitui serviços de emergência.
+                  {t(
+                    "TCP usa sockets reais. Série pode usar dispositivos ou PTYs de teste. BLE, Wi-Fi Direct e rádios físicos ainda não foram validados. Não substitui serviços de emergência.",
+                  )}
                 </p>
                 <button
                   className="danger-outline"
                   onClick={() => setModal("alert")}
                 >
-                  <AlertTriangle size={17} /> Criar alerta prioritário
+                  <AlertTriangle size={17} /> {t("Criar alerta prioritário")}
                 </button>
               </div>
             </>
@@ -2418,7 +2385,14 @@ function App() {
           {page === "settings" && (
             <div className="settings-grid">
               <section className="card">
-                <h2>Identidade & confiança</h2>
+                <LanguageSelector />
+                <details className="setup-help">
+                  <summary>{t("Primeiros passos")}</summary>
+                  <WelcomeGuide />
+                </details>
+              </section>
+              <section className="card">
+                <h2>{t("Identidade & confiança")}</h2>
                 <div className="identity-card">
                   <Avatar name={me!.name} />
                   <div>
@@ -2428,15 +2402,16 @@ function App() {
                   <ShieldCheck />
                 </div>
                 <p className="muted">
-                  Verifica a impressão da identidade por um canal de confiança.
-                  Uma assinatura válida não comprova a identidade civil.
+                  {t(
+                    "Verifica a impressão da identidade por um canal de confiança. Uma assinatura válida não comprova a identidade civil.",
+                  )}
                 </p>
                 <label>
-                  Cartão público da identidade
+                  {t("Cartão público da identidade")}
                   <textarea
                     readOnly
                     value={JSON.stringify(me)}
-                    aria-label="Cartão público da identidade"
+                    aria-label={t("Cartão público da identidade")}
                   />
                 </label>
                 <button
@@ -2445,26 +2420,29 @@ function App() {
                     copy(JSON.stringify(me), "Cartão público copiado")
                   }
                 >
-                  <Copy size={17} /> Copiar cartão público
+                  <Copy size={17} /> {t("Copiar cartão público")}
                 </button>
                 <button
                   className="secondary"
                   onClick={() => setModal("export")}
                 >
-                  <Download size={17} /> Exportar cofre de recuperação
+                  <Download size={17} /> {t("Exportar cofre de recuperação")}
                 </button>
                 <p className="small-note">
-                  Guarda o cofre e a frase-passe separadamente. Sem ambos, a
-                  identidade não é recuperável.
+                  {t(
+                    "Guarda o cofre e a frase-passe separadamente. Sem ambos, a identidade não é recuperável.",
+                  )}
                 </p>
               </section>
               <section className="card">
-                <h2>Dar à rede, ao teu ritmo</h2>
+                <h2>{t("Dar à rede, ao teu ritmo")}</h2>
                 <label className="toggle-row">
                   <div>
-                    <strong>Retransmitir conteúdo</strong>
+                    <strong>{t("Retransmitir conteúdo")}</strong>
                     <span>
-                      Permitir que este nó ajude a rede quando está a correr.
+                      {t(
+                        "Permitir que este nó ajude a rede quando está a correr.",
+                      )}
                     </span>
                   </div>
                   <input
@@ -2477,10 +2455,11 @@ function App() {
                 </label>
                 <label className="toggle-row">
                   <div>
-                    <strong>Modo de baixo consumo</strong>
+                    <strong>{t("Modo de baixo consumo")}</strong>
                     <span>
-                      Adiar transferências em massa; manter mensagens
-                      prioritárias.
+                      {t(
+                        "Adiar transferências em massa; manter mensagens prioritárias.",
+                      )}
                     </span>
                   </div>
                   <input
@@ -2492,7 +2471,7 @@ function App() {
                   />
                 </label>
                 <label>
-                  Orçamento de armazenamento
+                  {t("Orçamento de armazenamento")}
                   <select
                     value={state.storage.quota}
                     onChange={(e) =>
@@ -2509,17 +2488,19 @@ function App() {
                   </select>
                 </label>
                 <p className="muted">
-                  Conteúdos não fixados podem ser removidos quando a quota é
-                  atingida. Eliminar não apaga cópias noutros pares.
+                  {t(
+                    "Conteúdos não fixados podem ser removidos quando a quota é atingida. Eliminar não apaga cópias noutros pares.",
+                  )}
                 </p>
                 <NotificationSettings controller={notifications} />
-                <h3>Leitura e acessibilidade</h3>
+                <h3>{t("Leitura e acessibilidade")}</h3>
                 <label className="toggle-row">
                   <div>
                     <strong>Liquid Glass</strong>
                     <span>
-                      Transparência e profundidade. Efeitos reduzidos em baixo
-                      consumo, alto contraste ou por preferência do sistema.
+                      {t(
+                        "Transparência e profundidade. Efeitos reduzidos em baixo consumo, alto contraste ou por preferência do sistema.",
+                      )}
                     </span>
                   </div>
                   <input
@@ -2530,9 +2511,11 @@ function App() {
                 </label>
                 <label className="toggle-row">
                   <div>
-                    <strong>Texto maior</strong>
+                    <strong>{t("Texto maior")}</strong>
                     <span>
-                      Aumentar mensagens, controlos e informação importante.
+                      {t(
+                        "Aumentar mensagens, controlos e informação importante.",
+                      )}
                     </span>
                   </div>
                   <input
@@ -2543,8 +2526,10 @@ function App() {
                 </label>
                 <label className="toggle-row">
                   <div>
-                    <strong>Alto contraste</strong>
-                    <span>Reforçar texto, contornos e estados de ligação.</span>
+                    <strong>{t("Alto contraste")}</strong>
+                    <span>
+                      {t("Reforçar texto, contornos e estados de ligação.")}
+                    </span>
                   </div>
                   <input
                     type="checkbox"
@@ -2552,7 +2537,7 @@ function App() {
                     onChange={(e) => setHighContrast(e.target.checked)}
                   />
                 </label>
-                <h3>Contactos</h3>
+                <h3>{t("Contactos")}</h3>
                 {contacts.map((c) => (
                   <div className="person" key={c.id}>
                     <Avatar name={c.name} small />
@@ -2569,8 +2554,8 @@ function App() {
                       }
                     >
                       {state.blocked.includes(c.id)
-                        ? "Desbloquear"
-                        : "Bloquear"}
+                        ? t("Desbloquear")
+                        : t("Bloquear")}
                     </button>
                   </div>
                 ))}
@@ -2578,45 +2563,47 @@ function App() {
                   className="text-button"
                   onClick={() => setModal("contact")}
                 >
-                  <Plus size={15} /> Adicionar contacto
+                  <Plus size={15} /> {t("Adicionar contacto")}
                 </button>
-                <h3>Denúncias locais</h3>
+                <h3>{t("Denúncias locais")}</h3>
                 <p className="muted">
-                  {state.reports.length} registos neste dispositivo. Não são
-                  enviados a um serviço central.
+                  {state.reports.length}{" "}
+                  {t(
+                    "registos neste dispositivo. Não são enviados a um serviço central.",
+                  )}
                 </p>
               </section>
             </div>
           )}
           <footer className="app-footer">
             <span>
-              <span className="live-dot" /> Guardado perto de ti. Partilhado
-              entre nós.
+              <span className="live-dot" />{" "}
+              {t("Guardado perto de ti. Partilhado entre nós.")}
             </span>
             <span>RELAYLOOM / EXPERIMENTAL</span>
           </footer>
         </main>
       </div>
       {(page !== "messages" || !selection) && !mobileMenu && (
-        <nav className="mobile-dock" aria-label="Navegação rápida">
+        <nav className="mobile-dock" aria-label={t("Navegação rápida")}>
           {nav.map((item) => (
             <button
               key={item.id}
-              aria-label={`Ir para ${item.label}`}
+              aria-label={t("Ir para {area}", { area: item.label })}
               aria-current={page === item.id ? "page" : undefined}
               onClick={() => changePage(item.id)}
             >
               <item.icon size={21} />
               <span>
                 {item.id === "site"
-                  ? "Página"
+                  ? t("Página")
                   : item.id === "messages"
-                    ? "Conversas"
+                    ? t("Conversas")
                     : item.id === "feed"
-                      ? "Praça"
+                      ? t("Praça")
                       : item.id === "network"
-                        ? "Rede"
-                        : "Guardados"}
+                        ? t("Rede")
+                        : t("Guardados")}
               </span>
             </button>
           ))}
@@ -2625,7 +2612,7 @@ function App() {
       {notice && (
         <div className="toast" role="status">
           <Check size={17} />
-          {notice}
+          {t(notice)}
         </div>
       )}
       {commandsOpen && (
@@ -2663,30 +2650,30 @@ function App() {
         <Modal
           title={
             modal === "outbox" || modal.startsWith("outbox:")
-              ? "O caminho dos teus envios"
+              ? t("O caminho dos teus envios")
               : modal === "contact"
-                ? "Adicionar uma pessoa"
+                ? t("Adicionar uma pessoa")
                 : modal === "retrieve"
-                  ? "Obter conteúdo da rede"
+                  ? t("Obter conteúdo da rede")
                   : modal === "conversation"
-                    ? "Começar uma conversa"
+                    ? t("Começar uma conversa")
                     : modal === "group"
-                      ? "Criar um grupo privado"
+                      ? t("Criar um grupo privado")
                       : modal === "peer"
-                        ? "Ligar um par"
+                        ? t("Ligar um par")
                         : modal === "export"
-                          ? "Guardar a tua identidade"
+                          ? t("Guardar a tua identidade")
                           : modal === "participants"
-                            ? "Quem está nesta conversa"
+                            ? t("Quem está nesta conversa")
                             : modal === "alert"
-                              ? "Criar alerta prioritário"
+                              ? t("Criar alerta prioritário")
                               : modal.startsWith("edit:")
-                                ? "Editar o teu conteúdo"
+                                ? t("Editar o teu conteúdo")
                                 : modal.startsWith("comment:")
-                                  ? "Juntar à conversa"
+                                  ? t("Juntar à conversa")
                                   : modal.startsWith("post-options:")
-                                    ? "Opções da publicação"
-                                    : "Uma história para partilhar"
+                                    ? t("Opções da publicação")
+                                    : t("Uma história para partilhar")
           }
           close={() => {
             setModal("");
@@ -2727,22 +2714,23 @@ function App() {
               }}
             >
               <p>
-                Um endereço identifica o conteúdo. Não concede uma chave de
-                leitura nem transfere a autoria.
+                {t(
+                  "Um endereço identifica o conteúdo. Não concede uma chave de leitura nem transfere a autoria.",
+                )}
               </p>
               <label>
-                Endereço do conteúdo
+                {t("Endereço do conteúdo")}
                 <input
                   name="id"
                   required
                   pattern="[a-f0-9]{64}"
                   minLength={64}
                   maxLength={64}
-                  placeholder="64 caracteres hexadecimais"
+                  placeholder={t("64 caracteres hexadecimais")}
                 />
               </label>
               <button className="primary full" disabled={busy}>
-                Pedir aos pares
+                {t("Pedir aos pares")}
               </button>
             </form>
           )}
@@ -2760,26 +2748,30 @@ function App() {
               }}
             >
               <p>
-                Troca o cartão público com a outra pessoa. Compara a impressão
-                da identidade por um canal de confiança.
+                {t(
+                  "Troca o cartão público com a outra pessoa. Compara a impressão da identidade por um canal de confiança.",
+                )}
               </p>
               <label>
-                Cartão público do contacto
+                {t("Cartão público do contacto")}
                 <textarea
                   name="card"
                   rows={5}
                   required
-                  placeholder="Cola aqui o cartão JSON da identidade"
+                  placeholder={t("Cola aqui o cartão JSON da identidade")}
+                  aria-label={t("Cartão público do contacto")}
                 />
               </label>
               <button className="primary full" disabled={busy}>
-                <ShieldCheck size={17} /> Verificar e adicionar
+                <ShieldCheck size={17} /> {t("Verificar e adicionar")}
               </button>
             </form>
           )}
           {modal === "conversation" && (
             <>
-              <p>Escolhe uma pessoa para começar uma conversa cifrada.</p>
+              <p>
+                {t("Escolhe uma pessoa para começar uma conversa cifrada.")}
+              </p>
               {contacts
                 .filter((c) => !state.blocked.includes(c.id))
                 .map((c) => (
@@ -2813,7 +2805,7 @@ function App() {
                 className="secondary full"
                 onClick={() => setModal("contact")}
               >
-                <Plus size={17} /> Adicionar uma pessoa
+                <Plus size={17} /> {t("Adicionar uma pessoa")}
               </button>
             </>
           )}
@@ -2836,20 +2828,21 @@ function App() {
               }}
             >
               <p>
-                Cada mensagem é cifrada para os membros escolhidos. A alteração
-                de membros ainda não está disponível.
+                {t(
+                  "Cada mensagem é cifrada para os membros escolhidos. A alteração de membros ainda não está disponível.",
+                )}
               </p>
               <label>
-                Nome do grupo
+                {t("Nome do grupo")}
                 <input
                   name="title"
                   required
                   maxLength={80}
-                  placeholder="Pessoas por perto"
+                  placeholder={t("Pessoas por perto")}
                 />
               </label>
               <fieldset>
-                <legend>Participantes</legend>
+                <legend>{t("Participantes")}</legend>
                 {contacts
                   .filter((c) => !state.blocked.includes(c.id))
                   .map((c) => (
@@ -2864,7 +2857,7 @@ function App() {
                 className="primary full"
                 disabled={busy || !contacts.length}
               >
-                <Users size={17} /> Criar grupo
+                <Users size={17} /> {t("Criar grupo")}
               </button>
             </form>
           )}
@@ -2887,14 +2880,15 @@ function App() {
                         )
                       }
                     >
-                      Adicionar
+                      {t("Adicionar")}
                     </button>
                   )}
                 </div>
               ))}
               <p className="muted">
-                A assinatura valida a identidade criptográfica. Confirma as
-                impressões com as pessoas que conheces.
+                {t(
+                  "A assinatura valida a identidade criptográfica. Confirma as impressões com as pessoas que conheces.",
+                )}
               </p>
             </>
           )}
@@ -2905,8 +2899,9 @@ function App() {
             <>
               <WebInvitation api={api} current={state.webPeer} />
               <p>
-                Liga-te ao endereço TCP que o outro nó partilhou contigo. O
-                controlo da aplicação continua apenas neste dispositivo.
+                {t(
+                  "Liga-te ao endereço TCP que o outro nó partilhou contigo. O controlo da aplicação continua apenas neste dispositivo.",
+                )}
               </p>
               <form
                 onSubmit={(e) => {
@@ -2922,7 +2917,7 @@ function App() {
                 }}
               >
                 <label>
-                  Endereço do par
+                  {t("Endereço do par")}
                   <input
                     name="host"
                     required
@@ -2931,31 +2926,33 @@ function App() {
                   />
                 </label>
                 <label>
-                  Porta TCP de transporte
+                  {t("Porta TCP de transporte")}
                   <input
                     name="port"
                     required
                     type="number"
                     min={1}
                     max={65535}
-                    placeholder="Porta indicada pelo outro nó"
+                    placeholder={t("Porta indicada pelo outro nó")}
                   />
                 </label>
                 <button className="primary full" disabled={busy}>
-                  <Link size={17} /> Ligar por TCP
+                  <Link size={17} /> {t("Ligar por TCP")}
                 </button>
               </form>
               {state.nativeRuntime === "Go" ? (
                 <p className="muted">
-                  O adaptador série ainda não está disponível neste núcleo
-                  nativo. Podes ligar pares por TCP.
+                  {t(
+                    "O adaptador série ainda não está disponível neste núcleo nativo. Podes ligar pares por TCP.",
+                  )}
                 </p>
               ) : (
                 <details>
-                  <summary>Dispositivo série</summary>
+                  <summary>{t("Dispositivo série")}</summary>
                   <p className="muted">
-                    Um dispositivo série compatível ou PTY de teste. Isto não
-                    configura nem valida um rádio físico.
+                    {t(
+                      "Um dispositivo série compatível ou PTY de teste. Isto não configura nem valida um rádio físico.",
+                    )}
                   </p>
                   <form
                     onSubmit={(e) => {
@@ -2971,11 +2968,11 @@ function App() {
                     }}
                   >
                     <label>
-                      Caminho do dispositivo
+                      {t("Caminho do dispositivo")}
                       <input name="path" required placeholder="/dev/ttyUSB0" />
                     </label>
                     <label>
-                      Velocidade
+                      {t("Velocidade")}
                       <select name="baud" defaultValue="115200">
                         <option>9600</option>
                         <option>57600</option>
@@ -2983,7 +2980,7 @@ function App() {
                       </select>
                     </label>
                     <button className="secondary full" disabled={busy}>
-                      Ligar por série
+                      {t("Ligar por série")}
                     </button>
                   </form>
                 </details>
@@ -3022,13 +3019,15 @@ function App() {
             >
               <p>
                 {modal === "alert"
-                  ? "A assinatura prova a autoria, não a exactidão. Indica o contexto e a hora; não publiques localização pessoal desnecessária."
-                  : "O que te apetece partilhar com a tua rede?"}
+                  ? t(
+                      "A assinatura prova a autoria, não a exactidão. Indica o contexto e a hora; não publiques localização pessoal desnecessária.",
+                    )
+                  : t("O que te apetece partilhar com a tua rede?")}
               </p>
               <label>
                 {modal === "alert"
-                  ? "Informação do alerta"
-                  : "A tua publicação"}
+                  ? t("Informação do alerta")
+                  : t("A tua publicação")}
                 <textarea
                   name="text"
                   rows={5}
@@ -3036,25 +3035,35 @@ function App() {
                   maxLength={12000}
                   placeholder={
                     modal === "alert"
-                      ? "O que se passa e quando foi observado?"
-                      : "Uma ideia, uma história, um olá…"
+                      ? t("O que se passa e quando foi observado?")
+                      : t("Uma ideia, uma história, um olá…")
+                  }
+                  aria-label={
+                    modal === "alert"
+                      ? t("Informação do alerta")
+                      : t("A tua publicação")
                   }
                 />
               </label>
               <label>
-                Quem pode ler
+                {t("Quem pode ler")}
                 <select name="privacy">
-                  <option value="public">Público — qualquer leitor</option>
-                  <option value="contacts">Os meus contactos actuais</option>
+                  <option value="public">
+                    {t("Público — qualquer leitor")}
+                  </option>
+                  <option value="contacts">
+                    {t("Os meus contactos actuais")}
+                  </option>
                 </select>
               </label>
               <p className="small-note">
-                Os leitores podem guardar e semear cópias. A autoria continua a
-                ser tua.
+                {t(
+                  "Os leitores podem guardar e semear cópias. A autoria continua a ser tua.",
+                )}
               </p>
               <button className="primary full" disabled={busy}>
                 <Send size={17} />
-                {modal === "alert" ? "Publicar alerta" : "Publicar"}
+                {modal === "alert" ? t("Publicar alerta") : t("Publicar")}
               </button>
             </form>
           )}
@@ -3078,7 +3087,7 @@ function App() {
               }}
             >
               <label>
-                Texto
+                {t("Texto")}
                 <textarea
                   name="text"
                   required
@@ -3091,10 +3100,11 @@ function App() {
                         )
                       : ""
                   }
+                  aria-label={t("Texto")}
                 />
               </label>
               <button className="primary full" disabled={busy}>
-                Guardar
+                {t("Guardar")}
               </button>
             </form>
           )}
@@ -3115,11 +3125,11 @@ function App() {
                   >
                     <Bookmark size={18} />
                     {o.pinned
-                      ? "Desafixar do armazenamento"
-                      : "Fixar no armazenamento"}
+                      ? t("Desafixar do armazenamento")
+                      : t("Fixar no armazenamento")}
                   </button>
                   <div className="collection-memberships">
-                    <strong>Guardar numa colecção</strong>
+                    <strong>{t("Guardar numa colecção")}</strong>
                     {state.collections.length ? (
                       state.collections.map((c) => (
                         <label key={c.id}>
@@ -3146,19 +3156,19 @@ function App() {
                           changePage("saved");
                         }}
                       >
-                        Criar uma colecção em Guardados
+                        {t("Criar uma colecção em Guardados")}
                       </button>
                     )}
                   </div>
                   <button
                     onClick={() => copy(o.id, "Endereço do conteúdo copiado")}
                   >
-                    <Copy size={18} /> Copiar endereço do conteúdo
+                    <Copy size={18} /> {t("Copiar endereço do conteúdo")}
                   </button>
                   {o.author.id === me!.id ? (
                     <>
                       <button onClick={() => setModal("edit:" + o.id)}>
-                        <Pencil size={18} /> Editar publicação
+                        <Pencil size={18} /> {t("Editar publicação")}
                       </button>
                       <button
                         onClick={() =>
@@ -3171,7 +3181,7 @@ function App() {
                           }, "Eliminação assinada; cópias remotas podem persistir")
                         }
                       >
-                        <Trash2 size={18} /> Eliminar publicação
+                        <Trash2 size={18} /> {t("Eliminar publicação")}
                       </button>
                     </>
                   ) : (
@@ -3184,7 +3194,7 @@ function App() {
                           }, "Autor bloqueado neste dispositivo")
                         }
                       >
-                        <ShieldCheck size={18} /> Bloquear este autor
+                        <ShieldCheck size={18} /> {t("Bloquear este autor")}
                       </button>
                       <form
                         onSubmit={(e) => {
@@ -3202,11 +3212,16 @@ function App() {
                         }}
                       >
                         <label>
-                          Motivo da denúncia
-                          <textarea name="reason" required maxLength={500} />
+                          {t("Motivo da denúncia")}
+                          <textarea
+                            name="reason"
+                            required
+                            maxLength={500}
+                            aria-label={t("Motivo da denúncia")}
+                          />
                         </label>
                         <button className="secondary full">
-                          Registar denúncia local
+                          {t("Registar denúncia local")}
                         </button>
                       </form>
                     </>
@@ -3236,11 +3251,12 @@ function App() {
               }}
             >
               <p>
-                A cópia contém as tuas chaves cifradas. Guarda-a num lugar
-                seguro e conserva a frase-passe separadamente.
+                {t(
+                  "A cópia contém as tuas chaves cifradas. Guarda-a num lugar seguro e conserva a frase-passe separadamente.",
+                )}
               </p>
               <label>
-                Frase-passe para esta cópia
+                {t("Frase-passe para esta cópia")}
                 <input
                   name="password"
                   type="password"
@@ -3251,7 +3267,7 @@ function App() {
                 />
               </label>
               <button className="primary full" disabled={busy}>
-                <Download size={17} /> Descarregar cofre cifrado
+                <Download size={17} /> {t("Descarregar cofre cifrado")}
               </button>
             </form>
           )}
@@ -3259,11 +3275,11 @@ function App() {
       )}
       {viewSite && (
         <Modal
-          title={`Página de ${viewSite.author.name}`}
+          title={t("Página de {name}", { name: viewSite.author.name })}
           close={() => setViewSite(undefined)}
         >
           {viewSite.content.site ? (
-            <Suspense fallback={<p role="status">A abrir o site…</p>}>
+            <Suspense fallback={<p role="status">{t("A abrir o site…")}</p>}>
               <SiteReader
                 key={viewSite.id}
                 contentId={viewSite.id}
@@ -3292,7 +3308,7 @@ function App() {
                   <p>{b.body}</p>
                   {b.url && /^https:\/\//.test(b.url) && (
                     <a href={b.url} target="_blank" rel="noopener noreferrer">
-                      Explorar <ArrowUpRight size={16} />
+                      {t("Explorar")} <ArrowUpRight size={16} />
                     </a>
                   )}
                 </section>
@@ -3300,8 +3316,9 @@ function App() {
             </div>
           )}
           <p className="small-note">
-            Assinatura verificada. Página lida a partir do armazenamento local;
-            pode ser servida por este nó mesmo com o autor desligado.
+            {t(
+              "Assinatura verificada. Página lida a partir do armazenamento local; pode ser servida por este nó mesmo com o autor desligado.",
+            )}
           </p>
         </Modal>
       )}
@@ -3408,10 +3425,10 @@ function AttachmentView({
           </span>
           {error ? (
             <button className="text-button" onClick={() => setRetry(retry + 1)}>
-              Voltar a carregar
+              {t("Voltar a carregar")}
             </button>
           ) : (
-            <span role="status">A carregar…</span>
+            <span role="status">{t("A carregar…")}</span>
           )}
         </div>
       )}

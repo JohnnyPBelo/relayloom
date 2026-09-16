@@ -8,7 +8,7 @@ test("a cached site dialog is visible and reachable after scrolling a long mobil
 }) => {
   const author = await launch(),
     viewer = await launch();
-  const context = await browser.newContext({
+  const context = await browser.newContext({ locale: "pt-PT",
     viewport: { width: 390, height: 844 },
     deviceScaleFactor: 2.75,
     isMobile: true,

@@ -14,6 +14,7 @@ test("onboarding fits the native minimum window and intermediate widths with key
   try {
     await page.setViewportSize({ width: 720, height: 600 });
     await page.goto(client.url + "/#token=" + client.token);
+    await page.getByRole("button", {name:"Começar",exact:true}).click();
     await expect(
       page.getByRole("button", { name: "Criar identidade", exact: true }),
     ).toBeVisible();

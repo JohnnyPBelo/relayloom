@@ -5,6 +5,7 @@ import { rmSync, mkdirSync, writeFileSync } from "node:fs";
 
 async function enter(page: Page, client: Client, name: string) {
   await page.goto(client.url + "/#token=" + client.token);
+  await page.getByRole("button", { name: "Começar", exact: true }).click();
   await page.getByLabel("Como te chamas?").fill(name);
   await page.getByLabel("Frase-passe", { exact: true }).fill(password);
   await page
@@ -61,10 +62,10 @@ test("two live clients: identities, connection, message, attachment, reaction, g
   const a = await launch(),
     b = await launch();
   let resumed: Client | undefined;
-  const ca = await browser.newContext({
+  const ca = await browser.newContext({ locale: "pt-PT",
       viewport: { width: 1440, height: 1000 },
     }),
-    cb = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
+    cb = await browser.newContext({ locale: "pt-PT", viewport: { width: 1440, height: 1000 } });
   const pa = await ca.newPage(),
     pb = await cb.newPage();
   const errors: string[] = [];

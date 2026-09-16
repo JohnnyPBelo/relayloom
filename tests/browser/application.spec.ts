@@ -13,6 +13,7 @@ test.afterAll(async () => {
 });
 async function enter(page: Page, name: string) {
   await page.goto(host.url + "/browser/index.html");
+  await page.getByRole("button", { name: "Começar", exact: true }).click();
   await page.getByLabel("Como te chamas?").fill(name);
   await page.getByLabel("Frase-passe", { exact: true }).fill(password);
   await page
@@ -74,10 +75,10 @@ async function audit(page: Page, name: string) {
 test("autonomous Liquid Glass UI owns identity and offline outbox, connects through real RTC, receives signed confirmations and survives reload", async ({
   browser,
 }) => {
-  const ca = await browser.newContext({
+  const ca = await browser.newContext({ locale: "pt-PT",
       viewport: { width: 1440, height: 1000 },
     }),
-    cb = await browser.newContext({ viewport: { width: 390, height: 844 } }),
+    cb = await browser.newContext({ locale: "pt-PT", viewport: { width: 390, height: 844 } }),
     a = await ca.newPage(),
     b = await cb.newPage();
   const errors: string[] = [];
@@ -203,10 +204,10 @@ async function unlock(page: Page) {
 test("autonomous social actions and safe signed site builder persist and remain viewable after author closes", async ({
   browser,
 }) => {
-  const ca = await browser.newContext({
+  const ca = await browser.newContext({ locale: "pt-PT",
       viewport: { width: 1440, height: 1000 },
     }),
-    cb = await browser.newContext({ viewport: { width: 1440, height: 1000 } }),
+    cb = await browser.newContext({ locale: "pt-PT", viewport: { width: 1440, height: 1000 } }),
     a = await ca.newPage(),
     b = await cb.newPage();
   try {
@@ -358,8 +359,8 @@ test("autonomous social actions and safe signed site builder persist and remain 
 test("production worker keeps private keys out of replies and recovers an applied send after the UI response is lost", async ({
   browser,
 }) => {
-  const ca = await browser.newContext(),
-    cb = await browser.newContext(),
+  const ca = await browser.newContext({ locale: "pt-PT" }),
+    cb = await browser.newContext({ locale: "pt-PT" }),
     a = await ca.newPage(),
     b = await cb.newPage();
   try {
@@ -465,7 +466,7 @@ test("production worker keeps private keys out of replies and recovers an applie
 test("a second tab cannot take ownership of a live application profile and an unknown or corrupt profile is never silently reset", async ({
   browser,
 }) => {
-  const context = await browser.newContext(),
+  const context = await browser.newContext({ locale: "pt-PT" }),
     a = await context.newPage(),
     b = await context.newPage();
   try {
@@ -523,7 +524,7 @@ test("cached application code and encrypted profile reopen when the static host 
   browser,
   request,
 }) => {
-  const context = await browser.newContext(),
+  const context = await browser.newContext({ locale: "pt-PT" }),
     page = await context.newPage();
   try {
     await enter(page, "Sem instalação");
@@ -588,7 +589,7 @@ test("cached application code and encrypted profile reopen when the static host 
 test("corrupted cached worker is rejected offline and recovered only from verified available code", async ({
   browser,
 }) => {
-  const context = await browser.newContext(),
+  const context = await browser.newContext({ locale: "pt-PT" }),
     page = await context.newPage();
   try {
     await enter(page, "Código verificado");

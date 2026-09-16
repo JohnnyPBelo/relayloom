@@ -8,6 +8,7 @@ import { webRnsNetwork } from "./web-network";
 
 async function enter(page: Page, url: string, name: string) {
   await page.goto(url);
+  await page.getByRole("button", { name: "Começar", exact: true }).click();
   await page.getByLabel("Como te chamas?").fill(name);
   await page.getByLabel("Frase-passe", { exact: true }).fill(password);
   await page
@@ -40,10 +41,10 @@ for (const throughBrowserRelay of [false, true])
     test.setTimeout(150_000);
     const f = await webRnsNetwork(),
       host = await appHost(),
-      ac = await browser.newContext(),
-      bc = await browser.newContext(),
-      cc = await browser.newContext(),
-      dc = throughBrowserRelay ? await browser.newContext() : undefined,
+      ac = await browser.newContext({ locale: "pt-PT" }),
+      bc = await browser.newContext({ locale: "pt-PT" }),
+      cc = await browser.newContext({ locale: "pt-PT" }),
+      dc = throughBrowserRelay ? await browser.newContext({ locale: "pt-PT" }) : undefined,
       a = await ac.newPage(),
       bp = await bc.newPage(),
       c = await cc.newPage(),

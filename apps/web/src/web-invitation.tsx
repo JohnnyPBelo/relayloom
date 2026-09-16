@@ -1,3 +1,4 @@
+import { t, getLanguage } from "./i18n/core";
 import React, { useEffect, useRef, useState } from "react";
 import { Copy, Link2, ShieldCheck } from "lucide-react";
 import type { API } from "./api";
@@ -61,12 +62,12 @@ export function WebInvitation({
     invitation ?? (current && current.expires > Date.now() ? current : null);
   return (
     <details className="web-invitation">
-      <summary>Usar a versão web neste dispositivo</summary>
+      <summary>{t("Usar a versão web neste dispositivo")}</summary>
       <div className="browser-peer-panel">
         <p>
-          Abre o RelayLoom no navegador deste dispositivo e partilha este
-          convite entre as duas aplicações. As mensagens podem seguir pela rede
-          dos teus pares, sem escolheres um meio em cada envio.
+          {t(
+            "Abre o RelayLoom no navegador deste dispositivo e partilha este convite entre as duas aplicações. As mensagens podem seguir pela rede dos teus pares, sem escolheres um meio em cada envio.",
+          )}
         </p>
         <form
           onSubmit={(event) => {
@@ -96,7 +97,7 @@ export function WebInvitation({
           }}
         >
           <label>
-            Endereço da versão web
+            {t("Endereço da versão web")}
             <input
               type="url"
               value={address}
@@ -109,27 +110,28 @@ export function WebInvitation({
           </label>
           <button className="primary full" disabled={busy}>
             <Link2 size={17} />
-            {active ? "Renovar convite" : "Criar convite"}
+            {active ? t("Renovar convite") : t("Criar convite")}
           </button>
         </form>
         {active && (
           <p className="muted">
-            Permitido para <strong>{active.origin}</strong> até{" "}
-            {new Intl.DateTimeFormat("pt-PT", {
+            {t("Permitido para")} <strong>{active.origin}</strong> {t("até")}{" "}
+            {new Intl.DateTimeFormat(getLanguage(), {
               hour: "2-digit",
               minute: "2-digit",
             }).format(active.expires)}
-            . Renovar fecha as ligações do convite anterior.
+            {t(". Renovar fecha as ligações do convite anterior.")}
           </p>
         )}
         {invitation && (
           <section className="peer-code">
             <label>
-              Convite para a versão web
+              {t("Convite para a versão web")}
               <textarea
                 readOnly
                 value={JSON.stringify(invitation)}
                 onFocus={(e) => e.currentTarget.select()}
+                aria-label={t("Convite para a versão web")}
               />
             </label>
             <button
@@ -145,7 +147,7 @@ export function WebInvitation({
               }
             >
               <Copy size={16} />
-              Copiar convite
+              {t("Copiar convite")}
             </button>
           </section>
         )}
@@ -164,25 +166,24 @@ export function WebInvitation({
               })
             }
           >
-            Revogar convite
+            {t("Revogar convite")}
           </button>
         )}
         {status && (
           <p role="status" className="peer-status">
             <ShieldCheck size={16} />
-            {status}
+            {t(status)}
           </p>
         )}
         {error && (
           <p role="alert" className="error">
-            {error}
+            {t(error)}
           </p>
         )}
         <p className="muted">
-          Este convite permite transportar conteúdo cifrado; não dá acesso à tua
-          identidade nem acrescenta contactos. Bloquear a identidade mantém a
-          ajuda à rede que autorizaste. Para fechar este caminho, revoga o
-          convite. A ligação directa actual está limitada a este dispositivo.
+          {t(
+            "Este convite permite transportar conteúdo cifrado; não dá acesso à tua identidade nem acrescenta contactos. Bloquear a identidade mantém a ajuda à rede que autorizaste. Para fechar este caminho, revoga o convite. A ligação directa actual está limitada a este dispositivo.",
+          )}
         </p>
       </div>
     </details>

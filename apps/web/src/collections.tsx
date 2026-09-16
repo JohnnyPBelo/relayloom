@@ -1,3 +1,4 @@
+import { t, getLanguage } from "./i18n/core";
 import React, { useState } from "react";
 import { Plus, Pencil, Trash2, Bookmark, ArrowUpRight } from "lucide-react";
 import type { Collection, CollectionCommand } from "../../node/src/social";
@@ -18,10 +19,10 @@ export function CollectionManager({
   return (
     <div className="collection-manager">
       <header>
-        <h3>As minhas colecções</h3>
+        <h3>{t("As minhas colecções")}</h3>
         <button
           className="icon"
-          aria-label="Criar colecção"
+          aria-label={t("Criar colecção")}
           onClick={() => {
             setEditing("new");
             setTitle("");
@@ -35,7 +36,7 @@ export function CollectionManager({
         aria-pressed={!selected}
         onClick={() => onSelect("")}
       >
-        <Bookmark size={17} /> Todos os guardados
+        <Bookmark size={17} /> {t("Todos os guardados")}
       </button>
       {collections.map((c) => (
         <div className="collection-row" key={c.id}>
@@ -51,7 +52,7 @@ export function CollectionManager({
           </button>
           <button
             className="icon"
-            aria-label={`Renomear colecção ${c.title}`}
+            aria-label={t("Renomear colecção {name}", { name: c.title })}
             onClick={() => {
               setEditing(c.id);
               setTitle(c.title);
@@ -61,7 +62,7 @@ export function CollectionManager({
           </button>
           <button
             className="icon"
-            aria-label={`Eliminar colecção ${c.title}`}
+            aria-label={t("Eliminar colecção {name}", { name: c.title })}
             onClick={async () => {
               await onCommand({ action: "delete", id: c.id });
               if (selected === c.id) onSelect("");
@@ -86,7 +87,7 @@ export function CollectionManager({
           }}
         >
           <label>
-            Nome da colecção
+            {t("Nome da colecção")}
             <input
               value={title}
               required
@@ -100,17 +101,18 @@ export function CollectionManager({
               type="button"
               onClick={() => setEditing(undefined)}
             >
-              Cancelar
+              {t("Cancelar")}
             </button>
             <button className="primary" disabled={busy}>
-              Guardar colecção
+              {t("Guardar colecção")}
             </button>
           </div>
         </form>
       )}
       <p className="muted">
-        Colecções privadas e cifradas neste dispositivo. Guardar uma referência
-        não altera a autoria nem impede a limpeza da cache.
+        {t(
+          "Colecções privadas e cifradas neste dispositivo. Guardar uma referência não altera a autoria nem impede a limpeza da cache.",
+        )}
       </p>
     </div>
   );

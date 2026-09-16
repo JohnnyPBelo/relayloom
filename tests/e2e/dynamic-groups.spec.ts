@@ -81,8 +81,8 @@ test("Liquid Glass groups create, invite, consent, approve, message and leave th
 }) => {
   const a = await launch(),
     b = await launch();
-  const ac = await browser.newContext(),
-    bc = await browser.newContext();
+  const ac = await browser.newContext({ locale: "pt-PT" }),
+    bc = await browser.newContext({ locale: "pt-PT" });
   const ap = await ac.newPage(),
     bp = await bc.newPage();
   const runtime =
@@ -115,6 +115,7 @@ test("Liquid Glass groups create, invite, consent, approve, message and leave th
       [b, bp, "Bruno da ponte"],
     ] as const) {
       await page.goto(client.url + "/#token=" + client.token);
+      await page.getByRole("button", { name: "Começar", exact: true }).click();
       await page.getByLabel("Como te chamas?").fill(name);
       await page.getByLabel("Frase-passe", { exact: true }).fill(password);
       await page

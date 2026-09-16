@@ -60,7 +60,7 @@ test("subpath offline installation preserves other installations' caches and use
   browser,
 }) => {
   const host = await appHost({ cacheProbe: true }),
-    context = await browser.newContext(),
+    context = await browser.newContext({ locale: "pt-PT" }),
     page = await context.newPage();
   const requests: string[] = [],
     errors: string[] = [];
@@ -85,6 +85,7 @@ test("subpath offline installation preserves other installations' caches and use
     // Keep the independent HTML client alive while this app installs. This
     // exercises actual activation without unregistering browser storage.
     await page.goto(host.url + "/browser/index.html");
+    await page.getByRole("button", { name: "Começar", exact: true }).click();
     await expect(
       page.getByRole("button", { name: "Criar identidade", exact: true }),
     ).toBeVisible();
@@ -98,6 +99,7 @@ test("subpath offline installation preserves other installations' caches and use
     ).toBe(host.url + "/browser/sw.js");
     host.setUnavailable(true);
     await page.reload();
+    await page.getByRole("button", { name: "Começar", exact: true }).click();
     await expect(
       page.getByRole("button", { name: "Criar identidade", exact: true }),
     ).toBeVisible();

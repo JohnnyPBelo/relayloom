@@ -1,3 +1,4 @@
+import { t } from "./i18n/core";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Bell, BellOff } from "lucide-react";
 import "./notifications.css";
@@ -182,7 +183,7 @@ export function usePrivateMessageNotifications({
     try {
       // No sender, conversation, message, identity ID, or remote resource enters the native notice.
       const notice = new Notification("RelayLoom", {
-        body: GENERIC_BODY,
+        body: t(GENERIC_BODY),
         tag: "relayloom-private-message",
         silent: true,
       });
@@ -205,12 +206,16 @@ export function usePrivateMessageNotifications({
           runtime.current.generation === generation
         )
           pauseAfterFailure(
-            "O navegador não conseguiu mostrar o aviso. As notificações foram desactivadas nesta identidade.",
+            t(
+              "O navegador não conseguiu mostrar o aviso. As notificações foram desactivadas nesta identidade.",
+            ),
           );
       };
     } catch {
       pauseAfterFailure(
-        "Este navegador não conseguiu criar uma notificação. Podes continuar a ler as mensagens na aplicação.",
+        t(
+          "Este navegador não conseguiu criar uma notificação. Podes continuar a ler as mensagens na aplicação.",
+        ),
       );
     }
   }, [closeVisible, pauseAfterFailure]);
@@ -396,7 +401,7 @@ export function NotificationSettings({
   return (
     <section
       className="notification-settings"
-      aria-label="Notificações privadas"
+      aria-label={t("Notificações privadas")}
     >
       <div className="notification-heading">
         {enabled ? (
@@ -404,25 +409,28 @@ export function NotificationSettings({
         ) : (
           <BellOff size={21} aria-hidden="true" />
         )}
-        <h3>Notificações privadas</h3>
+        <h3>{t("Notificações privadas")}</h3>
         <span className="notification-state">
-          {enabled ? "Activadas" : "Desactivadas"}
+          {enabled ? t("Activadas") : t("Desactivadas")}
         </span>
       </div>
       <p>
-        Um aviso genérico quando chegam mensagens privadas novas, apenas
-        enquanto a aplicação está aberta. O aviso não mostra o nome da pessoa
-        nem o conteúdo da conversa.
+        {t(
+          "Um aviso genérico quando chegam mensagens privadas novas, apenas enquanto a aplicação está aberta. O aviso não mostra o nome da pessoa nem o conteúdo da conversa.",
+        )}
       </p>
       {!available && (
         <p className="notification-support">
-          Este navegador não disponibiliza notificações aqui. Podes consultar as
-          mensagens na aplicação.
+          {t(
+            "Este navegador não disponibiliza notificações aqui. Podes consultar as mensagens na aplicação.",
+          )}
         </p>
       )}
       {available && permissionState === "denied" && (
         <p className="notification-support">
-          As notificações estão bloqueadas nas permissões deste navegador.
+          {t(
+            "As notificações estão bloqueadas nas permissões deste navegador.",
+          )}
         </p>
       )}
       <div className="notification-actions">
@@ -443,10 +451,10 @@ export function NotificationSettings({
             <Bell size={17} aria-hidden="true" />
           )}
           {busy
-            ? "Cancelar activação"
+            ? t("Cancelar activação")
             : enabled
-              ? "Desactivar notificações"
-              : "Activar notificações"}
+              ? t("Desactivar notificações")
+              : t("Activar notificações")}
         </button>
       </div>
       <p
@@ -455,7 +463,7 @@ export function NotificationSettings({
         aria-live="polite"
         aria-atomic="true"
       >
-        {status}
+        {t(status)}
       </p>
     </section>
   );

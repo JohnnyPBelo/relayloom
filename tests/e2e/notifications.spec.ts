@@ -69,7 +69,7 @@ async function stubNotifications(page: Page) {
 async function boot(browser: Browser, clock = false) {
   const a = await launch(),
     b = await launch(),
-    context = await browser.newContext(),
+    context = await browser.newContext({ locale: "pt-PT" }),
     page = await context.newPage();
   try {
     await stubNotifications(page);

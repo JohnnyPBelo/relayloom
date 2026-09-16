@@ -1,3 +1,4 @@
+import { t, getLanguage } from "./i18n/core";
 import { useEffect, useId, useRef, useState } from "react";
 import { ArrowUpRight, Search, X, type LucideIcon } from "lucide-react";
 
@@ -13,7 +14,7 @@ const normalise = (value: string) =>
   value
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
-    .toLocaleLowerCase("pt-PT");
+    .toLocaleLowerCase(getLanguage());
 
 /** Only mounted while unlocked and open. No independent index or persistent queries. */
 export function CommandPalette({
@@ -67,10 +68,14 @@ export function CommandPalette({
     >
       <div className="command-heading">
         <div>
-          <span className="eyebrow">AO ALCANCE DE UM GESTO</span>
-          <h2 id={`${id}-title`}>O teu espaço, mais perto.</h2>
+          <span className="eyebrow">{t("AO ALCANCE DE UM GESTO")}</span>
+          <h2 id={`${id}-title`}>{t("O teu espaço, mais perto.")}</h2>
         </div>
-        <button className="icon" aria-label="Fechar pesquisa" onClick={close}>
+        <button
+          className="icon"
+          aria-label={t("Fechar pesquisa")}
+          onClick={close}
+        >
           <X size={20} />
         </button>
       </div>
@@ -80,7 +85,7 @@ export function CommandPalette({
           ref={input}
           type="text"
           role="combobox"
-          aria-label="Pesquisar no teu espaço"
+          aria-label={t("Pesquisar no teu espaço")}
           aria-expanded="true"
           aria-autocomplete="list"
           aria-controls={`${id}-results`}
@@ -91,7 +96,7 @@ export function CommandPalette({
           autoComplete="off"
           spellCheck={false}
           maxLength={256}
-          placeholder="Uma conversa, uma mensagem, um destino…"
+          placeholder={t("Uma conversa, uma mensagem, um destino…")}
           value={query}
           onChange={(event) => {
             setQuery(event.target.value);
@@ -113,14 +118,15 @@ export function CommandPalette({
         />
       </div>
       <p className="command-scope" id={`${id}-scope`}>
-        Conversas e mensagens carregadas neste dispositivo. Só conteúdo a que
-        tens acesso.
+        {t(
+          "Conversas e mensagens carregadas neste dispositivo. Só conteúdo a que tens acesso.",
+        )}
       </p>
       <div
         className="command-results"
         id={`${id}-results`}
         role="listbox"
-        aria-label="Resultados da pesquisa"
+        aria-label={t("Resultados da pesquisa")}
       >
         {results.map((command, index) => (
           <div
@@ -145,21 +151,24 @@ export function CommandPalette({
       {!results.length && (
         <div className="command-empty">
           <Search size={26} />
-          <strong>Nenhum fio encontrado.</strong>
+          <strong>{t("Nenhum fio encontrado.")}</strong>
           <p>
-            Experimenta outra palavra ou carrega mais histórico na conversa.
+            {t(
+              "Experimenta outra palavra ou carrega mais histórico na conversa.",
+            )}
           </p>
         </div>
       )}
       <footer className="command-footer">
         <span role="status">
           {matches.length > 40
-            ? "40 primeiros resultados · refina a pesquisa"
-            : `${results.length} ${results.length === 1 ? "resultado" : "resultados"}`}
+            ? t("40 primeiros resultados · refina a pesquisa")
+            : `${results.length} ${results.length === 1 ? t("resultado") : t("resultados")}`}
         </span>
         <span>
           <kbd>↑</kbd>
-          <kbd>↓</kbd> explorar <kbd>↵</kbd> abrir <kbd>esc</kbd> fechar
+          <kbd>↓</kbd> {t("explorar")} <kbd>↵</kbd> {t("abrir")} <kbd>esc</kbd>{" "}
+          {t("fechar")}
         </span>
       </footer>
     </dialog>
