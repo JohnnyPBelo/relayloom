@@ -20,8 +20,14 @@ jobs:
         with:
           node-version: "22"
           cache: npm
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.26.8"
+          cache: false
       - run: npm ci --ignore-scripts
       - run: npm run build
+      - name: Build the Go peer required by controller and runtime-selection tests
+        run: npm run native:build
       - run: npm test
       - name: Inspect runner-provided Chrome
         if: runner.os == 'Linux'

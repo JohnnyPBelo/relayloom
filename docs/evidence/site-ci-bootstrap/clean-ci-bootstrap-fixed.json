@@ -1,0 +1,42 @@
+{
+  "sourceCommit": "6dd879d39dea32813a20ac0593abeb309b2f3c33",
+  "binaryBuiltFromInitiallyAbsent": "clean-ci-bootstrap.json",
+  "priorDriverOmission": "The first clean check omitted npm run build assets, which CI already produces; preserved failed run.",
+  "steps": [
+    {
+      "name": "web-build",
+      "command": [
+        "node",
+        "/home/absint0o/projects/relayloom/node_modules/typescript/bin/tsc",
+        "--noEmit"
+      ],
+      "exitCode": 0,
+      "durationMs": 8492
+    },
+    {
+      "name": "assets",
+      "command": [
+        "node",
+        "/home/absint0o/projects/relayloom/node_modules/vite/bin/vite.js",
+        "build"
+      ],
+      "exitCode": 0,
+      "durationMs": 3174
+    },
+    {
+      "name": "controllers",
+      "command": [
+        "node",
+        "--import",
+        "/home/absint0o/projects/relayloom/node_modules/tsx/dist/loader.mjs",
+        "--test",
+        "--test-concurrency=1",
+        "tests/runtime-selection.test.ts",
+        "tests/site-publishing-client.test.ts"
+      ],
+      "exitCode": 0,
+      "durationMs": 25382
+    }
+  ],
+  "status": "PASS"
+}

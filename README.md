@@ -110,8 +110,11 @@ O leitor pode guardar e semear a cópia; editar exige a chave de assinatura da a
 
 ## Verificar
 
+Os testes de controladores lançam pares Node e Go reais; compile os assets e o executável nativo antes da suite.
+
 ```sh
 npm run build
+npm run native:build
 npm test
 npm run test:browser
 node scripts/verify-ui.mjs

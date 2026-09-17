@@ -1,0 +1,30 @@
+{
+  "sourceCommit": "6dd879d39dea32813a20ac0593abeb309b2f3c33",
+  "binaryAbsentInitially": true,
+  "steps": [
+    {
+      "name": "build",
+      "command": [
+        "node",
+        "scripts/native-build.mjs"
+      ],
+      "exitCode": 0,
+      "durationMs": 11387
+    },
+    {
+      "name": "controllers",
+      "command": [
+        "node",
+        "--import",
+        "/home/absint0o/projects/relayloom/node_modules/tsx/dist/loader.mjs",
+        "--test",
+        "--test-concurrency=1",
+        "tests/runtime-selection.test.ts",
+        "tests/site-publishing-client.test.ts"
+      ],
+      "exitCode": 1,
+      "durationMs": 13294
+    }
+  ],
+  "status": "FAIL"
+}
