@@ -1,0 +1,33 @@
+{
+  "tree": "13cffef86ead5e113318749227aef315abd0ffac",
+  "root": "/home/absint0o/projects/relayloom/.cache/site-revisions/temp-fix-candidate/ddf0cbb5-549d-44f4-9f00-439c1940420e",
+  "fixtureCacheInitiallyAbsent": true,
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "typecheck",
+      "args": [
+        "/home/absint0o/projects/relayloom/node_modules/typescript/bin/tsc",
+        "--noEmit"
+      ],
+      "code": 0,
+      "durationMs": 6813
+    },
+    {
+      "name": "tests",
+      "args": [
+        "--import",
+        "tsx",
+        "--test",
+        "--test-concurrency=1",
+        "tests/site-catalog-process.test.ts",
+        "tests/site-catalog-profile.test.ts",
+        "tests/site-catalog.test.ts",
+        "tests/site-private-storage.test.ts",
+        "tests/stored-bundles.test.ts"
+      ],
+      "code": 0,
+      "durationMs": 3754
+    }
+  ]
+}

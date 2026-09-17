@@ -1,0 +1,35 @@
+native-node (macos-latest)	Run npm test	2026-09-17T03:49:34.7065120Z not ok 245 - actual process interruption at site prepare-before preserves the publication boundary
+native-node (macos-latest)	Run npm test	2026-09-17T03:49:34.7067600Z   error: "ENOENT: no such file or directory, mkdtemp '/Users/runner/work/relayloom/relayloom/.cache/tmp/site-process-XXXXXX'"
+native-node (macos-latest)	Run npm test	2026-09-17T03:49:34.7073810Z not ok 246 - actual process interruption at site prepare-after preserves the publication boundary
+native-node (macos-latest)	Run npm test	2026-09-17T03:49:34.7076190Z   error: "ENOENT: no such file or directory, mkdtemp '/Users/runner/work/relayloom/relayloom/.cache/tmp/site-process-XXXXXX'"
+native-node (macos-latest)	Run npm test	2026-09-17T03:49:34.7086600Z not ok 247 - actual process interruption at site commit-before preserves the publication boundary
+native-node (macos-latest)	Run npm test	2026-09-17T03:49:34.7088770Z   error: "ENOENT: no such file or directory, mkdtemp '/Users/runner/work/relayloom/relayloom/.cache/tmp/site-process-XXXXXX'"
+native-node (macos-latest)	Run npm test	2026-09-17T03:49:34.7094390Z not ok 248 - actual process interruption at site commit-after preserves the publication boundary
+native-node (macos-latest)	Run npm test	2026-09-17T03:49:34.7096410Z   error: "ENOENT: no such file or directory, mkdtemp '/Users/runner/work/relayloom/relayloom/.cache/tmp/site-process-XXXXXX'"
+native-node (macos-latest)	Run npm test	2026-09-17T03:49:34.7105400Z not ok 249 - actual process interruption at site copy preserves the publication boundary
+native-node (macos-latest)	Run npm test	2026-09-17T03:49:34.7108970Z   error: "ENOENT: no such file or directory, mkdtemp '/Users/runner/work/relayloom/relayloom/.cache/tmp/site-process-XXXXXX'"
+native-node (macos-latest)	Run npm test	2026-09-17T03:49:34.8936030Z not ok 250 - site transactions share the real bound application profile without changing its existing private state
+native-node (macos-latest)	Run npm test	2026-09-17T03:49:34.8938250Z   error: "ENOENT: no such file or directory, mkdtemp '/Users/runner/work/relayloom/relayloom/.cache/tmp/site-bound-profile-XXXXXX'"
+native-node (macos-latest)	Run npm test	2026-09-17T03:49:35.0359590Z not ok 251 - catalog atomically persists preparation, authorization and exact public-copy recovery across database restart
+native-node (macos-latest)	Run npm test	2026-09-17T03:49:35.0365880Z   error: "ENOENT: no such file or directory, mkdtemp '/Users/runner/work/relayloom/relayloom/.cache/tmp/site-catalog-XXXXXX'"
+native-node (macos-latest)	Run npm test	2026-09-17T03:49:35.0379170Z not ok 252 - another signed head appearing before authorization supersedes a private preparation without publishing it
+native-node (macos-latest)	Run npm test	2026-09-17T03:49:35.0385380Z   error: "ENOENT: no such file or directory, mkdtemp '/Users/runner/work/relayloom/relayloom/.cache/tmp/site-catalog-XXXXXX'"
+native-node (macos-latest)	Run npm test	2026-09-17T03:49:35.0420270Z not ok 253 - staging capacity failure cannot leave a catalog entry, partial bundle or changed prior operation
+native-node (macos-latest)	Run npm test	2026-09-17T03:49:35.0423450Z   error: "ENOENT: no such file or directory, mkdtemp '/Users/runner/work/relayloom/relayloom/.cache/tmp/site-catalog-XXXXXX'"
+native-node (macos-latest)	Run npm test	2026-09-17T03:49:35.0433440Z not ok 254 - expired preparations remain recoverable as terminal outcomes without treating the profile as corrupt
+native-node (macos-latest)	Run npm test	2026-09-17T03:49:35.0436330Z   error: "ENOENT: no such file or directory, mkdtemp '/Users/runner/work/relayloom/relayloom/.cache/tmp/site-catalog-XXXXXX'"
+native-node (macos-latest)	Run npm test	2026-09-17T03:49:35.0442870Z not ok 255 - public retries recover the exact first envelope; private retries cannot silently change a reading envelope
+native-node (macos-latest)	Run npm test	2026-09-17T03:49:35.0444960Z   error: "ENOENT: no such file or directory, mkdtemp '/Users/runner/work/relayloom/relayloom/.cache/tmp/site-catalog-XXXXXX'"
+native-node (macos-latest)	Run npm test	2026-09-17T03:49:35.0451450Z not ok 256 - repeated verified observations do not rewrite the encrypted catalog
+native-node (macos-latest)	Run npm test	2026-09-17T03:49:35.0453480Z   error: "ENOENT: no such file or directory, mkdtemp '/Users/runner/work/relayloom/relayloom/.cache/tmp/site-catalog-XXXXXX'"
+native-node (macos-latest)	Run npm test	2026-09-17T03:49:35.8431400Z not ok 319 - private site staging survives SQLite restart and does not expose signatures to the reading secret
+native-node (macos-latest)	Run npm test	2026-09-17T03:49:35.8433690Z   error: "ENOENT: no such file or directory, mkdtemp '/Users/runner/work/relayloom/relayloom/.cache/tmp/site-private-XXXXXX'"
+native-node (macos-latest)	Run npm test	2026-09-17T03:49:35.8444230Z not ok 320 - private staging quota failure aborts all record changes even when its error is caught
+native-node (macos-latest)	Run npm test	2026-09-17T03:49:35.8449600Z   error: "ENOENT: no such file or directory, mkdtemp '/Users/runner/work/relayloom/relayloom/.cache/tmp/site-private-quota-XXXXXX'"
+native-node (macos-latest)	Run npm test	2026-09-17T03:49:35.8464280Z not ok 321 - private record handles expire at the synchronous transaction boundary
+native-node (macos-latest)	Run npm test	2026-09-17T03:49:35.8506090Z   error: "ENOENT: no such file or directory, mkdtemp '/Users/runner/work/relayloom/relayloom/.cache/tmp/site-private-handle-XXXXXX'"
+native-node (macos-latest)	Run npm test	2026-09-17T03:49:35.8512150Z not ok 322 - missing and transposed ciphertext are rejected even inside an otherwise authentic outer database
+native-node (macos-latest)	Run npm test	2026-09-17T03:49:35.8514210Z   error: "ENOENT: no such file or directory, mkdtemp '/Users/runner/work/relayloom/relayloom/.cache/tmp/site-private-corrupt-XXXXXX'"
+native-node (macos-latest)	Run npm test	2026-09-17T03:49:47.3958520Z not ok 353 - authenticated historical decoding does not make expired content admissible or decryptable by another identity
+native-node (macos-latest)	Run npm test	2026-09-17T03:49:47.3966980Z   error: "ENOENT: no such file or directory, mkdtemp '/Users/runner/work/relayloom/relayloom/.cache/tmp/stored-bundle-XXXXXX'"
+native-node (macos-latest)	Run npm test	2026-09-17T03:50:10.3136160Z # fail 17

@@ -1,0 +1,35 @@
+native-node (windows-latest)	Run npm test	2026-09-17T03:41:28.1095519Z not ok 245 - actual process interruption at site prepare-before preserves the publication boundary
+native-node (windows-latest)	Run npm test	2026-09-17T03:41:28.1099771Z   error: "ENOENT: no such file or directory, mkdtemp 'D:\\a\\relayloom\\relayloom\\.cache\\tmp\\site-process-XXXXXX'"
+native-node (windows-latest)	Run npm test	2026-09-17T03:41:28.1107690Z not ok 246 - actual process interruption at site prepare-after preserves the publication boundary
+native-node (windows-latest)	Run npm test	2026-09-17T03:41:28.1111843Z   error: "ENOENT: no such file or directory, mkdtemp 'D:\\a\\relayloom\\relayloom\\.cache\\tmp\\site-process-XXXXXX'"
+native-node (windows-latest)	Run npm test	2026-09-17T03:41:28.1121814Z not ok 247 - actual process interruption at site commit-before preserves the publication boundary
+native-node (windows-latest)	Run npm test	2026-09-17T03:41:28.1124280Z   error: "ENOENT: no such file or directory, mkdtemp 'D:\\a\\relayloom\\relayloom\\.cache\\tmp\\site-process-XXXXXX'"
+native-node (windows-latest)	Run npm test	2026-09-17T03:41:28.1129683Z not ok 248 - actual process interruption at site commit-after preserves the publication boundary
+native-node (windows-latest)	Run npm test	2026-09-17T03:41:28.1131832Z   error: "ENOENT: no such file or directory, mkdtemp 'D:\\a\\relayloom\\relayloom\\.cache\\tmp\\site-process-XXXXXX'"
+native-node (windows-latest)	Run npm test	2026-09-17T03:41:28.1140142Z not ok 249 - actual process interruption at site copy preserves the publication boundary
+native-node (windows-latest)	Run npm test	2026-09-17T03:41:28.1143434Z   error: "ENOENT: no such file or directory, mkdtemp 'D:\\a\\relayloom\\relayloom\\.cache\\tmp\\site-process-XXXXXX'"
+native-node (windows-latest)	Run npm test	2026-09-17T03:41:28.3970145Z not ok 250 - site transactions share the real bound application profile without changing its existing private state
+native-node (windows-latest)	Run npm test	2026-09-17T03:41:28.3974149Z   error: "ENOENT: no such file or directory, mkdtemp 'D:\\a\\relayloom\\relayloom\\.cache\\tmp\\site-bound-profile-XXXXXX'"
+native-node (windows-latest)	Run npm test	2026-09-17T03:41:28.6803299Z not ok 251 - catalog atomically persists preparation, authorization and exact public-copy recovery across database restart
+native-node (windows-latest)	Run npm test	2026-09-17T03:41:28.6806649Z   error: "ENOENT: no such file or directory, mkdtemp 'D:\\a\\relayloom\\relayloom\\.cache\\tmp\\site-catalog-XXXXXX'"
+native-node (windows-latest)	Run npm test	2026-09-17T03:41:28.6815995Z not ok 252 - another signed head appearing before authorization supersedes a private preparation without publishing it
+native-node (windows-latest)	Run npm test	2026-09-17T03:41:28.6820014Z   error: "ENOENT: no such file or directory, mkdtemp 'D:\\a\\relayloom\\relayloom\\.cache\\tmp\\site-catalog-XXXXXX'"
+native-node (windows-latest)	Run npm test	2026-09-17T03:41:28.6842541Z not ok 253 - staging capacity failure cannot leave a catalog entry, partial bundle or changed prior operation
+native-node (windows-latest)	Run npm test	2026-09-17T03:41:28.6846422Z   error: "ENOENT: no such file or directory, mkdtemp 'D:\\a\\relayloom\\relayloom\\.cache\\tmp\\site-catalog-XXXXXX'"
+native-node (windows-latest)	Run npm test	2026-09-17T03:41:28.6857634Z not ok 254 - expired preparations remain recoverable as terminal outcomes without treating the profile as corrupt
+native-node (windows-latest)	Run npm test	2026-09-17T03:41:28.6861711Z   error: "ENOENT: no such file or directory, mkdtemp 'D:\\a\\relayloom\\relayloom\\.cache\\tmp\\site-catalog-XXXXXX'"
+native-node (windows-latest)	Run npm test	2026-09-17T03:41:28.6872171Z not ok 255 - public retries recover the exact first envelope; private retries cannot silently change a reading envelope
+native-node (windows-latest)	Run npm test	2026-09-17T03:41:28.6875963Z   error: "ENOENT: no such file or directory, mkdtemp 'D:\\a\\relayloom\\relayloom\\.cache\\tmp\\site-catalog-XXXXXX'"
+native-node (windows-latest)	Run npm test	2026-09-17T03:41:28.6885548Z not ok 256 - repeated verified observations do not rewrite the encrypted catalog
+native-node (windows-latest)	Run npm test	2026-09-17T03:41:28.6889322Z   error: "ENOENT: no such file or directory, mkdtemp 'D:\\a\\relayloom\\relayloom\\.cache\\tmp\\site-catalog-XXXXXX'"
+native-node (windows-latest)	Run npm test	2026-09-17T03:41:30.0838909Z not ok 319 - private site staging survives SQLite restart and does not expose signatures to the reading secret
+native-node (windows-latest)	Run npm test	2026-09-17T03:41:30.0843750Z   error: "ENOENT: no such file or directory, mkdtemp 'D:\\a\\relayloom\\relayloom\\.cache\\tmp\\site-private-XXXXXX'"
+native-node (windows-latest)	Run npm test	2026-09-17T03:41:30.0853485Z not ok 320 - private staging quota failure aborts all record changes even when its error is caught
+native-node (windows-latest)	Run npm test	2026-09-17T03:41:30.0857188Z   error: "ENOENT: no such file or directory, mkdtemp 'D:\\a\\relayloom\\relayloom\\.cache\\tmp\\site-private-quota-XXXXXX'"
+native-node (windows-latest)	Run npm test	2026-09-17T03:41:30.0903800Z not ok 321 - private record handles expire at the synchronous transaction boundary
+native-node (windows-latest)	Run npm test	2026-09-17T03:41:30.0946531Z   error: "ENOENT: no such file or directory, mkdtemp 'D:\\a\\relayloom\\relayloom\\.cache\\tmp\\site-private-handle-XXXXXX'"
+native-node (windows-latest)	Run npm test	2026-09-17T03:41:30.0962412Z not ok 322 - missing and transposed ciphertext are rejected even inside an otherwise authentic outer database
+native-node (windows-latest)	Run npm test	2026-09-17T03:41:30.0966989Z   error: "ENOENT: no such file or directory, mkdtemp 'D:\\a\\relayloom\\relayloom\\.cache\\tmp\\site-private-corrupt-XXXXXX'"
+native-node (windows-latest)	Run npm test	2026-09-17T03:41:42.5068325Z not ok 353 - authenticated historical decoding does not make expired content admissible or decryptable by another identity
+native-node (windows-latest)	Run npm test	2026-09-17T03:41:42.5072315Z   error: "ENOENT: no such file or directory, mkdtemp 'D:\\a\\relayloom\\relayloom\\.cache\\tmp\\stored-bundle-XXXXXX'"
+native-node (windows-latest)	Run npm test	2026-09-17T03:42:00.3100718Z # fail 17

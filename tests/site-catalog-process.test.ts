@@ -1,6 +1,7 @@
+import { projectTemp } from "./project-temp";
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { rmSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 import { randomUUID } from "node:crypto";
@@ -45,7 +46,7 @@ for (const mode of [
       mode +
       " preserves the publication boundary",
     () => {
-      const dir = mkdtempSync(join(resolve(".cache/tmp"), "site-process-")),
+      const dir = projectTemp("site-process-"),
         owner = createIdentity("Process author");
       let store: ProtectedGroupStore | undefined = new ProtectedGroupStore(
         join(dir, "private.sqlite"),

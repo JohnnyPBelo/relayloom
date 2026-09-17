@@ -1,6 +1,7 @@
+import { projectTemp } from "./project-temp";
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { readFileSync, rmSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { randomUUID } from "node:crypto";
 import {
@@ -20,7 +21,7 @@ import { createSiteContentProtocol } from "../packages/sites/src/content";
 import { nodeCertificateCrypto } from "../packages/core/src/certificate-crypto";
 
 test("site transactions share the real bound application profile without changing its existing private state", () => {
-  const dir = mkdtempSync(join(resolve(".cache/tmp"), "site-bound-profile-")),
+  const dir = projectTemp("site-bound-profile-"),
     owner = createIdentity("Bound profile owner"),
     legacyPath = join(dir, "private-state.json");
   const lease = new ProfileOwnership(dir);

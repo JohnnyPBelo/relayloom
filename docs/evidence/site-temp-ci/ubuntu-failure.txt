@@ -1,0 +1,35 @@
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:19.1303559Z not ok 245 - actual process interruption at site prepare-before preserves the publication boundary
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:19.1308057Z   error: "ENOENT: no such file or directory, mkdtemp '/home/runner/work/relayloom/relayloom/.cache/tmp/site-process-XXXXXX'"
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:19.1315920Z not ok 246 - actual process interruption at site prepare-after preserves the publication boundary
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:19.1320315Z   error: "ENOENT: no such file or directory, mkdtemp '/home/runner/work/relayloom/relayloom/.cache/tmp/site-process-XXXXXX'"
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:19.1327862Z not ok 247 - actual process interruption at site commit-before preserves the publication boundary
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:19.1330613Z   error: "ENOENT: no such file or directory, mkdtemp '/home/runner/work/relayloom/relayloom/.cache/tmp/site-process-XXXXXX'"
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:19.1337795Z not ok 248 - actual process interruption at site commit-after preserves the publication boundary
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:19.1344658Z   error: "ENOENT: no such file or directory, mkdtemp '/home/runner/work/relayloom/relayloom/.cache/tmp/site-process-XXXXXX'"
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:19.1354316Z not ok 249 - actual process interruption at site copy preserves the publication boundary
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:19.1357562Z   error: "ENOENT: no such file or directory, mkdtemp '/home/runner/work/relayloom/relayloom/.cache/tmp/site-process-XXXXXX'"
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:19.3367399Z not ok 250 - site transactions share the real bound application profile without changing its existing private state
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:19.3370626Z   error: "ENOENT: no such file or directory, mkdtemp '/home/runner/work/relayloom/relayloom/.cache/tmp/site-bound-profile-XXXXXX'"
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:19.5390716Z not ok 251 - catalog atomically persists preparation, authorization and exact public-copy recovery across database restart
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:19.5395620Z   error: "ENOENT: no such file or directory, mkdtemp '/home/runner/work/relayloom/relayloom/.cache/tmp/site-catalog-XXXXXX'"
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:19.5407731Z not ok 252 - another signed head appearing before authorization supersedes a private preparation without publishing it
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:19.5412893Z   error: "ENOENT: no such file or directory, mkdtemp '/home/runner/work/relayloom/relayloom/.cache/tmp/site-catalog-XXXXXX'"
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:19.5426314Z not ok 253 - staging capacity failure cannot leave a catalog entry, partial bundle or changed prior operation
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:19.5431605Z   error: "ENOENT: no such file or directory, mkdtemp '/home/runner/work/relayloom/relayloom/.cache/tmp/site-catalog-XXXXXX'"
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:19.5444678Z not ok 254 - expired preparations remain recoverable as terminal outcomes without treating the profile as corrupt
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:19.5449626Z   error: "ENOENT: no such file or directory, mkdtemp '/home/runner/work/relayloom/relayloom/.cache/tmp/site-catalog-XXXXXX'"
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:19.5464130Z not ok 255 - public retries recover the exact first envelope; private retries cannot silently change a reading envelope
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:19.5469143Z   error: "ENOENT: no such file or directory, mkdtemp '/home/runner/work/relayloom/relayloom/.cache/tmp/site-catalog-XXXXXX'"
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:19.5482299Z not ok 256 - repeated verified observations do not rewrite the encrypted catalog
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:19.5486632Z   error: "ENOENT: no such file or directory, mkdtemp '/home/runner/work/relayloom/relayloom/.cache/tmp/site-catalog-XXXXXX'"
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:20.5900875Z not ok 319 - private site staging survives SQLite restart and does not expose signatures to the reading secret
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:20.5904321Z   error: "ENOENT: no such file or directory, mkdtemp '/home/runner/work/relayloom/relayloom/.cache/tmp/site-private-XXXXXX'"
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:20.5913698Z not ok 320 - private staging quota failure aborts all record changes even when its error is caught
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:20.5918351Z   error: "ENOENT: no such file or directory, mkdtemp '/home/runner/work/relayloom/relayloom/.cache/tmp/site-private-quota-XXXXXX'"
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:20.5925381Z not ok 321 - private record handles expire at the synchronous transaction boundary
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:20.5929202Z   error: "ENOENT: no such file or directory, mkdtemp '/home/runner/work/relayloom/relayloom/.cache/tmp/site-private-handle-XXXXXX'"
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:20.5960395Z not ok 322 - missing and transposed ciphertext are rejected even inside an otherwise authentic outer database
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:20.6008615Z   error: "ENOENT: no such file or directory, mkdtemp '/home/runner/work/relayloom/relayloom/.cache/tmp/site-private-corrupt-XXXXXX'"
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:30.2497432Z not ok 353 - authenticated historical decoding does not make expired content admissible or decryptable by another identity
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:30.2500645Z   error: "ENOENT: no such file or directory, mkdtemp '/home/runner/work/relayloom/relayloom/.cache/tmp/stored-bundle-XXXXXX'"
+native-node (ubuntu-latest)	Run npm test	2026-09-17T03:40:52.7651511Z # fail 17

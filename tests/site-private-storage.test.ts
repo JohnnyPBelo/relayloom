@@ -1,6 +1,7 @@
+import { projectTemp } from "./project-temp";
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { mkdtempSync, rmSync } from "node:fs";
+import { rmSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { createDecipheriv, hkdfSync } from "node:crypto";
 import { createIdentity, canonical, hash } from "../packages/core/src/index";
@@ -9,12 +10,11 @@ import {
   RegistryCapacityError,
 } from "../packages/groups/src/storage";
 import { SitePrivateRecords } from "../packages/sites/src/private-storage";
-const root = resolve(".cache/tmp");
 const key = "site:" + hash("site key") + ":stage";
 const other = "site:" + hash("other key") + ":stage";
 
 test("private site staging survives SQLite restart and does not expose signatures to the reading secret", () => {
-  const dir = mkdtempSync(join(root, "site-private-")),
+  const dir = projectTemp("site-private-"),
     owner = createIdentity("Staging owner"),
     file = join(dir, "profile.sqlite");
   let store = new ProtectedGroupStore(file, owner, { create: true });
@@ -77,7 +77,7 @@ test("private site staging survives SQLite restart and does not expose signature
 });
 
 test("private staging quota failure aborts all record changes even when its error is caught", () => {
-  const dir = mkdtempSync(join(root, "site-private-quota-")),
+  const dir = projectTemp("site-private-quota-"),
     owner = createIdentity("Staging quota"),
     file = join(dir, "profile.sqlite");
   const store = new ProtectedGroupStore(file, owner, {
@@ -128,7 +128,7 @@ test("private staging quota failure aborts all record changes even when its erro
 });
 
 test("private record handles expire at the synchronous transaction boundary", () => {
-  const dir = mkdtempSync(join(root, "site-private-handle-")),
+  const dir = projectTemp("site-private-handle-"),
     owner = createIdentity("Staging handle"),
     file = join(dir, "profile.sqlite");
   const store = new ProtectedGroupStore(file, owner, { create: true });
@@ -157,7 +157,7 @@ test("private record handles expire at the synchronous transaction boundary", ()
 
 test("missing and transposed ciphertext are rejected even inside an otherwise authentic outer database", () => {
   for (const mode of ["missing", "swap"]) {
-    const dir = mkdtempSync(join(root, "site-private-corrupt-")),
+    const dir = projectTemp("site-private-corrupt-"),
       owner = createIdentity("Staging integrity"),
       file = join(dir, "profile.sqlite");
     const store = new ProtectedGroupStore(file, owner, { create: true });

@@ -1,3 +1,4 @@
+import { projectTemp } from "./project-temp";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
@@ -9,14 +10,14 @@ import {
   decryptStoredBundle,
   ContentStore,
 } from "../packages/core/src/index";
-import { mkdtempSync, rmSync } from "node:fs";
+import { rmSync } from "node:fs";
 import { join, resolve } from "node:path";
 
 test("authenticated historical decoding does not make expired content admissible or decryptable by another identity", () => {
   const original = Date.now;
   let now = original();
   Date.now = () => now;
-  const dir = mkdtempSync(join(resolve(".cache/tmp"), "stored-bundle-"));
+  const dir = projectTemp("stored-bundle-");
   try {
     const owner = createIdentity("Archive author"),
       reader = createIdentity("Archive reader"),

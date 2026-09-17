@@ -1,6 +1,7 @@
+import { projectTemp } from "./project-temp";
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { mkdtempSync, rmSync } from "node:fs";
+import { rmSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { randomUUID } from "node:crypto";
 import {
@@ -41,7 +42,7 @@ const payload = (text = "A private preparation") => ({
   },
 });
 function fixture(limits?: { totalBytes: number; reserveBytes: number }) {
-  const dir = mkdtempSync(join(resolve(".cache/tmp"), "site-catalog-")),
+  const dir = projectTemp("site-catalog-"),
     owner = createIdentity("Catalog owner"),
     path = join(dir, "private.sqlite");
   let store = new ProtectedGroupStore(path, owner, {

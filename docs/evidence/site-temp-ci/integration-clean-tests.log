@@ -1,0 +1,190 @@
+TAP version 13
+# (node:2793222) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: failed application profile commit cannot publish and a failed public copy remains recoverable
+ok 1 - failed application profile commit cannot publish and a failed public copy remains recoverable
+  ---
+  duration_ms: 802.790632
+  type: 'test'
+  ...
+# Subtest: the real application recovers its exact publication after process exit between authorization and public storage
+ok 2 - the real application recovers its exact publication after process exit between authorization and public storage
+  ---
+  duration_ms: 3658.457843
+  type: 'test'
+  ...
+# Subtest: a known newer head without bytes never falls back to an older site, including after profile unlock
+ok 3 - a known newer head without bytes never falls back to an older site, including after profile unlock
+  ---
+  duration_ms: 585.48888
+  type: 'test'
+  ...
+# Subtest: blocking a private-site reader pauses a committed copy and clears the publication error after resumption
+ok 4 - blocking a private-site reader pauses a committed copy and clears the publication error after resumption
+  ---
+  duration_ms: 513.311358
+  type: 'test'
+  ...
+# Subtest: real application APIs preserve revision identity, resolve updates and serve a new reader after the author exits
+ok 5 - real application APIs preserve revision identity, resolve updates and serve a new reader after the author exits
+  ---
+  duration_ms: 1860.151367
+  type: 'test'
+  ...
+# Subtest: private site APIs preserve reading scope and generic publication cannot bypass version authority
+ok 6 - private site APIs preserve reading scope and generic publication cannot bypass version authority
+  ---
+  duration_ms: 1731.047614
+  type: 'test'
+  ...
+# Subtest: a valid outer signature cannot smuggle another owner snapshot into application storage through TCP
+ok 7 - a valid outer signature cannot smuggle another owner snapshot into application storage through TCP
+  ---
+  duration_ms: 697.32647
+  type: 'test'
+  ...
+# Subtest: two installations with the same owner preserve a fork until the owner explicitly confirms all known heads
+ok 8 - two installations with the same owner preserve a fork until the owner explicitly confirms all known heads
+  ---
+  duration_ms: 1562.238882
+  type: 'test'
+  ...
+# (node:2794206) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: actual process interruption at site prepare-before preserves the publication boundary
+ok 9 - actual process interruption at site prepare-before preserves the publication boundary
+  ---
+  duration_ms: 331.231483
+  type: 'test'
+  ...
+# Subtest: actual process interruption at site prepare-after preserves the publication boundary
+ok 10 - actual process interruption at site prepare-after preserves the publication boundary
+  ---
+  duration_ms: 316.662779
+  type: 'test'
+  ...
+# Subtest: actual process interruption at site commit-before preserves the publication boundary
+ok 11 - actual process interruption at site commit-before preserves the publication boundary
+  ---
+  duration_ms: 303.737175
+  type: 'test'
+  ...
+# Subtest: actual process interruption at site commit-after preserves the publication boundary
+ok 12 - actual process interruption at site commit-after preserves the publication boundary
+  ---
+  duration_ms: 345.286785
+  type: 'test'
+  ...
+# Subtest: actual process interruption at site copy preserves the publication boundary
+ok 13 - actual process interruption at site copy preserves the publication boundary
+  ---
+  duration_ms: 335.296664
+  type: 'test'
+  ...
+# (node:2794500) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: site transactions share the real bound application profile without changing its existing private state
+ok 14 - site transactions share the real bound application profile without changing its existing private state
+  ---
+  duration_ms: 167.036881
+  type: 'test'
+  ...
+# (node:2794527) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: catalog atomically persists preparation, authorization and exact public-copy recovery across database restart
+ok 15 - catalog atomically persists preparation, authorization and exact public-copy recovery across database restart
+  ---
+  duration_ms: 248.164504
+  type: 'test'
+  ...
+# Subtest: another signed head appearing before authorization supersedes a private preparation without publishing it
+ok 16 - another signed head appearing before authorization supersedes a private preparation without publishing it
+  ---
+  duration_ms: 122.329271
+  type: 'test'
+  ...
+# Subtest: staging capacity failure cannot leave a catalog entry, partial bundle or changed prior operation
+ok 17 - staging capacity failure cannot leave a catalog entry, partial bundle or changed prior operation
+  ---
+  duration_ms: 100.795708
+  type: 'test'
+  ...
+# Subtest: expired preparations remain recoverable as terminal outcomes without treating the profile as corrupt
+ok 18 - expired preparations remain recoverable as terminal outcomes without treating the profile as corrupt
+  ---
+  duration_ms: 215.271664
+  type: 'test'
+  ...
+# Subtest: public retries recover the exact first envelope; private retries cannot silently change a reading envelope
+ok 19 - public retries recover the exact first envelope; private retries cannot silently change a reading envelope
+  ---
+  duration_ms: 126.928774
+  type: 'test'
+  ...
+# Subtest: repeated verified observations do not rewrite the encrypted catalog
+ok 20 - repeated verified observations do not rewrite the encrypted catalog
+  ---
+  duration_ms: 62.697489
+  type: 'test'
+  ...
+# (node:2794619) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: private site staging survives SQLite restart and does not expose signatures to the reading secret
+ok 21 - private site staging survives SQLite restart and does not expose signatures to the reading secret
+  ---
+  duration_ms: 105.83198
+  type: 'test'
+  ...
+# Subtest: private staging quota failure aborts all record changes even when its error is caught
+ok 22 - private staging quota failure aborts all record changes even when its error is caught
+  ---
+  duration_ms: 74.793978
+  type: 'test'
+  ...
+# Subtest: private record handles expire at the synchronous transaction boundary
+ok 23 - private record handles expire at the synchronous transaction boundary
+  ---
+  duration_ms: 25.327996
+  type: 'test'
+  ...
+# Subtest: missing and transposed ciphertext are rejected even inside an otherwise authentic outer database
+ok 24 - missing and transposed ciphertext are rejected even inside an otherwise authentic outer database
+  ---
+  duration_ms: 139.73319
+  type: 'test'
+  ...
+# (node:2794661) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: logical site publication replays the same public or private result before and after staging retirement
+ok 25 - logical site publication replays the same public or private result before and after staging retirement
+  ---
+  duration_ms: 316.897769
+  type: 'test'
+  ...
+# Subtest: request fingerprints bind exact reading cards, base, lifetime and document consistently across crypto runtimes
+ok 26 - request fingerprints bind exact reading cards, base, lifetime and document consistently across crypto runtimes
+  ---
+  duration_ms: 27.022013
+  type: 'test'
+  ...
+# Subtest: authenticated historical decoding does not make expired content admissible or decryptable by another identity
+ok 27 - authenticated historical decoding does not make expired content admissible or decryptable by another identity
+  ---
+  duration_ms: 27.186761
+  type: 'test'
+  ...
+# Subtest: historical time extraction rejects accessors without invoking them
+ok 28 - historical time extraction rejects accessors without invoking them
+  ---
+  duration_ms: 0.209443
+  type: 'test'
+  ...
+1..28
+# tests 28
+# suites 0
+# pass 28
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 16490.436208
