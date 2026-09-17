@@ -1,0 +1,63 @@
+{
+  "started": "2026-09-17T13:29:37.056Z",
+  "status": "PASS",
+  "sources": {
+    "packages/browser/src/application.ts": "5d9c790211e4bb61949a154616d18fffc9c856a024c3c0abee3a33d859362956",
+    "packages/browser/src/profile.ts": "7d60f0ce6bf89c739c7b960e59619dbb5d7a21b5f6a99e8e400d4e818d5951af",
+    "packages/browser/src/crypto.ts": "526e8a4578b8a8f97505c73a872ca7abfc1e24eae1d34d9b1f9cca6de0d993a4",
+    "packages/browser/src/mesh.ts": "d564eb23ad61f4a4a7d3e5bd64d940c7354847fb4759ab67896615a57296d129",
+    "packages/browser/src/site-content.ts": "b951195d0215ce18693d147c91a081b797478540866151126730f6aa66828115",
+    "packages/browser/src/site-catalog.ts": "3858a3458dbd092e632d3ef894d94433fe9d5003847f186cb9f072d6fc8f0196",
+    "packages/browser/src/site-runtime.ts": "1b652a4ce0ae6a231b19ff4e7dad92f05e6a2d9e5b67ccb86f3a550cf4c0990d",
+    "tests/browser/site-api.spec.ts": "c8f4bc344d61a2aeada1d612dfd4b42c60a32061fb28ab0f4e57452373d4113d",
+    "tests/browser/site-catalog.spec.ts": "69e62f2830cd2b97445b16724b8bcaa6fbe3fdf62c4ea13ed03d7764b1a6fa4c",
+    "tests/browser/private-values.spec.ts": "53ddc71abde8842d8eccf4684f86ccc8724c37458770f6d9417899fd8bd3446a",
+    "tests/browser/application-api.spec.ts": "1188e5b0d00c3de7fdc43ff8a8963284014e0cddf61633578ad91fa89075f55b"
+  },
+  "steps": [
+    {
+      "engine": "chromium",
+      "args": [
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "tests/browser/site-catalog.spec.ts",
+        "tests/browser/site-api.spec.ts",
+        "tests/browser/private-values.spec.ts",
+        "tests/browser/application-api.spec.ts"
+      ],
+      "exitCode": 0,
+      "durationMs": 17456
+    },
+    {
+      "engine": "firefox",
+      "args": [
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "tests/browser/site-catalog.spec.ts",
+        "tests/browser/site-api.spec.ts",
+        "tests/browser/private-values.spec.ts",
+        "tests/browser/application-api.spec.ts"
+      ],
+      "exitCode": 0,
+      "durationMs": 37754
+    },
+    {
+      "engine": "webkit",
+      "args": [
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "tests/browser/site-catalog.spec.ts",
+        "tests/browser/site-api.spec.ts",
+        "tests/browser/private-values.spec.ts",
+        "tests/browser/application-api.spec.ts"
+      ],
+      "exitCode": 0,
+      "durationMs": 18113
+    }
+  ],
+  "finished": "2026-09-17T13:30:50.383Z",
+  "sourcesStable": true
+}

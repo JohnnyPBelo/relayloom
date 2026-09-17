@@ -1,6 +1,7 @@
 import { exactShape } from "../../core/src/protocol";
 import type { Bundle } from "../../core/src/protocol";
 import { verifiedBundle } from "./crypto";
+import { inspectPublicSite } from "./site-content";
 import type { PublicIdentity } from "../../core/src/protocol";
 export interface MeshProfile {
   readonly name: string;
@@ -215,6 +216,7 @@ export class BrowserMesh {
         throw new Error("Controlos de grupo ainda não ligados ao motor web");
       if (this.#settings.blocked.includes(bundle.manifest.author.id))
         throw new Error("Origem bloqueada");
+      await inspectPublicSite(bundle);
     } else if (
       !wire ||
       !exactShape(wire, ["type", "ids"]) ||

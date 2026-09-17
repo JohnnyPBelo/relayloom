@@ -1,3 +1,4 @@
+import { BrowserSiteCatalog } from "../../packages/browser/src/site-catalog";
 // Test-only exports. Never included in the shipped client or a served control API.
 import * as crypto from "../../packages/browser/src/crypto";
 import {
@@ -24,6 +25,7 @@ Object.assign(window, {
     sites: browserSiteRevisions,
     ...packet,
     BrowserProfile,
+    BrowserSiteCatalog,
     PRIVATE_VALUE_LIMITS,
     BrowserMesh,
     BrowserRouter,

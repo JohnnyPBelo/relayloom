@@ -550,13 +550,19 @@ async function verifyManifestSnapshot(m: Manifest, now: number): Promise<void> {
     throw new Error("Assinatura inválida");
 }
 /** Returns an owned, verified snapshot: callers never persist mutable caller data after await. */
-export async function verifiedBundle(value: Bundle): Promise<Bundle> {
+async function verifiedBundleAt(
+  value: Bundle,
+  stored: boolean,
+): Promise<Bundle> {
   if (!exactShape(value, ["manifest", "chunks"]))
     throw new Error("Campos do conteúdo inválidos");
   const encoded = canonical(value);
   if (encoded.length > 6 * 1024 * 1024) throw new Error("Limite de conteúdo");
   const b = JSON.parse(encoded) as Bundle;
-  await verifyManifestSnapshot(b.manifest, Date.now());
+  await verifyManifestSnapshot(
+    b.manifest,
+    stored ? b.manifest.created : Date.now(),
+  );
   if (
     !b.chunks ||
     typeof b.chunks !== "object" ||
@@ -571,6 +577,14 @@ export async function verifiedBundle(value: Bundle): Promise<Bundle> {
   }
   return b;
 }
+export async function verifiedBundle(value: Bundle): Promise<Bundle> {
+  return verifiedBundleAt(value, false);
+}
+/** Authenticated private staging can be read to recover an expired outcome.
+ * This is never the admission or ordinary display path. */
+export async function verifiedStoredBundle(value: Bundle): Promise<Bundle> {
+  return verifiedBundleAt(value, true);
+}
 export async function verifyBundle(bundle: Bundle): Promise<void> {
   await verifiedBundle(bundle);
 }
@@ -578,9 +592,22 @@ export async function decryptBundle(
   value: Bundle,
   identity?: Identity,
 ): Promise<unknown> {
+  return decryptBundleAt(value, identity, false);
+}
+export async function decryptStoredBundle(
+  value: Bundle,
+  identity?: Identity,
+): Promise<unknown> {
+  return decryptBundleAt(value, identity, true);
+}
+async function decryptBundleAt(
+  value: Bundle,
+  identity: Identity | undefined,
+  stored: boolean,
+): Promise<unknown> {
   const who =
     identity && (JSON.parse(canonical(identity)) as Identity | undefined);
-  const b = await verifiedBundle(value),
+  const b = await verifiedBundleAt(value, stored),
     m = b.manifest;
   let key: Uint8Array;
   if (m.publicKey) key = un64(m.publicKey);

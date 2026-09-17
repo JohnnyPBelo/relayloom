@@ -50,7 +50,7 @@ Na versão web, já pode duplicar páginas completas e alterar a sua ordem. A c�
 
 A correcção para guardar rascunhos web com imagens maiores que 1 MiB passou a regressão nos três motores de browser e nos clientes Node/Go, incluindo recuperação exacta após recarregar. A correcção já está no URL público: 17 ficheiros conferidos por hash e 13 percursos HTTPS passaram. [Testes e limites](docs/evidence/private-values).
 
-As aplicações Node e Go têm uma API de revisões assinadas: endereço estável, histórico, conflitos explícitos e retoma da mesma publicação após interrupção. A paridade passou testes de processos, armazenamento partilhado, leitura privada e seeder com autor desligado. Os controlos de revisões ainda não estão no editor e a API browser continua por integrar. [Âmbito e comandos](docs/SITE-REVISIONS.md).
+O código local Node, Go e browser tem uma API de revisões assinadas: endereço estável, histórico, conflitos explícitos e retoma da mesma publicação após interrupção. O browser guarda catálogo e preparação cifrados em IndexedDB, sem daemon obrigatório. Passaram 66 cenários por motor Chromium/Firefox/WebKit, incluindo transporte real WebRTC→WebSocket→TCP entre browser/Node/Go e um seeder reiniciado com o autor desligado. [Testes, correcções e âmbito](docs/evidence/browser-site-api). Os controlos de revisões ainda não estão no editor publicado; o HTML público continua na fonte 0c6b58a. [API e limites](docs/SITE-REVISIONS.md).
 
 Existe também um [APK Android ARM64 experimental](docs/ANDROID-ARM64.md), construído com a mesma interface. A arquitectura, assinatura e assets foram verificados; a execução num telefone ARM64 ainda está pendente.
 

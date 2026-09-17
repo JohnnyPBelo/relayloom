@@ -29,6 +29,8 @@ import {
 import { BrowserProfile } from "./profile";
 import { hash, utf8, un64, validateIdentity, verifiedBundle } from "./crypto";
 import type { Priority } from "./packet";
+import { BrowserSiteRuntime } from "./site-runtime";
+import { verifySiteContent } from "./site-content";
 
 type Mutation = {
   author: string;
@@ -98,6 +100,7 @@ export class BrowserApplication {
   #timer?: ReturnType<typeof setInterval>;
   #flushing = false;
   #closed = false;
+  #sites?: BrowserSiteRuntime;
   constructor(
     readonly profile: BrowserProfile,
     private network: ApplicationNetwork,
@@ -205,6 +208,17 @@ export class BrowserApplication {
       if (!(await validateIdentity(card)))
         throw new Error("Contacto guardado inválido");
     this.network.context(owner, this.#generation);
+    this.#sites?.close();
+    this.#sites = new BrowserSiteRuntime({
+      profile: this.profile,
+      blocked: async () =>
+        ((await this.profile.getValue("mesh-settings")) as any)?.blocked ?? [],
+      readers: (ids) => this.readers(ids),
+      publish: (bundle) => this.network.publish(bundle, "normal"),
+      request: async (ids) => {
+        for (const id of ids) await this.network.command("request", { id });
+      },
+    });
     clearInterval(this.#timer);
     this.#timer = setInterval(() => {
       void this.flush();
@@ -213,6 +227,8 @@ export class BrowserApplication {
   }
   lock() {
     this.#generation++;
+    this.#sites?.close();
+    this.#sites = undefined;
     clearInterval(this.#timer);
     this.#cache.clear();
     this.#cacheBytes = 0;
@@ -235,6 +251,7 @@ export class BrowserApplication {
     await this.validateContent(content);
     if (content.type !== bundle.manifest.kind || grouped(content))
       throw new Error("Conteúdo ou autoridade de grupo indisponível");
+    verifySiteContent(content, bundle.manifest.author);
     return {
       id: bundle.manifest.id,
       kind: bundle.manifest.kind,
@@ -434,6 +451,7 @@ export class BrowserApplication {
       reports: [],
       collections: [],
       siteDraft: null,
+      sitePublishing: null,
       objects: [],
       outbox: [],
       history: { hasMore: false, nextBefore: null, total: 0, availableIds: [] },
@@ -462,6 +480,7 @@ export class BrowserApplication {
       reports: data.reports,
       collections: data.collections,
       siteDraft: draftSummary(data.siteDraft),
+      sitePublishing: this.#sites?.status() ?? null,
       ...this.page(objects),
       followedPostIds: followedFeed(objects, data.following).map((o) => o.id),
       outbox: Object.values(data.outbox).map((e) =>
@@ -472,12 +491,28 @@ export class BrowserApplication {
   async ingest(value: Bundle): Promise<string> {
     const generation = this.#generation,
       bundle = await verifiedBundle(value);
-    this.owner();
+    const owner = this.owner();
+    if (
+      (
+        (await this.profile.getValue("mesh-settings")) as any
+      )?.blocked?.includes(bundle.manifest.author.id)
+    )
+      throw new Error("Origem bloqueada");
     let object: DisplayObject | undefined;
     try {
       object = await this.project(bundle);
-    } catch {
+    } catch (error) {
+      if (
+        bundle.manifest.kind === "site" &&
+        (bundle.manifest.publicKey !== null ||
+          bundle.manifest.keys.some((k) => k.reader === owner.id))
+      )
+        throw error;
       /* Opaque relaying does not need a read key. */
+    }
+    if (bundle.manifest.kind === "site") {
+      if (!this.#sites) throw new Error("Sessão de site bloqueada");
+      await this.#sites.receive(bundle);
     }
     if (object && eventKinds.includes(object.kind)) {
       const all = await this.objects();
@@ -530,19 +565,8 @@ export class BrowserApplication {
     }
     return bundle.manifest.id;
   }
-  private async prepare(
-    raw: Content,
-    recipients: string[] | "public",
-    ttlMs = 30 * 86400_000,
-    extra: PublicIdentity[] = [],
-  ): Promise<Bundle> {
-    const owner = this.owner(),
-      content = JSON.parse(canonical(raw)) as Content;
-    await this.validateContent(content);
-    if (grouped(content))
-      throw new Error("Grupos dinâmicos ainda não estão ligados ao motor web");
-    if (!Number.isSafeInteger(ttlMs) || ttlMs < 1000 || ttlMs > 365 * 86400_000)
-      throw new Error("Prazo inválido");
+  private async readers(recipients: unknown, extra: PublicIdentity[] = []) {
+    const owner = this.owner();
     if (
       recipients !== "public" &&
       (!Array.isArray(recipients) ||
@@ -553,17 +577,33 @@ export class BrowserApplication {
     const data = await this.data(),
       settings = (await this.profile.getValue("mesh-settings")) as any,
       cards = [owner, ...extra, ...data.contacts];
-    const readers =
-      recipients === "public"
-        ? "public"
-        : [...new Set([owner.id, ...recipients])].map((id) => {
-            const card = cards.find((c) => c.id === id);
-            if (!card)
-              throw new Error("Adiciona primeiro o cartão do destinatário");
-            if (settings?.blocked?.includes(id))
-              throw new Error("Contacto bloqueado");
-            return card;
-          });
+    return recipients === "public"
+      ? ("public" as const)
+      : [...new Set([owner.id, ...(recipients as string[])])].map((id) => {
+          const card = cards.find((c) => c.id === id);
+          if (!card)
+            throw new Error("Adiciona primeiro o cartão do destinatário");
+          if (settings?.blocked?.includes(id))
+            throw new Error("Contacto bloqueado");
+          return card;
+        });
+  }
+  private async prepare(
+    raw: Content,
+    recipients: string[] | "public",
+    ttlMs = 30 * 86400_000,
+    extra: PublicIdentity[] = [],
+  ): Promise<Bundle> {
+    const owner = this.owner(),
+      content = JSON.parse(canonical(raw)) as Content;
+    await this.validateContent(content);
+    if (content.type === "site" && Object.hasOwn(content, "siteRevision"))
+      throw new Error("Publica revisões através do comando de site");
+    if (grouped(content))
+      throw new Error("Grupos dinâmicos ainda não estão ligados ao motor web");
+    if (!Number.isSafeInteger(ttlMs) || ttlMs < 1000 || ttlMs > 365 * 86400_000)
+      throw new Error("Prazo inválido");
+    const readers = await this.readers(recipients, extra);
     if (
       ["message", "group", "receipt", "delivery"].includes(content.type) &&
       readers === "public"
@@ -886,6 +926,7 @@ export class BrowserApplication {
     } catch {
       /* Durable state is rechecked at the next attempt; no mutation is replayed with a fresh ID. */
     } finally {
+      await this.#sites?.tick();
       this.#flushing = false;
     }
   }
@@ -917,6 +958,10 @@ export class BrowserApplication {
       }
     }
     this.owner();
+    if (path === "site-command") {
+      if (!this.#sites) throw new Error("Sessão de site bloqueada");
+      return this.#sites.command(body);
+    }
     if (path === "export")
       return { vault: await this.profile.exportCopy(body.password) };
     if (path === "contact") {

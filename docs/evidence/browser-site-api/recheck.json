@@ -1,0 +1,74 @@
+{
+  "started": "2026-09-17T13:52:11.499Z",
+  "status": "PASS",
+  "sources": {
+    "tests/browser/application.spec.ts": "4bf690bcadb4939685c6f83900fc47c1edee81d36478288966f29e65dfd2905f",
+    "tests/browser/site-worker.spec.ts": "9e846a8455712e9052315074675c44dd23ba7496e5c3f76b8dfd68be0acdb7af",
+    "dist/web/assets/browser-DCSdGgUo.js": "2e22046c68accff8176a0b7a9217b57c396ebd3d3c219b4172000d64d998cf78",
+    "dist/web/assets/main-DEi_Xkk3.css": "46f13f96e5f5ac7e0004b1463f8db8639f0ebcf13dcfed004b085215b91a3453",
+    "dist/web/assets/main-DMQT2B0d.js": "9156a2e9533f1683dcf9293d7c76877c71481d230ba632c079fcdf73c98136cb",
+    "dist/web/assets/manifest-BWKlX33v.webmanifest": "19128cfd05183584671ce8d8697e44011315a35bfb2425b920511bc6b56a9cee",
+    "dist/web/assets/modulepreload-polyfill-B5Qt9EMX.js": "d2a32840421496e872ade591618d2fa5c33797605d1aec04301717e5a90757d0",
+    "dist/web/assets/peers-BkGuch8F.js": "8ea5045c7aacde11417431d3344a9b74c619b8f8d3c1744a01489a16f5be31a7",
+    "dist/web/assets/peers-zdFnw8Ii.css": "e05138d7e12b9cad8dd98db964a3cbed83a7c4dc6f718de67e756e92b723dd04",
+    "dist/web/assets/renderer-AmIL56_-.css": "ad23c40ab4a8b0059642c62630fee31d541dfe2d2d16c62c99b390cc5ea867f6",
+    "dist/web/assets/renderer-BgMJZ5-P.js": "d00fbe4e2b241c9b7737d6b159ea93ae0ecf34960a6418d385c68b5d5f4ab404",
+    "dist/web/assets/site-studio-notices.txt": "75c009a409459b4fb9f62c1838d32a86e2d16805c8e8f6db930761b8615eccbb",
+    "dist/web/assets/studio-CK9UJ9-_.js": "7c4fc5ba7019398d91dee9b060b23a1b84888def0f51531411f484338fb7e3e4",
+    "dist/web/browser/assets.json": "04a7766c3c5e630d1f73e9eda2334fccae5d0164fdff46c2db159e3eb469f330",
+    "dist/web/browser/icon.svg": "e07d4044578707df6661e170be9e819ad252a9e6654a60858600de2963a4b35e",
+    "dist/web/browser/index.html": "1f464802d0dc467329aa78ab93a3e8d1aea8c53e40e71772def63ddb8ebda82d",
+    "dist/web/browser/manifest.webmanifest": "19128cfd05183584671ce8d8697e44011315a35bfb2425b920511bc6b56a9cee",
+    "dist/web/browser/sw.js": "8fc516344758cad9654da4469ccc1e397127b5ca95272f2f7660c2e0279436d0",
+    "dist/web/browser/worker-d715LS6I.js": "a2afe709f0ba0be4ff8e860b4e56a7aadf2610e8ecf6e569c93f240496b9b4ab",
+    "dist/web/index.html": "0ef17eb7a14eeb6c06254192f44d27748c2f455491175e6df99f3a70c933f057"
+  },
+  "unmodifiedFullRegressionSources": true,
+  "scope": "Retest only the affected scoped-status scenario and add the compiled production worker site scenario in each engine. The other 64 scenarios per engine retain their unchanged full-regression results.",
+  "steps": [
+    {
+      "engine": "chromium",
+      "args": [
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "tests/browser/application.spec.ts",
+        "tests/browser/site-worker.spec.ts",
+        "-g",
+        "autonomous social actions|production worker publishes"
+      ],
+      "exitCode": 0,
+      "durationMs": 17629
+    },
+    {
+      "engine": "firefox",
+      "args": [
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "tests/browser/application.spec.ts",
+        "tests/browser/site-worker.spec.ts",
+        "-g",
+        "autonomous social actions|production worker publishes"
+      ],
+      "exitCode": 0,
+      "durationMs": 21780
+    },
+    {
+      "engine": "webkit",
+      "args": [
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "tests/browser/application.spec.ts",
+        "tests/browser/site-worker.spec.ts",
+        "-g",
+        "autonomous social actions|production worker publishes"
+      ],
+      "exitCode": 0,
+      "durationMs": 22063
+    }
+  ],
+  "finished": "2026-09-17T13:53:12.976Z",
+  "sourcesStable": true
+}

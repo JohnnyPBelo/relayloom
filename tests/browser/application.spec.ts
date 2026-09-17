@@ -286,11 +286,11 @@ test("autonomous social actions and safe signed site builder persist and remain 
     await a
       .getByRole("button", { name: "Guardar rascunho", exact: true })
       .click();
-    await expect(a.getByRole("status")).toContainText("Rascunho cifrado");
+    await expect(a.getByRole("region", { name: "Estúdio do site", exact: true }).getByRole("status")).toContainText("Rascunho cifrado");
     await a
       .getByRole("button", { name: "Publicar página", exact: true })
       .click();
-    await expect(a.getByRole("status")).toContainText("Página assinada");
+    await expect(a.getByRole("region", { name: "Estúdio do site", exact: true }).getByRole("status")).toContainText("Página assinada");
     await nav(b, "A praça");
     await expect(
       b.getByRole("button", {

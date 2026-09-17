@@ -1,3 +1,5 @@
+import { createSiteContentProtocol } from "../../sites/src/content";
+import { browserCertificateCrypto } from "./certificate-crypto";
 import { canonical, exactShape } from "../../core/src/protocol";
 import type {
   Bundle,
@@ -17,6 +19,7 @@ import {
   open,
   verifiedBundle,
   decryptBundle,
+  decryptStoredBundle,
   hash,
 } from "./crypto";
 
@@ -75,6 +78,12 @@ const allowedValueKey = (key: unknown): key is string =>
 const privateKey = (id: string) => "private:" + id;
 
 /** One encrypted profile per origin/name. Full runtime authority/outbox integration remains separate. */
+export interface ProfileValueTransaction {
+  get(key: string): Promise<unknown>;
+  set(key: string, value: unknown): void;
+  remove(key: string): Promise<void>;
+  keys(prefix?: string): string[];
+}
 export class BrowserProfile {
   #session?: Session;
   #generation = 0;
@@ -154,6 +163,9 @@ export class BrowserProfile {
     return this.#session
       ? structuredClone(this.#session.identity.public)
       : null;
+  }
+  get sessionGeneration(): number {
+    return this.active().generation;
   }
   get locked(): boolean {
     return !this.#session;
@@ -342,6 +354,38 @@ export class BrowserProfile {
     this.guard(s);
     return result;
   }
+  async signSiteBundle(
+    name: string,
+    sequence: number,
+    previous: string[],
+    payload: unknown,
+    readers: PublicIdentity[] | "public",
+    ttl: number,
+  ): Promise<Bundle> {
+    const session = this.active();
+    const content = createSiteContentProtocol(browserCertificateCrypto).create(
+      session.identity,
+      name,
+      sequence,
+      previous,
+      payload,
+    );
+    const bundle = await createBundle(
+      session.identity,
+      "site",
+      content,
+      readers,
+      ttl,
+    );
+    this.guard(session);
+    return bundle;
+  }
+  async decryptStaging(value: Bundle): Promise<unknown> {
+    const session = this.active(),
+      decoded = await decryptStoredBundle(value, session.identity);
+    this.guard(session);
+    return decoded;
+  }
   async decrypt(value: Bundle): Promise<unknown> {
     const s = this.active(),
       valueOwned = await verifiedBundle(value),
@@ -443,6 +487,7 @@ export class BrowserProfile {
     s: Session,
     state: State,
     mutation?: { key: string; update: (previous: unknown) => unknown },
+    checkLimits = true,
   ): Promise<ValueWrite | undefined> {
     if (!mutation) return;
     if (!allowedValueKey(mutation.key))
@@ -479,11 +524,183 @@ export class BrowserProfile {
       },
     };
     delete state.values[mutation.key];
-    this.checkValueReferences(state);
+    if (checkLimits) this.checkValueReferences(state);
     return {
       put: { id: privateKey(id), sealed },
       remove: old ? [privateKey(old.id)] : [],
     };
+  }
+  /** Internal worker transaction. It holds the profile lock across asynchronous
+   * crypto, and releases only a committed result. No RPC accepts this callback. */
+  async transactValues<T>(
+    run: (tx: ProfileValueTransaction) => Promise<T>,
+  ): Promise<T> {
+    const session = this.active();
+    return this.exclusive(async () => {
+      this.guard(session);
+      const state = await this.state(session);
+      const fetched = new Map<string, Promise<unknown>>();
+      const changes = new Map<
+        string,
+        { remove: true } | { remove: false; value: unknown; bytes: number }
+      >();
+      const accessed = new Set<string>();
+      let live = true,
+        inflight = 0,
+        failure: Error | undefined;
+      const fail = (error: unknown): never => {
+        failure ??= error instanceof Error ? error : new Error(String(error));
+        throw failure;
+      };
+      const check = (key?: string) => {
+        if (failure) throw failure;
+        this.guard(session);
+        if (key !== undefined) {
+          if (!allowedValueKey(key)) throw new Error("Nome de estado inválido");
+          accessed.add(key);
+          if (accessed.size > 192)
+            throw new Error("Demasiados valores numa transacção");
+        }
+      };
+      const active = (key?: string) => {
+        if (!live) throw new Error("Transacção privada terminada");
+        try {
+          check(key);
+        } catch (error) {
+          fail(error);
+        }
+      };
+      const original = async (key: string) => {
+        try {
+          check(key);
+          let pending = fetched.get(key);
+          if (!pending) {
+            pending = this.resolveValue(session, state.value, key);
+            fetched.set(key, pending);
+          }
+          const value = await pending;
+          check(key);
+          return value;
+        } catch (error) {
+          return fail(error);
+        }
+      };
+      const track = <V>(operation: () => Promise<V>): Promise<V> => {
+        inflight++;
+        const pending = (async () => {
+          try {
+            return await operation();
+          } catch (error) {
+            return fail(error);
+          } finally {
+            inflight--;
+          }
+        })();
+        void pending.catch(() => {}); // The transaction still fails if a caller forgets to await.
+        return pending;
+      };
+      const tx: ProfileValueTransaction = {
+        get: (key) =>
+          track(async () => {
+            active(key);
+            const changed = changes.get(key);
+            const value = changed
+              ? changed.remove
+                ? null
+                : changed.value
+              : await original(key);
+            active(key);
+            return structuredClone(value);
+          }),
+        set: (key, value) => {
+          active(key);
+          try {
+            const encoded = canonical(value),
+              bytes = utf8(encoded).length;
+            if (bytes > PRIVATE_VALUE_LIMITS.valueBytes)
+              throw new Error("Valor privado excede o limite");
+            const total = [...changes.entries()].reduce(
+              (sum, [other, change]) =>
+                sum + (other !== key && !change.remove ? change.bytes : 0),
+              bytes,
+            );
+            if (total > PRIVATE_VALUE_LIMITS.totalBytes)
+              throw new Error("Transacção privada excede o limite");
+            changes.set(key, {
+              remove: false,
+              value: JSON.parse(encoded),
+              bytes,
+            });
+          } catch (error) {
+            fail(error);
+          }
+        },
+        remove: (key) =>
+          track(async () => {
+            active(key);
+            await original(key);
+            active(key);
+            changes.set(key, { remove: true });
+          }),
+        keys: (prefix = "") => {
+          active();
+          if (typeof prefix !== "string" || prefix.length > 160)
+            return fail(new Error("Prefixo privado inválido"));
+          const names = new Set([
+            ...Object.keys(state.value.values),
+            ...Object.keys(state.value.valueRefs ?? {}),
+          ]);
+          for (const [key, change] of changes) {
+            if (change.remove) names.delete(key);
+            else names.add(key);
+          }
+          return [...names].filter((key) => key.startsWith(prefix)).sort();
+        },
+      };
+      try {
+        const result = structuredClone(await run(tx));
+        active();
+        if (inflight)
+          throw new Error("Aguarda as operações privadas pendentes");
+        live = false;
+        for (const key of changes.keys()) await original(key);
+        const writes: ValueWrite[] = [],
+          remove: string[] = [];
+        for (const [key, change] of changes)
+          if (change.remove) {
+            const reference = state.value.valueRefs?.[key];
+            if (reference) remove.push(privateKey(reference.id));
+            delete state.value.values[key];
+            if (state.value.valueRefs) delete state.value.valueRefs[key];
+          }
+        for (const [key, change] of changes)
+          if (!change.remove) {
+            const write = await this.mutate(
+              session,
+              state.value,
+              { key, update: () => change.value },
+              false,
+            );
+            if (write) writes.push(write);
+          }
+        // encryptState/commit validates the complete final quota/index before
+        // queuing any IndexedDB writes. Intermediate replacement sizes do not
+        // bypass per-value or transaction memory bounds.
+        if (changes.size)
+          await this.commit(
+            session,
+            state.row,
+            state.value,
+            undefined,
+            remove,
+            writes,
+          );
+        this.guard(session);
+        return result;
+      } finally {
+        live = false;
+      }
+    });
   }
   async updateValue(
     key: string,

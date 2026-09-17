@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "nativePids": [
+    1357129,
+    1357137
+  ],
+  "runtimes": [
+    "Browser",
+    "Node",
+    "Go"
+  ],
+  "media": [
+    "webrtc",
+    "websocket",
+    "tcp"
+  ],
+  "actualRouteHops": 3,
+  "partitionNegativeControl": true,
+  "heal": true,
+  "exactHistory": true,
+  "privateOpaqueTransit": true,
+  "signingAuthorityRejected": true,
+  "reverseTransfer": true,
+  "restartedSoleSeeder": true,
+  "pausedSoleSeederNegativeControl": true,
+  "authorPreserved": true,
+  "physicalRadio": false,
+  "uiTest": false
+}

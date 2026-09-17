@@ -1,0 +1,45 @@
+
+Running 8 tests using 1 worker
+
+(node:1242163) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/browser/site-api.spec.ts:93:1 › browser site API retains stable address, exact replay and history across reopen; a missing head never falls back (927ms)
+  ✘  2 tests/browser/site-api.spec.ts:191:1 › readable sites reject forged author, signature and payload; opaque private seeding confers no editing authority (838ms)
+(node:1242778) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  3 tests/browser/site-api.spec.ts:304:1 › storage exhaustion keeps exact authorized publication private and the offline application resumes after reopening (739ms)
+  ✓  4 tests/browser/site-api.spec.ts:350:1 › concurrent recovered identities require explicit heads and retain both histories after conflict resolution (1.0s)
+  ✓  5 tests/browser/site-catalog.spec.ts:22:1 › private profile transactions commit deletion and values together and close their handles (275ms)
+  ✓  6 tests/browser/site-catalog.spec.ts:73:1 › caught failures, abandoned async calls and profile lock cannot partially commit a transaction (415ms)
+  ✓  7 tests/browser/site-catalog.spec.ts:151:1 › browser catalog keeps preparation private and resumes the exact signed snapshot after reopening (536ms)
+  ✓  8 tests/browser/site-catalog.spec.ts:221:1 › two browser profiles sharing a base can reserve only one publication (446ms)
+
+
+  1) tests/browser/site-api.spec.ts:191:1 › readable sites reject forged author, signature and payload; opaque private seeding confers no editing authority
+
+    Error: page.evaluate: TypeError: _mesh.stop is not a function
+        at eval (eval at evaluate (:311:30), <anonymous>:90:75)
+        at async <anonymous>:337:30
+        at eval (eval at evaluate (:311:30), <anonymous>:90:75)
+        at async <anonymous>:337:30
+        at <repo>/.cache/browser-site-parity/tests/browser/site-api.spec.ts:195:29
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/site-api-readable-sites-re-9497f-onfers-no-editing-authority/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/site-api-readable-sites-re-9497f-onfers-no-editing-authority/error-context.md
+
+    Error Context: test-results/site-api-readable-sites-re-9497f-onfers-no-editing-authority/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/site-api-readable-sites-re-9497f-onfers-no-editing-authority/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/site-api-readable-sites-re-9497f-onfers-no-editing-authority/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/browser/site-api.spec.ts:191:1 › readable sites reject forged author, signature and payload; opaque private seeding confers no editing authority
+  7 passed (6.6s)

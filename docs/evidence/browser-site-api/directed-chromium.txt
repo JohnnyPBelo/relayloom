@@ -1,0 +1,24 @@
+
+Running 17 tests using 1 worker
+
+(node:1282944) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › tests/browser/application-api.spec.ts:11:1 › application API preserves send identity, rejects corrupt retained acceptance, and validates event author/read scope (463ms)
+  ✓   2 [chromium] › tests/browser/private-values.spec.ts:4:1 › private values larger than the metadata index survive restart without becoming peer inventory (918ms)
+  ✓   3 [chromium] › tests/browser/private-values.spec.ts:51:1 › legacy embedded values migrate lazily and encrypted value rows remain outside peer access (981ms)
+  ✓   4 [chromium] › tests/browser/private-values.spec.ts:206:1 › bundle and private-value mutations commit together, and corruption cannot silently reset a value (411ms)
+  ✓   5 [chromium] › tests/browser/private-values.spec.ts:385:1 › private-value byte and total budgets reject excess without losing committed values (3.9s)
+  ✓   6 [chromium] › tests/browser/private-values.spec.ts:443:1 › multiple private values share one commit and a concurrent writer cannot remove a reader's snapshot (291ms)
+  ✓   7 [chromium] › tests/browser/site-api.spec.ts:93:1 › browser site API retains stable address, exact replay and history across reopen; a missing head never falls back (878ms)
+  ✓   8 [chromium] › tests/browser/site-api.spec.ts:191:1 › readable sites reject forged author, signature and payload; opaque private seeding confers no editing authority (837ms)
+  ✓   9 [chromium] › tests/browser/site-api.spec.ts:304:1 › storage exhaustion keeps exact authorized publication private and the offline application resumes after reopening (683ms)
+  ✓  10 [chromium] › tests/browser/site-api.spec.ts:350:1 › concurrent recovered identities require explicit heads and retain both histories after conflict resolution (1.0s)
+  ✓  11 [chromium] › tests/browser/site-catalog.spec.ts:22:1 › private profile transactions commit deletion and values together and close their handles (281ms)
+  ✓  12 [chromium] › tests/browser/site-catalog.spec.ts:73:1 › caught failures, abandoned async calls and profile lock cannot partially commit a transaction (393ms)
+  ✓  13 [chromium] › tests/browser/site-catalog.spec.ts:151:1 › browser catalog keeps preparation private and resumes the exact signed snapshot after reopening (524ms)
+  ✓  14 [chromium] › tests/browser/site-catalog.spec.ts:221:1 › two browser profiles sharing a base can reserve only one publication (462ms)
+  ✓  15 [chromium] › tests/browser/site-catalog.spec.ts:277:1 › expired browser preparations remain terminal, preserve counters and reject a stale session (744ms)
+  ✓  16 [chromium] › tests/browser/site-catalog.spec.ts:370:1 › IndexedDB abort and corrupted private staging cannot leave partial site state or silently replace signed bytes (489ms)
+  ✓  17 [chromium] › tests/browser/site-catalog.spec.ts:524:1 › private transactions enforce final quota while an atomic replacement fits at the storage boundary (2.8s)
+
+  17 passed (17.0s)

@@ -1,0 +1,123 @@
+
+Running 65 tests using 1 worker
+
+(node:1414486) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [webkit] › tests/browser/application-api.spec.ts:11:1 › application API preserves send identity, rejects corrupt retained acceptance, and validates event author/read scope (636ms)
+  ✓   2 [webkit] › tests/browser/application.spec.ts:75:1 › autonomous Liquid Glass UI owns identity and offline outbox, connects through real RTC, receives signed confirmations and survives reload (11.2s)
+  ✘   3 [webkit] › tests/browser/application.spec.ts:204:1 › autonomous social actions and safe signed site builder persist and remain viewable after author closes (10.8s)
+(node:1418278) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   4 [webkit] › tests/browser/application.spec.ts:359:1 › production worker keeps private keys out of replies and recovers an applied send after the UI response is lost (24.7s)
+  ✓   5 [webkit] › tests/browser/application.spec.ts:466:1 › a second tab cannot take ownership of a live application profile and an unknown or corrupt profile is never silently reset (3.6s)
+  ✓   6 [webkit] › tests/browser/application.spec.ts:523:1 › cached application code and encrypted profile reopen when the static host is unavailable, without installing the PWA (4.4s)
+  ✓   7 [webkit] › tests/browser/application.spec.ts:589:1 › corrupted cached worker is rejected offline and recovered only from verified available code (2.3s)
+  ✓   8 [webkit] › tests/browser/connectivity.spec.ts:98:1 › both pending outboxes deliver after completing signalling; modes stay separate and diagnostics contain no secrets (15.7s)
+  ✓   9 [webkit] › tests/browser/connectivity.spec.ts:242:1 › closing while a code is being generated releases the late pending peer (4.9s)
+  ✓  10 [webkit] › tests/browser/contact-relay.spec.ts:121:1 › imported contact immediately appears once, survives reload and becomes the first real DM without a duplicate (7.5s)
+  ✓  11 [webkit] › tests/browser/contact-relay.spec.ts:208:1 › relay consent through the UI gates a real A to B to C path and does not grant B private reading (44.4s)
+  ✓  12 [webkit] › tests/browser/foundation.spec.ts:24:1 › Browser owns compatible identities/vaults/bundles: real Node and Go positive and negative controls (2.2s)
+  ✓  13 [webkit] › tests/browser/foundation.spec.ts:205:1 › encrypted IndexedDB persists, coordinates two pages, rejects corruption and preserves pins on failed admission (1.2s)
+  ✓  14 [webkit] › tests/browser/foundation.spec.ts:397:1 › lock during unlock cannot resurrect keys; missing authenticated state is not replaced with empty success (725ms)
+  ✓  15 [webkit] › tests/browser/foundation.spec.ts:449:1 › real WebRTC transfers encrypted chunks and an offline author's reader seeds identical bytes to a new reader (2.9s)
+  ✓  16 [webkit] › tests/browser/foundation.spec.ts:623:1 › WebRTC rejects a correctly framed corrupt bundle before storage and rejects admission failure without ACK (4.4s)
+  ✓  17 [webkit] › tests/browser/foundation.spec.ts:723:1 › identity recovery is compatible and cannot overwrite an existing profile; quota eviction retains pinned objects (550ms)
+  ✓  18 [webkit] › tests/browser/foundation.spec.ts:783:1 › browser application bundle/ledger commit is atomic, pending reservations survive eviction pressure and IDB abort preserves prior state (446ms)
+  ✓  19 [webkit] › tests/browser/group-certificates.spec.ts:78:1 › browser identity and group authority refuse all small-order reference keys and noncanonical aliases (306ms)
+  ✓  20 [webkit] › tests/browser/group-certificates.spec.ts:143:1 › browser, Node and Go verify shared group certificates, fresh consents, removal and strict signing ownership (981ms)
+  ✓  21 [webkit] › tests/browser/large-site-draft.spec.ts:13:1 › an allowed large site image saves through the UI and survives encrypted browser restart (18.0s)
+  ✓  22 [webkit] › tests/browser/mobile-navigation.spec.ts:13:1 › a single touch activates compact sidebar destinations after an open conversation hides the dock (2.3s)
+  ✓  23 [webkit] › tests/browser/native-transport.spec.ts:51:3 › browser WebRTC to browser WebSocket to real node daemon, reverse transfer and invitation revocation (5.2s)
+  ✓  24 [webkit] › tests/browser/native-transport.spec.ts:51:3 › browser WebRTC to browser WebSocket to real native daemon, reverse transfer and invitation revocation (4.8s)
+  ✓  25 [webkit] › tests/browser/native-transport.spec.ts:191:1 › private four-medium route WebRTC-WebSocket-TCP-serial, partition/heal and restarted browser seeder with author offline (11.2s)
+  ✓  26 [webkit] › tests/browser/native-transport.spec.ts:419:1 › late native ACK cannot leave an orphan retry assembly or close an otherwise healthy WebSocket (4.6s)
+  ✓  27 [webkit] › tests/browser/onboarding-language.spec.ts:13:1 › initial language, product guide and appearance work without altering identity form values (3.7s)
+  ✓  28 [webkit] › tests/browser/onboarding-language.spec.ts:133:1 › English and Spanish identities exchange encrypted messages and files without translating authored text (16.2s)
+  ✓  29 [webkit] › tests/browser/onboarding-language.spec.ts:365:1 › a blocked tab can change UI language while the owning identity remains intact (3.3s)
+  ✓  30 [webkit] › tests/browser/onboarding-language.spec.ts:455:1 › unavailable preference storage and localized form validation never reset a profile (2.9s)
+  ✓  31 [webkit] › tests/browser/onboarding-language.spec.ts:534:1 › saving one preference does not hide a different unsaved preference (1.6s)
+  ✓  32 [webkit] › tests/browser/private-values.spec.ts:4:1 › private values larger than the metadata index survive restart without becoming peer inventory (816ms)
+  ✓  33 [webkit] › tests/browser/private-values.spec.ts:51:1 › legacy embedded values migrate lazily and encrypted value rows remain outside peer access (948ms)
+  ✓  34 [webkit] › tests/browser/private-values.spec.ts:206:1 › bundle and private-value mutations commit together, and corruption cannot silently reset a value (573ms)
+  ✓  35 [webkit] › tests/browser/private-values.spec.ts:385:1 › private-value byte and total budgets reject excess without losing committed values (2.1s)
+  ✓  36 [webkit] › tests/browser/private-values.spec.ts:443:1 › multiple private values share one commit and a concurrent writer cannot remove a reader's snapshot (435ms)
+  ✓  37 [webkit] › tests/browser/routing.spec.ts:83:1 › automatic A-B-C mesh: consent controls, own sends while paused, partition/heal and restarted reader takeover with author offline (7.6s)
+  ✓  38 [webkit] › tests/browser/routing.spec.ts:211:1 › one network owner per profile and concurrent consent/preferences do not resurrect revoked relay (767ms)
+  ✓  39 [webkit] › tests/browser/routing.spec.ts:269:1 › fragment scheduling preempts bulk with SOS, gives bulk a fair turn, and cancels relayed bytes without closing own traffic (2.8s)
+  ✓  40 [webkit] › tests/browser/routing.spec.ts:475:1 › packet bounds reject expiry, hop loops and tampering; retained flood is bounded (291ms)
+  ✓  41 [webkit] › tests/browser/routing.spec.ts:539:1 › low-power defers bulk on a live link, keeps SOS moving and never revives an expired queued packet (2.8s)
+  ✓  42 [webkit] › tests/browser/routing.spec.ts:597:1 › browser routing packets cross real native TCP routers; native packet bytes verify in the browser and corruption never forwards (965ms)
+  ✓  43 [webkit] › tests/browser/routing.spec.ts:745:1 › opaque packet corruption is rejected by the browser mesh before storage or forwarding, with valid controls on both sides (2.7s)
+  ✓  44 [webkit] › tests/browser/routing.spec.ts:828:1 › managed relay revocation cancels an in-flight forwarded packet and keeps an authored SOS on that same open link (3.1s)
+  ✓  45 [webkit] › tests/browser/site-api.spec.ts:93:1 › browser site API retains stable address, exact replay and history across reopen; a missing head never falls back (1.0s)
+  ✓  46 [webkit] › tests/browser/site-api.spec.ts:191:1 › readable sites reject forged author, signature and payload; opaque private seeding confers no editing authority (1.0s)
+  ✓  47 [webkit] › tests/browser/site-api.spec.ts:304:1 › storage exhaustion keeps exact authorized publication private and the offline application resumes after reopening (883ms)
+  ✓  48 [webkit] › tests/browser/site-api.spec.ts:350:1 › concurrent recovered identities require explicit heads and retain both histories after conflict resolution (1.2s)
+  ✓  49 [webkit] › tests/browser/site-catalog.spec.ts:22:1 › private profile transactions commit deletion and values together and close their handles (423ms)
+  ✓  50 [webkit] › tests/browser/site-catalog.spec.ts:73:1 › caught failures, abandoned async calls and profile lock cannot partially commit a transaction (546ms)
+  ✓  51 [webkit] › tests/browser/site-catalog.spec.ts:151:1 › browser catalog keeps preparation private and resumes the exact signed snapshot after reopening (680ms)
+  ✓  52 [webkit] › tests/browser/site-catalog.spec.ts:221:1 › two browser profiles sharing a base can reserve only one publication (602ms)
+  ✓  53 [webkit] › tests/browser/site-catalog.spec.ts:277:1 › expired browser preparations remain terminal, preserve counters and reject a stale session (903ms)
+  ✓  54 [webkit] › tests/browser/site-catalog.spec.ts:370:1 › IndexedDB abort and corrupted private staging cannot leave partial site state or silently replace signed bytes (689ms)
+  ✓  55 [webkit] › tests/browser/site-catalog.spec.ts:524:1 › private transactions enforce final quota while an atomic replacement fits at the storage boundary (1.8s)
+  ✓  56 [webkit] › tests/browser/site-language.spec.ts:115:1 › three multilingual identities edit signed pages, preserve original text and seed to a new reader after author closes (22.2s)
+  ✓  57 [webkit] › tests/browser/site-network.spec.ts:156:3 › versioned sites cross RTC, WebSocket and TCP through node, heal a partition and survive with only a restarted reader (7.7s)
+  ✓  58 [webkit] › tests/browser/site-network.spec.ts:156:3 › versioned sites cross RTC, WebSocket and TCP through native, heal a partition and survive with only a restarted reader (7.6s)
+  ✓  59 [webkit] › tests/browser/site-pages.spec.ts:65:1 › web users copy pages, reorder with keyboard, reopen encrypted drafts and read the signed result after the author closes (13.4s)
+  ✓  60 [webkit] › tests/browser/site-revisions.spec.ts:70:1 › real browser, Node and Go agree on signed site snapshots while reading keys cannot edit them (895ms)
+  ✓  61 [webkit] › tests/browser/site-studio.spec.ts:77:1 › multipage studio saves encrypted draft, rejects executable imports and a consenting reader seeds it to a new browser after author closes (29.2s)
+  ✓  62 [webkit] › tests/browser/site-studio.spec.ts:351:1 › studio keyboard navigation, nested drag, duplicate, reparent and page references stay editable on a narrow screen (4.5s)
+  ✓  63 [webkit] › tests/browser/site-studio.spec.ts:425:1 › dense three-level compositions keep all controls inside their blocks and preserve contrast across palettes and app themes (11.3s)
+  ✓  64 [webkit] › tests/browser/x25519.spec.ts:5:1 › portable curves match RFC 7748, reject invalid reading keys and work when native curve operations fail (560ms)
+  ✓  65 [webkit] › tests/browser/x25519.spec.ts:137:1 › identity lifecycle remains valid across 512 generated and reimported signing/reading key pairs (1.7s)
+
+
+  1) [webkit] › tests/browser/application.spec.ts:204:1 › autonomous social actions and safe signed site builder persist and remain viewable after author closes
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('status')
+    Expected substring: "Rascunho cifrado"
+    Error: strict mode violation: getByRole('status') resolved to 2 elements:
+        1) <span role="status">…</span> aka getByText('Rascunho cifrado guardado')
+        2) <div class="toast" role="status">…</div> aka getByText('Publicação assinada e guardada')
+
+    Call log:
+      - Expect "toContainText" getByRole('status') with timeout 15000ms
+      - waiting for getByRole('status')
+        - locator resolved to <div class="toast" role="status">…</div>
+        - unexpected value "Publicação assinada e guardada"
+
+
+      287 |       .getByRole("button", { name: "Guardar rascunho", exact: true })
+      288 |       .click();
+    > 289 |     await expect(a.getByRole("status")).toContainText("Rascunho cifrado");
+          |                                         ^
+      290 |     await a
+      291 |       .getByRole("button", { name: "Publicar página", exact: true })
+      292 |       .click();
+        at <repo>/tests/browser/application.spec.ts:289:41
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/application-autonomous-soc-b6a2c-iewable-after-author-closes-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/application-autonomous-soc-b6a2c-iewable-after-author-closes-webkit/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/application-autonomous-soc-b6a2c-iewable-after-author-closes-webkit/error-context.md
+
+    Error Context: test-results/application-autonomous-soc-b6a2c-iewable-after-author-closes-webkit/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/application-autonomous-soc-b6a2c-iewable-after-author-closes-webkit/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/application-autonomous-soc-b6a2c-iewable-after-author-closes-webkit/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [webkit] › tests/browser/application.spec.ts:204:1 › autonomous social actions and safe signed site builder persist and remain viewable after author closes
+  64 passed (5.9m)

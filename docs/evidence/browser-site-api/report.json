@@ -1,0 +1,1772 @@
+{
+  "status": "PASS_AFTER_SCOPED_UI_TEST_FIX",
+  "scope": "Browser catalog/application/production worker and existing UI. Version-history controls are not yet integrated or published. No hardware/radio or all-OS validation.",
+  "fullRegression": {
+    "started": "2026-09-17T13:33:33.985Z",
+    "finished": "2026-09-17T13:50:48.066Z",
+    "status": "FAIL",
+    "sourcesStable": true,
+    "steps": [
+      {
+        "name": "typecheck",
+        "args": [
+          "node_modules/typescript/bin/tsc",
+          "--noEmit"
+        ],
+        "exitCode": 0,
+        "durationMs": 7292
+      },
+      {
+        "name": "build",
+        "args": [
+          "node_modules/vite/bin/vite.js",
+          "build"
+        ],
+        "exitCode": 0,
+        "durationMs": 2982
+      },
+      {
+        "name": "chromium",
+        "args": [
+          "scripts/e2e.mjs",
+          "--config",
+          "tests/browser/matrix.config.ts"
+        ],
+        "env": {
+          "RELAYLOOM_MATRIX_ENGINE": "chromium"
+        },
+        "exitCode": 0,
+        "durationMs": 287137
+      },
+      {
+        "name": "firefox",
+        "args": [
+          "scripts/e2e.mjs",
+          "--config",
+          "tests/browser/matrix.config.ts"
+        ],
+        "env": {
+          "RELAYLOOM_MATRIX_ENGINE": "firefox"
+        },
+        "exitCode": 0,
+        "durationMs": 380851
+      },
+      {
+        "name": "webkit",
+        "args": [
+          "scripts/e2e.mjs",
+          "--config",
+          "tests/browser/matrix.config.ts"
+        ],
+        "env": {
+          "RELAYLOOM_MATRIX_ENGINE": "webkit"
+        },
+        "exitCode": 1,
+        "durationMs": 355765
+      }
+    ]
+  },
+  "recheck": {
+    "started": "2026-09-17T13:52:11.499Z",
+    "finished": "2026-09-17T13:53:12.976Z",
+    "status": "PASS",
+    "sourcesStable": true,
+    "steps": [
+      {
+        "engine": "chromium",
+        "args": [
+          "scripts/e2e.mjs",
+          "--config",
+          "tests/browser/matrix.config.ts",
+          "tests/browser/application.spec.ts",
+          "tests/browser/site-worker.spec.ts",
+          "-g",
+          "autonomous social actions|production worker publishes"
+        ],
+        "exitCode": 0,
+        "durationMs": 17629
+      },
+      {
+        "engine": "firefox",
+        "args": [
+          "scripts/e2e.mjs",
+          "--config",
+          "tests/browser/matrix.config.ts",
+          "tests/browser/application.spec.ts",
+          "tests/browser/site-worker.spec.ts",
+          "-g",
+          "autonomous social actions|production worker publishes"
+        ],
+        "exitCode": 0,
+        "durationMs": 21780
+      },
+      {
+        "engine": "webkit",
+        "args": [
+          "scripts/e2e.mjs",
+          "--config",
+          "tests/browser/matrix.config.ts",
+          "tests/browser/application.spec.ts",
+          "tests/browser/site-worker.spec.ts",
+          "-g",
+          "autonomous social actions|production worker publishes"
+        ],
+        "exitCode": 0,
+        "durationMs": 22063
+      }
+    ],
+    "scope": "Retest only the affected scoped-status scenario and add the compiled production worker site scenario in each engine. The other 64 scenarios per engine retain their unchanged full-regression results."
+  },
+  "engines": {
+    "chromium": {
+      "uniquePassed": 66,
+      "fullStats": {
+        "startTime": "2026-09-17T13:33:44.774Z",
+        "duration": 286645.936,
+        "expected": 65,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "recheckStats": {
+        "startTime": "2026-09-17T13:52:11.971Z",
+        "duration": 17135.456,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "application-api.spec.ts",
+          "title": "application API preserves send identity, rejects corrupt retained acceptance, and validates event author/read scope",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 464,
+          "source": "full-regression"
+        },
+        {
+          "file": "application.spec.ts",
+          "title": "autonomous Liquid Glass UI owns identity and offline outbox, connects through real RTC, receives signed confirmations and survives reload",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 8312,
+          "source": "full-regression"
+        },
+        {
+          "file": "application.spec.ts",
+          "title": "autonomous social actions and safe signed site builder persist and remain viewable after author closes",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 14921,
+          "source": "recheck"
+        },
+        {
+          "file": "application.spec.ts",
+          "title": "production worker keeps private keys out of replies and recovers an applied send after the UI response is lost",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 22569,
+          "source": "full-regression"
+        },
+        {
+          "file": "application.spec.ts",
+          "title": "a second tab cannot take ownership of a live application profile and an unknown or corrupt profile is never silently reset",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 1872,
+          "source": "full-regression"
+        },
+        {
+          "file": "application.spec.ts",
+          "title": "cached application code and encrypted profile reopen when the static host is unavailable, without installing the PWA",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 3974,
+          "source": "full-regression"
+        },
+        {
+          "file": "application.spec.ts",
+          "title": "corrupted cached worker is rejected offline and recovered only from verified available code",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 1341,
+          "source": "full-regression"
+        },
+        {
+          "file": "connectivity.spec.ts",
+          "title": "both pending outboxes deliver after completing signalling; modes stay separate and diagnostics contain no secrets",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 13211,
+          "source": "full-regression"
+        },
+        {
+          "file": "connectivity.spec.ts",
+          "title": "closing while a code is being generated releases the late pending peer",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 4611,
+          "source": "full-regression"
+        },
+        {
+          "file": "contact-relay.spec.ts",
+          "title": "imported contact immediately appears once, survives reload and becomes the first real DM without a duplicate",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 5077,
+          "source": "full-regression"
+        },
+        {
+          "file": "contact-relay.spec.ts",
+          "title": "relay consent through the UI gates a real A to B to C path and does not grant B private reading",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 32745,
+          "source": "full-regression"
+        },
+        {
+          "file": "foundation.spec.ts",
+          "title": "Browser owns compatible identities/vaults/bundles: real Node and Go positive and negative controls",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 2236,
+          "source": "full-regression"
+        },
+        {
+          "file": "foundation.spec.ts",
+          "title": "encrypted IndexedDB persists, coordinates two pages, rejects corruption and preserves pins on failed admission",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 969,
+          "source": "full-regression"
+        },
+        {
+          "file": "foundation.spec.ts",
+          "title": "lock during unlock cannot resurrect keys; missing authenticated state is not replaced with empty success",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 627,
+          "source": "full-regression"
+        },
+        {
+          "file": "foundation.spec.ts",
+          "title": "real WebRTC transfers encrypted chunks and an offline author's reader seeds identical bytes to a new reader",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 9181,
+          "source": "full-regression"
+        },
+        {
+          "file": "foundation.spec.ts",
+          "title": "WebRTC rejects a correctly framed corrupt bundle before storage and rejects admission failure without ACK",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 1271,
+          "source": "full-regression"
+        },
+        {
+          "file": "foundation.spec.ts",
+          "title": "identity recovery is compatible and cannot overwrite an existing profile; quota eviction retains pinned objects",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 400,
+          "source": "full-regression"
+        },
+        {
+          "file": "foundation.spec.ts",
+          "title": "browser application bundle/ledger commit is atomic, pending reservations survive eviction pressure and IDB abort preserves prior state",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 270,
+          "source": "full-regression"
+        },
+        {
+          "file": "group-certificates.spec.ts",
+          "title": "browser identity and group authority refuse all small-order reference keys and noncanonical aliases",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 159,
+          "source": "full-regression"
+        },
+        {
+          "file": "group-certificates.spec.ts",
+          "title": "browser, Node and Go verify shared group certificates, fresh consents, removal and strict signing ownership",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 775,
+          "source": "full-regression"
+        },
+        {
+          "file": "large-site-draft.spec.ts",
+          "title": "an allowed large site image saves through the UI and survives encrypted browser restart",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 7294,
+          "source": "full-regression"
+        },
+        {
+          "file": "mobile-navigation.spec.ts",
+          "title": "a single touch activates compact sidebar destinations after an open conversation hides the dock",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 1459,
+          "source": "full-regression"
+        },
+        {
+          "file": "native-transport.spec.ts",
+          "title": "browser WebRTC to browser WebSocket to real node daemon, reverse transfer and invitation revocation",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 2976,
+          "source": "full-regression"
+        },
+        {
+          "file": "native-transport.spec.ts",
+          "title": "browser WebRTC to browser WebSocket to real native daemon, reverse transfer and invitation revocation",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 2859,
+          "source": "full-regression"
+        },
+        {
+          "file": "native-transport.spec.ts",
+          "title": "private four-medium route WebRTC-WebSocket-TCP-serial, partition/heal and restarted browser seeder with author offline",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 10801,
+          "source": "full-regression"
+        },
+        {
+          "file": "native-transport.spec.ts",
+          "title": "late native ACK cannot leave an orphan retry assembly or close an otherwise healthy WebSocket",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 4147,
+          "source": "full-regression"
+        },
+        {
+          "file": "onboarding-language.spec.ts",
+          "title": "initial language, product guide and appearance work without altering identity form values",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 2038,
+          "source": "full-regression"
+        },
+        {
+          "file": "onboarding-language.spec.ts",
+          "title": "English and Spanish identities exchange encrypted messages and files without translating authored text",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 10145,
+          "source": "full-regression"
+        },
+        {
+          "file": "onboarding-language.spec.ts",
+          "title": "a blocked tab can change UI language while the owning identity remains intact",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 1412,
+          "source": "full-regression"
+        },
+        {
+          "file": "onboarding-language.spec.ts",
+          "title": "unavailable preference storage and localized form validation never reset a profile",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 1306,
+          "source": "full-regression"
+        },
+        {
+          "file": "onboarding-language.spec.ts",
+          "title": "saving one preference does not hide a different unsaved preference",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 872,
+          "source": "full-regression"
+        },
+        {
+          "file": "private-values.spec.ts",
+          "title": "private values larger than the metadata index survive restart without becoming peer inventory",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 925,
+          "source": "full-regression"
+        },
+        {
+          "file": "private-values.spec.ts",
+          "title": "legacy embedded values migrate lazily and encrypted value rows remain outside peer access",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 1008,
+          "source": "full-regression"
+        },
+        {
+          "file": "private-values.spec.ts",
+          "title": "bundle and private-value mutations commit together, and corruption cannot silently reset a value",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 401,
+          "source": "full-regression"
+        },
+        {
+          "file": "private-values.spec.ts",
+          "title": "private-value byte and total budgets reject excess without losing committed values",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 3981,
+          "source": "full-regression"
+        },
+        {
+          "file": "private-values.spec.ts",
+          "title": "multiple private values share one commit and a concurrent writer cannot remove a reader's snapshot",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 294,
+          "source": "full-regression"
+        },
+        {
+          "file": "routing.spec.ts",
+          "title": "automatic A-B-C mesh: consent controls, own sends while paused, partition/heal and restarted reader takeover with author offline",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 6856,
+          "source": "full-regression"
+        },
+        {
+          "file": "routing.spec.ts",
+          "title": "one network owner per profile and concurrent consent/preferences do not resurrect revoked relay",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 485,
+          "source": "full-regression"
+        },
+        {
+          "file": "routing.spec.ts",
+          "title": "fragment scheduling preempts bulk with SOS, gives bulk a fair turn, and cancels relayed bytes without closing own traffic",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 3062,
+          "source": "full-regression"
+        },
+        {
+          "file": "routing.spec.ts",
+          "title": "packet bounds reject expiry, hop loops and tampering; retained flood is bounded",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 127,
+          "source": "full-regression"
+        },
+        {
+          "file": "routing.spec.ts",
+          "title": "low-power defers bulk on a live link, keeps SOS moving and never revives an expired queued packet",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 1782,
+          "source": "full-regression"
+        },
+        {
+          "file": "routing.spec.ts",
+          "title": "browser routing packets cross real native TCP routers; native packet bytes verify in the browser and corruption never forwards",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 778,
+          "source": "full-regression"
+        },
+        {
+          "file": "routing.spec.ts",
+          "title": "opaque packet corruption is rejected by the browser mesh before storage or forwarding, with valid controls on both sides",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 1406,
+          "source": "full-regression"
+        },
+        {
+          "file": "routing.spec.ts",
+          "title": "managed relay revocation cancels an in-flight forwarded packet and keeps an authored SOS on that same open link",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 2327,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-api.spec.ts",
+          "title": "browser site API retains stable address, exact replay and history across reopen; a missing head never falls back",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 849,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-api.spec.ts",
+          "title": "readable sites reject forged author, signature and payload; opaque private seeding confers no editing authority",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 812,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-api.spec.ts",
+          "title": "storage exhaustion keeps exact authorized publication private and the offline application resumes after reopening",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 689,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-api.spec.ts",
+          "title": "concurrent recovered identities require explicit heads and retain both histories after conflict resolution",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 979,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-catalog.spec.ts",
+          "title": "private profile transactions commit deletion and values together and close their handles",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 275,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-catalog.spec.ts",
+          "title": "caught failures, abandoned async calls and profile lock cannot partially commit a transaction",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 395,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-catalog.spec.ts",
+          "title": "browser catalog keeps preparation private and resumes the exact signed snapshot after reopening",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 538,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-catalog.spec.ts",
+          "title": "two browser profiles sharing a base can reserve only one publication",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 464,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-catalog.spec.ts",
+          "title": "expired browser preparations remain terminal, preserve counters and reject a stale session",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 759,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-catalog.spec.ts",
+          "title": "IndexedDB abort and corrupted private staging cannot leave partial site state or silently replace signed bytes",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 524,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-catalog.spec.ts",
+          "title": "private transactions enforce final quota while an atomic replacement fits at the storage boundary",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 2843,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-language.spec.ts",
+          "title": "three multilingual identities edit signed pages, preserve original text and seed to a new reader after author closes",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 18954,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-network.spec.ts",
+          "title": "versioned sites cross RTC, WebSocket and TCP through node, heal a partition and survive with only a restarted reader",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 5210,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-network.spec.ts",
+          "title": "versioned sites cross RTC, WebSocket and TCP through native, heal a partition and survive with only a restarted reader",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 5304,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-pages.spec.ts",
+          "title": "web users copy pages, reorder with keyboard, reopen encrypted drafts and read the signed result after the author closes",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 12696,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-revisions.spec.ts",
+          "title": "real browser, Node and Go agree on signed site snapshots while reading keys cannot edit them",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 1061,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-studio.spec.ts",
+          "title": "multipage studio saves encrypted draft, rejects executable imports and a consenting reader seeds it to a new browser after author closes",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 23990,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-studio.spec.ts",
+          "title": "studio keyboard navigation, nested drag, duplicate, reparent and page references stay editable on a narrow screen",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 3157,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-studio.spec.ts",
+          "title": "dense three-level compositions keep all controls inside their blocks and preserve contrast across palettes and app themes",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 8910,
+          "source": "full-regression"
+        },
+        {
+          "file": "x25519.spec.ts",
+          "title": "portable curves match RFC 7748, reject invalid reading keys and work when native curve operations fail",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 391,
+          "source": "full-regression"
+        },
+        {
+          "file": "x25519.spec.ts",
+          "title": "identity lifecycle remains valid across 512 generated and reimported signing/reading key pairs",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 1298,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-worker.spec.ts",
+          "title": "production worker publishes and recovers exact site requests, refuses forged snapshots and does not export signing helpers",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 1365,
+          "source": "recheck"
+        }
+      ]
+    },
+    "firefox": {
+      "uniquePassed": 66,
+      "fullStats": {
+        "startTime": "2026-09-17T13:38:31.909Z",
+        "duration": 380363.407,
+        "expected": 65,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "recheckStats": {
+        "startTime": "2026-09-17T13:52:29.556Z",
+        "duration": 21337.158,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "application-api.spec.ts",
+          "title": "application API preserves send identity, rejects corrupt retained acceptance, and validates event author/read scope",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 1777,
+          "source": "full-regression"
+        },
+        {
+          "file": "application.spec.ts",
+          "title": "autonomous Liquid Glass UI owns identity and offline outbox, connects through real RTC, receives signed confirmations and survives reload",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 10847,
+          "source": "full-regression"
+        },
+        {
+          "file": "application.spec.ts",
+          "title": "autonomous social actions and safe signed site builder persist and remain viewable after author closes",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 17647,
+          "source": "recheck"
+        },
+        {
+          "file": "application.spec.ts",
+          "title": "production worker keeps private keys out of replies and recovers an applied send after the UI response is lost",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 24836,
+          "source": "full-regression"
+        },
+        {
+          "file": "application.spec.ts",
+          "title": "a second tab cannot take ownership of a live application profile and an unknown or corrupt profile is never silently reset",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 2579,
+          "source": "full-regression"
+        },
+        {
+          "file": "application.spec.ts",
+          "title": "cached application code and encrypted profile reopen when the static host is unavailable, without installing the PWA",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 4443,
+          "source": "full-regression"
+        },
+        {
+          "file": "application.spec.ts",
+          "title": "corrupted cached worker is rejected offline and recovered only from verified available code",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 2751,
+          "source": "full-regression"
+        },
+        {
+          "file": "connectivity.spec.ts",
+          "title": "both pending outboxes deliver after completing signalling; modes stay separate and diagnostics contain no secrets",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 13802,
+          "source": "full-regression"
+        },
+        {
+          "file": "connectivity.spec.ts",
+          "title": "closing while a code is being generated releases the late pending peer",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 4630,
+          "source": "full-regression"
+        },
+        {
+          "file": "contact-relay.spec.ts",
+          "title": "imported contact immediately appears once, survives reload and becomes the first real DM without a duplicate",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 7430,
+          "source": "full-regression"
+        },
+        {
+          "file": "contact-relay.spec.ts",
+          "title": "relay consent through the UI gates a real A to B to C path and does not grant B private reading",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 47358,
+          "source": "full-regression"
+        },
+        {
+          "file": "foundation.spec.ts",
+          "title": "Browser owns compatible identities/vaults/bundles: real Node and Go positive and negative controls",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 3060,
+          "source": "full-regression"
+        },
+        {
+          "file": "foundation.spec.ts",
+          "title": "encrypted IndexedDB persists, coordinates two pages, rejects corruption and preserves pins on failed admission",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 3516,
+          "source": "full-regression"
+        },
+        {
+          "file": "foundation.spec.ts",
+          "title": "lock during unlock cannot resurrect keys; missing authenticated state is not replaced with empty success",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 1236,
+          "source": "full-regression"
+        },
+        {
+          "file": "foundation.spec.ts",
+          "title": "real WebRTC transfers encrypted chunks and an offline author's reader seeds identical bytes to a new reader",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 4479,
+          "source": "full-regression"
+        },
+        {
+          "file": "foundation.spec.ts",
+          "title": "WebRTC rejects a correctly framed corrupt bundle before storage and rejects admission failure without ACK",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 3610,
+          "source": "full-regression"
+        },
+        {
+          "file": "foundation.spec.ts",
+          "title": "identity recovery is compatible and cannot overwrite an existing profile; quota eviction retains pinned objects",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 885,
+          "source": "full-regression"
+        },
+        {
+          "file": "foundation.spec.ts",
+          "title": "browser application bundle/ledger commit is atomic, pending reservations survive eviction pressure and IDB abort preserves prior state",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 663,
+          "source": "full-regression"
+        },
+        {
+          "file": "group-certificates.spec.ts",
+          "title": "browser identity and group authority refuse all small-order reference keys and noncanonical aliases",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 386,
+          "source": "full-regression"
+        },
+        {
+          "file": "group-certificates.spec.ts",
+          "title": "browser, Node and Go verify shared group certificates, fresh consents, removal and strict signing ownership",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 1461,
+          "source": "full-regression"
+        },
+        {
+          "file": "large-site-draft.spec.ts",
+          "title": "an allowed large site image saves through the UI and survives encrypted browser restart",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 10971,
+          "source": "full-regression"
+        },
+        {
+          "file": "mobile-navigation.spec.ts",
+          "title": "a single touch activates compact sidebar destinations after an open conversation hides the dock",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 1666,
+          "source": "full-regression"
+        },
+        {
+          "file": "native-transport.spec.ts",
+          "title": "browser WebRTC to browser WebSocket to real node daemon, reverse transfer and invitation revocation",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 4091,
+          "source": "full-regression"
+        },
+        {
+          "file": "native-transport.spec.ts",
+          "title": "browser WebRTC to browser WebSocket to real native daemon, reverse transfer and invitation revocation",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 4642,
+          "source": "full-regression"
+        },
+        {
+          "file": "native-transport.spec.ts",
+          "title": "private four-medium route WebRTC-WebSocket-TCP-serial, partition/heal and restarted browser seeder with author offline",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 12263,
+          "source": "full-regression"
+        },
+        {
+          "file": "native-transport.spec.ts",
+          "title": "late native ACK cannot leave an orphan retry assembly or close an otherwise healthy WebSocket",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 4888,
+          "source": "full-regression"
+        },
+        {
+          "file": "onboarding-language.spec.ts",
+          "title": "initial language, product guide and appearance work without altering identity form values",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 2603,
+          "source": "full-regression"
+        },
+        {
+          "file": "onboarding-language.spec.ts",
+          "title": "English and Spanish identities exchange encrypted messages and files without translating authored text",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 11329,
+          "source": "full-regression"
+        },
+        {
+          "file": "onboarding-language.spec.ts",
+          "title": "a blocked tab can change UI language while the owning identity remains intact",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 2087,
+          "source": "full-regression"
+        },
+        {
+          "file": "onboarding-language.spec.ts",
+          "title": "unavailable preference storage and localized form validation never reset a profile",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 2863,
+          "source": "full-regression"
+        },
+        {
+          "file": "onboarding-language.spec.ts",
+          "title": "saving one preference does not hide a different unsaved preference",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 1178,
+          "source": "full-regression"
+        },
+        {
+          "file": "private-values.spec.ts",
+          "title": "private values larger than the metadata index survive restart without becoming peer inventory",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 1702,
+          "source": "full-regression"
+        },
+        {
+          "file": "private-values.spec.ts",
+          "title": "legacy embedded values migrate lazily and encrypted value rows remain outside peer access",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 1792,
+          "source": "full-regression"
+        },
+        {
+          "file": "private-values.spec.ts",
+          "title": "bundle and private-value mutations commit together, and corruption cannot silently reset a value",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 827,
+          "source": "full-regression"
+        },
+        {
+          "file": "private-values.spec.ts",
+          "title": "private-value byte and total budgets reject excess without losing committed values",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 4811,
+          "source": "full-regression"
+        },
+        {
+          "file": "private-values.spec.ts",
+          "title": "multiple private values share one commit and a concurrent writer cannot remove a reader's snapshot",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 690,
+          "source": "full-regression"
+        },
+        {
+          "file": "routing.spec.ts",
+          "title": "automatic A-B-C mesh: consent controls, own sends while paused, partition/heal and restarted reader takeover with author offline",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 10400,
+          "source": "full-regression"
+        },
+        {
+          "file": "routing.spec.ts",
+          "title": "one network owner per profile and concurrent consent/preferences do not resurrect revoked relay",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 1265,
+          "source": "full-regression"
+        },
+        {
+          "file": "routing.spec.ts",
+          "title": "fragment scheduling preempts bulk with SOS, gives bulk a fair turn, and cancels relayed bytes without closing own traffic",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 4314,
+          "source": "full-regression"
+        },
+        {
+          "file": "routing.spec.ts",
+          "title": "packet bounds reject expiry, hop loops and tampering; retained flood is bounded",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 313,
+          "source": "full-regression"
+        },
+        {
+          "file": "routing.spec.ts",
+          "title": "low-power defers bulk on a live link, keeps SOS moving and never revives an expired queued packet",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 1798,
+          "source": "full-regression"
+        },
+        {
+          "file": "routing.spec.ts",
+          "title": "browser routing packets cross real native TCP routers; native packet bytes verify in the browser and corruption never forwards",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 1102,
+          "source": "full-regression"
+        },
+        {
+          "file": "routing.spec.ts",
+          "title": "opaque packet corruption is rejected by the browser mesh before storage or forwarding, with valid controls on both sides",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 2529,
+          "source": "full-regression"
+        },
+        {
+          "file": "routing.spec.ts",
+          "title": "managed relay revocation cancels an in-flight forwarded packet and keeps an authored SOS on that same open link",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 5012,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-api.spec.ts",
+          "title": "browser site API retains stable address, exact replay and history across reopen; a missing head never falls back",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 2039,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-api.spec.ts",
+          "title": "readable sites reject forged author, signature and payload; opaque private seeding confers no editing authority",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 2432,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-api.spec.ts",
+          "title": "storage exhaustion keeps exact authorized publication private and the offline application resumes after reopening",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 1611,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-api.spec.ts",
+          "title": "concurrent recovered identities require explicit heads and retain both histories after conflict resolution",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 2375,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-catalog.spec.ts",
+          "title": "private profile transactions commit deletion and values together and close their handles",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 873,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-catalog.spec.ts",
+          "title": "caught failures, abandoned async calls and profile lock cannot partially commit a transaction",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 802,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-catalog.spec.ts",
+          "title": "browser catalog keeps preparation private and resumes the exact signed snapshot after reopening",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 1175,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-catalog.spec.ts",
+          "title": "two browser profiles sharing a base can reserve only one publication",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 1748,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-catalog.spec.ts",
+          "title": "expired browser preparations remain terminal, preserve counters and reject a stale session",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 2032,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-catalog.spec.ts",
+          "title": "IndexedDB abort and corrupted private staging cannot leave partial site state or silently replace signed bytes",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 1041,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-catalog.spec.ts",
+          "title": "private transactions enforce final quota while an atomic replacement fits at the storage boundary",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 4170,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-language.spec.ts",
+          "title": "three multilingual identities edit signed pages, preserve original text and seed to a new reader after author closes",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 21746,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-network.spec.ts",
+          "title": "versioned sites cross RTC, WebSocket and TCP through node, heal a partition and survive with only a restarted reader",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 8514,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-network.spec.ts",
+          "title": "versioned sites cross RTC, WebSocket and TCP through native, heal a partition and survive with only a restarted reader",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 8505,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-pages.spec.ts",
+          "title": "web users copy pages, reorder with keyboard, reopen encrypted drafts and read the signed result after the author closes",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 13476,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-revisions.spec.ts",
+          "title": "real browser, Node and Go agree on signed site snapshots while reading keys cannot edit them",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 974,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-studio.spec.ts",
+          "title": "multipage studio saves encrypted draft, rejects executable imports and a consenting reader seeds it to a new browser after author closes",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 28894,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-studio.spec.ts",
+          "title": "studio keyboard navigation, nested drag, duplicate, reparent and page references stay editable on a narrow screen",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 3859,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-studio.spec.ts",
+          "title": "dense three-level compositions keep all controls inside their blocks and preserve contrast across palettes and app themes",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 13042,
+          "source": "full-regression"
+        },
+        {
+          "file": "x25519.spec.ts",
+          "title": "portable curves match RFC 7748, reject invalid reading keys and work when native curve operations fail",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 775,
+          "source": "full-regression"
+        },
+        {
+          "file": "x25519.spec.ts",
+          "title": "identity lifecycle remains valid across 512 generated and reimported signing/reading key pairs",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 3740,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-worker.spec.ts",
+          "title": "production worker publishes and recovers exact site requests, refuses forged snapshots and does not export signing helpers",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 2192,
+          "source": "recheck"
+        }
+      ]
+    },
+    "webkit": {
+      "uniquePassed": 66,
+      "fullStats": {
+        "startTime": "2026-09-17T13:44:52.737Z",
+        "duration": 355297.335,
+        "expected": 64,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "recheckStats": {
+        "startTime": "2026-09-17T13:52:51.355Z",
+        "duration": 21601.072,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "application-api.spec.ts",
+          "title": "application API preserves send identity, rejects corrupt retained acceptance, and validates event author/read scope",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 636,
+          "source": "full-regression"
+        },
+        {
+          "file": "application.spec.ts",
+          "title": "autonomous Liquid Glass UI owns identity and offline outbox, connects through real RTC, receives signed confirmations and survives reload",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 11222,
+          "source": "full-regression"
+        },
+        {
+          "file": "application.spec.ts",
+          "title": "autonomous social actions and safe signed site builder persist and remain viewable after author closes",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 18405,
+          "source": "recheck"
+        },
+        {
+          "file": "application.spec.ts",
+          "title": "production worker keeps private keys out of replies and recovers an applied send after the UI response is lost",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 24709,
+          "source": "full-regression"
+        },
+        {
+          "file": "application.spec.ts",
+          "title": "a second tab cannot take ownership of a live application profile and an unknown or corrupt profile is never silently reset",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 3621,
+          "source": "full-regression"
+        },
+        {
+          "file": "application.spec.ts",
+          "title": "cached application code and encrypted profile reopen when the static host is unavailable, without installing the PWA",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 4372,
+          "source": "full-regression"
+        },
+        {
+          "file": "application.spec.ts",
+          "title": "corrupted cached worker is rejected offline and recovered only from verified available code",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 2285,
+          "source": "full-regression"
+        },
+        {
+          "file": "connectivity.spec.ts",
+          "title": "both pending outboxes deliver after completing signalling; modes stay separate and diagnostics contain no secrets",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 15691,
+          "source": "full-regression"
+        },
+        {
+          "file": "connectivity.spec.ts",
+          "title": "closing while a code is being generated releases the late pending peer",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 4879,
+          "source": "full-regression"
+        },
+        {
+          "file": "contact-relay.spec.ts",
+          "title": "imported contact immediately appears once, survives reload and becomes the first real DM without a duplicate",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 7527,
+          "source": "full-regression"
+        },
+        {
+          "file": "contact-relay.spec.ts",
+          "title": "relay consent through the UI gates a real A to B to C path and does not grant B private reading",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 44446,
+          "source": "full-regression"
+        },
+        {
+          "file": "foundation.spec.ts",
+          "title": "Browser owns compatible identities/vaults/bundles: real Node and Go positive and negative controls",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 2177,
+          "source": "full-regression"
+        },
+        {
+          "file": "foundation.spec.ts",
+          "title": "encrypted IndexedDB persists, coordinates two pages, rejects corruption and preserves pins on failed admission",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 1168,
+          "source": "full-regression"
+        },
+        {
+          "file": "foundation.spec.ts",
+          "title": "lock during unlock cannot resurrect keys; missing authenticated state is not replaced with empty success",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 725,
+          "source": "full-regression"
+        },
+        {
+          "file": "foundation.spec.ts",
+          "title": "real WebRTC transfers encrypted chunks and an offline author's reader seeds identical bytes to a new reader",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 2873,
+          "source": "full-regression"
+        },
+        {
+          "file": "foundation.spec.ts",
+          "title": "WebRTC rejects a correctly framed corrupt bundle before storage and rejects admission failure without ACK",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 4406,
+          "source": "full-regression"
+        },
+        {
+          "file": "foundation.spec.ts",
+          "title": "identity recovery is compatible and cannot overwrite an existing profile; quota eviction retains pinned objects",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 550,
+          "source": "full-regression"
+        },
+        {
+          "file": "foundation.spec.ts",
+          "title": "browser application bundle/ledger commit is atomic, pending reservations survive eviction pressure and IDB abort preserves prior state",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 446,
+          "source": "full-regression"
+        },
+        {
+          "file": "group-certificates.spec.ts",
+          "title": "browser identity and group authority refuse all small-order reference keys and noncanonical aliases",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 306,
+          "source": "full-regression"
+        },
+        {
+          "file": "group-certificates.spec.ts",
+          "title": "browser, Node and Go verify shared group certificates, fresh consents, removal and strict signing ownership",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 981,
+          "source": "full-regression"
+        },
+        {
+          "file": "large-site-draft.spec.ts",
+          "title": "an allowed large site image saves through the UI and survives encrypted browser restart",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 17985,
+          "source": "full-regression"
+        },
+        {
+          "file": "mobile-navigation.spec.ts",
+          "title": "a single touch activates compact sidebar destinations after an open conversation hides the dock",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 2283,
+          "source": "full-regression"
+        },
+        {
+          "file": "native-transport.spec.ts",
+          "title": "browser WebRTC to browser WebSocket to real node daemon, reverse transfer and invitation revocation",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 5160,
+          "source": "full-regression"
+        },
+        {
+          "file": "native-transport.spec.ts",
+          "title": "browser WebRTC to browser WebSocket to real native daemon, reverse transfer and invitation revocation",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 4787,
+          "source": "full-regression"
+        },
+        {
+          "file": "native-transport.spec.ts",
+          "title": "private four-medium route WebRTC-WebSocket-TCP-serial, partition/heal and restarted browser seeder with author offline",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 11237,
+          "source": "full-regression"
+        },
+        {
+          "file": "native-transport.spec.ts",
+          "title": "late native ACK cannot leave an orphan retry assembly or close an otherwise healthy WebSocket",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 4615,
+          "source": "full-regression"
+        },
+        {
+          "file": "onboarding-language.spec.ts",
+          "title": "initial language, product guide and appearance work without altering identity form values",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 3655,
+          "source": "full-regression"
+        },
+        {
+          "file": "onboarding-language.spec.ts",
+          "title": "English and Spanish identities exchange encrypted messages and files without translating authored text",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 16210,
+          "source": "full-regression"
+        },
+        {
+          "file": "onboarding-language.spec.ts",
+          "title": "a blocked tab can change UI language while the owning identity remains intact",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 3319,
+          "source": "full-regression"
+        },
+        {
+          "file": "onboarding-language.spec.ts",
+          "title": "unavailable preference storage and localized form validation never reset a profile",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 2930,
+          "source": "full-regression"
+        },
+        {
+          "file": "onboarding-language.spec.ts",
+          "title": "saving one preference does not hide a different unsaved preference",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 1623,
+          "source": "full-regression"
+        },
+        {
+          "file": "private-values.spec.ts",
+          "title": "private values larger than the metadata index survive restart without becoming peer inventory",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 816,
+          "source": "full-regression"
+        },
+        {
+          "file": "private-values.spec.ts",
+          "title": "legacy embedded values migrate lazily and encrypted value rows remain outside peer access",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 948,
+          "source": "full-regression"
+        },
+        {
+          "file": "private-values.spec.ts",
+          "title": "bundle and private-value mutations commit together, and corruption cannot silently reset a value",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 573,
+          "source": "full-regression"
+        },
+        {
+          "file": "private-values.spec.ts",
+          "title": "private-value byte and total budgets reject excess without losing committed values",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 2093,
+          "source": "full-regression"
+        },
+        {
+          "file": "private-values.spec.ts",
+          "title": "multiple private values share one commit and a concurrent writer cannot remove a reader's snapshot",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 435,
+          "source": "full-regression"
+        },
+        {
+          "file": "routing.spec.ts",
+          "title": "automatic A-B-C mesh: consent controls, own sends while paused, partition/heal and restarted reader takeover with author offline",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 7605,
+          "source": "full-regression"
+        },
+        {
+          "file": "routing.spec.ts",
+          "title": "one network owner per profile and concurrent consent/preferences do not resurrect revoked relay",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 767,
+          "source": "full-regression"
+        },
+        {
+          "file": "routing.spec.ts",
+          "title": "fragment scheduling preempts bulk with SOS, gives bulk a fair turn, and cancels relayed bytes without closing own traffic",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 2826,
+          "source": "full-regression"
+        },
+        {
+          "file": "routing.spec.ts",
+          "title": "packet bounds reject expiry, hop loops and tampering; retained flood is bounded",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 291,
+          "source": "full-regression"
+        },
+        {
+          "file": "routing.spec.ts",
+          "title": "low-power defers bulk on a live link, keeps SOS moving and never revives an expired queued packet",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 2833,
+          "source": "full-regression"
+        },
+        {
+          "file": "routing.spec.ts",
+          "title": "browser routing packets cross real native TCP routers; native packet bytes verify in the browser and corruption never forwards",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 965,
+          "source": "full-regression"
+        },
+        {
+          "file": "routing.spec.ts",
+          "title": "opaque packet corruption is rejected by the browser mesh before storage or forwarding, with valid controls on both sides",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 2725,
+          "source": "full-regression"
+        },
+        {
+          "file": "routing.spec.ts",
+          "title": "managed relay revocation cancels an in-flight forwarded packet and keeps an authored SOS on that same open link",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 3102,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-api.spec.ts",
+          "title": "browser site API retains stable address, exact replay and history across reopen; a missing head never falls back",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 1033,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-api.spec.ts",
+          "title": "readable sites reject forged author, signature and payload; opaque private seeding confers no editing authority",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 1018,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-api.spec.ts",
+          "title": "storage exhaustion keeps exact authorized publication private and the offline application resumes after reopening",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 883,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-api.spec.ts",
+          "title": "concurrent recovered identities require explicit heads and retain both histories after conflict resolution",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 1172,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-catalog.spec.ts",
+          "title": "private profile transactions commit deletion and values together and close their handles",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 423,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-catalog.spec.ts",
+          "title": "caught failures, abandoned async calls and profile lock cannot partially commit a transaction",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 546,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-catalog.spec.ts",
+          "title": "browser catalog keeps preparation private and resumes the exact signed snapshot after reopening",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 680,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-catalog.spec.ts",
+          "title": "two browser profiles sharing a base can reserve only one publication",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 602,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-catalog.spec.ts",
+          "title": "expired browser preparations remain terminal, preserve counters and reject a stale session",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 903,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-catalog.spec.ts",
+          "title": "IndexedDB abort and corrupted private staging cannot leave partial site state or silently replace signed bytes",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 689,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-catalog.spec.ts",
+          "title": "private transactions enforce final quota while an atomic replacement fits at the storage boundary",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 1784,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-language.spec.ts",
+          "title": "three multilingual identities edit signed pages, preserve original text and seed to a new reader after author closes",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 22198,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-network.spec.ts",
+          "title": "versioned sites cross RTC, WebSocket and TCP through node, heal a partition and survive with only a restarted reader",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 7696,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-network.spec.ts",
+          "title": "versioned sites cross RTC, WebSocket and TCP through native, heal a partition and survive with only a restarted reader",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 7601,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-pages.spec.ts",
+          "title": "web users copy pages, reorder with keyboard, reopen encrypted drafts and read the signed result after the author closes",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 13363,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-revisions.spec.ts",
+          "title": "real browser, Node and Go agree on signed site snapshots while reading keys cannot edit them",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 895,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-studio.spec.ts",
+          "title": "multipage studio saves encrypted draft, rejects executable imports and a consenting reader seeds it to a new browser after author closes",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 29181,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-studio.spec.ts",
+          "title": "studio keyboard navigation, nested drag, duplicate, reparent and page references stay editable on a narrow screen",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 4508,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-studio.spec.ts",
+          "title": "dense three-level compositions keep all controls inside their blocks and preserve contrast across palettes and app themes",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 11310,
+          "source": "full-regression"
+        },
+        {
+          "file": "x25519.spec.ts",
+          "title": "portable curves match RFC 7748, reject invalid reading keys and work when native curve operations fail",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 560,
+          "source": "full-regression"
+        },
+        {
+          "file": "x25519.spec.ts",
+          "title": "identity lifecycle remains valid across 512 generated and reimported signing/reading key pairs",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 1697,
+          "source": "full-regression"
+        },
+        {
+          "file": "site-worker.spec.ts",
+          "title": "production worker publishes and recovers exact site requests, refuses forged snapshots and does not export signing helpers",
+          "status": "expected",
+          "result": "passed",
+          "durationMs": 2446,
+          "source": "recheck"
+        }
+      ]
+    }
+  },
+  "uniqueScenariosTotal": 198,
+  "physicalRadio": false,
+  "independentReview": false
+}

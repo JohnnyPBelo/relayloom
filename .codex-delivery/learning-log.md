@@ -502,3 +502,15 @@ O CI expôs dependência de.cache/tmp previamente criada. Cada fixture agora cri
 Windows pode indicar fim por signalCode enquanto exitCode permanece null. Aguardar o evento terminal com prazo e manter uma prova independente de indisponibilidade; killed não basta. A correcção usa SIGKILL apenas no processo de publicação criado pelo teste e conserva a recusaTCP e o novo seeder.
 
 API Node:397testes+31UI por núcleo/2interoplegados/Linuxpassaram. A camadaGo de registos privados também passou partilha deSQLite real e recusa de contexto diferente. Não são UI de revisões nem paridadeGo/browser completa.
+
+## Catálogo browser, transacções e verificação de UI — 2026-09-17
+
+O catálogo/API assíncrono passou 17 casos dirigidos em cada motor: Chromium, Firefox e WebKit. A cópia do site só começa depois da autorização durável; a recepção recusa site legível inválido antes de guardar/transmitir, mas conserva a possibilidade de relay privado opaco. O runtime tem fila própria porque ingest/flush não partilham a fila das chamadas de controlo.
+
+A nova fixture chamou Mesh.stop inexistente no cleanup; corrigida para Mesh.close, o caso passou. Confirmar os contratos dos helpers antes de os usar, incluindo a limpeza. Outro teste calculou quota como plaintext, mas o orçamento do perfil conta JSON cifrado/base64. A fixture passou depois de calcular a fronteira real, sem aumentar limites. Um script de substituição falhou na asserção e o shell continuou para uma repetição inalterada; separar a alteração e a execução em ferramentas sequenciais, ou usar encadeamento que pare na primeira falha. Falhas preservadas em .cache/browser-site-parity/.cache/site-api-first-failure e site-browser-check-before-quota-fixture.
+
+Dois percursos reais entre browser/Node/Go passaram WebRTC→WebSocket→TCP, controlos de pausa/retoma, privacidade e autoria, histórico e seeder único reiniciado após encerramento do autor. Não são hardware de rádio nem a UI futura de revisões.
+
+Na regressão WebKit, o teste antigo procurava role=status global e encontrou o feedback do estúdio e o toast de uma publicação social anterior. O trace mostra o sucesso do rascunho. A correcção deve procurar o estado dentro do landmark Estúdio do site, mantendo a expectativa e o prazo. Não esperar pelo desaparecimento arbitrário do toast nem escolher o primeiro resultado. A repetição desta correcção ainda está pendente enquanto o gate original termina.
+
+A repetição do selector limitado ao estúdio passou em Chromium/Firefox/WebKit, juntamente com o novo teste do worker compilado. A matriz consolidada cobre 66 cenários por engine (198 combinações), mantendo a primeira execução WebKit como FAIL e os relatórios de correcção separados. Nenhuma fonte de produto ou asset mudou entre a regressão e a repetição. O port está integrado no principal; o contexto/editor seguinte continua numa worktree isolada e não deve ser promovido como UI entregue.
