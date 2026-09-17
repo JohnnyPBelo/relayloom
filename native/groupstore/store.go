@@ -540,6 +540,14 @@ func (tx *Tx) Owner() (string, error) {
 	}
 	return tx.body.Owner, nil
 }
+
+// StoreID exposes only authenticated, immutable context for nested records.
+func (tx *Tx) StoreID() (string, error) {
+	if err := tx.check(false); err != nil {
+		return "", err
+	}
+	return tx.body.StoreID, nil
+}
 func (tx *Tx) RecordRevision(key string) (int64, bool, error) {
 	if err := tx.check(false); err != nil {
 		return 0, false, err
