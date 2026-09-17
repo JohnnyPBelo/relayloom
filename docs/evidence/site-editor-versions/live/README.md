@@ -1,0 +1,11 @@
+# Estúdio publicado e verificado no HTTPS
+
+A distribuição **4bc293c5d1790f47d3e33cb000c830236df6f8d4**, da fonte **2d84a61415c40c5458a8b6646ded98ed4041c77f**, está em https://johnnypbelo.github.io/relayloom/. O gate local passou 90 percursos na compilação normal, 96 na distribuição com subpath e um percurso entre processos Chromium/Firefox independentes. Os 18 ficheiros públicos coincidem por hash e tamanho; release.json aponta para a fonte esperada.
+
+No URL HTTPS real, dois percursos de páginas passaram em Chromium e Firefox: identidade, cartões e ligação pela UI, publicação de duas versões, leitura fixa do histórico, retorno à actual e um terceiro leitor servido após fechar a autora. A leitura não apresentou controlos de autoria. O percurso adicional com processos Chromium/Firefox independentes trocou mensagens nos dois sentidos, um anexo de 63 488 bytes exactos, recibo de leitura e recuperação offline. Não havia daemon a guardar ou assinar o conteúdo; as requisições observadas não incluíram API central ou recursos externos de runtime. Isto não equivale a dois dispositivos físicos.
+
+[Relatório](report.json), [hashes HTTP](http.json) e [gate público](public-gate.json). O verificador HTTPS é tests/site-publication-live.checks.ts, com configuração .codex-delivery/validation/site-live.playwright.ts; o comando completo está no relatório. Também reproduzível: RELAYLOOM_LAUNCH_URL=https://johnnypbelo.github.io/relayloom node scripts/e2e.mjs --config tests/browser/launch.config.ts.
+
+A configuração temporária escreveu o relatório numa pasta aninhada. O original executado foi conservado. A listagem posterior da configuração permanente produziu um relatório com dois casos skipped; não é usada como evidência de execução. O exportador recusou essa listagem e passou a ler o original de dois testes executados, identificado por hash no relatório. A configuração permanente só corrige caminhos; a listagem conferiu os mesmos dois casos.
+
+Axe passou nos percursos registados, mas não é revisão independente. A ocorrência intermitente RTC referida no relatório local continua sem causa comprovada. Apple/signing, rádios físicos, grupos dinâmicos web, dados/contribuições/ficheiros opcionais e restante contrato permanecem abertos. O worktree de tabelas não faz parte destes assets.

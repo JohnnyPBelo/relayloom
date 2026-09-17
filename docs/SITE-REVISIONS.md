@@ -1,6 +1,6 @@
 # Revisões de sites — APIs Node, Go e browser
 
-As aplicações Node, Go e browser dispõem localmente de publicação versionada, com o mesmo protocolo e superfície de comandos. No browser, a API corre no worker e a persistência cifrada usa IndexedDB, sem daemon de controlo. O editor partilhado está ligado a estes comandos, com controlos de privacidade, histórico, conflito e recuperação. A versão web pública continua na fonte 0c6b58a, com a correcção de rascunhos grandes; esta nova API ainda não foi publicada no HTML.
+As aplicações Node, Go e browser dispõem localmente de publicação versionada, com o mesmo protocolo e superfície de comandos. No browser, a API corre no worker e a persistência cifrada usa IndexedDB, sem daemon de controlo. O editor partilhado está ligado a estes comandos, com controlos de privacidade, histórico, conflito e recuperação. A versão web pública já inclui esta integração, na fonte2d84a61/distribuição4bc293c5, com verificação do HTTPS. [Evidência](evidence/site-editor-versions/live).
 
 Cada site tem um endereço `relayloom:site:<id-da-assinatura>/<nome>`. A revisão assina um documento completo e liga proprietário, nome, sequência, antecessores e hash do conteúdo. Um leitor pode servir o mesmo bundle, mantendo o autor original. Reassinar o envelope com outra identidade não dá autoridade sobre o endereço original.
 
@@ -60,4 +60,4 @@ O botão de opções de publicação mostra a audiência. Pode escolher público
 
 **Usar como rascunho** apresenta uma cópia verificada. A confirmação substitui o rascunho e conserva os leitores da versão escolhida; ainda não publica nada. **Publicar página** cria uma nova revisão assinada. O UUID e o digest ficam guardados antes do envio, para recuperar o mesmo resultado após perda de resposta ou reinício. Não abandonar um pedido incerto enquanto ele ainda possa ser aceite; o catálogo deve demonstrar que terminou ou que a base/contador já impossibilita a admissão.
 
-O incremento passou o gate local documentado em [site-editor-versions](evidence/site-editor-versions), com uma ocorrência intermitente de fecho de relay em Firefox ainda sem causa comprovada. A distribuição HTML pública ainda não inclui estes controlos nesta nota. Os limites de dados, contribuições, ficheiros opcionais, descoberta e dispositivos físicos permanecem abertos no contrato.
+O incremento passou o gate local documentado em [site-editor-versions](evidence/site-editor-versions), com uma ocorrência intermitente de fecho de relay em Firefox ainda sem causa comprovada. A distribuição HTML pública já inclui estes controlos, com a fonte e as provas indicadas no início deste documento. Os limites de dados, contribuições, ficheiros opcionais, descoberta e dispositivos físicos permanecem abertos no contrato.

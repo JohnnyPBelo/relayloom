@@ -1,0 +1,11 @@
+
+Running 2 tests using 1 worker
+
+(node:101684) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/site-publication-live.checks.ts:88:1 › published HTTPS artifact exposes versioned studio, fixed history and a consenting seeder after the author closes (19.5s)
+(node:103111) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  2 [firefox] › tests/site-publication-live.checks.ts:88:1 › published HTTPS artifact exposes versioned studio, fixed history and a consenting seeder after the author closes (23.8s)
+
+  2 passed (45.5s)

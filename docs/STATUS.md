@@ -1,5 +1,11 @@
 # RelayLoom — estado verificável
 
+## Publicação web actual — estúdio de versões no HTTPS
+
+**Fonte 2d84a61415c40c5458a8b6646ded98ed4041c77f; distribuição 4bc293c5d1790f47d3e33cb000c830236df6f8d4.** O estúdio com histórico, privacidade, conflitos e recuperação está disponível em https://johnnypbelo.github.io/relayloom/. Passaram 90 percursos na compilação normal, 96 na distribuição pública e um entre processos independentes. Depois da publicação, 18 ficheiros HTTP coincidiram por hash/tamanho; dois percursos de páginas em Chromium/Firefox confirmaram histórico e seeder com autora desligada, e um percurso adicional entre processos independentes confirmou mensagens, anexo exacto e recuperação offline. [Provas e reprodução](evidence/site-editor-versions/live).
+
+O CI 35276560255, com a preparação Go corrigida, passou os três jobs Node em Windows/macOS/Linux; o job Go ainda estava em execução na última consulta. Isso não valida os dispositivos físicos nem conclui o produto. A observação intermitente de fecho de relay e a ausência de validação Apple/radios continuam explícitas abaixo. Os registos de versões anteriores são históricos.
+
 ## Estúdio de versões — implementado e verificado localmente
 
 O estúdio partilhado publica versões pela UI, escolhe leitores e prazo, conserva a versão de partida e o UUID do pedido no rascunho cifrado, consulta histórico, fixa uma versão para leitura e recupera conteúdo com a audiência original. A recuperação exige pré-visualização verificada e confirmação antes de substituir o rascunho; publicar continua a exigir uma acção separada. A leitura normal acompanha versões recebidas, sem promover um payload antigo quando faltam os bytes da cabeça conhecida. Há PT-PT, inglês e espanhol, controlo por teclado, toque, mensagens de falha e tratamento de resultados incertos.
@@ -10,7 +16,7 @@ A primeira execução Node tinha uma tradução em falta; foi corrigida e i18n/t
 
 **Fiabilidade ainda por esclarecer:** uma execução Firefox fechou a ligação após pausar o relay, embora tivesse preservado o SOS próprio e impedido a entrega do conteúdo cancelado. Cinco repetições dirigidas, o ficheiro completo e a nova matriz passaram com diagnóstico, sem alterações no transporte. A causa continua desconhecida; não marcar esta ocorrência como corrigida. A revisão independente também continua pendente.
 
-O HTML público mantém a fonte 0c6b58a / distribuição 45ecacdf até passar o gate dos novos artefactos. Apps físicas, Apple/signing, rádios e restante contrato não são demonstrados por este gate local. Em particular, o CI 35252072691 / dc57316 falhou no reload da imagem grande (reproduzido e corrigido localmente neste marco) e na importação da fotografia iOS; os restantes nove jobs passaram. O CI anterior 35226875160 chegou ao picker e falhou a consulta AX. A nova captura XCUIScreen preparada para o picker tem validação host/static, mas ainda não execução Apple.
+O HTML público foi actualizado após o gate, para a versão identificada no início deste documento. Apps físicas, Apple/signing, rádios e restante contrato não são demonstrados por este gate local. Em particular, o CI 35252072691 / dc57316 falhou no reload da imagem grande (reproduzido e corrigido localmente neste marco) e na importação da fotografia iOS; os restantes nove jobs passaram. O CI anterior 35226875160 chegou ao picker e falhou a consulta AX. A nova captura XCUIScreen preparada para o picker tem validação host/static, mas ainda não execução Apple.
 
 ## Rascunhos web grandes — publicados e verificados
 

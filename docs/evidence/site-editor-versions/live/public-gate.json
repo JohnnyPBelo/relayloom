@@ -1,0 +1,418 @@
+{
+  "status": "PASS",
+  "started": "2026-09-17T21:05:54.215Z",
+  "baseCommit": "6dd879d39dea32813a20ac0593abeb309b2f3c33",
+  "sources": {
+    "apps/web/browser/icon.svg": "e07d4044578707df6661e170be9e819ad252a9e6654a60858600de2963a4b35e",
+    "apps/web/browser/index.html": "bcd74fe8f5624df9aaf86b75977540ff3352141b7e28547e14176b22804384bb",
+    "apps/web/browser/manifest.webmanifest": "19128cfd05183584671ce8d8697e44011315a35bfb2425b920511bc6b56a9cee",
+    "apps/web/index.html": "219de677f2a4efc02e4e3556148d7042c3bce23a8a790765db46af90cce84054",
+    "apps/web/src/api.ts": "d62b209d229388161ec5069b8b01751b767b22073f61fa766dc382da7e65c503",
+    "apps/web/src/appearance.ts": "c37f37c3f78b41729d15e762743ed230f029a228f4b5219e4338ead7bd5c22b0",
+    "apps/web/src/browser/client.ts": "d919a967e2c629bfab91940ba030a2b13b6bd4204019d83afa1b1634e4b166b0",
+    "apps/web/src/browser/entry.ts": "a7b1066c34f8d2b06f6067e9a66cb58b8c197b4bad68963613887c45b57b611f",
+    "apps/web/src/browser/peers.css": "e71aa2a6562b90bb8bb8fd133a5ac15a205618deb3a3a8c85b1fe8491a31b10e",
+    "apps/web/src/browser/peers.tsx": "fefeed8d9314c03e5f83ba1143455182ab3a7a3b9e473f7d4573a340da2c116b",
+    "apps/web/src/browser/service-worker.js": "c8ad4424e5845694b22d0c6baf2cfa3d2660214d1378527fe0869d34c3a104e9",
+    "apps/web/src/browser/worker.ts": "c6b0cf6c5c05945fed03937b5844f5f85618f1ec0e573013ca281c42b4b6478d",
+    "apps/web/src/collections.tsx": "4971e32c944028f893d123f2b4de2e85360007bd93b7e27f4d837944a3283301",
+    "apps/web/src/commands.tsx": "5ada1787d15e8e52d9b43e7e5c469fcda28af387235c6cb05931c759c7f61c68",
+    "apps/web/src/conversation-id.ts": "43d636e0d7dda63702ae597871572af79697e729266dd8692fd9bbca0dcd5b39",
+    "apps/web/src/device-preferences.ts": "577bf5fddaef29af43fde332ed0d895030bfaf10f9294f12e00b49862ab4aff9",
+    "apps/web/src/groups.css": "ef04947a85e2a92927a0d64475ce4e4b5652305ec12e572cdea3c7b3cc2100f4",
+    "apps/web/src/groups.tsx": "7d59b8e4dc91477cffaa513c745f13a3fbd2c0dc6a5041e6cd4d74cc716be29e",
+    "apps/web/src/i18n/connections.ts": "367abec0dc7b6a8cc8fcddbf5dea247184b7aa2310c33b97edfd9df94b5eb71d",
+    "apps/web/src/i18n/core.ts": "50834ed08835107e1512509223f27c7360ec4e5a780bf05b8110115965fdb3ee",
+    "apps/web/src/i18n/delivery.ts": "44dd968338bb833beace1deaf51c0c19a5adef62da07f801848afcafd20aeed2",
+    "apps/web/src/i18n/groups.ts": "debe9da2e9512ed16d01dc93cdc2e3b6b6c6d3156982c79baf3bcf665b365788",
+    "apps/web/src/i18n/media.ts": "53c9ffa09ce840b7ed373d89479e4f99c5322581c75a5df12d9ff36bfd803715",
+    "apps/web/src/i18n/messages.ts": "325954911931cec6b4a30efbbbc38e080d2dd9732de3d5dc82ff6f918161402e",
+    "apps/web/src/i18n/messenger.ts": "e40404d5ec0ec94972cdeda6bb503d153cfcbc773904c76a0686bab0d1e89192",
+    "apps/web/src/i18n/participation.ts": "6ad0b218c459262478757d523ac5b7304ecb0480fa5b164ebaef78aa01279f20",
+    "apps/web/src/i18n/runtime-errors.ts": "f343fe96bd672e4c6323a6a8d1d91295a3f6fc63329728163553ddcb76cbff94",
+    "apps/web/src/i18n/selector.tsx": "01d3d5588a4040346921ad7d34ac5c782c475b9ac0884661aae571658ebd1e2f",
+    "apps/web/src/i18n/shell.ts": "29b9879b7267aec5178444052b919faca6156545dcccbc75e7f0f97ea9db941b",
+    "apps/web/src/i18n/site-content.ts": "f11d7662efaa1013fea976285f5ebd8f744accf8eaf6ca58675f9d40bf30a035",
+    "apps/web/src/i18n/site-publishing.ts": "4cb417341fc8add9a969dd6763c0d66e20e931cac26feda6fce06bcff3ef8bb5",
+    "apps/web/src/i18n/studio.ts": "1f81d25768645c8ac61114bcc4d40ea33e3dea615d42674a9c242c937ad24bf7",
+    "apps/web/src/i18n/surfaces.ts": "63f2be9ce543a09e8005c42a47ff4294b22dbc70dc4c79f60b0bf2220e2256ff",
+    "apps/web/src/i18n/validation.ts": "3dfd93ba9d087d88fc6e0251cee210b16c859446387266c0cce1cb9aaa01bbd1",
+    "apps/web/src/i18n/welcome.ts": "1db692ee61e16df682a7aef011b936c8674c53731534e5aaf6917560530ea45b",
+    "apps/web/src/liquid-glass.css": "8c6051ad9c01a76848bd6dfbdd7cc81d4dff49b8722d6985ef7f02e7074de420",
+    "apps/web/src/main.tsx": "abcf476269bf68a9769b06525710dd2ce0ff26de5e9e75902dd86888108c27fa",
+    "apps/web/src/media.css": "30c3a0bcd086fffc72f7e7d22109048033cd92b176c152b9ead0c7829df727fc",
+    "apps/web/src/media.tsx": "5ed486811199b4705e14ebaf517024a10e4ede2847253ab3e0c2bd41e7a19e5a",
+    "apps/web/src/notifications.css": "cdbc683ff118f070e391c902f06e31232d60aede5857a61343f96e7e5694ea15",
+    "apps/web/src/notifications.tsx": "9c936cb618bc442f1051c43f5e473212d760cdf3d63d6e6776dfd3c68f297518",
+    "apps/web/src/onboarding.css": "227e7dc7095d11a7b04d06d1ce07a715dae58de0fbeb63774a37439b9f536f84",
+    "apps/web/src/onboarding.tsx": "319e913b2818fe44df0ee549115b51f647706071d4a246cb57b5fa02d8fa1bb9",
+    "apps/web/src/outbox.css": "775ec5167560a63ffb9ae5b3bfcbf60bb6623fdda06feef19c9db659f0da1adc",
+    "apps/web/src/outbox.tsx": "461013fcde66619653ba6fb0843a8dfa234870b32515c86f257fb26b16165292",
+    "apps/web/src/preference-status.tsx": "fc0126261836a28c1810701af3fa08fae609a4e771bc6f314b2974bf92f3dfc9",
+    "apps/web/src/relay-participation.css": "feaee3ca738f99cee81eabb787a65e4558631ca2dcab9e26266060b78b0c3c34",
+    "apps/web/src/relay-participation.tsx": "6925371ae3cd39b7b327ebbb1bbc6c8633fd44ef93ec487d5e55adf47c764305",
+    "apps/web/src/site/editor.tsx": "c841dacaf0d54c8344c5b2a45ea2fcb82ad34a967a17e26949cccf2a73883c10",
+    "apps/web/src/site/history.css": "b1e2b4ec208e71c024516593c6a8bfe34e154dcc89386d1c93e12bb872f642ad",
+    "apps/web/src/site/history.tsx": "6649c9a62ed849774f55cce202cd38f528a619691bca0a11223743901476c203",
+    "apps/web/src/site/model.ts": "f7cf82bf610037f489d0e1082d4ac12c133cf1d5a93f9c2f3ba9c4083e441c59",
+    "apps/web/src/site/publishing.ts": "4f83e4176de6299a9d077415d392b0686bfea6862db6bf97fdbd3914f501a6ad",
+    "apps/web/src/site/renderer.tsx": "caafc3f35f6f6a04b56217b4caa489d39f007f29dcc72b400ac6511f7eaf8bf5",
+    "apps/web/src/site/studio.css": "0538cd0ea51c125b9c972509cf7eb2630926f813037a9a553e7396f74eb887ca",
+    "apps/web/src/site/studio.tsx": "37d618f118812aefd727f96ff50d2d766099f00d009a8fdc3418b9fe4aa6f6d9",
+    "apps/web/src/site/visit.tsx": "02202d4756b0397fc31df8d49417199ee107da3129242774b14305fd9406820d",
+    "apps/web/src/startup.tsx": "9709f4ef652c6da57688a14145d5f92e35f4e372b90915c67905948d0556375e",
+    "apps/web/src/style.css": "46b0e55f4342d3a93a0cdfa707c1cab459d69940579672cb71586161efce1f1a",
+    "apps/web/src/vite-env.d.ts": "65996936fbb042915f7b74a200fcdde7e410f32a669b1ab9597cfaa4b0faddb5",
+    "apps/web/src/web-invitation.tsx": "3a5325f865f32f02f1a46d54cd4d3981b021d66583ab285a6d617e0cc787839e",
+    "apps/web/src/welcome.tsx": "0a008def7d56c521282eed40fb33914ff31b2ada35c4e3d2e15aa4e929eec477",
+    "docs/licenses/site-studio/NOTICE.txt": "75c009a409459b4fb9f62c1838d32a86e2d16805c8e8f6db930761b8615eccbb",
+    "docs/licenses/site-studio/manifest.json": "4b6f7dbf033fecfa7a7463790aea34fc2780d7b5777c1848bffc4427140de1dc",
+    "package-lock.json": "b7e14f1f5b3a754ae5bca349f2abb9dc3e4e82c75f81e4e46050d4536c72ccd8",
+    "package.json": "72bee6632ebdde39f101b6198d37a118e621a9ba24b8f7e1e98fbe6037db18ec",
+    "packages/browser/src/application.ts": "a70fff584729713254a7645f5e05eb707adc20897ba76a9697f98a6bee602d91",
+    "packages/browser/src/certificate-crypto.ts": "aa499416ea6b8b469d1d7136e58c73595481d2a5bf42130058dac47820a459c5",
+    "packages/browser/src/crypto.ts": "526e8a4578b8a8f97505c73a872ca7abfc1e24eae1d34d9b1f9cca6de0d993a4",
+    "packages/browser/src/group-certificates.ts": "6a0394f0a5c0ca87f847a6d3eb739d4f496acc2b91468195dbf0f176a00d1394",
+    "packages/browser/src/mesh.ts": "d564eb23ad61f4a4a7d3e5bd64d940c7354847fb4759ab67896615a57296d129",
+    "packages/browser/src/packet.ts": "be9bfd0cc55784a0a79c0f77f9ac05e3e2a2646db4d1215cf2f501e91aba717f",
+    "packages/browser/src/profile.ts": "7d60f0ce6bf89c739c7b960e59619dbb5d7a21b5f6a99e8e400d4e818d5951af",
+    "packages/browser/src/router.ts": "81adb105555dc6f42604492635ece08e8a82f861d7953dcf9cbe61ee4d4ba2d4",
+    "packages/browser/src/rtc.ts": "41e3e3ae031c5c2a810bdd5d1a111c0445d7542087086753f3db15e6bd97bc99",
+    "packages/browser/src/site-catalog.ts": "3858a3458dbd092e632d3ef894d94433fe9d5003847f186cb9f072d6fc8f0196",
+    "packages/browser/src/site-content.ts": "b951195d0215ce18693d147c91a081b797478540866151126730f6aa66828115",
+    "packages/browser/src/site-revisions.ts": "f47fa24bee029e7c0c4003a8760151e3c57ca5e93249774fa6855a55dc353cc4",
+    "packages/browser/src/site-runtime.ts": "1b652a4ce0ae6a231b19ff4e7dad92f05e6a2d9e5b67ccb86f3a550cf4c0990d",
+    "packages/browser/src/websocket.ts": "3bdaf0602505363ba355539a65f1f8115216828d3c2e530f06fba7424728b0c9",
+    "packages/content/src/outbox.ts": "317e7cbe64541dc926423f777c3ae1204c8097d67ab93fb521c3e653547764a1",
+    "packages/content/src/site.ts": "424310a5d3b5b75f07188b25e775fc7c1c132dda2159a2f79a6fcc6f38fa49bf",
+    "packages/content/src/types.ts": "608114942909c6d65ddc6aa8d1d7fe5330481e87ee35ad82279b733f4fd2fac2",
+    "packages/content/src/validation.ts": "550fd31ff6f337a98563bec5705fe0d73ecb9e9c14dd1604c1c813048dae75fb",
+    "packages/core/src/certificate-crypto.ts": "44b0bbf0b0987c18fa3b18b189b82ea56d75a2c635464aa2588aa024856d1178",
+    "packages/core/src/certificate-types.ts": "89f85a5eeabba8793b932cae938c7855acdd9d8430c517d8154869cfc7831c63",
+    "packages/core/src/index.ts": "c674a680176919b9ea750f5c6601bb1cef8609939213462b6f0b7493a5502e8c",
+    "packages/core/src/protocol.ts": "b10709bce07d8ad10175fec74032d48d10b9d785bcecb6a9fdc430bbb9f4ab67",
+    "packages/core/src/signing-key.ts": "54f3089142d35f45a2567ea08463cb9bc30b5bcbbe40050250a06b2c9c0db93a",
+    "packages/groups/src/access.ts": "a22c6fef920a1e73172fe7cc90f7c9953132a62090e21213429436d8401de267",
+    "packages/groups/src/carriers.ts": "d2c600c1366cd5ad0fc51628188c7692d66b79da8d1236244e652bc12ccac616",
+    "packages/groups/src/certificate-protocol.ts": "fa0a4447b19c9bf57576ff2a9ff97a67e2b3c16afccb7574fd4f06204fcdee29",
+    "packages/groups/src/certificates.ts": "14212ad2ac49c1173a5c5e912d544b13b90a106efc555630422dad6bd212630a",
+    "packages/groups/src/ledger.ts": "4a70aa9c35f86362be71fb7dd1d280518c05ac060e3699902643220ef37787a5",
+    "packages/groups/src/notices.ts": "5804fb81a01d56f27cd3c414fe97312cb2aff778e94d6ee52995fcce30f65a8f",
+    "packages/groups/src/registry.ts": "83883bb39d7eab69e0ea2a1d12e856d7cc9ee693247359cfd0570fac9b58f924",
+    "packages/groups/src/storage.ts": "71ad563cb74866f05a07c1831e6eadd1bffddd6015a98f77e1a8a23299024566",
+    "packages/preferences/src/index.ts": "a0a73c2dc3546b165aefeccba714ca6139e4c57702d388f2ab4792afd6933ff9",
+    "packages/profile/src/binding.ts": "892b0d623ba00b2d5cf63622080d0ecff4416fb9ce527f46fd73a90fb669e80a",
+    "packages/profile/src/database.ts": "e7e7780c4403a3cc8cdf08daede15b926e8a975625f455b301cf1ee1aafe33e2",
+    "packages/profile/src/ownership.ts": "dd812d422b797c34a32e5a6437fc948d1f3e54ff6e9b8f114025b05b6c06746b",
+    "packages/profile/src/state.ts": "09db151f681789f03aeba05b1198ed952b28fb612ea9348b56dde8171fb35312",
+    "packages/simulation/src/index.ts": "93f206d68a7375644d49ff8a7c1796d5b82270cd4e9fa093fcd8380228dc37b3",
+    "packages/simulation/src/scenarios.ts": "e175c37794d27dcb174ecc6d2b04fd19b52bd8f4b25382ff90ef40b8551d6fe5",
+    "packages/sites/src/catalog.ts": "79517eefd9a5715f16165f2c87bea6424fa865d37ce6011904b55eeaa37343ba",
+    "packages/sites/src/content.ts": "11238c57f5ad7f1fe8bc1240c21f4b976a4c4b515b60af623cf68f143636ceb2",
+    "packages/sites/src/editing.ts": "d1b57d110b47256eb1c3ab54d3b287ddd477510ff3ab5510731ffc3fc05cdc14",
+    "packages/sites/src/index.ts": "7ea9500d290d54bcc5bb8476f7789e6bbd859dfbe68de8512a05435c48c66af2",
+    "packages/sites/src/private-storage.ts": "851b0d69593a6714e8b8802aef7eafd5fe9eedf3c516843fe3fa8dd3709faf6f",
+    "packages/sites/src/protocol.ts": "40e231e75871e6b075093a942c5df9d8f1cc5764216d7b8ed51a3b061e6fea83",
+    "packages/sites/src/registry.ts": "7dec299769ca0b3675983d3faff369b0df0d5d5b9465dcb6f9c45aab27cb5136",
+    "packages/sites/src/request.ts": "b389c1bae615d0a9201cbc862012136f8d8e3d81eb86106abaeb509ff498b638",
+    "packages/transport/src/index.ts": "b5ecf9052193d3eb86c5a3d250133e25a027a9b3b8e5e28c9d205b0d78b676e9",
+    "packages/transport/src/protocol.ts": "fc7e95e7f5d3347055958d8bb9ddf56c61b34876784076de3cba4d5029eb8cbb",
+    "packages/transport/src/reticulum.ts": "4d3de97454bde89758f416aec075f81bb4844c327c0b86482de7f576502c3a78",
+    "packages/transport/src/serial.ts": "1cefb0b1154cbaa55676bc0057858ee894f2ad938048b9000fe7639c66ee5357",
+    "packages/transport/src/websocket.ts": "1037def24f77b1163cd905268ed3499ea9275acd5c31d5f324a6a2ecb174521b",
+    "playwright.config.ts": "b724fa07685989dbf46f65261d74d514dbd87dc7891c4da916c49ca3db7db9d9",
+    "scripts/android-bind.mjs": "44dbffa743a1e90d31d90e71783dcb6da7214cc19cc9921242c25329d83e6df6",
+    "scripts/android-build.py": "449ae5d85e5283580abc5c0ab5a17cf68e4df57be067ad199c312a2256e9da17",
+    "scripts/android-documents.mjs": "17d0ff911b6c56369a8d1841deddc47fd26710f9fec13fed2ef33071a3ed1098",
+    "scripts/android-emulator.py": "e14905a86c4920c0492f60a61dbf89986795ea378a7f822a85bffcea7148ae41",
+    "scripts/android-evidence.mjs": "11ebcfde33e8a28b0de33f818a7c2299afa7a3b3eb7d4836125bd019ec0e7c72",
+    "scripts/android-instrumentation.py": "a175250ae0b203aada6a1e2cfd1de701d0ef75745fb0bd4de656e23ff09e1338",
+    "scripts/android-private-profile.mjs": "91e0a23123ac766b9ae38f60bfd3419457a60ee821576438d1e6900c88f55deb",
+    "scripts/android-relay.mjs": "1b754c431aa3bb7b378cc41e68fa52d5ba295e7064bf32e88b580863a59aed0a",
+    "scripts/android-smoke.mjs": "2293bf0861d0dbfc2cc7fdc7305761296dac2eece863aa2b157c4d8917ccae0b",
+    "scripts/android-toolchain.py": "f42dccf9b21a2b93e0d0e81cf8e51316e9475c32435dee3f9afa4adcd2f4afc1",
+    "scripts/android-ui.py": "c301b43d0acdafe85d87d903e66c50ea0ace8292a6af9b51db50fd9421441800",
+    "scripts/desktop-build.mjs": "e3eceb876dab3a9478f66a756683a150c87b6c9505a9f5bd770479a12eb0bde6",
+    "scripts/desktop-package.mjs": "7d61d2f22b2cd0ac2e75aa4f4a7e8fce63ce188393a6421dcbe64b558529dc33",
+    "scripts/desktop-packaged-smoke.mjs": "14af2ff05e3d0b53c97f00b0285f9f889eada85e3bb10d64bd6170da5b8e735f",
+    "scripts/desktop-run.mjs": "bbdb35c3eb6f4ee7e015535651d35cdf4f8d08ca5732e5dc063df7d14b74f6bd",
+    "scripts/e2e.mjs": "af1abbe7416464d38c4adbf4dced90d1c3d42585d6f5d293ae55ae25971ca0d6",
+    "scripts/go.mjs": "b14be8de761bbbf842052ac10ba7e7b7fa7b1a74f1537eab9ed2d2df606e306e",
+    "scripts/ios-build.mjs": "90fec1d0498fe785a5f8ac374cf3ba5a186a56e5e05d4729eb3f739db3fde66d",
+    "scripts/ios-simulator.d.mts": "de421e3a9a725d48378b2a31b8cbda14885780995eb11f988f8c2faa90580e79",
+    "scripts/ios-simulator.mjs": "ac4754ee64a5ef921b5ca278315252c93e8d69a6b2f510bf40001d98402583a5",
+    "scripts/ios-static-check.py": "36103ecc4eefd8b8e7b246ef0afa125fe40ec8d9db0f5ffb53fc5be587e48514",
+    "scripts/native-build.mjs": "40a3eb3118f6766b2a6b92fa70abe925255823b5e54616576b8e2882d7a28865",
+    "scripts/native-interop.ts": "955fa74f33547216a3dd1f42a9413c2601035f82a21b571d8750e6ce3d2af1d3",
+    "scripts/pty-bridge.py": "3e125721028a3bcfae1e85a5c7142f698651cd4f9935d81e47004f9f7861210f",
+    "scripts/publish-web.mjs": "6cba16e8e530eb0cefb11e54beba1c6dd152c03512420f5c0cc63c9251fb61be",
+    "scripts/reticulum-setup.py": "2d690710c0533c334cc1c0caed6f5df2db72b12bb7c47c86b42c777f8d19d29f",
+    "scripts/simulate.ts": "e603f65a72c85fc3173fee07b14ec98527b9263117005c324495ea8017e17133",
+    "scripts/site-notices.mjs": "09e7f34b89327e0eef2be05ba80699a98843397637c7e9174397b587c21fdbd0",
+    "scripts/verify-autonomous.mjs": "8bf08bf7e70febc13646b80e03d4cb195e6bc8a60f439fb6bd927a231ca393e5",
+    "scripts/verify-browser-matrix.mjs": "c976b803382bd8e171c8a1e50a1fc8c2f15857146ac26e05b4a83d67f052120b",
+    "scripts/verify-browser-native.mjs": "27910e87ebb15765a0b2e2d4923cd33f9d62178902aea38aa1938445af29267c",
+    "scripts/verify-browser.mjs": "a0974a5ab2656f77e012da7a2ebc9d788322904d648903d93b035d96c0b894af",
+    "scripts/verify-group-browser.mjs": "6b05189e6041c1d2a375579896bb67edc194513f003c9cc22fbb07f59e30cc5d",
+    "scripts/verify-onboarding-languages.mjs": "f955d026689ffaaab1eb84d76edaa844ad5ea47c353ab3975b624a5380cf2869",
+    "scripts/verify-public-web.mjs": "69f140c6d5a5e19e9da3f7250afc608b3784ec70ce81c23ecccc4a614e5da94a",
+    "scripts/verify-reticulum.mjs": "6584071c3aecefc035a0e898fca0ad5a4a57c41bc44e236b44926fa61115e4f2",
+    "scripts/verify-site-studio.mjs": "e7ef4fc733e82aa4bc96b94f4d007224458275b81fcfcecc369cca1644b72881",
+    "scripts/verify-ui.mjs": "4bc0b05390cd97ba80d88e77937f01592f389695c0c9fff8566e77e99f5f5ba6",
+    "scripts/verify.mjs": "0f33af171100a83b31066ccf012698659c888e47f5fe40d505116385259e8ac4",
+    "scripts/web-artifact.mjs": "9e260edbdd40a36b80cc6bcb977287915f61fa36f109249398b2b2dbac38bf27",
+    "scripts/webkit-host-deps-linux.json": "612afc3820fba8696f879eb5d94eb20fab2a9400bdeb16aba31532fbb096fc80",
+    "scripts/webkit-host-deps.py": "ff36b946be9a841a9affac65b6b0e86c02da686518b9759b5e91df565b3b9035",
+    "tests/browser/app-host.ts": "6f465e94c11a7ca85a598beaffc634baac625c53525230d1c058f0a7f28e705c",
+    "tests/browser/application-api.spec.ts": "1188e5b0d00c3de7fdc43ff8a8963284014e0cddf61633578ad91fa89075f55b",
+    "tests/browser/application.spec.ts": "4bf690bcadb4939685c6f83900fc47c1edee81d36478288966f29e65dfd2905f",
+    "tests/browser/browser.config.ts": "079f3e228c80e06f02db81f0b2763e1ad8715bc0323e43f8c1c519724e8156e0",
+    "tests/browser/connectivity.spec.ts": "e50c77e3bb71e13916a6575eff6ff9bc6d27725ea879a3b4142882297502b636",
+    "tests/browser/contact-relay.spec.ts": "c330791d00495cea5b15056e5ef75372fbb9d8cc06f52f6716e9e58b11a4c6dc",
+    "tests/browser/foundation.spec.ts": "601c568ea6b60439c2eb447c0c647315cdf93136e15365eaf9916c1610913578",
+    "tests/browser/group-certificates.spec.ts": "22467a8dba49d21251275ea439e3c74e23b2f480eaa2631097ad52b4da499b85",
+    "tests/browser/harness.ts": "05a24a1faed7196923dbcc40b99915d18d45ffa13d54d69e3f676fd61bded723",
+    "tests/browser/large-site-draft.spec.ts": "73d00269aa7c8d720422bf85dcf896ce6ec5fa3a8bf04554590d1b38c920782e",
+    "tests/browser/launch.checks.ts": "0c58430fceac191413a7914780582fee45c9fc42b8423f78bc47766bfd3f5b48",
+    "tests/browser/launch.config.ts": "ff6142d32e724491004b00692dff050fc48d908eb1b889537be4e4e2416c4ee7",
+    "tests/browser/matrix.config.ts": "b33bc027ba07010c0f6a54b4ff39b99b65e128ecb82b5dea9d0a1785db8fbfbf",
+    "tests/browser/mobile-navigation.spec.ts": "39fd337b0cf7bde29d303b7d14134ef5396bee054404dd9e10a3fbf863e50979",
+    "tests/browser/native-transport.spec.ts": "aa3422c37dd660c2c505184349ab86143d73c0265cac1f7fc225dffe3c407ba4",
+    "tests/browser/onboarding-language.spec.ts": "30a822a3613e02aa8c33fc17de793aadc972f26d2411408985a4ca80dfdebb48",
+    "tests/browser/private-values.spec.ts": "53ddc71abde8842d8eccf4684f86ccc8724c37458770f6d9417899fd8bd3446a",
+    "tests/browser/public-distribution.checks.ts": "21ba57cb8f68840bd6463d92aa8c25e079449d7e8dce8615d563164cee2555c9",
+    "tests/browser/public.config.ts": "98a1d288cc63f754e305c8d1a35db0967baa4cfc60a4b612d91e8696e9280d60",
+    "tests/browser/reload-diagnostics.ts": "89d1b0e772b9ed56c5069790d1040af085fca1c3b73aa1e820b29a29dbc927d5",
+    "tests/browser/routing.spec.ts": "badf8a417b448edfc9d9235a1b05014e55de639ab064c2d07541547bf04a412a",
+    "tests/browser/site-api.spec.ts": "c8f4bc344d61a2aeada1d612dfd4b42c60a32061fb28ab0f4e57452373d4113d",
+    "tests/browser/site-catalog.spec.ts": "d4f3c274892adc5304220f63b1913b5d0adac209b31652b264cc4711dfc0807a",
+    "tests/browser/site-language.spec.ts": "983ad2379d7b313f92f3d0f9c048b93e8662f6fdccb5e16c75a19ee35aceeda5",
+    "tests/browser/site-network.spec.ts": "84862f010fd5194b528eb718f32abca27acdf204dd21e7d3ca9002efcf4177d6",
+    "tests/browser/site-pages.spec.ts": "0bf7e320453f911d5357368c7e5644ee99bd54dff1e4260f6cd8f7d8d79c30dc",
+    "tests/browser/site-publication.spec.ts": "a7132c49e47941de442ae1850195ba125fb996ff8ebb87838b72de175812ea5c",
+    "tests/browser/site-revisions.spec.ts": "72ece498db7449e7a41dc2d48bcfe8c2fe414d98403e52d98403a33ab9cab7c3",
+    "tests/browser/site-studio.spec.ts": "0bd83ba318969a8d716edfb5b68eee070a992af36cadba6188746a31034ab31c",
+    "tests/browser/site-worker.spec.ts": "9e846a8455712e9052315074675c44dd23ba7496e5c3f76b8dfd68be0acdb7af",
+    "tests/browser/static-harness.ts": "8c8de403074678290d9e16cd82071ee2f7eb8ed0d376ee61daf75747328db10d",
+    "tests/browser/x25519.spec.ts": "cd7dc183d6eed73091c5e9d19ffe18410cd735d80c47d1e0fe1626e33086a244",
+    "tests/conversation-id.test.ts": "0b07012db0aaa61a8e86f1d440f53cda0d65abe0515ffd8d557ae0196b5e3a63",
+    "tests/reticulum/ui.config.ts": "fdab8b78ecc9f05469b281ab7a77074066c6c370f8bef3d38e6fa86c35731a15",
+    "vite.config.ts": "fff9fdf5b3f40084f290ec2e6edaf5a0cf6ee34a46e5dd82e083615e6f3e9ff0"
+  },
+  "checks": [
+    {
+      "name": "typecheck",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit"
+      ],
+      "exitCode": 0,
+      "durationMs": 7333
+    },
+    {
+      "name": "conversation-address",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "--import",
+        "tsx",
+        "--test",
+        "tests/conversation-id.test.ts"
+      ],
+      "exitCode": 0,
+      "durationMs": 158
+    },
+    {
+      "name": "default-build",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "node_modules/vite/bin/vite.js",
+        "build"
+      ],
+      "exitCode": 0,
+      "durationMs": 2904
+    },
+    {
+      "name": "default-ui-chromium",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "tests/browser/application.spec.ts",
+        "tests/browser/contact-relay.spec.ts",
+        "tests/browser/connectivity.spec.ts",
+        "tests/browser/site-studio.spec.ts",
+        "tests/browser/site-publication.spec.ts",
+        "tests/browser/site-worker.spec.ts",
+        "tests/browser/onboarding-language.spec.ts",
+        "tests/browser/site-language.spec.ts",
+        "tests/browser/site-pages.spec.ts",
+        "tests/browser/large-site-draft.spec.ts",
+        "tests/browser/mobile-navigation.spec.ts"
+      ],
+      "exitCode": 0,
+      "durationMs": 284586
+    },
+    {
+      "name": "default-ui-firefox",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "tests/browser/application.spec.ts",
+        "tests/browser/contact-relay.spec.ts",
+        "tests/browser/connectivity.spec.ts",
+        "tests/browser/site-studio.spec.ts",
+        "tests/browser/site-publication.spec.ts",
+        "tests/browser/site-worker.spec.ts",
+        "tests/browser/onboarding-language.spec.ts",
+        "tests/browser/site-language.spec.ts",
+        "tests/browser/site-pages.spec.ts",
+        "tests/browser/large-site-draft.spec.ts",
+        "tests/browser/mobile-navigation.spec.ts"
+      ],
+      "exitCode": 0,
+      "durationMs": 344303
+    },
+    {
+      "name": "default-ui-webkit",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "tests/browser/application.spec.ts",
+        "tests/browser/contact-relay.spec.ts",
+        "tests/browser/connectivity.spec.ts",
+        "tests/browser/site-studio.spec.ts",
+        "tests/browser/site-publication.spec.ts",
+        "tests/browser/site-worker.spec.ts",
+        "tests/browser/onboarding-language.spec.ts",
+        "tests/browser/site-language.spec.ts",
+        "tests/browser/site-pages.spec.ts",
+        "tests/browser/large-site-draft.spec.ts",
+        "tests/browser/mobile-navigation.spec.ts"
+      ],
+      "exitCode": 0,
+      "durationMs": 377463
+    },
+    {
+      "name": "public-build",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "node_modules/vite/bin/vite.js",
+        "build",
+        "--mode",
+        "public-web",
+        "--base",
+        "/relayloom/"
+      ],
+      "exitCode": 0,
+      "durationMs": 3065
+    },
+    {
+      "name": "public-matrix",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/public.config.ts"
+      ],
+      "exitCode": 0,
+      "durationMs": 1004413
+    },
+    {
+      "name": "two-processes",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/launch.config.ts"
+      ],
+      "exitCode": 0,
+      "durationMs": 14580
+    }
+  ],
+  "scope": "Build/default UI + public subpath UI Chromium/Firefox/WebKit on Linux; separate Chromium/Firefox processes. No physical-device or complete-product claim.",
+  "artifacts": {
+    ".nojekyll": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "assets/browser-B1-ojTN3.js": {
+      "sha256": "b50d1b4d1bc46784afce278245f92d2e270771912ffca0c3931ae923c9205d5c",
+      "bytes": 68613
+    },
+    "assets/editor-BD7CSJlJ.js": {
+      "sha256": "cf2315aed25d9a3ace79ab500a57ca33ca0033aa29d36a8a631a3e1e8a360375",
+      "bytes": 39282
+    },
+    "assets/history-CtYMyyFE.css": {
+      "sha256": "bea50f6353b677c5f7615bd9cfd9ec099e91ecea67761696aaf89c5991587de9",
+      "bytes": 17135
+    },
+    "assets/history-DT_ra8Db.js": {
+      "sha256": "bd7e12ccde19e32c052d52e468e9158b79fd777c6927c5841caa5e1b5554a4ed",
+      "bytes": 129211
+    },
+    "assets/main-D4Jj5Cmn.js": {
+      "sha256": "df0b934d54dc9e46b192895e15db35728c614c6ef42af46fd09ede9f7f58d219",
+      "bytes": 148173
+    },
+    "assets/main-DEi_Xkk3.css": {
+      "sha256": "46f13f96e5f5ac7e0004b1463f8db8639f0ebcf13dcfed004b085215b91a3453",
+      "bytes": 13872
+    },
+    "assets/manifest-BWKlX33v.webmanifest": {
+      "sha256": "19128cfd05183584671ce8d8697e44011315a35bfb2425b920511bc6b56a9cee",
+      "bytes": 319
+    },
+    "assets/peers-BkpZf0fB.js": {
+      "sha256": "c72356dc147c6a33995349075019d79cb9a132f65e3536ae8637896c5adc55fd",
+      "bytes": 384416
+    },
+    "assets/peers-zdFnw8Ii.css": {
+      "sha256": "e05138d7e12b9cad8dd98db964a3cbed83a7c4dc6f718de67e756e92b723dd04",
+      "bytes": 61705
+    },
+    "assets/site-studio-notices.txt": {
+      "sha256": "75c009a409459b4fb9f62c1838d32a86e2d16805c8e8f6db930761b8615eccbb",
+      "bytes": 97684
+    },
+    "assets/visit-B39tfGPb.js": {
+      "sha256": "4604c8118aee423df5f65084a96e99815f1c5a80ac74a847f6c025255d29c835",
+      "bytes": 3548
+    },
+    "browser/assets.json": {
+      "sha256": "d2bb90a8795fb733782e6b3bd82e818040161e7852caf86dbd92636f989808f2",
+      "bytes": 2354
+    },
+    "browser/icon.svg": {
+      "sha256": "e07d4044578707df6661e170be9e819ad252a9e6654a60858600de2963a4b35e",
+      "bytes": 364
+    },
+    "browser/index.html": {
+      "sha256": "a62dc94025b8777852c8041911052339e0889b0d8f0dd5f3b523419105fe87e7",
+      "bytes": 1115
+    },
+    "browser/manifest.webmanifest": {
+      "sha256": "19128cfd05183584671ce8d8697e44011315a35bfb2425b920511bc6b56a9cee",
+      "bytes": 319
+    },
+    "browser/sw.js": {
+      "sha256": "2634fa70d58b1f61101f0c4f18655f20187f81de4cac0e9d6ed8b5ecf44e4aac",
+      "bytes": 4542
+    },
+    "browser/worker-BRlztqZN.js": {
+      "sha256": "975f673db9c2fc727a8bb0ba3b75a2f8247584ed5716836eb6341bc5fb666e99",
+      "bytes": 144051
+    },
+    "index.html": {
+      "sha256": "39566836f8abf04e2e7ce51a8e5dc7a0ed6533bdb35ce32c2399a82f0e1c0dfe",
+      "bytes": 385
+    }
+  },
+  "finished": "2026-09-17T21:39:53.183Z"
+}

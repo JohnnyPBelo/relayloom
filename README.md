@@ -44,7 +44,7 @@ O novo estúdio já está disponível na [versão web](https://johnnypbelo.githu
 
 A publicação foi conferida por hash e passou quatro testes no URL real, incluindo seeding do site com a autora offline e troca de mensagens/anexo entre processos. [Evidência pública](docs/evidence/site-studio/live). Guarde o rascunho, feche os separadores RelayLoom antigos e reabra a página inicial para actualizar, sem apagar os dados.
 
-Esta adaptação inspira-se nos sites distribuídos do ZeroNet, com execução limitada a blocos seguros. Os limites actuais são 12 páginas, 128 blocos, três níveis e quatro imagens com até 2 MiB no total. Na interface publicada ainda faltam contribuições multiutilizador, ficheiros opcionais e controlos de endereços permanentes/revisões. [Como criar e limites exactos](docs/SITE-STUDIO.md).
+Esta adaptação inspira-se nos sites distribuídos do ZeroNet, com execução limitada a blocos seguros. Os limites actuais são 12 páginas, 128 blocos, três níveis e quatro imagens com até 2 MiB no total. Na interface publicada ainda faltam contribuições multiutilizador e ficheiros opcionais; os controlos de endereço permanente, histórico e recuperação já estão disponíveis. [Como criar e limites exactos](docs/SITE-STUDIO.md).
 
 Na versão web, já pode duplicar páginas completas e alterar a sua ordem. A cópia conserva ligações, imagens e a página inicial, com desfazer/refazer e controlos por teclado/toque. A publicação64363cf da fontebfcb5fc foi conferida em17ficheirosHTTP e12percursosUI. Os gates Node/Go,135casos de browser e Android também passaram. [Evidência e pendentes](docs/evidence/page-organisation).
 
@@ -52,7 +52,7 @@ A correcção para guardar rascunhos web com imagens maiores que 1 MiB passou a 
 
 O estúdio no código actual já usa as revisões assinadas em Node, Go e browser: endereço permanente, histórico, leitores públicos ou privados, conflitos explícitos e recuperação de versões como novos rascunhos. A recuperação conserva os leitores originais e só publica após nova escolha do proprietário. A regressão local inclui 32 cenários UI por motor Node/Go, 73 por browser (219), 69 testes de interoperabilidade e execução do pacote Linux. [Testes e correcções](docs/evidence/site-editor-versions).
 
-Há uma ocorrência de fecho de ligação em Firefox durante a pausa de relay ainda sem causa comprovada; os testes posteriores passaram, mas isso não é uma correcção demonstrada. O HTML público permanece na fonte 0c6b58a, enquanto a distribuição deste marco é validada. [Âmbito e limites](docs/SITE-REVISIONS.md).
+Há uma ocorrência de fecho de ligação em Firefox durante a pausa de relay ainda sem causa comprovada; os testes posteriores passaram, mas isso não é uma correcção demonstrada. O HTML público já usa a fonte **2d84a61**, na distribuição **4bc293c5**: 18 ficheiros HTTP conferidos por hash, dois percursos de páginas e um de mensagens/anexo entre processos independentes passaram no HTTPS. [Evidência da publicação](docs/evidence/site-editor-versions/live). [Âmbito e limites](docs/SITE-REVISIONS.md).
 
 Existe também um [APK Android ARM64 experimental](docs/ANDROID-ARM64.md), construído com a mesma interface. A arquitectura, assinatura e assets foram verificados; a execução num telefone ARM64 ainda está pendente.
 
