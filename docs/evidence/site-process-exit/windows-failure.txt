@@ -1,0 +1,29 @@
+native-node (windows-latest)	Run npm test	2026-09-17T11:29:57.8718027Z # Subtest: real application APIs preserve revision identity, resolve updates and serve a new reader after the author exits
+native-node (windows-latest)	Run npm test	2026-09-17T11:29:57.8725401Z not ok 249 - real application APIs preserve revision identity, resolve updates and serve a new reader after the author exits
+native-node (windows-latest)	Run npm test	2026-09-17T11:29:57.8726700Z   ---
+native-node (windows-latest)	Run npm test	2026-09-17T11:29:57.8727059Z   duration_ms: 1624.0664
+native-node (windows-latest)	Run npm test	2026-09-17T11:29:57.8727432Z   type: 'test'
+native-node (windows-latest)	Run npm test	2026-09-17T11:29:57.8728307Z   location: 'D:\\a\\relayloom\\relayloom\\tests\\site-application.test.ts:82:1'
+native-node (windows-latest)	Run npm test	2026-09-17T11:29:57.8729548Z   failureType: 'testCodeFailure'
+native-node (windows-latest)	Run npm test	2026-09-17T11:29:57.8730042Z   error: 'Expected "actual" to be strictly unequal to: null'
+native-node (windows-latest)	Run npm test	2026-09-17T11:29:57.8730394Z   code: 'ERR_ASSERTION'
+native-node (windows-latest)	Run npm test	2026-09-17T11:29:57.8730704Z   name: 'AssertionError'
+native-node (windows-latest)	Run npm test	2026-09-17T11:29:57.8731054Z   expected: ~
+native-node (windows-latest)	Run npm test	2026-09-17T11:29:57.8731344Z   actual: ~
+native-node (windows-latest)	Run npm test	2026-09-17T11:29:57.8731660Z   operator: 'notStrictEqual'
+native-node (windows-latest)	Run npm test	2026-09-17T11:29:57.8732100Z   stack: |-
+native-node (windows-latest)	Run npm test	2026-09-17T11:29:57.8733086Z     TestContext.<anonymous> (D:\a\relayloom\relayloom\tests\site-application.test.ts:118:12)
+native-node (windows-latest)	Run npm test	2026-09-17T11:29:57.8734231Z     process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+native-node (windows-latest)	Run npm test	2026-09-17T11:29:57.8734851Z     async Test.run (node:internal/test_runner/test:1054:7)
+native-node (windows-latest)	Run npm test	2026-09-17T11:29:57.8735357Z     async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+native-node (windows-latest)	Run npm test	2026-09-17T11:29:57.8735765Z   ...
+native-node (windows-latest)	Run npm test	2026-09-17T11:30:00.2335829Z # Subtest: private site APIs preserve reading scope and generic publication cannot bypass version authority
+native-node (windows-latest)	Run npm test	2026-09-17T11:30:00.2337565Z ok 250 - private site APIs preserve reading scope and generic publication cannot bypass version authority
+native-node (windows-latest)	Run npm test	2026-09-17T11:30:00.2338117Z   ---
+native-node (windows-latest)	Run npm test	2026-09-17T11:30:00.2338324Z   duration_ms: 2363.0214
+native-node (windows-latest)	Run npm test	2026-09-17T11:30:00.2338574Z   type: 'test'
+native-node (windows-latest)	Run npm test	2026-09-17T11:30:00.2338757Z   ...
+native-node (windows-latest)	Run npm test	2026-09-17T11:30:01.0670419Z # Subtest: a valid outer signature cannot smuggle another owner snapshot into application storage through TCP
+native-node (windows-latest)	Run npm test	2026-09-17T11:30:01.0672751Z ok 251 - a valid outer signature cannot smuggle another owner snapshot into application storage through TCP
+native-node (windows-latest)	Run npm test	2026-09-17T11:30:01.0673968Z   ---
+native-node (windows-latest)	Run npm test	2026-09-17T11:30:01.0674368Z   duration_ms: 833.4937

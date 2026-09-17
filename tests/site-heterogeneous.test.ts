@@ -114,7 +114,7 @@ test(
       await delay(250);
       await a.stop();
       await c.stop();
-      assert.notEqual(a.process.exitCode, null);
+      assert.ok(a.process.exitCode !== null || a.process.signalCode !== null);
       const d = await launch(undefined, 0, -1, "node");
       nodes.push(d);
       await d.call("setup", {

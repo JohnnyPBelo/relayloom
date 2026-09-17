@@ -114,8 +114,23 @@ test("real application APIs preserve revision identity, resolve updates and serv
     await assert.rejects(() =>
       a.call("site-command", { ...one.request, operationId: randomUUID() }),
     );
+    // An outage can end a process by signal, which intentionally leaves
+    // exitCode null. Await the actual exit, then retain the TCP refusal control.
+    const exited = new Promise<void>((done, fail) => {
+      const timeout = setTimeout(
+        () => fail(new Error("Owned publisher did not exit")),
+        8000,
+      );
+      a.process.once("exit", () => {
+        clearTimeout(timeout);
+        done();
+      });
+    });
+    void exited.catch(() => {});
+    assert.equal(a.process.kill("SIGKILL"), true);
+    await exited;
     await a.stop();
-    assert.notEqual(a.process.exitCode, null);
+    assert.ok(a.process.exitCode !== null || a.process.signalCode !== null);
     const reachable = await new Promise<boolean>((done) => {
       const socket = createConnection({ host: "127.0.0.1", port: a.tcpPort });
       socket.on("connect", () => {
