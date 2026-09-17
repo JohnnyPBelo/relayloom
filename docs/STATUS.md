@@ -10,6 +10,12 @@ Os certificados de revisões e o catálogo persistente Node têm código/testes 
 
 POSTsite-command cria a revisão e a preparação numa transacção real, autoriza antes de copiar/enviar, recupera pedidos e resolve endereços a partir de certificados e bytes verificados. Conflitos conhecidos exigem confirmação explícita das cabeças. Uma cabeça sem payload não promove a versão antiga. Passaram397testesNode,31UI por núcleoNode/Go,2percursos legados de interoperabilidade eLinuxbuild/run/package/run. [Evidência](evidence/site-api) e [guia](SITE-REVISIONS.md). Não há ainda UI de revisões nem API/persistência equivalentes Go/browser; contribuições e ficheiros opcionais continuam pendentes.
 
+## CI e camada Go mais recentes
+
+CI35215212384 passou Node emLinux/macOS e falhou emWindows numa asserção do teste sobre exitCode após terminação por sinal. A correcção mantém espera limitada e recusaTCP; cinco testes dirigidos passaram, mas a repetiçãoWindows ainda está pendente. [Evidência](evidence/site-process-exit). Os jobs dependentes, incluindo iOS, não correram nessa execução.
+
+A cifra privada de sites já tem portGo e interoperabilidade real comNode na mesmaSQLite, com controlos de quota, corrupção e contexto. [Provas](evidence/go-site-private). O catálogo/API/estúdio de revisões emGo e browser continuam em desenvolvimento.
+
 ## iOS — fotografia visível, selecção ainda sem passe
 
 O CI35182599156 (fontea1b896f) passou nos outros dezjobs. Em iOS26.4.1, build/install/startup e importação da fotografia passaram; a UI navegou e guardou a mensagem privada. O selector collectionViews.cells não encontrou a fotografia, embora esteja visível. A candidata consulta células visíveis directamente e acrescenta diagnóstico limitado, sem mudar prazos/gestos/permissões.24testes dohost e estáticaPASS; execuçãoApple da candidata pendente. [Evidência actual](evidence/ios-photo-cells). As falhas anteriores de instalação/fotografia foram preservadas.

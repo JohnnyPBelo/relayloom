@@ -2,14 +2,41 @@
 
 O produto completo **não está concluído**. Preservar todo o `PROJECT-BRIEF.md`: Windows/Android/macOS/iOS/Linux, web autónoma com paridade, comunicação agnóstica/Reticulum, Liquid Glass, sites expressivos, assinatura separada de leitura/seeding e todos os gates. Só este projecto. Manter Astra/Copilot Ultra, sem alterações a modelos, bridges, autenticação, permissões ou serviços. A recuperação continua sequencial, sem criar/retomar agentes. O checkpoint adicional de manutenção foi cancelado.
 
+## Estado mais recente — Node integrado, Go iniciado
+
+Esta continuação produziu código e evidência reais; o objectivo continua activo.
+
+- Node API/revisões em **f0f2616**: POSTsite-command, criação lógica idempotente, estado/histórico/resolução, confirmação explícita de conflitos, recepção/renderização verificadas, recuperação da app após interrupção e cabeça sem payload sem fallback. Guia docs/SITE-REVISIONS.md. Ainda não existe UI de revisões nem catálogo/API Go/browser equivalente.
+- Gate66071 terminouPASS e já foi recolhido por relatório final/ausência de processos quando o handle deixou de existir:397Node,31UI Node,31UI Go,2interop legados,builds eLinuxbuild/run/package/run. Evidência docs/evidence/site-api. Não repetir sem mudança relevante.
+- CI894d8f4/35178572305 falhou17testes porhost devido à ausência de.cache/tmp. A correcção **a1b896f**, comtests/project-temp.ts, passou18testes/typecheck numa árvoreGit isolada sem cache e depois passou nos três hosts noCI35182599156. A integração completa também passou28casos numa cópia limpa. As falhas do driver (until/Router.close) e do copiador (playwright.config ausente) ficaram registadas; os passes são das repetições corrigidas.
+- iOSa1b896f: build/install/startup/fotografia passaram; UI navegou e guardou a mensagem, mascollectionViews.cells não encontrou o asset visível. Candidata **16ae953** procura células nativas visíveis sem o ancestral e acrescenta diagnóstico limitado, mantendo prazos/gestos/cobertura.24testeshost+estáticaPASS; ainda sem execuçãoApple da candidata. Provas docs/evidence/ios-photo-cells.
+- CI16ae953/35215212384: NodeLinux/macOSPASS, WindowsFAIL num teste que exigia exitCode não nulo apesar de terminação por sinal. Os jobs dependentes ficaram por executar. A correcção **579b761** espera exit com limite8s, aceita exitCode ou signalCode, conserva recusaTCP e seeder; cinco casos passaram e o caso afectado voltou a passar após acrescentar o limite. Provas docs/evidence/site-process-exit. Não confundir com falha do produto ou validar Windows antes do novoCI.
+- Go **e803e37**: portado SitePrivateRecords com a mesma cifra/ligação a dono/store/chave lógica. Go sites/groupstore comracePASS; dois testesNode↔processoGo usando a mesmaSQLitePASS, incluindo Unicode/surrogate e recusa de transplante entrestores. TypecheckPASS. Provas docs/evidence/go-site-private. Falta o modelo de catálogo, pedidos, conteúdo, API, rede eUI Go. Não apresentar esta camada como paridade concluída.
+
+Todos os testes/builds locais referidos terminaram. Sessões65165/16116/35154 e anteriores foram recolhidas; nenhum processo de teste desta etapa está pendente. Os WIP antigos de documentação/evidência foram preservados. Último disco:50GiB livres.
+
+Próximo trabalho concreto: implementar o modelo de registo/catálogo Go, usando os mesmos formatos Node e o novo tx.StoreID autenticado, e testar as transições/persistência em processos mistos. Depois persistência/API browser e controlos no estúdio partilhado, com várias identidades, idiomas e gates completos. Contribuições, módulos declarativos, ficheiros opcionais, grupos dinâmicos web, backup/rotação/keystore, todas as plataformas/rádios e revisão independente continuam obrigatórios. Não recriar a web publicada, aindafonte0c6b58a/distribuição45ecacdf, só por mudanças não ligadas ao browser.
+
+Confirmar git/CI antes de push: o últimoCI16ae terminou; os commitsGo e teste de terminação estão preparados para envio conjunto. A retoma abaixo é histórica onde divergir deste estado.
+
 ## Marco publicado nesta execução
 
-- A correcção publicada é `0c6b58a9a27d3f3707c73ba65ea4639a9a5756e7`, enviada para origin. O catálogo foi guardado no commit `1e47575` e o diagnóstico iOS em `bae61c0`. Ambos aguardam o push conjunto após a conclusão do CI anterior; confirmar git antes de repetir.
+- A correcção publicada é `0c6b58a9a27d3f3707c73ba65ea4639a9a5756e7`, enviada para origin. O catálogo está em `1e47575`, o diagnóstico iOS em `bae61c0` e a documentação em `894d8f43af88a2df01384098c8a4ba0aaf38292e`. O push conjunto terminou com sucesso e foi recolhido (sessão33788). HEAD e origin/codex/setup-languages estão em894d8f4.
 - Rascunhos web com imagens válidas maiores que 1 MiB passam a usar blobs privados cifrados separados do índice. Leitura legada, transacções conjuntas, limites de 8 MiB/valor e 32 MiB de valores cifrados. Não entram no inventário P2P. A UI limpa a confirmação da acção anterior ao começar outra gravação/publicação.
 - Gate principal `72652` e suplemento `30433` terminaram e foram recolhidos: 236 execuções de testes browser/UI, dois oráculos de endereçamento, 36 Axe sem violações e Linux build/run/package/run. Fontes estáveis. Evidência em `docs/evidence/private-values`.
 - A compilação isolada do commit (`55039`, recolhida) produziu exactamente os 18 assets testados, sem depender do WIP de revisões. Relatório `docs/evidence/private-values/committed-build.json`.
 - Distribuição `45ecacdf06ebacd4572620a6eb0ea5869ed45821`, Pages `35174450966` SUCCESS. URL https://johnnypbelo.github.io/relayloom/. Verificação HTTPS `32330` terminou/recolhida: 17 hashes HTTP e 13 percursos (12 UI + um entre processos). A imagem grande foi recuperada exactamente no URL publicado. Provas em `docs/evidence/private-values/live`.
-- A documentação e a evidência posteriores à publicação estão preparadas para o commit de retoma. Logs brutos do erro original conservaram dois espaços finais, com os hashes originais; não os reescrever para satisfazer whitespace.
+- A documentação e a evidência posteriores à publicação foram commitadas e enviadas em894d8f4. Logs brutos do erro original conservaram dois espaços finais, com os hashes originais; não os reescrever para satisfazer whitespace.
+
+## Integração Node iniciada nesta continuação
+
+A continuação anterior foi progresso verificado. Agora há WIP em apps/node/src/site-runtime.ts, node.ts/server.ts e packages/sites/src/request.ts/catalog.ts/registry.ts: POSTsite-command com criação lógica, estado, histórico, resolução, cancelamento/retoma; validação do certificado antes da admissão/renderização; identidade da operação preservada; confirmação explícita das cabeças concorrentes. A recepção usa os inventários/transportes existentes. Ainda sem UI de revisões ou APIs Go/browser. Guia docs/SITE-REVISIONS.md e plano SITE-API-IMPLEMENTATION.md.
+
+Passaram10testes dirigidos de API/recuperação/pedido lógico, um percurso TCP→PTY com partição/heal e seeder sem autor, e28testes numa cópia de fonte isolada sem cacheprévia. O primeiro driver API usava incorrectamente until e Router.close; foi corrigido para until(fn,predicate)/Router.stop. Os seus casos já tinham falhado, mas ficaram um worker e um nó de fixture a repetir ligações; foram identificados por PID/argv/parentesco e terminados apenas esses processos. A sessão90013 terminou/recolhidaFAIL; as repetições72628,52989,88396 e71764 passaram e foram recolhidas. Logs .cache/site-revisions/application-*, forks-*, app-recovery-* e site-media-*.
+
+CI35178572305 falhou17casos em cada um dos três hosts Node porque .cache/tmp não existia. Corrigido comtests/project-temp.ts, que cria o pai por fixture. A correcção isolada passoutypecheck+18casos a partir da árvoreGit preparada, sem pasta de fixtures anterior. Commita1b896f já foi enviado; push52994 recolhido. As novas fixtures de integração também usam ohelper. Evidência docs/evidence/site-temp-ci. Confirmar novoCI antes de outro push; o CI894 não chegou a Go/iOS.
+
+**Gate actual: sessão66071**, `node .cache/site-api-final/run.mjs`. Relatório .cache/site-api-final/report.json com PID/etapa; sequência build, toda a suiteNode, buildGo, interoperabilidadelegadasites, UIcompletaNode/Go eLinuxdesktop. Fontes congeladas atéterminar; não relançar sem recolher. A aplicação web pública não foi republicada por esta integração Node.
 
 ## Trabalho activo — catálogo persistente de revisões
 
@@ -37,11 +64,12 @@ Falhas reproduzidas e corrigidas: staging expirado era tratado como corrupção;
 
 ## CI e plataformas
 
+- **Novo CI35178572305**, fonte894d8f4, estava queued após o push. Consultar `.cache/site-revisions/ci-after-push.json` e GitHub antes de outro push, para não cancelar este ensaio. Não declarar resultado antes de o recolher.
 - CI da publicação privada, `35174446730`, fonte `0c6b58a`: CI concluído FAIL: iOS não obteve sucesso na instalação dentro do prazo (65154ms), com erro de paragem EPERM que mascarou a causa original. A compilação passou; não chegou à fotografia/startup/UI. O runner foi corrigido para conservar ambos os erros, com24testes dohost e estáticaPASS; a correcção ainda não foi executada emApple. Docs/evidence/ios-install-diagnostic. `.cache/private-values-final/ci-0c6b58a.json`. A execução terminou; os outros dez jobs passaram. A correcção de recolha de erros foi guardada em bae61c0, ainda sem execução Apple. Não repetir a falha antiga como diagnóstico da nova fonte.
 - CI anterior `35169832946`, fonte `1ecbe79`, terminou FAIL apenas em iOS. Build/install/startup Apple passaram; `seed-synthetic-photo` excedeu 60 s (60827 ms), antes do percurso funcional. Photos registou validação de 59,078497 s e resposta success, mas o comando não retornou sucesso dentro do prazo. Não reclassificar como PASS nem atribuir a falha ao selector de navegação. Provas em `docs/evidence/ios-visible-navigation/ci-1ecbe79`.
 - APK ARM64 anterior `812339a7d716db41ab8fe26b1f4a83033575210547ad666b7c33abc507d83ed8` foi compilado/verificado, sem execução física. APK x86_64 `40d808ae…` e os seus dados/evidências foram preservados. Não reconstruídos nesta etapa web.
 - Último emulador conhecido: PID 70918, emulator-5580, adb isolado 5047. Confirmar estado antes de usar; não o parar nem reiniciar por suposição. Não foi usado nesta execução.
-- Último disco: 55 GiB livres; mínimo de 15 GiB continua obrigatório.
+- Último disco: 54 GiB livres; mínimo de 15 GiB continua obrigatório.
 
 ## Próximos passos, sem reduzir o contrato
 

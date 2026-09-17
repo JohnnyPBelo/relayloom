@@ -491,3 +491,14 @@ A primeira fixture de ProfileDatabase não tinha a estrutura exigida de mutation
 ## Diagnósticos iOS — 2026-09-17
 
 No CI1ecbe79, Photos registou sucesso após validação de 59,078497 s, mas o comando de preparação não terminou com sucesso no prazo. Não promover essa linha de log a passe do comando ou da UI. No CI0c6b58a, a falha ocorreu antes, na instalação: o erro de paragem EPERM substituiu a causa original no runner. Conservar a primeira falha e acrescentar a falha de paragem separadamente, sem alterar sinais, alvos, permissões ou prazos. Os 24 testes do host e a estática passaram; execução Apple da correcção continua pendente.
+
+
+## Integração de sites e reprodução limpa — 2026-09-17
+
+O driver novo usava until sem predicate e Router.close inexistente. O teste falhou e deixou um nó/worker de fixture; identificar por PID/argv/parentesco, terminar apenas os recursos próprios e corrigir a limpeza antes de repetir. A assinatura dos helpers existentes deve ser lida antes de os reutilizar.
+
+O CI expôs dependência de.cache/tmp previamente criada. Cada fixture agora cria o seu pai através deproject-temp. Verificar a árvoreGit isolada com a pasta ausente, não apagar a cache partilhada. O primeiro arquivo de verificação omitiuplaywright.config; preservar essa falha e completar a cópia a partir da mesma árvore.
+
+Windows pode indicar fim por signalCode enquanto exitCode permanece null. Aguardar o evento terminal com prazo e manter uma prova independente de indisponibilidade; killed não basta. A correcção usa SIGKILL apenas no processo de publicação criado pelo teste e conserva a recusaTCP e o novo seeder.
+
+API Node:397testes+31UI por núcleo/2interoplegados/Linuxpassaram. A camadaGo de registos privados também passou partilha deSQLite real e recusa de contexto diferente. Não são UI de revisões nem paridadeGo/browser completa.
