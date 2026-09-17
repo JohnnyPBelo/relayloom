@@ -1,14 +1,14 @@
 # RelayLoom — estado verificável
 
-## Rascunhos web grandes — verificados localmente, publicação pendente
+## Rascunhos web grandes — publicados e verificados
 
-Corrigida a gravação de imagens válidas que excediam o índice privado de 1 MiB. Os valores cifrados passam a ter armazenamento separado, leitura legada e transacções conjuntas, sem entrar no inventário P2P. Passaram 236 execuções de testes de browser/UI, dois oráculos de endereçamento, 36 verificações Axe e build/run/package/run Linux. Incluem recuperação exacta da imagem, corrupção/ausência/troca de blobs, partição/reconexão e seeding. [Comandos, fontes e âmbito](evidence/private-values). A publicação da correcção ainda está pendente; o limite de imagens do editor não mudou.
+Corrigida a gravação de imagens válidas que excediam o índice privado de 1 MiB. Os valores cifrados passam a ter armazenamento separado, leitura legada e transacções conjuntas, sem entrar no inventário P2P. Passaram 236 execuções de testes de browser/UI, dois oráculos de endereçamento, 36 verificações Axe e build/run/package/run Linux. Incluem recuperação exacta da imagem, corrupção/ausência/troca de blobs, partição/reconexão e seeding. [Comandos, fontes e âmbito](evidence/private-values). A fonte `0c6b58a` foi publicada na distribuição `45ecacdf`: Pages passou e foram verificados 17 hashes HTTP e 13 percursos no URL público. O limite de imagens do editor não mudou.
 
-Os certificados de revisões de sites têm código/testes locais, mas ainda não há publicação/endereço permanente integrado na aplicação. Contribuições assinadas e ficheiros opcionais continuam pendentes; o produto completo mantém-se em implementação.
+Os certificados de revisões e o catálogo persistente Node têm código/testes locais, incluindo interrupção de processos e recuperação. [Evidência e limites](evidence/site-revisions). Ainda não há publicação/endereço permanente integrado nas APIs ou na UI, nem persistência equivalente Go/browser. Contribuições assinadas e ficheiros opcionais continuam pendentes; o produto completo mantém-se em implementação.
 
-## CI 1ecbe79 — iOS bloqueado na preparação do teste
+## iOS — instalação no simulador ainda sem passe
 
-CI 35169832946 passou Node nos três hosts, Go, UI, Reticulum, browser e pacotes desktop. Em iOS 26.4.1/Xcode 26.6, build/install/startup passaram; a preparação da fotografia excedeu 60 s e o percurso funcional não arrancou. A correcção de navegação continua sem nova validação Apple. [Relatório e diagnóstico](evidence/ios-visible-navigation/ci-1ecbe79). Não há nova execução física.
+No CI `35174446730`, fonte `0c6b58a`, a compilação passou mas a instalação não terminou com sucesso dentro do prazo. A paragem reportou `kill EPERM` e substituiu o motivo original no relatório. O runner foi corrigido para conservar os dois erros, com 24 testes do host e verificação estática passados; essa correcção ainda não foi executada em Apple. [Evidência actual](evidence/ios-install-diagnostic). Não chegou à fotografia ou ao fluxo funcional. A execução anterior `1ecbe79` tinha falhado na preparação da fotografia; [esse diagnóstico foi preservado](evidence/ios-visible-navigation/ci-1ecbe79).
 
 ## Android ARM64 — compilado, não executado em dispositivo
 

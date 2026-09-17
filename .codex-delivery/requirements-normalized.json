@@ -1758,6 +1758,13 @@
             "docs/evidence/page-organisation"
           ],
           "notes": "Copy/order, original/home/assets/links preservation, keyboard/touch and Node/Go/browser/Android journeys. Complete browser and final mobile gates still pending; revisions, contributor permissions and optional files remain required."
+        },
+        {
+          "kind": "test",
+          "command": "node docs/evidence/private-values/run.mjs; node docs/evidence/private-values/supplement.mjs; node docs/evidence/private-values/verify-live.mjs",
+          "result": "pass",
+          "timestamp": "2026-09-17",
+          "notes": "236 browser/UI tests, two address controls, 36 Axe audits, Linux build/run/package/run. Published source0c6b58a, distribution45ecacdf:17HTTP hashes and13HTTPS journeys. Larger encrypted web drafts preserve exact bytes. Revision catalog remains WIP without app integration; all broader requirements and platform limits remain."
         }
       ]
     },
@@ -1827,6 +1834,13 @@
             "docs/evidence/site-studio/live/manifest.json"
           ],
           "notes": "17 runtime assets match; 3 studio tests + 1 independent Chromium/Firefox process test. Not physical devices or complete product parity."
+        },
+        {
+          "kind": "test",
+          "command": "node docs/evidence/private-values/run.mjs; node docs/evidence/private-values/supplement.mjs; node docs/evidence/private-values/verify-live.mjs",
+          "result": "pass",
+          "timestamp": "2026-09-17",
+          "notes": "236 browser/UI tests, two address controls, 36 Axe audits, Linux build/run/package/run. Published source0c6b58a, distribution45ecacdf:17HTTP hashes and13HTTPS journeys. Larger encrypted web drafts preserve exact bytes. Revision catalog remains WIP without app integration; all broader requirements and platform limits remain."
         }
       ]
     },
@@ -1905,6 +1919,13 @@
             "docs/evidence/page-organisation"
           ],
           "notes": "Copy/order, original/home/assets/links preservation, keyboard/touch and Node/Go/browser/Android journeys. Complete browser and final mobile gates still pending; revisions, contributor permissions and optional files remain required."
+        },
+        {
+          "kind": "test",
+          "command": "node docs/evidence/private-values/run.mjs; node docs/evidence/private-values/supplement.mjs; node docs/evidence/private-values/verify-live.mjs",
+          "result": "pass",
+          "timestamp": "2026-09-17",
+          "notes": "236 browser/UI tests, two address controls, 36 Axe audits, Linux build/run/package/run. Published source0c6b58a, distribution45ecacdf:17HTTP hashes and13HTTPS journeys. Larger encrypted web drafts preserve exact bytes. Revision catalog remains WIP without app integration; all broader requirements and platform limits remain."
         }
       ]
     },

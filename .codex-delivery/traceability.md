@@ -216,3 +216,10 @@ FR-044/045 parcialmente realizados: gate geral345Node/Go-race+SQLiteC/62interop/
 FR-038/FR-040: duplicação/ordem com IDs novos, ligação à própria cópia, início e anexos preservados. 64domínio, Node/Go/3browsers dirigidos,31UI Node+31Go e Linux build/run/package/run passaram; Android25asserções com documento exacto recebido porNode e rascunho recuperado. Matriz integral e gatesAndroidfinais ainda em curso/pendentes. docs/evidence/page-organisation; não encerra sites nem o produto.
 
 FR-045: HTTPS02188da/eff7e9b9 verificado em17assets e10percursosUI, docs/evidence/onboarding-languages/live/final. iOS02188da compilado/startup executado, falha funcional na navegação; correcçãoXCTest e fallbackPT ainda aguardam novoCI.
+
+
+## Incremento de 17 de Setembro — FR-038/039/040 e FR-005
+
+A correcção de rascunhos grandes está publicada: fonte0c6b58a, distribuição45ecacdf. Foram verificados236testesbrowser/UI,2oráculos,36Axe,Linuxbuild/run/package/run e, depois,17hashesHTTP+13percursosHTTPS. Provas em docs/evidence/private-values. Mantêm-se as limitações de plataforma/revisão independente.
+
+Revisões: certificados interoperáveis e catálogo Node com persistência/cancelamento/expiração/recuperação por processos têm testes locais. Não estão ligados à API/rede/UI nem à persistência Go/browser; não fechar requisitos de endereços permanentes, contribuições ou paridade por estes resultados. O gate do catálogo passou384testesNode eGo sites/core; a correcção posterior de escrita idempotente passou12testes afectados/typecheck. Evidência emdocs/evidence/site-revisions; APIs/transportes/UI e paridade persistente continuam pendentes.

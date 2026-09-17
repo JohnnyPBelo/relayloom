@@ -472,3 +472,22 @@ A cópia precisa de IDs próprios em todos os descendentes e de remapear apenas 
 O emulador anterior desapareceu após interrupção. Confirmar /proc e adb antes de arquivar o registo e retomar o mesmoAVD; nunca reiniciar só por uma observação lenta. O primeiro Androidpages começou sem rascunho; é necessária uma segunda passagem final para exercitar a restauração do rascunho existente.
 
 No iOS, addmedia passou nesta execução; o erro passou a ser navegação. A captura mostra o menu aberto com a página anterior seleccionada. O XCTest reutilizava uma consulta global definida antes de abrir a gaveta. Nova consulta ao landmark após abertura, condição hittable e diagnóstico de geometria foram preparados; o teste de toqueWebKit passou, mas não valida essa correcção no iOS. Não atribuir a falha actual à fototeca nem fazer um segundo toque automático para mascarar o comportamento.
+
+
+## Rascunhos grandes e índice web — 2026-09-17
+
+Um PNG sintético válido, maior que 1 MiB, reproduziu «Estado privado excede o limite» na aplicação compilada anterior. A correcção separa valores privados cifrados do índice e mantém a leitura legada. Preservar captura/trace antes de reconstruir; testar o percurso real de guardar, recarregar, desbloquear e comparar os bytes. O teste usa uiHost e confere o URL; o harness de crypto/IndexedDB é apenas prova local. Limpar o feedback da acção anterior evita um sucesso antigo junto de um erro novo.
+
+O marco passou 236 execuções browser/UI, dois oráculos, 36 Axe e Linux build/run/package/run. Uma compilação isolada do commit0c6b58a produziu exactamente os 18 assets validados. A distribuição45ecacdf passou 17 hashes HTTP e 13 percursos HTTPS, incluindo a imagem grande e processos Chromium/Firefox independentes. Todos os handles foram recolhidos.
+
+Logs brutos podem conter whitespace; conservar os hashes em vez de alterar a evidência para passar stylecheck. Ficheiros *.log podem ser ignorados pelo Git: verificar os caminhos do manifesto e adicionar apenas os logs curados explicitamente.
+
+## Catálogo de sites e recuperação — 2026-09-17
+
+Três falhas foram reproduzidas: preparação expirada tratada como corrupção; repetição de um pedido retido expirado sem recuperar o resultado; observações idênticas a voltar a gravar o catálogo. A leitura histórica autentica a recuperação, mantendo a verificação pelo relógio actual na admissão/transmissão. Contadores e cabeças autorizadas sobrevivem à expiração; assinaturas preparadas usam cifra ligada à chave de assinatura. Não retornar bytes para publicação antes de terminar a transacção real.
+
+A primeira fixture de ProfileDatabase não tinha a estrutura exigida de mutations/rascunho e falhou antes do catálogo. Corrigir a fixture, preservando a validação do perfil. O gate completo passou 384 testes Node e Go sites/core; depois da correcção isolada de no-op passaram 12 testes afectados e typecheck. O manifesto de fontes identifica a diferença entre os momentos. Cinco testes terminam realmente processos em fronteiras de commit/cópia; não equivalem a corte de energia físico. APIs, transportes, UI e persistência Go/browser continuam pendentes.
+
+## Diagnósticos iOS — 2026-09-17
+
+No CI1ecbe79, Photos registou sucesso após validação de 59,078497 s, mas o comando de preparação não terminou com sucesso no prazo. Não promover essa linha de log a passe do comando ou da UI. No CI0c6b58a, a falha ocorreu antes, na instalação: o erro de paragem EPERM substituiu a causa original no runner. Conservar a primeira falha e acrescentar a falha de paragem separadamente, sem alterar sinais, alvos, permissões ou prazos. Os 24 testes do host e a estática passaram; execução Apple da correcção continua pendente.

@@ -1,4 +1,4 @@
-# Rascunhos web grandes — correcção verificada localmente
+# Rascunhos web grandes — correcção publicada e verificada
 
 O editor aceitava imagens até 2 MiB no total, mas o perfil web guardava todo o estado privado num índice de 1 MiB. O teste com um PNG sintético válido de cerca de 1,3 MiB falhou ao guardar com «Estado privado excede o limite». A [captura anterior](large-draft-before.png) e o [erro original](large-draft-before.log) foram preservados antes de reconstruir.
 
@@ -27,6 +27,6 @@ node docs/evidence/private-values/run.mjs
 node docs/evidence/private-values/supplement.mjs
 ```
 
-Os scripts usam dependências/caches locais e uma única sequência de testes/builds. O primeiro gate foi executado pelo mesmo runner em `.cache/private-values-final/run.mjs`; a cópia versionada ajusta apenas o caminho relativo do import. As verificações HTTPS usam `uiHost` e conferem o URL real; os testes do harness de armazenamento/crypto são apenas provas locais. Antes de publicar, `verify-committed.mjs` deve demonstrar que o commit produz exactamente os assets testados. Depois da publicação, `verify-live.mjs` confere hashes HTTP e executa os percursos no URL público. Esses dois resultados ainda estão pendentes nesta revisão do documento.
+Os scripts usam dependências/caches locais e uma única sequência de testes/builds. O primeiro gate foi executado pelo mesmo runner em `.cache/private-values-final/run.mjs`; a cópia versionada ajusta apenas o caminho relativo do import. As verificações HTTPS usam `uiHost` e conferem o URL real; os testes do harness de armazenamento/crypto são apenas provas locais. Antes de publicar, `verify-committed.mjs` deve demonstrar que o commit produz exactamente os assets testados. Depois da publicação, `verify-live.mjs` confere hashes HTTP e executa os percursos no URL público. Ambos passaram: [compilação isolada](committed-build.json) e [HTTPS](live/report.json). Fonte `0c6b58a9a27d3f3707c73ba65ea4639a9a5756e7`, distribuição `45ecacdf06ebacd4572620a6eb0ea5869ed45821`, Pages `35174450966` concluído com sucesso. O ensaio público passou 17 hashes HTTP e 13 percursos: 12 de UI e um entre processos Chromium/Firefox.
 
 Root reviu as capturas de desktop e móvel; não é revisão independente. WebKit/Linux não é Safari/iOS nem dispositivo físico. Não foram testados rádios físicos ou os dois dispositivos do proprietário. O iOS da fonte anterior terminou com falha na preparação da fotografia, antes do fluxo funcional: [diagnóstico](../ios-visible-navigation/ci-1ecbe79). Endereços permanentes/revisões, contribuições e ficheiros opcionais continuam sem integração no produto. Todo o contrato permanece aberto.

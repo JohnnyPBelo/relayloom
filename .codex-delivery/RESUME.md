@@ -1,6 +1,87 @@
+# RelayLoom — retoma, 17 de Setembro de 2026
+
+O produto completo **não está concluído**. Preservar todo o `PROJECT-BRIEF.md`: Windows/Android/macOS/iOS/Linux, web autónoma com paridade, comunicação agnóstica/Reticulum, Liquid Glass, sites expressivos, assinatura separada de leitura/seeding e todos os gates. Só este projecto. Manter Astra/Copilot Ultra, sem alterações a modelos, bridges, autenticação, permissões ou serviços. A recuperação continua sequencial, sem criar/retomar agentes. O checkpoint adicional de manutenção foi cancelado.
+
+## Marco publicado nesta execução
+
+- A correcção publicada é `0c6b58a9a27d3f3707c73ba65ea4639a9a5756e7`, enviada para origin. O catálogo foi guardado no commit `1e47575` e o diagnóstico iOS em `bae61c0`. Ambos aguardam o push conjunto após a conclusão do CI anterior; confirmar git antes de repetir.
+- Rascunhos web com imagens válidas maiores que 1 MiB passam a usar blobs privados cifrados separados do índice. Leitura legada, transacções conjuntas, limites de 8 MiB/valor e 32 MiB de valores cifrados. Não entram no inventário P2P. A UI limpa a confirmação da acção anterior ao começar outra gravação/publicação.
+- Gate principal `72652` e suplemento `30433` terminaram e foram recolhidos: 236 execuções de testes browser/UI, dois oráculos de endereçamento, 36 Axe sem violações e Linux build/run/package/run. Fontes estáveis. Evidência em `docs/evidence/private-values`.
+- A compilação isolada do commit (`55039`, recolhida) produziu exactamente os 18 assets testados, sem depender do WIP de revisões. Relatório `docs/evidence/private-values/committed-build.json`.
+- Distribuição `45ecacdf06ebacd4572620a6eb0ea5869ed45821`, Pages `35174450966` SUCCESS. URL https://johnnypbelo.github.io/relayloom/. Verificação HTTPS `32330` terminou/recolhida: 17 hashes HTTP e 13 percursos (12 UI + um entre processos). A imagem grande foi recuperada exactamente no URL publicado. Provas em `docs/evidence/private-values/live`.
+- A documentação e a evidência posteriores à publicação estão preparadas para o commit de retoma. Logs brutos do erro original conservaram dois espaços finais, com os hashes originais; não os reescrever para satisfazer whitespace.
+
+## Trabalho activo — catálogo persistente de revisões
+
+WIP de implementação, ainda sem ligação à API/rede/UI da aplicação. **Não anunciar endereços permanentes ou contribuições como funcionalidades já disponíveis.**
+
+Código actual em `packages/sites/src`: `protocol.ts`, `content.ts`, `registry.ts`, `private-storage.ts`, `catalog.ts` e `index.ts`. Adaptadores em `packages/core/src/certificate-*` e `packages/browser/src/certificate-crypto.ts`/`site-revisions.ts`; extracção equivalente dos adaptadores de grupos. Go tem apenas certificados/classificação em `native/sites` e `native/core/certificate.go`, ainda sem este catálogo persistente.
+
+- Snapshots completos assinados e endereço `relayloom:site:<ownerId>/<name>`; maior cabeça assinada persistida, conflitos de igual sequência e histórico parcial explícitos.
+- Registo distingue prepared, committed, ready, cancelled, superseded e expired. Revalida a base no commit, incluindo concorrência de igual sequência. Prepared não promove cabeça; committed preserva a autoridade mesmo sem cópia pública; cancelar não revoga uma autorização já gravada.
+- `SitePrivateRecords` cifra registos/preparações com chave derivada da assinatura, dentro da base privada existente, com ligação a dono/store/chave lógica. Não altera o formato legado de grupos. Handles síncronos expiram no fim do callback e falhas abortam a transacção completa.
+- `NodeSiteCatalog` coordena catálogo/registo/staging em transacções reais. Pode receber a interface transaction da base de perfil existente, mas ainda não foi instanciado nas apps. Guarda até 64 sites; os IDs de bundles são pistas e não prova de disponibilidade. Publicação/serving precisam de consultar/verificar o store real.
+- Helpers `verifyStoredBundle`/`decryptStoredBundle` em core autenticam dados históricos para recuperação. Verificação, leitura comum e admissão no ContentStore conservam a validação pelo relógio actual. Expiração do staging termina a operação e preserva contadores/cabeças já autorizadas. Repetição retida expirada devolve o mesmo resultado; uma nova publicação expirada é recusada.
+- Na API inferior do catálogo, repetições de snapshots privados exigem o mesmo envelope para não confundir uma mudança de chave de leitura com a mesma audiência por ID. A futura API de composição deve conservar o pedido/envelope e tratar rotação/recuperação explicitamente.
+
+Testes concluídos nesta etapa: 22 iniciais de modelos/conteúdo/cifra; depois 54 de core, revisões, catálogo, leitura histórica, grupos e chaves; cinco casos com processos que saem realmente antes/depois do commit e após a cópia pública. Typecheck passou. Não são prova de transporte/UI de revisões nem corte de energia físico.
+
+Falhas reproduzidas e corrigidas: staging expirado era tratado como corrupção; depois, a repetição do pedido expirado não recuperava o resultado terminal. Logs before/after em `.cache/site-revisions/catalog-*expiry.log` e `catalog-*expired-replay.log`. Os testes da cópia pública usam ContentStore real. Os processos `25432`, `96913`, `26602` e os typechecks anteriores terminaram/recolhidos; os dois testes de processo/core não se sobrepuseram (timestamps dos logs registados).
+
+## Gates mais recentes — todos terminados e recolhidos
+
+- Sessão **61405**, `node .cache/site-revisions/full-regression/run.mjs`: PASS. `tsc --noEmit`, **384 testes Node** em 400,763 s e `go test -race -p=1 ./sites ./core` (sites 1,457 s; core em cache). Fontes estáveis durante este gate. O rótulo interno build corresponde ao typecheck, não a Vite.
+- Depois do gate completo, foi reproduzido que oito observações idênticas causavam oito escritas adicionais. A única mudança posterior em código de produto foi `if (!same(record, next))` antes de gravar a observação. Passaram os **12 testes afectados**, incluindo cinco interrupções de processos e a utilização de ProfileDatabase com ownership/rascunho legado real. Sessão **25811** terminou/recolhida; typecheck final **14534** também passou.
+- A primeira fixture de ProfileDatabase era inválida (faltava mutations e a estrutura completa do rascunho). Foi corrigida apenas a fixture e repetido o teste. Não foi um erro de migração no produto.
+- Evidência em `docs/evidence/site-revisions`; `final-sources.json` identifica exactamente três ficheiros que diferem do gate completo: catálogo, teste de catálogo e novo teste de ProfileDatabase. Nenhum processo local de teste desta execução ficou pendente.
+
+## CI e plataformas
+
+- CI da publicação privada, `35174446730`, fonte `0c6b58a`: CI concluído FAIL: iOS não obteve sucesso na instalação dentro do prazo (65154ms), com erro de paragem EPERM que mascarou a causa original. A compilação passou; não chegou à fotografia/startup/UI. O runner foi corrigido para conservar ambos os erros, com24testes dohost e estáticaPASS; a correcção ainda não foi executada emApple. Docs/evidence/ios-install-diagnostic. `.cache/private-values-final/ci-0c6b58a.json`. A execução terminou; os outros dez jobs passaram. A correcção de recolha de erros foi guardada em bae61c0, ainda sem execução Apple. Não repetir a falha antiga como diagnóstico da nova fonte.
+- CI anterior `35169832946`, fonte `1ecbe79`, terminou FAIL apenas em iOS. Build/install/startup Apple passaram; `seed-synthetic-photo` excedeu 60 s (60827 ms), antes do percurso funcional. Photos registou validação de 59,078497 s e resposta success, mas o comando não retornou sucesso dentro do prazo. Não reclassificar como PASS nem atribuir a falha ao selector de navegação. Provas em `docs/evidence/ios-visible-navigation/ci-1ecbe79`.
+- APK ARM64 anterior `812339a7d716db41ab8fe26b1f4a83033575210547ad666b7c33abc507d83ed8` foi compilado/verificado, sem execução física. APK x86_64 `40d808ae…` e os seus dados/evidências foram preservados. Não reconstruídos nesta etapa web.
+- Último emulador conhecido: PID 70918, emulator-5580, adb isolado 5047. Confirmar estado antes de usar; não o parar nem reiniciar por suposição. Não foi usado nesta execução.
+- Último disco: 55 GiB livres; mínimo de 15 GiB continua obrigatório.
+
+## Próximos passos, sem reduzir o contrato
+
+1. Os gates locais foram recolhidos. Continuar a revisão dos limites/recuperação e acrescentar verdadeira concorrência entre escritores e limites do catálogo. A integração com ProfileDatabase já tem teste passado; não confundir esse teste de biblioteca com ligação à app/API.
+2. Versionar o marco de protocolo/catálogo só depois dos gates aplicáveis, preservando o WIP antigo; nunca `git add -A`. Confirmar o CI antes de push. A publicação web actual já está concluída e não precisa de ser repetida por alterações a módulos ainda não ligados.
+3. Instanciar o catálogo na aplicação, preparar/cancelar/autorizar/copiar/reconciliar através da fronteira serializada do perfil e permitir resolução por endereço. Validar o certificado e o envelope antes de aceitar/display/seed. Cabeça sem payload não promove uma revisão antiga. Não aceitar hints de peers como autoridade.
+4. Implementar a mesma persistência em Go e browser; testes entre processos/engines, CAS, falhas, quotas, partição/heal, autor offline e novo seeder. Só depois expor endereço, histórico, revisão fixa e restauração como nova publicação na UI PT/EN/ES, com teclado/toque/Axe/capturas.
+5. Continuar contribuições assinadas com permissões, módulos declarativos de dados e ficheiros opcionais. Mantêm-se grupos dinâmicos web, backup/rotação/keystore, todos os meios/plataformas, aparelhos/rádios físicos, revisão independente e todo o contrato.
+
+As candidatas em `.cache/site-revisions/*-candidate*` foram aplicadas e depois evoluíram. **Não voltar a copiá-las sobre as fontes actuais.** O original do modelo foi preservado em `.cache/site-revisions/pre-transaction-integration`. O conteúdo abaixo é histórico e não prevalece sobre este estado.
+
 # RelayLoom — retoma, 16 de Setembro de 2026
 
 **O produto completo não está concluído.** Preservar todo o PROJECT-BRIEF.md, incluindo todas as aplicações, paridade web, Liquid Glass, autoria separada de leitura/seeding e transporte agnóstico. Só este projecto. Manter Astra/Copilot Ultra e recuperação sequencial: sem novos agentes, alterações a modelos, bridges, autenticação ou serviços. O checkpoint extra de manutenção foi cancelado.
+
+## Incremento activo — certificados de revisões
+
+A etapa anterior fez progresso real: web de organização publicada/verificada e APKARM64 construído (execução física pendente). Agora há código de certificados de snapshot/endereço/histórico em packages/sites e native/sites, com adaptadoresCrypto extraídos de grupos; ainda NÃO integrado em persistência/API/UI da aplicação.
+
+22 testes Node/portátil/grupos/chavesPASS e typecheckPASS após corrigir TS2775. Go-race ./sites ./corePASS. Chromium3casosPASS com bibliotecas reais e processoGo. Testes e vectores públicos em tests/site-revisions.test.ts, tests/fixtures/site-revisions.json e tests/browser/site-revisions.spec.ts. Logs .cache/site-revisions e .cache/page-organisation/site-revision-*.log. Firefox dirigido está emcurso; recolher antes de repetir. Plano exacto em SITE-REVISION-IMPLEMENTATION.md, que distingue snapshots completos assinados de genealogia disponível e preserva o contrato.
+
+Fonte desta etapa é WIP não commitado. Não promover certificados como sites dinâmicos já entregues. Seguem catálogo persistente/intenções/CAS, API Node/Go/browser, resolução/rede e UI/revisões. CI4fee4b2/35160603438 continua separado; confirmar antes de push. Não há novos agentes/modelos/bridges alterados.
+
+## Estado mais recente — web publicada, ARM64 em construção
+
+Publicação das páginas concluída: fontebfcb5fc, distribuição64363cf1864a7f6eb044d51ac6a9afaebb0bf2d5, Pages35159873540success. Verificação23545PASS17assetsHTTP+11UI+1entreprocessos, hashes de verificadores estáveis. Gate41135PASS133casos+2oráculos. Ambos os handles recolhidos; evidência em docs/evidence/page-organisation/live.
+
+CI35150603062 cancelado pelo orçamento global25m, comGo/domínio/interopPASS; a UI foi cortada eApple nãoexecutado. Workflow4fee4b2 separaUI numjob dependente15m, mantendo os testes e prazos individuais. Push confirmado, novoCI consta de .cache/page-organisation/ci-after-split.json; não cancelar com novo push sem verificar estado.
+
+ARM64: scripts/android-bind.mjs eandroid-build.py aceitam ABI explícita com AAR/APK/staging/relatórios separados e verificaçãoELF. Novos testes apps/android/tests/BuildTargetsTest.py:4PASS, sintaxeNode/PythonPASS. **ARM64 construído:** bind2028 e APK50443 terminaram/recolhidos. APK812339a7d716db41ab8fe26b1f4a83033575210547ad666b7c33abc507d83ed8,16841791bytes. ELF183/LOAD0x4000/ZIP/assinatura/assets verificados; x86_64 preservado. Sem execução física. Provas docs/evidence/android-arm64. PreservarAPK/AAR/relatóriosx86_64, perfilAVD70918/adb5047. Nenhuma imagem adicional ou teste de aparelhoARM64 efectuado.
+
+Apósbind: construirAPKARM64, verificararquitectura/assinatura/alinhamento/assets e preservarx86_64, documentar como cross-compilado não testado emdispositivo; continuarCIApple e todoo contrato, em especialrevisões/contribuições/ficheirosopcionais. Produto não concluído. FonteABI WIP não commitada; semalterarbridges/modelos/serviços externos.
+
+## Retoma actual — publicação dos controlos de páginas
+
+Matriz135PASS(45porengine), sessão70042recolhida. Android65035PASS:26páginas (rascunho existente restaurado),57mensagens,38documentos,15prazo,13relay e inspecção privada, APK40d808ae exacto. UI completa36025PASS31Node+31Go/Linux. Todos estes handles terminaram; não os relançar.
+
+**Gate público activo:** node scripts/verify-public-web.mjs, sessão41135, relatório .cache/public-web/gate/report.json, consola .cache/page-organisation/public-console.log. Fontes congeladas até terminar; recolher sessão antes de repetir. Código bfcb5fcd962e103f12e256a39bbb55493d5b1242 já enviado para origin/codex/setup-languages; novoCI35150603062 em curso. Não cancelar com outro push. Os controlos de cópia/ordem ainda não estão no URL: publicação activaeff7e9b9/fonte02188da, que passou17assets+10UI anteriormente.
+
+Próximo: recolher gate público, publicar assets exactos sePASS e verificarHTTPS dos novos controlos; acompanharCIApple; conservar os gates/evidência final. Continuar endereços/revisões/contribuições/ficheiros opcionais e todo o contrato. Emulador70918/adb5047conservados, app foi parada pelo teste final de perfil como parte desse controlo. Para abrir depois, iniciar MainActivity do mesmoAVD semwipe. Não declarar produto completo.
 
 ## Retoma imediata — gate UI activo
 
@@ -147,3 +228,11 @@ WebKit WPE/Linux não é Safari/iOS; viewport compacto não é dispositivo; PTY 
 Última consulta CI35138345398: [{"name": "native-node (windows-latest)", "status": "completed", "conclusion": "success"}, {"name": "native-node (macos-latest)", "status": "completed", "conclusion": "success"}, {"name": "native-node (ubuntu-latest)", "status": "completed", "conclusion": "success"}, {"name": "native-go", "status": "in_progress", "conclusion": ""}]. Não chamar os jobs por executar de passe. As alterações actuais de testes não mudam os assets públicos; não republicar apenas para corrigir a selecção dehost do verificador.
 
 Marcos locais de código:91d1604(verificadorHTTPS),8becd29(organização de páginas/toque),73e864a(Androidpages/fallback),038cda6(iOSnavegação/fallback). Ainda sem push desta série na altura da nota. Matriz70042emcurso, fontes congeladas. Evidência inicial docs/evidence/page-organisation; não promover como gate integral já concluído.
+
+Evidência final local conservada em docs/evidence/page-organisation/final:135 browsers, Android26/57/38/15/13 e perfil privado. A publicação continua na sessão41135, confirmada em execução; CI35150603062 também activo. Não editar fontes durante o gate nem repetir os concluídos.
+
+Actualização CI:35150603062terminoucancelled por limite global25min (anotação confirmada), após domínios/interopPASS; UIcancelada eApple nãoexecutado. Workflow separada emnative-go25min e native-ui15min, dependência sequencial preservada atéRNS/desktop/iOS, sem alterar casos/prazos. ControloYAML/comandosPASS; nova execução remota pendente. Detalhes CI-NATIVE-UI.md. Pages35159873540success da distribuição64363cf1864a7f6eb044d51ac6a9afaebb0bf2d5/fontebfcb5fc. VerificaçãoHTTP+12UI emcurso na sessão23545, .cache/page-organisation/live/report.json; não repetir/prometerpasse antes de recolher.
+
+Última retoma: não há build/teste/publicação local desta etapa por recolher. CI35160603438 activo sobre4fee4b2; confirmar estado antes de outro push. ABI scripts/tests/guia foram guardados no commit local6d9ebf2 (ainda não enviado para evitar cancelarCI4fee4b2). Não reduzir requisitos nem concluirproduto.
+
+Próximo trabalho funcional dos sites: endereço estável e revisões assinadas, mantendo leitura independente de autoria e histórico disponível nos pares. Não reduzir esse âmbito a ordenação/duplicação, já entregues. Confirmar oCI35160603438 antes de outro push; nenhum teste/build local em execução nesta nota.

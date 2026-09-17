@@ -1,0 +1,25 @@
+
+Running 12 tests using 1 worker
+
+(node:2027598) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+RelayLoom UI target: https://johnnypbelo.github.io/relayloom
+  ✓   1 tests/browser/large-site-draft.spec.ts:13:1 › an allowed large site image saves through the UI and survives encrypted browser restart (7.2s)
+RelayLoom UI target: https://johnnypbelo.github.io/relayloom
+  ✓   2 tests/browser/mobile-navigation.spec.ts:13:1 › a single touch activates compact sidebar destinations after an open conversation hides the dock (1.7s)
+RelayLoom UI target: https://johnnypbelo.github.io/relayloom
+  ✓   3 tests/browser/onboarding-language.spec.ts:13:1 › initial language, product guide and appearance work without altering identity form values (2.1s)
+  ✓   4 tests/browser/onboarding-language.spec.ts:133:1 › English and Spanish identities exchange encrypted messages and files without translating authored text (12.4s)
+  ✓   5 tests/browser/onboarding-language.spec.ts:365:1 › a blocked tab can change UI language while the owning identity remains intact (1.7s)
+  ✓   6 tests/browser/onboarding-language.spec.ts:455:1 › unavailable preference storage and localized form validation never reset a profile (1.7s)
+  ✓   7 tests/browser/onboarding-language.spec.ts:534:1 › saving one preference does not hide a different unsaved preference (1.1s)
+RelayLoom UI target: https://johnnypbelo.github.io/relayloom
+  ✓   8 tests/browser/site-language.spec.ts:115:1 › three multilingual identities edit signed pages, preserve original text and seed to a new reader after author closes (20.9s)
+RelayLoom UI target: https://johnnypbelo.github.io/relayloom
+  ✓   9 tests/browser/site-pages.spec.ts:65:1 › web users copy pages, reorder with keyboard, reopen encrypted drafts and read the signed result after the author closes (11.0s)
+RelayLoom UI target: https://johnnypbelo.github.io/relayloom
+  ✓  10 tests/browser/site-studio.spec.ts:77:1 › multipage studio saves encrypted draft, rejects executable imports and a consenting reader seeds it to a new browser after author closes (23.8s)
+  ✓  11 tests/browser/site-studio.spec.ts:351:1 › studio keyboard navigation, nested drag, duplicate, reparent and page references stay editable on a narrow screen (3.4s)
+  ✓  12 tests/browser/site-studio.spec.ts:425:1 › dense three-level compositions keep all controls inside their blocks and preserve contrast across palettes and app themes (9.6s)
+
+  12 passed (1.6m)
