@@ -1,0 +1,15 @@
+ok  	github.com/JohnnyPBelo/relayloom/native/sites	1.013s [no tests to run]
+--- FAIL: TestSiteDocumentSharedVectors (0.04s)
+    --- FAIL: TestSiteDocumentSharedVectors/multipage_with_nested_media_and_local_navigation (0.00s)
+        site_test.go:24: valid=true error=site declarativo inválido ou acima dos limites
+    --- FAIL: TestSiteDocumentSharedVectors/literal_HTML_is_data,_never_a_block_program (0.00s)
+        site_test.go:24: valid=true error=site declarativo inválido ou acima dos limites
+    --- FAIL: TestSiteDocumentSharedVectors/exact_UTF-16_title_boundary (0.00s)
+        site_test.go:24: valid=true error=site declarativo inválido ou acima dos limites
+    --- FAIL: TestSiteDocumentSharedVectors/query_URL (0.00s)
+        site_test.go:24: valid=true error=site declarativo inválido ou acima dos limites
+--- FAIL: TestSiteDocumentImageBoundary (0.52s)
+    site_test.go:44: size=2097152 error=site declarativo inválido ou acima dos limites
+FAIL
+FAIL	github.com/JohnnyPBelo/relayloom/native/app	0.574s
+FAIL

@@ -49,6 +49,9 @@ func summaryContent(content Content) Content {
 		}
 	}
 	if text(content["type"]) == "site" {
+		if revision, exists := content["siteRevision"]; exists {
+			result["siteRevision"] = revision
+		}
 		if site, exists := content["site"]; exists {
 			result["site"] = site
 		}

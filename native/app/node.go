@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/JohnnyPBelo/relayloom/native/core"
@@ -23,21 +24,24 @@ import (
 	"github.com/JohnnyPBelo/relayloom/native/profiledb"
 	"github.com/JohnnyPBelo/relayloom/native/profilelock"
 	"github.com/JohnnyPBelo/relayloom/native/profilestate"
+	"github.com/JohnnyPBelo/relayloom/native/sites"
 	"github.com/JohnnyPBelo/relayloom/native/transport"
 	"github.com/JohnnyPBelo/relayloom/native/webpeer"
 )
 
 type Node struct {
-	webPeerMu sync.Mutex
-	webPeer   *webpeer.Server
-	mu        sync.Mutex
-	Dir       string
-	Store     *core.ContentStore
-	Router    *transport.Router
-	TCPPort   int
-	identity  *core.Identity
-	config    Config
-	private   PrivateState
+	webPeerMu    sync.Mutex
+	webPeer      *webpeer.Server
+	mu           sync.Mutex
+	Dir          string
+	Store        *core.ContentStore
+	Router       *transport.Router
+	TCPPort      int
+	identity     *core.Identity
+	wireIdentity *atomic.Pointer[core.Identity]
+	siteRuntime  *siteRuntime
+	config       Config
+	private      PrivateState
 	// Per-node persistence seam for exercising uncertain completion boundaries.
 	writePrivateState  func([]byte, string) (string, error)
 	updateGroupState   func(func(*groupstore.Tx) error) error
@@ -100,13 +104,15 @@ func NewNode(dir string) (*Node, error) {
 	if err != nil {
 		return nil, err
 	}
-	router, err := transport.New(transport.Options{DisableRelay: !config.Relay, Validate: ValidateWire})
+	wireIdentity := new(atomic.Pointer[core.Identity])
+	router, err := transport.New(transport.Options{DisableRelay: !config.Relay, Validate: func(raw json.RawMessage) error { return validateWireWithIdentity(raw, wireIdentity.Load()) }})
 	if err != nil {
 		return nil, err
 	}
 	router.SetLowPower(config.LowPower)
 	ctx, cancel := context.WithCancel(context.Background())
 	n := &Node{Dir: dir, Store: store, Router: router, config: config, private: emptyPrivate(), routes: map[string]transport.Route{}, requests: map[string]int64{}, receipts: map[string]bool{}, ctx: ctx, cancel: cancel, ownership: ownership, closeDone: make(chan struct{})}
+	n.wireIdentity = wireIdentity
 	n.clearSummariesLocked()
 	n.groupSync = newGroupSynchronizer(n)
 	n.noticeSync = newNoticeSynchronizer(n)
@@ -189,6 +195,10 @@ func (n *Node) Close() error {
 		return n.closeErr
 	}
 	n.closed = true
+	n.siteRuntime = nil
+	if n.wireIdentity != nil {
+		n.wireIdentity.Store(nil)
+	}
 	n.cancel()
 	cancellations := append([]context.CancelFunc{}, n.cancellations...)
 	n.identity = nil
@@ -220,6 +230,10 @@ func (n *Node) initialized() bool {
 	return err == nil
 }
 func (n *Node) lockPrivateLocked() error {
+	n.siteRuntime = nil
+	if n.wireIdentity != nil {
+		n.wireIdentity.Store(nil)
+	}
 	n.cancelGroupPacketsLocked(true)
 	if n.groupSync != nil {
 		n.groupSync.reset()
@@ -330,7 +344,8 @@ func (n *Node) cloneConfig() Config {
 	return c
 }
 
-func ValidateWire(raw json.RawMessage) error {
+func ValidateWire(raw json.RawMessage) error { return validateWireWithIdentity(raw, nil) }
+func validateWireWithIdentity(raw json.RawMessage, identity *core.Identity) error {
 	value, err := core.DecodeJSON(raw, transport.MaxPacketBytes)
 	if err != nil {
 		return err
@@ -348,6 +363,9 @@ func ValidateWire(raw json.RawMessage) error {
 		}
 		if err == nil && b.Manifest.Kind == "group-notice" {
 			return groupnotice.VerifyEnvelope(b)
+		}
+		if err == nil && b.Manifest.Kind == "site" {
+			_, err = inspectSiteBundle(b, identity)
 		}
 		return err
 	case "inventory", "request":
@@ -456,6 +474,21 @@ func (n *Node) receiveLocked(delivery transport.Delivery) error {
 		if err = n.journalReceivedConfirmationLocked(b); err != nil {
 			return err
 		}
+		if b.Manifest.Kind == "site" {
+			parsed, e := inspectSiteBundle(b, n.identity)
+			if e != nil {
+				return e
+			}
+			if parsed != nil && n.identity != nil {
+				s, e := n.sitesLocked()
+				if e != nil {
+					return e
+				}
+				if e = s.receive(b); e != nil {
+					return e
+				}
+			}
+		}
 		if n.identity != nil {
 			incoming, e := n.displayLocked(b)
 			if e == nil && groupaccess.HasBinding(incoming.Content) && (text(incoming.Content["target"]) != "" || text(incoming.Content["replyTo"]) != "") {
@@ -554,6 +587,11 @@ func (n *Node) syncLocked() {
 		}
 		n.issueDeliveriesLocked(objects)
 		n.flushOutboxLocked(time.Now().UnixMilli())
+		if n.identity != nil {
+			if s, e := n.sitesLocked(); e == nil {
+				s.tick()
+			}
+		}
 	}
 	if !n.config.Relay {
 		return
@@ -604,12 +642,16 @@ func (n *Node) displayLocked(bundle core.Bundle) (*DisplayObject, error) {
 		return nil, err
 	}
 	content := Content(m)
-	if err = validateContent(content); err != nil {
-		return nil, err
-	}
 	manifest := bundle.Manifest
 	if text(content["type"]) != manifest.Kind {
 		return nil, errors.New("tipo não corresponde ao manifesto")
+	}
+	if _, versioned := content["siteRevision"]; manifest.Kind == "site" && versioned {
+		if _, err = sites.VerifyContent(map[string]any(content), manifest.Author, ""); err != nil {
+			return nil, err
+		}
+	} else if err = validateContent(content); err != nil {
+		return nil, err
 	}
 	if groupaccess.HasBinding(content) {
 		if _, err = groupaccess.ParseBinding(content); err != nil {
@@ -919,7 +961,7 @@ func (n *Node) stateLocked() (map[string]any, error) {
 	}
 	counters := n.Router.Counters()
 	counters.Rejected += n.rejected
-	return map[string]any{"initialized": n.initialized(), "locked": n.identity == nil, "identity": identity, "tcpPort": n.TCPPort, "peers": n.Router.Peers(), "webPeer": n.webPeerStateLocked(), "counters": counters, "storage": n.Store.Stats(), "settings": map[string]any{"relay": n.config.Relay, "lowPower": n.config.LowPower}, "contacts": contacts, "blocked": blocked, "following": following, "saved": saved, "reports": reports, "groupContent": n.groupContentStateLocked(), "objects": page.Objects, "outbox": n.outboxItemsLocked(outboxAt, manifests), "outboxPolicy": outboxPolicy(), "history": page.History, "followedPostIds": followed, "collections": collections, "siteDraft": siteDraftSummary(draft), "transportError": n.lastTransportError, "now": outboxAt, "nativeRuntime": "Go"}, nil
+	return map[string]any{"initialized": n.initialized(), "locked": n.identity == nil, "identity": identity, "tcpPort": n.TCPPort, "peers": n.Router.Peers(), "webPeer": n.webPeerStateLocked(), "counters": counters, "storage": n.Store.Stats(), "settings": map[string]any{"relay": n.config.Relay, "lowPower": n.config.LowPower}, "contacts": contacts, "blocked": blocked, "following": following, "saved": saved, "reports": reports, "groupContent": n.groupContentStateLocked(), "objects": page.Objects, "outbox": n.outboxItemsLocked(outboxAt, manifests), "outboxPolicy": outboxPolicy(), "history": page.History, "followedPostIds": followed, "collections": collections, "siteDraft": siteDraftSummary(draft), "sitePublishing": n.siteStatusLocked(), "transportError": n.lastTransportError, "now": outboxAt, "nativeRuntime": "Go"}, nil
 }
 
 func (n *Node) Publish(content Content, recipients any, ttlMS int64) (DisplayObject, error) {
@@ -950,6 +992,11 @@ func (n *Node) prepareLocked(content Content, recipients any, ttlMS int64) (*pre
 	content = Content(m)
 	if err = validateContent(content); err != nil {
 		return nil, err
+	}
+	if text(content["type"]) == "site" {
+		if _, versioned := content["siteRevision"]; versioned {
+			return nil, errors.New("use a publicação versionada de sites")
+		}
 	}
 	if groupaccess.HasBinding(content) {
 		return nil, errors.New("o envio neste grupo ainda não está disponível")
@@ -1169,6 +1216,10 @@ func (n *Node) Handle(operation string, body map[string]any) (any, error) {
 			return nil, err
 		}
 		n.identity = &identity
+		if n.wireIdentity != nil {
+			n.wireIdentity.Store(&identity)
+		}
+		n.siteRuntime = nil
 		n.private = local
 		n.privateDatabase = database
 		n.privateDigest = digest
@@ -1205,6 +1256,10 @@ func (n *Node) Handle(operation string, body map[string]any) (any, error) {
 			_ = n.privateDatabase.Close()
 		}
 		n.identity = &identity
+		if n.wireIdentity != nil {
+			n.wireIdentity.Store(&identity)
+		}
+		n.siteRuntime = nil
 		n.private = local
 		n.privateDatabase = database
 		n.privateDigest = digest
@@ -1237,6 +1292,12 @@ func (n *Node) Handle(operation string, body map[string]any) (any, error) {
 		return map[string]any{"vault": vault}, err
 	case "group-command":
 		return n.groupCommandLocked(body)
+	case "site-command":
+		s, err := n.sitesLocked()
+		if err != nil {
+			return nil, err
+		}
+		return s.command(body)
 	case "send":
 		return n.sendLocked(body)
 	case "outbox-retry":
@@ -1488,6 +1549,7 @@ func (n *Node) actionLocked(body map[string]any) error {
 		return err
 	}
 	if action == "block" {
+		n.cancelSitePacketsLocked()
 		return n.reconcileGroupSendsLocked()
 	}
 	return nil

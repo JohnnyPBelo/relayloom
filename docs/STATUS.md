@@ -6,15 +6,15 @@ Corrigida a gravação de imagens válidas que excediam o índice privado de 1 M
 
 Os certificados de revisões e o catálogo persistente Node têm código/testes locais, incluindo interrupção de processos e recuperação. [Evidência e limites](evidence/site-revisions). A API Node foi integrada no marco abaixo; os controlos de UI e a persistência/API Go/browser continuam pendentes. Contribuições assinadas e ficheiros opcionais continuam pendentes; o produto completo mantém-se em implementação.
 
-## Revisões de sites — API Node integrada
+## Revisões de sites — APIs Node e Go integradas
 
-POSTsite-command cria a revisão e a preparação numa transacção real, autoriza antes de copiar/enviar, recupera pedidos e resolve endereços a partir de certificados e bytes verificados. Conflitos conhecidos exigem confirmação explícita das cabeças. Uma cabeça sem payload não promove a versão antiga. Passaram397testesNode,31UI por núcleoNode/Go,2percursos legados de interoperabilidade eLinuxbuild/run/package/run. [Evidência](evidence/site-api) e [guia](SITE-REVISIONS.md). Não há ainda UI de revisões nem API/persistência equivalentes Go/browser; contribuições e ficheiros opcionais continuam pendentes.
+POSTsite-command cria a revisão e a preparação numa transacção real, autoriza antes de copiar/enviar, recupera pedidos e resolve endereços a partir de certificados e bytes verificados. Conflitos conhecidos exigem confirmação explícita das cabeças. Uma cabeça sem payload não promove a versão antiga. Passaram397testesNode,31UI por núcleoNode/Go,2percursos legados de interoperabilidade eLinuxbuild/run/package/run. [Evidência](evidence/site-api) e [guia](SITE-REVISIONS.md). A paridade Go passou o gate completo descrito abaixo. Ainda não há UI de revisões nem API/persistência browser; contribuições e ficheiros opcionais continuam pendentes.
 
 ## CI e camada Go mais recentes
 
 CI35215212384 passou Node emLinux/macOS e falhou emWindows numa asserção do teste sobre exitCode após terminação por sinal. A correcção mantém espera limitada e recusaTCP; cinco testes dirigidos passaram, mas a repetiçãoWindows ainda está pendente. [Evidência](evidence/site-process-exit). Os jobs dependentes, incluindo iOS, não correram nessa execução.
 
-A cifra privada de sites já tem portGo e interoperabilidade real comNode na mesmaSQLite, com controlos de quota, corrupção e contexto. [Provas](evidence/go-site-private). O catálogo/API/estúdio de revisões emGo e browser continuam em desenvolvimento.
+O catálogo e a API Go já retomam publicações Node e vice-versa, preservando revisão, leitores, conflitos e expiração. Passaram os pacotesGo comrace,69interop,SQLiteC,31UI Node+31UI Go eLinuxbuild/run/package/run. [Provas actuais](evidence/go-site-api). Persistência/API browser e controlos no estúdio continuam em desenvolvimento.
 
 ## iOS — fotografia visível, selecção ainda sem passe
 

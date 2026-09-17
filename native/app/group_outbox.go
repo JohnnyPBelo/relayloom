@@ -15,6 +15,24 @@ import (
 )
 
 func (n *Node) maySeedLocked(manifest core.Manifest) (bool, error) {
+	if manifest.Kind == "site" {
+		if manifest.PublicKey == nil && n.identity == nil && n.initialized() {
+			return false, nil
+		}
+		if n.identity != nil && manifest.Author.ID == n.identity.Public.ID {
+			for _, k := range manifest.Keys {
+				if contains(n.config.Blocked, k.Reader) {
+					return false, nil
+				}
+			}
+		}
+		bundle, err := n.Store.GetWithTouch(manifest.ID, false)
+		if err != nil {
+			return false, err
+		}
+		_, err = inspectSiteBundle(bundle, n.identity)
+		return err == nil, nil
+	}
 	if manifest.Kind == "group-notice" {
 		if !groupnotice.ManifestPolicy(manifest) {
 			return false, nil

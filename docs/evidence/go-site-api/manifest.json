@@ -1,0 +1,101 @@
+{
+  "status": "PASS",
+  "sourceCount": 562,
+  "files": [
+    {
+      "name": "report.json",
+      "bytes": 63915,
+      "sha256": "1edff4a0cbd77f4f1ee5f619cfbc7ae7da36ce7129615b9235667a8494143958"
+    },
+    {
+      "name": "go.log",
+      "bytes": 1077,
+      "sha256": "98f1fe1dd46cd99c01f0b312f1c8651266760931633cbf2c7d25ccc2fb8308d6"
+    },
+    {
+      "name": "interop.log",
+      "bytes": 21521,
+      "sha256": "9491bf0548bc69fa1eca0f52d687a357810bae55237343d7e9e6112bdaac6374"
+    },
+    {
+      "name": "sqlite-cgo.log",
+      "bytes": 323,
+      "sha256": "664fc203a218d65fac9e5b4a6d3c717cb5d21feb74a93a97482139eb22a88566"
+    },
+    {
+      "name": "ui-node.log",
+      "bytes": 5281,
+      "sha256": "fa6218bbdaecbc1ee1a4ca12de0ff8c1bfa98cd4664c9501680da4dde723adba"
+    },
+    {
+      "name": "ui-go.log",
+      "bytes": 5281,
+      "sha256": "e78edcb6dddf51fd759fe858e52deb42863a9ede471bda5acbd1d7ebbe9f3fe2"
+    },
+    {
+      "name": "desktop-build.log",
+      "bytes": 62,
+      "sha256": "c9a63277a1b4b07857281a537bf875abc7214e04314f0273860dd485747d367c"
+    },
+    {
+      "name": "desktop-run.log",
+      "bytes": 101,
+      "sha256": "b6b330489eb6907b1fe6062fbf5ca45277269e9ece9d7aa4a922a96e6d217cc3"
+    },
+    {
+      "name": "desktop-package.log",
+      "bytes": 3164,
+      "sha256": "d0a567ae077ceb46f94d900811454830ccd0ca43ddda810617a4bd474dc3b850"
+    },
+    {
+      "name": "desktop-packaged-run.log",
+      "bytes": 64,
+      "sha256": "ca0e323461166ca4416ffa306cfb99c794aa3e5ee450a494eb52539e10a5ac51"
+    },
+    {
+      "name": "registry-vectors.json",
+      "bytes": 196,
+      "sha256": "8dba56aeccfd569b30b51696a347579fd6f257497f150a7963bd28da875c1c7f"
+    },
+    {
+      "name": "shared-catalog.log",
+      "bytes": 548,
+      "sha256": "c6775b52ae0cfe8112387680acb8b9822d79cf2549f314d85d7a7e483a6d6c02"
+    },
+    {
+      "name": "mixed-api.log",
+      "bytes": 865,
+      "sha256": "81c39cb45ecb1c8c3b604a77396d84fc4ac8e0756583a75a4044cc307a9be0e9"
+    },
+    {
+      "name": "runtime-directed.log",
+      "bytes": 57,
+      "sha256": "423c28ae359d80e458fb8f5c7242fb6f7037376f0eeafb58c24129d54d586d56"
+    },
+    {
+      "name": "runtime-optimized.log",
+      "bytes": 115,
+      "sha256": "e9b1d55cd930b55ade4ae13578ab2d5da5c678156289ee8433f8ff18f5fa14bb"
+    },
+    {
+      "name": "profile-before.log",
+      "bytes": 205,
+      "sha256": "12fca1e90e2f8c0e33472188ba9bc2129152ef495028dae126535c61b553f39f"
+    },
+    {
+      "name": "profile-after.log",
+      "bytes": 205,
+      "sha256": "f7e55f281168b5a5aa40a576de7d28e3889ba75d1dd0e9dfd04e8b9755f6f201"
+    },
+    {
+      "name": "extraction-failure.log",
+      "bytes": 1025,
+      "sha256": "3a94e1e0ad1e61f00b3fb3c40fab003fe4577064ae022ffe253c8b8185dc8e62"
+    },
+    {
+      "name": "extraction-fixed.log",
+      "bytes": 132,
+      "sha256": "78c71489d79dcfd56a9a1a45758081eea09b0b7c2dc97a6e14dfdf515ea0a28c"
+    }
+  ]
+}

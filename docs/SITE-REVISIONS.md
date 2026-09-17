@@ -1,6 +1,6 @@
-# Revisões de sites — API Node em integração
+# Revisões de sites — APIs Node e Go
 
-A aplicação Node já dispõe de publicação versionada no código de integração. As APIs equivalentes Go/browser e os controlos do editor partilhado ainda não foram ligados. A versão web pública continua na fonte0c6b58a, com a correcção de rascunhos grandes; não anuncia esta API como funcionalidade do browser.
+As aplicações Node e Go dispõem de publicação versionada, com o mesmo catálogo e API. A API browser e os controlos do editor partilhado ainda não foram ligados. A versão web pública continua na fonte0c6b58a, com a correcção de rascunhos grandes; não anuncia esta API como funcionalidade do browser.
 
 Cada site tem um endereço `relayloom:site:<id-da-assinatura>/<nome>`. A revisão assina um documento completo e liga proprietário, nome, sequência, antecessores e hash do conteúdo. Um leitor pode servir o mesmo bundle, mantendo o autor original. Reassinar o envelope com outra identidade não dá autoridade sobre o endereço original.
 
@@ -38,3 +38,8 @@ A rota é POST `/api/site-command`, com a mesma capacidade local de autorizaçã
 Testes dirigidos passaram: API com nós independentes, versões públicas/privadas, autor desligado e novo seeder, envelope de outro assinante recusado, falha de gravação/cópia, reinício real da app no meio da publicação, conflito entre duas instalações da mesma identidade e cabeça sem payload. Um percurso real TCP→sériePTY passou partição/heal e retomada por seeder com o autor desligado, com controlos de ausência e consentimento. PTY não é rádio físico.
 
 A regressão passou397testesNode,31UI por núcleoNode/Go,2percursos legados de interoperabilidade eLinuxbuild/run/package/run; [evidência](evidence/site-api). não há ainda evidência de UI de revisões, paridade persistente Go/browser ou validação física. Comandos dirigidos: `node --import tsx --test --test-concurrency=1 tests/site-application.test.ts tests/site-application-recovery.test.ts tests/site-request.test.ts` e `node --import tsx --test tests/site-heterogeneous.test.ts`.
+
+
+## Paridade Go verificada
+
+O portGo passou66vectores de transição contraNode e retomada de publicações na mesmaSQLite nos dois sentidos. Passaram os pacotesGo completos comrace,69testes de interoperabilidade,SQLiteC,31UI por núcleoNode/Go eLinuxbuild/run/package/run. [Evidência](evidence/go-site-api). A validação partilhada preserva o formato do estúdio existente. Estes testes não são a UI de revisões nem validação de todos os dispositivos físicos.
