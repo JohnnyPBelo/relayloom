@@ -418,10 +418,10 @@ export function verifyManifest(m: Manifest, now = Date.now()): void {
   )
     throw new Error("Assinatura inválida");
 }
-export function verifyBundle(bundle: Bundle): void {
+function verifyBundleAt(bundle: Bundle, now: number): void {
   if (!exactShape(bundle, ["manifest", "chunks"]))
     throw new Error("Campos do conteúdo inválidos");
-  verifyManifest(bundle.manifest);
+  verifyManifest(bundle.manifest, now);
   if (
     !bundle.chunks ||
     Object.keys(bundle.chunks).length > bundle.manifest.chunks.length
@@ -433,8 +433,43 @@ export function verifyBundle(bundle: Bundle): void {
       throw new Error("Conteúdo corrompido");
   }
 }
+export function verifyBundle(bundle: Bundle): void {
+  verifyBundleAt(bundle, Date.now());
+}
+function storedBundleTime(bundle: Bundle): number {
+  if (
+    !exactShape(bundle, ["manifest", "chunks"]) ||
+    !bundle.manifest ||
+    typeof bundle.manifest !== "object"
+  )
+    throw new Error("Conteúdo guardado inválido");
+  const created = Object.getOwnPropertyDescriptor(bundle.manifest, "created");
+  if (!created || !("value" in created) || !Number.isSafeInteger(created.value))
+    throw new Error("Data do conteúdo guardado inválida");
+  return created.value;
+}
+/** Verify authenticated local staging after its delivery deadline. This does
+ * not authorize admission, display or transmission; those use verifyBundle. */
+export function verifyStoredBundle(bundle: Bundle): void {
+  verifyBundleAt(bundle, storedBundleTime(bundle));
+}
 export function decryptBundle(bundle: Bundle, identity?: Identity): unknown {
-  verifyBundle(bundle);
+  return decryptBundleAt(bundle, identity, Date.now());
+}
+/** Decode already-authenticated private staging for terminal recovery only.
+ * Network receivers and ordinary content reads retain the wall-clock check. */
+export function decryptStoredBundle(
+  bundle: Bundle,
+  identity?: Identity,
+): unknown {
+  return decryptBundleAt(bundle, identity, storedBundleTime(bundle));
+}
+function decryptBundleAt(
+  bundle: Bundle,
+  identity: Identity | undefined,
+  now: number,
+): unknown {
+  verifyBundleAt(bundle, now);
   const m = bundle.manifest;
   let key: Buffer;
   if (m.publicKey) key = un64(m.publicKey);

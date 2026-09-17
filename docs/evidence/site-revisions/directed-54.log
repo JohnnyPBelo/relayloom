@@ -1,0 +1,340 @@
+TAP version 13
+# (node:2123235) ExperimentalWarning: The MockTimers API is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: identity proof binds signing address, name and decryption key
+ok 1 - identity proof binds signing address, name and decryption key
+  ---
+  duration_ms: 2.270186
+  type: 'test'
+  ...
+# Subtest: vault encrypts private keys; recovery and wrong-password controls
+ok 2 - vault encrypts private keys; recovery and wrong-password controls
+  ---
+  duration_ms: 228.177791
+  type: 'test'
+  ...
+# Subtest: reader decrypts and seeds but cannot become author; unauthorized reader fails
+ok 3 - reader decrypts and seeds but cannot become author; unauthorized reader fails
+  ---
+  duration_ms: 5.368936
+  type: 'test'
+  ...
+# Subtest: ciphertext, manifest, expiry, depth and address negative controls
+ok 4 - ciphertext, manifest, expiry, depth and address negative controls
+  ---
+  duration_ms: 15.245723
+  type: 'test'
+  ...
+# Subtest: encrypted persistent seed takeover, deduplication, pin/quota, disk corruption
+ok 5 - encrypted persistent seed takeover, deduplication, pin/quota, disk corruption
+  ---
+  duration_ms: 45.696395
+  type: 'test'
+  ...
+# Subtest: object-count cap bounds small-object floods, survives restart and preserves pinned content
+ok 6 - object-count cap bounds small-object floods, survives restart and preserves pinned content
+  ---
+  duration_ms: 277.174364
+  type: 'test'
+  ...
+# Subtest: metadata listing does not replace real viewing order in LRU eviction
+ok 7 - metadata listing does not replace real viewing order in LRU eviction
+  ---
+  duration_ms: 60.593093
+  type: 'test'
+  ...
+# Subtest: cached manifest metadata is isolated, invalidated by disk changes, and never bypasses get verification
+ok 8 - cached manifest metadata is isolated, invalidated by disk changes, and never bypasses get verification
+  ---
+  duration_ms: 28.894383
+  type: 'test'
+  ...
+# Subtest: rejected quota decrease preserves existing files and policy; feasible decrease evicts only unpinned content
+ok 9 - rejected quota decrease preserves existing files and policy; feasible decrease evicts only unpinned content
+  ---
+  duration_ms: 168.701231
+  type: 'test'
+  ...
+# Subtest: invalid persisted index fails safely without deleting verified objects
+ok 10 - invalid persisted index fails safely without deleting verified objects
+  ---
+  duration_ms: 26.491888
+  type: 'test'
+  ...
+# Subtest: strict wire fields and every recipient envelope are validated before accepting signatures
+ok 11 - strict wire fields and every recipient envelope are validated before accepting signatures
+  ---
+  duration_ms: 3.854507
+  type: 'test'
+  ...
+# Subtest: newcomer validates exact join consent from signed parent header without old snapshot keys
+ok 12 - newcomer validates exact join consent from signed parent header without old snapshot keys
+  ---
+  duration_ms: 59.081249
+  type: 'test'
+  ...
+# Subtest: permanent group anchor has real creator signature, exact schema and separate carrier identity
+ok 13 - permanent group anchor has real creator signature, exact schema and separate carrier identity
+  ---
+  duration_ms: 8.206766
+  type: 'test'
+  ...
+# Subtest: invitation and signed consent do not alter roster until the creator commits the exact parent
+ok 14 - invitation and signed consent do not alter roster until the creator commits the exact parent
+  ---
+  duration_ms: 28.344391
+  type: 'test'
+  ...
+# Subtest: newcomer reads real new ciphertext without obtaining historical keys; removed reader cannot read new content
+ok 15 - newcomer reads real new ciphertext without obtaining historical keys; removed reader cannot read new content
+  ---
+  duration_ms: 51.580697
+  type: 'test'
+  ...
+# Subtest: stale, substituted, missing or extra member consents cannot commit a roster
+ok 16 - stale, substituted, missing or extra member consents cannot commit a roster
+  ---
+  duration_ms: 55.909773
+  type: 'test'
+  ...
+# Subtest: removal and rejoin remain restrictive across the complete path even with identical final cards
+ok 17 - removal and rejoin remain restrictive across the complete path even with identical final cards
+  ---
+  duration_ms: 51.703687
+  type: 'test'
+  ...
+# Subtest: creator reading-card replacement preserves signing authority but requires fresh signed consent
+ok 18 - creator reading-card replacement preserves signing authority but requires fresh signed consent
+  ---
+  duration_ms: 38.841121
+  type: 'test'
+  ...
+# Subtest: signed schema tampering, roster duplication, invalid order and snapshot substitution fail
+ok 19 - signed schema tampering, roster duplication, invalid order and snapshot substitution fail
+  ---
+  duration_ms: 26.446514
+  type: 'test'
+  ...
+# Subtest: closure preserves the committed historical state and reserves the final epoch
+ok 20 - closure preserves the committed historical state and reserves the final epoch
+  ---
+  duration_ms: 40.462502
+  type: 'test'
+  ...
+# Subtest: a valid creator fork cannot masquerade as a contiguous successor or grant reader authority
+ok 21 - a valid creator fork cannot masquerade as a contiguous successor or grant reader authority
+  ---
+  duration_ms: 35.598091
+  type: 'test'
+  ...
+# Subtest: full 64-member roster is bounded; capacity and title failures do not mutate its parent
+ok 22 - full 64-member roster is bounded; capacity and title failures do not mutate its parent
+  ---
+  duration_ms: 493.87623
+  type: 'test'
+  ...
+# Subtest: member leave is a signed request with no direct roster effect and cannot replace creator closure
+ok 23 - member leave is a signed request with no direct roster effect and cannot replace creator closure
+  ---
+  duration_ms: 34.453155
+  type: 'test'
+  ...
+# Subtest: identity proof rejects small-order signing keys even when the underlying verifier accepts the equation
+ok 24 - identity proof rejects small-order signing keys even when the underlying verifier accepts the equation
+  ---
+  duration_ms: 19.95872
+  type: 'test'
+  ...
+# Subtest: the signing-key profile rejects all reference torsion points and noncanonical aliases without changing its input
+ok 25 - the signing-key profile rejects all reference torsion points and noncanonical aliases without changing its input
+  ---
+  duration_ms: 13.661614
+  type: 'test'
+  ...
+# (node:2123421) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: catalog atomically persists preparation, authorization and exact public-copy recovery across database restart
+ok 26 - catalog atomically persists preparation, authorization and exact public-copy recovery across database restart
+  ---
+  duration_ms: 201.704318
+  type: 'test'
+  ...
+# Subtest: another signed head appearing before authorization supersedes a private preparation without publishing it
+ok 27 - another signed head appearing before authorization supersedes a private preparation without publishing it
+  ---
+  duration_ms: 124.756922
+  type: 'test'
+  ...
+# Subtest: staging capacity failure cannot leave a catalog entry, partial bundle or changed prior operation
+ok 28 - staging capacity failure cannot leave a catalog entry, partial bundle or changed prior operation
+  ---
+  duration_ms: 99.774753
+  type: 'test'
+  ...
+# Subtest: expired preparations remain recoverable as terminal outcomes without treating the profile as corrupt
+ok 29 - expired preparations remain recoverable as terminal outcomes without treating the profile as corrupt
+  ---
+  duration_ms: 210.030859
+  type: 'test'
+  ...
+# Subtest: public retries recover the exact first envelope; private retries cannot silently change a reading envelope
+ok 30 - public retries recover the exact first envelope; private retries cannot silently change a reading envelope
+  ---
+  duration_ms: 119.565489
+  type: 'test'
+  ...
+# Subtest: complete declarative snapshots bind a signed revision to the payload and envelope signing owner
+ok 31 - complete declarative snapshots bind a signed revision to the payload and envelope signing owner
+  ---
+  duration_ms: 76.273813
+  type: 'test'
+  ...
+# Subtest: snapshots reject unsigned additions, malformed declarative documents and changed signed payloads
+ok 32 - snapshots reject unsigned additions, malformed declarative documents and changed signed payloads
+  ---
+  duration_ms: 3.766992
+  type: 'test'
+  ...
+# (node:2123473) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: private site staging survives SQLite restart and does not expose signatures to the reading secret
+ok 33 - private site staging survives SQLite restart and does not expose signatures to the reading secret
+  ---
+  duration_ms: 101.528502
+  type: 'test'
+  ...
+# Subtest: private staging quota failure aborts all record changes even when its error is caught
+ok 34 - private staging quota failure aborts all record changes even when its error is caught
+  ---
+  duration_ms: 48.261564
+  type: 'test'
+  ...
+# Subtest: private record handles expire at the synchronous transaction boundary
+ok 35 - private record handles expire at the synchronous transaction boundary
+  ---
+  duration_ms: 17.327427
+  type: 'test'
+  ...
+# Subtest: missing and transposed ciphertext are rejected even inside an otherwise authentic outer database
+ok 36 - missing and transposed ciphertext are rejected even inside an otherwise authentic outer database
+  ---
+  duration_ms: 87.860627
+  type: 'test'
+  ...
+# Subtest: site sequence reservation is not publication; replay is stable and stale bases do not mutate state
+ok 37 - site sequence reservation is not publication; replay is stable and stale bases do not mutate state
+  ---
+  duration_ms: 22.313415
+  type: 'test'
+  ...
+# Subtest: a newer signed observation supersedes an unfinished publication and cannot roll back to older headers
+ok 38 - a newer signed observation supersedes an unfinished publication and cannot roll back to older headers
+  ---
+  duration_ms: 10.543748
+  type: 'test'
+  ...
+# Subtest: retired site operation sequences cannot be replayed as new writes
+ok 39 - retired site operation sequences cannot be replayed as new writes
+  ---
+  duration_ms: 621.675887
+  type: 'test'
+  ...
+# Subtest: a full site history can advance while the latest known header is retained without payloads
+ok 40 - a full site history can advance while the latest known header is retained without payloads
+  ---
+  duration_ms: 680.44471
+  type: 'test'
+  ...
+# Subtest: registry shape and single pending operation limits reject malformed state without invoking getters
+ok 41 - registry shape and single pending operation limits reject malformed state without invoking getters
+  ---
+  duration_ms: 5.504039
+  type: 'test'
+  ...
+# Subtest: equal-sequence signed concurrency changes the base before durable authorization
+ok 42 - equal-sequence signed concurrency changes the base before durable authorization
+  ---
+  duration_ms: 7.158271
+  type: 'test'
+  ...
+# Subtest: committed publication recovery is irreversible and never rolls back a newer signed head
+ok 43 - committed publication recovery is irreversible and never rolls back a newer signed head
+  ---
+  duration_ms: 11.648249
+  type: 'test'
+  ...
+# Subtest: cryptographic memoization is confined to one transition and cannot hide subsequent mutations
+ok 44 - cryptographic memoization is confined to one transition and cannot hide subsequent mutations
+  ---
+  duration_ms: 128.444396
+  type: 'test'
+  ...
+# Subtest: site addresses are stable under display/read-card changes and reject ambiguous input
+ok 45 - site addresses are stable under display/read-card changes and reject ambiguous input
+  ---
+  duration_ms: 34.794045
+  type: 'test'
+  ...
+# Subtest: node signed snapshots bind the exact content and retain ownership when another reader can decrypt
+ok 46 - node signed snapshots bind the exact content and retain ownership when another reader can decrypt
+  ---
+  duration_ms: 9.238341
+  type: 'test'
+  ...
+# Subtest: node orders revisions by signed sequence, reports forks and does not let replay replace a known head
+ok 47 - node orders revisions by signed sequence, reports forks and does not let replay replace a known head
+  ---
+  duration_ms: 10.85422
+  type: 'test'
+  ...
+# Subtest: node rejects malformed certificates without invoking getters and enforces finite history/signature bounds
+ok 48 - node rejects malformed certificates without invoking getters and enforces finite history/signature bounds
+  ---
+  duration_ms: 17.87315
+  type: 'test'
+  ...
+# Subtest: portable signed snapshots bind the exact content and retain ownership when another reader can decrypt
+ok 49 - portable signed snapshots bind the exact content and retain ownership when another reader can decrypt
+  ---
+  duration_ms: 64.649228
+  type: 'test'
+  ...
+# Subtest: portable orders revisions by signed sequence, reports forks and does not let replay replace a known head
+ok 50 - portable orders revisions by signed sequence, reports forks and does not let replay replace a known head
+  ---
+  duration_ms: 93.003219
+  type: 'test'
+  ...
+# Subtest: portable rejects malformed certificates without invoking getters and enforces finite history/signature bounds
+ok 51 - portable rejects malformed certificates without invoking getters and enforces finite history/signature bounds
+  ---
+  duration_ms: 40.641837
+  type: 'test'
+  ...
+# Subtest: Node and portable crypto produce identical snapshot bytes/signatures and verify each other
+ok 52 - Node and portable crypto produce identical snapshot bytes/signatures and verify each other
+  ---
+  duration_ms: 10.67838
+  type: 'test'
+  ...
+# Subtest: authenticated historical decoding does not make expired content admissible or decryptable by another identity
+ok 53 - authenticated historical decoding does not make expired content admissible or decryptable by another identity
+  ---
+  duration_ms: 24.185925
+  type: 'test'
+  ...
+# Subtest: historical time extraction rejects accessors without invoking them
+ok 54 - historical time extraction rejects accessors without invoking them
+  ---
+  duration_ms: 0.18157
+  type: 'test'
+  ...
+1..54
+# tests 54
+# suites 0
+# pass 54
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 5920.936317

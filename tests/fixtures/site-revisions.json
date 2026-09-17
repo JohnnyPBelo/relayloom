@@ -1,0 +1,505 @@
+{
+  "version": 1,
+  "scope": "Public signed certificate vectors only; no private keys or application/network execution claim.",
+  "owner": {
+    "id": "83966f8fa003cc8307561c82a232e0c63fd522ba00be5d63146b9ca029e2aa30",
+    "name": "Site vector — 🌿",
+    "signKey": "MCowBQYDK2VwAyEAbl4jtGRncHlrFy1KO6efQLo4HszjquFW5KUF8IF3hPI=",
+    "boxKey": "MCowBQYDK2VuAyEAkiaY6JaHW0u7yq11oYJUnK6K4BGEZHpDWRAmS1hT4F8=",
+    "proof": "bxmg2/n6s3Hlp5aBUNl/cX2APaiKtkRiD4axnK/dye6mRaFcUNOYoECUkf71fZIpzm9loReIID9/ryCjt72BCg=="
+  },
+  "address": "relayloom:site:83966f8fa003cc8307561c82a232e0c63fd522ba00be5d63146b9ca029e2aa30/profile",
+  "payload": {
+    "title": "Um lugar na rede",
+    "pages": [
+      {
+        "title": "Início",
+        "body": "Texto da autora."
+      }
+    ],
+    "attachments": []
+  },
+  "documentHash": "7a315730ff0438ed45f32afed1c3473b5b5b58d7c47ca74a9efd50892c6557cc",
+  "first": {
+    "body": {
+      "domain": "relayloom/site-snapshot/1",
+      "owner": {
+        "id": "83966f8fa003cc8307561c82a232e0c63fd522ba00be5d63146b9ca029e2aa30",
+        "name": "Site vector — 🌿",
+        "signKey": "MCowBQYDK2VwAyEAbl4jtGRncHlrFy1KO6efQLo4HszjquFW5KUF8IF3hPI=",
+        "boxKey": "MCowBQYDK2VuAyEAkiaY6JaHW0u7yq11oYJUnK6K4BGEZHpDWRAmS1hT4F8=",
+        "proof": "bxmg2/n6s3Hlp5aBUNl/cX2APaiKtkRiD4axnK/dye6mRaFcUNOYoECUkf71fZIpzm9loReIID9/ryCjt72BCg=="
+      },
+      "name": "profile",
+      "number": 1,
+      "previous": [],
+      "documentHash": "7a315730ff0438ed45f32afed1c3473b5b5b58d7c47ca74a9efd50892c6557cc"
+    },
+    "id": "932efd302763e709b91618a7f46482cf809d613cb358df200c0c3dc9efdf670a",
+    "signature": "msAfTjyA5Dtb8xI0uCjSqRw7SZU5dqIirMjp2w/CUvuoghecbmgGLHfLRH9iweDj5UBG1nGyY1Onvxgee1H8Dw=="
+  },
+  "selections": [
+    {
+      "name": "complete merged history",
+      "revisions": [
+        {
+          "body": {
+            "domain": "relayloom/site-snapshot/1",
+            "owner": {
+              "id": "83966f8fa003cc8307561c82a232e0c63fd522ba00be5d63146b9ca029e2aa30",
+              "name": "Site vector — 🌿",
+              "signKey": "MCowBQYDK2VwAyEAbl4jtGRncHlrFy1KO6efQLo4HszjquFW5KUF8IF3hPI=",
+              "boxKey": "MCowBQYDK2VuAyEAkiaY6JaHW0u7yq11oYJUnK6K4BGEZHpDWRAmS1hT4F8=",
+              "proof": "bxmg2/n6s3Hlp5aBUNl/cX2APaiKtkRiD4axnK/dye6mRaFcUNOYoECUkf71fZIpzm9loReIID9/ryCjt72BCg=="
+            },
+            "name": "profile",
+            "number": 3,
+            "previous": [
+              "4d29a407f815fd9c9819d03f149c1a0cf62704b7dbda747467452d1f7567c3d9",
+              "70464862603ce470aee93fdcf7b800d041b9a9569ead785fac7e07099c8c2ae8"
+            ],
+            "documentHash": "d096b3e6d32d8550463eecafecda885536a4a7eb2e2d45fa40b88e85f643fe8d"
+          },
+          "id": "9f6f24be6b5054028c1ef1e5d7fe8d57bd0d58530a7907c94e3ff1a7b5b18b54",
+          "signature": "+iXxSY8Ey1wkWgoE3sbGr2nXSWO6hn1vjUeugol6x7Z+1segYWfSSn3cIuZuyyoR8pIuEsrh2yzbM6V2VgtvCw=="
+        },
+        {
+          "body": {
+            "domain": "relayloom/site-snapshot/1",
+            "owner": {
+              "id": "83966f8fa003cc8307561c82a232e0c63fd522ba00be5d63146b9ca029e2aa30",
+              "name": "Site vector — 🌿",
+              "signKey": "MCowBQYDK2VwAyEAbl4jtGRncHlrFy1KO6efQLo4HszjquFW5KUF8IF3hPI=",
+              "boxKey": "MCowBQYDK2VuAyEAkiaY6JaHW0u7yq11oYJUnK6K4BGEZHpDWRAmS1hT4F8=",
+              "proof": "bxmg2/n6s3Hlp5aBUNl/cX2APaiKtkRiD4axnK/dye6mRaFcUNOYoECUkf71fZIpzm9loReIID9/ryCjt72BCg=="
+            },
+            "name": "profile",
+            "number": 2,
+            "previous": [
+              "932efd302763e709b91618a7f46482cf809d613cb358df200c0c3dc9efdf670a"
+            ],
+            "documentHash": "2b376afdd0c6efd9597bca68d4f3c17b7a08dac809a3e4289b049d4175483523"
+          },
+          "id": "70464862603ce470aee93fdcf7b800d041b9a9569ead785fac7e07099c8c2ae8",
+          "signature": "MfaeLuxzV9qh53FXN9kIL1HGM4gs82DiHeaFLwuNjqLEYvChcLrmiasqGjcb/nuhvO0oA406RtYklZi5HTnSCA=="
+        },
+        {
+          "body": {
+            "domain": "relayloom/site-snapshot/1",
+            "owner": {
+              "id": "83966f8fa003cc8307561c82a232e0c63fd522ba00be5d63146b9ca029e2aa30",
+              "name": "Site vector — 🌿",
+              "signKey": "MCowBQYDK2VwAyEAbl4jtGRncHlrFy1KO6efQLo4HszjquFW5KUF8IF3hPI=",
+              "boxKey": "MCowBQYDK2VuAyEAkiaY6JaHW0u7yq11oYJUnK6K4BGEZHpDWRAmS1hT4F8=",
+              "proof": "bxmg2/n6s3Hlp5aBUNl/cX2APaiKtkRiD4axnK/dye6mRaFcUNOYoECUkf71fZIpzm9loReIID9/ryCjt72BCg=="
+            },
+            "name": "profile",
+            "number": 2,
+            "previous": [
+              "932efd302763e709b91618a7f46482cf809d613cb358df200c0c3dc9efdf670a"
+            ],
+            "documentHash": "738f0f547460dc41e59a5ddf2e5a9317f0d6cc193f04ca7f6176a0c8de4788e9"
+          },
+          "id": "4d29a407f815fd9c9819d03f149c1a0cf62704b7dbda747467452d1f7567c3d9",
+          "signature": "nEgwqBY4NWqko6LZ/n3xjq7NVn82r2GiFKYI2ATy8fEPXXKZ9y0OuBWEqBZabhMdYkISdncuztyzhNnJst49Bw=="
+        },
+        {
+          "body": {
+            "domain": "relayloom/site-snapshot/1",
+            "owner": {
+              "id": "83966f8fa003cc8307561c82a232e0c63fd522ba00be5d63146b9ca029e2aa30",
+              "name": "Site vector — 🌿",
+              "signKey": "MCowBQYDK2VwAyEAbl4jtGRncHlrFy1KO6efQLo4HszjquFW5KUF8IF3hPI=",
+              "boxKey": "MCowBQYDK2VuAyEAkiaY6JaHW0u7yq11oYJUnK6K4BGEZHpDWRAmS1hT4F8=",
+              "proof": "bxmg2/n6s3Hlp5aBUNl/cX2APaiKtkRiD4axnK/dye6mRaFcUNOYoECUkf71fZIpzm9loReIID9/ryCjt72BCg=="
+            },
+            "name": "profile",
+            "number": 1,
+            "previous": [],
+            "documentHash": "7a315730ff0438ed45f32afed1c3473b5b5b58d7c47ca74a9efd50892c6557cc"
+          },
+          "id": "932efd302763e709b91618a7f46482cf809d613cb358df200c0c3dc9efdf670a",
+          "signature": "msAfTjyA5Dtb8xI0uCjSqRw7SZU5dqIirMjp2w/CUvuoghecbmgGLHfLRH9iweDj5UBG1nGyY1Onvxgee1H8Dw=="
+        }
+      ],
+      "expected": {
+        "status": "head",
+        "number": 3,
+        "heads": [
+          {
+            "body": {
+              "domain": "relayloom/site-snapshot/1",
+              "owner": {
+                "id": "83966f8fa003cc8307561c82a232e0c63fd522ba00be5d63146b9ca029e2aa30",
+                "name": "Site vector — 🌿",
+                "signKey": "MCowBQYDK2VwAyEAbl4jtGRncHlrFy1KO6efQLo4HszjquFW5KUF8IF3hPI=",
+                "boxKey": "MCowBQYDK2VuAyEAkiaY6JaHW0u7yq11oYJUnK6K4BGEZHpDWRAmS1hT4F8=",
+                "proof": "bxmg2/n6s3Hlp5aBUNl/cX2APaiKtkRiD4axnK/dye6mRaFcUNOYoECUkf71fZIpzm9loReIID9/ryCjt72BCg=="
+              },
+              "name": "profile",
+              "number": 3,
+              "previous": [
+                "4d29a407f815fd9c9819d03f149c1a0cf62704b7dbda747467452d1f7567c3d9",
+                "70464862603ce470aee93fdcf7b800d041b9a9569ead785fac7e07099c8c2ae8"
+              ],
+              "documentHash": "d096b3e6d32d8550463eecafecda885536a4a7eb2e2d45fa40b88e85f643fe8d"
+            },
+            "id": "9f6f24be6b5054028c1ef1e5d7fe8d57bd0d58530a7907c94e3ff1a7b5b18b54",
+            "signature": "+iXxSY8Ey1wkWgoE3sbGr2nXSWO6hn1vjUeugol6x7Z+1segYWfSSn3cIuZuyyoR8pIuEsrh2yzbM6V2VgtvCw=="
+          }
+        ],
+        "missingHistory": []
+      }
+    },
+    {
+      "name": "fork",
+      "revisions": [
+        {
+          "body": {
+            "domain": "relayloom/site-snapshot/1",
+            "owner": {
+              "id": "83966f8fa003cc8307561c82a232e0c63fd522ba00be5d63146b9ca029e2aa30",
+              "name": "Site vector — 🌿",
+              "signKey": "MCowBQYDK2VwAyEAbl4jtGRncHlrFy1KO6efQLo4HszjquFW5KUF8IF3hPI=",
+              "boxKey": "MCowBQYDK2VuAyEAkiaY6JaHW0u7yq11oYJUnK6K4BGEZHpDWRAmS1hT4F8=",
+              "proof": "bxmg2/n6s3Hlp5aBUNl/cX2APaiKtkRiD4axnK/dye6mRaFcUNOYoECUkf71fZIpzm9loReIID9/ryCjt72BCg=="
+            },
+            "name": "profile",
+            "number": 2,
+            "previous": [
+              "932efd302763e709b91618a7f46482cf809d613cb358df200c0c3dc9efdf670a"
+            ],
+            "documentHash": "738f0f547460dc41e59a5ddf2e5a9317f0d6cc193f04ca7f6176a0c8de4788e9"
+          },
+          "id": "4d29a407f815fd9c9819d03f149c1a0cf62704b7dbda747467452d1f7567c3d9",
+          "signature": "nEgwqBY4NWqko6LZ/n3xjq7NVn82r2GiFKYI2ATy8fEPXXKZ9y0OuBWEqBZabhMdYkISdncuztyzhNnJst49Bw=="
+        },
+        {
+          "body": {
+            "domain": "relayloom/site-snapshot/1",
+            "owner": {
+              "id": "83966f8fa003cc8307561c82a232e0c63fd522ba00be5d63146b9ca029e2aa30",
+              "name": "Site vector — 🌿",
+              "signKey": "MCowBQYDK2VwAyEAbl4jtGRncHlrFy1KO6efQLo4HszjquFW5KUF8IF3hPI=",
+              "boxKey": "MCowBQYDK2VuAyEAkiaY6JaHW0u7yq11oYJUnK6K4BGEZHpDWRAmS1hT4F8=",
+              "proof": "bxmg2/n6s3Hlp5aBUNl/cX2APaiKtkRiD4axnK/dye6mRaFcUNOYoECUkf71fZIpzm9loReIID9/ryCjt72BCg=="
+            },
+            "name": "profile",
+            "number": 1,
+            "previous": [],
+            "documentHash": "7a315730ff0438ed45f32afed1c3473b5b5b58d7c47ca74a9efd50892c6557cc"
+          },
+          "id": "932efd302763e709b91618a7f46482cf809d613cb358df200c0c3dc9efdf670a",
+          "signature": "msAfTjyA5Dtb8xI0uCjSqRw7SZU5dqIirMjp2w/CUvuoghecbmgGLHfLRH9iweDj5UBG1nGyY1Onvxgee1H8Dw=="
+        },
+        {
+          "body": {
+            "domain": "relayloom/site-snapshot/1",
+            "owner": {
+              "id": "83966f8fa003cc8307561c82a232e0c63fd522ba00be5d63146b9ca029e2aa30",
+              "name": "Site vector — 🌿",
+              "signKey": "MCowBQYDK2VwAyEAbl4jtGRncHlrFy1KO6efQLo4HszjquFW5KUF8IF3hPI=",
+              "boxKey": "MCowBQYDK2VuAyEAkiaY6JaHW0u7yq11oYJUnK6K4BGEZHpDWRAmS1hT4F8=",
+              "proof": "bxmg2/n6s3Hlp5aBUNl/cX2APaiKtkRiD4axnK/dye6mRaFcUNOYoECUkf71fZIpzm9loReIID9/ryCjt72BCg=="
+            },
+            "name": "profile",
+            "number": 2,
+            "previous": [
+              "932efd302763e709b91618a7f46482cf809d613cb358df200c0c3dc9efdf670a"
+            ],
+            "documentHash": "2b376afdd0c6efd9597bca68d4f3c17b7a08dac809a3e4289b049d4175483523"
+          },
+          "id": "70464862603ce470aee93fdcf7b800d041b9a9569ead785fac7e07099c8c2ae8",
+          "signature": "MfaeLuxzV9qh53FXN9kIL1HGM4gs82DiHeaFLwuNjqLEYvChcLrmiasqGjcb/nuhvO0oA406RtYklZi5HTnSCA=="
+        },
+        {
+          "body": {
+            "domain": "relayloom/site-snapshot/1",
+            "owner": {
+              "id": "83966f8fa003cc8307561c82a232e0c63fd522ba00be5d63146b9ca029e2aa30",
+              "name": "Site vector — 🌿",
+              "signKey": "MCowBQYDK2VwAyEAbl4jtGRncHlrFy1KO6efQLo4HszjquFW5KUF8IF3hPI=",
+              "boxKey": "MCowBQYDK2VuAyEAkiaY6JaHW0u7yq11oYJUnK6K4BGEZHpDWRAmS1hT4F8=",
+              "proof": "bxmg2/n6s3Hlp5aBUNl/cX2APaiKtkRiD4axnK/dye6mRaFcUNOYoECUkf71fZIpzm9loReIID9/ryCjt72BCg=="
+            },
+            "name": "profile",
+            "number": 2,
+            "previous": [
+              "932efd302763e709b91618a7f46482cf809d613cb358df200c0c3dc9efdf670a"
+            ],
+            "documentHash": "2b376afdd0c6efd9597bca68d4f3c17b7a08dac809a3e4289b049d4175483523"
+          },
+          "id": "70464862603ce470aee93fdcf7b800d041b9a9569ead785fac7e07099c8c2ae8",
+          "signature": "MfaeLuxzV9qh53FXN9kIL1HGM4gs82DiHeaFLwuNjqLEYvChcLrmiasqGjcb/nuhvO0oA406RtYklZi5HTnSCA=="
+        }
+      ],
+      "expected": {
+        "status": "conflict",
+        "number": 2,
+        "heads": [
+          {
+            "body": {
+              "domain": "relayloom/site-snapshot/1",
+              "owner": {
+                "id": "83966f8fa003cc8307561c82a232e0c63fd522ba00be5d63146b9ca029e2aa30",
+                "name": "Site vector — 🌿",
+                "signKey": "MCowBQYDK2VwAyEAbl4jtGRncHlrFy1KO6efQLo4HszjquFW5KUF8IF3hPI=",
+                "boxKey": "MCowBQYDK2VuAyEAkiaY6JaHW0u7yq11oYJUnK6K4BGEZHpDWRAmS1hT4F8=",
+                "proof": "bxmg2/n6s3Hlp5aBUNl/cX2APaiKtkRiD4axnK/dye6mRaFcUNOYoECUkf71fZIpzm9loReIID9/ryCjt72BCg=="
+              },
+              "name": "profile",
+              "number": 2,
+              "previous": [
+                "932efd302763e709b91618a7f46482cf809d613cb358df200c0c3dc9efdf670a"
+              ],
+              "documentHash": "738f0f547460dc41e59a5ddf2e5a9317f0d6cc193f04ca7f6176a0c8de4788e9"
+            },
+            "id": "4d29a407f815fd9c9819d03f149c1a0cf62704b7dbda747467452d1f7567c3d9",
+            "signature": "nEgwqBY4NWqko6LZ/n3xjq7NVn82r2GiFKYI2ATy8fEPXXKZ9y0OuBWEqBZabhMdYkISdncuztyzhNnJst49Bw=="
+          },
+          {
+            "body": {
+              "domain": "relayloom/site-snapshot/1",
+              "owner": {
+                "id": "83966f8fa003cc8307561c82a232e0c63fd522ba00be5d63146b9ca029e2aa30",
+                "name": "Site vector — 🌿",
+                "signKey": "MCowBQYDK2VwAyEAbl4jtGRncHlrFy1KO6efQLo4HszjquFW5KUF8IF3hPI=",
+                "boxKey": "MCowBQYDK2VuAyEAkiaY6JaHW0u7yq11oYJUnK6K4BGEZHpDWRAmS1hT4F8=",
+                "proof": "bxmg2/n6s3Hlp5aBUNl/cX2APaiKtkRiD4axnK/dye6mRaFcUNOYoECUkf71fZIpzm9loReIID9/ryCjt72BCg=="
+              },
+              "name": "profile",
+              "number": 2,
+              "previous": [
+                "932efd302763e709b91618a7f46482cf809d613cb358df200c0c3dc9efdf670a"
+              ],
+              "documentHash": "2b376afdd0c6efd9597bca68d4f3c17b7a08dac809a3e4289b049d4175483523"
+            },
+            "id": "70464862603ce470aee93fdcf7b800d041b9a9569ead785fac7e07099c8c2ae8",
+            "signature": "MfaeLuxzV9qh53FXN9kIL1HGM4gs82DiHeaFLwuNjqLEYvChcLrmiasqGjcb/nuhvO0oA406RtYklZi5HTnSCA=="
+          }
+        ],
+        "missingHistory": []
+      }
+    },
+    {
+      "name": "newer header with missing history",
+      "revisions": [
+        {
+          "body": {
+            "domain": "relayloom/site-snapshot/1",
+            "owner": {
+              "id": "83966f8fa003cc8307561c82a232e0c63fd522ba00be5d63146b9ca029e2aa30",
+              "name": "Site vector — 🌿",
+              "signKey": "MCowBQYDK2VwAyEAbl4jtGRncHlrFy1KO6efQLo4HszjquFW5KUF8IF3hPI=",
+              "boxKey": "MCowBQYDK2VuAyEAkiaY6JaHW0u7yq11oYJUnK6K4BGEZHpDWRAmS1hT4F8=",
+              "proof": "bxmg2/n6s3Hlp5aBUNl/cX2APaiKtkRiD4axnK/dye6mRaFcUNOYoECUkf71fZIpzm9loReIID9/ryCjt72BCg=="
+            },
+            "name": "profile",
+            "number": 1,
+            "previous": [],
+            "documentHash": "7a315730ff0438ed45f32afed1c3473b5b5b58d7c47ca74a9efd50892c6557cc"
+          },
+          "id": "932efd302763e709b91618a7f46482cf809d613cb358df200c0c3dc9efdf670a",
+          "signature": "msAfTjyA5Dtb8xI0uCjSqRw7SZU5dqIirMjp2w/CUvuoghecbmgGLHfLRH9iweDj5UBG1nGyY1Onvxgee1H8Dw=="
+        },
+        {
+          "body": {
+            "domain": "relayloom/site-snapshot/1",
+            "owner": {
+              "id": "83966f8fa003cc8307561c82a232e0c63fd522ba00be5d63146b9ca029e2aa30",
+              "name": "Site vector — 🌿",
+              "signKey": "MCowBQYDK2VwAyEAbl4jtGRncHlrFy1KO6efQLo4HszjquFW5KUF8IF3hPI=",
+              "boxKey": "MCowBQYDK2VuAyEAkiaY6JaHW0u7yq11oYJUnK6K4BGEZHpDWRAmS1hT4F8=",
+              "proof": "bxmg2/n6s3Hlp5aBUNl/cX2APaiKtkRiD4axnK/dye6mRaFcUNOYoECUkf71fZIpzm9loReIID9/ryCjt72BCg=="
+            },
+            "name": "profile",
+            "number": 3,
+            "previous": [
+              "4d29a407f815fd9c9819d03f149c1a0cf62704b7dbda747467452d1f7567c3d9",
+              "70464862603ce470aee93fdcf7b800d041b9a9569ead785fac7e07099c8c2ae8"
+            ],
+            "documentHash": "d096b3e6d32d8550463eecafecda885536a4a7eb2e2d45fa40b88e85f643fe8d"
+          },
+          "id": "9f6f24be6b5054028c1ef1e5d7fe8d57bd0d58530a7907c94e3ff1a7b5b18b54",
+          "signature": "+iXxSY8Ey1wkWgoE3sbGr2nXSWO6hn1vjUeugol6x7Z+1segYWfSSn3cIuZuyyoR8pIuEsrh2yzbM6V2VgtvCw=="
+        }
+      ],
+      "expected": {
+        "status": "head",
+        "number": 3,
+        "heads": [
+          {
+            "body": {
+              "domain": "relayloom/site-snapshot/1",
+              "owner": {
+                "id": "83966f8fa003cc8307561c82a232e0c63fd522ba00be5d63146b9ca029e2aa30",
+                "name": "Site vector — 🌿",
+                "signKey": "MCowBQYDK2VwAyEAbl4jtGRncHlrFy1KO6efQLo4HszjquFW5KUF8IF3hPI=",
+                "boxKey": "MCowBQYDK2VuAyEAkiaY6JaHW0u7yq11oYJUnK6K4BGEZHpDWRAmS1hT4F8=",
+                "proof": "bxmg2/n6s3Hlp5aBUNl/cX2APaiKtkRiD4axnK/dye6mRaFcUNOYoECUkf71fZIpzm9loReIID9/ryCjt72BCg=="
+              },
+              "name": "profile",
+              "number": 3,
+              "previous": [
+                "4d29a407f815fd9c9819d03f149c1a0cf62704b7dbda747467452d1f7567c3d9",
+                "70464862603ce470aee93fdcf7b800d041b9a9569ead785fac7e07099c8c2ae8"
+              ],
+              "documentHash": "d096b3e6d32d8550463eecafecda885536a4a7eb2e2d45fa40b88e85f643fe8d"
+            },
+            "id": "9f6f24be6b5054028c1ef1e5d7fe8d57bd0d58530a7907c94e3ff1a7b5b18b54",
+            "signature": "+iXxSY8Ey1wkWgoE3sbGr2nXSWO6hn1vjUeugol6x7Z+1segYWfSSn3cIuZuyyoR8pIuEsrh2yzbM6V2VgtvCw=="
+          }
+        ],
+        "missingHistory": [
+          "4d29a407f815fd9c9819d03f149c1a0cf62704b7dbda747467452d1f7567c3d9",
+          "70464862603ce470aee93fdcf7b800d041b9a9569ead785fac7e07099c8c2ae8"
+        ]
+      }
+    },
+    {
+      "name": "empty",
+      "revisions": [],
+      "expected": {
+        "status": "empty",
+        "number": 0,
+        "heads": [],
+        "missingHistory": []
+      }
+    }
+  ],
+  "invalid": [
+    {
+      "name": "signed wrong domain",
+      "revision": {
+        "body": {
+          "domain": "relayloom/group-anchor/1",
+          "owner": {
+            "id": "83966f8fa003cc8307561c82a232e0c63fd522ba00be5d63146b9ca029e2aa30",
+            "name": "Site vector — 🌿",
+            "signKey": "MCowBQYDK2VwAyEAbl4jtGRncHlrFy1KO6efQLo4HszjquFW5KUF8IF3hPI=",
+            "boxKey": "MCowBQYDK2VuAyEAkiaY6JaHW0u7yq11oYJUnK6K4BGEZHpDWRAmS1hT4F8=",
+            "proof": "bxmg2/n6s3Hlp5aBUNl/cX2APaiKtkRiD4axnK/dye6mRaFcUNOYoECUkf71fZIpzm9loReIID9/ryCjt72BCg=="
+          },
+          "name": "profile",
+          "number": 1,
+          "previous": [],
+          "documentHash": "7a315730ff0438ed45f32afed1c3473b5b5b58d7c47ca74a9efd50892c6557cc"
+        },
+        "id": "ae2069fa00829474ca5fc30b5de943d5859cdece4a6725f71fd9cd07b5e3c893",
+        "signature": "r/p3yxrbn0RnZBVC29qai3l9LA7dOHJ5ACdhiz5y9UJIM4y4WsjKxRly1AUBlcxGeQ9qhaSaKYeLdZlzVoj/Bw=="
+      }
+    },
+    {
+      "name": "signed noninteger sequence",
+      "revision": {
+        "body": {
+          "domain": "relayloom/site-snapshot/1",
+          "owner": {
+            "id": "83966f8fa003cc8307561c82a232e0c63fd522ba00be5d63146b9ca029e2aa30",
+            "name": "Site vector — 🌿",
+            "signKey": "MCowBQYDK2VwAyEAbl4jtGRncHlrFy1KO6efQLo4HszjquFW5KUF8IF3hPI=",
+            "boxKey": "MCowBQYDK2VuAyEAkiaY6JaHW0u7yq11oYJUnK6K4BGEZHpDWRAmS1hT4F8=",
+            "proof": "bxmg2/n6s3Hlp5aBUNl/cX2APaiKtkRiD4axnK/dye6mRaFcUNOYoECUkf71fZIpzm9loReIID9/ryCjt72BCg=="
+          },
+          "name": "profile",
+          "number": 1.5,
+          "previous": [],
+          "documentHash": "7a315730ff0438ed45f32afed1c3473b5b5b58d7c47ca74a9efd50892c6557cc"
+        },
+        "id": "dfb152c3549eb0aad7e8ce9ced5ac41705e095b175b14a14a5423e6ca0776e63",
+        "signature": "1TWxUu36tLtsqOwhed/lclZ0XPSHj0Yj2wBE7w81ch4Qxxu7Vpq2PlVT9pE+z4gMDJfHxb6o6BVzoSQJL1PiDQ=="
+      }
+    },
+    {
+      "name": "signed repeated predecessor",
+      "revision": {
+        "body": {
+          "domain": "relayloom/site-snapshot/1",
+          "owner": {
+            "id": "83966f8fa003cc8307561c82a232e0c63fd522ba00be5d63146b9ca029e2aa30",
+            "name": "Site vector — 🌿",
+            "signKey": "MCowBQYDK2VwAyEAbl4jtGRncHlrFy1KO6efQLo4HszjquFW5KUF8IF3hPI=",
+            "boxKey": "MCowBQYDK2VuAyEAkiaY6JaHW0u7yq11oYJUnK6K4BGEZHpDWRAmS1hT4F8=",
+            "proof": "bxmg2/n6s3Hlp5aBUNl/cX2APaiKtkRiD4axnK/dye6mRaFcUNOYoECUkf71fZIpzm9loReIID9/ryCjt72BCg=="
+          },
+          "name": "profile",
+          "number": 2,
+          "previous": [
+            "932efd302763e709b91618a7f46482cf809d613cb358df200c0c3dc9efdf670a",
+            "932efd302763e709b91618a7f46482cf809d613cb358df200c0c3dc9efdf670a"
+          ],
+          "documentHash": "2b376afdd0c6efd9597bca68d4f3c17b7a08dac809a3e4289b049d4175483523"
+        },
+        "id": "c711005f851833147cb9a185b543b4dff1482b313f52858b82db1db3593f5867",
+        "signature": "HAIFsfYqi56w6U4pq+M7pYcFubSxRzXQKL/06T61W7UG/ys7l/8slndumJDzQp1hBIq3orXH/wxOIb+iaCITAw=="
+      }
+    },
+    {
+      "name": "signed wrong predecessor order",
+      "revision": {
+        "body": {
+          "domain": "relayloom/site-snapshot/1",
+          "owner": {
+            "id": "83966f8fa003cc8307561c82a232e0c63fd522ba00be5d63146b9ca029e2aa30",
+            "name": "Site vector — 🌿",
+            "signKey": "MCowBQYDK2VwAyEAbl4jtGRncHlrFy1KO6efQLo4HszjquFW5KUF8IF3hPI=",
+            "boxKey": "MCowBQYDK2VuAyEAkiaY6JaHW0u7yq11oYJUnK6K4BGEZHpDWRAmS1hT4F8=",
+            "proof": "bxmg2/n6s3Hlp5aBUNl/cX2APaiKtkRiD4axnK/dye6mRaFcUNOYoECUkf71fZIpzm9loReIID9/ryCjt72BCg=="
+          },
+          "name": "profile",
+          "number": 3,
+          "previous": [
+            "70464862603ce470aee93fdcf7b800d041b9a9569ead785fac7e07099c8c2ae8",
+            "4d29a407f815fd9c9819d03f149c1a0cf62704b7dbda747467452d1f7567c3d9"
+          ],
+          "documentHash": "d096b3e6d32d8550463eecafecda885536a4a7eb2e2d45fa40b88e85f643fe8d"
+        },
+        "id": "b78fd4170a9e3eb3fc7543576805af45a88dc7f903aeebc343c87306067c56a9",
+        "signature": "SNqcD+bL/ik+9HF38GCFWyBWHTQfYHObIdx2BtHb5YXo1CEC4s+H8PI4vWNjAH7DydaTe3GQP9rqe7/SwuSdBQ=="
+      }
+    },
+    {
+      "name": "extra outer field",
+      "revision": {
+        "body": {
+          "domain": "relayloom/site-snapshot/1",
+          "owner": {
+            "id": "83966f8fa003cc8307561c82a232e0c63fd522ba00be5d63146b9ca029e2aa30",
+            "name": "Site vector — 🌿",
+            "signKey": "MCowBQYDK2VwAyEAbl4jtGRncHlrFy1KO6efQLo4HszjquFW5KUF8IF3hPI=",
+            "boxKey": "MCowBQYDK2VuAyEAkiaY6JaHW0u7yq11oYJUnK6K4BGEZHpDWRAmS1hT4F8=",
+            "proof": "bxmg2/n6s3Hlp5aBUNl/cX2APaiKtkRiD4axnK/dye6mRaFcUNOYoECUkf71fZIpzm9loReIID9/ryCjt72BCg=="
+          },
+          "name": "profile",
+          "number": 1,
+          "previous": [],
+          "documentHash": "7a315730ff0438ed45f32afed1c3473b5b5b58d7c47ca74a9efd50892c6557cc"
+        },
+        "id": "932efd302763e709b91618a7f46482cf809d613cb358df200c0c3dc9efdf670a",
+        "signature": "msAfTjyA5Dtb8xI0uCjSqRw7SZU5dqIirMjp2w/CUvuoghecbmgGLHfLRH9iweDj5UBG1nGyY1Onvxgee1H8Dw==",
+        "unexpected": true
+      }
+    },
+    {
+      "name": "signature corruption",
+      "revision": {
+        "body": {
+          "domain": "relayloom/site-snapshot/1",
+          "owner": {
+            "id": "83966f8fa003cc8307561c82a232e0c63fd522ba00be5d63146b9ca029e2aa30",
+            "name": "Site vector — 🌿",
+            "signKey": "MCowBQYDK2VwAyEAbl4jtGRncHlrFy1KO6efQLo4HszjquFW5KUF8IF3hPI=",
+            "boxKey": "MCowBQYDK2VuAyEAkiaY6JaHW0u7yq11oYJUnK6K4BGEZHpDWRAmS1hT4F8=",
+            "proof": "bxmg2/n6s3Hlp5aBUNl/cX2APaiKtkRiD4axnK/dye6mRaFcUNOYoECUkf71fZIpzm9loReIID9/ryCjt72BCg=="
+          },
+          "name": "profile",
+          "number": 1,
+          "previous": [],
+          "documentHash": "7a315730ff0438ed45f32afed1c3473b5b5b58d7c47ca74a9efd50892c6557cc"
+        },
+        "id": "932efd302763e709b91618a7f46482cf809d613cb358df200c0c3dc9efdf670a",
+        "signature": "AsAfTjyA5Dtb8xI0uCjSqRw7SZU5dqIirMjp2w/CUvuoghecbmgGLHfLRH9iweDj5UBG1nGyY1Onvxgee1H8Dw=="
+      }
+    }
+  ]
+}

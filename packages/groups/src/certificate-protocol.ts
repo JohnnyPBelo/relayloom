@@ -77,13 +77,8 @@ export interface GroupSnapshot {
  * Each platform adapter must validate the complete card and check private/public
  * signing-key ownership. The protocol below is shared byte-for-byte.
  */
-export interface GroupCertificateCrypto {
-  hash(text: string): string;
-  validateIdentity(card: PublicIdentity): boolean;
-  random(size: number): Uint8Array;
-  verify(card: PublicIdentity, text: string, signature: Uint8Array): boolean;
-  sign(identity: Identity, text: string): string;
-}
+export type GroupCertificateCrypto =
+  import("../../core/src/certificate-types").CertificateCrypto;
 
 export function createGroupCertificateProtocol(crypto: GroupCertificateCrypto) {
   const { hash, validateIdentity } = crypto;

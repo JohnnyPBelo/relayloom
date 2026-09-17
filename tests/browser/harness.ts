@@ -12,6 +12,7 @@ import {
 } from "../../packages/browser/src/rtc";
 import { BrowserApplication } from "../../packages/browser/src/application";
 import { browserGroupCertificates } from "../../packages/browser/src/group-certificates";
+import { browserSiteRevisions } from "../../packages/browser/src/site-revisions";
 import { BrowserMesh } from "../../packages/browser/src/mesh";
 import { BrowserRouter } from "../../packages/browser/src/router";
 import * as packet from "../../packages/browser/src/packet";
@@ -20,6 +21,7 @@ Object.assign(window, {
     ...crypto,
     BrowserApplication,
     groups: browserGroupCertificates,
+    sites: browserSiteRevisions,
     ...packet,
     BrowserProfile,
     PRIVATE_VALUE_LIMITS,

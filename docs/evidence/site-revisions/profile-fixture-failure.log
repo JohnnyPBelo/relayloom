@@ -1,0 +1,103 @@
+TAP version 13
+# (node:2187237) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: actual process interruption at site prepare-before preserves the publication boundary
+ok 1 - actual process interruption at site prepare-before preserves the publication boundary
+  ---
+  duration_ms: 437.629214
+  type: 'test'
+  ...
+# Subtest: actual process interruption at site prepare-after preserves the publication boundary
+ok 2 - actual process interruption at site prepare-after preserves the publication boundary
+  ---
+  duration_ms: 407.273041
+  type: 'test'
+  ...
+# Subtest: actual process interruption at site commit-before preserves the publication boundary
+ok 3 - actual process interruption at site commit-before preserves the publication boundary
+  ---
+  duration_ms: 400.89378
+  type: 'test'
+  ...
+# Subtest: actual process interruption at site commit-after preserves the publication boundary
+ok 4 - actual process interruption at site commit-after preserves the publication boundary
+  ---
+  duration_ms: 408.193316
+  type: 'test'
+  ...
+# Subtest: actual process interruption at site copy preserves the publication boundary
+ok 5 - actual process interruption at site copy preserves the publication boundary
+  ---
+  duration_ms: 404.913407
+  type: 'test'
+  ...
+# (node:2187562) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: site transactions share the real bound application profile without changing its existing private state
+not ok 6 - site transactions share the real bound application profile without changing its existing private state
+  ---
+  duration_ms: 25.609764
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/tests/site-catalog-profile.test.ts:1:796'
+  failureType: 'testCodeFailure'
+  error: 'Estado privado inválido'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    parsePrivateState (/home/absint0o/projects/relayloom/apps/node/src/local-state.ts:135:11)
+    decodePrivateState (/home/absint0o/projects/relayloom/apps/node/src/local-state.ts:116:10)
+    readPrivateState (/home/absint0o/projects/relayloom/apps/node/src/local-state.ts:98:10)
+    load (/home/absint0o/projects/relayloom/tests/site-catalog-profile.test.ts:35:36)
+    Function.open (/home/absint0o/projects/relayloom/packages/profile/src/database.ts:164:31)
+    TestContext.<anonymous> (/home/absint0o/projects/relayloom/tests/site-catalog-profile.test.ts:38:26)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# (node:2187581) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: catalog atomically persists preparation, authorization and exact public-copy recovery across database restart
+ok 7 - catalog atomically persists preparation, authorization and exact public-copy recovery across database restart
+  ---
+  duration_ms: 234.831927
+  type: 'test'
+  ...
+# Subtest: another signed head appearing before authorization supersedes a private preparation without publishing it
+ok 8 - another signed head appearing before authorization supersedes a private preparation without publishing it
+  ---
+  duration_ms: 152.537767
+  type: 'test'
+  ...
+# Subtest: staging capacity failure cannot leave a catalog entry, partial bundle or changed prior operation
+ok 9 - staging capacity failure cannot leave a catalog entry, partial bundle or changed prior operation
+  ---
+  duration_ms: 119.171259
+  type: 'test'
+  ...
+# Subtest: expired preparations remain recoverable as terminal outcomes without treating the profile as corrupt
+ok 10 - expired preparations remain recoverable as terminal outcomes without treating the profile as corrupt
+  ---
+  duration_ms: 254.506475
+  type: 'test'
+  ...
+# Subtest: public retries recover the exact first envelope; private retries cannot silently change a reading envelope
+ok 11 - public retries recover the exact first envelope; private retries cannot silently change a reading envelope
+  ---
+  duration_ms: 153.471498
+  type: 'test'
+  ...
+# Subtest: repeated verified observations do not rewrite the encrypted catalog
+ok 12 - repeated verified observations do not rewrite the encrypted catalog
+  ---
+  duration_ms: 84.439082
+  type: 'test'
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 11
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3867.339718

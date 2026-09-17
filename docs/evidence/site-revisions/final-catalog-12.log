@@ -1,0 +1,88 @@
+TAP version 13
+# (node:2196822) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: actual process interruption at site prepare-before preserves the publication boundary
+ok 1 - actual process interruption at site prepare-before preserves the publication boundary
+  ---
+  duration_ms: 362.234289
+  type: 'test'
+  ...
+# Subtest: actual process interruption at site prepare-after preserves the publication boundary
+ok 2 - actual process interruption at site prepare-after preserves the publication boundary
+  ---
+  duration_ms: 376.889836
+  type: 'test'
+  ...
+# Subtest: actual process interruption at site commit-before preserves the publication boundary
+ok 3 - actual process interruption at site commit-before preserves the publication boundary
+  ---
+  duration_ms: 416.397869
+  type: 'test'
+  ...
+# Subtest: actual process interruption at site commit-after preserves the publication boundary
+ok 4 - actual process interruption at site commit-after preserves the publication boundary
+  ---
+  duration_ms: 413.396512
+  type: 'test'
+  ...
+# Subtest: actual process interruption at site copy preserves the publication boundary
+ok 5 - actual process interruption at site copy preserves the publication boundary
+  ---
+  duration_ms: 518.519172
+  type: 'test'
+  ...
+# (node:2197042) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: site transactions share the real bound application profile without changing its existing private state
+ok 6 - site transactions share the real bound application profile without changing its existing private state
+  ---
+  duration_ms: 179.891301
+  type: 'test'
+  ...
+# (node:2197067) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: catalog atomically persists preparation, authorization and exact public-copy recovery across database restart
+ok 7 - catalog atomically persists preparation, authorization and exact public-copy recovery across database restart
+  ---
+  duration_ms: 226.670837
+  type: 'test'
+  ...
+# Subtest: another signed head appearing before authorization supersedes a private preparation without publishing it
+ok 8 - another signed head appearing before authorization supersedes a private preparation without publishing it
+  ---
+  duration_ms: 136.410731
+  type: 'test'
+  ...
+# Subtest: staging capacity failure cannot leave a catalog entry, partial bundle or changed prior operation
+ok 9 - staging capacity failure cannot leave a catalog entry, partial bundle or changed prior operation
+  ---
+  duration_ms: 116.708452
+  type: 'test'
+  ...
+# Subtest: expired preparations remain recoverable as terminal outcomes without treating the profile as corrupt
+ok 10 - expired preparations remain recoverable as terminal outcomes without treating the profile as corrupt
+  ---
+  duration_ms: 234.260746
+  type: 'test'
+  ...
+# Subtest: public retries recover the exact first envelope; private retries cannot silently change a reading envelope
+ok 11 - public retries recover the exact first envelope; private retries cannot silently change a reading envelope
+  ---
+  duration_ms: 151.074263
+  type: 'test'
+  ...
+# Subtest: repeated verified observations do not rewrite the encrypted catalog
+ok 12 - repeated verified observations do not rewrite the encrypted catalog
+  ---
+  duration_ms: 93.079331
+  type: 'test'
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 12
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3939.341821
