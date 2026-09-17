@@ -1,6 +1,9 @@
 // Test-only exports. Never included in the shipped client or a served control API.
 import * as crypto from "../../packages/browser/src/crypto";
-import { BrowserProfile } from "../../packages/browser/src/profile";
+import {
+  BrowserProfile,
+  PRIVATE_VALUE_LIMITS,
+} from "../../packages/browser/src/profile";
 import {
   RtcPeer,
   RtcBundleChannel,
@@ -19,6 +22,7 @@ Object.assign(window, {
     groups: browserGroupCertificates,
     ...packet,
     BrowserProfile,
+    PRIVATE_VALUE_LIMITS,
     BrowserMesh,
     BrowserRouter,
     RtcPeer,

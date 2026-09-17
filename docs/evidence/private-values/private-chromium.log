@@ -1,0 +1,20 @@
+
+Running 13 tests using 1 worker
+
+(node:1780407) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › tests/browser/foundation.spec.ts:24:1 › Browser owns compatible identities/vaults/bundles: real Node and Go positive and negative controls (2.3s)
+  ✓   2 [chromium] › tests/browser/foundation.spec.ts:205:1 › encrypted IndexedDB persists, coordinates two pages, rejects corruption and preserves pins on failed admission (906ms)
+  ✓   3 [chromium] › tests/browser/foundation.spec.ts:397:1 › lock during unlock cannot resurrect keys; missing authenticated state is not replaced with empty success (591ms)
+  ✓   4 [chromium] › tests/browser/foundation.spec.ts:449:1 › real WebRTC transfers encrypted chunks and an offline author's reader seeds identical bytes to a new reader (9.3s)
+  ✓   5 [chromium] › tests/browser/foundation.spec.ts:623:1 › WebRTC rejects a correctly framed corrupt bundle before storage and rejects admission failure without ACK (1.2s)
+  ✓   6 [chromium] › tests/browser/foundation.spec.ts:723:1 › identity recovery is compatible and cannot overwrite an existing profile; quota eviction retains pinned objects (387ms)
+  ✓   7 [chromium] › tests/browser/foundation.spec.ts:783:1 › browser application bundle/ledger commit is atomic, pending reservations survive eviction pressure and IDB abort preserves prior state (267ms)
+  ✓   8 [chromium] › tests/browser/large-site-draft.spec.ts:13:1 › an allowed large site image saves through the UI and survives encrypted browser restart (7.2s)
+  ✓   9 [chromium] › tests/browser/private-values.spec.ts:4:1 › private values larger than the metadata index survive restart without becoming peer inventory (921ms)
+  ✓  10 [chromium] › tests/browser/private-values.spec.ts:51:1 › legacy embedded values migrate lazily and encrypted value rows remain outside peer access (952ms)
+  ✓  11 [chromium] › tests/browser/private-values.spec.ts:206:1 › bundle and private-value mutations commit together, and corruption cannot silently reset a value (397ms)
+  ✓  12 [chromium] › tests/browser/private-values.spec.ts:385:1 › private-value byte and total budgets reject excess without losing committed values (3.8s)
+  ✓  13 [chromium] › tests/browser/private-values.spec.ts:443:1 › multiple private values share one commit and a concurrent writer cannot remove a reader's snapshot (277ms)
+
+  13 passed (29.4s)

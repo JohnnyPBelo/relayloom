@@ -1,0 +1,9 @@
+
+Running 2 tests using 1 worker
+
+(node:1979060) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/site-pages.spec.ts:6:1 › copied and reordered pages preserve home and source through native persistence and author-offline viewing (6.7s)
+  ✓  2 tests/e2e/site-studio.spec.ts:7:1 › native site studio restores full draft, renders edited posts and publishes verified pages to another process (2.9s)
+
+  2 passed (10.2s)

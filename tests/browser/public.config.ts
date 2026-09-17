@@ -13,6 +13,7 @@ export default defineConfig({
     "onboarding-language.spec.ts",
     "site-language.spec.ts",
     "site-pages.spec.ts",
+    "large-site-draft.spec.ts",
     "mobile-navigation.spec.ts",
     "public-distribution.checks.ts",
   ],

@@ -1,0 +1,20 @@
+
+Running 13 tests using 1 worker
+
+(node:1784766) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [firefox] › tests/browser/foundation.spec.ts:24:1 › Browser owns compatible identities/vaults/bundles: real Node and Go positive and negative controls (3.4s)
+  ✓   2 [firefox] › tests/browser/foundation.spec.ts:205:1 › encrypted IndexedDB persists, coordinates two pages, rejects corruption and preserves pins on failed admission (2.9s)
+  ✓   3 [firefox] › tests/browser/foundation.spec.ts:397:1 › lock during unlock cannot resurrect keys; missing authenticated state is not replaced with empty success (1.8s)
+  ✓   4 [firefox] › tests/browser/foundation.spec.ts:449:1 › real WebRTC transfers encrypted chunks and an offline author's reader seeds identical bytes to a new reader (4.5s)
+  ✓   5 [firefox] › tests/browser/foundation.spec.ts:623:1 › WebRTC rejects a correctly framed corrupt bundle before storage and rejects admission failure without ACK (3.6s)
+  ✓   6 [firefox] › tests/browser/foundation.spec.ts:723:1 › identity recovery is compatible and cannot overwrite an existing profile; quota eviction retains pinned objects (902ms)
+  ✓   7 [firefox] › tests/browser/foundation.spec.ts:783:1 › browser application bundle/ledger commit is atomic, pending reservations survive eviction pressure and IDB abort preserves prior state (699ms)
+  ✓   8 [firefox] › tests/browser/large-site-draft.spec.ts:13:1 › an allowed large site image saves through the UI and survives encrypted browser restart (10.3s)
+  ✓   9 [firefox] › tests/browser/private-values.spec.ts:4:1 › private values larger than the metadata index survive restart without becoming peer inventory (1.7s)
+  ✓  10 [firefox] › tests/browser/private-values.spec.ts:51:1 › legacy embedded values migrate lazily and encrypted value rows remain outside peer access (1.7s)
+  ✓  11 [firefox] › tests/browser/private-values.spec.ts:206:1 › bundle and private-value mutations commit together, and corruption cannot silently reset a value (926ms)
+  ✓  12 [firefox] › tests/browser/private-values.spec.ts:385:1 › private-value byte and total budgets reject excess without losing committed values (4.9s)
+  ✓  13 [firefox] › tests/browser/private-values.spec.ts:443:1 › multiple private values share one commit and a concurrent writer cannot remove a reader's snapshot (1.5s)
+
+  13 passed (40.4s)

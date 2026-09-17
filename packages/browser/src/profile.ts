@@ -17,15 +17,31 @@ import {
   open,
   verifiedBundle,
   decryptBundle,
+  hash,
 } from "./crypto";
 
 const MAX_BYTES = 128 * 1024 * 1024;
 const MAX_OBJECTS = 1024;
 const MAX_STATE = 1024 * 1024;
+export const PRIVATE_VALUE_LIMITS = Object.freeze({
+  valueBytes: 8 * 1024 * 1024,
+  totalBytes: 32 * 1024 * 1024,
+  values: 4096,
+});
+const MAX_VALUE_CIPHER =
+  4 * Math.ceil(PRIVATE_VALUE_LIMITS.valueBytes / 3) + 1024;
 const decoder = new TextDecoder("utf-8", { fatal: true });
 type CipherRow = { sealed: Sealed; revision: string; size: number };
+type ValueReference = {
+  id: string;
+  bytes: number;
+  sealedBytes: number;
+  digest: string;
+};
+type ValueWrite = { put: { id: string; sealed: Sealed }; remove: string[] };
 type State = {
   values: Record<string, unknown>;
+  valueRefs?: Record<string, ValueReference>;
   bundles: Record<
     string,
     {
@@ -52,6 +68,11 @@ const complete = (tx: IDBTransaction) =>
       reject(tx.error ?? new Error("Transacção abortada"));
   });
 const allowedID = (id: string) => /^[a-f0-9]{64}$/.test(id);
+const allowedValueKey = (key: unknown): key is string =>
+  typeof key === "string" &&
+  /^[a-z][a-z0-9:/._-]{0,159}$/.test(key) &&
+  !["constructor", "prototype"].includes(key);
+const privateKey = (id: string) => "private:" + id;
 
 /** One encrypted profile per origin/name. Full runtime authority/outbox integration remains separate. */
 export class BrowserProfile {
@@ -163,6 +184,7 @@ export class BrowserProfile {
     return { identity, key, generation };
   }
   private async encryptState(s: Session, state: State): Promise<CipherRow> {
+    this.checkValueReferences(state);
     const bytes = utf8(canonical(state));
     if (bytes.length > MAX_STATE)
       throw new Error("Estado privado excede o limite");
@@ -198,7 +220,8 @@ export class BrowserProfile {
     if (bytes.length !== row.size) throw new Error("Índice privado corrompido");
     const state = JSON.parse(decoder.decode(bytes)) as State;
     if (
-      !exactShape(state, ["values", "bundles"]) ||
+      (!exactShape(state, ["values", "bundles"]) &&
+        !exactShape(state, ["values", "bundles", "valueRefs"])) ||
       !state.values ||
       !state.bundles ||
       Object.getPrototypeOf(state.values) !== Object.prototype ||
@@ -206,6 +229,7 @@ export class BrowserProfile {
       Object.keys(state.bundles).length > MAX_OBJECTS
     )
       throw new Error("Índice privado inválido");
+    this.checkValueReferences(state);
     for (const [id, entry] of Object.entries(state.bundles))
       if (
         !allowedID(id) ||
@@ -335,37 +359,167 @@ export class BrowserProfile {
     const s = this.active();
     return structuredClone((await this.state(s)).value.bundles);
   }
-  private mutate(
+  private checkValueReferences(state: State) {
+    if (state.valueRefs === undefined) return;
+    if (
+      !state.valueRefs ||
+      Object.getPrototypeOf(state.valueRefs) !== Object.prototype ||
+      Object.keys(state.valueRefs).length > PRIVATE_VALUE_LIMITS.values
+    )
+      throw new Error("Índice de valores privados inválido");
+    let total = 0;
+    const ids = new Set<string>();
+    for (const [key, reference] of Object.entries(state.valueRefs)) {
+      if (
+        !allowedValueKey(key) ||
+        Object.hasOwn(state.values, key) ||
+        !exactShape(reference, ["id", "bytes", "sealedBytes", "digest"]) ||
+        typeof reference.id !== "string" ||
+        !/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/.test(
+          reference.id,
+        ) ||
+        ids.has(reference.id) ||
+        !Number.isSafeInteger(reference.bytes) ||
+        reference.bytes < 1 ||
+        reference.bytes > PRIVATE_VALUE_LIMITS.valueBytes ||
+        !Number.isSafeInteger(reference.sealedBytes) ||
+        reference.sealedBytes < 1 ||
+        reference.sealedBytes > MAX_VALUE_CIPHER ||
+        typeof reference.digest !== "string" ||
+        !allowedID(reference.digest)
+      )
+        throw new Error("Referência privada inválida");
+      total += reference.sealedBytes;
+      ids.add(reference.id);
+    }
+    if (total > PRIVATE_VALUE_LIMITS.totalBytes)
+      throw new Error("Limite de valores privados atingido");
+  }
+  private async resolveValue(
+    s: Session,
+    state: State,
+    key: string,
+  ): Promise<unknown> {
+    const reference =
+      state.valueRefs && Object.hasOwn(state.valueRefs, key)
+        ? state.valueRefs[key]
+        : undefined;
+    if (!reference)
+      return Object.hasOwn(state.values, key) ? state.values[key] : null;
+    const row = await this.read<Sealed>("bundles", privateKey(reference.id));
+    this.guard(s);
+    if (
+      !row ||
+      !exactShape(row, ["nonce", "data", "tag"]) ||
+      typeof row.nonce !== "string" ||
+      row.nonce.length !== 16 ||
+      typeof row.tag !== "string" ||
+      row.tag.length !== 24 ||
+      typeof row.data !== "string" ||
+      row.data.length > MAX_VALUE_CIPHER ||
+      utf8(canonical(row)).length !== reference.sealedBytes
+    )
+      throw new Error("Valor privado ausente ou inválido");
+    const bytes = await open(
+      row,
+      s.key,
+      "relayloom-browser-value-v1:" +
+        s.identity.public.id +
+        ":" +
+        key +
+        ":" +
+        reference.id,
+    );
+    this.guard(s);
+    if (
+      bytes.length !== reference.bytes ||
+      (await hash(bytes)) !== reference.digest
+    )
+      throw new Error("Valor privado corrompido");
+    this.guard(s);
+    return JSON.parse(decoder.decode(bytes));
+  }
+  private async mutate(
+    s: Session,
     state: State,
     mutation?: { key: string; update: (previous: unknown) => unknown },
-  ) {
+  ): Promise<ValueWrite | undefined> {
     if (!mutation) return;
-    if (
-      !/^[a-z][a-z0-9-]{0,63}$/.test(mutation.key) ||
-      ["constructor", "prototype"].includes(mutation.key)
-    )
+    if (!allowedValueKey(mutation.key))
       throw new Error("Nome de estado inválido");
-    state.values[mutation.key] = JSON.parse(
-      canonical(
-        mutation.update(structuredClone(state.values[mutation.key] ?? null)),
-      ),
+    const previous = await this.resolveValue(s, state, mutation.key);
+    this.guard(s);
+    const bytes = utf8(canonical(mutation.update(structuredClone(previous))));
+    if (bytes.length > PRIVATE_VALUE_LIMITS.valueBytes)
+      throw new Error("Valor privado excede o limite");
+    const id = crypto.randomUUID(),
+      old =
+        state.valueRefs && Object.hasOwn(state.valueRefs, mutation.key)
+          ? state.valueRefs[mutation.key]
+          : undefined;
+    const sealed = await seal(
+      bytes,
+      s.key,
+      "relayloom-browser-value-v1:" +
+        s.identity.public.id +
+        ":" +
+        mutation.key +
+        ":" +
+        id,
     );
+    const digest = await hash(bytes);
+    this.guard(s);
+    state.valueRefs = {
+      ...state.valueRefs,
+      [mutation.key]: {
+        id,
+        bytes: bytes.length,
+        sealedBytes: utf8(canonical(sealed)).length,
+        digest,
+      },
+    };
+    delete state.values[mutation.key];
+    this.checkValueReferences(state);
+    return {
+      put: { id: privateKey(id), sealed },
+      remove: old ? [privateKey(old.id)] : [],
+    };
   }
   async updateValue(
     key: string,
     update: (previous: unknown) => unknown,
     release: string[] = [],
   ): Promise<void> {
+    return this.updateValues([{ key, update }], release);
+  }
+  /** Private values and reservation releases share one index/blob transaction. */
+  async updateValues(
+    mutations: { key: string; update: (previous: unknown) => unknown }[],
+    release: string[] = [],
+  ): Promise<void> {
+    if (
+      !Array.isArray(mutations) ||
+      mutations.length > 64 ||
+      mutations.some(
+        (m) => !m || !allowedValueKey(m.key) || typeof m.update !== "function",
+      ) ||
+      new Set(mutations.map((m) => m.key)).size !== mutations.length
+    )
+      throw new Error("Alterações privadas inválidas");
     return this.exclusive(async () => {
       const s = this.active(),
         state = await this.state(s);
-      this.mutate(state.value, { key, update });
+      const writes: ValueWrite[] = [];
+      for (const mutation of mutations) {
+        const write = await this.mutate(s, state.value, mutation);
+        if (write) writes.push(write);
+      }
       for (const id of release) {
         if (!allowedID(id)) throw new Error("Endereço inválido");
         if (state.value.bundles[id]?.reserved !== undefined)
           state.value.bundles[id].reserved = false;
       }
-      await this.commit(s, state.row, state.value);
+      await this.commit(s, state.row, state.value, undefined, [], writes);
     });
   }
   async changeQuota(
@@ -394,8 +548,8 @@ export class BrowserProfile {
         size -= next[1].size;
         delete value.bundles[next[0]];
       }
-      this.mutate(value, mutation);
-      await this.commit(s, row, value, undefined, remove);
+      const valueWrite = await this.mutate(s, value, mutation);
+      await this.commit(s, row, value, undefined, remove, valueWrite);
       this.quota = quota;
     });
   }
@@ -411,11 +565,18 @@ export class BrowserProfile {
     next: State,
     put?: { id: string; sealed: Sealed },
     remove: string[] = [],
+    valueWrite?: ValueWrite | ValueWrite[],
   ): Promise<void> {
+    const values = Array.isArray(valueWrite)
+      ? valueWrite
+      : valueWrite
+        ? [valueWrite]
+        : [];
     const encrypted = await this.encryptState(s, next);
     this.guard(s);
     const tx = this.db.transaction(["profile", "bundles"], "readwrite"),
       done = complete(tx);
+    let enqueueFailure: unknown;
     const check = tx.objectStore("profile").get("state");
     check.onsuccess = () => {
       // All requests are enqueued synchronously while the IDB transaction is active.
@@ -423,32 +584,72 @@ export class BrowserProfile {
         tx.abort();
         return;
       }
-      tx.objectStore("profile").put(encrypted, "state");
-      if (put) tx.objectStore("bundles").put(put.sealed, put.id);
-      for (const id of remove) tx.objectStore("bundles").delete(id);
+      try {
+        tx.objectStore("profile").put(encrypted, "state");
+        if (put) tx.objectStore("bundles").put(put.sealed, put.id);
+        for (const value of values)
+          tx.objectStore("bundles").put(value.put.sealed, value.put.id);
+        for (const id of remove) tx.objectStore("bundles").delete(id);
+        for (const value of values)
+          for (const id of value.remove) tx.objectStore("bundles").delete(id);
+      } catch (error) {
+        enqueueFailure = error;
+        try {
+          tx.abort();
+        } catch {
+          /* The browser may already have aborted. */
+        }
+      }
     };
-    await done;
+    try {
+      await done;
+    } catch (error) {
+      throw enqueueFailure ?? error;
+    }
     this.guard(s);
   }
   async getValue(key: string): Promise<unknown> {
-    const s = this.active(),
-      values = (await this.state(s)).value.values;
-    return Object.hasOwn(values, key) ? values[key] : null;
-  }
-  async setValue(key: string, value: unknown): Promise<void> {
-    if (
-      !/^[a-z][a-z0-9-]{0,63}$/.test(key) ||
-      key === "constructor" ||
-      key === "prototype"
-    )
-      throw new Error("Nome de estado inválido");
-    const owned = JSON.parse(canonical(value));
+    if (!allowedValueKey(key)) throw new Error("Nome de estado inválido");
     return this.exclusive(async () => {
       const s = this.active(),
-        state = await this.state(s);
-      state.value.values[key] = owned;
-      await this.commit(s, state.row, state.value);
+        state = (await this.state(s)).value;
+      return this.resolveValue(s, state, key);
     });
+  }
+  async readValues(keys: string[]): Promise<Record<string, unknown>> {
+    if (
+      !Array.isArray(keys) ||
+      keys.length > 64 ||
+      keys.some((key) => !allowedValueKey(key)) ||
+      new Set(keys).size !== keys.length
+    )
+      throw new Error("Leitura privada inválida");
+    return this.exclusive(async () => {
+      const s = this.active(),
+        state = (await this.state(s)).value;
+      const entries: [string, unknown][] = [];
+      for (const key of keys)
+        entries.push([key, await this.resolveValue(s, state, key)]);
+      this.guard(s);
+      return Object.fromEntries(entries);
+    });
+  }
+  async setValue(key: string, value: unknown): Promise<void> {
+    if (!allowedValueKey(key)) throw new Error("Nome de estado inválido");
+    const owned = JSON.parse(canonical(value));
+    return this.updateValue(key, () => owned);
+  }
+  async valueKeys(prefix = ""): Promise<string[]> {
+    const s = this.active(),
+      state = (await this.state(s)).value;
+    return [
+      ...new Set([
+        ...Object.keys(state.values),
+        ...Object.keys(state.valueRefs ?? {}),
+      ]),
+    ]
+      .filter((key) => key.startsWith(prefix))
+      .sort();
   }
   async stats() {
     const s = this.active(),
@@ -459,6 +660,10 @@ export class BrowserProfile {
       bytes: entries.reduce((n, e) => n + e.size, 0),
       pinned: entries.filter((e) => e.pinned).length,
       quota: this.quota,
+      privateBytes: Object.values(value.valueRefs ?? {}).reduce(
+        (sum, reference) => sum + reference.sealedBytes,
+        0,
+      ),
     };
   }
   async ids(): Promise<string[]> {
@@ -525,13 +730,14 @@ export class BrowserProfile {
         created: b.manifest.created,
         revision: crypto.randomUUID(),
       };
-      this.mutate(state, mutation);
+      const valueWrite = await this.mutate(s, state, mutation);
       await this.commit(
         s,
         row,
         state,
         { id, sealed },
         remove.filter((other) => other !== id),
+        valueWrite,
       );
       return id;
     });
@@ -573,8 +779,8 @@ export class BrowserProfile {
       if (value.bundles[id].reserved && !pinned)
         throw new Error("Conteúdo reservado por um envio pendente");
       value.bundles[id].pinned = pinned;
-      this.mutate(value, mutation);
-      await this.commit(s, row, value);
+      const valueWrite = await this.mutate(s, value, mutation);
+      await this.commit(s, row, value, undefined, [], valueWrite);
     });
   }
 }

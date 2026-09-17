@@ -1,0 +1,396 @@
+{
+  "status": "PASS",
+  "audits": 36,
+  "files": [
+    {
+      "file": "docs/evidence/private-values/main-report.json",
+      "source": ".cache/private-values-final/report.json",
+      "sha256": "31e32bf327dad3f3d90f4dc5d5f5dc4990d7856e3257ef14115f799db5934b9e",
+      "bytes": 20705
+    },
+    {
+      "file": "docs/evidence/private-values/supplement-report.json",
+      "source": ".cache/private-values-final/supplement/report.json",
+      "sha256": "61e5c61bc2c07792307e895fdbe4531108af5158d635d5ecb7d68798b6f109f1",
+      "bytes": 21721
+    },
+    {
+      "file": "docs/evidence/private-values/public-report.json",
+      "source": ".cache/private-values-final/public-gate/report.json",
+      "sha256": "549b95604b92d73b45f446670d59af1192b25224a7db47525ecfcd7dade00f84",
+      "bytes": 25135
+    },
+    {
+      "file": "docs/evidence/private-values/directed-webkit.log",
+      "source": ".cache/site-revisions/private-regression-webkit.log",
+      "sha256": "b7295d1d0d5ef3ae3cda35aa552e59072344c9cd78b76c08b7e3d124a8ae42a4",
+      "bytes": 2526
+    },
+    {
+      "file": "docs/evidence/private-values/large-draft-before.log",
+      "source": ".cache/site-revisions/large-draft-before.log",
+      "sha256": "2fa9fa7daba6a7bf793942ac803c1ee39e39a695972942a407a45dce54af79fa",
+      "bytes": 3628
+    },
+    {
+      "file": "docs/evidence/private-values/large-draft-first-pass.log",
+      "source": ".cache/site-revisions/large-draft-after.log",
+      "sha256": "e26dcf1fd3f754f773b28f3c88076eb14f3c4876685b82e0b60331a586c49e97",
+      "bytes": 383
+    },
+    {
+      "file": "docs/evidence/private-values/large-draft-before.png",
+      "source": ".cache/site-revisions/large-draft-before-artifacts/large-site-draft-an-allowe-55f59-s-encrypted-browser-restart-chromium/test-failed-1.png",
+      "sha256": "5b99395c8307ffcac5e3870d363948e679f8d35e2d9ec5040301dc20af71db46",
+      "bytes": 487463
+    },
+    {
+      "file": "docs/evidence/private-values/private-chromium.log",
+      "source": ".cache/private-values-final/private-chromium.log",
+      "sha256": "ddac0fe713535460aed47838f0a01d2c9b5d686184e403c470290c48ea3f14be",
+      "bytes": 2552
+    },
+    {
+      "file": "docs/evidence/private-values/private-firefox.log",
+      "source": ".cache/private-values-final/private-firefox.log",
+      "sha256": "a57852e0c99d046055f2322daa800bc87e5ddd6a62f408be11d7d8bd88248c25",
+      "bytes": 2535
+    },
+    {
+      "file": "docs/evidence/private-values/native-studio-node.log",
+      "source": ".cache/private-values-final/native-studio-node.log",
+      "sha256": "5a70bfe06317f10309c52093b216edd9f7f052a773eff1767fa28b8fe1ecd0d5",
+      "bytes": 541
+    },
+    {
+      "file": "docs/evidence/private-values/native-studio-go.log",
+      "source": ".cache/private-values-final/native-studio-go.log",
+      "sha256": "4c9747d2a200363f243b88005ce194a85c02ead25c30c376a105ffa2342e3014",
+      "bytes": 541
+    },
+    {
+      "file": "docs/evidence/private-values/remaining-browser-chromium.log",
+      "source": ".cache/private-values-final/supplement/remaining-browser-chromium.log",
+      "sha256": "82e155eb6617072afea278d593bb8574d3f83102367773b58a42f2d5af9cda91",
+      "bytes": 3504
+    },
+    {
+      "file": "docs/evidence/private-values/remaining-browser-firefox.log",
+      "source": ".cache/private-values-final/supplement/remaining-browser-firefox.log",
+      "sha256": "8cd8fc430e2dcb64bf91841f3c5d008d8dfcae093b62a1b052de0d2b6f1f49a7",
+      "bytes": 3480
+    },
+    {
+      "file": "docs/evidence/private-values/remaining-browser-webkit.log",
+      "source": ".cache/private-values-final/supplement/remaining-browser-webkit.log",
+      "sha256": "cbee2797d4244c75d6eb7344f8dece801d5b1a1f39982755bdf74f2b16acf508",
+      "bytes": 3467
+    },
+    {
+      "file": "docs/evidence/private-values/desktop-build.log",
+      "source": ".cache/private-values-final/supplement/desktop-build.log",
+      "sha256": "c9a63277a1b4b07857281a537bf875abc7214e04314f0273860dd485747d367c",
+      "bytes": 62
+    },
+    {
+      "file": "docs/evidence/private-values/desktop-run.log",
+      "source": ".cache/private-values-final/supplement/desktop-run.log",
+      "sha256": "b6b330489eb6907b1fe6062fbf5ca45277269e9ece9d7aa4a922a96e6d217cc3",
+      "bytes": 101
+    },
+    {
+      "file": "docs/evidence/private-values/desktop-package.log",
+      "source": ".cache/private-values-final/supplement/desktop-package.log",
+      "sha256": "d0a567ae077ceb46f94d900811454830ccd0ca43ddda810617a4bd474dc3b850",
+      "bytes": 3164
+    },
+    {
+      "file": "docs/evidence/private-values/desktop-packaged-run.log",
+      "source": ".cache/private-values-final/supplement/desktop-packaged-run.log",
+      "sha256": "ca0e323461166ca4416ffa306cfb99c794aa3e5ee450a494eb52539e10a5ac51",
+      "bytes": 64
+    },
+    {
+      "file": "docs/evidence/private-values/default-ui-chromium.log",
+      "source": ".cache/private-values-final/public-gate/default-ui-chromium.log",
+      "sha256": "df7f6a9c0a7dce81523900f4b7f55a9e87490167c701f3bd260585a70d6149cf",
+      "bytes": 4240
+    },
+    {
+      "file": "docs/evidence/private-values/default-ui-firefox.log",
+      "source": ".cache/private-values-final/public-gate/default-ui-firefox.log",
+      "sha256": "27f684ca5c922cfcc23e36ede40335a6013bba3ac58f5e6adc094f192decdc13",
+      "bytes": 4221
+    },
+    {
+      "file": "docs/evidence/private-values/default-ui-webkit.log",
+      "source": ".cache/private-values-final/public-gate/default-ui-webkit.log",
+      "sha256": "f70ba6c62baf967bffe440e82eaf247854d3945421d301f0f5e07fe79c02de71",
+      "bytes": 4199
+    },
+    {
+      "file": "docs/evidence/private-values/public-matrix.log",
+      "source": ".cache/private-values-final/public-gate/public-matrix.log",
+      "sha256": "39731d6eec0a5b5e2f2de2982f02b8fa1c4342e7f873ffd6baa024bfbb2a1506",
+      "bytes": 13608
+    },
+    {
+      "file": "docs/evidence/private-values/two-processes.log",
+      "source": ".cache/private-values-final/public-gate/two-processes.log",
+      "sha256": "bdc1e923455823fd62d4fb25ecf8a2f4a924bec56a492799231e6f078830eb6a",
+      "bytes": 391
+    },
+    {
+      "file": "docs/evidence/private-values/ui-chromium/dense-dark-forest-axe.json",
+      "source": ".cache/site-studio/ui-chromium/dense-dark-forest-axe.json",
+      "sha256": "8f131b0f7db8787b867440e0a3f11a7b86f55c55ec506af4fda68d7d24a10345",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-chromium/dense-dark-ink-axe.json",
+      "source": ".cache/site-studio/ui-chromium/dense-dark-ink-axe.json",
+      "sha256": "8f131b0f7db8787b867440e0a3f11a7b86f55c55ec506af4fda68d7d24a10345",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-chromium/dense-dark-sand-axe.json",
+      "source": ".cache/site-studio/ui-chromium/dense-dark-sand-axe.json",
+      "sha256": "8f131b0f7db8787b867440e0a3f11a7b86f55c55ec506af4fda68d7d24a10345",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-chromium/dense-light-forest-axe.json",
+      "source": ".cache/site-studio/ui-chromium/dense-light-forest-axe.json",
+      "sha256": "8f131b0f7db8787b867440e0a3f11a7b86f55c55ec506af4fda68d7d24a10345",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-chromium/dense-light-ink-axe.json",
+      "source": ".cache/site-studio/ui-chromium/dense-light-ink-axe.json",
+      "sha256": "8f131b0f7db8787b867440e0a3f11a7b86f55c55ec506af4fda68d7d24a10345",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-chromium/dense-light-sand-axe.json",
+      "source": ".cache/site-studio/ui-chromium/dense-light-sand-axe.json",
+      "sha256": "8f131b0f7db8787b867440e0a3f11a7b86f55c55ec506af4fda68d7d24a10345",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-chromium/editor-axe.json",
+      "source": ".cache/site-studio/ui-chromium/editor-axe.json",
+      "sha256": "99f9e805fd364dfe950dd1c3a27bd40e1bf3b2cfaebb247f1095b29eecd04656",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-chromium/editor-viewport.png",
+      "source": ".cache/site-studio/ui-chromium/editor-viewport.png",
+      "sha256": "0f191679d46c125b465f021b920553b1b761d808a2d979b8d08e50898840ff3e",
+      "bytes": 200369
+    },
+    {
+      "file": "docs/evidence/private-values/ui-chromium/mobile-editor-axe.json",
+      "source": ".cache/site-studio/ui-chromium/mobile-editor-axe.json",
+      "sha256": "8f131b0f7db8787b867440e0a3f11a7b86f55c55ec506af4fda68d7d24a10345",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-chromium/mobile-editor-viewport.png",
+      "source": ".cache/site-studio/ui-chromium/mobile-editor-viewport.png",
+      "sha256": "f7be3bdbccd6aad94f2b4e5127cb22591deba1d801a8740126521d7b4a250ad5",
+      "bytes": 127907
+    },
+    {
+      "file": "docs/evidence/private-values/ui-chromium/mobile-preview-axe.json",
+      "source": ".cache/site-studio/ui-chromium/mobile-preview-axe.json",
+      "sha256": "339a56b2fdcad31cc38b38309f84fe89e04a5774d42d91000a221fc5581b8704",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-chromium/preview-axe.json",
+      "source": ".cache/site-studio/ui-chromium/preview-axe.json",
+      "sha256": "339a56b2fdcad31cc38b38309f84fe89e04a5774d42d91000a221fc5581b8704",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-chromium/reader-author-offline-axe.json",
+      "source": ".cache/site-studio/ui-chromium/reader-author-offline-axe.json",
+      "sha256": "39e41fecf11ec69a9db2b7089a01c3d561f8c74eb9d0f87cc3c37f54b26a8864",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-chromium/third-reader-axe.json",
+      "source": ".cache/site-studio/ui-chromium/third-reader-axe.json",
+      "sha256": "39e41fecf11ec69a9db2b7089a01c3d561f8c74eb9d0f87cc3c37f54b26a8864",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-firefox/dense-dark-forest-axe.json",
+      "source": ".cache/site-studio/ui-firefox/dense-dark-forest-axe.json",
+      "sha256": "8f131b0f7db8787b867440e0a3f11a7b86f55c55ec506af4fda68d7d24a10345",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-firefox/dense-dark-ink-axe.json",
+      "source": ".cache/site-studio/ui-firefox/dense-dark-ink-axe.json",
+      "sha256": "8f131b0f7db8787b867440e0a3f11a7b86f55c55ec506af4fda68d7d24a10345",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-firefox/dense-dark-sand-axe.json",
+      "source": ".cache/site-studio/ui-firefox/dense-dark-sand-axe.json",
+      "sha256": "8f131b0f7db8787b867440e0a3f11a7b86f55c55ec506af4fda68d7d24a10345",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-firefox/dense-light-forest-axe.json",
+      "source": ".cache/site-studio/ui-firefox/dense-light-forest-axe.json",
+      "sha256": "8f131b0f7db8787b867440e0a3f11a7b86f55c55ec506af4fda68d7d24a10345",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-firefox/dense-light-ink-axe.json",
+      "source": ".cache/site-studio/ui-firefox/dense-light-ink-axe.json",
+      "sha256": "8f131b0f7db8787b867440e0a3f11a7b86f55c55ec506af4fda68d7d24a10345",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-firefox/dense-light-sand-axe.json",
+      "source": ".cache/site-studio/ui-firefox/dense-light-sand-axe.json",
+      "sha256": "8f131b0f7db8787b867440e0a3f11a7b86f55c55ec506af4fda68d7d24a10345",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-firefox/editor-axe.json",
+      "source": ".cache/site-studio/ui-firefox/editor-axe.json",
+      "sha256": "99f9e805fd364dfe950dd1c3a27bd40e1bf3b2cfaebb247f1095b29eecd04656",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-firefox/editor-viewport.png",
+      "source": ".cache/site-studio/ui-firefox/editor-viewport.png",
+      "sha256": "5fa258b2baed0b1e3eacc7afb6fa35c4ed099edd003d8a7787ed00e8e7965538",
+      "bytes": 217416
+    },
+    {
+      "file": "docs/evidence/private-values/ui-firefox/mobile-editor-axe.json",
+      "source": ".cache/site-studio/ui-firefox/mobile-editor-axe.json",
+      "sha256": "8f131b0f7db8787b867440e0a3f11a7b86f55c55ec506af4fda68d7d24a10345",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-firefox/mobile-editor-viewport.png",
+      "source": ".cache/site-studio/ui-firefox/mobile-editor-viewport.png",
+      "sha256": "01ae9b01edd948bb2271ac53d0b91213092a40aad08753c8da14ec6f4346a010",
+      "bytes": 96794
+    },
+    {
+      "file": "docs/evidence/private-values/ui-firefox/mobile-preview-axe.json",
+      "source": ".cache/site-studio/ui-firefox/mobile-preview-axe.json",
+      "sha256": "339a56b2fdcad31cc38b38309f84fe89e04a5774d42d91000a221fc5581b8704",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-firefox/preview-axe.json",
+      "source": ".cache/site-studio/ui-firefox/preview-axe.json",
+      "sha256": "339a56b2fdcad31cc38b38309f84fe89e04a5774d42d91000a221fc5581b8704",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-firefox/reader-author-offline-axe.json",
+      "source": ".cache/site-studio/ui-firefox/reader-author-offline-axe.json",
+      "sha256": "39e41fecf11ec69a9db2b7089a01c3d561f8c74eb9d0f87cc3c37f54b26a8864",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-firefox/third-reader-axe.json",
+      "source": ".cache/site-studio/ui-firefox/third-reader-axe.json",
+      "sha256": "39e41fecf11ec69a9db2b7089a01c3d561f8c74eb9d0f87cc3c37f54b26a8864",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-webkit/dense-dark-forest-axe.json",
+      "source": ".cache/site-studio/ui-webkit/dense-dark-forest-axe.json",
+      "sha256": "8f131b0f7db8787b867440e0a3f11a7b86f55c55ec506af4fda68d7d24a10345",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-webkit/dense-dark-ink-axe.json",
+      "source": ".cache/site-studio/ui-webkit/dense-dark-ink-axe.json",
+      "sha256": "8f131b0f7db8787b867440e0a3f11a7b86f55c55ec506af4fda68d7d24a10345",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-webkit/dense-dark-sand-axe.json",
+      "source": ".cache/site-studio/ui-webkit/dense-dark-sand-axe.json",
+      "sha256": "8f131b0f7db8787b867440e0a3f11a7b86f55c55ec506af4fda68d7d24a10345",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-webkit/dense-light-forest-axe.json",
+      "source": ".cache/site-studio/ui-webkit/dense-light-forest-axe.json",
+      "sha256": "8f131b0f7db8787b867440e0a3f11a7b86f55c55ec506af4fda68d7d24a10345",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-webkit/dense-light-ink-axe.json",
+      "source": ".cache/site-studio/ui-webkit/dense-light-ink-axe.json",
+      "sha256": "8f131b0f7db8787b867440e0a3f11a7b86f55c55ec506af4fda68d7d24a10345",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-webkit/dense-light-sand-axe.json",
+      "source": ".cache/site-studio/ui-webkit/dense-light-sand-axe.json",
+      "sha256": "8f131b0f7db8787b867440e0a3f11a7b86f55c55ec506af4fda68d7d24a10345",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-webkit/editor-axe.json",
+      "source": ".cache/site-studio/ui-webkit/editor-axe.json",
+      "sha256": "99f9e805fd364dfe950dd1c3a27bd40e1bf3b2cfaebb247f1095b29eecd04656",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-webkit/editor-viewport.png",
+      "source": ".cache/site-studio/ui-webkit/editor-viewport.png",
+      "sha256": "d484f6a14bb314351e2ec1ec4262e7cad7ea76d711fcf5b2c09cbdf1d31c5a5e",
+      "bytes": 225431
+    },
+    {
+      "file": "docs/evidence/private-values/ui-webkit/mobile-editor-axe.json",
+      "source": ".cache/site-studio/ui-webkit/mobile-editor-axe.json",
+      "sha256": "8f131b0f7db8787b867440e0a3f11a7b86f55c55ec506af4fda68d7d24a10345",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-webkit/mobile-editor-viewport.png",
+      "source": ".cache/site-studio/ui-webkit/mobile-editor-viewport.png",
+      "sha256": "502b19765dd286d980de0ded950cb40891e2b7241d260831e067bc56c4b044a0",
+      "bytes": 107635
+    },
+    {
+      "file": "docs/evidence/private-values/ui-webkit/mobile-preview-axe.json",
+      "source": ".cache/site-studio/ui-webkit/mobile-preview-axe.json",
+      "sha256": "339a56b2fdcad31cc38b38309f84fe89e04a5774d42d91000a221fc5581b8704",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-webkit/preview-axe.json",
+      "source": ".cache/site-studio/ui-webkit/preview-axe.json",
+      "sha256": "339a56b2fdcad31cc38b38309f84fe89e04a5774d42d91000a221fc5581b8704",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-webkit/reader-author-offline-axe.json",
+      "source": ".cache/site-studio/ui-webkit/reader-author-offline-axe.json",
+      "sha256": "39e41fecf11ec69a9db2b7089a01c3d561f8c74eb9d0f87cc3c37f54b26a8864",
+      "bytes": 38
+    },
+    {
+      "file": "docs/evidence/private-values/ui-webkit/third-reader-axe.json",
+      "source": ".cache/site-studio/ui-webkit/third-reader-axe.json",
+      "sha256": "39e41fecf11ec69a9db2b7089a01c3d561f8c74eb9d0f87cc3c37f54b26a8864",
+      "bytes": 38
+    }
+  ]
+}

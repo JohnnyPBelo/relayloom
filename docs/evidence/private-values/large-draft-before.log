@@ -1,0 +1,51 @@
+
+Running 1 test using 1 worker
+
+(node:1692745) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [chromium] › tests/browser/large-site-draft.spec.ts:9:1 › an allowed large site image saves through the UI and survives encrypted browser restart (18.3s)
+
+
+  1) [chromium] › tests/browser/large-site-draft.spec.ts:9:1 › an allowed large site image saves through the UI and survives encrypted browser restart 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('region', { name: 'Estúdio do site' }).getByRole('status')
+    Expected substring: "Rascunho cifrado"
+    Received string:    "Projecto validado e aplicado"
+    Timeout: 15000ms
+
+    Call log:
+      - Expect "toContainText" getByRole('region', { name: 'Estúdio do site' }).getByRole('status') with timeout 15000ms
+      - waiting for getByRole('region', { name: 'Estúdio do site' }).getByRole('status')
+        34 × locator resolved to <span role="status">…</span>
+           - unexpected value "Projecto validado e aplicado"
+
+
+      41 |   await expect.poll(() => studio.getByRole("img", { name: "Imagem sintética grande" }).evaluate((image: HTMLImageElement) => image.naturalWidth)).toBe(768);
+      42 |   await studio.getByRole("button", { name: "Guardar rascunho", exact: true }).click();
+    > 43 |   await expect(studio.getByRole("status")).toContainText("Rascunho cifrado");
+         |                                            ^
+      44 |   await page.reload();
+      45 |   await page.getByLabel("Frase-passe", { exact: true }).fill(password);
+      46 |   await page.getByRole("button", { name: "Entrar na minha rede", exact: true }).click();
+        at /home/absint0o/projects/relayloom/tests/browser/large-site-draft.spec.ts:43:44
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/large-site-draft-an-allowe-55f59-s-encrypted-browser-restart-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/large-site-draft-an-allowe-55f59-s-encrypted-browser-restart-chromium/error-context.md
+
+    Error Context: test-results/large-site-draft-an-allowe-55f59-s-encrypted-browser-restart-chromium/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/large-site-draft-an-allowe-55f59-s-encrypted-browser-restart-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/large-site-draft-an-allowe-55f59-s-encrypted-browser-restart-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › tests/browser/large-site-draft.spec.ts:9:1 › an allowed large site image saves through the UI and survives encrypted browser restart 

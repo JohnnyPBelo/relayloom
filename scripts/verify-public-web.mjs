@@ -92,9 +92,10 @@ try {
         "tests/browser/connectivity.spec.ts",
         "tests/browser/site-studio.spec.ts",
         "tests/browser/onboarding-language.spec.ts",
-      "tests/browser/site-language.spec.ts",
-      "tests/browser/site-pages.spec.ts",
-      "tests/browser/mobile-navigation.spec.ts",
+        "tests/browser/site-language.spec.ts",
+        "tests/browser/site-pages.spec.ts",
+        "tests/browser/large-site-draft.spec.ts",
+        "tests/browser/mobile-navigation.spec.ts",
       ],
       { RELAYLOOM_MATRIX_ENGINE: engine },
     );

@@ -362,6 +362,7 @@ export function SiteStudio({
   }
   async function action(kind: "save" | "publish") {
     setError("");
+    setFeedback("");
     setWorking(true);
     try {
       validateStudio(value);

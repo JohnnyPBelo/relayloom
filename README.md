@@ -46,7 +46,11 @@ A publicação foi conferida por hash e passou quatro testes no URL real, inclui
 
 Esta adaptação inspira-se nos sites distribuídos do ZeroNet, com execução limitada a blocos seguros. Os limites actuais são 12 páginas, 128 blocos, três níveis e quatro imagens com até 2 MiB no total. Contribuições multiutilizador, ficheiros opcionais e endereços permanentes com revisões ainda não estão implementados. [Como criar e limites exactos](docs/SITE-STUDIO.md).
 
-Na candidata de integração, já pode duplicar páginas completas e alterar a sua ordem. A cópia conserva ligações, imagens e a página inicial, com desfazer/refazer e controlos por teclado/toque. Os testes dirigidos Node/Go/browser e Android passaram; os controlos novos ainda não estão publicados. [Evidência e pendentes](docs/evidence/page-organisation).
+Na versão web, já pode duplicar páginas completas e alterar a sua ordem. A cópia conserva ligações, imagens e a página inicial, com desfazer/refazer e controlos por teclado/toque. A publicação64363cf da fontebfcb5fc foi conferida em17ficheirosHTTP e12percursosUI. Os gates Node/Go,135casos de browser e Android também passaram. [Evidência e pendentes](docs/evidence/page-organisation).
+
+A correcção para guardar rascunhos web com imagens maiores que 1 MiB passou a regressão nos três motores de browser e nos clientes Node/Go, incluindo recuperação exacta após recarregar. A publicação no URL público ainda está pendente. [Testes e limites](docs/evidence/private-values).
+
+Existe também um [APK Android ARM64 experimental](docs/ANDROID-ARM64.md), construído com a mesma interface. A arquitectura, assinatura e assets foram verificados; a execução num telefone ARM64 ainda está pendente.
 
 ## Meios através de Reticulum
 

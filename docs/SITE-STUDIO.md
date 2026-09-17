@@ -28,7 +28,7 @@ A paleta dispõe de 13 blocos: capa, texto, ligação, destaque, título, citaç
 | Publicações | Até 12 entradas do próprio autor, já verificadas e autorizadas neste dispositivo; edições respeitadas, eliminadas omitidas |
 | Execução | Sem scripts, HTML executável, SQL livre, imagens remotas Markdown ou módulos carregados pelos sites |
 
-Os endereços de página (`slug`) são metadados para organização; a navegação actual usa IDs internos. Não há ainda deep links externos para páginas, duplicação/reordenação de páginas, directório global ou abertura automática de sites por hash. A exportação JSON transporta um projecto editável; republicá-lo com outra identidade cria uma obra assinada por essa identidade, não altera a assinatura original.
+Os endereços de página (`slug`) são metadados para organização; a navegação actual usa IDs internos. Não há ainda deep links externos para páginas, directório global ou abertura automática de sites por hash. A exportação JSON transporta um projecto editável; republicá-lo com outra identidade cria uma obra assinada por essa identidade, não altera a assinatura original.
 
 ## O que foi aproveitado do ZeroNet
 
@@ -63,3 +63,15 @@ Controlos dirigidos já concluídos: esquema TypeScript/Go; dois percursos Node�
 Na sincronização automática por inventário, tanto o seeder como o novo nó receptor autorizam a participação em A rede. O teste de três browsers mantém o seeder em pausa, comprova ausência, activa-o e só então obtém o site com a autora já fechada.
 
 As capturas e verificações Axe são testes automatizados no Linux. WebKit/Linux não é Safari/iOS; viewport móvel não é toque físico. Revisão independente deste incremento permanece pendente durante a recuperação sequencial pedida pelo proprietário. Rádios físicos, apps assinadas e o relato nos dois dispositivos pessoais continuam fora da evidência destes testes.
+
+
+## Duplicar e ordenar páginas
+
+Os controlos na página seleccionada permitem duplicar a composição completa e mover a página na navegação. A cópia recebe IDs e slug próprios; adapta ligações a si mesma e conserva ligações às outras páginas e referências às imagens. O início permanece na página escolhida, independentemente da ordem. Desfazer/refazer e gravação cifrada continuam disponíveis; os botões respeitam os limites e têm alternativa por teclado/toque.
+
+Publicação64363cf da fontebfcb5fc verificada em17assets e12percursosHTTPS, além de135browsers,62UI Node/Go e Android. [Provas](evidence/page-organisation). Endereços estáveis/revisões, contribuições e ficheiros opcionais continuam pendentes.
+
+
+## Correcção de rascunhos grandes verificada localmente
+
+O limite de 2 MiB de imagens do editor não mudou. A versão web anterior guardava o rascunho dentro de um índice privado de 1 MiB; uma imagem permitida pelo editor podia por isso falhar ao guardar. A candidata usa valores privados cifrados separados, até 8 MiB por valor e 32 MiB no total cifrado, mantém leitura de perfis anteriores e grava índice/valor numa só transacção. Os blobs privados não entram no inventário nem podem ser pedidos como bundles. O teste UI recarrega/desbloqueia o perfil e compara a imagem e o projecto exactos. A recuperação de erros não repõe valores vazios silenciosamente. Passaram 236 testes de browser/UI, dois oráculos de endereçamento e os gates Linux; [evidência e âmbito](evidence/private-values). Publicação ainda pendente.

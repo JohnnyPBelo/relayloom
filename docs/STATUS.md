@@ -1,8 +1,22 @@
 # RelayLoom — estado verificável
 
-## Organização de páginas — integração
+## Rascunhos web grandes — verificados localmente, publicação pendente
 
-Duplicação e ordenação implementadas no estúdio, com IDs independentes, ligações próprias remapeadas, anexos partilhados e início preservado. 64 testes de domínio, UI dirigida Node/Go/3browsers, 25asserções Android e regressão31Node+31Go/Linux passaram. A matriz completa e os gates móveis finais estão em curso ou pendentes. [Comandos e âmbito](evidence/page-organisation). Não publicado ainda.
+Corrigida a gravação de imagens válidas que excediam o índice privado de 1 MiB. Os valores cifrados passam a ter armazenamento separado, leitura legada e transacções conjuntas, sem entrar no inventário P2P. Passaram 236 execuções de testes de browser/UI, dois oráculos de endereçamento, 36 verificações Axe e build/run/package/run Linux. Incluem recuperação exacta da imagem, corrupção/ausência/troca de blobs, partição/reconexão e seeding. [Comandos, fontes e âmbito](evidence/private-values). A publicação da correcção ainda está pendente; o limite de imagens do editor não mudou.
+
+Os certificados de revisões de sites têm código/testes locais, mas ainda não há publicação/endereço permanente integrado na aplicação. Contribuições assinadas e ficheiros opcionais continuam pendentes; o produto completo mantém-se em implementação.
+
+## CI 1ecbe79 — iOS bloqueado na preparação do teste
+
+CI 35169832946 passou Node nos três hosts, Go, UI, Reticulum, browser e pacotes desktop. Em iOS 26.4.1/Xcode 26.6, build/install/startup passaram; a preparação da fotografia excedeu 60 s e o percurso funcional não arrancou. A correcção de navegação continua sem nova validação Apple. [Relatório e diagnóstico](evidence/ios-visible-navigation/ci-1ecbe79). Não há nova execução física.
+
+## Android ARM64 — compilado, não executado em dispositivo
+
+APK812339a7… para arm64-v8a,16841791bytes, com ABI/ELF/alinhamento/assinatura verificados e assets iguais à variantex86_64 testada. Os artefactosx86_64 foram preservados. Não houve execuçãoARM64, acesso a rádios físicos ou mudança de protecções doSO. [Artefacto e reprodução](ANDROID-ARM64.md).
+
+## Organização de páginas — publicada
+
+Duplicação e ordenação implementadas no estúdio, com IDs independentes, ligações próprias remapeadas, anexos partilhados e início preservado. 64 testes de domínio, UI dirigida Node/Go/3browsers, 25asserções Android e regressão31Node+31Go/Linux passaram. A matriz completa passou 45 casos por browser (135), e o Android final passou páginas, mensagens, ficheiros, prazo, relay e perfil privado no APK exacto. A publicação64363cf da fontebfcb5fc passou17hashesHTTP e12percursosUI. A nova execução Apple permanece pendente. [Comandos e âmbito](evidence/page-organisation). A verificação publicada está em [evidência HTTPS](evidence/page-organisation/live).
 
 ## Setup e idiomas — publicação verificada
 

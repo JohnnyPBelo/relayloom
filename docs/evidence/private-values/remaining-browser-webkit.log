@@ -1,0 +1,25 @@
+
+Running 18 tests using 1 worker
+
+(node:1993334) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [webkit] › tests/browser/application-api.spec.ts:11:1 › application API preserves send identity, rejects corrupt retained acceptance, and validates event author/read scope (642ms)
+  ✓   2 [webkit] › tests/browser/group-certificates.spec.ts:78:1 › browser identity and group authority refuse all small-order reference keys and noncanonical aliases (319ms)
+  ✓   3 [webkit] › tests/browser/group-certificates.spec.ts:143:1 › browser, Node and Go verify shared group certificates, fresh consents, removal and strict signing ownership (931ms)
+  ✓   4 [webkit] › tests/browser/native-transport.spec.ts:51:3 › browser WebRTC to browser WebSocket to real node daemon, reverse transfer and invitation revocation (9.4s)
+  ✓   5 [webkit] › tests/browser/native-transport.spec.ts:51:3 › browser WebRTC to browser WebSocket to real native daemon, reverse transfer and invitation revocation (5.0s)
+  ✓   6 [webkit] › tests/browser/native-transport.spec.ts:191:1 › private four-medium route WebRTC-WebSocket-TCP-serial, partition/heal and restarted browser seeder with author offline (11.2s)
+  ✓   7 [webkit] › tests/browser/native-transport.spec.ts:419:1 › late native ACK cannot leave an orphan retry assembly or close an otherwise healthy WebSocket (4.5s)
+  ✓   8 [webkit] › tests/browser/routing.spec.ts:83:1 › automatic A-B-C mesh: consent controls, own sends while paused, partition/heal and restarted reader takeover with author offline (7.8s)
+  ✓   9 [webkit] › tests/browser/routing.spec.ts:211:1 › one network owner per profile and concurrent consent/preferences do not resurrect revoked relay (758ms)
+  ✓  10 [webkit] › tests/browser/routing.spec.ts:269:1 › fragment scheduling preempts bulk with SOS, gives bulk a fair turn, and cancels relayed bytes without closing own traffic (2.8s)
+  ✓  11 [webkit] › tests/browser/routing.spec.ts:475:1 › packet bounds reject expiry, hop loops and tampering; retained flood is bounded (277ms)
+  ✓  12 [webkit] › tests/browser/routing.spec.ts:539:1 › low-power defers bulk on a live link, keeps SOS moving and never revives an expired queued packet (5.6s)
+  ✓  13 [webkit] › tests/browser/routing.spec.ts:597:1 › browser routing packets cross real native TCP routers; native packet bytes verify in the browser and corruption never forwards (939ms)
+  ✓  14 [webkit] › tests/browser/routing.spec.ts:745:1 › opaque packet corruption is rejected by the browser mesh before storage or forwarding, with valid controls on both sides (2.6s)
+  ✓  15 [webkit] › tests/browser/routing.spec.ts:828:1 › managed relay revocation cancels an in-flight forwarded packet and keeps an authored SOS on that same open link (3.1s)
+  ✓  16 [webkit] › tests/browser/site-revisions.spec.ts:70:1 › real browser, Node and Go agree on signed site snapshots while reading keys cannot edit them (638ms)
+  ✓  17 [webkit] › tests/browser/x25519.spec.ts:5:1 › portable curves match RFC 7748, reject invalid reading keys and work when native curve operations fail (526ms)
+  ✓  18 [webkit] › tests/browser/x25519.spec.ts:137:1 › identity lifecycle remains valid across 512 generated and reimported signing/reading key pairs (1.6s)
+
+  18 passed (1.0m)
