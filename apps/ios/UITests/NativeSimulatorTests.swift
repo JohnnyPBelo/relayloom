@@ -178,28 +178,29 @@ final class NativeSimulatorTests: XCTestCase {
         guard XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: absent, object: nil)], timeout: 30) == .completed else { throw SmokeFailure.missing(label) }
     }
     @MainActor private func navigate(_ app: XCUIApplication, to label: String) throws {
-        func target() -> XCUIElement {
-            app.webViews.descendants(matching: .any).matching(identifier: "Main navigation").firstMatch.buttons.matching(identifier: label).firstMatch
+        func targets() -> [XCUIElement] {
+            app.webViews.buttons.matching(identifier: label).allElementsBoundByIndex.filter { $0.exists && $0.isEnabled && $0.isHittable }
         }
-        // The compact dock and sidebar share page names. Resolve the actual
-        // navigation landmark again after opening it; never retain a query to
-        // a removed dock control or tap a merely existing, hidden sidebar row.
-        if !target().exists || !target().isHittable { try tap(app, "Open navigation") }
-        let destination = target()
-        let visible = NSPredicate { _, _ in destination.exists && destination.isHittable }
-        guard XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: visible, object: destination)], timeout: 30) == .completed else {
+        // Run35160603438 exposed a hittable named button but no matching DOM
+        // landmark through XCTest. Resolve current visible controls after the
+        // drawer/dock changes; never guess among multiple matching controls.
+        if targets().isEmpty { try tap(app, "Open navigation") }
+        let visible = NSPredicate { _, _ in targets().count == 1 }
+        guard XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: visible, object: nil)], timeout: 30) == .completed else {
             navigationEvidence(app, label: label, phase: "not-hittable")
-            throw SmokeFailure.missing("visible main navigation " + label)
+            throw SmokeFailure.missing("one visible navigation control " + label)
         }
+        let current = targets()
+        guard current.count == 1 else { throw SmokeFailure.missing("stable navigation control " + label) }
         navigationEvidence(app, label: label, phase: "before-tap")
-        destination.tap()
+        current[0].tap()
         navigationEvidence(app, label: label, phase: "after-tap")
     }
     @MainActor private func navigationEvidence(_ app: XCUIApplication, label: String, phase: String) {
         // Only fixture navigation labels/geometry, never form values or cards.
         let candidates: [[String: Any]] = app.webViews.buttons.matching(identifier: label).allElementsBoundByIndex.prefix(6).map { element in
             let frame = element.frame
-            return ["identifier": element.identifier, "hittable": element.isHittable, "enabled": element.isEnabled,
+            return ["identifier": element.identifier, "label": element.label, "hittable": element.isHittable, "enabled": element.isEnabled,
                     "x": frame.origin.x, "y": frame.origin.y, "width": frame.width, "height": frame.height]
         }
         if let data = try? JSONSerialization.data(withJSONObject: ["phase": phase, "destination": label, "candidates": candidates], options: [.sortedKeys]),
