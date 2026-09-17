@@ -1,0 +1,7 @@
+# iOS — fotografia visível, selecção ainda por validar
+
+CI35182599156, fontea1b896f, Xcode26.6/iOS26.4.1. Build, instalação, arranque e importação da fotografia passaram. A UI criou identidade, publicou, navegou, adicionou o contacto e guardou a mensagem privada. A selecção da fotografia falhou ao consultar `app.collectionViews.cells.firstMatch`. A captura mostra a grelha nativa com a fotografia sintética no canto superior esquerdo. [Captura](picker-visible.png), [relatório](ci-a1b896f.json), [log funcional](functional-failure.log).
+
+A candidata consulta células nativas visíveis directamente, sem exigir um ancestral collectionView. Conserva o prazo de20s, o toque normal no elemento e o restante percurso do anexo. Não usa coordenadas nem JavaScript/API injectados. Acrescenta metadados limitados de células/imagens/botões do simulador sintético, sem valores de campos ou dump completo, para identificar o papel exposto pelo picker caso as células continuem ausentes.
+
+`node --test apps/ios/Tests/SimulatorRunnerTests.mjs`:24PASS. `node scripts/ios-simulator.mjs --check`:STATIC_ONLY_PASSED. Não são compilação/execuçãoSwift nem validaçãoApple desta candidata; a escolha correcta da fotografia ainda precisa da execução real. Não escolher uma imagem arbitrária para obter um passe e não confundir a captura visível com um anexo já enviado. Nenhuma configuração, permissão, serviço ou provider foi alterado.

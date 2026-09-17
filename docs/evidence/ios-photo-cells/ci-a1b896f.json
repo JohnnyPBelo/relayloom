@@ -1,0 +1,175 @@
+{
+  "kind": "IOS_REAL_SIMULATOR_GATE",
+  "runID": "9bfa41f8-102e-47b9-ad0d-7a885cd9eab5",
+  "requestedRuntimeVersion": "26.4.1",
+  "status": "FAILED",
+  "simulatorExecuted": true,
+  "physicalDeviceExecuted": false,
+  "photoAttachmentRequested": true,
+  "signing": "disabled; no accounts, identities or profiles requested",
+  "webViewDebugging": false,
+  "extraAppControlPort": false,
+  "cleanup": {
+    "udid": "1E91826E-EB7B-48FD-8760-D9894B741DEE",
+    "deleted": true,
+    "onlyCreatedDeviceTouched": true
+  },
+  "commands": [
+    {
+      "label": "xcode-version",
+      "exitCode": 0,
+      "elapsedMs": 763,
+      "log": "01-xcode-version.log"
+    },
+    {
+      "label": "source-commit",
+      "exitCode": 0,
+      "elapsedMs": 82,
+      "log": "02-source-commit.log"
+    },
+    {
+      "label": "source-cleanliness",
+      "exitCode": 0,
+      "elapsedMs": 20,
+      "log": "03-source-cleanliness.log"
+    },
+    {
+      "label": "installed-runtimes",
+      "exitCode": 0,
+      "elapsedMs": 2550,
+      "log": "04-installed-runtimes.log"
+    },
+    {
+      "label": "installed-device-types",
+      "exitCode": 0,
+      "elapsedMs": 262,
+      "log": "05-installed-device-types.log"
+    },
+    {
+      "label": "create-owned",
+      "exitCode": 0,
+      "elapsedMs": 411,
+      "log": "06-create-owned.log"
+    },
+    {
+      "label": "boot-owned",
+      "exitCode": 0,
+      "elapsedMs": 2415,
+      "log": "07-boot-owned.log"
+    },
+    {
+      "label": "wait-owned-boot",
+      "exitCode": 0,
+      "elapsedMs": 228433,
+      "log": "08-wait-owned-boot.log"
+    },
+    {
+      "label": "build-for-testing",
+      "exitCode": 0,
+      "elapsedMs": 45369,
+      "log": "09-build-for-testing.log"
+    },
+    {
+      "label": "install-owned-app",
+      "exitCode": 0,
+      "elapsedMs": 12897,
+      "log": "10-install-owned-app.log"
+    },
+    {
+      "label": "execute-startup-test",
+      "exitCode": 0,
+      "elapsedMs": 183989,
+      "log": "11-execute-startup-test.log"
+    },
+    {
+      "label": "startup-xctest-summary",
+      "exitCode": 0,
+      "elapsedMs": 13652,
+      "log": "12-startup-xctest-summary.log"
+    },
+    {
+      "label": "seed-synthetic-photo",
+      "exitCode": 0,
+      "elapsedMs": 49096,
+      "log": "13-seed-synthetic-photo.log"
+    },
+    {
+      "label": "execute-ui-test",
+      "exitCode": 65,
+      "elapsedMs": 224076,
+      "log": "14-execute-ui-test.log"
+    },
+    {
+      "label": "export-startup-attachments",
+      "exitCode": 0,
+      "elapsedMs": 681,
+      "log": "15-export-startup-attachments.log"
+    },
+    {
+      "label": "export-test-attachments",
+      "exitCode": 0,
+      "elapsedMs": 498,
+      "log": "16-export-test-attachments.log"
+    },
+    {
+      "label": "cleanup-inventory",
+      "exitCode": 0,
+      "elapsedMs": 873
+    },
+    {
+      "label": "shutdown-owned",
+      "exitCode": 0,
+      "elapsedMs": 3620,
+      "log": "18-shutdown-owned.log"
+    },
+    {
+      "label": "delete-owned",
+      "exitCode": 0,
+      "elapsedMs": 279,
+      "log": "19-delete-owned.log"
+    }
+  ],
+  "xcode": "Xcode 26.6\nBuild version 17F113",
+  "sourceHashes": {
+    "runner": "ac4754ee64a5ef921b5ca278315252c93e8d69a6b2f510bf40001d98402583a5",
+    "peerFixture": "d046dd045a27c07e36fb5da6734e0487ed1fdd32f1dd702048f5f70fd170b57c",
+    "uiTest": "a5c8a987bd16c03019629925e8101e0032a584964853a7a27357ea2bf01310dd",
+    "project": "2331e5b806b3e27955be38b8e78a18b9ea33f251b0e76d61881a92a801d414a4",
+    "scheme": "c105ce198c4a20b9deefe4d3bdb4ecda777108e4abd886440e0c41261e0f4e63"
+  },
+  "sourceCommit": "a1b896fdb0ec4ac84df3c171dcae8dd3a8486d0d",
+  "workingTreeDirty": false,
+  "runtime": {
+    "identifier": "com.apple.CoreSimulator.SimRuntime.iOS-26-4",
+    "version": "26.4.1",
+    "buildVersion": "23E254a",
+    "deviceType": "com.apple.CoreSimulator.SimDeviceType.iPhone-SE-3rd-generation",
+    "downloaded": false
+  },
+  "udid": "1E91826E-EB7B-48FD-8760-D9894B741DEE",
+  "firstBootBudgetMs": 600000,
+  "simulatorBooted": true,
+  "app": {
+    "executableSHA256": "70adcdb5f751b642d7e23cb35f7610301c84f84af7b5b4cacac179fefe70888e",
+    "webIndexSHA256": "dbb798a20c1e650d208d15525fd21ad4f4755bdecadc40168042093446af1070",
+    "uiTestSourceSHA256": "a5c8a987bd16c03019629925e8101e0032a584964853a7a27357ea2bf01310dd",
+    "bindingReportSHA256": "e3ec3fe2359ce6cd2dd75f4cd12ce2e94976b21201d4a108f56ea14b71a3ee3f"
+  },
+  "startupTestStarted": true,
+  "appStartup": {
+    "result": "Passed",
+    "passedTests": 1,
+    "failedTests": 0,
+    "skippedTests": 0
+  },
+  "testCommandStarted": true,
+  "error": "Owned command failed: execute-ui-test (see sanitized evidence)",
+  "peerDiagnostics": {
+    "captured": true,
+    "bytes": 427
+  },
+  "startupScreenshotsExported": 1,
+  "screenshotsExported": 3,
+  "completedAt": "2026-09-17T05:33:06.544Z",
+  "diskFreeBytesAtEnd": 97270251520
+}

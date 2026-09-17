@@ -291,11 +291,41 @@ final class NativeSimulatorTests: XCTestCase {
         // simulator UI is English. Both exact native labels have been observed.
         let library = app.buttons.matching(NSPredicate(format: "label == 'Photo Library' OR label == 'Fototeca'")).firstMatch
         try require(library, "system Photo Library action", timeout: 15); library.tap()
-        let photo = app.collectionViews.cells.firstMatch
-        try require(photo, "seeded synthetic photo", timeout: 20); photo.tap()
+        // The observed iOS 26 picker shows the fixture but exposes no
+        // collectionViews ancestor to this query. Resolve visible native cells
+        // directly; do not tap a coordinate or choose an unrelated app image.
+        let ready = NSPredicate { _, _ in !self.photoCells(app).isEmpty }
+        guard XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: ready, object: nil)], timeout: 20) == .completed,
+              let photo = photoCells(app).first else {
+            photoPickerEvidence(app)
+            throw SmokeFailure.missing("seeded synthetic photo")
+        }
+        photoPickerEvidence(app)
+        photo.tap()
         let add = app.buttons.matching(NSPredicate(format: "label == 'Add' OR label BEGINSWITH 'Add (' OR label == 'Done' OR label == 'Choose' OR label == 'Adicionar' OR label BEGINSWITH 'Adicionar (' OR label == 'Concluído' OR label == 'Escolher'")).firstMatch
         try require(add, "confirm system photo selection", timeout: 15); add.tap()
         try require(app.webViews.buttons["Remove"].firstMatch, "photo selected into composer", timeout: 20)
+    }
+    @MainActor private func photoCells(_ app: XCUIApplication) -> [XCUIElement] {
+        app.descendants(matching: .cell).allElementsBoundByIndex.filter { cell in
+            let frame = cell.frame
+            return cell.exists && cell.isHittable && frame.width >= 44 && frame.height >= 44 &&
+                abs(frame.width - frame.height) <= max(frame.width, frame.height) * 0.25
+        }.sorted { a, b in a.frame.minY == b.frame.minY ? a.frame.minX < b.frame.minX : a.frame.minY < b.frame.minY }
+    }
+    @MainActor private func photoPickerEvidence(_ app: XCUIApplication) {
+        // Only the freshly created synthetic simulator. Omit text-field values,
+        // WebView URLs, capabilities and full accessibility debug descriptions.
+        let elements = Array(app.cells.allElementsBoundByIndex.prefix(24)) +
+            Array(app.images.allElementsBoundByIndex.prefix(24)) +
+            Array(app.buttons.allElementsBoundByIndex.prefix(24))
+        let rows = elements.map { element in
+            ["type": String(describing: element.elementType), "identifier": String(element.identifier.prefix(160)),
+             "label": String(element.label.prefix(160)), "hittable": element.isHittable, "enabled": element.isEnabled,
+             "x": element.frame.minX, "y": element.frame.minY, "width": element.frame.width, "height": element.frame.height] as [String: Any]
+        }
+        if let data = try? JSONSerialization.data(withJSONObject: rows, options: [.sortedKeys]),
+           let text = String(data: data, encoding: .utf8) { print("IOS_SIMULATOR_PHOTO_CONTROLS " + text) }
     }
     @MainActor private func capture(_ app: XCUIApplication, _ name: String) {
         let screenshot = XCTAttachment(screenshot: app.screenshot())

@@ -10,9 +10,9 @@ Os certificados de revisões e o catálogo persistente Node têm código/testes 
 
 POSTsite-command cria a revisão e a preparação numa transacção real, autoriza antes de copiar/enviar, recupera pedidos e resolve endereços a partir de certificados e bytes verificados. Conflitos conhecidos exigem confirmação explícita das cabeças. Uma cabeça sem payload não promove a versão antiga. Passaram397testesNode,31UI por núcleoNode/Go,2percursos legados de interoperabilidade eLinuxbuild/run/package/run. [Evidência](evidence/site-api) e [guia](SITE-REVISIONS.md). Não há ainda UI de revisões nem API/persistência equivalentes Go/browser; contribuições e ficheiros opcionais continuam pendentes.
 
-## iOS — instalação no simulador ainda sem passe
+## iOS — fotografia visível, selecção ainda sem passe
 
-No CI `35174446730`, fonte `0c6b58a`, a compilação passou mas a instalação não terminou com sucesso dentro do prazo. A paragem reportou `kill EPERM` e substituiu o motivo original no relatório. O runner foi corrigido para conservar os dois erros, com 24 testes do host e verificação estática passados; essa correcção ainda não foi executada em Apple. [Evidência actual](evidence/ios-install-diagnostic). Não chegou à fotografia ou ao fluxo funcional. A execução anterior `1ecbe79` tinha falhado na preparação da fotografia; [esse diagnóstico foi preservado](evidence/ios-visible-navigation/ci-1ecbe79).
+O CI35182599156 (fontea1b896f) passou nos outros dezjobs. Em iOS26.4.1, build/install/startup e importação da fotografia passaram; a UI navegou e guardou a mensagem privada. O selector collectionViews.cells não encontrou a fotografia, embora esteja visível. A candidata consulta células visíveis directamente e acrescenta diagnóstico limitado, sem mudar prazos/gestos/permissões.24testes dohost e estáticaPASS; execuçãoApple da candidata pendente. [Evidência actual](evidence/ios-photo-cells). As falhas anteriores de instalação/fotografia foram preservadas.
 
 ## Android ARM64 — compilado, não executado em dispositivo
 
