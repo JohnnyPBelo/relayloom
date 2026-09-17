@@ -7,7 +7,7 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync, readFileSync } from 'nod
 import { DatabaseSync } from 'node:sqlite';
 import { join, resolve } from 'node:path';
 import { tsImport } from 'tsx/esm/api';
-import { startupBeforePhoto, sanitize, selectSimulator, requestedSimulatorVersion, validateOwnedContainer, assertTestSummary, verifySyntheticContainer, removeMatchingRunRecord, requireInactiveCleanupOwner, stopOwnedProcessGroup, annotatePhotoFailure, recordPeerDiagnostics } from '../../../scripts/ios-simulator.mjs';
+import { startupBeforePhoto, sanitize, selectSimulator, requestedSimulatorVersion, validateOwnedContainer, assertTestSummary, verifySyntheticContainer, removeMatchingRunRecord, requireInactiveCleanupOwner, stopOwnedProcessGroup, stopOwnedAfterFailure, annotatePhotoFailure, recordPeerDiagnostics } from '../../../scripts/ios-simulator.mjs';
 
 test('select only compatible installed iOS runtimes, never unavailable or other platforms', () => {
   const runtime = (identifier, version, available) => ({ identifier: 'com.apple.CoreSimulator.SimRuntime.' + identifier, version, isAvailable: available });
@@ -272,4 +272,23 @@ test('photo failure preserves a separately confirmed startup but does not pass t
     return {output:JSON.stringify({result:'Passed',passedTests:1,failedTests:0,skippedTests:0,totalTestCount:1})};};
   await assert.rejects(startupBeforePhoto(tool,{common:[],result:'owned.xcresult',udid:'owned',photoPath:'synthetic.png'},report),error=>error===failure);
   assert.equal(report.appStartup.result,'Passed');assert.equal(report.simulatorExecuted,false);
+});
+
+
+test('a denied stop preserves the original owned-command failure and records the denial separately', async () => {
+  const original = new Error('Owned command timed out: install-owned-app');
+  const denial = Object.assign(new Error('kill EPERM'), { code: 'EPERM' });
+  const calls = [];
+  const result = await stopOwnedAfterFailure(12345, original, async pid => { calls.push(pid); throw denial; });
+  assert.deepEqual(calls, [12345]);
+  assert.equal(result.failure, original);
+  assert.equal(result.stopFailure, denial);
+  assert.equal(result.failure.message, 'Owned command timed out: install-owned-app');
+});
+
+test('a successful stop cannot turn the preceding command failure into success', async () => {
+  const original = new Error('Bounded tool output exceeded');
+  const result = await stopOwnedAfterFailure(12345, original, async () => {});
+  assert.equal(result.failure, original);
+  assert.equal(result.stopFailure, undefined);
 });

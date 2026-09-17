@@ -99,6 +99,12 @@ export async function stopOwnedProcessGroup(pid, controls = {}) {
   for (let i = 0; i < 20; i++) { if (!alive()) return; await wait(100); }
   if (alive()) throw new Error('Owned process group did not stop after escalation');
 }
+/** A denied/failed stop is additional evidence, never a replacement for the
+ * timeout or output failure that caused supervision to stop the command. */
+export async function stopOwnedAfterFailure(pid, failure, stop = stopOwnedProcessGroup) {
+  try { await stop(pid); return { failure }; }
+  catch (stopFailure) { return { failure, stopFailure }; }
+}
 export async function annotatePhotoFailure(report, owned, tool) {
   // This is the in-memory record returned by this gate's simctl create. Never
   // inspect the host's Photos library, another simulator, or change services.
@@ -247,13 +253,13 @@ async function main(argv) {
     if (!cleanup && (context.abort || Date.now() > deadline || diskFree() < reserveBytes)) throw context.abort ?? new Error('Simulator timeout or 15 GiB disk reserve reached');
     const started = Date.now();
     const child = spawn(command, args, { cwd: root, env: process.env, detached: true, stdio: ['ignore', 'pipe', 'pipe'] });
-    let size = 0, stdout = [], stderr = [], failure, groupStop, observation = '', finishAborted;
+    let size = 0, stdout = [], stderr = [], failure, groupStop, stopFailure, observation = '', finishAborted;
     const aborted = new Promise(resolveAbort => { finishAborted = resolveAbort; });
     const kill = reason => {
       if (failure) return; failure = reason;
       // Continue supervising the owned group after the leader exits. A child
       // which ignores TERM must not survive merely because xcodebuild closed.
-      groupStop = stopOwnedProcessGroup(child.pid).catch(error => { failure = error; }).finally(() => {
+      groupStop = stopOwnedAfterFailure(child.pid, failure).then(result => { stopFailure = result.stopFailure; }).finally(() => {
         child.stdout.destroy(); child.stderr.destroy(); finishAborted(-1);
       });
     };
@@ -272,7 +278,7 @@ async function main(argv) {
     }, 1000);
     let drainTimer;
     const closed = new Promise(resolveExit => {
-      child.on('error', error => { failure = error; resolveExit(-1); });
+      child.on('error', error => { failure ??= error; resolveExit(-1); });
       child.on('close', resolveExit);
       child.on('exit', code => {
         // A detached descendant cannot hold this parent's pipe forever after
@@ -287,6 +293,8 @@ async function main(argv) {
     const output = Buffer.concat(stdout).toString('utf8'), errors = Buffer.concat(stderr).toString('utf8');
     const sanitized = sanitize(output + errors);
     const record = { label, exitCode: code, elapsedMs: Date.now() - started };
+    if (failure) record.error = sanitize(failure.message);
+    if (stopFailure) record.stopFailure = sanitize(stopFailure.message);
     if (logOutput && context.logBytes + Buffer.byteLength(sanitized) <= 8 * 1024 ** 2) {
       const name = String(context.tools.length + 1).padStart(2, '0') + '-' + label + '.log';
       writeFileSync(join(evidence, name), sanitized, { mode: 0o600 }); context.logBytes += Buffer.byteLength(sanitized); record.log = name;
