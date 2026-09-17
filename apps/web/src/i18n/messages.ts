@@ -1,3 +1,4 @@
+import { sitePublishing } from "./site-publishing";
 import { runtimeErrors } from "./runtime-errors";
 import { validation } from "./validation";
 import { studio } from "./studio";
@@ -24,6 +25,7 @@ export const messageRows: readonly (readonly [string, string, string])[] = [
   ...participation,
   ...groups,
   ...studio,
+  ...sitePublishing,
   ...siteContent,
   ...validation,
   ...runtimeErrors,

@@ -1,0 +1,290 @@
+{
+  "retainedNode": {
+    "status": "PASS_AFTER_I18N_CORRECTION",
+    "originalTests": 410,
+    "originalPassed": 409,
+    "originalFailed": 1,
+    "originalReport": "../report.json",
+    "correction": "../correction.json",
+    "onlySourceChange": "apps/web/src/i18n/site-publishing.ts",
+    "correctedCatalogTests": 4
+  },
+  "retainedUINode": {
+    "status": "PASS_AFTER_EXPLICIT_PUBLIC_READING_CHOICE",
+    "passedBefore": 31,
+    "corrected": 1,
+    "original": "../continued/ui-node.json",
+    "correction": "../legacy-studio-correction.json",
+    "onlySourceChange": "tests/e2e/site-studio.spec.ts"
+  },
+  "openReliabilityObservation": {
+    "status": "UNRESOLVED_INTERMITTENT",
+    "scenario": "Firefox managed relay revocation closed the link after preserving own SOS",
+    "original": "../resumed/browser-firefox.json",
+    "diagnosticRepeats": 5,
+    "routingFilePasses": 8,
+    "productChanged": false
+  },
+  "status": "PASS_WITH_OPEN_RELIABILITY_OBSERVATION",
+  "scope": "Integrated site editor, private draft context, live/fixed history, recovery, profile lease/focus fixes and all affected local regressions. Go UI explicitly selects native and checks nativeRuntime. No Apple simulator or physical-radio claim.",
+  "started": "2026-09-17T20:39:54.271Z",
+  "finished": "2026-09-17T21:01:21.296Z",
+  "headBeforeCommit": "dc573161d04e2370577cecd72f15ea6e0f1a4766",
+  "checks": [
+    {
+      "name": "go-race",
+      "args": [
+        "scripts/go.mjs",
+        "test",
+        "-race",
+        "-p=1",
+        "./core",
+        "./transport",
+        "./webpeer",
+        "./app",
+        "./sites",
+        "./groups",
+        "./groupstore",
+        "./groupauthority",
+        "./groupaccess",
+        "./groupcontrol",
+        "./groupnotice",
+        "./groupledger",
+        "./profilelock",
+        "./profilestate",
+        "./profilebinding",
+        "./profiledb",
+        "./sqlitedriver"
+      ],
+      "env": {},
+      "exitCode": 0,
+      "durationMs": 519302
+    },
+    {
+      "name": "native-build",
+      "args": [
+        "scripts/native-build.mjs"
+      ],
+      "env": {},
+      "exitCode": 0,
+      "durationMs": 236
+    },
+    {
+      "name": "interop",
+      "args": [
+        "--import",
+        "tsx",
+        "--test",
+        "--test-concurrency=1",
+        "tests/native/*.test.ts"
+      ],
+      "env": {},
+      "exitCode": 0,
+      "durationMs": 521140
+    },
+    {
+      "name": "sqlite-cgo",
+      "args": [
+        "scripts/go.mjs",
+        "test",
+        "-race",
+        "-p=1",
+        "-tags",
+        "relayloom_sqlite_cgo,sqlite_omit_load_extension",
+        "./sqlitedriver",
+        "./groupstore",
+        "./profilelock",
+        "./profiledb",
+        "./profilestate"
+      ],
+      "env": {},
+      "exitCode": 0,
+      "durationMs": 168
+    },
+    {
+      "name": "ui-native",
+      "args": [
+        "scripts/e2e.mjs"
+      ],
+      "env": {
+        "RELAYLOOM_TEST_BACKEND": "native"
+      },
+      "exitCode": 0,
+      "durationMs": 195676
+    },
+    {
+      "name": "browser-chromium",
+      "args": [
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/matrix.config.ts"
+      ],
+      "env": {
+        "RELAYLOOM_MATRIX_ENGINE": "chromium"
+      },
+      "exitCode": 0,
+      "durationMs": 358201
+    },
+    {
+      "name": "browser-firefox",
+      "args": [
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/matrix.config.ts"
+      ],
+      "env": {
+        "RELAYLOOM_MATRIX_ENGINE": "firefox"
+      },
+      "exitCode": 0,
+      "durationMs": 469273,
+      "playwrightStats": {
+        "startTime": "2026-09-17T20:39:54.727Z",
+        "duration": 468808.046,
+        "expected": 73,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "name": "browser-webkit",
+      "args": [
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/matrix.config.ts"
+      ],
+      "env": {
+        "RELAYLOOM_MATRIX_ENGINE": "webkit"
+      },
+      "exitCode": 0,
+      "durationMs": 462769,
+      "playwrightStats": {
+        "startTime": "2026-09-17T20:47:44.085Z",
+        "duration": 462120.683,
+        "expected": 73,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "name": "rns-ui-chromium",
+      "args": [
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/reticulum/ui.config.ts",
+        "--browser",
+        "chromium"
+      ],
+      "env": {},
+      "exitCode": 0,
+      "durationMs": 105431
+    },
+    {
+      "name": "rns-ui-firefox",
+      "args": [
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/reticulum/ui.config.ts",
+        "--browser",
+        "firefox"
+      ],
+      "env": {},
+      "exitCode": 0,
+      "durationMs": 116203
+    },
+    {
+      "name": "rns-ui-webkit",
+      "args": [
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/reticulum/ui.config.ts",
+        "--browser",
+        "webkit"
+      ],
+      "env": {},
+      "exitCode": 0,
+      "durationMs": 121661
+    },
+    {
+      "name": "ios-host",
+      "args": [
+        "--test",
+        "apps/ios/Tests/SimulatorRunnerTests.mjs"
+      ],
+      "env": {},
+      "exitCode": 0,
+      "durationMs": 2035
+    },
+    {
+      "name": "ios-static",
+      "args": [
+        "scripts/ios-static-check.py"
+      ],
+      "env": {},
+      "exitCode": 0,
+      "durationMs": 33
+    },
+    {
+      "name": "desktop-build",
+      "args": [
+        "scripts/desktop-build.mjs"
+      ],
+      "env": {},
+      "exitCode": 0,
+      "durationMs": 171
+    },
+    {
+      "name": "desktop-run",
+      "args": [
+        "scripts/desktop-run.mjs",
+        "--smoke",
+        "--x11"
+      ],
+      "env": {},
+      "exitCode": 0,
+      "durationMs": 1517
+    },
+    {
+      "name": "desktop-package",
+      "args": [
+        "scripts/desktop-package.mjs",
+        "--dir"
+      ],
+      "env": {},
+      "exitCode": 0,
+      "durationMs": 6941
+    },
+    {
+      "name": "desktop-packaged-run",
+      "args": [
+        "scripts/desktop-packaged-smoke.mjs"
+      ],
+      "env": {},
+      "exitCode": 0,
+      "durationMs": 701
+    }
+  ],
+  "sourceCount": 585,
+  "sourcesStable": true,
+  "publicHTMLUpdated": false,
+  "physicalHardwareValidated": false,
+  "independentReviewCompleted": false,
+  "notes": [
+    "The local site-api/go-site-api ui-go labels were incorrect: both used Node. Their raw logs are preserved; see site-ui-runtime-correction. This gate uses native explicitly and the UI test checks nativeRuntime=Go.",
+    "The reload lease and focus defects were reproduced before fixing; no test timeout or active-profile exclusion was weakened.",
+    "Only local/synthetic test evidence is copied here. Raw traces and vaults remain in the local cache.",
+    "The iOS screenshot change has only host/static validation here; actual Apple execution remains pending."
+  ],
+  "counts": {
+    "nodeCases": 410,
+    "nodeOriginalPassed": 409,
+    "nodeOriginalFailed": 1,
+    "interop": 69,
+    "uiNode": 32,
+    "uiGo": 32,
+    "browserPerEngine": 73,
+    "browserTotal": 219,
+    "uiRNS": 9
+  }
+}

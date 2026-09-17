@@ -1450,6 +1450,12 @@ func (n *Node) Handle(operation string, body map[string]any) (any, error) {
 			return nil, err
 		}
 		next.SiteDraft = map[string]any{"blocks": body["blocks"], "theme": body["theme"], "savedAt": time.Now().UnixMilli()}
+		if context, exists := body["editing"]; exists {
+			if err = sites.ValidateEditingContext(context, n.identity.Public.ID); err != nil {
+				return nil, err
+			}
+			next.SiteDraft["editing"] = context
+		}
 		for _, key := range []string{"site", "attachments"} {
 			if value, exists := content[key]; exists {
 				next.SiteDraft[key] = value

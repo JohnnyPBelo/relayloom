@@ -1,0 +1,13 @@
+{
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "--test",
+    "--test-concurrency=1",
+    "--test-name-pattern=late fork",
+    "tests/site-publishing-client.test.ts"
+  ],
+  "exitCode": 1,
+  "durationMs": 2294
+}

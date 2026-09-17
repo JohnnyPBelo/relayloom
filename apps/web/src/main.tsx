@@ -1,3 +1,7 @@
+import type { SiteVisitTarget } from "./site/visit";
+import type { SiteRevision } from "../../../packages/sites/src/protocol";
+import { contextFor, type PublishingSession, type SiteCatalogState } from "./site/publishing";
+import { siteAddress } from "../../../packages/sites/src/protocol";
 import {
   configureNativePreferences,
   ensureNativePreferences,
@@ -95,10 +99,10 @@ if (!usesLocalAPI())
   );
 
 const SiteStudio = lazy(() =>
-  import("./site/studio").then((m) => ({ default: m.SiteStudio })),
+  import("./site/editor").then((m) => ({ default: m.SiteEditor })),
 );
-const SiteReader = lazy(() =>
-  import("./site/renderer").then((m) => ({ default: m.SiteReader })),
+const SiteVisit = lazy(() =>
+  import("./site/visit").then((m) => ({ default: m.SiteVisit })),
 );
 type State = {
   capabilities?: { autonomous?: boolean; dynamicGroups?: boolean };
@@ -258,7 +262,7 @@ function App() {
     [text, setText] = useState(""),
     [reply, setReply] = useState<DisplayObject>(),
     [attachments, setAttachments] = useState<Attachment[]>([]),
-    [viewSite, setViewSite] = useState<DisplayObject>(),
+    [viewSite, setViewSite] = useState<SiteVisitTarget>(),
     [mobileMenu, setMobileMenu] = useState(false);
   const [messageTTL, setMessageTTL] = useState(30 * 86400_000);
   const [groupManager, setGroupManager] = useState(false);
@@ -309,6 +313,7 @@ function App() {
   const [studioValue, setStudioValue] = useState<StudioValue>(() =>
     initialSite(""),
   );
+  const [siteSession, setSiteSession] = useState<(PublishingSession & { generation: number }) | undefined>();
   const [siteLoading, setSiteLoading] = useState(false),
     [siteLoadError, setSiteLoadError] = useState(""),
     [siteLoadVersion, setSiteLoadVersion] = useState(0);
@@ -518,6 +523,7 @@ function App() {
     setViewSite(undefined);
     loadedSite.current = "";
     setStudioValue(initialSite(""));
+    setSiteSession(undefined);
     setSiteLoadError("");
     setModal("");
     setCommandsOpen(false);
@@ -721,9 +727,10 @@ function App() {
     if (!me) {
       loadedSite.current = "";
       setStudioValue(initialSite(""));
+      setSiteSession(undefined);
       return;
     }
-    if (page !== "site" || loadedSite.current === me.id) return;
+    if (page !== "site" || (loadedSite.current === me.id && siteSession?.generation === privacyGeneration.current)) return;
     const owner = me.id,
       generation = privacyGeneration.current;
     let active = true,
@@ -732,14 +739,34 @@ function App() {
     setSiteLoading(true);
     setSiteLoadError("");
     void (async () => {
-      const latest = objects
-        .filter((o) => o.kind === "site" && o.author.id === owner)
-        .at(-1);
-      const data = state?.siteDraft
-        ? await api("site-draft-load", {})
-        : latest
-          ? (await api("view", { id: latest.id })).content
-          : null;
+      const address = siteAddress(owner, "profile");
+      let catalog: SiteCatalogState = await api("site-command", { action: "state", address });
+      let data = await api("site-draft-load", {});
+      let editing = data?.editing;
+      let defaultRecipients: "public" | string[] = data ? [] : "public";
+      if (!editing && catalog.number > 0) {
+        defaultRecipients = [];
+        const current = await api("site-command", { action: "resolve", address });
+        catalog = current.state;
+        if (current.status === "available") {
+          defaultRecipients = current.object.public ? "public" : current.object.readers.filter((id:string) => id !== owner).sort();
+          if (!data) {
+            data = current.object.content;
+            editing = catalog.nextSequence === null ? undefined : contextFor(owner, catalog, undefined, defaultRecipients);
+          }
+        }
+      } else if (!editing && catalog.heads.length === 0) {
+        const latest = objects
+          .filter((o) => o.kind === "site" && o.author.id === owner && !o.content.siteRevision)
+          .sort((a,b) => b.created - a.created || b.id.localeCompare(a.id))[0];
+        if (latest) {
+          const previous = await api("view", { id: latest.id });
+          defaultRecipients = previous.public ? "public" : previous.readers.filter((id:string) => id !== owner).sort();
+          data ??= previous.content;
+        }
+      }
+      if (!editing && catalog.number === 0 && catalog.pending.length === 0 && catalog.nextSequence !== null)
+        editing = contextFor(owner, catalog, undefined, defaultRecipients);
       if (!active || generation !== privacyGeneration.current) return;
       setStudioValue(
         data
@@ -750,6 +777,7 @@ function App() {
             }
           : initialSite(me.name),
       );
+      setSiteSession({editing, catalog, generation, defaultRecipients});
       resolved = true;
     })()
       .catch((e) => {
@@ -765,7 +793,7 @@ function App() {
       active = false;
       if (!resolved && loadedSite.current === owner) loadedSite.current = "";
     };
-  }, [me?.id, page, siteLoadVersion]);
+  }, [me?.id, page, siteLoadVersion, privacyGeneration.current]);
   useEffect(() => {
     if (nearBottom.current) {
       messageScroll.current?.scrollTo({
@@ -2125,16 +2153,7 @@ function App() {
                             aria-label={t("Ver página de {name}", {
                               name: c.name,
                             })}
-                            onClick={() => {
-                              setViewSite(
-                                objects
-                                  .filter(
-                                    (o) =>
-                                      o.kind === "site" && o.author.id === c.id,
-                                  )
-                                  .at(-1),
-                              );
-                            }}
+                            onClick={() => setViewSite({author:c})}
                           >
                             <ArrowUpRight size={19} />
                           </button>
@@ -2157,7 +2176,7 @@ function App() {
             </div>
           )}
           {page === "site" &&
-            (siteLoading ? (
+            (siteLoading || (!siteSession && !siteLoadError) ? (
               <section className="card" role="status">
                 {t("A abrir o teu projecto cifrado…")}
               </section>
@@ -2180,6 +2199,18 @@ function App() {
                   value={studioValue}
                   onChange={setStudioValue}
                   owner={me!.name}
+                  ownerId={me!.id}
+                  knownVersions={objects.filter(o => o.kind === "site" && o.author.id === me!.id && (o.content.siteRevision as SiteRevision | undefined)?.body?.name === "profile").map(o => o.id).sort().join(":" )}
+                  contacts={contacts}
+                  blocked={state.blocked}
+                  session={siteSession!}
+                  onSession={next => setSiteSession(current => current && current.generation === siteSession!.generation ? {...current, ...next} : current)}
+                  isActive={() => privacyGeneration.current === siteSession!.generation}
+                  onView={object => {
+                    const revision = object.content.siteRevision as SiteRevision | undefined;
+                    setViewSite({author:object.author, ...(revision ? {name:revision.body.name,revisionId:revision.id} : {legacyId:object.id})});
+                  }}
+                  onSaved={refresh}
                   posts={objects
                     .filter(
                       (o) =>
@@ -2189,34 +2220,6 @@ function App() {
                     )
                     .sort((a, b) => b.created - a.created)}
                   busy={busy}
-                  onSave={async (v) => {
-                    await api("site-draft", {
-                      blocks: siteFallback(v.site),
-                      theme: v.theme,
-                      site: v.site,
-                      attachments: v.attachments,
-                    });
-                    await refresh();
-                  }}
-                  onPublish={async (v) => {
-                    await api("site-draft", {
-                      blocks: siteFallback(v.site),
-                      theme: v.theme,
-                      site: v.site,
-                      attachments: v.attachments,
-                    });
-                    await publish(
-                      {
-                        type: "site",
-                        blocks: siteFallback(v.site),
-                        theme: v.theme,
-                        site: v.site,
-                        attachments: v.attachments,
-                      },
-                      "public",
-                    );
-                    await refresh();
-                  }}
                 />
               </Suspense>
             ))}
@@ -3278,48 +3281,9 @@ function App() {
           title={t("Página de {name}", { name: viewSite.author.name })}
           close={() => setViewSite(undefined)}
         >
-          {viewSite.content.site ? (
-            <Suspense fallback={<p role="status">{t("A abrir o site…")}</p>}>
-              <SiteReader
-                key={viewSite.id}
-                contentId={viewSite.id}
-                site={viewSite.content.site}
-                theme={viewSite.content.theme ?? "sand"}
-                assets={viewSite.content.attachments ?? []}
-                posts={objects
-                  .filter(
-                    (o) =>
-                      o.kind === "post" &&
-                      o.author.id === viewSite.author.id &&
-                      !o.deleted,
-                  )
-                  .sort((a, b) => b.created - a.created)}
-              />
-            </Suspense>
-          ) : (
-            <div className={"site-canvas " + viewSite.content.theme}>
-              <div className="site-masthead">
-                <strong>{viewSite.author.name}</strong>
-                <ShieldCheck size={18} />
-              </div>
-              {viewSite.content.blocks?.map((b) => (
-                <section className={"site-block " + b.type} key={b.id}>
-                  <h2>{b.title}</h2>
-                  <p>{b.body}</p>
-                  {b.url && /^https:\/\//.test(b.url) && (
-                    <a href={b.url} target="_blank" rel="noopener noreferrer">
-                      {t("Explorar")} <ArrowUpRight size={16} />
-                    </a>
-                  )}
-                </section>
-              ))}
-            </div>
-          )}
-          <p className="small-note">
-            {t(
-              "Assinatura verificada. Página lida a partir do armazenamento local; pode ser servida por este nó mesmo com o autor desligado.",
-            )}
-          </p>
+          <Suspense fallback={<p role="status">{t("A abrir o site…")}</p>}>
+            <SiteVisit target={viewSite} knownVersions={objects.filter(o => o.kind === "site" && o.author.id === viewSite.author.id && (o.content.siteRevision as SiteRevision | undefined)?.body?.name === (viewSite.name ?? "profile")).map(o => o.id).sort().join(":")} legacy={objects.filter(o => o.kind === "site" && o.author.id === viewSite.author.id && !o.content.siteRevision)} posts={objects.filter(o => o.kind === "post" && o.author.id === viewSite.author.id && !o.deleted).sort((a,b) => b.created - a.created)}/>
+          </Suspense>
         </Modal>
       )}
     </div>

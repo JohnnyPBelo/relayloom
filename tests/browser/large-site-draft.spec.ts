@@ -1,3 +1,4 @@
+import { recordReloadFailure } from "./reload-diagnostics";
 import { test, expect } from "@playwright/test";
 import { uiHost } from "./app-host";
 import { createHash } from "node:crypto";
@@ -105,7 +106,12 @@ test("an allowed large site image saves through the UI and survives encrypted br
     .click();
   await expect(studio.getByRole("status")).toContainText("Rascunho cifrado");
   await page.reload();
-  await page.getByLabel("Frase-passe", { exact: true }).fill(password);
+  try {
+    await page.getByLabel("Frase-passe", { exact: true }).fill(password);
+  } catch (error) {
+    await recordReloadFailure(page, info).catch(() => {});
+    throw error;
+  }
   await page
     .getByRole("button", { name: "Entrar na minha rede", exact: true })
     .click();

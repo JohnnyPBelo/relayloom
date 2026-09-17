@@ -514,3 +514,25 @@ Dois percursos reais entre browser/Node/Go passaram WebRTC→WebSocket→TCP, co
 Na regressão WebKit, o teste antigo procurava role=status global e encontrou o feedback do estúdio e o toast de uma publicação social anterior. O trace mostra o sucesso do rascunho. A correcção deve procurar o estado dentro do landmark Estúdio do site, mantendo a expectativa e o prazo. Não esperar pelo desaparecimento arbitrário do toast nem escolher o primeiro resultado. A repetição desta correcção ainda está pendente enquanto o gate original termina.
 
 A repetição do selector limitado ao estúdio passou em Chromium/Firefox/WebKit, juntamente com o novo teste do worker compilado. A matriz consolidada cobre 66 cenários por engine (198 combinações), mantendo a primeira execução WebKit como FAIL e os relatórios de correcção separados. Nenhuma fonte de produto ou asset mudou entre a regressão e a repetição. O port está integrado no principal; o contexto/editor seguinte continua numa worktree isolada e não deve ser promovido como UI entregue.
+
+
+## Estúdio de versões e observação das falhas — 2026-09-17
+
+O controlador actual guarda intenção com base/UUID/digest/audiência/prazo antes de enviar e recupera operações prontas após perda de resposta/reinício real. Node/Go passaram os novos casos. A recuperação de uma versão privada tem de recuperar também os leitores dessa versão; herdar uma publicação posterior pública seria declassificação inesperada. O preview recuperado só permite confirmação depois de verificado.
+
+O primeiro percurso de3contas passou4publicações e2recuperações e falhou no helperde navegação apósreload: a leitura imediata de isVisible escolheu o menu móvel antes do unlock terminar. Aguardar a heading de conversas passou sem mudar prazo ou produto. Gate dofork UI tambémPASS. Não interpretar essa falha dafixture como perda do rascunho.
+
+CIbrowserdc revelou outro problema: o campo de password não apareceu em12s depois de reload no teste de imagemgrande. O artefacto não conserva a captura/trace; não atribuir a causa aRTC,concorrênciaoulease. Melhorar diagnósticos e obter reprodução antes de mudar temporizadores/política de arranque. iOS3f importoua foto, navegou à fototeca e falhouconsulta remota decélulas; as imagensexportadas são anteriores ao picker, não evidência da sua grelha.
+
+A delegação managedFeedback noestúdio suprimia validação local que ocorresse antes de chamar ocontrolador. Foi adicionada onActionError paraapresentar oerro e limparsucessoantigo; ainda precisa detesteUInegativo. Separar alterações e testes: scripts de edição com assert falhado não devem prosseguir para a validação com código inalterado.
+
+
+## Cobertura por motor e retoma da regressão — 17 de Setembro
+
+Os dois drivers locais site-api-final/go-site-final usavam envgo para uma etapa rotuladaGo; o helper antigo seleccionavaNode. Corrigir a atribuição, preservar os logs e não converter a etiqueta em prova. O runner/helper recusam agora valores desconhecidos e um teste confirma o motor efectivo por API. O novo percursoUI passou emNode eGo com essa confirmação; os CI antigos native-ui também usaram o valorcorrecto native.
+
+O primeiro gate integral do estúdio concluiu410casosNode,409PASS e1FAIL por entrada de tradução«Bloqueado» em falta. Corrigida a entrada, passaram os testes i18n/typecheck/build. A continuação comprova por hash que só mudou essa linha e conserva os outros409resultados. Nunca substituir o relatório originalFAIL por umPASS; registar a correcção e o âmbito preservado separadamente.
+
+A UI Node completa expôs uma fixture legada que guardava um rascunho sem leitores e esperava distribuição pública. O produto inicia esse caso como privado. O teste agora escolhe Público explicitamente e confirma a entrega e a autoria no outro processo. As passagens Node/Go dirigidas e a UI Go32 passaram, sem relaxar a privacidade inicial.
+
+A matriz integral Firefox teve um fecho inesperado deRTC ao pausarrelay, apesar da entrega do SOS próprio e da recusa do conteúdo cancelado. A causa não ficou no trace inicial. Metadados limitados de frames/closeReason foram acrescentados ao teste; cinco repetições, o ficheiro completo e a nova matriz passaram. Registar a ocorrência como não esclarecida; não transformar o passe posterior em prova de uma correcção inexistente. O gate continuou com todas as outras fontes iguais, incluindo WebKit73, nove UI-RNS e pacote Linux. A evidência final indica explicitamente esta observação e a ausência de revisão independente/validação física.

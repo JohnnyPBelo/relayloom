@@ -1,6 +1,13 @@
 import { spawn } from "node:child_process";
 import { resolve } from "node:path";
 import { mkdirSync } from "node:fs";
+if (
+  process.env.RELAYLOOM_TEST_BACKEND !== undefined &&
+  !["node", "native"].includes(process.env.RELAYLOOM_TEST_BACKEND)
+)
+  throw new Error(
+    "Use RELAYLOOM_TEST_BACKEND=node|native; native selects the Go runtime.",
+  );
 const temp = resolve(".cache/tmp");
 mkdirSync(temp, { recursive: true });
 const child = spawn(

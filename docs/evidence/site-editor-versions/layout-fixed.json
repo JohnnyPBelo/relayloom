@@ -1,0 +1,78 @@
+{
+  "steps": [
+    {
+      "name": "typecheck",
+      "command": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit"
+      ],
+      "environment": {},
+      "exitCode": 0,
+      "durationMs": 6774
+    },
+    {
+      "name": "build",
+      "command": [
+        "node",
+        "node_modules/vite/bin/vite.js",
+        "build"
+      ],
+      "environment": {},
+      "exitCode": 0,
+      "durationMs": 2742
+    },
+    {
+      "name": "chromium",
+      "command": [
+        "node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "tests/browser/site-publication.spec.ts",
+        "-g",
+        "controls work in"
+      ],
+      "environment": {
+        "RELAYLOOM_MATRIX_ENGINE": "chromium"
+      },
+      "exitCode": 0,
+      "durationMs": 9057
+    },
+    {
+      "name": "firefox",
+      "command": [
+        "node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "tests/browser/site-publication.spec.ts",
+        "-g",
+        "controls work in"
+      ],
+      "environment": {
+        "RELAYLOOM_MATRIX_ENGINE": "firefox"
+      },
+      "exitCode": 0,
+      "durationMs": 12970
+    },
+    {
+      "name": "webkit",
+      "command": [
+        "node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "tests/browser/site-publication.spec.ts",
+        "-g",
+        "controls work in"
+      ],
+      "environment": {
+        "RELAYLOOM_MATRIX_ENGINE": "webkit"
+      },
+      "exitCode": 0,
+      "durationMs": 15609
+    }
+  ],
+  "status": "PASS"
+}

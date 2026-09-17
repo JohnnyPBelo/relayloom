@@ -1,0 +1,13 @@
+{
+  "command": [
+    "node",
+    "scripts/e2e.mjs",
+    "--config",
+    "tests/browser/browser.config.ts",
+    "tests/browser/site-publication.spec.ts",
+    "-g",
+    "controls work in en-GB"
+  ],
+  "exitCode": 1,
+  "durationMs": 4528
+}

@@ -176,6 +176,8 @@ jobs:
             .cache/browser-application/ui
             .cache/browser-native/*-network*
             .cache/browser-groups/*.json
+            .cache/browser-reload-diagnostics
+            test-results/**/test-failed-*.png
           retention-days: 7
 
   desktop-package:

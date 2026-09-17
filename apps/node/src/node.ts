@@ -1,3 +1,4 @@
+import { validateSiteEditingContext } from "../../../packages/sites/src/editing";
 import { readUIPreferences, saveUIPreferences } from "./ui-preferences";
 import { SiteRuntime, inspectSite } from "./site-runtime";
 import { NodeSiteCatalog } from "../../../packages/sites/src/catalog";
@@ -804,8 +805,13 @@ export class LoomNode extends EventEmitter {
     theme: string,
     site?: Content["site"],
     attachments?: Content["attachments"],
+    editing?: unknown,
   ) {
-    this.requireIdentity();
+    const owner = this.requireIdentity();
+    const context =
+      editing === undefined
+        ? undefined
+        : validateSiteEditingContext(editing, owner.public.id);
     validateContent({
       type: "site",
       blocks,
@@ -820,6 +826,7 @@ export class LoomNode extends EventEmitter {
         theme,
         ...(site !== undefined ? { site } : {}),
         ...(attachments !== undefined ? { attachments } : {}),
+        ...(context !== undefined ? { editing: context } : {}),
         savedAt: Date.now(),
       },
     };

@@ -1,0 +1,42 @@
+
+Running 1 test using 1 worker
+
+(node:3334990) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/browser/site-publication.spec.ts:739:3 › publication and history controls work in en-GB and keep authored text across a language change (3.2s)
+
+
+  1) tests/browser/site-publication.spec.ts:739:3 › publication and history controls work in en-GB and keep authored text across a language change
+
+    Error: expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 180
+    Received:    77.671875
+
+      792 |     ).toBeVisible();
+      793 |     const addressField = dialog.getByLabel(language.code === "en-GB" ? "Permanent site address" : "Dirección permanente del sitio", {exact:true});
+    > 794 |     expect((await addressField.boundingBox())!.width).toBeGreaterThanOrEqual(180);
+          |                                                       ^
+      795 |     await page.setViewportSize({width:390,height:844});
+      796 |     expect((await addressField.boundingBox())!.width).toBeGreaterThanOrEqual(180);
+      797 |     await page.setViewportSize({width:1440,height:1000});
+        at <repo>/tests/browser/site-publication.spec.ts:794:55
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/site-publication-publicati-deade-xt-across-a-language-change/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/site-publication-publicati-deade-xt-across-a-language-change/error-context.md
+
+    Error Context: test-results/site-publication-publicati-deade-xt-across-a-language-change/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/site-publication-publicati-deade-xt-across-a-language-change/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/site-publication-publicati-deade-xt-across-a-language-change/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/browser/site-publication.spec.ts:739:3 › publication and history controls work in en-GB and keep authored text across a language change

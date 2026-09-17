@@ -310,23 +310,29 @@ export function SiteReader({
   assets: suppliedAssets,
   posts,
   contentId,
+  onReady,
 }: {
   site: SiteDocument;
   theme: string;
   assets: Attachment[];
   posts: DisplayObject[];
   contentId: string;
+  onReady?: (object: DisplayObject | undefined) => void;
 }) {
   const [verified, setVerified] = useState<DisplayObject>(),
     [readError, setReadError] = useState("");
   useEffect(() => {
     let active = true;
     setVerified(undefined);
+    onReady?.(undefined);
     setReadError("");
     void api("view", { id: contentId })
       .then((value: DisplayObject) => {
         validateSite(value.content.site, value.content.attachments);
-        if (active) setVerified(value);
+        if (active) {
+          setVerified(value);
+          onReady?.(value);
+        }
       })
       .catch(() => {
         if (active)

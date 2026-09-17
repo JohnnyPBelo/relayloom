@@ -99,50 +99,68 @@ void (async () => {
     });
     return;
   }
-  await navigator.locks.request(
-    "relayloom-application:" + profileName,
-    { ifAvailable: true },
-    async (lease) => {
-      if (!lease) {
-        worker.postMessage({
-          type: "boot-error",
-          error:
-            "Este perfil já está aberto noutro separador. Continua nesse separador ou fecha-o primeiro.",
-        });
-        return;
-      }
-      try {
-        const profile = await BrowserProfile.connect(profileName);
-        app = new BrowserApplication(profile, {
-          publish: (bundle, priority) =>
-            worker.postMessage({
-              type: "publish",
-              bundle,
-              priority,
-              generation,
-              owner: identityId,
-            }),
-          command: networkCommand,
-          state: () => network,
-          context: (identity, g) => {
-            generation = g;
-            identityId = identity?.id ?? null;
-            network = { peers: [], counters: {}, error: "" };
-            worker.postMessage({ type: "context", identity, generation });
-          },
-        });
-        worker.postMessage({ type: "ready", state: await app.state() });
-        // The browser terminates this owned worker and releases the lease on page teardown.
-        await new Promise(() => {});
-      } catch (error) {
-        worker.postMessage({
-          type: "boot-error",
-          error:
-            error instanceof Error && error.message
-              ? error.message
-              : "Não foi possível abrir o perfil",
-        });
-      }
-    },
-  );
+  // Reload may start this worker before the previous worker's termination has
+  // released its lock. Queue briefly; never break or take over a live lease.
+  const acquisition = new AbortController();
+  const deadline = setTimeout(() => acquisition.abort(), 2000);
+  try {
+    await navigator.locks.request(
+      "relayloom-application:" + profileName,
+      { signal: acquisition.signal },
+      async (lease) => {
+        clearTimeout(deadline);
+        if (!lease) {
+          worker.postMessage({
+            type: "boot-error",
+            error:
+              "Este perfil já está aberto noutro separador. Continua nesse separador ou fecha-o primeiro.",
+          });
+          return;
+        }
+        try {
+          const profile = await BrowserProfile.connect(profileName);
+          app = new BrowserApplication(profile, {
+            publish: (bundle, priority) =>
+              worker.postMessage({
+                type: "publish",
+                bundle,
+                priority,
+                generation,
+                owner: identityId,
+              }),
+            command: networkCommand,
+            state: () => network,
+            context: (identity, g) => {
+              generation = g;
+              identityId = identity?.id ?? null;
+              network = { peers: [], counters: {}, error: "" };
+              worker.postMessage({ type: "context", identity, generation });
+            },
+          });
+          worker.postMessage({ type: "ready", state: await app.state() });
+          // The browser terminates this owned worker and releases the lease on page teardown.
+          await new Promise(() => {});
+        } catch (error) {
+          worker.postMessage({
+            type: "boot-error",
+            error:
+              error instanceof Error && error.message
+                ? error.message
+                : "Não foi possível abrir o perfil",
+          });
+        }
+      },
+    );
+  } catch (error) {
+    worker.postMessage({
+      type: "boot-error",
+      error: acquisition.signal.aborted
+        ? "Este perfil já está aberto noutro separador. Continua nesse separador ou fecha-o primeiro."
+        : error instanceof Error && error.message
+          ? error.message
+          : "Não foi possível abrir o perfil",
+    });
+  } finally {
+    clearTimeout(deadline);
+  }
 })();

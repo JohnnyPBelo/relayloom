@@ -84,6 +84,10 @@ export function SiteStudio({
   owner,
   posts,
   busy,
+  header,
+  managedFeedback = false,
+  publishDisabled = false,
+  onActionError,
 }: {
   value: StudioValue;
   onChange: (v: StudioValue) => void;
@@ -92,6 +96,10 @@ export function SiteStudio({
   owner: string;
   posts: DisplayObject[];
   busy: boolean;
+  header?: React.ReactNode;
+  managedFeedback?: boolean;
+  publishDisabled?: boolean;
+  onActionError?: (error: Error) => void;
 }) {
   const [pageId, setPage] = useState(value.site.home),
     [selected, setSelected] = useState(""),
@@ -361,22 +369,53 @@ export function SiteStudio({
     if (site !== value.site) change({ ...value, site });
   }
   async function action(kind: "save" | "publish") {
+    const trigger =
+      document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : undefined;
+    const region = trigger?.closest(".site-studio");
+    let moved = false;
+    const interacted = () => {
+      moved = true;
+    };
+    const cleanup = () => {
+      document.removeEventListener("pointerdown", interacted, true);
+      document.removeEventListener("keydown", interacted, true);
+    };
+    document.addEventListener("pointerdown", interacted, true);
+    document.addEventListener("keydown", interacted, true);
     setError("");
     setFeedback("");
     setWorking(true);
     try {
       validateStudio(value);
       await (kind === "save" ? onSave(value) : onPublish(value));
-      if (mounted.current)
+      if (mounted.current && !managedFeedback)
         setFeedback(
           kind === "save"
             ? "Rascunho cifrado guardado neste dispositivo"
             : "Página assinada e publicada no armazenamento P2P",
         );
     } catch (e) {
-      if (mounted.current) setError((e as Error).message);
+      if (mounted.current) {
+        if (managedFeedback && onActionError) onActionError(e as Error);
+        else setError((e as Error).message);
+      }
     } finally {
-      if (mounted.current) setWorking(false);
+      if (mounted.current) {
+        setWorking(false);
+        requestAnimationFrame(() => {
+          cleanup();
+          if (!mounted.current || moved || !region?.isConnected) return;
+          const target =
+            trigger?.isConnected && !trigger.matches(":disabled")
+              ? trigger
+              : region.querySelector<HTMLElement>(
+                  "[data-site-followup]:enabled",
+                );
+          target?.focus({ preventScroll: true });
+        });
+      } else cleanup();
     }
   }
   async function files(list: FileList | null) {
@@ -469,6 +508,7 @@ export function SiteStudio({
       aria-label={t("Estúdio do site")}
       data-revision={revision}
     >
+      {header}
       <fieldset
         className="studio-controls"
         aria-label={t("Controlos do estúdio")}
@@ -560,7 +600,7 @@ export function SiteStudio({
           </button>
           <button
             className="primary"
-            disabled={disabled}
+            disabled={disabled || publishDisabled}
             onClick={() => void action("publish")}
           >
             <Globe2 size={16} />

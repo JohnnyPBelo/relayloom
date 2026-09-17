@@ -1,3 +1,4 @@
+import { validateSiteEditingContext } from "../../../packages/sites/src/editing";
 import {
   createCipheriv,
   createDecipheriv,
@@ -159,6 +160,8 @@ export function parsePrivateState(
       !Number.isSafeInteger(state.siteDraft.savedAt)
     )
       throw new Error("Rascunho privado inválido");
+    if (state.siteDraft.editing !== undefined)
+      validateSiteEditingContext(state.siteDraft.editing, identity.public.id);
     validateContent({
       type: "site",
       blocks: state.siteDraft.blocks,

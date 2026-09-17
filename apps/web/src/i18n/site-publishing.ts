@@ -1,0 +1,342 @@
+export const sitePublishing = [
+  [
+    "Chegou uma nova versão durante a revisão. Actualiza e confirma novamente.",
+    "A new version arrived during review. Refresh and confirm again.",
+    "Ha llegado una nueva versión durante la revisión. Actualiza y confirma de nuevo.",
+  ],
+  [
+    "A publicação foi cancelada. Conservámos o teu rascunho.",
+    "Publication was cancelled. Your draft has been kept.",
+    "Se ha cancelado la publicación. Hemos conservado tu borrador.",
+  ],
+  [
+    "A tua próxima publicação vai indicar explicitamente quais as versões que substitui.",
+    "Your next publication will explicitly identify the versions it replaces.",
+    "Tu próxima publicación indicará explícitamente las versiones que sustituye.",
+  ],
+  [
+    "A verificar e guardar o estado do site…",
+    "Checking and saving site state…",
+    "Comprobando y guardando el estado del sitio…",
+  ],
+  [
+    "Aguarda a operação do site em curso",
+    "Wait for the current site operation to finish",
+    "Espera a que termine la operación del sitio",
+  ],
+  ["Cancelar preparação", "Cancel preparation", "Cancelar preparación"],
+  ["Comparar versões", "Compare versions", "Comparar versiones"],
+  [
+    "Confirma todas as versões concorrentes antes de publicar",
+    "Confirm all competing versions before publishing",
+    "Confirma todas las versiones en conflicto antes de publicar",
+  ],
+  [
+    "Confirmo que este rascunho resolve todas as versões indicadas",
+    "I confirm that this draft resolves all the listed versions",
+    "Confirmo que este borrador resuelve todas las versiones indicadas",
+  ],
+  [
+    "Conservámos o pedido original. Verifica o resultado antes de editar ou tentar outra publicação.",
+    "The original request has been kept. Check its outcome before editing or starting another publication.",
+    "Hemos conservado la solicitud original. Comprueba su resultado antes de editar o iniciar otra publicación.",
+  ],
+  ["Contacto indisponível", "Contact unavailable", "Contacto no disponible"],
+  ["Encerrar esta tentativa", "Close this attempt", "Cerrar este intento"],
+  [
+    "Escolhe a versão de partida antes de publicar",
+    "Choose the starting version before publishing",
+    "Elige la versión de partida antes de publicar",
+  ],
+  [
+    "Escolher a versão de partida",
+    "Choose the starting version",
+    "Elegir la versión de partida",
+  ],
+  [
+    "Esta tentativa expirou. Conservámos o teu rascunho.",
+    "This attempt expired. Your draft has been kept.",
+    "Este intento ha caducado. Hemos conservado tu borrador.",
+  ],
+  [
+    "Esta versão é privada. Os leitores originais serão conservados no rascunho.",
+    "This version is private. The draft will keep its original readers.",
+    "Esta versión es privada. El borrador conservará sus lectores originales.",
+  ],
+  [
+    "Esta versão é pública",
+    "This version is public",
+    "Esta versión es pública",
+  ],
+  [
+    "Estado da publicação do site",
+    "Site publication status",
+    "Estado de publicación del sitio",
+  ],
+  [
+    "Este site atingiu o limite de publicações. O histórico continua disponível.",
+    "This site has reached its publication limit. History remains available.",
+    "Este sitio ha alcanzado su límite de publicaciones. El historial sigue disponible.",
+  ],
+  [
+    "Guardar é privado. Publicar cria uma versão assinada para os leitores que escolheres.",
+    "Saving is private. Publishing creates a signed version for the readers you choose.",
+    "Guardar es privado. Publicar crea una versión firmada para los lectores que elijas.",
+  ],
+  [
+    "Este rascunho não está ligado à versão actual. Compara o histórico antes de publicar.",
+    "This draft is not linked to the current version. Compare the history before publishing.",
+    "Este borrador no está vinculado a la versión actual. Compara el historial antes de publicar.",
+  ],
+  [
+    "Há {count} versões concorrentes",
+    "There are {count} competing versions",
+    "Hay {count} versiones en conflicto",
+  ],
+  [
+    "Leitores privados do site",
+    "Private site readers",
+    "Lectores privados del sitio",
+  ],
+  [
+    "O conteúdo do rascunho será mantido. A próxima publicação continuará a partir das versões indicadas.",
+    "Your draft content will be kept. The next publication will continue from the listed versions.",
+    "Se conservará el contenido del borrador. La próxima publicación continuará a partir de las versiones indicadas.",
+  ],
+  [
+    "O rascunho actual será substituído por esta versão. Nada é publicado até voltares a escolher Publicar página.",
+    "This version will replace your current draft. Nothing is published until you choose Publish page again.",
+    "Esta versión sustituirá tu borrador actual. No se publica nada hasta que vuelvas a elegir Publicar página.",
+  ],
+  [
+    "O rascunho não corresponde ao pedido pendente. Não foi publicada outra versão.",
+    "The draft does not match the pending request. No other version was published.",
+    "El borrador no coincide con la solicitud pendiente. No se ha publicado otra versión.",
+  ],
+  [
+    "O resultado ainda não permite abandonar esta tentativa. Verifica ou retoma a publicação.",
+    "The outcome does not yet allow this attempt to be abandoned. Check or resume publication.",
+    "El resultado todavía no permite abandonar este intento. Comprueba o reanuda la publicación.",
+  ],
+  [
+    "O site mudou desde que começaste a editar. Compara as versões antes de publicar.",
+    "The site has changed since you started editing. Compare versions before publishing.",
+    "El sitio ha cambiado desde que empezaste a editar. Compara las versiones antes de publicar.",
+  ],
+  [
+    "O teu rascunho, a tua assinatura",
+    "Your draft, your signature",
+    "Tu borrador, tu firma",
+  ],
+  [
+    "Outra versão ultrapassou esta tentativa. Conservámos o teu rascunho.",
+    "Another version superseded this attempt. Your draft has been kept.",
+    "Otra versión ha sustituido este intento. Hemos conservado tu borrador.",
+  ],
+  ["PUBLICAÇÃO ASSINADA", "SIGNED PUBLICATION", "PUBLICACIÓN FIRMADA"],
+  [
+    "Prazo desta publicação",
+    "Publication lifetime",
+    "Duración de esta publicación",
+  ],
+  ["Prazo personalizado", "Custom lifetime", "Duración personalizada"],
+  [
+    "Privado — leitores escolhidos",
+    "Private — selected readers",
+    "Privado — lectores elegidos",
+  ],
+  [
+    "Publicação autorizada. A cópia está pendente.",
+    "Publication is authorised. The copy is pending.",
+    "La publicación está autorizada. La copia está pendiente.",
+  ],
+  [
+    "Publicação e privacidade do site",
+    "Site publication and privacy",
+    "Publicación y privacidad del sitio",
+  ],
+  [
+    "Publicação por concluir",
+    "Publication to complete",
+    "Publicación por completar",
+  ],
+  [
+    "Publicação preparada. Retoma para concluir.",
+    "Publication is prepared. Resume to complete it.",
+    "La publicación está preparada. Reanuda para completarla.",
+  ],
+  [
+    "Página publicada. Chegou outra versão; compara as versões antes de voltar a publicar.",
+    "Page published. Another version has arrived; compare versions before publishing again.",
+    "Página publicada. Ha llegado otra versión; compara las versiones antes de volver a publicar.",
+  ],
+  [
+    "Público — qualquer pessoa com uma cópia",
+    "Public — anyone with a copy",
+    "Público — cualquiera que tenga una copia",
+  ],
+  [
+    "Quem pode ler o site",
+    "Who can read this site",
+    "Quién puede leer el sitio",
+  ],
+  [
+    "Versão de partida guardada. O conteúdo do rascunho foi mantido.",
+    "Starting version saved. Your draft content has been kept.",
+    "Versión de partida guardada. Se ha conservado el contenido del borrador.",
+  ],
+  [
+    "Recuperar uma versão anterior",
+    "Recover an earlier version",
+    "Recuperar una versión anterior",
+  ],
+  [
+    "Resultado da publicação por verificar",
+    "Publication outcome to verify",
+    "Resultado de publicación por verificar",
+  ],
+  [
+    "Revê a versão de partida",
+    "Review the starting version",
+    "Revisa la versión de partida",
+  ],
+  [
+    "Sessão do estúdio bloqueada",
+    "Studio session locked",
+    "Sesión del estudio bloqueada",
+  ],
+  [
+    "Substituir rascunho por esta versão",
+    "Replace draft with this version",
+    "Sustituir el borrador por esta versión",
+  ],
+  [
+    "Só podes recuperar uma versão do teu próprio site",
+    "You can only recover a version of your own site",
+    "Solo puedes recuperar una versión de tu propio sitio",
+  ],
+  [
+    "Tentativa encerrada. Compara as versões para criar uma nova publicação.",
+    "Attempt closed. Compare versions to create a new publication.",
+    "Intento cerrado. Compara las versiones para crear una nueva publicación.",
+  ],
+  [
+    "Tu podes sempre ler e assinar. Os restantes leitores podem ler e partilhar a cópia, sem editar o original.",
+    "You can always read and sign. Other readers can read and share the copy, without editing the original.",
+    "Tú siempre puedes leer y firmar. Los demás lectores pueden leer y compartir la copia, sin editar el original.",
+  ],
+  ["Um ano", "One year", "Un año"],
+  ["Um dia", "One day", "Un día"],
+  ["Uma hora", "One hour", "Una hora"],
+  ["Uma semana", "One week", "Una semana"],
+  [
+    "Manter o rascunho e continuar",
+    "Keep draft and continue",
+    "Conservar el borrador y continuar",
+  ],
+  [
+    "Verifica a publicação pendente antes de editar",
+    "Check the pending publication before editing",
+    "Comprueba la publicación pendiente antes de editar",
+  ],
+  [
+    "Verificar e retomar publicação",
+    "Check and resume publication",
+    "Comprobar y reanudar publicación",
+  ],
+  [
+    "Verificar estado da publicação",
+    "Check publication status",
+    "Comprobar estado de publicación",
+  ],
+  ["Voltar ao rascunho", "Back to draft", "Volver al borrador"],
+  ["Privacidade por escolher", "Choose privacy", "Privacidad por elegir"],
+  ["Só tu", "Only you", "Solo tú"],
+  [
+    "Privado · {count} leitores",
+    "Private · {count} readers",
+    "Privado · {count} lectores",
+  ],
+  [
+    "Versão {number} conhecida",
+    "Version {number} known",
+    "Versión {number} conocida",
+  ],
+  [
+    "Opções de publicação: {audience}",
+    "Publication options: {audience}",
+    "Opciones de publicación: {audience}",
+  ],
+  [
+    "O prazo limita a circulação desta publicação. Não apaga cópias que outros leitores tenham conservado.",
+    "The lifetime limits circulation of this publication. It does not erase copies other readers have kept.",
+    "El plazo limita la circulación de esta publicación. No borra las copias que otros lectores hayan conservado.",
+  ],
+  [
+    "Página de outro autor recusada",
+    "A page from another author was rejected",
+    "Se ha rechazado una página de otro autor",
+  ],
+  [
+    "A ler a versão {number}",
+    "Reading version {number}",
+    "Leyendo la versión {number}",
+  ],
+  [
+    "Página guardada anterior ao histórico de versões",
+    "Saved page from before version history",
+    "Página guardada anterior al historial de versiones",
+  ],
+  ["Ver versão actual", "View current version", "Ver versión actual"],
+  [
+    "Este site tem versões concorrentes. Abre o histórico e escolhe a versão que queres ler.",
+    "This site has competing versions. Open history and choose the version to read.",
+    "Este sitio tiene versiones en conflicto. Abre el historial y elige la versión que quieres leer.",
+  ],
+  [
+    "A página ainda não está disponível neste dispositivo. Mantém uma ligação a um par que tenha uma cópia.",
+    "This page is not available on this device yet. Keep a connection to a peer that has a copy.",
+    "La página aún no está disponible en este dispositivo. Mantén una conexión con un par que tenga una copia.",
+  ],
+  [
+    "As páginas são verificadas antes de abrir. Os leitores autorizados podem servir cópias sem adquirir autoria.",
+    "Pages are verified before opening. Authorised readers can serve copies without acquiring authorship.",
+    "Las páginas se verifican antes de abrirlas. Los lectores autorizados pueden servir copias sin adquirir la autoría.",
+  ],
+  [
+    "Pré-visualização da versão escolhida",
+    "Preview of the selected version",
+    "Vista previa de la versión elegida",
+  ],
+  [
+    "Conclui a publicação anterior antes de iniciar outra.",
+    "Complete the previous publication before starting another.",
+    "Completa la publicación anterior antes de iniciar otra.",
+  ],
+  [
+    "Revê a preparação na aplicação que a criou.",
+    "Review the preparation in the application that created it.",
+    "Revisa la preparación en la aplicación que la creó.",
+  ],
+  [
+    "A tentativa anterior terminou. O teu rascunho foi mantido; compara as versões antes de publicar.",
+    "The previous attempt ended. Your draft was kept; compare versions before publishing.",
+    "El intento anterior ha terminado. Se ha conservado tu borrador; compara las versiones antes de publicar.",
+  ],
+  [
+    "Existe uma publicação anterior por concluir. O rascunho actual será mantido.",
+    "There is a previous publication to complete. Your current draft will be kept.",
+    "Hay una publicación anterior por completar. Se conservará el borrador actual.",
+  ],
+  [
+    "Retomar publicação anterior",
+    "Resume previous publication",
+    "Reanudar publicación anterior",
+  ],
+  [
+    "Cancelar preparação anterior",
+    "Cancel previous preparation",
+    "Cancelar preparación anterior",
+  ],
+  ["Bloqueado", "Blocked", "Bloqueado"],
+] as const;

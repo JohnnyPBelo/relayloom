@@ -1,0 +1,55 @@
+
+Running 2 tests using 1 worker
+
+(node:2780290) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/browser/site-publication.spec.ts:137:1 › real UI publishes public and private revisions, reads fixed history and restores original privacy without granting readers authorship (32.2s)
+(node:2786520) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  2 tests/browser/site-publication.spec.ts:344:1 › two user-restored identities preserve a visible fork until the UI explicitly reviews and confirms all versions (8.6s)
+
+
+  1) tests/browser/site-publication.spec.ts:137:1 › real UI publishes public and private revisions, reads fixed history and restores original privacy without granting readers authorship
+
+    TimeoutError: locator.click: Timeout 12000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Abrir navegação', exact: true })
+
+
+      35 |     await page
+      36 |       .getByRole("button", { name: "Abrir navegação", exact: true })
+    > 37 |       .click();
+         |        ^
+      38 |   await button.click();
+      39 | }
+      40 | async function card(page: Page) {
+        at nav (<repo>/tests/browser/site-publication.spec.ts:37:8)
+        at <repo>/tests/browser/site-publication.spec.ts:322:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/site-publication-real-UI-p-d3ecd-granting-readers-authorship/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/site-publication-real-UI-p-d3ecd-granting-readers-authorship/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/site-publication-real-UI-p-d3ecd-granting-readers-authorship/test-failed-3.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/site-publication-real-UI-p-d3ecd-granting-readers-authorship/error-context.md
+
+    Error Context: test-results/site-publication-real-UI-p-d3ecd-granting-readers-authorship/error-context.md
+
+    attachment #6: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/site-publication-real-UI-p-d3ecd-granting-readers-authorship/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/site-publication-real-UI-p-d3ecd-granting-readers-authorship/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/browser/site-publication.spec.ts:137:1 › real UI publishes public and private revisions, reads fixed history and restores original privacy without granting readers authorship
+  1 passed (42.8s)

@@ -1,0 +1,14 @@
+{
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "--test",
+    "--test-concurrency=1",
+    "tests/site-editing.test.ts",
+    "tests/site-publishing-client.test.ts",
+    "tests/runtime-selection.test.ts"
+  ],
+  "exitCode": 0,
+  "durationMs": 24886
+}

@@ -1,0 +1,288 @@
+[
+  {
+    "closed": false,
+    "counters": {
+      "sent": 53587,
+      "received": 710,
+      "accepted": 2,
+      "rejected": 0
+    },
+    "resources": {
+      "outgoingBytes": 0,
+      "incomingBytes": 0,
+      "queuedBytes": 0,
+      "outgoing": 0,
+      "incoming": 0,
+      "completed": 0
+    },
+    "frames": [
+      {
+        "direction": "send",
+        "t": "part",
+        "id": "d5983f9f3db4",
+        "index": 0,
+        "count": 1,
+        "at": 2634
+      },
+      {
+        "direction": "send",
+        "t": "part",
+        "id": "263fe2a63a84",
+        "index": 0,
+        "count": 1,
+        "at": 2634
+      },
+      {
+        "direction": "receive",
+        "t": "ack",
+        "id": "d5983f9f3db4",
+        "at": 2639
+      },
+      {
+        "direction": "receive",
+        "t": "ack",
+        "id": "263fe2a63a84",
+        "at": 2659
+      },
+      {
+        "direction": "receive",
+        "t": "part",
+        "id": "d93259815e5e",
+        "index": 0,
+        "count": 1,
+        "at": 2660
+      },
+      {
+        "direction": "send",
+        "t": "ack",
+        "id": "d93259815e5e",
+        "at": 2685
+      },
+      {
+        "direction": "send",
+        "t": "part",
+        "id": "c3370d307caf",
+        "index": 0,
+        "count": 99,
+        "at": 2939
+      },
+      {
+        "direction": "send",
+        "t": "part",
+        "id": "c3370d307caf",
+        "index": 1,
+        "count": 99,
+        "at": 2940
+      },
+      {
+        "direction": "send",
+        "t": "part",
+        "id": "c3370d307caf",
+        "index": 2,
+        "count": 99,
+        "at": 2940
+      },
+      {
+        "direction": "send",
+        "t": "drop",
+        "id": "c3370d307caf",
+        "at": 2941
+      },
+      {
+        "direction": "send",
+        "t": "ping",
+        "nonce": "c2a7b280-d0d2-44e9-a433-ba7d4e47769f",
+        "at": 2943
+      },
+      {
+        "direction": "receive",
+        "t": "pong",
+        "nonce": "c2a7b280-d0d2-44e9-a433-ba7d4e47769f",
+        "at": 2947
+      },
+      {
+        "direction": "send",
+        "t": "part",
+        "id": "a045683d4629",
+        "index": 0,
+        "count": 1,
+        "at": 2961
+      },
+      {
+        "direction": "send",
+        "t": "pong",
+        "nonce": "40e13fbd-89d0-4cd2-a4dd-7776e23dd9df",
+        "at": 2971
+      },
+      {
+        "direction": "receive",
+        "t": "ping",
+        "nonce": "40e13fbd-89d0-4cd2-a4dd-7776e23dd9df",
+        "at": 2971
+      },
+      {
+        "direction": "receive",
+        "t": "ack",
+        "id": "a045683d4629",
+        "at": 2976
+      },
+      {
+        "direction": "receive",
+        "t": "part",
+        "id": "447bbdc217fa",
+        "index": 0,
+        "count": 1,
+        "at": 2985
+      },
+      {
+        "direction": "send",
+        "t": "ack",
+        "id": "447bbdc217fa",
+        "at": 2986
+      }
+    ]
+  },
+  {
+    "closed": false,
+    "counters": {
+      "sent": 1543,
+      "received": 2532,
+      "accepted": 3,
+      "rejected": 0
+    },
+    "resources": {
+      "outgoingBytes": 0,
+      "incomingBytes": 0,
+      "queuedBytes": 0,
+      "outgoing": 0,
+      "incoming": 0,
+      "completed": 0
+    },
+    "frames": [
+      {
+        "direction": "receive",
+        "t": "part",
+        "id": "d5983f9f3db4",
+        "index": 0,
+        "count": 1,
+        "at": 2241
+      },
+      {
+        "direction": "receive",
+        "t": "part",
+        "id": "263fe2a63a84",
+        "index": 0,
+        "count": 1,
+        "at": 2241
+      },
+      {
+        "direction": "send",
+        "t": "ack",
+        "id": "d5983f9f3db4",
+        "at": 2242
+      },
+      {
+        "direction": "send",
+        "t": "ack",
+        "id": "263fe2a63a84",
+        "at": 2245
+      },
+      {
+        "direction": "send",
+        "t": "part",
+        "id": "d93259815e5e",
+        "index": 0,
+        "count": 1,
+        "at": 2245
+      },
+      {
+        "direction": "receive",
+        "t": "ack",
+        "id": "d93259815e5e",
+        "at": 2293
+      },
+      {
+        "direction": "receive",
+        "t": "part",
+        "id": "c3370d307caf",
+        "index": 0,
+        "count": 99,
+        "at": 2548
+      },
+      {
+        "direction": "receive",
+        "t": "part",
+        "id": "c3370d307caf",
+        "index": 1,
+        "count": 99,
+        "at": 2549
+      },
+      {
+        "direction": "receive",
+        "t": "part",
+        "id": "c3370d307caf",
+        "index": 2,
+        "count": 99,
+        "at": 2552
+      },
+      {
+        "direction": "receive",
+        "t": "drop",
+        "id": "c3370d307caf",
+        "at": 2552
+      },
+      {
+        "direction": "send",
+        "t": "pong",
+        "nonce": "c2a7b280-d0d2-44e9-a433-ba7d4e47769f",
+        "at": 2552
+      },
+      {
+        "direction": "receive",
+        "t": "ping",
+        "nonce": "c2a7b280-d0d2-44e9-a433-ba7d4e47769f",
+        "at": 2552
+      },
+      {
+        "direction": "receive",
+        "t": "part",
+        "id": "a045683d4629",
+        "index": 0,
+        "count": 1,
+        "at": 2568
+      },
+      {
+        "direction": "send",
+        "t": "ping",
+        "nonce": "40e13fbd-89d0-4cd2-a4dd-7776e23dd9df",
+        "at": 2577
+      },
+      {
+        "direction": "receive",
+        "t": "pong",
+        "nonce": "40e13fbd-89d0-4cd2-a4dd-7776e23dd9df",
+        "at": 2578
+      },
+      {
+        "direction": "send",
+        "t": "ack",
+        "id": "a045683d4629",
+        "at": 2582
+      },
+      {
+        "direction": "send",
+        "t": "part",
+        "id": "447bbdc217fa",
+        "index": 0,
+        "count": 1,
+        "at": 2591
+      },
+      {
+        "direction": "receive",
+        "t": "ack",
+        "id": "447bbdc217fa",
+        "at": 2593
+      }
+    ]
+  }
+]

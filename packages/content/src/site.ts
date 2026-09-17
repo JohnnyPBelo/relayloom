@@ -62,6 +62,7 @@ export type SiteDocument = {
   };
 };
 export type SiteDraft = {
+  editing?: import("../../sites/src/editing").SiteEditingContext;
   blocks: SiteBlock[];
   theme: string;
   site?: SiteDocument;

@@ -1,0 +1,21 @@
+
+Running 14 tests using 1 worker
+
+(node:3236959) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › tests/browser/application.spec.ts:75:1 › autonomous Liquid Glass UI owns identity and offline outbox, connects through real RTC, receives signed confirmations and survives reload (8.1s)
+  ✓   2 [chromium] › tests/browser/application.spec.ts:204:1 › autonomous social actions and safe signed site builder persist and remain viewable after author closes (15.5s)
+  ✓   3 [chromium] › tests/browser/application.spec.ts:359:1 › production worker keeps private keys out of replies and recovers an applied send after the UI response is lost (22.5s)
+  ✓   4 [chromium] › tests/browser/application.spec.ts:466:1 › a second tab cannot take ownership of a live application profile and an unknown or corrupt profile is never silently reset (4.1s)
+  ✓   5 [chromium] › tests/browser/application.spec.ts:523:1 › cached application code and encrypted profile reopen when the static host is unavailable, without installing the PWA (4.1s)
+  ✓   6 [chromium] › tests/browser/application.spec.ts:589:1 › corrupted cached worker is rejected offline and recovered only from verified available code (1.3s)
+  ✓   7 [chromium] › tests/browser/large-site-draft.spec.ts:14:1 › an allowed large site image saves through the UI and survives encrypted browser restart (7.2s)
+  ✓   8 [chromium] › tests/browser/site-publication.spec.ts:137:1 › real UI publishes public and private revisions, reads fixed history and restores original privacy without granting readers authorship (21.3s)
+  ✓   9 [chromium] › tests/browser/site-publication.spec.ts:347:1 › two user-restored identities preserve a visible fork until the UI explicitly reviews and confirms all versions (8.3s)
+  ✓  10 [chromium] › tests/browser/site-publication.spec.ts:452:1 › studio reports local validation, preserves the saved draft and keeps keyboard focus after saving (4.0s)
+  ✓  11 [chromium] › tests/browser/site-publication.spec.ts:504:1 › lost worker publication response keeps the editor frozen and resumes the same version through the UI (23.3s)
+  ✓  12 [chromium] › tests/browser/site-publication.spec.ts:600:1 › application waits for an owned closing lease and never takes a live profile from another tab (3.5s)
+  ✓  13 [chromium] › tests/browser/site-publication.spec.ts:739:3 › publication and history controls work in en-GB and keep authored text across a language change (3.7s)
+  ✓  14 [chromium] › tests/browser/site-publication.spec.ts:739:3 › publication and history controls work in es-ES and keep authored text across a language change (4.3s)
+
+  14 passed (2.2m)

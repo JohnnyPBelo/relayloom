@@ -130,3 +130,10 @@ FR-044/045: apresentação/configuração guiada,1031entradas emPT/EN/ES, prefer
 Concluída a integração local de IndexedDB, runtime serial, site-command e validação/relay na aplicação browser. A matriz consolidada tem 66 cenários por motor (198 engine/cenário), depois da correcção dirigida de dois selectores de estado num teste; as restantes fontes e os assets mantiveram os hashes. Inclui seis percursos reais Browser/Node/Go em três meios e o worker compilado. Evidência docs/evidence/browser-site-api. Não é conclusão do contrato nem publicação no HTML.
 
 Seguinte: contexto durável do rascunho e controlador de publicação/histórico/recuperação no estúdio. Candidata isolada em .cache/browser-site-parity: modelo/validação e persistência do contexto em três runtimes, componente de histórico com API real e PT/EN/ES, ainda sem ligação ao estúdio. Dois testes TypeScript, um teste Go de contexto e typecheck passaram; APIs de persistência/contexto, UI, acessibilidade, os fluxos de resposta perdida e todos os gates dessa candidata ainda pendentes. Não misturar os resultados da candidata com o marco browser validado do principal.
+
+
+## 17 de Setembro — estúdio integrado, gate local terminado
+
+O gate local do estúdio foi concluído e recolhido. Consultar docs/evidence/site-editor-versions: 410 casos Node com correcção isolada de tradução, Go/race, 69interop, SQLite C, 32UI Node e32UI Go efectivos, 219browser, nove UI-RNS, 24hostiOS/static e Linuxbuild/run/package/run. Mantém-se aberta a causa de um fecho intermitente de ligação Firefox na pausa de relay; repetições diagnosticadas passaram, sem correcção de transporte demonstrada. Não usar o resultado como prontidão para catástrofes.
+
+Seguinte: validar a distribuição pública com site-publication/site-worker agora incluídos, conferir o commit e os hashes dos assets, publicar HTML experimental com os limites descritos e verificar no HTTPS. Continuar depois contribuições/dados declarativos/ficheiros opcionais, grupos dinâmicos web, backup/rotação/keystore, meios e hardware/plataformas e revisão independente. Manter execução sequencial e preservar os dados/WIP do projecto.

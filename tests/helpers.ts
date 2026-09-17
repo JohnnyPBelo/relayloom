@@ -13,15 +13,23 @@ export interface Client {
   call: (path: string, body?: unknown) => Promise<any>;
   stop: () => Promise<void>;
 }
+function defaultBackend(): "node" | "native" {
+  const selected = process.env.RELAYLOOM_TEST_BACKEND ?? "node";
+  if (selected !== "node" && selected !== "native")
+    throw new Error(
+      "Use RELAYLOOM_TEST_BACKEND=node|native; native selects the Go runtime.",
+    );
+  return selected;
+}
 export async function launch(
   dir?: string,
   httpPort = 0,
   tcpPort = 0,
-  backend: "node" | "native" = process.env.RELAYLOOM_TEST_BACKEND === "native"
-    ? "native"
-    : "node",
+  backend: "node" | "native" = defaultBackend(),
   extraArgs: string[] = [],
 ): Promise<Client> {
+  if (backend !== "node" && backend !== "native")
+    throw new Error("Unknown test runtime");
   mkdirSync(".cache", { recursive: true });
   dir ??= mkdtempSync(join(process.cwd(), ".cache/node-"));
   const nativeBinary = join(

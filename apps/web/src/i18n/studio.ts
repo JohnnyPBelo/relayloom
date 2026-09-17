@@ -299,4 +299,105 @@ export const studio = [
     "Página {index} de {total}",
   ],
   ["Organizar página", "Organise page", "Organizar página"],
+  [
+    "Endereço e histórico do site",
+    "Site address and history",
+    "Dirección e historial del sitio",
+  ],
+  [
+    "O endereço permanece. O teu site evolui.",
+    "Your address stays. Your site evolves.",
+    "Tu dirección permanece. Tu sitio evoluciona.",
+  ],
+  [
+    "Endereço permanente do site",
+    "Permanent site address",
+    "Dirección permanente del sitio",
+  ],
+  ["Copiar endereço", "Copy address", "Copiar dirección"],
+  ["Ver histórico", "View history", "Ver historial"],
+  [
+    "Publicações deste site",
+    "Publications of this site",
+    "Publicaciones de este sitio",
+  ],
+  [
+    "Há versões concorrentes. Escolhe explicitamente o que queres conservar.",
+    "There are competing versions. Explicitly choose what you want to keep.",
+    "Hay versiones en conflicto. Elige explícitamente lo que quieres conservar.",
+  ],
+  [
+    "Versão {number} conhecida neste dispositivo",
+    "Version {number} known on this device",
+    "Versión {number} conocida en este dispositivo",
+  ],
+  [
+    "Ainda não há versões assinadas para este endereço.",
+    "No signed versions are known for this address yet.",
+    "Todavía no se conocen versiones firmadas para esta dirección.",
+  ],
+  [
+    "Actualizar histórico do site",
+    "Refresh site history",
+    "Actualizar historial del sitio",
+  ],
+  ["Versão {number}", "Version {number}", "Versión {number}"],
+  [
+    "Versão actual observada",
+    "Observed current version",
+    "Versión actual observada",
+  ],
+  ["Versão anterior", "Earlier version", "Versión anterior"],
+  [
+    "Ver versão {number}: {id}",
+    "View version {number}: {id}",
+    "Ver versión {number}: {id}",
+  ],
+  ["Ver versão", "View version", "Ver versión"],
+  [
+    "Recuperar versão {number}: {id}",
+    "Recover version {number}: {id}",
+    "Recuperar versión {number}: {id}",
+  ],
+  ["Usar como rascunho", "Use as draft", "Usar como borrador"],
+  [
+    "O histórico depende dos pares e das cópias guardadas. Ver uma página não dá permissão para alterar o original.",
+    "History depends on peers and retained copies. Viewing a page does not grant permission to edit the original.",
+    "El historial depende de los pares y las copias guardadas. Ver una página no da permiso para modificar el original.",
+  ],
+  [
+    "A verificar versões e disponibilidade…",
+    "Checking versions and availability…",
+    "Comprobando versiones y disponibilidad…",
+  ],
+  [
+    "Esta versão ainda não está disponível. Foi pedida aos pares ligados.",
+    "This version is not available yet. It has been requested from connected peers.",
+    "Esta versión aún no está disponible. Se ha solicitado a los pares conectados.",
+  ],
+  [
+    "Versão aberta como rascunho. Publicar cria uma nova versão assinada.",
+    "Version opened as a draft. Publishing creates a new signed version.",
+    "Versión abierta como borrador. Publicar crea una nueva versión firmada.",
+  ],
+  [
+    "Endereço do site copiado",
+    "Site address copied",
+    "Dirección del sitio copiada",
+  ],
+  [
+    "Não foi possível copiar. Selecciona o endereço e copia-o.",
+    "Could not copy. Select the address and copy it.",
+    "No se ha podido copiar. Selecciona la dirección y cópiala.",
+  ],
+  [
+    "Contexto do rascunho inválido",
+    "Invalid draft context",
+    "Contexto del borrador no válido",
+  ],
+  [
+    "Esta versão já não consta do histórico local. Actualiza a lista.",
+    "This version is no longer in local history. Refresh the list.",
+    "Esta versión ya no aparece en el historial local. Actualiza la lista.",
+  ],
 ] as const;

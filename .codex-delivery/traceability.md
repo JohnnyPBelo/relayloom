@@ -227,3 +227,8 @@ Revisões: certificados interoperáveis e catálogo Node com persistência/cance
 ## Incremento 2026-09-17 — catálogo/API browser de sites
 
 FR-038 e FR-040: catálogo de versões, autoria, histórico e recuperação locais implementados em browser; a UI de revisões ainda está em preparação e o estatuto integral continua parcial. CON-002: sites legíveis com snapshot/payload/autoria inválidos recusados antes da admissão e forwarding. INT-009 e ACC-014: seis percursos reais Browser/Node/Go em WebRTC/WebSocket/TCP e matriz consolidada de 66 cenários por engine, com uma correcção de selector de teste e repetição dirigida. Evidência: docs/evidence/browser-site-api. FR-045 continua parcial: idiomas existentes passaram regressão; os controlos novos do histórico ainda não estão integrados. Não há validação de hardware nem revisão independente nova.
+
+
+## 17 de Setembro — estúdio de publicação versionada
+
+FR-038/FR-040: controlos de histórico, leitores, prazo, versão de partida, idempotência, conflitos e recuperação implementados na UI partilhada. Persistência de contexto e comportamento testados em Node/Go/browser; 32 UI por runtime, 73 por engine, nove UI-RNS e pacote Linux. FR-045: novos controlos testados em EN/ES com texto criado pelo utilizador preservado; a experiência completa mantém estatuto parcial. INT-009/ACC-014: percursos mistos continuam verificados, com uma ocorrência Firefox de fecho do canal ao pausar relay ainda sem causa esclarecida. CON-002: publicação e recuperação continuam limitadas a conteúdo declarativo assinado. Evidência docs/evidence/site-editor-versions e errata site-ui-runtime-correction. Publicação HTML, hardware, contribuições/dados, ficheiros opcionais e revisão independente continuam pendentes.

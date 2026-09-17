@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/JohnnyPBelo/relayloom/native/core"
+	"github.com/JohnnyPBelo/relayloom/native/sites"
 )
 
 const privateLimit = 16 * 1024 * 1024
@@ -116,6 +117,11 @@ func parsePrivate(value any, owner string) (PrivateState, error) {
 		}
 		if _, err = number(draft["savedAt"]); err != nil {
 			return p, err
+		}
+		if context, exists := draft["editing"]; exists {
+			if err = sites.ValidateEditingContext(context, owner); err != nil {
+				return p, err
+			}
 		}
 		p.SiteDraft = draft
 	}

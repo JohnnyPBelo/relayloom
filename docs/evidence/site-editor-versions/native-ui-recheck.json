@@ -1,0 +1,29 @@
+{
+  "steps": [
+    {
+      "command": [
+        "node",
+        "scripts/e2e.mjs",
+        "tests/e2e/site-publication.spec.ts"
+      ],
+      "environment": {
+        "RELAYLOOM_TEST_BACKEND": "node"
+      },
+      "exitCode": 0,
+      "durationMs": 11273
+    },
+    {
+      "command": [
+        "node",
+        "scripts/e2e.mjs",
+        "tests/e2e/site-publication.spec.ts"
+      ],
+      "environment": {
+        "RELAYLOOM_TEST_BACKEND": "native"
+      },
+      "exitCode": 0,
+      "durationMs": 10777
+    }
+  ],
+  "status": "PASS"
+}

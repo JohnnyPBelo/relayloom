@@ -128,6 +128,7 @@ export async function serve(
                 body.theme,
                 body.site,
                 body.attachments,
+                body.editing,
               );
               break;
             case "/api/collection":

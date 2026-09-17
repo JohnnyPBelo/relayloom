@@ -1,0 +1,91 @@
+
+Running 3 tests using 1 worker
+
+(node:3079875) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/browser/large-site-draft.spec.ts:14:1 › an allowed large site image saves through the UI and survives encrypted browser restart (16.1s)
+(node:3081138) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 tests/browser/site-publication.spec.ts:452:1 › studio reports local validation, preserves the saved draft and keeps keyboard focus after saving (16.8s)
+(node:3082066) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  3 tests/browser/site-publication.spec.ts:504:1 › lost worker publication response keeps the editor frozen and resumes the same version through the UI (23.3s)
+
+
+  1) tests/browser/large-site-draft.spec.ts:14:1 › an allowed large site image saves through the UI and survives encrypted browser restart
+
+    TimeoutError: locator.fill: Timeout 12000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Frase-passe', { exact: true })
+
+
+      108 |   await page.reload();
+      109 |   try {
+    > 110 |     await page.getByLabel("Frase-passe", { exact: true }).fill(password);
+          |                                                           ^
+      111 |   } catch (error) {
+      112 |     await recordReloadFailure(page, info).catch(() => {});
+      113 |     throw error;
+        at <repo>/tests/browser/large-site-draft.spec.ts:110:59
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/large-site-draft-an-allowe-55f59-s-encrypted-browser-restart/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/large-site-draft-an-allowe-55f59-s-encrypted-browser-restart/error-context.md
+
+    Error Context: test-results/large-site-draft-an-allowe-55f59-s-encrypted-browser-restart/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/large-site-draft-an-allowe-55f59-s-encrypted-browser-restart/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/large-site-draft-an-allowe-55f59-s-encrypted-browser-restart/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) tests/browser/site-publication.spec.ts:452:1 › studio reports local validation, preserves the saved draft and keeps keyboard focus after saving
+
+    Error: expect(locator).toBeFocused() failed
+
+    Locator:  getByRole('region', { name: 'Estúdio do site', exact: true }).getByRole('button', { name: 'Guardar rascunho', exact: true })
+    Expected: focused
+    Received: inactive
+    Timeout:  15000ms
+
+    Call log:
+      - Expect "toBeFocused" getByRole('region', { name: 'Estúdio do site', exact: true }).getByRole('button', { name: 'Guardar rascunho', exact: true }) with timeout 15000ms
+      - waiting for getByRole('region', { name: 'Estúdio do site', exact: true }).getByRole('button', { name: 'Guardar rascunho', exact: true })
+        34 × locator resolved to <button class="secondary">…</button>
+           - unexpected value "inactive"
+
+
+      486 |     }),
+      487 |   ).toContainText("Rascunho cifrado");
+    > 488 |   await expect(save).toBeFocused();
+          |                      ^
+      489 |   await audit(page, `${info.project.name || "chromium"}-validation-keyboard`);
+      490 |   await page.reload();
+      491 |   await page.getByLabel("Frase-passe", { exact: true }).fill(password);
+        at <repo>/tests/browser/site-publication.spec.ts:488:22
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/site-publication-studio-re-2a5c4-keyboard-focus-after-saving/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/site-publication-studio-re-2a5c4-keyboard-focus-after-saving/error-context.md
+
+    Error Context: test-results/site-publication-studio-re-2a5c4-keyboard-focus-after-saving/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/site-publication-studio-re-2a5c4-keyboard-focus-after-saving/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/site-publication-studio-re-2a5c4-keyboard-focus-after-saving/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    tests/browser/large-site-draft.spec.ts:14:1 › an allowed large site image saves through the UI and survives encrypted browser restart
+    tests/browser/site-publication.spec.ts:452:1 › studio reports local validation, preserves the saved draft and keeps keyboard focus after saving
+  1 passed (59.0s)

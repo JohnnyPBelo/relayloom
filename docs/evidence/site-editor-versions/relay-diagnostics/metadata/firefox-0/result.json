@@ -1,0 +1,204 @@
+[
+  {
+    "closed": false,
+    "counters": {
+      "sent": 52276,
+      "received": 356,
+      "accepted": 1,
+      "rejected": 0
+    },
+    "resources": {
+      "outgoingBytes": 0,
+      "incomingBytes": 0,
+      "queuedBytes": 0,
+      "outgoing": 0,
+      "incoming": 0,
+      "completed": 0
+    },
+    "frames": [
+      {
+        "direction": "send",
+        "t": "part",
+        "id": "41a4947ce49e",
+        "index": 0,
+        "count": 99,
+        "at": 2776
+      },
+      {
+        "direction": "send",
+        "t": "part",
+        "id": "41a4947ce49e",
+        "index": 1,
+        "count": 99,
+        "at": 2777
+      },
+      {
+        "direction": "send",
+        "t": "part",
+        "id": "41a4947ce49e",
+        "index": 2,
+        "count": 99,
+        "at": 2777
+      },
+      {
+        "direction": "send",
+        "t": "drop",
+        "id": "41a4947ce49e",
+        "at": 2778
+      },
+      {
+        "direction": "send",
+        "t": "part",
+        "id": "42f5ecc35f03",
+        "index": 0,
+        "count": 1,
+        "at": 2799
+      },
+      {
+        "direction": "receive",
+        "t": "ack",
+        "id": "42f5ecc35f03",
+        "at": 2815
+      },
+      {
+        "direction": "send",
+        "t": "ping",
+        "nonce": "2a785e58-a534-487e-bab0-ca45025a4ef0",
+        "at": 2868
+      },
+      {
+        "direction": "receive",
+        "t": "pong",
+        "nonce": "2a785e58-a534-487e-bab0-ca45025a4ef0",
+        "at": 2869
+      },
+      {
+        "direction": "send",
+        "t": "pong",
+        "nonce": "58438232-6019-465e-b6ea-4600f1355435",
+        "at": 2904
+      },
+      {
+        "direction": "receive",
+        "t": "ping",
+        "nonce": "58438232-6019-465e-b6ea-4600f1355435",
+        "at": 2904
+      },
+      {
+        "direction": "receive",
+        "t": "part",
+        "id": "00447ee859b8",
+        "index": 0,
+        "count": 1,
+        "at": 3002
+      },
+      {
+        "direction": "send",
+        "t": "ack",
+        "id": "00447ee859b8",
+        "at": 3002
+      }
+    ]
+  },
+  {
+    "closed": false,
+    "counters": {
+      "sent": 791,
+      "received": 1783,
+      "accepted": 1,
+      "rejected": 0
+    },
+    "resources": {
+      "outgoingBytes": 0,
+      "incomingBytes": 0,
+      "queuedBytes": 0,
+      "outgoing": 0,
+      "incoming": 0,
+      "completed": 0
+    },
+    "frames": [
+      {
+        "direction": "receive",
+        "t": "part",
+        "id": "41a4947ce49e",
+        "index": 0,
+        "count": 99,
+        "at": 2383
+      },
+      {
+        "direction": "receive",
+        "t": "part",
+        "id": "41a4947ce49e",
+        "index": 1,
+        "count": 99,
+        "at": 2384
+      },
+      {
+        "direction": "receive",
+        "t": "part",
+        "id": "41a4947ce49e",
+        "index": 2,
+        "count": 99,
+        "at": 2384
+      },
+      {
+        "direction": "receive",
+        "t": "drop",
+        "id": "41a4947ce49e",
+        "at": 2384
+      },
+      {
+        "direction": "receive",
+        "t": "part",
+        "id": "42f5ecc35f03",
+        "index": 0,
+        "count": 1,
+        "at": 2402
+      },
+      {
+        "direction": "send",
+        "t": "ack",
+        "id": "42f5ecc35f03",
+        "at": 2417
+      },
+      {
+        "direction": "send",
+        "t": "pong",
+        "nonce": "2a785e58-a534-487e-bab0-ca45025a4ef0",
+        "at": 2471
+      },
+      {
+        "direction": "receive",
+        "t": "ping",
+        "nonce": "2a785e58-a534-487e-bab0-ca45025a4ef0",
+        "at": 2471
+      },
+      {
+        "direction": "send",
+        "t": "ping",
+        "nonce": "58438232-6019-465e-b6ea-4600f1355435",
+        "at": 2505
+      },
+      {
+        "direction": "receive",
+        "t": "pong",
+        "nonce": "58438232-6019-465e-b6ea-4600f1355435",
+        "at": 2506
+      },
+      {
+        "direction": "send",
+        "t": "part",
+        "id": "00447ee859b8",
+        "index": 0,
+        "count": 1,
+        "at": 2603
+      },
+      {
+        "direction": "receive",
+        "t": "ack",
+        "id": "00447ee859b8",
+        "at": 2606
+      }
+    ]
+  }
+]

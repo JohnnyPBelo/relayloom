@@ -1,0 +1,82 @@
+(node:3545950) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 32 tests using 1 worker
+
+(node:3545967) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/device-preferences.spec.ts:6:1 › native profile keeps language and appearance across an actual process restart on a different HTTP port (2.3s)
+  ✓   2 tests/e2e/device-preferences.spec.ts:122:1 › a late native preference read cannot overwrite a newer language choice (804ms)
+  ✓   3 tests/e2e/device-preferences.spec.ts:169:1 › a lost preference response can be retried without replacing a newer choice (923ms)
+  ✓   4 tests/e2e/dynamic-groups.spec.ts:8:1 › a new group version preserves the draft, requires audience review, and lock removes the group dialog (6.1s)
+  ✓   5 tests/e2e/dynamic-groups.spec.ts:79:1 › Liquid Glass groups create, invite, consent, approve, message and leave through two real clients (12.4s)
+  ✓   6 tests/e2e/flows.spec.ts:59:1 › two live clients: identities, connection, message, attachment, reaction, group, social, safe site and offline recovery (21.2s)
+  ✓   7 tests/e2e/group-language.spec.ts:5:1 › group approval uses verified group state with an English creator and Spanish member (10.5s)
+  ✓   8 tests/e2e/group-operation-recovery.spec.ts:23:1 › a committed group operation with a lost response survives dialog closure and recovers without a second mutation (2.9s)
+  ✓   9 tests/e2e/group-operation-recovery.spec.ts:83:1 › a late recovered group state cannot restore the pre-lock conversation draft (3.3s)
+(node:3545967) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+  ✓  10 tests/e2e/group-outbox.spec.ts:9:1 › real runtime group outbox shows proof pause and terminal stop with accessible recovery guidance (7.5s)
+  ✓  11 tests/e2e/liquid-glass.spec.ts:40:1 › command search uses real authorised peer messages, preserves drafts and forgets private queries on lock (5.0s)
+  ✓  12 tests/e2e/liquid-glass.spec.ts:187:1 › glass respects device effects, low power, contrast and keyboard access across responsive screens (11.7s)
+  ✓  13 tests/e2e/long-dialog.spec.ts:6:1 › a cached site dialog is visible and reachable after scrolling a long mobile contact list (3.2s)
+  ✓  14 tests/e2e/notifications.spec.ts:166:1 › notification stubs verify explicit opt-in, private filtering, coalescing, privacy and persistence (25.0s)
+  ✓  15 tests/e2e/notifications.spec.ts:303:1 › lock, identity switch and cancelled permission close notices and invalidate pending work (9.6s)
+  ✓  16 tests/e2e/notifications.spec.ts:406:1 › denied, unavailable and failed notification APIs remain honest inactive states (3.3s)
+  ✓  17 tests/e2e/onboarding-layout.spec.ts:8:1 › onboarding fits the native minimum window and intermediate widths with keyboard access (1.8s)
+  ✓  18 tests/e2e/outbox.spec.ts:64:1 › durable composer retries a lost response once, survives restart, and shows distinct real received/read states (11.5s)
+  ✓  19 tests/e2e/outbox.spec.ts:204:1 › expired pending sends remain visible without delivery, and locking clears the outbox UI (6.1s)
+  ✓  20 tests/e2e/outbox.spec.ts:253:1 › an absent record after an uncertain response requires an explicit new-send choice (1.7s)
+  ✓  21 tests/e2e/outbox.spec.ts:291:1 › legacy group read labels count unique recipients without retained outbox metadata (4.8s)
+  ✓  22 tests/e2e/privacy-history.spec.ts:6:1 › an earlier delayed state cannot restore private UI after identity lock (4.8s)
+  ✓  23 tests/e2e/privacy-history.spec.ts:70:1 › history page loads older verified posts without inflating the periodic snapshot (5.9s)
+  ✓  24 tests/e2e/site-pages.spec.ts:6:1 › copied and reordered pages preserve home and source through native persistence and author-offline viewing (8.9s)
+  ✓  25 tests/e2e/site-publication.spec.ts:52:1 › native-backed UI publishes private versions, resolves the current head and preserves cached history with the author offline (10.7s)
+  ✘  26 tests/e2e/site-studio.spec.ts:7:1 › native site studio restores full draft, renders edited posts and publishes verified pages to another process (14.4s)
+(node:3564160) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  27 tests/e2e/social.spec.ts:6:1 › named private collections, followed feed, sharing reference and UI persistence (3.3s)
+  ✓  28 tests/e2e/web-invitation.spec.ts:15:1 › native invitation UI connects an autonomous browser, preserves identity authority and revokes the actual socket (4.8s)
+  ✓  29 tests/e2e/web-invitation.spec.ts:155:1 › late invitation response after closing and locking cannot disclose its capability on unlock (2.1s)
+(node:3566088) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  30 tests/e2e/media.spec.ts:207:1 › synthetic image, audio, video and fake-microphone voice arrive at a real peer (8.5s)
+  ✓  31 tests/e2e/media.spec.ts:381:1 › microphone denial and unsupported recording are explicit and do not add attachments (4.2s)
+  ✓  32 tests/e2e/media.spec.ts:434:1 › late permission, recording error, byte cap and virtual duration cap release synthetic tracks (5.9s)
+
+
+  1) tests/e2e/site-studio.spec.ts:7:1 › native site studio restores full draft, renders edited posts and publishes verified pages to another process
+
+    Error: condition timed out
+
+       at ../helpers.ts:222
+
+      220 |     await delay(120);
+      221 |   } while (Date.now() < end);
+    > 222 |   throw new Error("condition timed out");
+          |         ^
+      223 | }
+      224 |
+        at until (<repo>/tests/helpers.ts:222:9)
+        at <repo>/tests/e2e/site-studio.spec.ts:99:22
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/site-studio-native-site-st-96ad7-ed-pages-to-another-process/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/site-studio-native-site-st-96ad7-ed-pages-to-another-process/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/site-studio-native-site-st-96ad7-ed-pages-to-another-process/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/site-studio-native-site-st-96ad7-ed-pages-to-another-process/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/site-studio-native-site-st-96ad7-ed-pages-to-another-process/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/e2e/site-studio.spec.ts:7:1 › native site studio restores full draft, renders edited posts and publishes verified pages to another process
+  31 passed (3.8m)

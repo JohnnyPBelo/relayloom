@@ -291,6 +291,12 @@ final class NativeSimulatorTests: XCTestCase {
         // simulator UI is English. Both exact native labels have been observed.
         let library = app.buttons.matching(NSPredicate(format: "label == 'Photo Library' OR label == 'Fototeca'")).firstMatch
         try require(library, "system Photo Library action", timeout: 15); library.tap()
+        // The picker may be hosted by a separate system process. Preserve the
+        // owned simulator screen before an accessibility query can fail.
+        let pickerScreen = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
+        pickerScreen.name = "ios-photo-picker-before-cell-query"
+        pickerScreen.lifetime = .keepAlways
+        add(pickerScreen)
         // The observed iOS 26 picker shows the fixture but exposes no
         // collectionViews ancestor to this query. Resolve visible native cells
         // directly; do not tap a coordinate or choose an unrelated app image.

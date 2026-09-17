@@ -1,0 +1,106 @@
+TAP version 13
+# Subtest: UI runtime selection rejects an ambiguous alias and launches the actual requested engine
+ok 1 - UI runtime selection rejects an ambiguous alias and launches the actual requested engine
+  ---
+  duration_ms: 337.717341
+  type: 'test'
+  ...
+# Subtest: draft context retains original base and exact pending request across serialisation without transferring ownership
+ok 2 - draft context retains original base and exact pending request across serialisation without transferring ownership
+  ---
+  duration_ms: 1.961597
+  type: 'test'
+  ...
+# Subtest: malformed or ambiguous draft context cannot replace valid private editing metadata
+ok 3 - malformed or ambiguous draft context cannot replace valid private editing metadata
+  ---
+  duration_ms: 0.862157
+  type: 'test'
+  ...
+# Subtest: node editor keeps one publication after a lost response and process restart; private version recovery preserves readers
+ok 4 - node editor keeps one publication after a lost response and process restart; private version recovery preserves readers
+  ---
+  duration_ms: 1970.071646
+  type: 'test'
+  ...
+# Subtest: node editor rejects stale and changed review bases, and can close a consumed competing attempt without claiming cancellation
+ok 5 - node editor rejects stale and changed review bases, and can close a consumed competing attempt without claiming cancellation
+  ---
+  duration_ms: 2424.925358
+  type: 'test'
+  ...
+# Subtest: node editor never sends before durable draft acknowledgement, keeps unknown submissions frozen, and fences a locked session
+ok 6 - node editor never sends before durable draft acknowledgement, keeps unknown submissions frozen, and fences a locked session
+  ---
+  duration_ms: 1040.042065
+  type: 'test'
+  ...
+# Subtest: native editor keeps one publication after a lost response and process restart; private version recovery preserves readers
+ok 7 - native editor keeps one publication after a lost response and process restart; private version recovery preserves readers
+  ---
+  duration_ms: 1463.259226
+  type: 'test'
+  ...
+# Subtest: native editor rejects stale and changed review bases, and can close a consumed competing attempt without claiming cancellation
+ok 8 - native editor rejects stale and changed review bases, and can close a consumed competing attempt without claiming cancellation
+  ---
+  duration_ms: 2203.894122
+  type: 'test'
+  ...
+# Subtest: native editor never sends before durable draft acknowledgement, keeps unknown submissions frozen, and fences a locked session
+ok 9 - native editor never sends before durable draft acknowledgement, keeps unknown submissions frozen, and fences a locked session
+  ---
+  duration_ms: 756.790013
+  type: 'test'
+  ...
+# Subtest: node editor can close an unadmitted request after a late fork changes only its base
+ok 10 - node editor can close an unadmitted request after a late fork changes only its base
+  ---
+  duration_ms: 1924.062021
+  type: 'test'
+  ...
+# Subtest: native editor can close an unadmitted request after a late fork changes only its base
+ok 11 - native editor can close an unadmitted request after a late fork changes only its base
+  ---
+  duration_ms: 1914.498352
+  type: 'test'
+  ...
+# Subtest: node editor can resume an earlier authorized copy without replacing the current draft
+not ok 12 - node editor can resume an earlier authorized copy without replacing the current draft
+  ---
+  duration_ms: 485.484446
+  type: 'test'
+  location: '<repo>/tests/site-publishing-client.test.ts:1:11674'
+  failureType: 'testCodeFailure'
+  error: 'Quota inválida'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    IncomingMessage.<anonymous> (<repo>/tests/helpers.ts:181:26)
+    IncomingMessage.emit (node:events:531:35)
+    endReadableNT (node:internal/streams/readable:1698:12)
+    process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+  ...
+# Subtest: native editor can resume an earlier authorized copy without replacing the current draft
+not ok 13 - native editor can resume an earlier authorized copy without replacing the current draft
+  ---
+  duration_ms: 208.353778
+  type: 'test'
+  location: '<repo>/tests/site-publishing-client.test.ts:1:11674'
+  failureType: 'testCodeFailure'
+  error: 'quota inválida'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    IncomingMessage.<anonymous> (<repo>/tests/helpers.ts:181:26)
+    IncomingMessage.emit (node:events:531:35)
+    endReadableNT (node:internal/streams/readable:1698:12)
+    process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 11
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 15159.966724

@@ -50,7 +50,9 @@ Na versão web, já pode duplicar páginas completas e alterar a sua ordem. A c�
 
 A correcção para guardar rascunhos web com imagens maiores que 1 MiB passou a regressão nos três motores de browser e nos clientes Node/Go, incluindo recuperação exacta após recarregar. A correcção já está no URL público: 17 ficheiros conferidos por hash e 13 percursos HTTPS passaram. [Testes e limites](docs/evidence/private-values).
 
-O código local Node, Go e browser tem uma API de revisões assinadas: endereço estável, histórico, conflitos explícitos e retoma da mesma publicação após interrupção. O browser guarda catálogo e preparação cifrados em IndexedDB, sem daemon obrigatório. Passaram 66 cenários por motor Chromium/Firefox/WebKit, incluindo transporte real WebRTC→WebSocket→TCP entre browser/Node/Go e um seeder reiniciado com o autor desligado. [Testes, correcções e âmbito](docs/evidence/browser-site-api). Os controlos de revisões ainda não estão no editor publicado; o HTML público continua na fonte 0c6b58a. [API e limites](docs/SITE-REVISIONS.md).
+O estúdio no código actual já usa as revisões assinadas em Node, Go e browser: endereço permanente, histórico, leitores públicos ou privados, conflitos explícitos e recuperação de versões como novos rascunhos. A recuperação conserva os leitores originais e só publica após nova escolha do proprietário. A regressão local inclui 32 cenários UI por motor Node/Go, 73 por browser (219), 69 testes de interoperabilidade e execução do pacote Linux. [Testes e correcções](docs/evidence/site-editor-versions).
+
+Há uma ocorrência de fecho de ligação em Firefox durante a pausa de relay ainda sem causa comprovada; os testes posteriores passaram, mas isso não é uma correcção demonstrada. O HTML público permanece na fonte 0c6b58a, enquanto a distribuição deste marco é validada. [Âmbito e limites](docs/SITE-REVISIONS.md).
 
 Existe também um [APK Android ARM64 experimental](docs/ANDROID-ARM64.md), construído com a mesma interface. A arquitectura, assinatura e assets foram verificados; a execução num telefone ARM64 ainda está pendente.
 

@@ -1,5 +1,17 @@
 # RelayLoom — estado verificável
 
+## Estúdio de versões — implementado e verificado localmente
+
+O estúdio partilhado publica versões pela UI, escolhe leitores e prazo, conserva a versão de partida e o UUID do pedido no rascunho cifrado, consulta histórico, fixa uma versão para leitura e recupera conteúdo com a audiência original. A recuperação exige pré-visualização verificada e confirmação antes de substituir o rascunho; publicar continua a exigir uma acção separada. A leitura normal acompanha versões recebidas, sem promover um payload antigo quando faltam os bytes da cabeça conhecida. Há PT-PT, inglês e espanhol, controlo por teclado, toque, mensagens de falha e tratamento de resultados incertos.
+
+A regressão consolidada cobre 410 casos Node, Go com race, 69 testes de interoperabilidade, SQLite C, **32 UI Node + 32 UI Go**, **73 cenários por browser (219)**, nove percursos UI através de RNS, 24 testes host iOS/estática e Linux build/run/package/run. Os resultados Go efectivamente executados estão separados das passagens vindas da cache. [Relatórios, fontes, falhas e correcções](evidence/site-editor-versions).
+
+A primeira execução Node tinha uma tradução em falta; foi corrigida e i18n/typecheck/build passaram. A fixture de um rascunho antigo sem audiência passou a escolher «Público» explicitamente e a verificar entrega/autoria, preservando o comportamento privado inicial. A contenção do WebLock no reload e a perda de foco após guardar foram reproduzidas e corrigidas, mantendo a exclusão de outro perfil vivo e os prazos dos testes. O campo de endereço demasiado estreito foi corrigido e testado em diálogo e viewport compacto.
+
+**Fiabilidade ainda por esclarecer:** uma execução Firefox fechou a ligação após pausar o relay, embora tivesse preservado o SOS próprio e impedido a entrega do conteúdo cancelado. Cinco repetições dirigidas, o ficheiro completo e a nova matriz passaram com diagnóstico, sem alterações no transporte. A causa continua desconhecida; não marcar esta ocorrência como corrigida. A revisão independente também continua pendente.
+
+O HTML público mantém a fonte 0c6b58a / distribuição 45ecacdf até passar o gate dos novos artefactos. Apps físicas, Apple/signing, rádios e restante contrato não são demonstrados por este gate local. Em particular, o CI 35252072691 / dc57316 falhou no reload da imagem grande (reproduzido e corrigido localmente neste marco) e na importação da fotografia iOS; os restantes nove jobs passaram. O CI anterior 35226875160 chegou ao picker e falhou a consulta AX. A nova captura XCUIScreen preparada para o picker tem validação host/static, mas ainda não execução Apple.
+
 ## Rascunhos web grandes — publicados e verificados
 
 Corrigida a gravação de imagens válidas que excediam o índice privado de 1 MiB. Os valores cifrados passam a ter armazenamento separado, leitura legada e transacções conjuntas, sem entrar no inventário P2P. Passaram 236 execuções de testes de browser/UI, dois oráculos de endereçamento, 36 verificações Axe e build/run/package/run Linux. Incluem recuperação exacta da imagem, corrupção/ausência/troca de blobs, partição/reconexão e seeding. [Comandos, fontes e âmbito](evidence/private-values). A fonte `0c6b58a` foi publicada na distribuição `45ecacdf`: Pages passou e foram verificados 17 hashes HTTP e 13 percursos no URL público. O limite de imagens do editor não mudou.
@@ -8,7 +20,7 @@ Os certificados de revisões e o catálogo persistente Node têm código/testes 
 
 ## Revisões de sites — APIs Node e Go integradas
 
-POSTsite-command cria a revisão e a preparação numa transacção real, autoriza antes de copiar/enviar, recupera pedidos e resolve endereços a partir de certificados e bytes verificados. Conflitos conhecidos exigem confirmação explícita das cabeças. Uma cabeça sem payload não promove a versão antiga. Passaram397testesNode,31UI por núcleoNode/Go,2percursos legados de interoperabilidade eLinuxbuild/run/package/run. [Evidência](evidence/site-api) e [guia](SITE-REVISIONS.md). A paridade Go passou o gate completo descrito abaixo. Ainda não há UI de revisões; a API/persistência browser passou o marco descrito a seguir. Contribuições e ficheiros opcionais continuam pendentes.
+POSTsite-command cria a revisão e a preparação numa transacção real, autoriza antes de copiar/enviar, recupera pedidos e resolve endereços a partir de certificados e bytes verificados. Conflitos conhecidos exigem confirmação explícita das cabeças. Uma cabeça sem payload não promove a versão antiga. Passaram397testesNode,duas passagens de31UI Node, uma indevidamente rotulada Go ([correcção](evidence/site-ui-runtime-correction)),2percursos legados de interoperabilidade eLinuxbuild/run/package/run. [Evidência](evidence/site-api) e [guia](SITE-REVISIONS.md). A paridade Go passou o gate completo descrito abaixo. A UI de revisões foi integrada posteriormente, no marco acima; a API/persistência browser passou o marco descrito a seguir. Contribuições e ficheiros opcionais continuam pendentes.
 
 ## Revisões de sites — browser integrado e verificado localmente
 
@@ -16,13 +28,13 @@ O perfil browser guarda preparação e catálogo em transacções IndexedDB cifr
 
 Passaram 17 casos dirigidos por motor (51). A regressão completa executou 65 cenários por motor; em WebKit, um teste antigo encontrou dois role=status legítimos. O selector foi limitado ao landmark do estúdio, sem mudar prazo/assertivas; esse percurso voltou a passar nos três motores. Um novo percurso com o worker compilado também passou nos três. Resultado consolidado: **66 cenários por motor, 198 distintos por motor/cenário**, com fontes de produto e assets iguais na repetição. [Relatórios, hashes, falha e comandos](evidence/browser-site-api).
 
-Os percursos reais ligaram Browser→Browser→Node→Go e Browser→Browser→Go→Node com WebRTC/WebSocket/TCP, pausa/retoma, histórico, conteúdo privado opaco, resposta nativa e seeder único reiniciado depois de o autor sair. A identidade e os bytes foram preservados. O código público continua em 0c6b58a / distribuição45ecacdf; esta API e os futuros controlos de revisões não foram publicados no HTML. O editor com base persistente/histórico/recuperação está em preparação isolada, ainda sem gate/UI final. Hardware, revisão independente e restante contrato continuam pendentes.
+Os percursos reais ligaram Browser→Browser→Node→Go e Browser→Browser→Go→Node com WebRTC/WebSocket/TCP, pausa/retoma, histórico, conteúdo privado opaco, resposta nativa e seeder único reiniciado depois de o autor sair. A identidade e os bytes foram preservados. O código público continua em 0c6b58a / distribuição45ecacdf; esta API e os futuros controlos de revisões não foram publicados no HTML. O editor com base persistente/histórico/recuperação passou a verificação local descrita no início deste documento. Hardware, revisão independente e restante contrato continuam pendentes.
 
 ## CI e camada Go mais recentes
 
-O CI35217405129 (e4b82be) passou Node Linux/macOS/Windows, Go, UI, RNS, web autónoma e os três pacotes desktop. Apenas iOS falhou em seed-synthetic-photo, antes de validar o selector corrigido. O erro antigo de exitCode no Windows está ultrapassado nessa execução. A fonte Go 3f63f19 foi enviada; CI35226875160 continua em curso na última consulta, com os três jobs Node passados e Go em execução. Não é validação das alterações browser locais deste marco.
+O CI35217405129 (e4b82be) passou Node Linux/macOS/Windows, Go, UI, RNS, web autónoma e os três pacotes desktop. Apenas iOS falhou em seed-synthetic-photo, antes de validar o selector corrigido. O erro antigo de exitCode no Windows está ultrapassado nessa execução. A fonte Go 3f63f19 foi enviada; CI35226875160 terminou: apenas iOS falhou na consulta AX do picker; os restantes jobs passaram. Não é validação das alterações browser locais deste marco.
 
-O catálogo e a API Go já retomam publicações Node e vice-versa, preservando revisão, leitores, conflitos e expiração. Passaram os pacotesGo comrace,69interop,SQLiteC,31UI Node+31UI Go eLinuxbuild/run/package/run. [Provas actuais](evidence/go-site-api). A API browser está verificada no marco acima; os controlos no estúdio continuam em desenvolvimento.
+O catálogo e a API Go já retomam publicações Node e vice-versa, preservando revisão, leitores, conflitos e expiração. Passaram os pacotesGo comrace,69interop,SQLiteC,duas passagens locais de31UI Node, uma indevidamente rotulada Go ([correcção](evidence/site-ui-runtime-correction)) eLinuxbuild/run/package/run. [Provas actuais](evidence/go-site-api). A API browser está verificada no marco acima; os controlos no estúdio continuam em desenvolvimento.
 
 ## iOS — fotografia visível, selecção ainda sem passe
 

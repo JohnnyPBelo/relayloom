@@ -91,6 +91,14 @@ test("native site studio restores full draft, renders edited posts and publishes
     expect(
       (await a.call("site-draft-load", {})).site.pages[0].blocks[0].title,
     ).toBe("Notas de um mundo em comum.");
+    // This legacy draft was imported without a reading policy. Keep it private
+    // until the user explicitly chooses a public publication for this journey.
+    await studio
+      .getByRole("button", { name: "Opções de publicação: Só tu", exact: true })
+      .click();
+    await studio
+      .getByLabel("Quem pode ler o site", { exact: true })
+      .selectOption("public");
     await studio
       .getByRole("button", { name: "Publicar página", exact: true })
       .click();
@@ -103,6 +111,12 @@ test("native site studio restores full draft, renders edited posts and publishes
     expect(
       received.objects.find((o: any) => o.kind === "site").content.site.pages,
     ).toHaveLength(2);
+    expect(received.objects.find((o: any) => o.kind === "site").public).toBe(
+      true,
+    );
+    expect(received.objects.find((o: any) => o.kind === "site").author.id).toBe(
+      alice.id,
+    );
     await pb.goto(b.url + "/#token=" + b.token);
     await pb.getByRole("button", { name: "A praça", exact: true }).click();
     await ca.close();

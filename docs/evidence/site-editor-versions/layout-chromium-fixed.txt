@@ -1,0 +1,9 @@
+
+Running 2 tests using 1 worker
+
+(node:3348232) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/browser/site-publication.spec.ts:739:3 › publication and history controls work in en-GB and keep authored text across a language change (4.0s)
+  ✓  2 [chromium] › tests/browser/site-publication.spec.ts:739:3 › publication and history controls work in es-ES and keep authored text across a language change (3.8s)
+
+  2 passed (8.6s)

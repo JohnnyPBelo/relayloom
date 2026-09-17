@@ -745,7 +745,9 @@ test("browser routing packets cross real native TCP routers; native packet bytes
 test("opaque packet corruption is rejected by the browser mesh before storage or forwarding, with valid controls on both sides", async ({
   browser,
 }) => {
-  const contexts = await Promise.all([0, 1, 2].map(() => browser.newContext({ locale: "pt-PT" })));
+  const contexts = await Promise.all(
+    [0, 1, 2].map(() => browser.newContext({ locale: "pt-PT" })),
+  );
   const [a, b, c] = await Promise.all(contexts.map((ctx) => ctx.newPage()));
   try {
     await a.goto(harness.url);
@@ -827,8 +829,10 @@ test("opaque packet corruption is rejected by the browser mesh before storage or
 
 test("managed relay revocation cancels an in-flight forwarded packet and keeps an authored SOS on that same open link", async ({
   browser,
-}) => {
-  const contexts = await Promise.all([0, 1, 2].map(() => browser.newContext({ locale: "pt-PT" })));
+}, info) => {
+  const contexts = await Promise.all(
+    [0, 1, 2].map(() => browser.newContext({ locale: "pt-PT" })),
+  );
   const [a, b, c] = await Promise.all(contexts.map((ctx) => ctx.newPage()));
   try {
     const cards = [];
@@ -838,6 +842,46 @@ test("managed relay revocation cancels an in-flight forwarded packet and keeps a
     }
     await pair(a, b, "ab");
     await pair(b, c, "bc");
+    for (const p of [b, c])
+      await p.evaluate(() => {
+        const w = window as any,
+          link = w.links.bc.peer.link,
+          channel = link.channel;
+        w.revocationFrames = [];
+        const record = (direction: string, text: string) => {
+          if (w.revocationFrames.length >= 256) return;
+          try {
+            const f = JSON.parse(text);
+            w.revocationFrames.push({
+              direction,
+              t: f.t,
+              id: f.id?.slice(0, 12),
+              index: f.index,
+              count: f.count,
+              nonce: f.nonce,
+              at: performance.now(),
+            });
+          } catch {}
+        };
+        const raw = channel.send.bind(channel);
+        channel.send = (text: string) => {
+          record("send", text);
+          return raw(text);
+        };
+        channel.addEventListener("message", (e: MessageEvent) =>
+          record("receive", e.data),
+        );
+        const close = link.close.bind(link);
+        link.close = (reason?: string) => {
+          w.revocationClose ??= {
+            reason: reason ?? "local",
+            at: performance.now(),
+            counters: { ...link.counters },
+            resources: { ...link.resources },
+          };
+          return close(reason);
+        };
+      });
     const prepared = await a.evaluate(
       async ({ cards, password }) => {
         const r = (window as any).rl,
@@ -913,6 +957,31 @@ test("managed relay revocation cancels an in-flight forwarded packet and keeps a
       )
       .toBe(0);
   } finally {
+    const diagnostics = [];
+    for (const p of [b, c])
+      if (!p.isClosed())
+        diagnostics.push(
+          await p
+            .evaluate(() => {
+              const w = window as any,
+                link = w.links?.bc?.peer?.link;
+              return {
+                close: w.revocationClose,
+                closeReason: link?.closeReason,
+                closed: link?.closed,
+                counters: link?.counters,
+                resources: link?.resources,
+                frames: w.revocationFrames,
+              };
+            })
+            .catch(() => ({ diagnosticUnavailable: true })),
+        );
+    const directory = `.cache/relay-revocation/${info.project.name || "chromium"}-${info.repeatEachIndex}`;
+    mkdirSync(directory, { recursive: true });
+    writeFileSync(
+      directory + "/result.json",
+      JSON.stringify(diagnostics, null, 2),
+    );
     await Promise.all(contexts.map((ctx) => ctx.close()));
   }
 });

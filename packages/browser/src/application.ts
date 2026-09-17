@@ -1,3 +1,4 @@
+import { validateSiteEditingContext } from "../../sites/src/editing";
 import { draftSummary } from "../../content/src/site";
 import { canonical } from "../../core/src/protocol";
 import type { Bundle, PublicIdentity } from "../../core/src/protocol";
@@ -163,6 +164,8 @@ export class BrowserApplication {
         Object.values(r).some((v) => !isAddress(v))
       )
         throw new Error("Registo de confirmações inválido");
+    if (d.siteDraft?.editing !== undefined)
+      validateSiteEditingContext(d.siteDraft.editing, owner);
     if (d.siteDraft)
       validateContentShape({
         type: "site",
@@ -1025,6 +1028,10 @@ export class BrowserApplication {
     if (path === "site-draft-load")
       return structuredClone((await this.data()).siteDraft);
     if (path === "site-draft") {
+      const context =
+        body.editing === undefined
+          ? undefined
+          : validateSiteEditingContext(body.editing, this.owner().id);
       validateContentShape({
         type: "site",
         blocks: body.blocks,
@@ -1042,6 +1049,7 @@ export class BrowserApplication {
           ...(body.attachments !== undefined
             ? { attachments: body.attachments }
             : {}),
+          ...(context !== undefined ? { editing: context } : {}),
           savedAt: Date.now(),
         };
       });
