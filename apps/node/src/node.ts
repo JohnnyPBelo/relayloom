@@ -1,4 +1,7 @@
 import { readUIPreferences, saveUIPreferences } from "./ui-preferences";
+import { SiteRuntime, inspectSite } from "./site-runtime";
+import { NodeSiteCatalog } from "../../../packages/sites/src/catalog";
+import { RegistryIntegrityError } from "../../../packages/groups/src/storage";
 import { draftSummary } from "../../../packages/content/src/site";
 import { commitGroupSendIntent } from "./group-send.js";
 import { ReticulumAdapter } from "../../../packages/transport/src/reticulum.js";
@@ -132,6 +135,8 @@ export class LoomNode extends EventEmitter {
   private privateState: PrivateState = { mutations: {} };
   private privateDatabase?: ProfileDatabase;
   private privateDigest?: string;
+  private siteRuntime?: SiteRuntime;
+  private siteRuntimeOwner?: Identity;
   private summaryCache = new Map<
     string,
     { object: DisplayObject; bytes: number }
@@ -420,6 +425,8 @@ export class LoomNode extends EventEmitter {
     return identity.public;
   }
   lock() {
+    this.siteRuntime = undefined;
+    this.siteRuntimeOwner = undefined;
     this.cancelGroupPackets(true);
     this.groupSync.reset();
     this.noticeSync.reset();
@@ -439,6 +446,85 @@ export class LoomNode extends EventEmitter {
     this.requireRunning();
     if (!this.identity) throw new Error("Desbloqueie a identidade");
     return this.identity;
+  }
+  private sites() {
+    const identity = this.requireIdentity();
+    if (this.siteRuntime && this.siteRuntimeOwner === identity)
+      return this.siteRuntime;
+    if (!this.privateDatabase || !this.privateDigest)
+      throw new Error("Estado privado indisponível");
+    const catalog = new NodeSiteCatalog(
+      {
+        transaction: <T>(
+          fn: Parameters<ProfileDatabase["transaction"]>[0],
+        ): T => {
+          if (this.requireIdentity() !== identity || !this.privateDatabase)
+            throw new Error("Sessão de site bloqueada");
+          try {
+            return this.privateDatabase.transaction((tx) => {
+              if (readProfileState(tx)?.digest !== this.privateDigest)
+                throw new Error("Estado privado desactualizado");
+              return fn(tx) as T;
+            });
+          } catch (error) {
+            if (
+              error instanceof RegistryIntegrityError ||
+              String((error as any)?.code ?? "").includes("SQLITE")
+            )
+              this.lock();
+            throw error;
+          }
+        },
+      },
+      identity,
+    );
+    this.siteRuntimeOwner = identity;
+    this.siteRuntime = new SiteRuntime({
+      identity,
+      catalog,
+      store: this.store,
+      blocked: () => this.config.blocked,
+      readers: (ids) => {
+        if (ids === "public") return "public";
+        if (
+          !Array.isArray(ids) ||
+          ids.length > 64 ||
+          ids.some((id) => typeof id !== "string" || !/^[a-f0-9]{64}$/.test(id))
+        )
+          throw new Error("Destinatários inválidos");
+        return [...new Set([identity.public.id, ...ids])].map((id) => {
+          if (this.config.blocked.includes(id))
+            throw new Error("Contacto bloqueado");
+          const card =
+            id === identity.public.id
+              ? identity.public
+              : this.config.contacts.find((c) => c.id === id);
+          if (!card)
+            throw new Error("Adicione primeiro o cartão do destinatário");
+          return card;
+        });
+      },
+      publish: (bundle) => {
+        if (this.requireIdentity() !== identity)
+          throw new Error("Sessão de site bloqueada");
+        if (!this.maySeed(bundle.manifest))
+          throw new Error("Partilha de site interrompida");
+        this.router.broadcast({ type: "bundle", bundle }, "bulk");
+        this.emit("content");
+      },
+      request: (ids) => {
+        const wanted = ids
+          .filter((id) => Date.now() - (this.requests.get(id) ?? 0) > 5000)
+          .slice(0, 8);
+        if (!wanted.length) return;
+        for (const id of wanted) this.markRequest(id);
+        this.router.broadcast({ type: "request", ids: wanted }, "normal");
+      },
+    });
+    return this.siteRuntime;
+  }
+  siteCommand(command: unknown) {
+    return this.sites().command(command);
   }
   private groupRetries = new Map<string, GroupRetry>();
   private groupEventSeeds = new Set<string>();
@@ -1296,7 +1382,18 @@ export class LoomNode extends EventEmitter {
       ];
     } else throw new Error("Acção desconhecida");
     this.saveConfig();
-    if (action === "block") this.reconcileGroupSends();
+    if (action === "block") {
+      this.reconcileGroupSends();
+      this.router.cancelLocal(
+        (payload: any) =>
+          payload?.type === "bundle" &&
+          payload.bundle?.manifest?.kind === "site" &&
+          payload.bundle.manifest.author.id === this.identity?.public.id &&
+          payload.bundle.manifest.keys.some((key: any) =>
+            this.config.blocked.includes(key.reader),
+          ),
+      );
+    }
   }
   private preparePublication(
     content: Content,
@@ -1306,6 +1403,8 @@ export class LoomNode extends EventEmitter {
   ): { bundle: Bundle; content: Content; mutationTarget?: Manifest } {
     const identity = this.requireIdentity();
     validateContent(content);
+    if (content.type === "site" && Object.hasOwn(content, "siteRevision"))
+      throw new Error("Use a publicação versionada de sites");
     if (hasGroupBinding(content))
       throw new Error("O envio neste grupo ainda não está disponível");
     let mutationTarget: Manifest | undefined;
@@ -1518,6 +1617,21 @@ export class LoomNode extends EventEmitter {
     return this.display(bundle)!;
   }
   private maySeed(manifest: Manifest) {
+    if (manifest.kind === "site") {
+      if (manifest.publicKey === null && !this.identity && this.initialized)
+        return false;
+      if (
+        manifest.author.id === this.identity?.public.id &&
+        manifest.keys.some((k) => this.config.blocked.includes(k.reader))
+      )
+        return false;
+      try {
+        inspectSite(this.store.get(manifest.id, false), this.identity);
+        return true;
+      } catch {
+        return false;
+      }
+    }
     if (manifest.kind === "group-notice") {
       if (
         !noticeManifestPolicy(manifest) ||
@@ -1580,7 +1694,11 @@ export class LoomNode extends EventEmitter {
         verifyGroupControlEnvelope(payload.bundle);
       else if (payload.bundle?.manifest?.kind === "group-notice")
         verifyNoticeEnvelope(payload.bundle);
-      else verifyBundle(payload.bundle);
+      else {
+        verifyBundle(payload.bundle);
+        if (payload.bundle.manifest.kind === "site")
+          inspectSite(payload.bundle, this.identity);
+      }
     } else if (
       !Array.isArray(payload.ids) ||
       payload.ids.length > 64 ||
@@ -1673,6 +1791,11 @@ export class LoomNode extends EventEmitter {
         if (this.identity) {
           const incoming = this.display(payload.bundle, true);
           if (
+            incoming?.kind === "site" &&
+            Object.hasOwn(incoming.content, "siteRevision")
+          )
+            this.sites().receive(payload.bundle);
+          if (
             incoming &&
             hasGroupBinding(incoming.content) &&
             (incoming.content.target || incoming.content.replyTo)
@@ -1735,6 +1858,10 @@ export class LoomNode extends EventEmitter {
         const objects = this.objects();
         this.issueDeliveries(objects);
         this.flushOutbox();
+        if (this.identity) {
+          const sites = this.sites();
+          sites.tick();
+        }
       }
       if (!this.router.peers.some((p) => p.connected) || !this.config.relay)
         return;
@@ -1763,6 +1890,7 @@ export class LoomNode extends EventEmitter {
       const content = decryptBundle(bundle, this.identity) as Content;
       validateContent(content);
       if (content.type !== bundle.manifest.kind) return;
+      if (content.type === "site") inspectSite(bundle, this.identity);
       if (hasGroupBinding(content)) parseGroupBinding(content);
       return {
         id: bundle.manifest.id,
@@ -1800,6 +1928,8 @@ export class LoomNode extends EventEmitter {
     if (content.type === "site") {
       if (content.theme !== undefined) out.theme = content.theme;
       if (content.site !== undefined) out.site = content.site;
+      if (content.siteRevision !== undefined)
+        out.siteRevision = content.siteRevision;
       out.blocks = content.blocks!.map((b) => ({
         id: b.id,
         type: b.type,
@@ -2152,6 +2282,9 @@ export class LoomNode extends EventEmitter {
         : [],
       siteDraft: this.identity
         ? draftSummary(this.privateState.siteDraft)
+        : null,
+      sitePublishing: this.identity
+        ? (this.siteRuntime?.status() ?? { pending: 0, error: "" })
         : null,
       outbox: this.identity
         ? Object.values(this.privateState.outbox ?? {}).map((e) =>

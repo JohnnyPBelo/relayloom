@@ -10,7 +10,7 @@ A paleta dispõe de 13 blocos: capa, texto, ligação, destaque, título, citaç
 
 **Estilo** permite escolher tipografia, largura, cantos e cor de detalhe; cada bloco tem alinhamento, espaçamento e fundo. **Pré-visualizar** apresenta o mesmo renderer usado pelos leitores, com navegação interna e largura móvel. As imagens são incluídas no site e podem ser reutilizadas em várias páginas, com descrições alternativas.
 
-**Guardar rascunho** conserva o projecto cifrado apenas neste dispositivo. **Publicar página** cria uma publicação pública assinada e imutável, distribuível pelos pares. Publicar guarda primeiro o rascunho actual, para que as alterações publicadas também estejam disponíveis ao voltar a editar. A versão mais recente disponível do autor é a apresentada na praça; não existe ainda um endereço mutável permanente do site.
+**Guardar rascunho** conserva o projecto cifrado apenas neste dispositivo. **Publicar página** cria uma publicação pública assinada e imutável, distribuível pelos pares. Publicar guarda primeiro o rascunho actual, para que as alterações publicadas também estejam disponíveis ao voltar a editar. A versão mais recente disponível do autor é a apresentada na praça; o estúdio publicado ainda não expõe um endereço permanente com histórico de revisões.
 
 **Avançado** exporta/importa um projecto declarativo JSON, incluindo páginas, estilos e imagens. A importação é validada antes de substituir a composição. Não importa um site HTML/JavaScript arbitrário. Desfazer/refazer funciona enquanto o estúdio permanece montado, com até 40 estados e orçamento de 8 MiB de JSON UTF-8 para o histórico passado (a memória real inclui estruturas e imagens descodificadas); o projecto guardado não inclui esse histórico.
 
@@ -75,3 +75,6 @@ Publicação64363cf da fontebfcb5fc verificada em17assets e12percursosHTTPS, al�
 ## Correcção de rascunhos grandes publicada
 
 O limite de 2 MiB de imagens do editor não mudou. A versão web anterior guardava o rascunho dentro de um índice privado de 1 MiB; uma imagem permitida pelo editor podia por isso falhar ao guardar. A candidata usa valores privados cifrados separados, até 8 MiB por valor e 32 MiB no total cifrado, mantém leitura de perfis anteriores e grava índice/valor numa só transacção. Os blobs privados não entram no inventário nem podem ser pedidos como bundles. O teste UI recarrega/desbloqueia o perfil e compara a imagem e o projecto exactos. A recuperação de erros não repõe valores vazios silenciosamente. Passaram 236 testes de browser/UI, dois oráculos de endereçamento e os gates Linux; [evidência e âmbito](evidence/private-values). Publicação da fonte `0c6b58a` verificada em 17 hashes HTTP e 13 percursos no URL público.
+
+
+A aplicação Node dispõe agora de uma [API de revisões](SITE-REVISIONS.md), ainda sem controlos no estúdio partilhado. Os testes de API/transporte não substituem a UI de revisões nem as APIs Go/browser pendentes.

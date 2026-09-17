@@ -1,0 +1,74 @@
+TAP version 13
+# (node:2755758) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: failed application profile commit cannot publish and a failed public copy remains recoverable
+ok 1 - failed application profile commit cannot publish and a failed public copy remains recoverable
+  ---
+  duration_ms: 846.110039
+  type: 'test'
+  ...
+# Subtest: the real application recovers its exact publication after process exit between authorization and public storage
+ok 2 - the real application recovers its exact publication after process exit between authorization and public storage
+  ---
+  duration_ms: 3596.061328
+  type: 'test'
+  ...
+# Subtest: a known newer head without bytes never falls back to an older site, including after profile unlock
+ok 3 - a known newer head without bytes never falls back to an older site, including after profile unlock
+  ---
+  duration_ms: 536.609208
+  type: 'test'
+  ...
+# Subtest: blocking a private-site reader pauses a committed copy and clears the publication error after resumption
+ok 4 - blocking a private-site reader pauses a committed copy and clears the publication error after resumption
+  ---
+  duration_ms: 428.827973
+  type: 'test'
+  ...
+# Subtest: real application APIs preserve revision identity, resolve updates and serve a new reader after the author exits
+ok 5 - real application APIs preserve revision identity, resolve updates and serve a new reader after the author exits
+  ---
+  duration_ms: 1978.26316
+  type: 'test'
+  ...
+# Subtest: private site APIs preserve reading scope and generic publication cannot bypass version authority
+ok 6 - private site APIs preserve reading scope and generic publication cannot bypass version authority
+  ---
+  duration_ms: 1755.252706
+  type: 'test'
+  ...
+# Subtest: a valid outer signature cannot smuggle another owner snapshot into application storage through TCP
+ok 7 - a valid outer signature cannot smuggle another owner snapshot into application storage through TCP
+  ---
+  duration_ms: 709.776223
+  type: 'test'
+  ...
+# Subtest: two installations with the same owner preserve a fork until the owner explicitly confirms all known heads
+ok 8 - two installations with the same owner preserve a fork until the owner explicitly confirms all known heads
+  ---
+  duration_ms: 1692.808762
+  type: 'test'
+  ...
+# (node:2757609) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: logical site publication replays the same public or private result before and after staging retirement
+ok 9 - logical site publication replays the same public or private result before and after staging retirement
+  ---
+  duration_ms: 300.313676
+  type: 'test'
+  ...
+# Subtest: request fingerprints bind exact reading cards, base, lifetime and document consistently across crypto runtimes
+ok 10 - request fingerprints bind exact reading cards, base, lifetime and document consistently across crypto runtimes
+  ---
+  duration_ms: 27.590378
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 12586.20203

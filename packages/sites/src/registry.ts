@@ -24,6 +24,7 @@ export interface SiteOperation {
   expectedBase: string;
   revision: SiteRevision;
   bundleId: string;
+  requestFingerprint?: string;
   phase:
     "prepared" | "committed" | "ready" | "cancelled" | "superseded" | "expired";
 }
@@ -42,7 +43,10 @@ export interface SiteReservation {
   expectedBase: string;
   revision: SiteRevision;
   bundleId: string;
+  requestFingerprint?: string;
 }
+const operationShape = (value: unknown, keys: string[]) =>
+  exactShape(value, keys) || exactShape(value, [...keys, "requestFingerprint"]);
 const address = (value: unknown): value is string =>
   typeof value === "string" && /^[a-f0-9]{64}$/.test(value);
 const operationID = (value: unknown): value is string =>
@@ -144,7 +148,7 @@ function registryModel(crypto: CertificateCrypto) {
     let prepared = 0;
     for (const entry of value.operations) {
       requireThat(
-        exactShape(entry, [
+        operationShape(entry, [
           "sequence",
           "operationId",
           "fingerprint",
@@ -162,6 +166,8 @@ function registryModel(crypto: CertificateCrypto) {
           address(entry.fingerprint) &&
           address(entry.expectedBase) &&
           address(entry.bundleId) &&
+          (entry.requestFingerprint === undefined ||
+            address(entry.requestFingerprint)) &&
           [
             "prepared",
             "committed",
@@ -325,7 +331,7 @@ function registryModel(crypto: CertificateCrypto) {
   }
   function begin(value: SiteRecord, request: SiteReservation) {
     requireThat(
-      exactShape(request, [
+      operationShape(request, [
         "sequence",
         "operationId",
         "fingerprint",
@@ -334,6 +340,11 @@ function registryModel(crypto: CertificateCrypto) {
         "bundleId",
       ]),
       "Reserva de publicação inválida",
+    );
+    requireThat(
+      request.requestFingerprint === undefined ||
+        address(request.requestFingerprint),
+      "Pedido de publicação inválido",
     );
     const previous = lookup(
       value,
@@ -379,6 +390,9 @@ function registryModel(crypto: CertificateCrypto) {
       revision: structuredClone(revision),
       bundleId: request.bundleId,
       phase: "prepared",
+      ...(request.requestFingerprint !== undefined
+        ? { requestFingerprint: request.requestFingerprint }
+        : {}),
     };
     next.counter = request.sequence;
     next.operations.sort((a, b) => a.sequence - b.sequence);

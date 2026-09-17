@@ -1,0 +1,22 @@
+TAP version 13
+# Subtest: node site → go restarted seeder → node new reader: encrypted multipage draft, authority, corruption and author-offline transfer
+ok 1 - node site → go restarted seeder → node new reader: encrypted multipage draft, authority, corruption and author-offline transfer
+  ---
+  duration_ms: 3257.370354
+  type: 'test'
+  ...
+# Subtest: go site → node restarted seeder → go new reader: encrypted multipage draft, authority, corruption and author-offline transfer
+ok 2 - go site → node restarted seeder → go new reader: encrypted multipage draft, authority, corruption and author-offline transfer
+  ---
+  duration_ms: 3174.076708
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 6602.284933

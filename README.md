@@ -44,11 +44,13 @@ O novo estúdio já está disponível na [versão web](https://johnnypbelo.githu
 
 A publicação foi conferida por hash e passou quatro testes no URL real, incluindo seeding do site com a autora offline e troca de mensagens/anexo entre processos. [Evidência pública](docs/evidence/site-studio/live). Guarde o rascunho, feche os separadores RelayLoom antigos e reabra a página inicial para actualizar, sem apagar os dados.
 
-Esta adaptação inspira-se nos sites distribuídos do ZeroNet, com execução limitada a blocos seguros. Os limites actuais são 12 páginas, 128 blocos, três níveis e quatro imagens com até 2 MiB no total. Contribuições multiutilizador, ficheiros opcionais e endereços permanentes com revisões ainda não estão implementados. [Como criar e limites exactos](docs/SITE-STUDIO.md).
+Esta adaptação inspira-se nos sites distribuídos do ZeroNet, com execução limitada a blocos seguros. Os limites actuais são 12 páginas, 128 blocos, três níveis e quatro imagens com até 2 MiB no total. Na interface publicada ainda faltam contribuições multiutilizador, ficheiros opcionais e controlos de endereços permanentes/revisões. [Como criar e limites exactos](docs/SITE-STUDIO.md).
 
 Na versão web, já pode duplicar páginas completas e alterar a sua ordem. A cópia conserva ligações, imagens e a página inicial, com desfazer/refazer e controlos por teclado/toque. A publicação64363cf da fontebfcb5fc foi conferida em17ficheirosHTTP e12percursosUI. Os gates Node/Go,135casos de browser e Android também passaram. [Evidência e pendentes](docs/evidence/page-organisation).
 
 A correcção para guardar rascunhos web com imagens maiores que 1 MiB passou a regressão nos três motores de browser e nos clientes Node/Go, incluindo recuperação exacta após recarregar. A correcção já está no URL público: 17 ficheiros conferidos por hash e 13 percursos HTTPS passaram. [Testes e limites](docs/evidence/private-values).
+
+A aplicação Node tem agora uma API de revisões assinadas: endereço estável, histórico, conflitos explícitos e retoma da mesma publicação após interrupção. Passaram 397 testes Node, 31 percursos de interface por núcleo e um percurso TCP/série com partição e seeder. Os controlos de revisões ainda não estão no editor, e as APIs Go/browser continuam por integrar. [Âmbito e comandos](docs/SITE-REVISIONS.md).
 
 Existe também um [APK Android ARM64 experimental](docs/ANDROID-ARM64.md), construído com a mesma interface. A arquitectura, assinatura e assets foram verificados; a execução num telefone ARM64 ainda está pendente.
 

@@ -4,7 +4,11 @@
 
 Corrigida a gravação de imagens válidas que excediam o índice privado de 1 MiB. Os valores cifrados passam a ter armazenamento separado, leitura legada e transacções conjuntas, sem entrar no inventário P2P. Passaram 236 execuções de testes de browser/UI, dois oráculos de endereçamento, 36 verificações Axe e build/run/package/run Linux. Incluem recuperação exacta da imagem, corrupção/ausência/troca de blobs, partição/reconexão e seeding. [Comandos, fontes e âmbito](evidence/private-values). A fonte `0c6b58a` foi publicada na distribuição `45ecacdf`: Pages passou e foram verificados 17 hashes HTTP e 13 percursos no URL público. O limite de imagens do editor não mudou.
 
-Os certificados de revisões e o catálogo persistente Node têm código/testes locais, incluindo interrupção de processos e recuperação. [Evidência e limites](evidence/site-revisions). Ainda não há publicação/endereço permanente integrado nas APIs ou na UI, nem persistência equivalente Go/browser. Contribuições assinadas e ficheiros opcionais continuam pendentes; o produto completo mantém-se em implementação.
+Os certificados de revisões e o catálogo persistente Node têm código/testes locais, incluindo interrupção de processos e recuperação. [Evidência e limites](evidence/site-revisions). A API Node foi integrada no marco abaixo; os controlos de UI e a persistência/API Go/browser continuam pendentes. Contribuições assinadas e ficheiros opcionais continuam pendentes; o produto completo mantém-se em implementação.
+
+## Revisões de sites — API Node integrada
+
+POSTsite-command cria a revisão e a preparação numa transacção real, autoriza antes de copiar/enviar, recupera pedidos e resolve endereços a partir de certificados e bytes verificados. Conflitos conhecidos exigem confirmação explícita das cabeças. Uma cabeça sem payload não promove a versão antiga. Passaram397testesNode,31UI por núcleoNode/Go,2percursos legados de interoperabilidade eLinuxbuild/run/package/run. [Evidência](evidence/site-api) e [guia](SITE-REVISIONS.md). Não há ainda UI de revisões nem API/persistência equivalentes Go/browser; contribuições e ficheiros opcionais continuam pendentes.
 
 ## iOS — instalação no simulador ainda sem passe
 

@@ -1,6 +1,7 @@
 import {
   canonical,
   hash,
+  createBundle,
   verifyBundle,
   decryptBundle,
   verifyStoredBundle,
@@ -23,6 +24,10 @@ import {
 import { createSiteContentProtocol } from "./content";
 import { SitePrivateRecords } from "./private-storage";
 import { siteAddress } from "./protocol";
+import {
+  createSiteRequestProtocol,
+  type SitePublicationRequest,
+} from "./request";
 
 export const SITE_CATALOG_LIMITS = Object.freeze({ sites: 64 });
 interface Database {
@@ -42,13 +47,15 @@ export interface SiteOperationHandle {
   fingerprint: string;
 }
 const registry = createSiteRegistry(nodeCertificateCrypto),
-  snapshots = createSiteContentProtocol(nodeCertificateCrypto);
+  snapshots = createSiteContentProtocol(nodeCertificateCrypto),
+  requests = createSiteRequestProtocol(nodeCertificateCrypto);
 const summary = (operation: SiteOperation) => ({
   sequence: operation.sequence,
   operationId: operation.operationId,
   fingerprint: operation.fingerprint,
   bundleId: operation.bundleId,
   phase: operation.phase,
+  requested: operation.requestFingerprint !== undefined,
 });
 function insist(value: unknown, message: string): asserts value {
   if (!value) throw new RegistryIntegrityError(message);
@@ -227,12 +234,13 @@ export class NodeSiteCatalog {
     }
     insist(
       record.ownerId === this.identity.public.id &&
-        exactShape(stored, ["domain", "bundle"]) &&
+        (exactShape(stored, ["domain", "bundle"]) ||
+          exactShape(stored, ["domain", "bundle", "request"])) &&
         (stored as any).domain === "relayloom/site-stage/1",
       "Preparação privada de site inválida ou ausente",
     );
     try {
-      const { bundle, revision } = this.verified(
+      const { bundle, revision, content } = this.verified(
         (stored as any).bundle,
         record.name,
         true,
@@ -244,6 +252,52 @@ export class NodeSiteCatalog {
             pending.fingerprint,
         "Preparação de site não corresponde à operação",
       );
+      if (pending.requestFingerprint !== undefined) {
+        const contextFields = [
+          "sequence",
+          "operationId",
+          "expectedBase",
+          "readers",
+          "ttlMs",
+        ];
+        insist(
+          exactShape((stored as any).request, contextFields) ||
+            exactShape((stored as any).request, [
+              ...contextFields,
+              "confirmedHeads",
+            ]),
+          "Contexto do pedido guardado inválido",
+        );
+        const { siteRevision: _, ...payload } = content;
+        const parsed = requests.normalize(bundle.manifest.author, record.name, {
+          ...(stored as any).request,
+          payload,
+        });
+        insist(
+          parsed.fingerprint === pending.requestFingerprint &&
+            same(parsed.context, (stored as any).request) &&
+            parsed.context.sequence === pending.sequence &&
+            parsed.context.operationId === pending.operationId &&
+            parsed.context.expectedBase === pending.expectedBase &&
+            bundle.manifest.expires - bundle.manifest.created >=
+              parsed.context.ttlMs &&
+            bundle.manifest.expires - bundle.manifest.created <=
+              parsed.context.ttlMs + 10 &&
+            same(
+              parsed.context.readers === "public"
+                ? "public"
+                : parsed.context.readers.map((r) => r.id).sort(),
+              bundle.manifest.publicKey !== null
+                ? "public"
+                : bundle.manifest.keys.map((k) => k.reader).sort(),
+            ),
+          "Pedido guardado não corresponde à preparação",
+        );
+      } else
+        insist(
+          !Object.hasOwn(stored as object, "request"),
+          "Pedido sem operação correspondente",
+        );
       return bundle;
     } catch (error) {
       if (error instanceof RegistryIntegrityError) throw error;
@@ -264,6 +318,109 @@ export class NodeSiteCatalog {
           .filter((o) => o.phase === "prepared" || o.phase === "committed")
           .map(summary),
       };
+    });
+  }
+  history(ownerId: string, name: string) {
+    return this.run((values, index) =>
+      structuredClone(this.record(values, index, ownerId, name).headers),
+    );
+  }
+  operation(name: string, sequence: number, operationId: string) {
+    return this.run((values, index) => {
+      const record = this.record(values, index, this.identity.public.id, name);
+      const found = record.operations.find((o) => o.sequence === sequence);
+      const result = registry.lookup(
+        record,
+        sequence,
+        operationId,
+        found?.fingerprint ?? "0".repeat(64),
+      );
+      return result ? summary(result) : null;
+    });
+  }
+  /** The logical UI request and its freshly signed snapshot/cipher share one
+   * durable preparation. Replays are resolved before creating any new bytes. */
+  createPublication(name: string, input: SitePublicationRequest) {
+    const request = requests.normalize(this.identity.public, name, input);
+    return this.run((values, index) => {
+      const record = this.record(values, index, this.identity.public.id, name);
+      const found = record.operations.find(
+        (o) => o.sequence === request.context.sequence,
+      );
+      const prior = registry.lookup(
+        record,
+        request.context.sequence,
+        request.context.operationId,
+        found?.fingerprint ?? "0".repeat(64),
+      );
+      if (prior) {
+        if (prior.requestFingerprint !== request.fingerprint)
+          throw new Error(
+            "A operação já foi usada para outro pedido de publicação",
+          );
+        return summary(prior);
+      }
+      const current = registry.state(record);
+      if (current.status === "conflict" || request.context.confirmedHeads) {
+        if (
+          !request.context.confirmedHeads ||
+          !same(
+            request.context.confirmedHeads,
+            current.heads.map((h) => h.id).sort(),
+          )
+        )
+          throw new Error(
+            "Confirma explicitamente as versões concorrentes antes de publicar",
+          );
+      }
+      if (
+        request.context.sequence !== current.nextSequence ||
+        request.context.expectedBase !== registry.baseHash(record)
+      )
+        throw new Error("O site mudou desde que começaste a editar");
+      if (
+        record.operations.some(
+          (o) => o.phase === "prepared" || o.phase === "committed",
+        )
+      )
+        throw new Error("Conclui ou cancela a publicação pendente");
+      const content = snapshots.create(
+        this.identity,
+        name,
+        request.context.sequence,
+        current.heads
+          .map((h) => h.id)
+          .sort()
+          .slice(0, 16),
+        request.payload,
+      );
+      const bundle = createBundle(
+        this.identity,
+        "site",
+        content,
+        request.context.readers,
+        request.context.ttlMs,
+      );
+      const result = registry.begin(record, {
+        sequence: request.context.sequence,
+        operationId: request.context.operationId,
+        expectedBase: request.context.expectedBase,
+        fingerprint: this.fingerprint(
+          bundle,
+          request.context.expectedBase,
+          name,
+        ),
+        revision: content.siteRevision,
+        bundleId: bundle.manifest.id,
+        requestFingerprint: request.fingerprint,
+      });
+      values.write(this.key(record.ownerId, name) + ":stage", {
+        domain: "relayloom/site-stage/1",
+        bundle,
+        request: request.context,
+      });
+      this.save(values, index, result.record);
+      return summary(result.operation);
     });
   }
   prepare(
@@ -359,6 +516,26 @@ export class NodeSiteCatalog {
     });
     verifyBundle(bundle);
     return bundle;
+  }
+  preparationAccess(name: string, handle: SiteOperationHandle) {
+    return this.run((values, index) => {
+      const record = this.record(values, index, this.identity.public.id, name);
+      const operation = registry.lookup(
+        record,
+        handle.sequence,
+        handle.operationId,
+        handle.fingerprint,
+      );
+      if (!operation || !["prepared", "committed"].includes(operation.phase))
+        return null;
+      const bundle = this.stage(values, record)!;
+      return {
+        readers:
+          bundle.manifest.publicKey !== null
+            ? ("public" as const)
+            : bundle.manifest.keys.map((k) => k.reader),
+      };
+    });
   }
   observe(value: Bundle, name: string) {
     const { bundle, revision } = this.verified(value, name);
