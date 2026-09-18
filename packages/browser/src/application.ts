@@ -1,3 +1,4 @@
+import { BrowserResourceRuntime } from "./resource-runtime";
 import { validateSiteEditingContext } from "../../sites/src/editing";
 import { draftSummary } from "../../content/src/site";
 import { summarizeSiteResource } from "../../content/src/site-resource";
@@ -103,6 +104,7 @@ export class BrowserApplication {
   #flushing = false;
   #closed = false;
   #sites?: BrowserSiteRuntime;
+  #resources?: BrowserResourceRuntime;
   constructor(
     readonly profile: BrowserProfile,
     private network: ApplicationNetwork,
@@ -223,6 +225,26 @@ export class BrowserApplication {
         for (const id of ids) await this.network.command("request", { id });
       },
     });
+    this.#resources?.close();
+    this.#resources = new BrowserResourceRuntime({
+      profile: this.profile,
+      readerSnapshot: async () => {
+        const data = await this.data(),
+          settings = (await this.profile.getValue("mesh-settings")) as any,
+          cards = [owner, ...data.contacts];
+        return (scope) =>
+          scope === "public"
+            ? scope
+            : scope.map((id) => {
+                if (settings?.blocked?.includes(id))
+                  throw new Error("Contacto bloqueado");
+                const card = cards.find((c) => c.id === id);
+                if (!card)
+                  throw new Error("Adiciona primeiro o cartão do destinatário");
+                return card;
+              });
+      },
+    });
     clearInterval(this.#timer);
     this.#timer = setInterval(() => {
       void this.flush();
@@ -233,6 +255,8 @@ export class BrowserApplication {
     this.#generation++;
     this.#sites?.close();
     this.#sites = undefined;
+    this.#resources?.close();
+    this.#resources = undefined;
     clearInterval(this.#timer);
     this.#cache.clear();
     this.#cacheBytes = 0;
@@ -937,6 +961,7 @@ export class BrowserApplication {
       /* Durable state is rechecked at the next attempt; no mutation is replayed with a fresh ID. */
     } finally {
       await this.#sites?.tick();
+      await this.#resources?.tick();
       this.#flushing = false;
     }
   }
@@ -968,6 +993,10 @@ export class BrowserApplication {
       }
     }
     this.owner();
+    if (path === "resource-command") {
+      if (!this.#resources) throw new Error("Sessão de recursos bloqueada");
+      return this.#resources.command(body);
+    }
     if (path === "site-command") {
       if (!this.#sites) throw new Error("Sessão de site bloqueada");
       return this.#sites.command(body);

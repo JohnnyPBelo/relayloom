@@ -30,18 +30,19 @@ import (
 )
 
 type Node struct {
-	webPeerMu    sync.Mutex
-	webPeer      *webpeer.Server
-	mu           sync.Mutex
-	Dir          string
-	Store        *core.ContentStore
-	Router       *transport.Router
-	TCPPort      int
-	identity     *core.Identity
-	wireIdentity *atomic.Pointer[core.Identity]
-	siteRuntime  *siteRuntime
-	config       Config
-	private      PrivateState
+	webPeerMu       sync.Mutex
+	webPeer         *webpeer.Server
+	mu              sync.Mutex
+	Dir             string
+	Store           *core.ContentStore
+	Router          *transport.Router
+	TCPPort         int
+	identity        *core.Identity
+	wireIdentity    *atomic.Pointer[core.Identity]
+	resourceRuntime *resourceRuntime
+	siteRuntime     *siteRuntime
+	config          Config
+	private         PrivateState
 	// Per-node persistence seam for exercising uncertain completion boundaries.
 	writePrivateState  func([]byte, string) (string, error)
 	updateGroupState   func(func(*groupstore.Tx) error) error
@@ -196,6 +197,7 @@ func (n *Node) Close() error {
 	}
 	n.closed = true
 	n.siteRuntime = nil
+	n.resourceRuntime = nil
 	if n.wireIdentity != nil {
 		n.wireIdentity.Store(nil)
 	}
@@ -231,6 +233,7 @@ func (n *Node) initialized() bool {
 }
 func (n *Node) lockPrivateLocked() error {
 	n.siteRuntime = nil
+	n.resourceRuntime = nil
 	if n.wireIdentity != nil {
 		n.wireIdentity.Store(nil)
 	}
@@ -593,6 +596,11 @@ func (n *Node) syncLocked() {
 		if n.identity != nil {
 			if s, e := n.sitesLocked(); e == nil {
 				s.tick()
+			}
+			if r, e := n.resourcesLocked(); e == nil {
+				if e = r.tick(); e != nil {
+					n.lastTransportError = "Criação de recurso adiada; estado por verificar"
+				}
 			}
 		}
 	}
@@ -1229,6 +1237,7 @@ func (n *Node) Handle(operation string, body map[string]any) (any, error) {
 			n.wireIdentity.Store(&identity)
 		}
 		n.siteRuntime = nil
+		n.resourceRuntime = nil
 		n.private = local
 		n.privateDatabase = database
 		n.privateDigest = digest
@@ -1269,6 +1278,7 @@ func (n *Node) Handle(operation string, body map[string]any) (any, error) {
 			n.wireIdentity.Store(&identity)
 		}
 		n.siteRuntime = nil
+		n.resourceRuntime = nil
 		n.private = local
 		n.privateDatabase = database
 		n.privateDigest = digest
@@ -1301,6 +1311,12 @@ func (n *Node) Handle(operation string, body map[string]any) (any, error) {
 		return map[string]any{"vault": vault}, err
 	case "group-command":
 		return n.groupCommandLocked(body)
+	case "resource-command":
+		r, err := n.resourcesLocked()
+		if err != nil {
+			return nil, err
+		}
+		return r.command(body)
 	case "site-command":
 		s, err := n.sitesLocked()
 		if err != nil {

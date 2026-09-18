@@ -246,18 +246,19 @@ for (const backend of ["node", "native"] as const)
           mime: "text/plain",
           data: btoa("optional payload\n".repeat(4096)),
         };
-        const bundle = await w.profile.signContent(
-          "site-resource",
-          payload,
-          "public",
-          3600000,
-        );
-        await w.app.ingest(bundle); // Fixture storage, not the future creation API.
-        const reference = w.rl.resources.describeSiteResource(payload, {
-          id: bundle.manifest.id,
-          authorId: bundle.manifest.author.id,
-          kind: bundle.manifest.kind,
+        const state = await w.app.call("resource-command", { action: "state" });
+        const result = await w.app.call("resource-command", {
+          action: "create",
+          sequence: state.nextSequence,
+          operationId: crypto.randomUUID(),
+          content: payload,
+          recipients: "public",
+          ttlMs: 3600000,
         });
+        if (result.operation.phase !== "ready")
+          throw Error(result.error ?? "resource not ready");
+        const reference = result.operation.reference,
+          bundle = await w.profile.getBundle(reference.bundleId);
         let announceRejected = false,
           publishRejected = false;
         try {
@@ -402,7 +403,7 @@ for (const backend of ["node", "native"] as const)
             exactCiphertext: true,
             authorPreserved: true,
             scope:
-              "Actual browser/application engines and native process; fixture signs/stores initial resource. Creation API/editor UI and physical radios not tested.",
+              "Actual browser application creation API, RTC/WS and native process. Editor UI and physical radios not tested.",
           },
           null,
           2,

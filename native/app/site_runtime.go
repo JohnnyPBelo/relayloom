@@ -62,15 +62,8 @@ type siteRuntime struct {
 	lastError   string
 }
 
-func (n *Node) sitesLocked() (*siteRuntime, error) {
-	if n.identity == nil || n.privateDatabase == nil {
-		return nil, errors.New("desbloqueie a identidade")
-	}
-	if n.siteRuntime != nil && n.siteRuntime.owner == n.identity {
-		return n.siteRuntime, nil
-	}
-	owner := n.identity
-	database := siteDatabase(func(fn func(*groupstore.Tx) error) error {
+func (n *Node) siteDatabaseLocked(owner *core.Identity) siteDatabase {
+	return siteDatabase(func(fn func(*groupstore.Tx) error) error {
 		if n.identity != owner || n.privateDatabase == nil {
 			return errors.New("sessão de site bloqueada")
 		}
@@ -89,6 +82,17 @@ func (n *Node) sitesLocked() (*siteRuntime, error) {
 		}
 		return err
 	})
+}
+
+func (n *Node) sitesLocked() (*siteRuntime, error) {
+	if n.identity == nil || n.privateDatabase == nil {
+		return nil, errors.New("desbloqueie a identidade")
+	}
+	if n.siteRuntime != nil && n.siteRuntime.owner == n.identity {
+		return n.siteRuntime, nil
+	}
+	owner := n.identity
+	database := n.siteDatabaseLocked(owner)
 	n.siteRuntime = &siteRuntime{node: n, owner: owner, catalog: sites.NewCatalog(database, *owner), pending: []pendingSite{}}
 	return n.siteRuntime, nil
 }

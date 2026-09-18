@@ -1,3 +1,5 @@
+import { ResourceRuntime } from "./resource-runtime";
+import { NodeResourceCatalog } from "../../../packages/sites/src/resource-catalog";
 import { validateSiteEditingContext } from "../../../packages/sites/src/editing";
 import { readUIPreferences, saveUIPreferences } from "./ui-preferences";
 import { SiteRuntime, inspectSite } from "./site-runtime";
@@ -138,6 +140,8 @@ export class LoomNode extends EventEmitter {
   private privateState: PrivateState = { mutations: {} };
   private privateDatabase?: ProfileDatabase;
   private privateDigest?: string;
+  private resourceRuntime?: ResourceRuntime;
+  private resourceRuntimeOwner?: Identity;
   private siteRuntime?: SiteRuntime;
   private siteRuntimeOwner?: Identity;
   private summaryCache = new Map<
@@ -428,6 +432,8 @@ export class LoomNode extends EventEmitter {
     return identity.public;
   }
   lock() {
+    this.resourceRuntime = undefined;
+    this.resourceRuntimeOwner = undefined;
     this.siteRuntime = undefined;
     this.siteRuntimeOwner = undefined;
     this.cancelGroupPackets(true);
@@ -450,37 +456,72 @@ export class LoomNode extends EventEmitter {
     if (!this.identity) throw new Error("Desbloqueie a identidade");
     return this.identity;
   }
+  private siteDatabase(identity: Identity) {
+    return {
+      transaction: <T>(
+        fn: Parameters<ProfileDatabase["transaction"]>[0],
+      ): T => {
+        if (this.requireIdentity() !== identity || !this.privateDatabase)
+          throw new Error("Sessão de site bloqueada");
+        try {
+          return this.privateDatabase.transaction((tx) => {
+            if (readProfileState(tx)?.digest !== this.privateDigest)
+              throw new Error("Estado privado desactualizado");
+            return fn(tx) as T;
+          });
+        } catch (error) {
+          if (
+            error instanceof RegistryIntegrityError ||
+            String((error as any)?.code ?? "").includes("SQLITE")
+          )
+            this.lock();
+          throw error;
+        }
+      },
+    };
+  }
+  private resources() {
+    const identity = this.requireIdentity();
+    if (this.resourceRuntime && this.resourceRuntimeOwner === identity)
+      return this.resourceRuntime;
+    if (!this.privateDatabase || !this.privateDigest)
+      throw new Error("Estado privado indisponível");
+    this.resourceRuntimeOwner = identity;
+    this.resourceRuntime = new ResourceRuntime({
+      catalog: new NodeResourceCatalog(this.siteDatabase(identity), identity),
+      store: this.store,
+      ensure: () => {
+        if (this.requireIdentity() !== identity)
+          throw new Error("Sessão de recursos bloqueada");
+      },
+      blocked: () => this.config.blocked,
+      readers: (scope) => {
+        if (scope === "public") return scope;
+        return scope.map((id) => {
+          if (this.config.blocked.includes(id))
+            throw new Error("Contacto bloqueado");
+          const card =
+            id === identity.public.id
+              ? identity.public
+              : this.config.contacts.find((c) => c.id === id);
+          if (!card)
+            throw new Error("Adicione primeiro o cartão do destinatário");
+          return card;
+        });
+      },
+    });
+    return this.resourceRuntime;
+  }
+  resourceCommand(command: unknown) {
+    return this.resources().command(command);
+  }
   private sites() {
     const identity = this.requireIdentity();
     if (this.siteRuntime && this.siteRuntimeOwner === identity)
       return this.siteRuntime;
     if (!this.privateDatabase || !this.privateDigest)
       throw new Error("Estado privado indisponível");
-    const catalog = new NodeSiteCatalog(
-      {
-        transaction: <T>(
-          fn: Parameters<ProfileDatabase["transaction"]>[0],
-        ): T => {
-          if (this.requireIdentity() !== identity || !this.privateDatabase)
-            throw new Error("Sessão de site bloqueada");
-          try {
-            return this.privateDatabase.transaction((tx) => {
-              if (readProfileState(tx)?.digest !== this.privateDigest)
-                throw new Error("Estado privado desactualizado");
-              return fn(tx) as T;
-            });
-          } catch (error) {
-            if (
-              error instanceof RegistryIntegrityError ||
-              String((error as any)?.code ?? "").includes("SQLITE")
-            )
-              this.lock();
-            throw error;
-          }
-        },
-      },
-      identity,
-    );
+    const catalog = new NodeSiteCatalog(this.siteDatabase(identity), identity);
     this.siteRuntimeOwner = identity;
     this.siteRuntime = new SiteRuntime({
       identity,
@@ -1893,6 +1934,7 @@ export class LoomNode extends EventEmitter {
         if (this.identity) {
           const sites = this.sites();
           sites.tick();
+          if (this.identity) this.resources().tick();
         }
       }
       if (!this.router.peers.some((p) => p.connected) || !this.config.relay)
