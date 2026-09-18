@@ -2,6 +2,8 @@
 
 ## Tabelas assinadas — publicadas e verificadas no HTTPS
 
+O CI **35314988987 da fonte59c9bd1** terminou: Node Windows/macOS/Linux, Go, UI nativa, Reticulum, browsers e três pacotes desktop passaram; iOS falhou na consulta AX da fototeca depois de uma mensagem recebida. Foi acrescentada recolha de diagnóstico delimitada, com25 testes host/estática aprovados, ainda por executar em Apple. Os logs anteriores estavam presentes mas omitidos pela listagem de ficheiros ignorados. [Provas e errata](evidence/site-data/ci-59c9bd1).
+
 A regressão integrada passou 427 casos Node, 33 UI Node + 33 UI Go e compilação/execução/pacote/execução Linux. O gate público foi interrompido e não é um passe; duas falhas de UI anteriores à interrupção não se reproduziram numa verificação dirigida, mantendo-se a causa por esclarecer. O CI 35291208941 passou Node Windows/Linux e falhou um teste obsoleto em macOS; a fixture foi corrigida com reprodução e oito casos Node/Go aprovados, aguardando novo CI. [Provas e limites](evidence/site-data/integration-fixes/report.json).
 
 Os commits 09a2422 e 10f037a acrescentam o documento v2 e o editor de tabelas à UI partilhada: cinco tipos, importação/exportação CSV/JSON, confirmação/desfazer, pesquisa/ordenação/paginação e rascunho cifrado. A autoridade de assinatura mantém-se separada de leitura e seeding. Passaram 138 casos Node, Go sites/app com race, 11 testes de interoperabilidade, 4 UI Node + 4 UI Go e 36 por browser (108). Foram reproduzidas e corrigidas falhas de nomes acessíveis, disposição móvel, foco após guardar e contraste do botão principal. [Comandos, hashes, capturas e falhas](evidence/site-data) · [Limites e compatibilidade v1/v2](SITE-DATA.md).

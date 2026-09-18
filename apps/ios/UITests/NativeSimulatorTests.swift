@@ -291,6 +291,7 @@ final class NativeSimulatorTests: XCTestCase {
         // simulator UI is English. Both exact native labels have been observed.
         let library = app.buttons.matching(NSPredicate(format: "label == 'Photo Library' OR label == 'Fototeca'")).firstMatch
         try require(library, "system Photo Library action", timeout: 15); library.tap()
+        print("IOS_SIMULATOR_PHASE photo-picker-requested")
         // The picker may be hosted by a separate system process. Preserve the
         // owned simulator screen before an accessibility query can fail.
         let pickerScreen = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
@@ -307,6 +308,7 @@ final class NativeSimulatorTests: XCTestCase {
             throw SmokeFailure.missing("seeded synthetic photo")
         }
         photoPickerEvidence(app)
+        print("IOS_SIMULATOR_PHASE photo-picker-ready")
         photo.tap()
         let add = app.buttons.matching(NSPredicate(format: "label == 'Add' OR label BEGINSWITH 'Add (' OR label == 'Done' OR label == 'Choose' OR label == 'Adicionar' OR label BEGINSWITH 'Adicionar (' OR label == 'Concluído' OR label == 'Escolher'")).firstMatch
         try require(add, "confirm system photo selection", timeout: 15); add.tap()

@@ -1,0 +1,75 @@
+{
+  "status": "completed",
+  "conclusion": "failure",
+  "headSha": "59c9bd1a4b8aa2efa03d37c8758ef943e0de37ee",
+  "url": "https://github.com/JohnnyPBelo/relayloom/actions/runs/35314988987",
+  "jobs": [
+    {
+      "name": "native-node (macos-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "databaseId": 105504614780
+    },
+    {
+      "name": "native-node (windows-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "databaseId": 105504614952
+    },
+    {
+      "name": "native-node (ubuntu-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "databaseId": 105504615050
+    },
+    {
+      "name": "native-go",
+      "status": "completed",
+      "conclusion": "success",
+      "databaseId": 105508528608
+    },
+    {
+      "name": "native-ui",
+      "status": "completed",
+      "conclusion": "success",
+      "databaseId": 105513699336
+    },
+    {
+      "name": "reticulum-reference",
+      "status": "completed",
+      "conclusion": "success",
+      "databaseId": 105514971509
+    },
+    {
+      "name": "ios-simulator-build",
+      "status": "completed",
+      "conclusion": "failure",
+      "databaseId": 105514971513
+    },
+    {
+      "name": "desktop-package (macos-latest, mac, arm64)",
+      "status": "completed",
+      "conclusion": "success",
+      "databaseId": 105514971533
+    },
+    {
+      "name": "desktop-package (ubuntu-22.04, linux, x64)",
+      "status": "completed",
+      "conclusion": "success",
+      "databaseId": 105514971550
+    },
+    {
+      "name": "desktop-package (windows-latest, win, x64)",
+      "status": "completed",
+      "conclusion": "success",
+      "databaseId": 105514971603
+    },
+    {
+      "name": "autonomous-browser",
+      "status": "completed",
+      "conclusion": "success",
+      "databaseId": 105517048227
+    }
+  ],
+  "scope": "GitHub runner results; desktop packaging is not physical-device testing. iOS functional UI remains failed."
+}

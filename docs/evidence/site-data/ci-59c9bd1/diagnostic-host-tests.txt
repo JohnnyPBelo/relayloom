@@ -1,0 +1,162 @@
+TAP version 13
+# (node:3660536) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: bounded UI phase diagnostics preserve failed status, reject arbitrary text and select only the incomplete photo stage
+ok 1 - bounded UI phase diagnostics preserve failed status, reject arbitrary text and select only the incomplete photo stage
+  ---
+  duration_ms: 2.329598
+  type: 'test'
+  ...
+# Subtest: select only compatible installed iOS runtimes, never unavailable or other platforms
+ok 2 - select only compatible installed iOS runtimes, never unavailable or other platforms
+  ---
+  duration_ms: 1.838577
+  type: 'test'
+  ...
+# Subtest: runtime advertised compatibility is honored instead of guessing a device
+ok 3 - runtime advertised compatibility is honored instead of guessing a device
+  ---
+  duration_ms: 8.590576
+  type: 'test'
+  ...
+# Subtest: logs remove launch capabilities, authorization headers and standalone secret tokens
+ok 4 - logs remove launch capabilities, authorization headers and standalone secret tokens
+  ---
+  duration_ms: 54.664476
+  type: 'test'
+  ...
+# Subtest: container reads are limited to the created simulator application container
+ok 5 - container reads are limited to the created simulator application container
+  ---
+  duration_ms: 8.862406
+  type: 'test'
+  ...
+# Subtest: empty, skipped or partially failed XCTest output cannot pass the execution gate
+ok 6 - empty, skipped or partially failed XCTest output cannot pass the execution gate
+  ---
+  duration_ms: 0.79965
+  type: 'test'
+  ...
+# Subtest: refusing concurrent cleanup preserves the active owner record and fixture namespace
+ok 7 - refusing concurrent cleanup preserves the active owner record and fixture namespace
+  ---
+  duration_ms: 6.926776
+  type: 'test'
+  ...
+# Subtest: owned group escalation continues when a TERM-resistant descendant outlives its leader
+ok 8 - owned group escalation continues when a TERM-resistant descendant outlives its leader
+  ---
+  duration_ms: 46.114246
+  type: 'test'
+  ...
+# Subtest: owned group supervision stops without KILL once the whole group disappears
+ok 9 - owned group supervision stops without KILL once the whole group disappears
+  ---
+  duration_ms: 0.588664
+  type: 'test'
+  ...
+# Subtest: photo failure diagnostics read only bounded logs from the recorded simulator
+ok 10 - photo failure diagnostics read only bounded logs from the recorded simulator
+  ---
+  duration_ms: 0.91204
+  type: 'test'
+  ...
+# Subtest: diagnostic timeout preserves the primary photo failure and sanitizes its own error
+ok 11 - diagnostic timeout preserves the primary photo failure and sanitizes its own error
+  ---
+  duration_ms: 0.236273
+  type: 'test'
+  ...
+# Subtest: host fixture verification authenticates encrypted vault/journal and signed private bundle
+ok 12 - host fixture verification authenticates encrypted vault/journal and signed private bundle
+  ---
+  duration_ms: 295.482186
+  type: 'test'
+  ...
+# Subtest: host fixture rejects a mismatched real-peer identity and changed encrypted bytes
+ok 13 - host fixture rejects a mismatched real-peer identity and changed encrypted bytes
+  ---
+  duration_ms: 504.633979
+  type: 'test'
+  ...
+# Subtest: host fixture compares exact attachment bytes across the encrypted store and peer proof
+ok 14 - host fixture compares exact attachment bytes across the encrypted store and peer proof
+  ---
+  duration_ms: 647.927399
+  type: 'test'
+  ...
+# Subtest: host fixture refuses missing initialized SQLite even when valid legacy data remains
+ok 15 - host fixture refuses missing initialized SQLite even when valid legacy data remains
+  ---
+  duration_ms: 342.839804
+  type: 'test'
+  ...
+# Subtest: host fixture rejects a tampered encrypted private row with an otherwise valid legacy copy
+ok 16 - host fixture rejects a tampered encrypted private row with an otherwise valid legacy copy
+  ---
+  duration_ms: 405.111742
+  type: 'test'
+  ...
+# Subtest: an exact installed-runtime probe never falls back to another version or platform
+ok 17 - an exact installed-runtime probe never falls back to another version or platform
+  ---
+  duration_ms: 0.739456
+  type: 'test'
+  ...
+# Subtest: runtime option is explicit, bounded and unambiguous
+ok 18 - runtime option is explicit, bounded and unambiguous
+  ---
+  duration_ms: 0.227377
+  type: 'test'
+  ...
+# Subtest: failed peer diagnostics stay bounded/redacted and never replace the primary error
+ok 19 - failed peer diagnostics stay bounded/redacted and never replace the primary error
+  ---
+  duration_ms: 2.077034
+  type: 'test'
+  ...
+# Subtest: real simulator peer bootstraps through private IPC and enforces its authenticated API
+ok 20 - real simulator peer bootstraps through private IPC and enforces its authenticated API
+  ---
+  duration_ms: 657.341739
+  type: 'test'
+  ...
+# Subtest: startup XCTest must pass exactly once before photo import and cannot satisfy the functional gate
+ok 21 - startup XCTest must pass exactly once before photo import and cannot satisfy the functional gate
+  ---
+  duration_ms: 0.555541
+  type: 'test'
+  ...
+# Subtest: startup command failure or empty/failed summary stops before photo import and retains the failure
+ok 22 - startup command failure or empty/failed summary stops before photo import and retains the failure
+  ---
+  duration_ms: 0.575048
+  type: 'test'
+  ...
+# Subtest: photo failure preserves a separately confirmed startup but does not pass the functional gate
+ok 23 - photo failure preserves a separately confirmed startup but does not pass the functional gate
+  ---
+  duration_ms: 0.239819
+  type: 'test'
+  ...
+# Subtest: a denied stop preserves the original owned-command failure and records the denial separately
+ok 24 - a denied stop preserves the original owned-command failure and records the denial separately
+  ---
+  duration_ms: 0.347843
+  type: 'test'
+  ...
+# Subtest: a successful stop cannot turn the preceding command failure into success
+ok 25 - a successful stop cannot turn the preceding command failure into success
+  ---
+  duration_ms: 0.199394
+  type: 'test'
+  ...
+1..25
+# tests 25
+# suites 0
+# pass 25
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3152.315351
