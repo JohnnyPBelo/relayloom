@@ -20,6 +20,8 @@ import {
 } from "../../groups/src/storage";
 
 const DOMAIN = "relayloom/site-private/1";
+const RESOURCE_DOMAIN = "relayloom/site-resource-private/1";
+type Namespace = "site" | "resource";
 export const SITE_PRIVATE_LIMITS = Object.freeze({
   bytes: 6 * 1024 * 1024 + 16384,
   chunkBytes: 512 * 1024,
@@ -29,9 +31,12 @@ const overhead = 61; // version + salt32 + nonce12 + tag16
 function insist(value: unknown, error: string): asserts value {
   if (!value) throw new RegistryIntegrityError(error);
 }
-function checkedKey(key: string) {
+function checkedKey(key: string, namespace: Namespace) {
   insist(
-    /^site:[a-f0-9]{64}:(record|stage)$/.test(key),
+    (namespace === "site"
+      ? /^site:[a-f0-9]{64}:(record|stage)$/
+      : /^resource:[a-f0-9]{64}:(record|stage)$/
+    ).test(key),
     "Chave privada de site inválida",
   );
   return key;
@@ -49,6 +54,7 @@ export class SitePrivateRecords {
     private ownerId: string,
     private storeId: string,
     private secret: Buffer,
+    private namespace: Namespace,
   ) {}
   private check() {
     if (this.closed) throw new Error("Sessão privada de site terminada");
@@ -58,6 +64,25 @@ export class SitePrivateRecords {
     identity: Identity,
     fn: (records: SitePrivateRecords) => T,
   ): T {
+    return this.session(tx, identity, fn, "site");
+  }
+  static runResource<T>(
+    tx: RegistryTransaction,
+    identity: Identity,
+    fn: (records: SitePrivateRecords) => T,
+  ): T {
+    return this.session(tx, identity, fn, "resource");
+  }
+  private static session<T>(
+    tx: RegistryTransaction,
+    identity: Identity,
+    fn: (records: SitePrivateRecords) => T,
+    namespace: Namespace,
+  ): T {
+    insist(
+      namespace === "site" || namespace === "resource",
+      "Espaço privado inválido",
+    );
     if (
       !validateIdentity(identity.public) ||
       tx.indexBody().owner !== identity.public.id
@@ -83,6 +108,7 @@ export class SitePrivateRecords {
         identity.public.id,
         tx.indexBody().storeId,
         secret,
+        namespace,
       );
       const result = fn(records);
       if (result && typeof (result as any).then === "function")
@@ -97,16 +123,24 @@ export class SitePrivateRecords {
       secret.fill(0);
     }
   }
+  private get domain() {
+    return this.namespace === "site" ? DOMAIN : RESOURCE_DOMAIN;
+  }
   private aad(key: string) {
     return Buffer.from(
-      canonical([DOMAIN, this.ownerId, this.storeId, checkedKey(key)]),
+      canonical([
+        this.domain,
+        this.ownerId,
+        this.storeId,
+        checkedKey(key, this.namespace),
+      ]),
     );
   }
   private encrypt(key: string, bytes: Buffer) {
     const salt = randomBytes(32),
       nonce = randomBytes(12);
     const derived = Buffer.from(
-      hkdfSync("sha256", this.secret, salt, DOMAIN, 32),
+      hkdfSync("sha256", this.secret, salt, this.domain, 32),
     );
     try {
       const cipher = createCipheriv("aes-256-gcm", derived, nonce);
@@ -129,7 +163,7 @@ export class SitePrivateRecords {
       "Envelope privado de site inválido",
     );
     const derived = Buffer.from(
-      hkdfSync("sha256", this.secret, bytes.subarray(1, 33), DOMAIN, 32),
+      hkdfSync("sha256", this.secret, bytes.subarray(1, 33), this.domain, 32),
     );
     try {
       const cipher = createDecipheriv(
@@ -159,7 +193,7 @@ export class SitePrivateRecords {
     }
   }
   private readChecked(key: string): unknown | null {
-    checkedKey(key);
+    checkedKey(key, this.namespace);
     const manifest = this.tx.get(key),
       keys = this.tx.keys(key + ":");
     if (!manifest) {
@@ -175,7 +209,7 @@ export class SitePrivateRecords {
     insist(
       manifest.length <= 1024 &&
         exactShape(data, ["domain", "bytes", "chunks", "digest"]) &&
-        data.domain === DOMAIN &&
+        data.domain === this.domain &&
         canonical(data) === manifest.toString("utf8") &&
         Number.isSafeInteger(data.bytes) &&
         data.bytes >= overhead &&
@@ -230,7 +264,7 @@ export class SitePrivateRecords {
     }
   }
   private writeChecked(key: string, value: unknown) {
-    checkedKey(key);
+    checkedKey(key, this.namespace);
     const bytes = Buffer.from(canonical(value));
     if (bytes.length > SITE_PRIVATE_LIMITS.bytes)
       throw new RegistryCapacityError("Dados privados de site acima do limite");
@@ -253,7 +287,7 @@ export class SitePrivateRecords {
       key,
       Buffer.from(
         canonical({
-          domain: DOMAIN,
+          domain: this.domain,
           bytes: encrypted.length,
           chunks,
           digest: hash(encrypted),
@@ -265,7 +299,7 @@ export class SitePrivateRecords {
    * from a corrupt record; callers must verify the catalog transition first. */
   remove(key: string) {
     this.check();
-    checkedKey(key);
+    checkedKey(key, this.namespace);
     for (const existing of this.tx.keys(key + ":")) this.tx.delete(existing);
     this.tx.delete(key);
   }

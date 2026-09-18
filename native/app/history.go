@@ -7,6 +7,7 @@ import (
 
 	"github.com/JohnnyPBelo/relayloom/native/core"
 	"github.com/JohnnyPBelo/relayloom/native/groupaccess"
+	"github.com/JohnnyPBelo/relayloom/native/sites"
 )
 
 const HistoryPageObjects = 100
@@ -27,6 +28,13 @@ type HistoryPage struct {
 // arbitrary extension fields and nested metadata cannot smuggle large payloads
 // into an otherwise bounded attachment-free snapshot. Full /view is unchanged.
 func summaryContent(content Content) Content {
+	if text(content["type"]) == "site-resource" {
+		value, err := sites.SummaryResource(map[string]any(content))
+		if err != nil {
+			return Content{"type": "site-resource"}
+		}
+		return Content(value)
+	}
 	result := Content{}
 	if groupaccess.HasBinding(content) {
 		for _, field := range []string{"groupAudience", "groupEpoch", "targetEpoch"} {

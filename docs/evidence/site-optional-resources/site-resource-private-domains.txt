@@ -1,0 +1,48 @@
+TAP version 13
+# (node:4122834) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures into the site namespace
+ok 1 - an authenticated outer SQLite database cannot transpose unpublished signatures into the site namespace
+  ---
+  duration_ms: 531.983616
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures into the resource namespace
+ok 2 - an authenticated outer SQLite database cannot transpose unpublished signatures into the resource namespace
+  ---
+  duration_ms: 73.525265
+  type: 'test'
+  ...
+# Subtest: Node and a real Go process exchange signing-protected site records in the same SQLite database
+ok 3 - Node and a real Go process exchange signing-protected site records in the same SQLite database
+  ---
+  duration_ms: 2348.612361
+  type: 'test'
+  ...
+# Subtest: Node and a real Go process exchange signing-protected resource records in the same SQLite database
+ok 4 - Node and a real Go process exchange signing-protected resource records in the same SQLite database
+  ---
+  duration_ms: 2321.620845
+  type: 'test'
+  ...
+# Subtest: Go rejects a Node encrypted site value transplanted into another authenticated store
+ok 5 - Go rejects a Node encrypted site value transplanted into another authenticated store
+  ---
+  duration_ms: 104.443896
+  type: 'test'
+  ...
+# Subtest: Go rejects a Node encrypted resource value transplanted into another authenticated store
+ok 6 - Go rejects a Node encrypted resource value transplanted into another authenticated store
+  ---
+  duration_ms: 93.078116
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 5671.459302

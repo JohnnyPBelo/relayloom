@@ -172,6 +172,11 @@ export function describeSiteResource(
     domain: "relayloom/site-resource-reference/1",
     bundleId: envelope.id,
     authorId: envelope.authorId,
+    ...resourceMetadata(resource),
+  });
+}
+function resourceMetadata(resource: SiteResource) {
+  return {
     kind: resource.kind,
     name: resource.name,
     mime: resource.kind === "table" ? tableMime : resource.mime,
@@ -182,7 +187,16 @@ export function describeSiteResource(
     payloadHash: bytesToHex(
       sha256(new TextEncoder().encode(canonical(resource))),
     ),
-  });
+  };
+}
+/** Metadata projection only: never put file bytes or table rows in polling
+ * snapshots, and never accept this summary as a publishable resource body. */
+export function summarizeSiteResource(value: unknown) {
+  return {
+    type: "site-resource",
+    domain: "relayloom/site-resource-summary/1",
+    ...resourceMetadata(parseSiteResource(value)),
+  };
 }
 /** A successful match says only that this plaintext/envelope matches this
  * signed-page reference. It confers neither publication nor reading rights. */

@@ -1,5 +1,6 @@
 import { validateSiteEditingContext } from "../../sites/src/editing";
 import { draftSummary } from "../../content/src/site";
+import { summarizeSiteResource } from "../../content/src/site-resource";
 import { canonical } from "../../core/src/protocol";
 import type { Bundle, PublicIdentity } from "../../core/src/protocol";
 import type {
@@ -269,6 +270,8 @@ export class BrowserApplication {
   }
   private summary(o: DisplayObject): DisplayObject {
     const result = structuredClone(o);
+    if (result.kind === "site-resource")
+      result.content = summarizeSiteResource(result.content);
     if (result.content.attachments)
       result.content.attachments = result.content.attachments.map((a) => ({
         name: a.name,
@@ -506,7 +509,7 @@ export class BrowserApplication {
       object = await this.project(bundle);
     } catch (error) {
       if (
-        bundle.manifest.kind === "site" &&
+        ["site", "site-resource"].includes(bundle.manifest.kind) &&
         (bundle.manifest.publicKey !== null ||
           bundle.manifest.keys.some((k) => k.reader === owner.id))
       )
@@ -600,6 +603,10 @@ export class BrowserApplication {
     const owner = this.owner(),
       content = JSON.parse(canonical(raw)) as Content;
     await this.validateContent(content);
+    if (content.type === "site-resource")
+      throw new Error(
+        "Guarda recursos opcionais através do gestor de recursos",
+      );
     if (content.type === "site" && Object.hasOwn(content, "siteRevision"))
       throw new Error("Publica revisões através do comando de site");
     if (grouped(content))

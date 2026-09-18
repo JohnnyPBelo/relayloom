@@ -1,0 +1,32 @@
+TAP version 13
+# Subtest: node optional resource stays out of inventory, then a restarted sole seeder serves its exact bytes on demand
+not ok 1 - node optional resource stays out of inventory, then a restarted sole seeder serves its exact bytes on demand
+  ---
+  duration_ms: 7352.560215
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/native/site-resource-routing.test.ts:1:1127'
+  failureType: 'testCodeFailure'
+  error: |-
+    optional bytes must not be advertised for automatic download
+    
+    true !== false
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/native/site-resource-routing.test.ts:43:12)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 7587.826894

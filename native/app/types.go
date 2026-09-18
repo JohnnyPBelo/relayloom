@@ -15,6 +15,7 @@ import (
 	"unicode/utf8"
 
 	"github.com/JohnnyPBelo/relayloom/native/core"
+	"github.com/JohnnyPBelo/relayloom/native/sites"
 )
 
 type Content map[string]any
@@ -259,6 +260,10 @@ var base64Pattern = regexp.MustCompile(`^[A-Za-z0-9+/]*={0,2}$`)
 
 func validateContent(c Content) error {
 	kind := text(c["type"])
+	if kind == "site-resource" {
+		_, err := sites.ParseResource(map[string]any(c))
+		return err
+	}
 	if !contains([]string{"message", "post", "group", "site", "comment", "reaction", "edit", "delete", "receipt", "delivery", "alert"}, kind) {
 		return errors.New("tipo de conteúdo inválido")
 	}

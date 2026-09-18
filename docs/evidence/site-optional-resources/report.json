@@ -1,0 +1,64 @@
+{
+  "status": "PASS_FOR_RECORDED_PROTOCOL_TRANSPORT_AND_PRIVATE_STORAGE_LAYERS",
+  "at": "2026-09-18T08:34:09.184883+00:00",
+  "baseCommit": "d3b7cad83fc36d235d803037a9c71207139e9db8",
+  "sources": {
+    "apps/node/src/node.ts": "db6069f12d66037801b5ed1e83d690680f94ed2c2ca47e9f5cf200e6b66a4aad",
+    "apps/node/src/site-resource.ts": "dfb9678baf4138e71b92bd72498e07a383ff7acfe8ec0098145d467b49b59cef",
+    "native/app/group_outbox.go": "2f443dc6650423b183fab6b886e45434d97193fba8a37cb6dfc7d12e0ba44482",
+    "native/app/history.go": "9dcac8aedbf1c1d98885f92e8d809a731719bd100c22f19edb9943aec4f955c1",
+    "native/app/node.go": "a1274e62dba0f2ce9ab9a6a16d5c2333a9f427c383812612a01f577b6c21d54d",
+    "native/app/site_resource.go": "17f8aea27ec8552f97d0caf76f66b8eb2e2242f6e6e33e1c0b79c49ea8b7b463",
+    "native/app/types.go": "394122b90ae7c20fcab8e5d8e0872a1cfbcd62ef3890e2754e57afda388397ce",
+    "native/sites/private_storage.go": "517b027758fe783173a14d0748c7f325fcd38285864895dcef8c5060b84a3bd0",
+    "native/sites/private_worker_test.go": "c12076d63f8d4070b912c0541a35bf676b6e166b8f8dd0bac1c667690b8f6fcb",
+    "native/sites/resource.go": "78f32f53d442898291306c017bfcd67312d2ba12de9c09469cc9dab913effb98",
+    "native/sites/resource_test.go": "4ea11289e4c96cb0df9a05b53db4ad4a61766720071e8cdfdd90b34672d49b98",
+    "packages/browser/src/application.ts": "9c575fcfdef222486a184ba4572dc97a1604cd6b9f944acef577fe71ede1e7f6",
+    "packages/browser/src/mesh.ts": "38d2706a87faaa22fa77056fd104428e349ba2f3b69128a52e569c9e510060a0",
+    "packages/browser/src/site-resource.ts": "85ed5144063f042679ab54ba174202108f44065dcdf719aa171229ba563c86d6",
+    "packages/content/src/site-resource.ts": "e12d3d9a66d81c6966fd477415df3dbdce0d0b970e7877c9c34fcc8afd871498",
+    "packages/content/src/validation.ts": "ba5d22e0a10601d21bfc5b736ebebba4f43719702ab62504e9dae2b59d4cb053",
+    "packages/sites/src/private-storage.ts": "dc991061ee1b3160ad30d807dabcdff0966fdd5d718d9ff065fe4581a47838b2",
+    "packages/sites/src/resource-operations.ts": "2a4a54a9015b8e3201784e9c62859536083a08492998310cd029408ac2d26936",
+    "tests/browser/harness.ts": "44d868ffe0cfc741b81e47617610ca1dae2fe27dc3f8c46cd2fee6be64b451af",
+    "tests/browser/site-resource-network.spec.ts": "a09c051fc8837d70dd3b39a11eaf451a861a421f6d3db8104254f086eaa6bfc8",
+    "tests/fixtures/site-resource-source.ts": "2d19a43398ead2eda80c232e7c0a1ac4581d0a00c98ebb16df8ec7996ca96afa",
+    "tests/native/site-private-storage.test.ts": "7c70e6ac81864e92c06b4566b10ffc8da7caded1516ffb7f1da254f2024d7b04",
+    "tests/native/site-resource-admission.test.ts": "b704e5a2ed765d9efde79fe2eb03450cf3112ce8a5ac90e8c717aab1476c40a3",
+    "tests/native/site-resource-routing.test.ts": "1ca6a62357c5c3f407e345b7b34e5f5b736e124c5063c9c25bf4d1b3443a0ef0",
+    "tests/site-private-storage.test.ts": "bdadc2560528c8b2f9e4d056b610108e3c39accc87160dd78bf740dd7547253c",
+    "tests/site-resource-interop.test.ts": "b831391031818372bf47af7c325e0769568305da593e5174c08fcc2ceef42f7f",
+    "tests/site-resource-operations.test.ts": "a05ab3a1e5f441346eb62e0b5b37c9899451603c8d81a0e76d2de4ef5f3f5320",
+    "tests/site-resource.test.ts": "1e8aa74f7f50e64db0c51d9b4d33b56352c12a815acafee5074bd767c9a1e04a"
+  },
+  "counts": {
+    "resourceDomainOperationsAndAdmission": 14,
+    "nativeOptionalTransferScenarios": 2,
+    "browserScenariosPerEngine": 11,
+    "browserCombinations": 33,
+    "privateStorageFirst": 9,
+    "privateStorageExpandedInterop": 6
+  },
+  "evidenceScope": [
+    "Native optional transfer has a signing fixture child plus real Node/Go application processes over TCP.",
+    "Browser optional transfer uses real BrowserApplication/IndexedDB/RTC/WS and Node/Go processes; original local resource is fixture-signed/stored.",
+    "Readable malformed resources are rejected; opaque private data confers no reading authority.",
+    "No optional bytes in automatic inventory or periodic state; explicit requests work after author termination and seeder restart.",
+    "Creation operation state machine is TypeScript-only and not attached to persistent catalog/API.",
+    "Private records use a separate resource namespace and signing-derived encryption, preserving the site domain."
+  ],
+  "limitations": [
+    "Not yet integrated into the principal branch or published.",
+    "Production resource creation, persistent catalog, operation recovery with real process death, Go state-machine parity, document v3 and editor UI remain pending.",
+    "No physical radio/mobile/Safari or independent review claim."
+  ],
+  "commands": [
+    "node --import <project tsx loader> --test --test-concurrency=1 tests/native/site-resource-routing.test.ts",
+    "node --import <project tsx loader> --test --test-concurrency=1 tests/site-resource.test.ts tests/site-resource-operations.test.ts tests/site-resource-interop.test.ts tests/native/site-resource-admission.test.ts",
+    "node --import <project tsx loader> --test --test-concurrency=1 tests/site-private-storage.test.ts tests/native/site-private-storage.test.ts",
+    "node --import <project tsx loader> --test --test-concurrency=1 tests/native/site-private-storage.test.ts",
+    "node scripts/go.mjs test -race -p=1 ./sites",
+    "RELAYLOOM_MATRIX_ENGINE=<chromium|firefox|webkit> node <project playwright cli> test --config tests/browser/matrix.config.ts tests/browser/site-resource-network.spec.ts tests/browser/site-network.spec.ts tests/browser/native-transport.spec.ts --reporter=list,json --output .cache/site-resource-matrix-fixed/<engine>-artifacts"
+  ]
+}

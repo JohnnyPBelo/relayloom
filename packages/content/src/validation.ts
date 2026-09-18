@@ -1,5 +1,6 @@
 import { canonical } from "../../core/src/protocol";
 import { validateSite } from "./site";
+import { parseSiteResource } from "./site-resource";
 import type { Content } from "./types";
 export function validateContentShape(content: Content) {
   if (
@@ -9,6 +10,7 @@ export function validateContentShape(content: Content) {
       "post",
       "group",
       "site",
+      "site-resource",
       "comment",
       "reaction",
       "edit",
@@ -19,6 +21,7 @@ export function validateContentShape(content: Content) {
     ].includes(content.type)
   )
     throw new Error("Tipo de conteúdo inválido");
+  if (content.type === "site-resource") parseSiteResource(content);
   for (const key of [
     "text",
     "title",

@@ -1,0 +1,68 @@
+TAP version 13
+# (node:4042369) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Node and a real Go process exchange signing-protected site records in the same SQLite database
+ok 1 - Node and a real Go process exchange signing-protected site records in the same SQLite database
+  ---
+  duration_ms: 29406.092898
+  type: 'test'
+  ...
+# Subtest: Node and a real Go process exchange signing-protected resource records in the same SQLite database
+ok 2 - Node and a real Go process exchange signing-protected resource records in the same SQLite database
+  ---
+  duration_ms: 2333.644109
+  type: 'test'
+  ...
+# Subtest: Go rejects a Node encrypted site value transplanted into another authenticated store
+ok 3 - Go rejects a Node encrypted site value transplanted into another authenticated store
+  ---
+  duration_ms: 61.90513
+  type: 'test'
+  ...
+# Subtest: Go rejects a Node encrypted resource value transplanted into another authenticated store
+ok 4 - Go rejects a Node encrypted resource value transplanted into another authenticated store
+  ---
+  duration_ms: 77.107768
+  type: 'test'
+  ...
+# (node:4046553) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: private site staging survives SQLite restart and does not expose signatures to the reading secret
+ok 5 - private site staging survives SQLite restart and does not expose signatures to the reading secret
+  ---
+  duration_ms: 104.023161
+  type: 'test'
+  ...
+# Subtest: private resource staging survives SQLite restart and does not expose signatures to the reading secret
+ok 6 - private resource staging survives SQLite restart and does not expose signatures to the reading secret
+  ---
+  duration_ms: 82.62542
+  type: 'test'
+  ...
+# Subtest: private staging quota failure aborts all record changes even when its error is caught
+ok 7 - private staging quota failure aborts all record changes even when its error is caught
+  ---
+  duration_ms: 32.327745
+  type: 'test'
+  ...
+# Subtest: private record handles expire at the synchronous transaction boundary
+ok 8 - private record handles expire at the synchronous transaction boundary
+  ---
+  duration_ms: 11.07174
+  type: 'test'
+  ...
+# Subtest: missing and transposed ciphertext are rejected even inside an otherwise authentic outer database
+ok 9 - missing and transposed ciphertext are rejected even inside an otherwise authentic outer database
+  ---
+  duration_ms: 52.351608
+  type: 'test'
+  ...
+1..9
+# tests 9
+# suites 0
+# pass 9
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 32574.313336

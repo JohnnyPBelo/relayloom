@@ -13,68 +13,78 @@ import { SitePrivateRecords } from "../packages/sites/src/private-storage";
 const key = "site:" + hash("site key") + ":stage";
 const other = "site:" + hash("other key") + ":stage";
 
-test("private site staging survives SQLite restart and does not expose signatures to the reading secret", () => {
-  const dir = projectTemp("site-private-"),
-    owner = createIdentity("Staging owner"),
-    file = join(dir, "profile.sqlite");
-  let store = new ProtectedGroupStore(file, owner, { create: true });
-  try {
-    const data = {
-      preparedSignature: "PRIVATE_SITE_SIGNATURE_CANARY",
-      content: "x".repeat(2 * 1024 * 1024),
-    };
-    store.transaction((tx) =>
-      SitePrivateRecords.run(tx, owner, (r) => r.write(key, data)),
-    );
-    const storageID = store.storeId();
-    store.close();
-    store = new ProtectedGroupStore(file, owner, {
-      expectedStoreId: storageID,
-    });
-    assert.deepEqual(
-      store.view((tx) => SitePrivateRecords.run(tx, owner, (r) => r.read(key))),
-      data,
-    );
-    const encrypted = store.view((tx) =>
-      Buffer.concat(tx.keys(key + ":").map((k) => tx.get(k)!)),
-    );
-    const aad = Buffer.from(
-      canonical(["relayloom/site-private/1", owner.public.id, storageID, key]),
-    );
-    const decrypt = (secret: string) => {
-      const derived = Buffer.from(
-        hkdfSync(
-          "sha256",
-          Buffer.from(secret, "base64"),
-          encrypted.subarray(1, 33),
-          "relayloom/site-private/1",
-          32,
-        ),
+for (const namespace of ["site", "resource"] as const)
+  test(`private ${namespace} staging survives SQLite restart and does not expose signatures to the reading secret`, () => {
+    const runPrivate =
+      namespace === "site"
+        ? SitePrivateRecords.run.bind(SitePrivateRecords)
+        : SitePrivateRecords.runResource.bind(SitePrivateRecords);
+    const domain =
+      namespace === "site"
+        ? "relayloom/site-private/1"
+        : "relayloom/site-resource-private/1";
+    const key = namespace + ":" + hash("private staging key") + ":stage";
+    const dir = projectTemp("site-private-"),
+      owner = createIdentity("Staging owner"),
+      file = join(dir, "profile.sqlite");
+    let store = new ProtectedGroupStore(file, owner, { create: true });
+    try {
+      const data = {
+        preparedSignature: "PRIVATE_SITE_SIGNATURE_CANARY",
+        content: "x".repeat(2 * 1024 * 1024),
+      };
+      store.transaction((tx) =>
+        runPrivate(tx, owner, (r) => r.write(key, data)),
       );
-      try {
-        const c = createDecipheriv(
-          "aes-256-gcm",
-          derived,
-          encrypted.subarray(33, 45),
+      const storageID = store.storeId();
+      store.close();
+      store = new ProtectedGroupStore(file, owner, {
+        expectedStoreId: storageID,
+      });
+      assert.deepEqual(
+        store.view((tx) => runPrivate(tx, owner, (r) => r.read(key))),
+        data,
+      );
+      const encrypted = store.view((tx) =>
+        Buffer.concat(tx.keys(key + ":").map((k) => tx.get(k)!)),
+      );
+      const aad = Buffer.from(
+        canonical([domain, owner.public.id, storageID, key]),
+      );
+      const decrypt = (secret: string) => {
+        const derived = Buffer.from(
+          hkdfSync(
+            "sha256",
+            Buffer.from(secret, "base64"),
+            encrypted.subarray(1, 33),
+            domain,
+            32,
+          ),
         );
-        c.setAAD(aad);
-        c.setAuthTag(encrypted.subarray(45, 61));
-        return Buffer.concat([c.update(encrypted.subarray(61)), c.final()]);
-      } finally {
-        derived.fill(0);
-      }
-    };
-    assert.throws(() => decrypt(owner.boxSecret));
-    assert.equal(decrypt(owner.signSecret).toString("utf8"), canonical(data));
-    assert.equal(
-      encrypted.includes(Buffer.from(data.preparedSignature)),
-      false,
-    );
-  } finally {
-    store.close();
-    rmSync(dir, { recursive: true, force: true });
-  }
-});
+        try {
+          const c = createDecipheriv(
+            "aes-256-gcm",
+            derived,
+            encrypted.subarray(33, 45),
+          );
+          c.setAAD(aad);
+          c.setAuthTag(encrypted.subarray(45, 61));
+          return Buffer.concat([c.update(encrypted.subarray(61)), c.final()]);
+        } finally {
+          derived.fill(0);
+        }
+      };
+      assert.throws(() => decrypt(owner.boxSecret));
+      assert.equal(decrypt(owner.signSecret).toString("utf8"), canonical(data));
+      assert.equal(
+        encrypted.includes(Buffer.from(data.preparedSignature)),
+        false,
+      );
+    } finally {
+      store.close();
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
 
 test("private staging quota failure aborts all record changes even when its error is caught", () => {
   const dir = projectTemp("site-private-quota-"),

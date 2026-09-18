@@ -367,6 +367,9 @@ func validateWireWithIdentity(raw json.RawMessage, identity *core.Identity) erro
 		if err == nil && b.Manifest.Kind == "site" {
 			_, err = inspectSiteBundle(b, identity)
 		}
+		if err == nil {
+			err = inspectResourceBundle(b, identity)
+		}
 		return err
 	case "inventory", "request":
 		_, err = stringsList(m["ids"], 64, true)
@@ -612,6 +615,9 @@ func (n *Node) syncLocked() {
 	}
 	ids := make([]string, 0, len(manifests))
 	for _, m := range manifests {
+		if m.Kind == "site-resource" {
+			continue
+		}
 		allowed, err := n.maySeedLocked(m)
 		if err != nil {
 			n.lastTransportError = "Partilha adiada; estado local por verificar"
@@ -978,6 +984,9 @@ type preparedPublication struct {
 }
 
 func (n *Node) prepareLocked(content Content, recipients any, ttlMS int64) (*preparedPublication, error) {
+	if text(content["type"]) == "site-resource" {
+		return nil, errors.New("guarda recursos opcionais através do gestor de recursos")
+	}
 	if n.identity == nil {
 		return nil, errors.New("desbloqueie a identidade")
 	}

@@ -48,104 +48,169 @@ function run(control: string) {
   );
 }
 
-test("Node and a real Go process exchange signing-protected site records in the same SQLite database", () => {
-  const directory = projectTemp("site-private-interop-"),
-    owner = createIdentity("Shared site storage owner"),
-    path = join(directory, "profile.sqlite");
-  let store = new ProtectedGroupStore(path, owner, { create: true });
-  try {
-    const key = "site:" + hash("node-site-value") + ":record",
-      writeKey = "site:" + hash("go-site-value") + ":stage";
+for (const target of ["site", "resource"] as const)
+  test(`an authenticated outer SQLite database cannot transpose unpublished signatures into the ${target} namespace`, () => {
+    const directory = projectTemp("publication-namespace-"),
+      owner = createIdentity("Namespace owner"),
+      path = join(directory, "profile.sqlite");
+    const store = new ProtectedGroupStore(path, owner, { create: true });
+    const source = target === "site" ? "resource" : "site",
+      slot = hash("same logical slot"),
+      from = source + ":" + slot + ":stage",
+      to = target + ":" + slot + ":stage";
     const value = {
-        title: "Exact private record 😀 \ud800",
-        body: "x".repeat(2 * 1024 * 1024),
-        values: [null, true, 23],
-      },
-      written = { label: "From Go", sequence: 2, body: "🧶" };
-    store.transaction((tx) =>
-      SitePrivateRecords.run(tx, owner, (r) => r.write(key, value)),
-    );
-    const id = store.storeId();
-    store.close();
-    const output = join(directory, "result.json"),
-      control = join(directory, "control.json");
-    writeFileSync(
-      control,
-      JSON.stringify({
-        database: path,
-        storeId: id,
-        identity: owner,
-        key,
-        expected: value,
-        writeKey,
-        writeValue: written,
-        output,
-      }),
-      { mode: 0o600 },
-    );
-    const result = run(control);
-    assert.equal(result.status, 0, result.stdout + result.stderr);
-    assert.equal(
-      JSON.parse(readFileSync(output, "utf8")).readSHA256,
-      hash(canonical(value)),
-    );
-    store = new ProtectedGroupStore(path, owner, { expectedStoreId: id });
-    assert.deepEqual(
-      store.view((tx) => SitePrivateRecords.run(tx, owner, (r) => r.read(key))),
-      value,
-    );
-    assert.deepEqual(
-      store.view((tx) =>
-        SitePrivateRecords.run(tx, owner, (r) => r.read(writeKey)),
-      ),
-      written,
-    );
-  } finally {
-    store.close();
-    rmSync(directory, { recursive: true, force: true });
-  }
-});
+      signature: "UNPUBLISHED_SIGNATURE",
+      body: "Kept under the signing secret",
+    };
+    const writer =
+      source === "site"
+        ? SitePrivateRecords.run.bind(SitePrivateRecords)
+        : SitePrivateRecords.runResource.bind(SitePrivateRecords);
+    try {
+      store.transaction((tx) => writer(tx, owner, (r) => r.write(from, value)));
+      store.transaction((tx) => {
+        const descriptor = JSON.parse(tx.get(from)!.toString("utf8"));
+        descriptor.domain =
+          target === "site"
+            ? "relayloom/site-private/1"
+            : "relayloom/site-resource-private/1";
+        for (const key of tx.keys(from + ":"))
+          tx.put(to + key.slice(from.length), tx.get(key)!);
+        tx.put(to, Buffer.from(canonical(descriptor)));
+      });
+      const storeId = store.storeId();
+      store.close();
+      const control = join(directory, "control.json");
+      writeFileSync(
+        control,
+        JSON.stringify({
+          namespace: target,
+          database: path,
+          storeId,
+          identity: owner,
+          key: to,
+          expected: value,
+          output: join(directory, "must-not-pass.json"),
+        }),
+        { mode: 0o600 },
+      );
+      const result = run(control);
+      assert.equal(result.status, 1);
+      assert.match(result.stdout + result.stderr, /autentica/i);
+    } finally {
+      store.close();
+      rmSync(directory, { recursive: true, force: true });
+    }
+  });
 
-test("Go rejects a Node encrypted site value transplanted into another authenticated store", () => {
-  const directory = projectTemp("site-private-context-"),
-    owner = createIdentity("Context-bound owner"),
-    a = join(directory, "a.sqlite"),
-    b = join(directory, "b.sqlite");
-  const first = new ProtectedGroupStore(a, owner, { create: true }),
-    second = new ProtectedGroupStore(b, owner, { create: true });
-  try {
-    const key = "site:" + hash("same-logical-name") + ":stage",
-      value = { text: "Bound to the original store" };
-    first.transaction((tx) =>
-      SitePrivateRecords.run(tx, owner, (r) => r.write(key, value)),
-    );
-    const rows = first.view((tx) =>
-      tx.keys("site:").map((key) => ({ key, bytes: tx.get(key)! })),
-    );
-    second.transaction((tx) => {
-      for (const row of rows) tx.put(row.key, row.bytes);
-    });
-    const id = second.storeId();
-    second.close();
-    const control = join(directory, "control.json");
-    writeFileSync(
-      control,
-      JSON.stringify({
-        database: b,
-        storeId: id,
-        identity: owner,
-        key,
-        expected: value,
-        output: join(directory, "must-not-pass.json"),
-      }),
-      { mode: 0o600 },
-    );
-    const result = run(control);
-    assert.equal(result.status, 1);
-    assert.match(result.stdout + result.stderr, /autentica/);
-  } finally {
-    first.close();
-    second.close();
-    rmSync(directory, { recursive: true, force: true });
-  }
-});
+for (const namespace of ["site", "resource"] as const)
+  test(`Node and a real Go process exchange signing-protected ${namespace} records in the same SQLite database`, () => {
+    const runPrivate =
+      namespace === "site"
+        ? SitePrivateRecords.run.bind(SitePrivateRecords)
+        : SitePrivateRecords.runResource.bind(SitePrivateRecords);
+    const directory = projectTemp("site-private-interop-"),
+      owner = createIdentity("Shared site storage owner"),
+      path = join(directory, "profile.sqlite");
+    let store = new ProtectedGroupStore(path, owner, { create: true });
+    try {
+      const key = namespace + ":" + hash("node-site-value") + ":record",
+        writeKey = namespace + ":" + hash("go-site-value") + ":stage";
+      const value = {
+          title: "Exact private record 😀 \ud800",
+          body: "x".repeat(2 * 1024 * 1024),
+          values: [null, true, 23],
+        },
+        written = { label: "From Go", sequence: 2, body: "🧶" };
+      store.transaction((tx) =>
+        runPrivate(tx, owner, (r) => r.write(key, value)),
+      );
+      const id = store.storeId();
+      store.close();
+      const output = join(directory, "result.json"),
+        control = join(directory, "control.json");
+      writeFileSync(
+        control,
+        JSON.stringify({
+          namespace,
+          database: path,
+          storeId: id,
+          identity: owner,
+          key,
+          expected: value,
+          writeKey,
+          writeValue: written,
+          output,
+        }),
+        { mode: 0o600 },
+      );
+      const result = run(control);
+      assert.equal(result.status, 0, result.stdout + result.stderr);
+      assert.equal(
+        JSON.parse(readFileSync(output, "utf8")).readSHA256,
+        hash(canonical(value)),
+      );
+      store = new ProtectedGroupStore(path, owner, { expectedStoreId: id });
+      assert.deepEqual(
+        store.view((tx) => runPrivate(tx, owner, (r) => r.read(key))),
+        value,
+      );
+      assert.deepEqual(
+        store.view((tx) => runPrivate(tx, owner, (r) => r.read(writeKey))),
+        written,
+      );
+    } finally {
+      store.close();
+      rmSync(directory, { recursive: true, force: true });
+    }
+  });
+
+for (const namespace of ["site", "resource"] as const)
+  test(`Go rejects a Node encrypted ${namespace} value transplanted into another authenticated store`, () => {
+    const runPrivate =
+      namespace === "site"
+        ? SitePrivateRecords.run.bind(SitePrivateRecords)
+        : SitePrivateRecords.runResource.bind(SitePrivateRecords);
+    const directory = projectTemp("site-private-context-"),
+      owner = createIdentity("Context-bound owner"),
+      a = join(directory, "a.sqlite"),
+      b = join(directory, "b.sqlite");
+    const first = new ProtectedGroupStore(a, owner, { create: true }),
+      second = new ProtectedGroupStore(b, owner, { create: true });
+    try {
+      const key = namespace + ":" + hash("same-logical-name") + ":stage",
+        value = { text: "Bound to the original store" };
+      first.transaction((tx) =>
+        runPrivate(tx, owner, (r) => r.write(key, value)),
+      );
+      const rows = first.view((tx) =>
+        tx.keys(namespace + ":").map((key) => ({ key, bytes: tx.get(key)! })),
+      );
+      second.transaction((tx) => {
+        for (const row of rows) tx.put(row.key, row.bytes);
+      });
+      const id = second.storeId();
+      second.close();
+      const control = join(directory, "control.json");
+      writeFileSync(
+        control,
+        JSON.stringify({
+          namespace,
+          database: b,
+          storeId: id,
+          identity: owner,
+          key,
+          expected: value,
+          output: join(directory, "must-not-pass.json"),
+        }),
+        { mode: 0o600 },
+      );
+      const result = run(control);
+      assert.equal(result.status, 1);
+      assert.match(result.stdout + result.stderr, /autentica/);
+    } finally {
+      first.close();
+      second.close();
+      rmSync(directory, { recursive: true, force: true });
+    }
+  });

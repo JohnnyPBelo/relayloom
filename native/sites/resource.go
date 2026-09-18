@@ -115,6 +115,14 @@ func DescribeResource(value any, envelope any) (map[string]any, error) {
 	if err != nil {
 		return nil, err
 	}
+	description, err := resourceMetadata(resource)
+	if err != nil {
+		return nil, err
+	}
+	description["domain"], description["bundleId"], description["authorId"] = resourceReferenceDomain, metadata["id"], metadata["authorId"]
+	return ParseResourceReference(description)
+}
+func resourceMetadata(resource map[string]any) (map[string]any, error) {
 	encoded, err := core.Canonical(resource)
 	if err != nil {
 		return nil, err
@@ -134,10 +142,24 @@ func DescribeResource(value any, envelope any) (map[string]any, error) {
 		}
 		size, mime = len(data), docTextValue(resource["mime"])
 	}
-	return ParseResourceReference(map[string]any{
-		"domain": resourceReferenceDomain, "bundleId": metadata["id"], "authorId": metadata["authorId"],
+	return map[string]any{
 		"kind": resource["kind"], "name": resource["name"], "mime": mime, "bytes": size, "payloadHash": core.Hash(encoded),
-	})
+	}, nil
+}
+
+// SummaryResource is not a resource body and cannot be republished as one.
+// Its closed metadata projection keeps optional bytes out of periodic state.
+func SummaryResource(value any) (map[string]any, error) {
+	resource, err := ParseResource(value)
+	if err != nil {
+		return nil, err
+	}
+	metadata, err := resourceMetadata(resource)
+	if err != nil {
+		return nil, err
+	}
+	metadata["type"], metadata["domain"] = "site-resource", "relayloom/site-resource-summary/1"
+	return metadata, nil
 }
 func MatchResource(reference any, value any, envelope any) (map[string]any, error) {
 	expected, err := ParseResourceReference(reference)

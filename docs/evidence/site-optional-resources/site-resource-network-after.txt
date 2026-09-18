@@ -1,0 +1,42 @@
+TAP version 13
+# Subtest: node optional resource stays out of inventory, then a restarted sole seeder serves its exact bytes on demand
+not ok 1 - node optional resource stays out of inventory, then a restarted sole seeder serves its exact bytes on demand
+  ---
+  duration_ms: 7653.045468
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/native/site-resource-routing.test.ts:1:1127'
+  failureType: 'testCodeFailure'
+  error: |-
+    node exited 1: recursos locais indisponíveis: open /home/absint0o/projects/relayloom/.cache/site-optional-resources/dist/web: no such file or directory
+    
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    ChildProcess.<anonymous> (/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/helpers.ts:73:16)
+    ChildProcess.emit (node:events:519:28)
+    ChildProcess._handle.onexit (node:internal/child_process:293:12)
+  ...
+# Subtest: native optional resource stays out of inventory, then a restarted sole seeder serves its exact bytes on demand
+not ok 2 - native optional resource stays out of inventory, then a restarted sole seeder serves its exact bytes on demand
+  ---
+  duration_ms: 6.191749
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/native/site-resource-routing.test.ts:1:1127'
+  failureType: 'testCodeFailure'
+  error: |-
+    node exited 1: recursos locais indisponíveis: open /home/absint0o/projects/relayloom/.cache/site-optional-resources/dist/web: no such file or directory
+    
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    ChildProcess.<anonymous> (/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/helpers.ts:73:16)
+    ChildProcess.emit (node:events:519:28)
+    ChildProcess._handle.onexit (node:internal/child_process:293:12)
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 0
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 7855.364691

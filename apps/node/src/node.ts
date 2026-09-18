@@ -1,6 +1,8 @@
 import { validateSiteEditingContext } from "../../../packages/sites/src/editing";
 import { readUIPreferences, saveUIPreferences } from "./ui-preferences";
 import { SiteRuntime, inspectSite } from "./site-runtime";
+import { inspectResource } from "./site-resource";
+import { summarizeSiteResource } from "../../../packages/content/src/site-resource";
 import { NodeSiteCatalog } from "../../../packages/sites/src/catalog";
 import { RegistryIntegrityError } from "../../../packages/groups/src/storage";
 import { draftSummary } from "../../../packages/content/src/site";
@@ -1410,6 +1412,10 @@ export class LoomNode extends EventEmitter {
   ): { bundle: Bundle; content: Content; mutationTarget?: Manifest } {
     const identity = this.requireIdentity();
     validateContent(content);
+    if (content.type === "site-resource")
+      throw new Error(
+        "Guarda recursos opcionais através do gestor de recursos",
+      );
     if (content.type === "site" && Object.hasOwn(content, "siteRevision"))
       throw new Error("Use a publicação versionada de sites");
     if (hasGroupBinding(content))
@@ -1624,6 +1630,24 @@ export class LoomNode extends EventEmitter {
     return this.display(bundle)!;
   }
   private maySeed(manifest: Manifest) {
+    if (manifest.kind === "site-resource") {
+      if (
+        this.config.blocked.includes(manifest.author.id) ||
+        (manifest.publicKey === null && !this.identity && this.initialized)
+      )
+        return false;
+      if (
+        manifest.author.id === this.identity?.public.id &&
+        manifest.keys.some((k) => this.config.blocked.includes(k.reader))
+      )
+        return false;
+      try {
+        inspectResource(this.store.get(manifest.id, false), this.identity);
+        return true;
+      } catch {
+        return false;
+      }
+    }
     if (manifest.kind === "site") {
       if (manifest.publicKey === null && !this.identity && this.initialized)
         return false;
@@ -1703,6 +1727,7 @@ export class LoomNode extends EventEmitter {
         verifyNoticeEnvelope(payload.bundle);
       else {
         verifyBundle(payload.bundle);
+        inspectResource(payload.bundle, this.identity);
         if (payload.bundle.manifest.kind === "site")
           inspectSite(payload.bundle, this.identity);
       }
@@ -1874,7 +1899,7 @@ export class LoomNode extends EventEmitter {
         return;
       const ids = this.store
         .list()
-        .filter((m) => this.maySeed(m))
+        .filter((m) => m.kind !== "site-resource" && this.maySeed(m))
         .map((m) => m.id);
       if (ids.length) {
         const start =
@@ -1916,6 +1941,7 @@ export class LoomNode extends EventEmitter {
     }
   }
   private summarizeContent(content: Content): Content {
+    if (content.type === "site-resource") return summarizeSiteResource(content);
     const out: Content = { type: content.type };
     const fields = ["text", "title", "priority"];
     if (hasGroupBinding(content))

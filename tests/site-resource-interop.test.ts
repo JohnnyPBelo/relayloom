@@ -13,6 +13,7 @@ import { authoredTable } from "./fixtures/site-table";
 import {
   describeSiteResource,
   resourceScopeCoversSite,
+  summarizeSiteResource,
 } from "../packages/content/src/site-resource";
 
 test("TypeScript and a real Go process agree on resource identity, canonical hashes, boundaries and reading scope", () => {
@@ -112,6 +113,13 @@ test("TypeScript and a real Go process agree on resource identity, canonical has
     [null, "public"],
   ];
   const output = {
+    summaries: resources.map((value) => {
+      try {
+        return summarizeSiteResource(value);
+      } catch {
+        return null;
+      }
+    }),
     resources: resources.map((value) => {
       try {
         return describeSiteResource(value, envelope);

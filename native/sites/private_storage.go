@@ -22,14 +22,17 @@ const PrivateChunkBytes = 512 * 1024
 const PrivateChunks = 16
 const privateOverhead = 61
 const privateDomain = "relayloom/site-private/1"
+const resourcePrivateDomain = "relayloom/site-resource-private/1"
 
 var privateKeyPattern = regexp.MustCompile(`^site:[a-f0-9]{64}:(record|stage)$`)
+var resourcePrivateKeyPattern = regexp.MustCompile(`^resource:[a-f0-9]{64}:(record|stage)$`)
 
 type PrivateRecords struct {
 	tx             *groupstore.Tx
 	owner, storeID string
 	secret         []byte
 	closed         bool
+	namespace      string
 }
 
 func privateIntegrity(reason string) error {
@@ -39,6 +42,15 @@ func privateIntegrity(reason string) error {
 // RunPrivate protects unpublished signatures with signing ownership inside the
 // existing transactional profile. It does not change the outer storage format.
 func RunPrivate(tx *groupstore.Tx, identity core.Identity, callback func(*PrivateRecords) error) error {
+	return runPrivateNamespace(tx, identity, callback, "site")
+}
+func RunResourcePrivate(tx *groupstore.Tx, identity core.Identity, callback func(*PrivateRecords) error) error {
+	return runPrivateNamespace(tx, identity, callback, "resource")
+}
+func runPrivateNamespace(tx *groupstore.Tx, identity core.Identity, callback func(*PrivateRecords) error, namespace string) error {
+	if namespace != "site" && namespace != "resource" {
+		return tx.Abort(privateIntegrity("espaço privado inválido"))
+	}
 	owner, err := tx.Owner()
 	if err != nil {
 		return err
@@ -58,7 +70,7 @@ func RunPrivate(tx *groupstore.Tx, identity core.Identity, callback func(*Privat
 		clear(secret)
 		return err
 	}
-	records := &PrivateRecords{tx: tx, owner: owner, storeID: storeID, secret: secret}
+	records := &PrivateRecords{tx: tx, owner: owner, storeID: storeID, secret: secret, namespace: namespace}
 	defer func() { records.closed = true; clear(records.secret) }()
 	if err = callback(records); err != nil {
 		return tx.Abort(err)
@@ -69,17 +81,27 @@ func (r *PrivateRecords) check(key string) error {
 	if r.closed {
 		return groupstore.ErrTransaction
 	}
-	if !privateKeyPattern.MatchString(key) {
+	pattern := privateKeyPattern
+	if r.namespace == "resource" {
+		pattern = resourcePrivateKeyPattern
+	}
+	if !pattern.MatchString(key) {
 		return privateIntegrity("chave de site inválida")
 	}
 	return nil
 }
+func (r *PrivateRecords) domain() string {
+	if r.namespace == "resource" {
+		return resourcePrivateDomain
+	}
+	return privateDomain
+}
 func (r *PrivateRecords) aad(key string) []byte {
-	data, _ := core.Canonical([]any{privateDomain, r.owner, r.storeID, key})
+	data, _ := core.Canonical([]any{r.domain(), r.owner, r.storeID, key})
 	return data
 }
 func (r *PrivateRecords) gcm(salt []byte) (cipher.AEAD, error) {
-	key, err := hkdf.Key(sha256.New, r.secret, salt, privateDomain, 32)
+	key, err := hkdf.Key(sha256.New, r.secret, salt, r.domain(), 32)
 	if err != nil {
 		return nil, err
 	}
@@ -166,7 +188,7 @@ func (r *PrivateRecords) Read(key string) (value any, found bool, err error) {
 		return nil, false, privateIntegrity("índice privado ilegível")
 	}
 	m, ok := parsed.(map[string]any)
-	if !ok || len(m) != 4 || m["domain"] != privateDomain {
+	if !ok || len(m) != 4 || m["domain"] != r.domain() {
 		return nil, false, privateIntegrity("índice privado inválido")
 	}
 	size, err := privateInt(m["bytes"])
@@ -246,7 +268,7 @@ func (r *PrivateRecords) Write(key string, value any) (err error) {
 			return err
 		}
 	}
-	manifest, err := core.Canonical(map[string]any{"domain": privateDomain, "bytes": len(encrypted), "chunks": chunks, "digest": core.Hash(encrypted)})
+	manifest, err := core.Canonical(map[string]any{"domain": r.domain(), "bytes": len(encrypted), "chunks": chunks, "digest": core.Hash(encrypted)})
 	if err != nil {
 		return err
 	}

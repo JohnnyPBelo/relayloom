@@ -35,16 +35,23 @@ func TestResourceVectorWorker(t *testing.T) {
 		t.Fatal("bounded resource vectors required")
 	}
 	results := make([]any, 0, len(resources))
+	summaries := make([]any, 0, len(resources))
 	for _, resource := range resources {
 		reference, err := DescribeResource(resource, corpus["envelope"])
 		if err != nil {
 			results = append(results, nil)
+			summaries = append(summaries, nil)
 			continue
 		}
 		if _, err = MatchResource(reference, resource, corpus["envelope"]); err != nil {
 			t.Fatal(err)
 		}
 		results = append(results, reference)
+		summary, err := SummaryResource(resource)
+		if err != nil {
+			t.Fatal(err)
+		}
+		summaries = append(summaries, summary)
 	}
 	scopes, ok := corpus["scopes"].([]any)
 	if !ok || len(scopes) > 128 {
@@ -63,7 +70,7 @@ func TestResourceVectorWorker(t *testing.T) {
 			permissions = append(permissions, allowed)
 		}
 	}
-	encoded, err := core.Canonical(map[string]any{"resources": results, "scopes": permissions})
+	encoded, err := core.Canonical(map[string]any{"resources": results, "scopes": permissions, "summaries": summaries})
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -15,6 +15,7 @@ import {
   parseSiteResourceReference,
   resourceScopeCoversSite,
   SITE_RESOURCE_LIMITS,
+  summarizeSiteResource,
 } from "../packages/content/src/site-resource";
 const table = () => ({
   type: "site-resource",
@@ -43,6 +44,14 @@ test("a table descriptor pins its complete canonical payload and returns owned d
   assert.equal(ref.mime, "application/vnd.relayloom.table+json");
   assert.equal(ref.bytes, Buffer.byteLength(canonical(source.table)));
   assert.deepEqual(matchSiteResource(ref, source, envelope), source);
+  const summary = summarizeSiteResource(source);
+  assert.equal(summary.payloadHash, ref.payloadHash);
+  assert.equal(Object.hasOwn(summary, "table"), false);
+  assert.equal(Object.hasOwn(summary, "data"), false);
+  assert.throws(
+    () => parseSiteResource(summary),
+    "summary must never become publishable input",
+  );
   const opened = matchSiteResource(ref, source, envelope);
   assert.equal(opened.kind, "table");
   if (opened.kind === "table") opened.table.rows[0].values.water = 0;

@@ -2,6 +2,7 @@ import { exactShape } from "../../core/src/protocol";
 import type { Bundle } from "../../core/src/protocol";
 import { verifiedBundle } from "./crypto";
 import { inspectPublicSite } from "./site-content";
+import { inspectPublicResource } from "./site-resource";
 import type { PublicIdentity } from "../../core/src/protocol";
 export interface MeshProfile {
   readonly name: string;
@@ -217,6 +218,7 @@ export class BrowserMesh {
       if (this.#settings.blocked.includes(bundle.manifest.author.id))
         throw new Error("Origem bloqueada");
       await inspectPublicSite(bundle);
+      await inspectPublicResource(bundle);
     } else if (
       !wire ||
       !exactShape(wire, ["type", "ids"]) ||
@@ -283,6 +285,8 @@ export class BrowserMesh {
   ): Promise<string> {
     if (this.#stopped || this.profile.locked) throw new Error("Rede bloqueada");
     const owned = await verifiedBundle(bundle);
+    if (owned.manifest.kind === "site-resource")
+      throw new Error("Recursos opcionais só são enviados após pedido");
     if (owned.manifest.author.id !== this.profile.identity?.id)
       throw new Error("A publicação tem de pertencer à identidade local");
     await this.validate({ type: "bundle", bundle: owned });
@@ -306,7 +310,10 @@ export class BrowserMesh {
       for (const id of ids.slice(this.#cursor, this.#cursor + 8)) {
         try {
           const bundle = await this.profile.getBundle(id);
-          if (!this.#settings.blocked.includes(bundle.manifest.author.id))
+          if (
+            bundle.manifest.kind !== "site-resource" &&
+            !this.#settings.blocked.includes(bundle.manifest.author.id)
+          )
             eligible.push(id);
         } catch {
           /* A corrupt/expired entry is never advertised. */

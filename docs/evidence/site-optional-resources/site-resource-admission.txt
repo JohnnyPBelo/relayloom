@@ -1,0 +1,58 @@
+TAP version 13
+# Subtest: node rejects readable invalid resources before storage, keeps opaque data unreadable and detects stored corruption
+ok 1 - node rejects readable invalid resources before storage, keeps opaque data unreadable and detects stored corruption
+  ---
+  duration_ms: 1062.609394
+  type: 'test'
+  ...
+# Subtest: native rejects readable invalid resources before storage, keeps opaque data unreadable and detects stored corruption
+ok 2 - native rejects readable invalid resources before storage, keeps opaque data unreadable and detects stored corruption
+  ---
+  duration_ms: 528.240137
+  type: 'test'
+  ...
+# Subtest: TypeScript and a real Go process agree on resource identity, canonical hashes, boundaries and reading scope
+ok 3 - TypeScript and a real Go process agree on resource identity, canonical hashes, boundaries and reading scope
+  ---
+  duration_ms: 1914.987
+  type: 'test'
+  ...
+# Subtest: a table descriptor pins its complete canonical payload and returns owned data
+ok 4 - a table descriptor pins its complete canonical payload and returns owned data
+  ---
+  duration_ms: 19.20532
+  type: 'test'
+  ...
+# Subtest: verification of real encrypted envelopes precedes descriptor matching; a reader's valid signature cannot replace the referenced author
+ok 5 - verification of real encrypted envelopes precedes descriptor matching; a reader's valid signature cannot replace the referenced author
+  ---
+  duration_ms: 26.47466
+  type: 'test'
+  ...
+# Subtest: files have canonical base64, exact decoded boundaries and no executable rendering type
+ok 6 - files have canonical base64, exact decoded boundaries and no executable rendering type
+  ---
+  duration_ms: 61.140266
+  type: 'test'
+  ...
+# Subtest: a private resource never becomes public by reference and reader sets cannot silently expand
+ok 7 - a private resource never becomes public by reference and reader sets cannot silently expand
+  ---
+  duration_ms: 0.688752
+  type: 'test'
+  ...
+# Subtest: descriptor and nested data getters are refused without access, including reader arrays
+ok 8 - descriptor and nested data getters are refused without access, including reader arrays
+  ---
+  duration_ms: 0.717656
+  type: 'test'
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 8
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4244.995875

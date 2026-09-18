@@ -26,6 +26,7 @@ func TestPrivateRecordsInteropWorker(t *testing.T) {
 		WriteKey   string          `json:"writeKey"`
 		WriteValue json.RawMessage `json:"writeValue"`
 		Output     string          `json:"output"`
+		Namespace  string          `json:"namespace"`
 	}
 	if err = json.Unmarshal(bytes, &input); err != nil {
 		t.Fatal(err)
@@ -40,8 +41,14 @@ func TestPrivateRecordsInteropWorker(t *testing.T) {
 		t.Fatal(err)
 	}
 	want, _ := core.Canonical(expected)
+	run := RunPrivate
+	if input.Namespace == "resource" {
+		run = RunResourcePrivate
+	} else if input.Namespace != "" && input.Namespace != "site" {
+		t.Fatal("unknown private namespace")
+	}
 	err = store.Update(func(tx *groupstore.Tx) error {
-		return RunPrivate(tx, input.Identity, func(r *PrivateRecords) error {
+		return run(tx, input.Identity, func(r *PrivateRecords) error {
 			value, found, err := r.Read(input.Key)
 			if err != nil {
 				return err

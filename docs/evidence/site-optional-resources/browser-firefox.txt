@@ -1,0 +1,18 @@
+
+Running 11 tests using 1 worker
+
+(node:4077383) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [firefox] › tests/browser/native-transport.spec.ts:51:3 › browser WebRTC to browser WebSocket to real node daemon, reverse transfer and invitation revocation (4.8s)
+  ✓   2 [firefox] › tests/browser/native-transport.spec.ts:51:3 › browser WebRTC to browser WebSocket to real native daemon, reverse transfer and invitation revocation (3.7s)
+  ✓   3 [firefox] › tests/browser/native-transport.spec.ts:191:1 › private four-medium route WebRTC-WebSocket-TCP-serial, partition/heal and restarted browser seeder with author offline (12.3s)
+  ✓   4 [firefox] › tests/browser/native-transport.spec.ts:419:1 › late native ACK cannot leave an orphan retry assembly or close an otherwise healthy WebSocket (4.9s)
+  ✓   5 [firefox] › tests/browser/site-network.spec.ts:172:5 › version 1 sites cross RTC, WebSocket and TCP through node, heal a partition and survive with only a restarted reader (9.2s)
+  ✓   6 [firefox] › tests/browser/site-network.spec.ts:172:5 › version 1 sites cross RTC, WebSocket and TCP through native, heal a partition and survive with only a restarted reader (8.5s)
+  ✓   7 [firefox] › tests/browser/site-network.spec.ts:172:5 › version 2 sites cross RTC, WebSocket and TCP through node, heal a partition and survive with only a restarted reader (8.6s)
+  ✓   8 [firefox] › tests/browser/site-network.spec.ts:172:5 › version 2 sites cross RTC, WebSocket and TCP through native, heal a partition and survive with only a restarted reader (9.2s)
+  ✓   9 [firefox] › tests/browser/site-resource-network.spec.ts:97:1 › browser resource admission rejects readable malformed bodies, preserves opaque seeding and keeps summaries distinct from full data (2.1s)
+  ✓  10 [firefox] › tests/browser/site-resource-network.spec.ts:221:3 › optional data crosses RTC and WS through node only on request and a restarted browser seeds it after author shutdown (18.2s)
+  ✓  11 [firefox] › tests/browser/site-resource-network.spec.ts:221:3 › optional data crosses RTC and WS through native only on request and a restarted browser seeds it after author shutdown (18.9s)
+
+  11 passed (1.7m)
