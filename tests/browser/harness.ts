@@ -1,4 +1,5 @@
 import { BrowserSiteCatalog } from "../../packages/browser/src/site-catalog";
+import { BrowserResourceCatalog } from "../../packages/browser/src/resource-catalog";
 // Test-only exports. Never included in the shipped client or a served control API.
 import * as crypto from "../../packages/browser/src/crypto";
 import {
@@ -27,6 +28,7 @@ Object.assign(window, {
     ...packet,
     BrowserProfile,
     BrowserSiteCatalog,
+    BrowserResourceCatalog,
     PRIVATE_VALUE_LIMITS,
     BrowserMesh,
     resources,

@@ -13,6 +13,7 @@ import {
  * keep it in signing-owned authenticated transactions and verify staged bundles
  * before calling these transitions. A read key never authorises creation. */
 export const RESOURCE_OPERATION_LIMIT = 128;
+export const RESOURCE_RECORD_BYTES = 1024 * 1024;
 export interface ResourceCreationRequest {
   sequence: number;
   operationId: string;
@@ -227,7 +228,12 @@ export function createResourceOperations(
         "pedido não corresponde à operação",
       );
     }
-    return JSON.parse(canonical(record));
+    const encoded = canonical(record);
+    insist(
+      new TextEncoder().encode(encoded).length <= RESOURCE_RECORD_BYTES,
+      "orçamento do registo",
+    );
+    return JSON.parse(encoded);
   }
   function lookup(
     value: unknown,
