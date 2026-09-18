@@ -1,0 +1,214 @@
+TAP version 13
+# Subtest: Node bundle creation derives expiry from one clock observation even when the clock advances between reads
+ok 1 - Node bundle creation derives expiry from one clock observation even when the clock advances between reads
+  ---
+  duration_ms: 8.433978
+  type: 'test'
+  ...
+# (node:1841191) ExperimentalWarning: The MockTimers API is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: identity proof binds signing address, name and decryption key
+ok 2 - identity proof binds signing address, name and decryption key
+  ---
+  duration_ms: 2.549982
+  type: 'test'
+  ...
+# Subtest: vault encrypts private keys; recovery and wrong-password controls
+ok 3 - vault encrypts private keys; recovery and wrong-password controls
+  ---
+  duration_ms: 238.660437
+  type: 'test'
+  ...
+# Subtest: reader decrypts and seeds but cannot become author; unauthorized reader fails
+ok 4 - reader decrypts and seeds but cannot become author; unauthorized reader fails
+  ---
+  duration_ms: 5.389368
+  type: 'test'
+  ...
+# Subtest: ciphertext, manifest, expiry, depth and address negative controls
+ok 5 - ciphertext, manifest, expiry, depth and address negative controls
+  ---
+  duration_ms: 15.315594
+  type: 'test'
+  ...
+# Subtest: encrypted persistent seed takeover, deduplication, pin/quota, disk corruption
+ok 6 - encrypted persistent seed takeover, deduplication, pin/quota, disk corruption
+  ---
+  duration_ms: 53.262664
+  type: 'test'
+  ...
+# Subtest: object-count cap bounds small-object floods, survives restart and preserves pinned content
+ok 7 - object-count cap bounds small-object floods, survives restart and preserves pinned content
+  ---
+  duration_ms: 334.23621
+  type: 'test'
+  ...
+# Subtest: metadata listing does not replace real viewing order in LRU eviction
+ok 8 - metadata listing does not replace real viewing order in LRU eviction
+  ---
+  duration_ms: 61.211152
+  type: 'test'
+  ...
+# Subtest: cached manifest metadata is isolated, invalidated by disk changes, and never bypasses get verification
+ok 9 - cached manifest metadata is isolated, invalidated by disk changes, and never bypasses get verification
+  ---
+  duration_ms: 28.521582
+  type: 'test'
+  ...
+# Subtest: rejected quota decrease preserves existing files and policy; feasible decrease evicts only unpinned content
+ok 10 - rejected quota decrease preserves existing files and policy; feasible decrease evicts only unpinned content
+  ---
+  duration_ms: 183.060961
+  type: 'test'
+  ...
+# Subtest: invalid persisted index fails safely without deleting verified objects
+ok 11 - invalid persisted index fails safely without deleting verified objects
+  ---
+  duration_ms: 40.009548
+  type: 'test'
+  ...
+# Subtest: strict wire fields and every recipient envelope are validated before accepting signatures
+ok 12 - strict wire fields and every recipient envelope are validated before accepting signatures
+  ---
+  duration_ms: 4.843915
+  type: 'test'
+  ...
+# (node:1841511) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: catalog atomically persists preparation, authorization and exact public-copy recovery across database restart
+ok 13 - catalog atomically persists preparation, authorization and exact public-copy recovery across database restart
+  ---
+  duration_ms: 219.065888
+  type: 'test'
+  ...
+# Subtest: another signed head appearing before authorization supersedes a private preparation without publishing it
+ok 14 - another signed head appearing before authorization supersedes a private preparation without publishing it
+  ---
+  duration_ms: 143.845272
+  type: 'test'
+  ...
+# Subtest: staging capacity failure cannot leave a catalog entry, partial bundle or changed prior operation
+ok 15 - staging capacity failure cannot leave a catalog entry, partial bundle or changed prior operation
+  ---
+  duration_ms: 98.362629
+  type: 'test'
+  ...
+# Subtest: expired preparations remain recoverable as terminal outcomes without treating the profile as corrupt
+ok 16 - expired preparations remain recoverable as terminal outcomes without treating the profile as corrupt
+  ---
+  duration_ms: 213.931489
+  type: 'test'
+  ...
+# Subtest: public retries recover the exact first envelope; private retries cannot silently change a reading envelope
+ok 17 - public retries recover the exact first envelope; private retries cannot silently change a reading envelope
+  ---
+  duration_ms: 121.47735
+  type: 'test'
+  ...
+# Subtest: repeated verified observations do not rewrite the encrypted catalog
+ok 18 - repeated verified observations do not rewrite the encrypted catalog
+  ---
+  duration_ms: 70.320746
+  type: 'test'
+  ...
+# (node:1842011) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: resource preparation is encrypted, survives reopen and returns the same reference after a lost response
+ok 19 - resource preparation is encrypted, survives reopen and returns the same reference after a lost response
+  ---
+  duration_ms: 154.284691
+  type: 'test'
+  ...
+# Subtest: resource quota failure rolls back counter and signatures, even when caught by an outer caller
+ok 20 - resource quota failure rolls back counter and signatures, even when caught by an outer caller
+  ---
+  duration_ms: 108.216951
+  type: 'test'
+  ...
+# Subtest: a different copy cannot finish an operation or consume its pending signature
+ok 21 - a different copy cannot finish an operation or consume its pending signature
+  ---
+  duration_ms: 50.789686
+  type: 'test'
+  ...
+# Subtest: expired preparation authenticates before disposal and never silently recreates the requested resource
+ok 22 - expired preparation authenticates before disposal and never silently recreates the requested resource
+  ---
+  duration_ms: 1158.136985
+  type: 'test'
+  ...
+# Subtest: a missing stage is corruption and is never interpreted as a fresh catalogue
+ok 23 - a missing stage is corruption and is never interpreted as a fresh catalogue
+  ---
+  duration_ms: 71.013175
+  type: 'test'
+  ...
+# Subtest: real process exit before-commit cannot duplicate or lose the resource creation identity
+ok 24 - real process exit before-commit cannot duplicate or lose the resource creation identity
+  ---
+  duration_ms: 281.378506
+  type: 'test'
+  ...
+# Subtest: real process exit after-commit cannot duplicate or lose the resource creation identity
+ok 25 - real process exit after-commit cannot duplicate or lose the resource creation identity
+  ---
+  duration_ms: 290.192947
+  type: 'test'
+  ...
+# Subtest: real process exit after-copy cannot duplicate or lose the resource creation identity
+ok 26 - real process exit after-copy cannot duplicate or lose the resource creation identity
+  ---
+  duration_ms: 356.732632
+  type: 'test'
+  ...
+# Subtest: real process exit after-ready cannot duplicate or lose the resource creation identity
+ok 27 - real process exit after-ready cannot duplicate or lose the resource creation identity
+  ---
+  duration_ms: 312.321298
+  type: 'test'
+  ...
+# Subtest: resource creation retries retain one signed identity and reject UUID reuse with a different request
+ok 28 - resource creation retries retain one signed identity and reject UUID reuse with a different request
+  ---
+  duration_ms: 7.056665
+  type: 'test'
+  ...
+# Subtest: a pending copy holds the slot; only its exact ciphertext may complete it
+ok 29 - a pending copy holds the slot; only its exact ciphertext may complete it
+  ---
+  duration_ms: 3.622284
+  type: 'test'
+  ...
+# Subtest: expired pending work remains a terminal outcome instead of silently signing a replacement
+ok 30 - expired pending work remains a terminal outcome instead of silently signing a replacement
+  ---
+  duration_ms: 3.744873
+  type: 'test'
+  ...
+# Subtest: retirement is bounded by committed sequence and cannot turn an old uncertain retry into new work
+ok 31 - retirement is bounded by committed sequence and cannot turn an old uncertain retry into new work
+  ---
+  duration_ms: 812.467372
+  type: 'test'
+  ...
+# Subtest: staging cannot change creator, size, scope or lifespan; private reader scope must include the owner
+ok 32 - staging cannot change creator, size, scope or lifespan; private reader scope must include the owner
+  ---
+  duration_ms: 1.782022
+  type: 'test'
+  ...
+# Subtest: untrusted local record and request getters are refused without execution
+ok 33 - untrusted local record and request getters are refused without execution
+  ---
+  duration_ms: 0.283001
+  type: 'test'
+  ...
+1..33
+# tests 33
+# suites 0
+# pass 33
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 6266.215693

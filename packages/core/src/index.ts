@@ -303,12 +303,13 @@ export function createBundle(
     chunks[id] = b64(chunk);
     refs.push({ hash: id, size: chunk.length });
   }
+  const created = Date.now();
   const body: ManifestBody = {
     version: 1,
     author: identity.public,
     kind,
-    created: Date.now(),
-    expires: Date.now() + ttlMs,
+    created,
+    expires: created + ttlMs,
     nonce: encrypted.nonce,
     tag: encrypted.tag,
     chunks: refs,
