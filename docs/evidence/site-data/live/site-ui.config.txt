@@ -1,0 +1,18 @@
+import { defineConfig } from "@playwright/test";
+import { resolve } from "node:path";
+import base from "../../../playwright.config";
+export default defineConfig({
+  ...base,
+  testDir: resolve("tests"),
+  testMatch: ["**/site-data-editor.spec.ts", "site-publication-live.checks.ts"],
+  projects: ["chromium", "firefox", "webkit"].map(name => ({
+    name,
+    use: {
+      browserName: name as "chromium" | "firefox" | "webkit",
+      channel: undefined,
+      launchOptions: name === "chromium" ? { chromiumSandbox: true } : {},
+    },
+  })),
+  outputDir: resolve(".cache/site-data-integrated/live/site-ui-artifacts"),
+  reporter: [["list"], ["json", { outputFile: resolve(".cache/site-data-integrated/live/site-ui.json") }]],
+});

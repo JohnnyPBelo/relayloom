@@ -237,3 +237,8 @@ FR-038/FR-040: controlos de histórico, leitores, prazo, versão de partida, ide
 ## Tabelas declarativas — 18 de Setembro de 2026
 
 FR-038/039/040 e CON-002: documento v2 com tabelas, tipos/CSV/JSON/undo, consulta local, assinaturas e seed em Node/Go/browser. Commits09a2422/10f037a, provas emdocs/evidence/site-data:138Node,Go/race,11interop,8UI nativa e108browser. Correcções com falhas preservadas e repetição dos gates afectados. Publicação web ainda pendente; contribuições, opcionais, revisão independente e plataformas físicas continuam em aberto. Não fechar paridade completa por este incremento.
+
+
+## Publicação das tabelas — 18 de Setembro de 2026
+
+FR-038/039/040: fonte59c9bd1, distribuiçãof6758222, Pages35317766195. Gate público102UI normal+108UI distribuição+1entreprocessos; HTTPS19hashes,15percursos de páginas/tabelas e1entreprocessos com mensagens/anexo/reload offline. Provas emdocs/evidence/site-data/live. A tentativa anterior interrompida e os seus dois timeouts continuam registados; passes seguintes não demonstram a causa original. O contrato completo permanece parcial; ficheiros opcionais/contribuições, revisão independente e hardware/plataformas continuam abertos.

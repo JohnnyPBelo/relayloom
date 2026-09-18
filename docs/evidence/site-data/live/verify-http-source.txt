@@ -1,0 +1,47 @@
+import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import assert from "node:assert/strict";
+import { isDeepStrictEqual } from "node:util";
+import { webSources, webArtifacts, digest } from "../../../scripts/web-artifact.mjs";
+const expected = process.argv[2];
+if (!/^[a-f0-9]{40}$/.test(expected ?? "")) throw Error("Pass the exact source commit");
+const gate = JSON.parse(readFileSync(".cache/public-web/gate/report.json", "utf8"));
+assert.equal(gate.status, "PASS");
+assert.ok(isDeepStrictEqual(gate.sources, webSources()));
+const artifacts = webArtifacts();
+assert.ok(isDeepStrictEqual(gate.artifacts, artifacts));
+const base = "https://johnnypbelo.github.io/relayloom/";
+const report = { status: "RUNNING", sourceCommit: expected, startedAt: new Date().toISOString(), base, files: [], scope: "Exact HTTPS runtime bytes; .nojekyll is a build marker, not a runtime fetch. No device/UI claim." };
+mkdirSync(".cache/site-data-integrated/live", { recursive: true });
+const path = ".cache/site-data-integrated/live/http-" + Date.now() + ".json";
+const save = () => writeFileSync(path, JSON.stringify(report, null, 2) + "\n");
+save();
+try {
+  const releaseResponse = await fetch(base + "release.json", { headers: { "Cache-Control": "no-cache" }, signal: AbortSignal.timeout(15000) });
+  assert.equal(releaseResponse.status, 200);
+  const release = await releaseResponse.json();
+  assert.equal(release.sourceCommit, expected);
+  assert.equal(release.artifactManifestSha256, digest(JSON.stringify(artifacts)));
+  report.release = release;
+  save();
+  for (const [name, expectedFile] of Object.entries(artifacts)) {
+    if (name === ".nojekyll") continue;
+    const response = await fetch(base + name, { headers: { "Cache-Control": "no-cache" }, signal: AbortSignal.timeout(15000) });
+    const bytes = Buffer.from(await response.arrayBuffer());
+    const file = { name, status: response.status, finalURL: response.url, bytes: bytes.length, sha256: digest(bytes), contentType: response.headers.get("content-type") };
+    report.files.push(file); save();
+    assert.equal(response.status, 200, name);
+    assert.equal(response.url, base + name, name);
+    assert.equal(file.bytes, expectedFile.bytes, name);
+    assert.equal(file.sha256, expectedFile.sha256, name);
+  }
+  assert.ok(isDeepStrictEqual(gate.sources, webSources()));
+  assert.ok(isDeepStrictEqual(artifacts, webArtifacts()));
+  report.status = "PASS";
+} catch (error) {
+  report.status = "FAIL";
+  report.error = error.message;
+  process.exitCode = 1;
+} finally {
+  report.finishedAt = new Date().toISOString(); save();
+  console.log(JSON.stringify({ status: report.status, report: path, files: report.files.length, error: report.error }));
+}
