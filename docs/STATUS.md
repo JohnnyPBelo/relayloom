@@ -1,10 +1,16 @@
 # RelayLoom — estado verificável
 
+## Tabelas assinadas — integradas, ainda não publicadas
+
+Os commits 09a2422 e 10f037a acrescentam o documento v2 e o editor de tabelas à UI partilhada: cinco tipos, importação/exportação CSV/JSON, confirmação/desfazer, pesquisa/ordenação/paginação e rascunho cifrado. A autoridade de assinatura mantém-se separada de leitura e seeding. Passaram 138 casos Node, Go sites/app com race, 11 testes de interoperabilidade, 4 UI Node + 4 UI Go e 36 por browser (108). Foram reproduzidas e corrigidas falhas de nomes acessíveis, disposição móvel, foco após guardar e contraste do botão principal. [Comandos, hashes, capturas e falhas](evidence/site-data) · [Limites e compatibilidade v1/v2](SITE-DATA.md).
+
+O gate de distribuição pública e a verificação HTTPS desta extensão estão pendentes. Não inclui contribuições multiutilizador ou ficheiros opcionais. Revisão independente, dispositivos/rádios/Apple e todo o restante contrato continuam abertos; não é prontidão para catástrofes.
+
 ## Publicação web actual — estúdio de versões no HTTPS
 
 **Fonte 2d84a61415c40c5458a8b6646ded98ed4041c77f; distribuição 4bc293c5d1790f47d3e33cb000c830236df6f8d4.** O estúdio com histórico, privacidade, conflitos e recuperação está disponível em https://johnnypbelo.github.io/relayloom/. Passaram 90 percursos na compilação normal, 96 na distribuição pública e um entre processos independentes. Depois da publicação, 18 ficheiros HTTP coincidiram por hash/tamanho; dois percursos de páginas em Chromium/Firefox confirmaram histórico e seeder com autora desligada, e um percurso adicional entre processos independentes confirmou mensagens, anexo exacto e recuperação offline. [Provas e reprodução](evidence/site-editor-versions/live).
 
-O CI 35276560255, com a preparação Go corrigida, passou os três jobs Node em Windows/macOS/Linux; o job Go ainda estava em execução na última consulta. Isso não valida os dispositivos físicos nem conclui o produto. A observação intermitente de fecho de relay e a ausência de validação Apple/radios continuam explícitas abaixo. Os registos de versões anteriores são históricos.
+O CI 35276560255 terminou: Node em Windows/macOS/Linux, Go, UI nativa, Reticulum, browsers e os três pacotes desktop passaram. iOS falhou em execute-ui-test (65), depois de startup e preparação da fotografia passarem; as capturas ainda mostram setup/teclado e não estabelecem a causa. O relatório está em [evidência iOS recolhida](evidence/site-data/prior-ci/ios-report.json). Isso não valida os dispositivos físicos nem conclui o produto. A observação intermitente de fecho de relay e a ausência de validação Apple/radios continuam explícitas abaixo. Os registos de versões anteriores são históricos.
 
 ## Estúdio de versões — implementado e verificado localmente
 

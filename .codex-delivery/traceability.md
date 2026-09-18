@@ -232,3 +232,8 @@ FR-038 e FR-040: catálogo de versões, autoria, histórico e recuperação loca
 ## 17 de Setembro — estúdio de publicação versionada
 
 FR-038/FR-040: controlos de histórico, leitores, prazo, versão de partida, idempotência, conflitos e recuperação implementados na UI partilhada. Persistência de contexto e comportamento testados em Node/Go/browser; 32 UI por runtime, 73 por engine, nove UI-RNS e pacote Linux. FR-045: novos controlos testados em EN/ES com texto criado pelo utilizador preservado; a experiência completa mantém estatuto parcial. INT-009/ACC-014: percursos mistos continuam verificados, com uma ocorrência Firefox de fecho do canal ao pausar relay ainda sem causa esclarecida. CON-002: publicação e recuperação continuam limitadas a conteúdo declarativo assinado. Evidência docs/evidence/site-editor-versions e errata site-ui-runtime-correction. Publicação HTML, hardware, contribuições/dados, ficheiros opcionais e revisão independente continuam pendentes.
+
+
+## Tabelas declarativas — 18 de Setembro de 2026
+
+FR-038/039/040 e CON-002: documento v2 com tabelas, tipos/CSV/JSON/undo, consulta local, assinaturas e seed em Node/Go/browser. Commits09a2422/10f037a, provas emdocs/evidence/site-data:138Node,Go/race,11interop,8UI nativa e108browser. Correcções com falhas preservadas e repetição dos gates afectados. Publicação web ainda pendente; contribuições, opcionais, revisão independente e plataformas físicas continuam em aberto. Não fechar paridade completa por este incremento.

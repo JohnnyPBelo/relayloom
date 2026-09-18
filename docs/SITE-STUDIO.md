@@ -1,5 +1,7 @@
 # Estúdio de sites
 
+Estado actual: o estúdio publicado já inclui [endereço permanente, histórico, privacidade e recuperação](SITE-REVISIONS.md). O código integrado acrescenta [tabelas tipadas](SITE-DATA.md), ainda em validação da distribuição pública. Os números e descrições das etapas abaixo são históricos quando indicam revisões/API ainda pendentes. [Estado verificável](STATUS.md).
+
 Incremento de 16 de Setembro de 2026 validado no host. O produto completo e a paridade física de plataformas continuam abertos em [STATUS](STATUS.md). Já está disponível em https://johnnypbelo.github.io/relayloom/ ; 17 ficheiros verificados por hash e 4 testes no URL real passaram. [Evidência](evidence/site-studio/live).
 
 ## Criar e publicar

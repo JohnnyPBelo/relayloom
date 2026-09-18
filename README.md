@@ -40,6 +40,8 @@ Mensagens/outbox, leitores fixos, social, colecções, páginas e recuperação 
 
 ## Estúdio de páginas pessoais
 
+O código actual inclui um novo bloco **Tabela**: colunas tipadas, edição de linhas, CSV/JSON, pesquisa, ordenação e paginação, dentro de versões assinadas. A extensão passou 138 testes Node, Go/race, 11 de interoperabilidade, oito percursos UI Node/Go e 108 de browser. **Ainda não está na versão web publicada**; está em validação da distribuição. [Guia e limites](docs/SITE-DATA.md) · [Provas, incluindo falhas corrigidas](docs/evidence/site-data). Contribuições multiutilizador e ficheiros opcionais continuam por implementar.
+
 O novo estúdio já está disponível na [versão web](https://johnnypbelo.github.io/relayloom/). Em **A minha página**, permite criar um site com várias páginas, 13 tipos de bloco, colunas aninhadas, galerias, estilos, três modelos e Markdown seguro. Inclui pré-visualização móvel, desfazer/refazer e importação/exportação declarativa. O rascunho é cifrado; publicar guarda o projecto actual e assina o conteúdo, que os leitores podem distribuir sem adquirir autoria.
 
 A publicação foi conferida por hash e passou quatro testes no URL real, incluindo seeding do site com a autora offline e troca de mensagens/anexo entre processos. [Evidência pública](docs/evidence/site-studio/live). Guarde o rascunho, feche os separadores RelayLoom antigos e reabra a página inicial para actualizar, sem apagar os dados.
