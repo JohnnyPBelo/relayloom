@@ -1,0 +1,26 @@
+
+Running 15 tests using 1 worker
+
+(node:774748) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [firefox] › tests/browser/site-data-component.spec.ts:25:1 › standalone table component filters literal data, sorts, paginates and rejects active content without mutating the source (2.6s)
+  ✓   2 [firefox] › tests/browser/site-data-editor.spec.ts:12:1 › table file import validates before replacement, preserves typed nulls, undoes changes and exports literal CSV safely (8.6s)
+  ✓   3 [firefox] › tests/browser/site-data-editor.spec.ts:337:3 › table controls and import failures use en-GB while authored data retains its language (2.2s)
+  ✓   4 [firefox] › tests/browser/site-data-editor.spec.ts:337:3 › table controls and import failures use es-ES while authored data retains its language (2.2s)
+  ✓   5 [firefox] › tests/browser/site-data-editor.spec.ts:396:1 › real table editor types decimal cells, preserves drafts, publishes signed data and permits read-only queries after the author closes (11.8s)
+(node:778161) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   6 [firefox] › tests/browser/site-data-component.spec.ts:25:1 › standalone table component filters literal data, sorts, paginates and rejects active content without mutating the source (2.7s)
+  ✓   7 [firefox] › tests/browser/site-data-editor.spec.ts:12:1 › table file import validates before replacement, preserves typed nulls, undoes changes and exports literal CSV safely (9.2s)
+  ✓   8 [firefox] › tests/browser/site-data-editor.spec.ts:337:3 › table controls and import failures use en-GB while authored data retains its language (2.2s)
+  ✓   9 [firefox] › tests/browser/site-data-editor.spec.ts:337:3 › table controls and import failures use es-ES while authored data retains its language (2.2s)
+  ✓  10 [firefox] › tests/browser/site-data-editor.spec.ts:396:1 › real table editor types decimal cells, preserves drafts, publishes signed data and permits read-only queries after the author closes (11.3s)
+(node:782713) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  11 [firefox] › tests/browser/site-data-component.spec.ts:25:1 › standalone table component filters literal data, sorts, paginates and rejects active content without mutating the source (2.7s)
+  ✓  12 [firefox] › tests/browser/site-data-editor.spec.ts:12:1 › table file import validates before replacement, preserves typed nulls, undoes changes and exports literal CSV safely (9.1s)
+  ✓  13 [firefox] › tests/browser/site-data-editor.spec.ts:337:3 › table controls and import failures use en-GB while authored data retains its language (2.1s)
+  ✓  14 [firefox] › tests/browser/site-data-editor.spec.ts:337:3 › table controls and import failures use es-ES while authored data retains its language (2.1s)
+  ✓  15 [firefox] › tests/browser/site-data-editor.spec.ts:396:1 › real table editor types decimal cells, preserves drafts, publishes signed data and permits read-only queries after the author closes (11.2s)
+
+  15 passed (1.4m)

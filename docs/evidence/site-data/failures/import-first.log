@@ -1,0 +1,42 @@
+
+Running 1 test using 1 worker
+
+(node:387476) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/browser/site-data-editor.spec.ts:12:1 › table file import validates before replacement, preserves typed nulls, undoes changes and exports literal CSV safely (15.6s)
+
+
+  1) tests/browser/site-data-editor.spec.ts:12:1 › table file import validates before replacement, preserves typed nulls, undoes changes and exports literal CSV safely 
+
+    TimeoutError: locator.selectOption: Timeout 12000ms exceeded.
+    Call log:
+      - waiting for getByRole('region', { name: 'Estúdio do site', exact: true }).getByRole('region', { name: 'Editar dados da tabela', exact: true }).getByLabel('Formato dos dados', { exact: true })
+
+
+      133 |   await editor
+      134 |     .getByLabel("Formato dos dados", { exact: true })
+    > 135 |     .selectOption("csv");
+          |      ^
+      136 |   const csv =
+      137 |     'Nome,Código,Notas\r\n"Centro, norte",001,"linha 1\nlinha ""2"""\r\n' +
+      138 |     Array.from({ length: 11 }, (_, i) => `Local ${i},=2+2,Texto`).join("\r\n") +
+        at /home/absint0o/projects/relayloom/.cache/site-data-next/tests/browser/site-data-editor.spec.ts:135:6
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/site-data-editor-table-fil-76ab9--exports-literal-CSV-safely/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/site-data-editor-table-fil-76ab9--exports-literal-CSV-safely/error-context.md
+
+    Error Context: test-results/site-data-editor-table-fil-76ab9--exports-literal-CSV-safely/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/site-data-editor-table-fil-76ab9--exports-literal-CSV-safely/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/site-data-editor-table-fil-76ab9--exports-literal-CSV-safely/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/browser/site-data-editor.spec.ts:12:1 › table file import validates before replacement, preserves typed nulls, undoes changes and exports literal CSV safely 

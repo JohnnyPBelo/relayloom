@@ -1,0 +1,49 @@
+
+Running 1 test using 1 worker
+
+(node:1006175) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [webkit] › tests/browser/site-data-component.spec.ts:25:1 › standalone table component filters literal data, sorts, paginates and rejects active content without mutating the source (20.3s)
+
+
+  1) [webkit] › tests/browser/site-data-component.spec.ts:25:1 › standalone table component filters literal data, sorts, paginates and rejects active content without mutating the source 
+
+    Error: expect(locator).toHaveCSS(expected) failed
+
+    Locator:  getByRole('button', { name: 'Publicar página', exact: true })
+    Expected: "rgb(17, 87, 79)"
+    Received: "rgba(0, 0, 0, 0)"
+    Timeout:  15000ms
+
+    Call log:
+      - Expect "toHaveCSS" getByRole('button', { name: 'Publicar página', exact: true }) with timeout 15000ms
+      - waiting for getByRole('button', { name: 'Publicar página', exact: true })
+        34 × locator resolved to <button class="primary">…</button>
+           - unexpected value "rgba(0, 0, 0, 0)"
+
+
+      184 |     // chosen in the intervening frame belongs to the user, including AT/autofill.
+      185 |     await page.evaluate(() => (window as any).showStudio());
+    > 186 |     await expect(page.getByRole("button", { name: "Publicar página", exact: true })).toHaveCSS("background-color", "rgb(17, 87, 79)");
+          |                                                                                      ^
+      187 |     await page
+      188 |       .getByRole("button", { name: "Guardar rascunho", exact: true })
+      189 |       .click();
+        at /home/absint0o/projects/relayloom/.cache/site-data-next/tests/browser/site-data-component.spec.ts:186:86
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .cache/site-data-contrast-before/site-data-component-standa-fe9d8-without-mutating-the-source-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: .cache/site-data-contrast-before/site-data-component-standa-fe9d8-without-mutating-the-source-webkit/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    .cache/site-data-contrast-before/site-data-component-standa-fe9d8-without-mutating-the-source-webkit/trace.zip
+    Usage:
+
+        npx playwright show-trace .cache/site-data-contrast-before/site-data-component-standa-fe9d8-without-mutating-the-source-webkit/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [webkit] › tests/browser/site-data-component.spec.ts:25:1 › standalone table component filters literal data, sorts, paginates and rejects active content without mutating the source 

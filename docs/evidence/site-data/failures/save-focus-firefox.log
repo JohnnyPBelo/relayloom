@@ -1,0 +1,57 @@
+
+Running 4 tests using 1 worker
+
+(node:743712) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [firefox] › tests/browser/site-data-editor.spec.ts:12:1 › table file import validates before replacement, preserves typed nulls, undoes changes and exports literal CSV safely (9.8s)
+  ✓  2 [firefox] › tests/browser/site-data-editor.spec.ts:337:3 › table controls and import failures use en-GB while authored data retains its language (2.2s)
+  ✓  3 [firefox] › tests/browser/site-data-editor.spec.ts:337:3 › table controls and import failures use es-ES while authored data retains its language (2.2s)
+  ✘  4 [firefox] › tests/browser/site-data-editor.spec.ts:396:1 › real table editor types decimal cells, preserves drafts, publishes signed data and permits read-only queries after the author closes (21.6s)
+
+
+  1) [firefox] › tests/browser/site-data-editor.spec.ts:396:1 › real table editor types decimal cells, preserves drafts, publishes signed data and permits read-only queries after the author closes 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('region', { name: 'Estúdio do site', exact: true }).getByRole('region', { name: 'Editar dados da tabela', exact: true }).getByRole('alert')
+    Expected: visible
+    Timeout: 15000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('region', { name: 'Estúdio do site', exact: true }).getByRole('region', { name: 'Editar dados da tabela', exact: true }).getByRole('alert') with timeout 15000ms
+      - waiting for getByRole('region', { name: 'Estúdio do site', exact: true }).getByRole('region', { name: 'Editar dados da tabela', exact: true }).getByRole('alert')
+
+
+      462 |     await editor.getByLabel("Linha 1, Litros", { exact: true }).fill("1e-");
+      463 |     await editor.getByLabel("Linha 1, Litros", { exact: true }).press("Tab");
+    > 464 |     await expect(editor.getByRole("alert")).toBeVisible();
+          |                                             ^
+      465 |     await expect(
+      466 |       editor.getByLabel("Linha 1, Litros", { exact: true }),
+      467 |     ).toHaveAttribute("aria-invalid", "true");
+        at /home/absint0o/projects/relayloom/.cache/site-data-next/tests/browser/site-data-editor.spec.ts:464:45
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .cache/site-data-gate/supplement/firefox-artifacts/site-data-editor-real-tabl-b5f7b-ies-after-the-author-closes-firefox/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .cache/site-data-gate/supplement/firefox-artifacts/site-data-editor-real-tabl-b5f7b-ies-after-the-author-closes-firefox/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: .cache/site-data-gate/supplement/firefox-artifacts/site-data-editor-real-tabl-b5f7b-ies-after-the-author-closes-firefox/error-context.md
+
+    Error Context: .cache/site-data-gate/supplement/firefox-artifacts/site-data-editor-real-tabl-b5f7b-ies-after-the-author-closes-firefox/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    .cache/site-data-gate/supplement/firefox-artifacts/site-data-editor-real-tabl-b5f7b-ies-after-the-author-closes-firefox/trace.zip
+    Usage:
+
+        npx playwright show-trace .cache/site-data-gate/supplement/firefox-artifacts/site-data-editor-real-tabl-b5f7b-ies-after-the-author-closes-firefox/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [firefox] › tests/browser/site-data-editor.spec.ts:396:1 › real table editor types decimal cells, preserves drafts, publishes signed data and permits read-only queries after the author closes 
+  3 passed (38.1s)

@@ -1,0 +1,40 @@
+
+Running 1 test using 1 worker
+
+(node:589262) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/browser/site-data-component.spec.ts:25:1 › standalone table component filters literal data, sorts, paginates and rejects active content without mutating the source (12.7s)
+
+
+  1) tests/browser/site-data-component.spec.ts:25:1 › standalone table component filters literal data, sorts, paginates and rejects active content without mutating the source 
+
+    TimeoutError: locator.selectOption: Timeout 12000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Linhas por página', { exact: true })
+
+
+      69 |     const table = page.getByRole("table", { name: "Pontos da comunidade" });
+      70 |     await expect(table.getByRole("row")).toHaveCount(11);
+    > 71 |     await page.getByLabel("Linhas por página", { exact: true }).selectOption("25");
+         |                                                                 ^
+      72 |     await expect(table.getByRole("row")).toHaveCount(26);
+      73 |     await page.getByLabel("Linhas por página", { exact: true }).selectOption("10");
+      74 |     await expect(table.getByRole("row")).toHaveCount(11);
+        at /home/absint0o/projects/relayloom/.cache/site-data-next/tests/browser/site-data-component.spec.ts:71:65
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .cache/site-data-reader-before/site-data-component-standa-fe9d8-without-mutating-the-source/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: .cache/site-data-reader-before/site-data-component-standa-fe9d8-without-mutating-the-source/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    .cache/site-data-reader-before/site-data-component-standa-fe9d8-without-mutating-the-source/trace.zip
+    Usage:
+
+        npx playwright show-trace .cache/site-data-reader-before/site-data-component-standa-fe9d8-without-mutating-the-source/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/browser/site-data-component.spec.ts:25:1 › standalone table component filters literal data, sorts, paginates and rejects active content without mutating the source 

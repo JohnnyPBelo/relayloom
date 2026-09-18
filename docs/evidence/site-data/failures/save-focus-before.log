@@ -1,0 +1,49 @@
+
+Running 1 test using 1 worker
+
+(node:763267) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [firefox] › tests/browser/site-data-component.spec.ts:25:1 › standalone table component filters literal data, sorts, paginates and rejects active content without mutating the source (17.8s)
+
+
+  1) [firefox] › tests/browser/site-data-component.spec.ts:25:1 › standalone table component filters literal data, sorts, paginates and rejects active content without mutating the source 
+
+    Error: expect(locator).toBeFocused() failed
+
+    Locator:  getByLabel('Linha 1, Litros', { exact: true })
+    Expected: focused
+    Received: inactive
+    Timeout:  15000ms
+
+    Call log:
+      - Expect "toBeFocused" getByLabel('Linha 1, Litros', { exact: true }) with timeout 15000ms
+      - waiting for getByLabel('Linha 1, Litros', { exact: true })
+        33 × locator resolved to <input value="1e-" maxlength="1000" aria-invalid="true" inputmode="decimal" aria-describedby="_r_2_" aria-label="Linha 1, Litros"/>
+           - unexpected value "inactive"
+
+
+      191 |     await expect(field).toHaveValue("1e-");
+      192 |     await page.evaluate(() => (window as any).releaseSaveFrames());
+    > 193 |     await expect(field).toBeFocused();
+          |                         ^
+      194 |     await expect(field).toHaveValue("1e-");
+      195 |     await expect(field).toHaveAttribute("aria-invalid", "true");
+      196 |   } finally {
+        at /home/absint0o/projects/relayloom/.cache/site-data-next/tests/browser/site-data-component.spec.ts:193:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .cache/site-data-save-focus-before/site-data-component-standa-fe9d8-without-mutating-the-source-firefox/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: .cache/site-data-save-focus-before/site-data-component-standa-fe9d8-without-mutating-the-source-firefox/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    .cache/site-data-save-focus-before/site-data-component-standa-fe9d8-without-mutating-the-source-firefox/trace.zip
+    Usage:
+
+        npx playwright show-trace .cache/site-data-save-focus-before/site-data-component-standa-fe9d8-without-mutating-the-source-firefox/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [firefox] › tests/browser/site-data-component.spec.ts:25:1 › standalone table component filters literal data, sorts, paginates and rejects active content without mutating the source 

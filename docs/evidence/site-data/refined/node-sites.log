@@ -1,0 +1,850 @@
+TAP version 13
+# Subtest: language variants resolve to supported choices and invalid selection preserves the current language
+ok 1 - language variants resolve to supported choices and invalid selection preserves the current language
+  ---
+  duration_ms: 0.806341
+  type: 'test'
+  ...
+# Subtest: context and interpolation preserve raw names without recursively translating parameters
+ok 2 - context and interpolation preserve raw names without recursively translating parameters
+  ---
+  duration_ms: 0.279234
+  type: 'test'
+  ...
+# Subtest: every catalog entry is unique, nonempty and retains all named parameters in both languages
+ok 3 - every catalog entry is unique, nonempty and retains all named parameters in both languages
+  ---
+  duration_ms: 6.246971
+  type: 'test'
+  ...
+# Subtest: literal UI lookups and state-label maps all have catalog entries
+ok 4 - literal UI lookups and state-label maps all have catalog entries
+  ---
+  duration_ms: 163.503447
+  type: 'test'
+  ...
+# (node:601156) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: failed application profile commit cannot publish and a failed public copy remains recoverable
+ok 5 - failed application profile commit cannot publish and a failed public copy remains recoverable
+  ---
+  duration_ms: 720.423572
+  type: 'test'
+  ...
+# Subtest: the real application recovers its exact publication after process exit between authorization and public storage
+ok 6 - the real application recovers its exact publication after process exit between authorization and public storage
+  ---
+  duration_ms: 3441.271128
+  type: 'test'
+  ...
+# Subtest: a known newer head without bytes never falls back to an older site, including after profile unlock
+ok 7 - a known newer head without bytes never falls back to an older site, including after profile unlock
+  ---
+  duration_ms: 425.59307
+  type: 'test'
+  ...
+# Subtest: blocking a private-site reader pauses a committed copy and clears the publication error after resumption
+ok 8 - blocking a private-site reader pauses a committed copy and clears the publication error after resumption
+  ---
+  duration_ms: 307.012089
+  type: 'test'
+  ...
+# Subtest: real application APIs preserve revision identity, resolve updates and serve a new reader after the author exits
+ok 9 - real application APIs preserve revision identity, resolve updates and serve a new reader after the author exits
+  ---
+  duration_ms: 1695.45872
+  type: 'test'
+  ...
+# Subtest: private site APIs preserve reading scope and generic publication cannot bypass version authority
+ok 10 - private site APIs preserve reading scope and generic publication cannot bypass version authority
+  ---
+  duration_ms: 1475.006624
+  type: 'test'
+  ...
+# Subtest: a valid outer signature cannot smuggle another owner snapshot into application storage through TCP
+ok 11 - a valid outer signature cannot smuggle another owner snapshot into application storage through TCP
+  ---
+  duration_ms: 661.95301
+  type: 'test'
+  ...
+# Subtest: two installations with the same owner preserve a fork until the owner explicitly confirms all known heads
+ok 12 - two installations with the same owner preserve a fork until the owner explicitly confirms all known heads
+  ---
+  duration_ms: 1359.218978
+  type: 'test'
+  ...
+# (node:602536) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: actual process interruption at site prepare-before preserves the publication boundary
+ok 13 - actual process interruption at site prepare-before preserves the publication boundary
+  ---
+  duration_ms: 270.327107
+  type: 'test'
+  ...
+# Subtest: actual process interruption at site prepare-after preserves the publication boundary
+ok 14 - actual process interruption at site prepare-after preserves the publication boundary
+  ---
+  duration_ms: 260.664622
+  type: 'test'
+  ...
+# Subtest: actual process interruption at site commit-before preserves the publication boundary
+ok 15 - actual process interruption at site commit-before preserves the publication boundary
+  ---
+  duration_ms: 255.811986
+  type: 'test'
+  ...
+# Subtest: actual process interruption at site commit-after preserves the publication boundary
+ok 16 - actual process interruption at site commit-after preserves the publication boundary
+  ---
+  duration_ms: 255.904309
+  type: 'test'
+  ...
+# Subtest: actual process interruption at site copy preserves the publication boundary
+ok 17 - actual process interruption at site copy preserves the publication boundary
+  ---
+  duration_ms: 264.140299
+  type: 'test'
+  ...
+# (node:602801) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: site transactions share the real bound application profile without changing its existing private state
+ok 18 - site transactions share the real bound application profile without changing its existing private state
+  ---
+  duration_ms: 100.617125
+  type: 'test'
+  ...
+# (node:602831) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: catalog atomically persists preparation, authorization and exact public-copy recovery across database restart
+ok 19 - catalog atomically persists preparation, authorization and exact public-copy recovery across database restart
+  ---
+  duration_ms: 148.692741
+  type: 'test'
+  ...
+# Subtest: another signed head appearing before authorization supersedes a private preparation without publishing it
+ok 20 - another signed head appearing before authorization supersedes a private preparation without publishing it
+  ---
+  duration_ms: 79.231073
+  type: 'test'
+  ...
+# Subtest: staging capacity failure cannot leave a catalog entry, partial bundle or changed prior operation
+ok 21 - staging capacity failure cannot leave a catalog entry, partial bundle or changed prior operation
+  ---
+  duration_ms: 67.251014
+  type: 'test'
+  ...
+# Subtest: expired preparations remain recoverable as terminal outcomes without treating the profile as corrupt
+ok 22 - expired preparations remain recoverable as terminal outcomes without treating the profile as corrupt
+  ---
+  duration_ms: 144.797939
+  type: 'test'
+  ...
+# Subtest: public retries recover the exact first envelope; private retries cannot silently change a reading envelope
+ok 23 - public retries recover the exact first envelope; private retries cannot silently change a reading envelope
+  ---
+  duration_ms: 105.238088
+  type: 'test'
+  ...
+# Subtest: repeated verified observations do not rewrite the encrypted catalog
+ok 24 - repeated verified observations do not rewrite the encrypted catalog
+  ---
+  duration_ms: 53.058537
+  type: 'test'
+  ...
+# Subtest: complete declarative snapshots bind a signed revision to the payload and envelope signing owner
+ok 25 - complete declarative snapshots bind a signed revision to the payload and envelope signing owner
+  ---
+  duration_ms: 80.481477
+  type: 'test'
+  ...
+# Subtest: snapshots reject unsigned additions, malformed declarative documents and changed signed payloads
+ok 26 - snapshots reject unsigned additions, malformed declarative documents and changed signed payloads
+  ---
+  duration_ms: 3.901274
+  type: 'test'
+  ...
+# Subtest: Node and a real Go process agree on bounded declarative table vectors
+ok 27 - Node and a real Go process agree on bounded declarative table vectors
+  ---
+  duration_ms: 756.167662
+  type: 'test'
+  ...
+# Subtest: signed table projection sorts numeric values, keeps null last, and leaves source bytes unchanged
+ok 28 - signed table projection sorts numeric values, keeps null last, and leaves source bytes unchanged
+  ---
+  duration_ms: 7.636817
+  type: 'test'
+  ...
+# Subtest: literal search never evaluates code or patterns and pagination stays finite on empty and boundary queries
+ok 29 - literal search never evaluates code or patterns and pagination stays finite on empty and boundary queries
+  ---
+  duration_ms: 2.102982
+  type: 'test'
+  ...
+# Subtest: table shape, dates, links, column types and finite limits reject negative controls
+ok 30 - table shape, dates, links, column types and finite limits reject negative controls
+  ---
+  duration_ms: 1.620448
+  type: 'test'
+  ...
+# Subtest: nested getters and noncanonical arrays are rejected before executing accessors
+ok 31 - nested getters and noncanonical arrays are rejected before executing accessors
+  ---
+  duration_ms: 0.481362
+  type: 'test'
+  ...
+# Subtest: table byte quota counts UTF-8 bytes and canonical field names, with both sides of the boundary
+ok 32 - table byte quota counts UTF-8 bytes and canonical field names, with both sides of the boundary
+  ---
+  duration_ms: 2.36843
+  type: 'test'
+  ...
+# Subtest: CSV handles quoted commas, quotes and newlines as literal text without guessing numeric identities
+ok 33 - CSV handles quoted commas, quotes and newlines as literal text without guessing numeric identities
+  ---
+  duration_ms: 2.028914
+  type: 'test'
+  ...
+# Subtest: CSV export neutralises spreadsheet formulas without changing signed table values
+ok 34 - CSV export neutralises spreadsheet formulas without changing signed table values
+  ---
+  duration_ms: 0.447068
+  type: 'test'
+  ...
+# Subtest: typed editing preserves incomplete numbers for validation rather than erasing them
+ok 35 - typed editing preserves incomplete numbers for validation rather than erasing them
+  ---
+  duration_ms: 0.354906
+  type: 'test'
+  ...
+# Subtest: site schema: multipage with nested media and local navigation
+ok 36 - site schema: multipage with nested media and local navigation
+  ---
+  duration_ms: 2.588933
+  type: 'test'
+  ...
+# Subtest: site schema: literal HTML is data, never a block program
+ok 37 - site schema: literal HTML is data, never a block program
+  ---
+  duration_ms: 0.505388
+  type: 'test'
+  ...
+# Subtest: site schema: exact UTF-16 title boundary
+ok 38 - site schema: exact UTF-16 title boundary
+  ---
+  duration_ms: 0.352241
+  type: 'test'
+  ...
+# Subtest: site schema: unknown version
+ok 39 - site schema: unknown version
+  ---
+  duration_ms: 0.228328
+  type: 'test'
+  ...
+# Subtest: site schema: script property
+ok 40 - site schema: script property
+  ---
+  duration_ms: 0.112521
+  type: 'test'
+  ...
+# Subtest: site schema: arbitrary CSS
+ok 41 - site schema: arbitrary CSS
+  ---
+  duration_ms: 0.095169
+  type: 'test'
+  ...
+# Subtest: site schema: CSS URL injection
+ok 42 - site schema: CSS URL injection
+  ---
+  duration_ms: 0.09596
+  type: 'test'
+  ...
+# Subtest: site schema: duplicate pages
+ok 43 - site schema: duplicate pages
+  ---
+  duration_ms: 0.103363
+  type: 'test'
+  ...
+# Subtest: site schema: duplicate slugs
+ok 44 - site schema: duplicate slugs
+  ---
+  duration_ms: 0.248526
+  type: 'test'
+  ...
+# Subtest: site schema: duplicate nested node IDs
+ok 45 - site schema: duplicate nested node IDs
+  ---
+  duration_ms: 0.37316
+  type: 'test'
+  ...
+# Subtest: site schema: path traversal
+ok 46 - site schema: path traversal
+  ---
+  duration_ms: 0.156834
+  type: 'test'
+  ...
+# Subtest: site schema: missing home
+ok 47 - site schema: missing home
+  ---
+  duration_ms: 0.083456
+  type: 'test'
+  ...
+# Subtest: site schema: missing internal target
+ok 48 - site schema: missing internal target
+  ---
+  duration_ms: 0.107992
+  type: 'test'
+  ...
+# Subtest: site schema: javascript URL
+ok 49 - site schema: javascript URL
+  ---
+  duration_ms: 0.093185
+  type: 'test'
+  ...
+# Subtest: site schema: credentials in URL
+ok 50 - site schema: credentials in URL
+  ---
+  duration_ms: 0.087514
+  type: 'test'
+  ...
+# Subtest: site schema: HTTP URL
+ok 51 - site schema: HTTP URL
+  ---
+  duration_ms: 0.086983
+  type: 'test'
+  ...
+# Subtest: site schema: invalid high port
+ok 52 - site schema: invalid high port
+  ---
+  duration_ms: 0.254177
+  type: 'test'
+  ...
+# Subtest: site schema: query URL
+ok 53 - site schema: query URL
+  ---
+  duration_ms: 0.445455
+  type: 'test'
+  ...
+# Subtest: site schema: 13 pages
+ok 54 - site schema: 13 pages
+  ---
+  duration_ms: 0.077856
+  type: 'test'
+  ...
+# Subtest: site schema: 25 siblings
+ok 55 - site schema: 25 siblings
+  ---
+  duration_ms: 0.104906
+  type: 'test'
+  ...
+# Subtest: site schema: four levels
+ok 56 - site schema: four levels
+  ---
+  duration_ms: 0.11705
+  type: 'test'
+  ...
+# Subtest: site schema: 144 total nodes
+ok 57 - site schema: 144 total nodes
+  ---
+  duration_ms: 0.715191
+  type: 'test'
+  ...
+# Subtest: site schema: children on text
+ok 58 - site schema: children on text
+  ---
+  duration_ms: 0.137097
+  type: 'test'
+  ...
+# Subtest: site schema: body limit
+ok 59 - site schema: body limit
+  ---
+  duration_ms: 0.102251
+  type: 'test'
+  ...
+# Subtest: site schema: UTF-16 title overflow
+ok 60 - site schema: UTF-16 title overflow
+  ---
+  duration_ms: 0.068609
+  type: 'test'
+  ...
+# Subtest: site schema: fractional columns
+ok 61 - site schema: fractional columns
+  ---
+  duration_ms: 0.086172
+  type: 'test'
+  ...
+# Subtest: site schema: bad alignment
+ok 62 - site schema: bad alignment
+  ---
+  duration_ms: 0.096781
+  type: 'test'
+  ...
+# Subtest: site schema: missing media
+ok 63 - site schema: missing media
+  ---
+  duration_ms: 0.110457
+  type: 'test'
+  ...
+# Subtest: site schema: out of bounds media
+ok 64 - site schema: out of bounds media
+  ---
+  duration_ms: 0.095619
+  type: 'test'
+  ...
+# Subtest: site schema: SVG media
+ok 65 - site schema: SVG media
+  ---
+  duration_ms: 0.050655
+  type: 'test'
+  ...
+# Subtest: site schema: remote media field
+ok 66 - site schema: remote media field
+  ---
+  duration_ms: 0.09589
+  type: 'test'
+  ...
+# Subtest: site schema: fractional posts limit
+ok 67 - site schema: fractional posts limit
+  ---
+  duration_ms: 0.106339
+  type: 'test'
+  ...
+# Subtest: site schema: large document
+ok 68 - site schema: large document
+  ---
+  duration_ms: 2.148939
+  type: 'test'
+  ...
+# Subtest: site schema: empty composition at third level
+ok 69 - site schema: empty composition at third level
+  ---
+  duration_ms: 0.302436
+  type: 'test'
+  ...
+# Subtest: site schema: unreferenced executable attachment
+ok 70 - site schema: unreferenced executable attachment
+  ---
+  duration_ms: 0.190196
+  type: 'test'
+  ...
+# Subtest: site schema: invalid image base64 length
+ok 71 - site schema: invalid image base64 length
+  ---
+  duration_ms: 0.086983
+  type: 'test'
+  ...
+# Subtest: site schema: valid HTTPS escaped path
+ok 72 - site schema: valid HTTPS escaped path
+  ---
+  duration_ms: 0.297869
+  type: 'test'
+  ...
+# Subtest: site schema: valid HTTPS local IPv4
+ok 73 - site schema: valid HTTPS local IPv4
+  ---
+  duration_ms: 0.378569
+  type: 'test'
+  ...
+# Subtest: site schema: valid HTTPS international path
+ok 74 - site schema: valid HTTPS international path
+  ---
+  duration_ms: 0.17616
+  type: 'test'
+  ...
+# Subtest: site schema: invalid HTTPS percent escape
+ok 75 - site schema: invalid HTTPS percent escape
+  ---
+  duration_ms: 0.121608
+  type: 'test'
+  ...
+# Subtest: site schema: invalid HTTPS dangling percent
+ok 76 - site schema: invalid HTTPS dangling percent
+  ---
+  duration_ms: 0.106791
+  type: 'test'
+  ...
+# Subtest: site schema: invalid HTTPS Unicode whitespace
+ok 77 - site schema: invalid HTTPS Unicode whitespace
+  ---
+  duration_ms: 0.175859
+  type: 'test'
+  ...
+# Subtest: site schema: invalid HTTPS control character
+ok 78 - site schema: invalid HTTPS control character
+  ---
+  duration_ms: 0.329778
+  type: 'test'
+  ...
+# Subtest: site schema: invalid HTTPS IPv4 range
+ok 79 - site schema: invalid HTTPS IPv4 range
+  ---
+  duration_ms: 0.165501
+  type: 'test'
+  ...
+# Subtest: site schema: invalid HTTPS abbreviated IPv4
+ok 80 - site schema: invalid HTTPS abbreviated IPv4
+  ---
+  duration_ms: 0.093826
+  type: 'test'
+  ...
+# Subtest: site schema: invalid HTTPS numeric final DNS label
+ok 81 - site schema: invalid HTTPS numeric final DNS label
+  ---
+  duration_ms: 0.079309
+  type: 'test'
+  ...
+# Subtest: site schema: invalid HTTPS hexadecimal IP alias
+ok 82 - site schema: invalid HTTPS hexadecimal IP alias
+  ---
+  duration_ms: 0.074349
+  type: 'test'
+  ...
+# Subtest: site schema: invalid HTTPS octal IP alias
+ok 83 - site schema: invalid HTTPS octal IP alias
+  ---
+  duration_ms: 0.090149
+  type: 'test'
+  ...
+# Subtest: site schema: valid HTTPS local hostname
+ok 84 - site schema: valid HTTPS local hostname
+  ---
+  duration_ms: 0.184957
+  type: 'test'
+  ...
+# Subtest: site schema: invalid HTTPS hostname label
+ok 85 - site schema: invalid HTTPS hostname label
+  ---
+  duration_ms: 0.09589
+  type: 'test'
+  ...
+# Subtest: site schema: valid HTTPS IDN ASCII hostname
+ok 86 - site schema: valid HTTPS IDN ASCII hostname
+  ---
+  duration_ms: 0.133831
+  type: 'test'
+  ...
+# Subtest: site schema: version 2 typed table
+ok 87 - site schema: version 2 typed table
+  ---
+  duration_ms: 0.708999
+  type: 'test'
+  ...
+# Subtest: site schema: table rejected in version 1
+ok 88 - site schema: table rejected in version 1
+  ---
+  duration_ms: 0.13307
+  type: 'test'
+  ...
+# Subtest: site schema: table missing data
+ok 89 - site schema: table missing data
+  ---
+  duration_ms: 0.101971
+  type: 'test'
+  ...
+# Subtest: site schema: data on non-table block
+ok 90 - site schema: data on non-table block
+  ---
+  duration_ms: 0.097924
+  type: 'test'
+  ...
+# Subtest: site schema: table unknown field
+ok 91 - site schema: table unknown field
+  ---
+  duration_ms: 0.095609
+  type: 'test'
+  ...
+# Subtest: site schema: table repeated row identifier
+ok 92 - site schema: table repeated row identifier
+  ---
+  duration_ms: 0.14376
+  type: 'test'
+  ...
+# Subtest: site schema: table wrong typed number
+ok 93 - site schema: table wrong typed number
+  ---
+  duration_ms: 0.137238
+  type: 'test'
+  ...
+# Subtest: templates satisfy the same wire contract and produce unique block identities
+ok 94 - templates satisfy the same wire contract and produce unique block identities
+  ---
+  duration_ms: 1.752225
+  type: 'test'
+  ...
+# Subtest: site input rejects getters without invoking them
+ok 95 - site input rejects getters without invoking them
+  ---
+  duration_ms: 0.260849
+  type: 'test'
+  ...
+# Subtest: site total image budget is enforced outside the editor
+ok 96 - site total image budget is enforced outside the editor
+  ---
+  duration_ms: 5.700346
+  type: 'test'
+  ...
+# Subtest: image limit counts decoded bytes, including padding at the exact boundary
+ok 97 - image limit counts decoded bytes, including padding at the exact boundary
+  ---
+  duration_ms: 9.695867
+  type: 'test'
+  ...
+# Subtest: individually valid tables also consume the global 128 KiB document budget
+ok 98 - individually valid tables also consume the global 128 KiB document budget
+  ---
+  duration_ms: 10.061853
+  type: 'test'
+  ...
+# Subtest: draft context retains original base and exact pending request across serialisation without transferring ownership
+ok 99 - draft context retains original base and exact pending request across serialisation without transferring ownership
+  ---
+  duration_ms: 2.435846
+  type: 'test'
+  ...
+# Subtest: malformed or ambiguous draft context cannot replace valid private editing metadata
+ok 100 - malformed or ambiguous draft context cannot replace valid private editing metadata
+  ---
+  duration_ms: 0.942637
+  type: 'test'
+  ...
+# Subtest: versioned sites cross TCP and serial PTY, survive partition/heal and reach a new reader from a consenting offline-author seeder
+ok 101 - versioned sites cross TCP and serial PTY, survive partition/heal and reach a new reader from a consenting offline-author seeder
+  ---
+  duration_ms: 7265.49057
+  type: 'test'
+  ...
+# Subtest: page duplication preserves the source, shared assets and external links while remapping nested self-links
+ok 102 - page duplication preserves the source, shared assets and external links while remapping nested self-links
+  ---
+  duration_ms: 3.953
+  type: 'test'
+  ...
+# Subtest: duplicate names/slugs remain bounded and unique with Unicode and the exact page cap
+ok 103 - duplicate names/slugs remain bounded and unique with Unicode and the exact page cap
+  ---
+  duration_ms: 4.827911
+  type: 'test'
+  ...
+# Subtest: page copying accepts exactly 128 nodes and refuses the next node without changing the draft
+ok 104 - page copying accepts exactly 128 nodes and refuses the next node without changing the draft
+  ---
+  duration_ms: 3.05639
+  type: 'test'
+  ...
+# Subtest: reordering preserves page identities, home and links and has no history-changing boundary step
+ok 105 - reordering preserves page identities, home and links and has no history-changing boundary step
+  ---
+  duration_ms: 0.805741
+  type: 'test'
+  ...
+# Subtest: copying is explicit authored content creation in the selected language and never mutates an invalid source
+ok 106 - copying is explicit authored content creation in the selected language and never mutates an invalid source
+  ---
+  duration_ms: 0.923211
+  type: 'test'
+  ...
+# (node:604034) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: private site staging survives SQLite restart and does not expose signatures to the reading secret
+ok 107 - private site staging survives SQLite restart and does not expose signatures to the reading secret
+  ---
+  duration_ms: 88.35648
+  type: 'test'
+  ...
+# Subtest: private staging quota failure aborts all record changes even when its error is caught
+ok 108 - private staging quota failure aborts all record changes even when its error is caught
+  ---
+  duration_ms: 31.168481
+  type: 'test'
+  ...
+# Subtest: private record handles expire at the synchronous transaction boundary
+ok 109 - private record handles expire at the synchronous transaction boundary
+  ---
+  duration_ms: 10.379728
+  type: 'test'
+  ...
+# Subtest: missing and transposed ciphertext are rejected even inside an otherwise authentic outer database
+ok 110 - missing and transposed ciphertext are rejected even inside an otherwise authentic outer database
+  ---
+  duration_ms: 48.933766
+  type: 'test'
+  ...
+# Subtest: node editor keeps one publication after a lost response and process restart; private version recovery preserves readers
+ok 111 - node editor keeps one publication after a lost response and process restart; private version recovery preserves readers
+  ---
+  duration_ms: 1853.835215
+  type: 'test'
+  ...
+# Subtest: node editor rejects stale and changed review bases, and can close a consumed competing attempt without claiming cancellation
+ok 112 - node editor rejects stale and changed review bases, and can close a consumed competing attempt without claiming cancellation
+  ---
+  duration_ms: 2157.410271
+  type: 'test'
+  ...
+# Subtest: node editor never sends before durable draft acknowledgement, keeps unknown submissions frozen, and fences a locked session
+ok 113 - node editor never sends before durable draft acknowledgement, keeps unknown submissions frozen, and fences a locked session
+  ---
+  duration_ms: 929.381261
+  type: 'test'
+  ...
+# Subtest: native editor keeps one publication after a lost response and process restart; private version recovery preserves readers
+ok 114 - native editor keeps one publication after a lost response and process restart; private version recovery preserves readers
+  ---
+  duration_ms: 1319.996389
+  type: 'test'
+  ...
+# Subtest: native editor rejects stale and changed review bases, and can close a consumed competing attempt without claiming cancellation
+ok 115 - native editor rejects stale and changed review bases, and can close a consumed competing attempt without claiming cancellation
+  ---
+  duration_ms: 1935.45207
+  type: 'test'
+  ...
+# Subtest: native editor never sends before durable draft acknowledgement, keeps unknown submissions frozen, and fences a locked session
+ok 116 - native editor never sends before durable draft acknowledgement, keeps unknown submissions frozen, and fences a locked session
+  ---
+  duration_ms: 670.817838
+  type: 'test'
+  ...
+# Subtest: node editor can close an unadmitted request after a late fork changes only its base
+ok 117 - node editor can close an unadmitted request after a late fork changes only its base
+  ---
+  duration_ms: 1663.149101
+  type: 'test'
+  ...
+# Subtest: native editor can close an unadmitted request after a late fork changes only its base
+ok 118 - native editor can close an unadmitted request after a late fork changes only its base
+  ---
+  duration_ms: 1651.662867
+  type: 'test'
+  ...
+# Subtest: node editor can resume an earlier authorized copy without replacing the current draft
+ok 119 - node editor can resume an earlier authorized copy without replacing the current draft
+  ---
+  duration_ms: 6423.534413
+  type: 'test'
+  ...
+# Subtest: native editor can resume an earlier authorized copy without replacing the current draft
+ok 120 - native editor can resume an earlier authorized copy without replacing the current draft
+  ---
+  duration_ms: 3723.158035
+  type: 'test'
+  ...
+# Subtest: site sequence reservation is not publication; replay is stable and stale bases do not mutate state
+ok 121 - site sequence reservation is not publication; replay is stable and stale bases do not mutate state
+  ---
+  duration_ms: 21.953686
+  type: 'test'
+  ...
+# Subtest: a newer signed observation supersedes an unfinished publication and cannot roll back to older headers
+ok 122 - a newer signed observation supersedes an unfinished publication and cannot roll back to older headers
+  ---
+  duration_ms: 10.076089
+  type: 'test'
+  ...
+# Subtest: retired site operation sequences cannot be replayed as new writes
+ok 123 - retired site operation sequences cannot be replayed as new writes
+  ---
+  duration_ms: 655.260633
+  type: 'test'
+  ...
+# Subtest: a full site history can advance while the latest known header is retained without payloads
+ok 124 - a full site history can advance while the latest known header is retained without payloads
+  ---
+  duration_ms: 682.107913
+  type: 'test'
+  ...
+# Subtest: registry shape and single pending operation limits reject malformed state without invoking getters
+ok 125 - registry shape and single pending operation limits reject malformed state without invoking getters
+  ---
+  duration_ms: 4.74776
+  type: 'test'
+  ...
+# Subtest: equal-sequence signed concurrency changes the base before durable authorization
+ok 126 - equal-sequence signed concurrency changes the base before durable authorization
+  ---
+  duration_ms: 5.223473
+  type: 'test'
+  ...
+# Subtest: committed publication recovery is irreversible and never rolls back a newer signed head
+ok 127 - committed publication recovery is irreversible and never rolls back a newer signed head
+  ---
+  duration_ms: 12.941741
+  type: 'test'
+  ...
+# Subtest: cryptographic memoization is confined to one transition and cannot hide subsequent mutations
+ok 128 - cryptographic memoization is confined to one transition and cannot hide subsequent mutations
+  ---
+  duration_ms: 133.464643
+  type: 'test'
+  ...
+# (node:608540) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: logical site publication replays the same public or private result before and after staging retirement
+ok 129 - logical site publication replays the same public or private result before and after staging retirement
+  ---
+  duration_ms: 254.9396
+  type: 'test'
+  ...
+# Subtest: request fingerprints bind exact reading cards, base, lifetime and document consistently across crypto runtimes
+ok 130 - request fingerprints bind exact reading cards, base, lifetime and document consistently across crypto runtimes
+  ---
+  duration_ms: 25.561479
+  type: 'test'
+  ...
+# Subtest: site addresses are stable under display/read-card changes and reject ambiguous input
+ok 131 - site addresses are stable under display/read-card changes and reject ambiguous input
+  ---
+  duration_ms: 42.224929
+  type: 'test'
+  ...
+# Subtest: node signed snapshots bind the exact content and retain ownership when another reader can decrypt
+ok 132 - node signed snapshots bind the exact content and retain ownership when another reader can decrypt
+  ---
+  duration_ms: 11.220515
+  type: 'test'
+  ...
+# Subtest: node orders revisions by signed sequence, reports forks and does not let replay replace a known head
+ok 133 - node orders revisions by signed sequence, reports forks and does not let replay replace a known head
+  ---
+  duration_ms: 13.926678
+  type: 'test'
+  ...
+# Subtest: node rejects malformed certificates without invoking getters and enforces finite history/signature bounds
+ok 134 - node rejects malformed certificates without invoking getters and enforces finite history/signature bounds
+  ---
+  duration_ms: 22.508356
+  type: 'test'
+  ...
+# Subtest: portable signed snapshots bind the exact content and retain ownership when another reader can decrypt
+ok 135 - portable signed snapshots bind the exact content and retain ownership when another reader can decrypt
+  ---
+  duration_ms: 76.587577
+  type: 'test'
+  ...
+# Subtest: portable orders revisions by signed sequence, reports forks and does not let replay replace a known head
+ok 136 - portable orders revisions by signed sequence, reports forks and does not let replay replace a known head
+  ---
+  duration_ms: 107.480131
+  type: 'test'
+  ...
+# Subtest: portable rejects malformed certificates without invoking getters and enforces finite history/signature bounds
+ok 137 - portable rejects malformed certificates without invoking getters and enforces finite history/signature bounds
+  ---
+  duration_ms: 43.863129
+  type: 'test'
+  ...
+# Subtest: Node and portable crypto produce identical snapshot bytes/signatures and verify each other
+ok 138 - Node and portable crypto produce identical snapshot bytes/signatures and verify each other
+  ---
+  duration_ms: 11.085161
+  type: 'test'
+  ...
+1..138
+# tests 138
+# suites 0
+# pass 138
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 48290.640854
