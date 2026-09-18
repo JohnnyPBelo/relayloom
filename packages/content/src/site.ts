@@ -1,3 +1,6 @@
+import { safeSiteUrl } from "./site-url";
+export { safeSiteUrl } from "./site-url";
+import { parseSiteTable, type SiteTable } from "./site-data";
 import { canonical, exactShape as strictShape } from "../../core/src/protocol";
 import type { Attachment, SiteBlock } from "./types";
 
@@ -23,6 +26,7 @@ export const SITE_BLOCKS = [
   "spacer",
   "columns",
   "posts",
+  "table",
 ] as const;
 export type SiteNodeType = (typeof SITE_BLOCKS)[number];
 export type SiteNode = {
@@ -35,6 +39,7 @@ export type SiteNode = {
   children?: SiteNode[];
   media?: { attachment: number; alt: string }[];
   limit?: number;
+  data?: SiteTable;
   style?: {
     align?: "left" | "center" | "right";
     tone?: "surface" | "soft" | "accent";
@@ -49,7 +54,7 @@ export type SitePage = {
   blocks: SiteNode[];
 };
 export type SiteDocument = {
-  version: 1;
+  version: 1 | 2;
   title: string;
   description: string;
   home: string;
@@ -86,37 +91,6 @@ const id = (v: unknown): v is string =>
   typeof v === "string" && /^[A-Za-z0-9_-]{1,64}$/.test(v);
 const text = (v: unknown, max: number): v is string =>
   typeof v === "string" && v.length <= max;
-export function safeSiteUrl(value: string): boolean {
-  // One lexical policy in TS and Go; WHATWG URL and net/url disagree on
-  // malformed escapes, whitespace and abbreviated/octal IPv4 addresses.
-  const parts =
-    /^https:\/\/([A-Za-z0-9.-]+)(?::([0-9]{1,5}))?(?:[/?#].*)?$/u.exec(value);
-  if (
-    !parts ||
-    value.length > 2000 ||
-    parts[1].length > 253 ||
-    /[\p{White_Space}\uFEFF\\\u0000-\u001f\u007f]/u.test(value) ||
-    /%(?![0-9a-f]{2})/i.test(value) ||
-    Number(parts[2] ?? 443) > 65535
-  )
-    return false;
-  const labels = parts[1].split(".");
-  if (
-    labels.some(
-      (label) => !/^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/i.test(label),
-    )
-  )
-    return false;
-  if (/^(?:[0-9]+|0x[0-9a-f]*)$/i.test(labels.at(-1)!))
-    return (
-      labels.length === 4 &&
-      labels.every(
-        (label) =>
-          /^(?:0|[1-9][0-9]{0,2})$/.test(label) && Number(label) <= 255,
-      )
-    );
-  return true;
-}
 export function validateSite(
   value: unknown,
   attachments: Pick<Attachment, "mime" | "data">[] = [],
@@ -155,7 +129,7 @@ export function validateSite(
   )
     fail("imagens acima de 2 MB");
   if (
-    s.version !== 1 ||
+    ![1, 2].includes(s.version) ||
     !text(s.title, 120) ||
     !text(s.description, 500) ||
     !id(s.home) ||
@@ -206,7 +180,7 @@ export function validateSite(
         !exactShape(
           b,
           ["id", "type", "title", "body"],
-          ["url", "format", "children", "media", "style", "limit"],
+          ["url", "format", "children", "media", "style", "limit", "data"],
         ) ||
         !id(b.id) ||
         nodes.has(b.id) ||
@@ -215,6 +189,12 @@ export function validateSite(
         !text(b.body, 4000)
       )
         fail("bloco ou identificador repetido");
+      if (b.type === "table") {
+        if (s.version !== 2 || !Object.hasOwn(b, "data"))
+          fail("tabela exige documento versão 2");
+        parseSiteTable(b.data);
+      } else if (Object.hasOwn(b, "data"))
+        fail("dados num bloco que não é tabela");
       nodes.add(b.id);
       if (nodes.size > SITE_LIMITS.blocks) fail("demasiados blocos");
       if (b.format !== undefined && !["plain", "markdown"].includes(b.format))

@@ -1,0 +1,31 @@
+{
+  "status": "PASS",
+  "documentVersion": 2,
+  "typedTablePreserved": true,
+  "nativePids": [
+    1044114,
+    1044122
+  ],
+  "runtimes": [
+    "Browser",
+    "Node",
+    "Go"
+  ],
+  "media": [
+    "webrtc",
+    "websocket",
+    "tcp"
+  ],
+  "actualRouteHops": 3,
+  "partitionNegativeControl": true,
+  "heal": true,
+  "exactHistory": true,
+  "privateOpaqueTransit": true,
+  "signingAuthorityRejected": true,
+  "reverseTransfer": true,
+  "restartedSoleSeeder": true,
+  "pausedSoleSeederNegativeControl": true,
+  "authorPreserved": true,
+  "physicalRadio": false,
+  "uiTest": false
+}

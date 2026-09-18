@@ -1,3 +1,4 @@
+import { SiteTableView } from "./table";
 import { t, getLanguage } from "../i18n/core";
 import { api } from "../api";
 import React, {
@@ -172,6 +173,13 @@ export function SiteNodeView({
         <ArrowUpRight size={16} />
       </a>
     ) : null;
+  if (node.type === "table")
+    return (
+      <>
+        {node.body && <SiteBody node={node} />}
+        <SiteTableView data={node.data} title={node.title} />
+      </>
+    );
   if (node.type === "divider") return <hr className="studio-divider" />;
   if (node.type === "spacer")
     return <div className="studio-spacer" aria-hidden="true" />;

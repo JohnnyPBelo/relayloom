@@ -80,7 +80,7 @@ func ValidateDocument(v any, attachments any) error {
 	}
 	version, e := docNumber(s["version"])
 	pages, ok := s["pages"].([]any)
-	if e != nil || version != 1 || !ok || len(pages) < 1 || len(pages) > 12 || !siteText(s["title"], 120) || !siteText(s["description"], 500) || !siteIDPattern.MatchString(docTextValue(s["home"])) {
+	if e != nil || (version != 1 && version != 2) || !ok || len(pages) < 1 || len(pages) > 12 || !siteText(s["title"], 120) || !siteText(s["description"], 500) || !siteIDPattern.MatchString(docTextValue(s["home"])) {
 		return fail()
 	}
 	d, ok := siteShape(s["design"], []string{"font", "width", "radius", "accent"}, nil)
@@ -122,8 +122,16 @@ func ValidateDocument(v any, attachments any) error {
 			return fail()
 		}
 		for _, value := range list {
-			b, ok := siteShape(value, []string{"id", "type", "title", "body"}, []string{"url", "format", "children", "media", "style", "limit"})
-			if !ok || !siteIDPattern.MatchString(docTextValue(b["id"])) || nodes[docTextValue(b["id"])] || !docContains([]string{"hero", "text", "links", "callout", "heading", "quote", "button", "image", "gallery", "divider", "spacer", "columns", "posts"}, docTextValue(b["type"])) || !siteText(b["title"], 120) || !siteText(b["body"], 4000) {
+			b, ok := siteShape(value, []string{"id", "type", "title", "body"}, []string{"url", "format", "children", "media", "style", "limit", "data"})
+			if !ok || !siteIDPattern.MatchString(docTextValue(b["id"])) || nodes[docTextValue(b["id"])] || !docContains([]string{"hero", "text", "links", "callout", "heading", "quote", "button", "image", "gallery", "divider", "spacer", "columns", "posts", "table"}, docTextValue(b["type"])) || !siteText(b["title"], 120) || !siteText(b["body"], 4000) {
+				return fail()
+			}
+			data, hasData := b["data"]
+			if docTextValue(b["type"]) == "table" {
+				if version != 2 || !hasData || ValidateDataTable(data) != nil {
+					return fail()
+				}
+			} else if hasData {
 				return fail()
 			}
 			nodes[docTextValue(b["id"])] = true

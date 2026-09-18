@@ -91,6 +91,7 @@ try {
         "tests/browser/contact-relay.spec.ts",
         "tests/browser/connectivity.spec.ts",
         "tests/browser/site-studio.spec.ts",
+        "tests/browser/site-data-editor.spec.ts",
         "tests/browser/site-publication.spec.ts",
         "tests/browser/site-worker.spec.ts",
         "tests/browser/onboarding-language.spec.ts",

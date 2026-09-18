@@ -14,7 +14,7 @@ export function webSources() {
     .split("\0")
     .filter(
       (file) =>
-        /^(apps\/web\/|packages\/|tests\/browser\/|scripts\/|docs\/licenses\/site-studio\/)/.test(
+        /^(apps\/web\/|packages\/|tests\/browser\/|tests\/fixtures\/|scripts\/|docs\/licenses\/site-studio\/)/.test(
           file,
         ) ||
         /^(package.*\.json|.*config\.ts|tests\/conversation-id\.test\.ts)$/.test(

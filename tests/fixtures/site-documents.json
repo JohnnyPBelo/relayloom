@@ -288,7 +288,7 @@
     "name": "unknown version",
     "valid": false,
     "site": {
-      "version": 2,
+      "version": 3,
       "title": "Um site completo",
       "description": "Dados assinados, sem scripts.",
       "home": "home",
@@ -5420,6 +5420,900 @@
               "title": "Ler",
               "body": "",
               "url": "https://xn--bcher-kva.example/"
+            }
+          ]
+        },
+        {
+          "id": "about",
+          "slug": "sobre",
+          "title": "Sobre",
+          "blocks": [
+            {
+              "id": "about-title",
+              "type": "heading",
+              "title": "Sobre nós",
+              "body": ""
+            },
+            {
+              "id": "posts",
+              "type": "posts",
+              "title": "Novidades",
+              "body": "",
+              "limit": 6
+            }
+          ]
+        }
+      ]
+    },
+    "attachments": [
+      {
+        "name": "pixel.png",
+        "mime": "image/png",
+        "data": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aNl8AAAAASUVORK5CYII="
+      }
+    ]
+  },
+  {
+    "name": "version 2 typed table",
+    "valid": true,
+    "site": {
+      "version": 2,
+      "title": "Um site completo",
+      "description": "Dados assinados, sem scripts.",
+      "home": "home",
+      "design": {
+        "font": "serif",
+        "width": "wide",
+        "radius": "soft",
+        "accent": "#24796b"
+      },
+      "pages": [
+        {
+          "id": "home",
+          "slug": "inicio",
+          "title": "Início",
+          "blocks": [
+            {
+              "id": "hero",
+              "type": "hero",
+              "title": "Bem-vindo",
+              "body": "Uma história."
+            },
+            {
+              "id": "layout",
+              "type": "columns",
+              "title": "",
+              "body": "",
+              "style": {
+                "columns": 2
+              },
+              "children": [
+                {
+                  "id": "text",
+                  "type": "text",
+                  "title": "Notas",
+                  "body": "**Texto** e listas.",
+                  "format": "markdown"
+                },
+                {
+                  "id": "image",
+                  "type": "image",
+                  "title": "",
+                  "body": "",
+                  "media": [
+                    {
+                      "attachment": 0,
+                      "alt": "Imagem sintética"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "link",
+              "type": "button",
+              "title": "Sobre",
+              "body": "",
+              "url": "page:about"
+            },
+            {
+              "id": "data-table",
+              "type": "table",
+              "title": "Pontos da comunidade",
+              "body": "Dados assinados",
+              "data": {
+                "domain": "relayloom/site-table/1",
+                "columns": [
+                  {
+                    "id": "name",
+                    "label": "Lugar",
+                    "type": "text"
+                  },
+                  {
+                    "id": "water",
+                    "label": "Água",
+                    "type": "number"
+                  }
+                ],
+                "rows": [
+                  {
+                    "id": "school",
+                    "values": {
+                      "name": "Escola",
+                      "water": 20
+                    }
+                  },
+                  {
+                    "id": "park",
+                    "values": {
+                      "name": "Parque",
+                      "water": null
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "about",
+          "slug": "sobre",
+          "title": "Sobre",
+          "blocks": [
+            {
+              "id": "about-title",
+              "type": "heading",
+              "title": "Sobre nós",
+              "body": ""
+            },
+            {
+              "id": "posts",
+              "type": "posts",
+              "title": "Novidades",
+              "body": "",
+              "limit": 6
+            }
+          ]
+        }
+      ]
+    },
+    "attachments": [
+      {
+        "name": "pixel.png",
+        "mime": "image/png",
+        "data": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aNl8AAAAASUVORK5CYII="
+      }
+    ]
+  },
+  {
+    "name": "table rejected in version 1",
+    "valid": false,
+    "site": {
+      "version": 1,
+      "title": "Um site completo",
+      "description": "Dados assinados, sem scripts.",
+      "home": "home",
+      "design": {
+        "font": "serif",
+        "width": "wide",
+        "radius": "soft",
+        "accent": "#24796b"
+      },
+      "pages": [
+        {
+          "id": "home",
+          "slug": "inicio",
+          "title": "Início",
+          "blocks": [
+            {
+              "id": "hero",
+              "type": "hero",
+              "title": "Bem-vindo",
+              "body": "Uma história."
+            },
+            {
+              "id": "layout",
+              "type": "columns",
+              "title": "",
+              "body": "",
+              "style": {
+                "columns": 2
+              },
+              "children": [
+                {
+                  "id": "text",
+                  "type": "text",
+                  "title": "Notas",
+                  "body": "**Texto** e listas.",
+                  "format": "markdown"
+                },
+                {
+                  "id": "image",
+                  "type": "image",
+                  "title": "",
+                  "body": "",
+                  "media": [
+                    {
+                      "attachment": 0,
+                      "alt": "Imagem sintética"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "link",
+              "type": "button",
+              "title": "Sobre",
+              "body": "",
+              "url": "page:about"
+            },
+            {
+              "id": "data-table",
+              "type": "table",
+              "title": "Pontos da comunidade",
+              "body": "Dados assinados",
+              "data": {
+                "domain": "relayloom/site-table/1",
+                "columns": [
+                  {
+                    "id": "name",
+                    "label": "Lugar",
+                    "type": "text"
+                  },
+                  {
+                    "id": "water",
+                    "label": "Água",
+                    "type": "number"
+                  }
+                ],
+                "rows": [
+                  {
+                    "id": "school",
+                    "values": {
+                      "name": "Escola",
+                      "water": 20
+                    }
+                  },
+                  {
+                    "id": "park",
+                    "values": {
+                      "name": "Parque",
+                      "water": null
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "about",
+          "slug": "sobre",
+          "title": "Sobre",
+          "blocks": [
+            {
+              "id": "about-title",
+              "type": "heading",
+              "title": "Sobre nós",
+              "body": ""
+            },
+            {
+              "id": "posts",
+              "type": "posts",
+              "title": "Novidades",
+              "body": "",
+              "limit": 6
+            }
+          ]
+        }
+      ]
+    },
+    "attachments": [
+      {
+        "name": "pixel.png",
+        "mime": "image/png",
+        "data": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aNl8AAAAASUVORK5CYII="
+      }
+    ]
+  },
+  {
+    "name": "table missing data",
+    "valid": false,
+    "site": {
+      "version": 2,
+      "title": "Um site completo",
+      "description": "Dados assinados, sem scripts.",
+      "home": "home",
+      "design": {
+        "font": "serif",
+        "width": "wide",
+        "radius": "soft",
+        "accent": "#24796b"
+      },
+      "pages": [
+        {
+          "id": "home",
+          "slug": "inicio",
+          "title": "Início",
+          "blocks": [
+            {
+              "id": "hero",
+              "type": "hero",
+              "title": "Bem-vindo",
+              "body": "Uma história."
+            },
+            {
+              "id": "layout",
+              "type": "columns",
+              "title": "",
+              "body": "",
+              "style": {
+                "columns": 2
+              },
+              "children": [
+                {
+                  "id": "text",
+                  "type": "text",
+                  "title": "Notas",
+                  "body": "**Texto** e listas.",
+                  "format": "markdown"
+                },
+                {
+                  "id": "image",
+                  "type": "image",
+                  "title": "",
+                  "body": "",
+                  "media": [
+                    {
+                      "attachment": 0,
+                      "alt": "Imagem sintética"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "link",
+              "type": "button",
+              "title": "Sobre",
+              "body": "",
+              "url": "page:about"
+            },
+            {
+              "id": "data-table",
+              "type": "table",
+              "title": "Pontos da comunidade",
+              "body": "Dados assinados"
+            }
+          ]
+        },
+        {
+          "id": "about",
+          "slug": "sobre",
+          "title": "Sobre",
+          "blocks": [
+            {
+              "id": "about-title",
+              "type": "heading",
+              "title": "Sobre nós",
+              "body": ""
+            },
+            {
+              "id": "posts",
+              "type": "posts",
+              "title": "Novidades",
+              "body": "",
+              "limit": 6
+            }
+          ]
+        }
+      ]
+    },
+    "attachments": [
+      {
+        "name": "pixel.png",
+        "mime": "image/png",
+        "data": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aNl8AAAAASUVORK5CYII="
+      }
+    ]
+  },
+  {
+    "name": "data on non-table block",
+    "valid": false,
+    "site": {
+      "version": 2,
+      "title": "Um site completo",
+      "description": "Dados assinados, sem scripts.",
+      "home": "home",
+      "design": {
+        "font": "serif",
+        "width": "wide",
+        "radius": "soft",
+        "accent": "#24796b"
+      },
+      "pages": [
+        {
+          "id": "home",
+          "slug": "inicio",
+          "title": "Início",
+          "blocks": [
+            {
+              "id": "hero",
+              "type": "hero",
+              "title": "Bem-vindo",
+              "body": "Uma história."
+            },
+            {
+              "id": "layout",
+              "type": "columns",
+              "title": "",
+              "body": "",
+              "style": {
+                "columns": 2
+              },
+              "children": [
+                {
+                  "id": "text",
+                  "type": "text",
+                  "title": "Notas",
+                  "body": "**Texto** e listas.",
+                  "format": "markdown"
+                },
+                {
+                  "id": "image",
+                  "type": "image",
+                  "title": "",
+                  "body": "",
+                  "media": [
+                    {
+                      "attachment": 0,
+                      "alt": "Imagem sintética"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "link",
+              "type": "button",
+              "title": "Sobre",
+              "body": "",
+              "url": "page:about"
+            },
+            {
+              "id": "data-table",
+              "type": "text",
+              "title": "Pontos da comunidade",
+              "body": "Dados assinados",
+              "data": {
+                "domain": "relayloom/site-table/1",
+                "columns": [
+                  {
+                    "id": "name",
+                    "label": "Lugar",
+                    "type": "text"
+                  },
+                  {
+                    "id": "water",
+                    "label": "Água",
+                    "type": "number"
+                  }
+                ],
+                "rows": [
+                  {
+                    "id": "school",
+                    "values": {
+                      "name": "Escola",
+                      "water": 20
+                    }
+                  },
+                  {
+                    "id": "park",
+                    "values": {
+                      "name": "Parque",
+                      "water": null
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "about",
+          "slug": "sobre",
+          "title": "Sobre",
+          "blocks": [
+            {
+              "id": "about-title",
+              "type": "heading",
+              "title": "Sobre nós",
+              "body": ""
+            },
+            {
+              "id": "posts",
+              "type": "posts",
+              "title": "Novidades",
+              "body": "",
+              "limit": 6
+            }
+          ]
+        }
+      ]
+    },
+    "attachments": [
+      {
+        "name": "pixel.png",
+        "mime": "image/png",
+        "data": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aNl8AAAAASUVORK5CYII="
+      }
+    ]
+  },
+  {
+    "name": "table unknown field",
+    "valid": false,
+    "site": {
+      "version": 2,
+      "title": "Um site completo",
+      "description": "Dados assinados, sem scripts.",
+      "home": "home",
+      "design": {
+        "font": "serif",
+        "width": "wide",
+        "radius": "soft",
+        "accent": "#24796b"
+      },
+      "pages": [
+        {
+          "id": "home",
+          "slug": "inicio",
+          "title": "Início",
+          "blocks": [
+            {
+              "id": "hero",
+              "type": "hero",
+              "title": "Bem-vindo",
+              "body": "Uma história."
+            },
+            {
+              "id": "layout",
+              "type": "columns",
+              "title": "",
+              "body": "",
+              "style": {
+                "columns": 2
+              },
+              "children": [
+                {
+                  "id": "text",
+                  "type": "text",
+                  "title": "Notas",
+                  "body": "**Texto** e listas.",
+                  "format": "markdown"
+                },
+                {
+                  "id": "image",
+                  "type": "image",
+                  "title": "",
+                  "body": "",
+                  "media": [
+                    {
+                      "attachment": 0,
+                      "alt": "Imagem sintética"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "link",
+              "type": "button",
+              "title": "Sobre",
+              "body": "",
+              "url": "page:about"
+            },
+            {
+              "id": "data-table",
+              "type": "table",
+              "title": "Pontos da comunidade",
+              "body": "Dados assinados",
+              "data": {
+                "domain": "relayloom/site-table/1",
+                "columns": [
+                  {
+                    "id": "name",
+                    "label": "Lugar",
+                    "type": "text"
+                  },
+                  {
+                    "id": "water",
+                    "label": "Água",
+                    "type": "number"
+                  }
+                ],
+                "rows": [
+                  {
+                    "id": "school",
+                    "values": {
+                      "name": "Escola",
+                      "water": 20
+                    }
+                  },
+                  {
+                    "id": "park",
+                    "values": {
+                      "name": "Parque",
+                      "water": null
+                    }
+                  }
+                ],
+                "script": "https://example.org/evil.js"
+              }
+            }
+          ]
+        },
+        {
+          "id": "about",
+          "slug": "sobre",
+          "title": "Sobre",
+          "blocks": [
+            {
+              "id": "about-title",
+              "type": "heading",
+              "title": "Sobre nós",
+              "body": ""
+            },
+            {
+              "id": "posts",
+              "type": "posts",
+              "title": "Novidades",
+              "body": "",
+              "limit": 6
+            }
+          ]
+        }
+      ]
+    },
+    "attachments": [
+      {
+        "name": "pixel.png",
+        "mime": "image/png",
+        "data": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aNl8AAAAASUVORK5CYII="
+      }
+    ]
+  },
+  {
+    "name": "table repeated row identifier",
+    "valid": false,
+    "site": {
+      "version": 2,
+      "title": "Um site completo",
+      "description": "Dados assinados, sem scripts.",
+      "home": "home",
+      "design": {
+        "font": "serif",
+        "width": "wide",
+        "radius": "soft",
+        "accent": "#24796b"
+      },
+      "pages": [
+        {
+          "id": "home",
+          "slug": "inicio",
+          "title": "Início",
+          "blocks": [
+            {
+              "id": "hero",
+              "type": "hero",
+              "title": "Bem-vindo",
+              "body": "Uma história."
+            },
+            {
+              "id": "layout",
+              "type": "columns",
+              "title": "",
+              "body": "",
+              "style": {
+                "columns": 2
+              },
+              "children": [
+                {
+                  "id": "text",
+                  "type": "text",
+                  "title": "Notas",
+                  "body": "**Texto** e listas.",
+                  "format": "markdown"
+                },
+                {
+                  "id": "image",
+                  "type": "image",
+                  "title": "",
+                  "body": "",
+                  "media": [
+                    {
+                      "attachment": 0,
+                      "alt": "Imagem sintética"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "link",
+              "type": "button",
+              "title": "Sobre",
+              "body": "",
+              "url": "page:about"
+            },
+            {
+              "id": "data-table",
+              "type": "table",
+              "title": "Pontos da comunidade",
+              "body": "Dados assinados",
+              "data": {
+                "domain": "relayloom/site-table/1",
+                "columns": [
+                  {
+                    "id": "name",
+                    "label": "Lugar",
+                    "type": "text"
+                  },
+                  {
+                    "id": "water",
+                    "label": "Água",
+                    "type": "number"
+                  }
+                ],
+                "rows": [
+                  {
+                    "id": "school",
+                    "values": {
+                      "name": "Escola",
+                      "water": 20
+                    }
+                  },
+                  {
+                    "id": "school",
+                    "values": {
+                      "name": "Escola",
+                      "water": 20
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "about",
+          "slug": "sobre",
+          "title": "Sobre",
+          "blocks": [
+            {
+              "id": "about-title",
+              "type": "heading",
+              "title": "Sobre nós",
+              "body": ""
+            },
+            {
+              "id": "posts",
+              "type": "posts",
+              "title": "Novidades",
+              "body": "",
+              "limit": 6
+            }
+          ]
+        }
+      ]
+    },
+    "attachments": [
+      {
+        "name": "pixel.png",
+        "mime": "image/png",
+        "data": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aNl8AAAAASUVORK5CYII="
+      }
+    ]
+  },
+  {
+    "name": "table wrong typed number",
+    "valid": false,
+    "site": {
+      "version": 2,
+      "title": "Um site completo",
+      "description": "Dados assinados, sem scripts.",
+      "home": "home",
+      "design": {
+        "font": "serif",
+        "width": "wide",
+        "radius": "soft",
+        "accent": "#24796b"
+      },
+      "pages": [
+        {
+          "id": "home",
+          "slug": "inicio",
+          "title": "Início",
+          "blocks": [
+            {
+              "id": "hero",
+              "type": "hero",
+              "title": "Bem-vindo",
+              "body": "Uma história."
+            },
+            {
+              "id": "layout",
+              "type": "columns",
+              "title": "",
+              "body": "",
+              "style": {
+                "columns": 2
+              },
+              "children": [
+                {
+                  "id": "text",
+                  "type": "text",
+                  "title": "Notas",
+                  "body": "**Texto** e listas.",
+                  "format": "markdown"
+                },
+                {
+                  "id": "image",
+                  "type": "image",
+                  "title": "",
+                  "body": "",
+                  "media": [
+                    {
+                      "attachment": 0,
+                      "alt": "Imagem sintética"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "link",
+              "type": "button",
+              "title": "Sobre",
+              "body": "",
+              "url": "page:about"
+            },
+            {
+              "id": "data-table",
+              "type": "table",
+              "title": "Pontos da comunidade",
+              "body": "Dados assinados",
+              "data": {
+                "domain": "relayloom/site-table/1",
+                "columns": [
+                  {
+                    "id": "name",
+                    "label": "Lugar",
+                    "type": "text"
+                  },
+                  {
+                    "id": "water",
+                    "label": "Água",
+                    "type": "number"
+                  }
+                ],
+                "rows": [
+                  {
+                    "id": "school",
+                    "values": {
+                      "name": "Escola",
+                      "water": "20"
+                    }
+                  },
+                  {
+                    "id": "park",
+                    "values": {
+                      "name": "Parque",
+                      "water": null
+                    }
+                  }
+                ]
+              }
             }
           ]
         },

@@ -27,6 +27,7 @@ export const labels: Record<SiteNodeType, string> = {
   spacer: "Espaço",
   columns: "Colunas",
   posts: "Publicações",
+  table: "Tabela",
 };
 export function newBlock(type: SiteNodeType): SiteNode {
   return {
@@ -47,6 +48,7 @@ export function newBlock(type: SiteNodeType): SiteNode {
         spacer: "",
         columns: "",
         posts: t("Do meu diário"),
+        table: t("Dados da comunidade"),
       } as const
     )[type],
     body: "",
@@ -54,6 +56,18 @@ export function newBlock(type: SiteNodeType): SiteNode {
       ? { children: [], style: { columns: 2 as const } }
       : {}),
     ...(type === "posts" ? { limit: 6 } : {}),
+    ...(type === "table"
+      ? {
+          data: {
+            domain: "relayloom/site-table/1" as const,
+            columns: [
+              { id: "name", label: t("Nome"), type: "text" as const },
+              { id: "value", label: t("Valor"), type: "text" as const },
+            ],
+            rows: [],
+          },
+        }
+      : {}),
     ...(["image", "gallery"].includes(type) ? { media: [] } : {}),
     ...(["button", "links"].includes(type)
       ? { url: "https://example.org" }

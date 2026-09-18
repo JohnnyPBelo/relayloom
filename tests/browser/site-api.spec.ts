@@ -1,5 +1,6 @@
 import { test, expect, type Page } from "@playwright/test";
 import { staticHarness } from "./static-harness";
+import { authoredTable } from "../fixtures/site-table";
 const payload = {
   type: "site",
   blocks: [],
@@ -26,68 +27,93 @@ test.afterAll(async () => {
   await host.close();
   expect(host.requests.some((p) => p.startsWith("/api/"))).toBe(false);
 });
-async function fixture(page: Page) {
+async function fixture(page: Page, version: 1 | 2 = 1) {
   await page.goto(host.url);
-  await page.evaluate((payload) => {
-    const w = window as any,
-      r = w.rl;
-    w.sitePayload = payload;
-    w.openSiteApp = async (name: string, existing?: string) => {
-      const dbName = existing ?? "site-api-" + crypto.randomUUID(),
-        password = "browser site API fixture passphrase";
-      const p = await r.BrowserProfile.connect(dbName),
-        published: any[] = [],
-        requests: any[] = [];
-      const network = {
-        publish: (b: any) => published.push(structuredClone(b)),
-        command: async (op: string, body: unknown) => {
-          requests.push({ op, body });
-        },
-        state: () => ({ peers: [], counters: {}, error: "" }),
-        context: () => {},
-      };
-      const app = new r.BrowserApplication(p, network);
-      await app.call(existing ? "unlock" : "setup", { name, password });
-      const owner = p.identity,
-        address = "relayloom:site:" + owner.id + "/profile";
-      const cmd = (body: any) => app.call("site-command", body);
-      const request = async (
-        title: string,
-        recipients: string[] | "public" = "public",
-      ) => {
-        const state = await cmd({ action: "state", address });
+  await page.evaluate(
+    (payload) => {
+      const w = window as any,
+        r = w.rl;
+      w.sitePayload = payload;
+      w.openSiteApp = async (name: string, existing?: string) => {
+        const dbName = existing ?? "site-api-" + crypto.randomUUID(),
+          password = "browser site API fixture passphrase";
+        const p = await r.BrowserProfile.connect(dbName),
+          published: any[] = [],
+          requests: any[] = [];
+        const network = {
+          publish: (b: any) => published.push(structuredClone(b)),
+          command: async (op: string, body: unknown) => {
+            requests.push({ op, body });
+          },
+          state: () => ({ peers: [], counters: {}, error: "" }),
+          context: () => {},
+        };
+        const app = new r.BrowserApplication(p, network);
+        await app.call(existing ? "unlock" : "setup", { name, password });
+        const owner = p.identity,
+          address = "relayloom:site:" + owner.id + "/profile";
+        const cmd = (body: any) => app.call("site-command", body);
+        const request = async (
+          title: string,
+          recipients: string[] | "public" = "public",
+        ) => {
+          const state = await cmd({ action: "state", address });
+          return {
+            action: "publish",
+            name: "profile",
+            sequence: state.nextSequence,
+            operationId: crypto.randomUUID(),
+            expectedBase: state.base,
+            payload: { ...payload, site: { ...payload.site, title } },
+            recipients,
+            ttlMs: 3600000,
+          };
+        };
         return {
-          action: "publish",
-          name: "profile",
-          sequence: state.nextSequence,
-          operationId: crypto.randomUUID(),
-          expectedBase: state.base,
-          payload: { ...payload, site: { ...payload.site, title } },
-          recipients,
-          ttlMs: 3600000,
+          p,
+          app,
+          cmd,
+          request,
+          owner,
+          address,
+          dbName,
+          published,
+          requests,
         };
       };
-      return {
-        p,
-        app,
-        cmd,
-        request,
-        owner,
-        address,
-        dbName,
-        published,
-        requests,
+      w.denied = async (fn: () => Promise<unknown>) => {
+        try {
+          await fn();
+          return false;
+        } catch {
+          return true;
+        }
       };
-    };
-    w.denied = async (fn: () => Promise<unknown>) => {
-      try {
-        await fn();
-        return false;
-      } catch {
-        return true;
-      }
-    };
-  }, payload);
+    },
+    version === 1
+      ? payload
+      : {
+          ...payload,
+          site: {
+            ...payload.site,
+            version: 2,
+            pages: [
+              {
+                ...payload.site.pages[0],
+                blocks: [
+                  {
+                    id: "data",
+                    type: "table",
+                    title: "Lugares",
+                    body: "",
+                    data: authoredTable(),
+                  },
+                ],
+              },
+            ],
+          },
+        },
+  );
 }
 
 test("browser site API retains stable address, exact replay and history across reopen; a missing head never falls back", async ({
@@ -188,118 +214,129 @@ test("browser site API retains stable address, exact replay and history across r
   });
 });
 
-test("readable sites reject forged author, signature and payload; opaque private seeding confers no editing authority", async ({
-  page,
-}) => {
-  await fixture(page);
-  const result = await page.evaluate(async () => {
-    const w = window as any,
-      r = w.rl,
-      a = await w.openSiteApp("Author"),
-      b = await w.openSiteApp("Reader"),
-      c = await w.openSiteApp("Opaque seeder");
-    let mesh: any;
-    try {
-      await a.app.call("contact", { contact: b.owner });
-      const own = await a.cmd(await a.request("Só os leitores", [b.owner.id])),
-        bundle = await a.p.getBundle(own.operation.bundleId);
-      await b.app.ingest(bundle);
-      await c.app.ingest(bundle);
-      const visible = await b.cmd({ action: "resolve", address: a.address }),
-        opaque = await c.cmd({ action: "resolve", address: a.address });
-      const content = visible.object.content,
-        attacker = await r.createIdentity("Forgery fixture");
-      const originals = [
-        await r.createBundle(attacker, "site", content, "public"),
-        await a.p.signContent(
+for (const version of [1, 2] as const)
+  test(`v${version} readable sites reject forged author, signature and payload; opaque private seeding confers no editing authority`, async ({
+    page,
+  }) => {
+    await fixture(page, version);
+    const result = await page.evaluate(async () => {
+      const w = window as any,
+        r = w.rl,
+        a = await w.openSiteApp("Author"),
+        b = await w.openSiteApp("Reader"),
+        c = await w.openSiteApp("Opaque seeder");
+      let mesh: any;
+      try {
+        await a.app.call("contact", { contact: b.owner });
+        const own = await a.cmd(
+            await a.request("Só os leitores", [b.owner.id]),
+          ),
+          bundle = await a.p.getBundle(own.operation.bundleId);
+        await b.app.ingest(bundle);
+        await c.app.ingest(bundle);
+        const visible = await b.cmd({ action: "resolve", address: a.address }),
+          opaque = await c.cmd({ action: "resolve", address: a.address });
+        const content = visible.object.content,
+          attacker = await r.createIdentity("Forgery fixture");
+        const originals = [
+          await r.createBundle(attacker, "site", content, "public"),
+          await a.p.signContent(
+            "site",
+            {
+              ...content,
+              site: { ...content.site, title: "Alterado sem certificado" },
+            },
+            [b.owner],
+          ),
+          await a.p.signContent(
+            "site",
+            {
+              ...content,
+              siteRevision: { ...content.siteRevision, signature: "AAAA" },
+            },
+            "public",
+          ),
+        ];
+        if (content.site.version === 2) {
+          const altered = structuredClone(content);
+          altered.site.pages[0].blocks[0].data.rows[0].values.water = 900;
+          originals.push(await a.p.signContent("site", altered, [b.owner]));
+        }
+        const refusals = [];
+        for (const invalid of originals)
+          refusals.push(await w.denied(() => b.app.ingest(invalid)));
+        const invalidPublic = await a.p.signContent(
           "site",
           {
             ...content,
-            site: { ...content.site, title: "Alterado sem certificado" },
-          },
-          [b.owner],
-        ),
-        await a.p.signContent(
-          "site",
-          {
-            ...content,
-            siteRevision: { ...content.siteRevision, signature: "AAAA" },
+            site: { ...content.site, title: "Corrompido público" },
           },
           "public",
-        ),
-      ];
-      const refusals = [];
-      for (const invalid of originals)
-        refusals.push(await w.denied(() => b.app.ingest(invalid)));
-      const invalidPublic = await a.p.signContent(
-        "site",
-        { ...content, site: { ...content.site, title: "Corrompido público" } },
-        "public",
-      );
-      mesh = await r.BrowserMesh.start(c.p);
-      const forwarded = await w.denied(() =>
-        mesh.router.broadcast({ type: "bundle", bundle: invalidPublic }),
-      );
-      const validPublic = await a.p.signSiteBundle(
-        "public-page",
-        1,
-        [],
-        w.sitePayload,
-        "public",
-        3600000,
-      );
-      await mesh.router.broadcast({ type: "bundle", bundle: validPublic });
-      const bypass = await w.denied(() =>
-        a.app.call("publish", { content, recipients: "public" }),
-      );
-      const unauthorized = await w.denied(() =>
-        b.app.call("publish", { content, recipients: "public" }),
-      );
-      await b.p.setValue("mesh-settings", {
-        relay: true,
-        lowPower: false,
-        blocked: [a.owner.id],
-      });
-      const blocked = await w.denied(() =>
-        b.cmd({ action: "resolve", address: a.address }),
-      );
-      return {
-        visible: visible.status,
-        owner: visible.object.author.id === a.owner.id,
-        opaque: opaque.status,
-        opaqueObjects: (await c.app.state()).objects.length,
-        opaqueStored: (await c.p.ids()).includes(bundle.manifest.id),
-        refusals,
-        forwarded,
-        bypass,
-        unauthorized,
-        blocked,
-        invalidStored: (await b.p.ids()).some((id: string) =>
-          originals.some((x) => x.manifest.id === id),
-        ),
-      };
-    } finally {
-      await mesh?.close();
-      for (const f of [a, b, c]) {
-        f.app.close();
-        indexedDB.deleteDatabase(f.dbName);
+        );
+        mesh = await r.BrowserMesh.start(c.p);
+        const forwarded = await w.denied(() =>
+          mesh.router.broadcast({ type: "bundle", bundle: invalidPublic }),
+        );
+        const validPublic = await a.p.signSiteBundle(
+          "public-page",
+          1,
+          [],
+          w.sitePayload,
+          "public",
+          3600000,
+        );
+        await mesh.router.broadcast({ type: "bundle", bundle: validPublic });
+        const bypass = await w.denied(() =>
+          a.app.call("publish", { content, recipients: "public" }),
+        );
+        const unauthorized = await w.denied(() =>
+          b.app.call("publish", { content, recipients: "public" }),
+        );
+        await b.p.setValue("mesh-settings", {
+          relay: true,
+          lowPower: false,
+          blocked: [a.owner.id],
+        });
+        const blocked = await w.denied(() =>
+          b.cmd({ action: "resolve", address: a.address }),
+        );
+        return {
+          visible: visible.status,
+          owner: visible.object.author.id === a.owner.id,
+          opaque: opaque.status,
+          opaqueObjects: (await c.app.state()).objects.length,
+          opaqueStored: (await c.p.ids()).includes(bundle.manifest.id),
+          refusals,
+          forwarded,
+          bypass,
+          unauthorized,
+          blocked,
+          invalidStored: (await b.p.ids()).some((id: string) =>
+            originals.some((x) => x.manifest.id === id),
+          ),
+        };
+      } finally {
+        await mesh?.close();
+        for (const f of [a, b, c]) {
+          f.app.close();
+          indexedDB.deleteDatabase(f.dbName);
+        }
       }
-    }
+    });
+    expect(result).toEqual({
+      visible: "available",
+      owner: true,
+      opaque: "pending",
+      opaqueObjects: 0,
+      opaqueStored: true,
+      refusals: version === 2 ? [true, true, true, true] : [true, true, true],
+      forwarded: true,
+      bypass: true,
+      unauthorized: true,
+      blocked: true,
+      invalidStored: false,
+    });
   });
-  expect(result).toEqual({
-    visible: "available",
-    owner: true,
-    opaque: "pending",
-    opaqueObjects: 0,
-    opaqueStored: true,
-    refusals: [true, true, true],
-    forwarded: true,
-    bypass: true,
-    unauthorized: true,
-    blocked: true,
-    invalidStored: false,
-  });
-});
 
 test("storage exhaustion keeps exact authorized publication private and the offline application resumes after reopening", async ({
   page,

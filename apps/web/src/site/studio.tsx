@@ -1,3 +1,4 @@
+import { SiteTableEditor } from "./table-editor";
 import { t, tc } from "../i18n/core";
 import React, { useEffect, useId, useRef, useState } from "react";
 import {
@@ -15,6 +16,7 @@ import {
   Minus,
   MoveVertical,
   Columns3,
+  Table2,
   Newspaper,
   type LucideIcon,
   Copy,
@@ -75,6 +77,7 @@ const blockIcons: Record<SiteNodeType, LucideIcon> = {
   spacer: MoveVertical,
   columns: Columns3,
   posts: Newspaper,
+  table: Table2,
 };
 export function SiteStudio({
   value,
@@ -212,6 +215,7 @@ export function SiteStudio({
     }
     const node = newBlock(type);
     editDoc((s) => {
+      if (type === "table") s.version = 2;
       const p = s.pages.find((p) => p.id === page.id)!;
       if (parent)
         p.blocks = mapNodes(p.blocks, parent, (n) => ({
@@ -378,12 +382,20 @@ export function SiteStudio({
     const interacted = () => {
       moved = true;
     };
+    const refocused = (event: FocusEvent) => {
+      if (event.target !== document.body && event.target !== trigger)
+        moved = true;
+    };
     const cleanup = () => {
       document.removeEventListener("pointerdown", interacted, true);
       document.removeEventListener("keydown", interacted, true);
+      document.removeEventListener("input", interacted, true);
+      document.removeEventListener("focusin", refocused, true);
     };
     document.addEventListener("pointerdown", interacted, true);
     document.addEventListener("keydown", interacted, true);
+    document.addEventListener("input", interacted, true);
+    document.addEventListener("focusin", refocused, true);
     setError("");
     setFeedback("");
     setWorking(true);
@@ -407,6 +419,13 @@ export function SiteStudio({
         requestAnimationFrame(() => {
           cleanup();
           if (!mounted.current || moved || !region?.isConnected) return;
+          // Assistive input/autofill can move focus without a pointer or key.
+          // Never blur a field the user chose after the save was completed.
+          if (
+            document.activeElement !== document.body &&
+            document.activeElement !== trigger
+          )
+            return;
           const target =
             trigger?.isConnected && !trigger.matches(":disabled")
               ? trigger
@@ -1517,6 +1536,14 @@ export function SiteStudio({
                   )}
                   maxLength={2000}
                   onChange={(e) => updateNode(node.id, { url: e.target.value })}
+                />
+              )}
+              {node.type === "table" && node.data && (
+                <SiteTableEditor
+                  key={node.id}
+                  data={node.data}
+                  onChange={(data) => updateNode(node.id, { data })}
+                  disabled={disabled}
                 />
               )}
               {node.type === "columns" ? (

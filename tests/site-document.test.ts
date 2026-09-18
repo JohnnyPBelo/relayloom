@@ -4,6 +4,9 @@ import { readFileSync } from "node:fs";
 import { validateContentShape } from "../packages/content/src/validation";
 import { validateSite, siteFallback } from "../packages/content/src/site";
 import { templateSite, validateStudio } from "../apps/web/src/site/model";
+import { largeTable } from "./fixtures/site-table";
+import { parseSiteTable } from "../packages/content/src/site-data";
+import { canonical } from "../packages/core/src/protocol";
 const cases = JSON.parse(
   readFileSync(
     new URL("./fixtures/site-documents.json", import.meta.url),
@@ -74,4 +77,28 @@ test("image limit counts decoded bytes, including padding at the exact boundary"
   ];
   assert.doesNotThrow(() => validateSite(site, asset(2 * 1024 * 1024)));
   assert.throws(() => validateSite(site, asset(2 * 1024 * 1024 + 1)));
+});
+test("individually valid tables also consume the global 128 KiB document budget", () => {
+  const site = templateSite("journal", "Autora").site;
+  site.version = 2;
+  const data = largeTable();
+  parseSiteTable(data);
+  site.pages[0].blocks = [0, 1].map((i) => ({
+    id: "table-" + i,
+    type: "table",
+    title: "Dados",
+    body: "",
+    data,
+  }));
+  assert.ok(Buffer.byteLength(canonical(site)) < 128 * 1024);
+  validateSite(site);
+  site.pages[0].blocks.push({
+    id: "table-2",
+    type: "table",
+    title: "Dados",
+    body: "",
+    data,
+  });
+  assert.ok(Buffer.byteLength(canonical(site)) > 128 * 1024);
+  assert.throws(() => validateSite(site), /128 KiB/);
 });

@@ -10,6 +10,7 @@ export default defineConfig({
     "contact-relay.spec.ts",
     "connectivity.spec.ts",
     "site-studio.spec.ts",
+    "site-data-editor.spec.ts",
     "site-publication.spec.ts",
     "site-worker.spec.ts",
     "onboarding-language.spec.ts",
