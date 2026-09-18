@@ -1,0 +1,42 @@
+TAP version 13
+# (node:97288) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Node and Go resume each other's resource operation on one signing-protected SQLite database
+ok 1 - Node and Go resume each other's resource operation on one signing-protected SQLite database
+  ---
+  duration_ms: 4481.648163
+  type: 'test'
+  ...
+# Subtest: Node recovers an exact resource after Go exits before-commit
+ok 2 - Node recovers an exact resource after Go exits before-commit
+  ---
+  duration_ms: 129.236991
+  type: 'test'
+  ...
+# Subtest: Node recovers an exact resource after Go exits after-commit
+ok 3 - Node recovers an exact resource after Go exits after-commit
+  ---
+  duration_ms: 128.18613
+  type: 'test'
+  ...
+# Subtest: Node recovers an exact resource after Go exits after-copy
+ok 4 - Node recovers an exact resource after Go exits after-copy
+  ---
+  duration_ms: 156.0873
+  type: 'test'
+  ...
+# Subtest: Node recovers an exact resource after Go exits after-ready
+ok 5 - Node recovers an exact resource after Go exits after-ready
+  ---
+  duration_ms: 180.354244
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 5278.099569

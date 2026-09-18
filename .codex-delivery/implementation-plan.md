@@ -137,3 +137,10 @@ Seguinte: contexto durável do rascunho e controlador de publicação/histórico
 O gate local do estúdio foi concluído e recolhido. Consultar docs/evidence/site-editor-versions: 410 casos Node com correcção isolada de tradução, Go/race, 69interop, SQLite C, 32UI Node e32UI Go efectivos, 219browser, nove UI-RNS, 24hostiOS/static e Linuxbuild/run/package/run. Mantém-se aberta a causa de um fecho intermitente de ligação Firefox na pausa de relay; repetições diagnosticadas passaram, sem correcção de transporte demonstrada. Não usar o resultado como prontidão para catástrofes.
 
 Seguinte: validar a distribuição pública com site-publication/site-worker agora incluídos, conferir o commit e os hashes dos assets, publicar HTML experimental com os limites descritos e verificar no HTTPS. Continuar depois contribuições/dados declarativos/ficheiros opcionais, grupos dinâmicos web, backup/rotação/keystore, meios e hardware/plataformas e revisão independente. Manter execução sequencial e preservar os dados/WIP do projecto.
+
+
+## Recursos opcionais — criação persistente verificada, 18 de Setembro
+
+Os catálogos e a criação nos três motores estão verificados localmente em 78cc38c/96e35c1. Provas em docs/evidence/site-optional-resources/creation.
+
+Próximo: documento v3 e API que extrai a referência de um snapshot autenticado; biblioteca de recursos, ficheiros e tabelas na UI; testes UI de disponibilidade, pedido explícito, autor offline, partição e privacidade. Depois continuar contribuições/formulários assinados, grupos web dinâmicos, recuperação/rotação/keystore, plataformas/rádios e revisão independente. O objectivo integral mantém-se activo.

@@ -1,0 +1,46 @@
+{
+  "status": "PASS",
+  "nodeTests": 450,
+  "goRacePackages": [
+    "./sites",
+    "./app"
+  ],
+  "mixedProcessTests": 19,
+  "browserAPI": {
+    "chromium": 19,
+    "firefox": 19,
+    "webkit": 19
+  },
+  "uiRegression": {
+    "node": 1,
+    "go": 1,
+    "chromium": 7,
+    "firefox": 7,
+    "webkit": 7
+  },
+  "axeReportsWithoutViolations": 20,
+  "axeReports": [
+    "ui/browser/chromium-validation-keyboard-axe.json",
+    "ui/browser/webkit-resolved-history-axe.json",
+    "ui/browser/chromium-editor-axe.json",
+    "ui/browser/firefox-editor-axe.json",
+    "ui/browser/firefox-validation-keyboard-axe.json",
+    "ui/browser/webkit-private-reader-axe.json",
+    "ui/browser/chromium-private-reader-axe.json",
+    "ui/browser/chromium-es-ES-history-axe.json",
+    "ui/browser/chromium-resolved-history-axe.json",
+    "ui/browser/firefox-en-GB-history-axe.json",
+    "ui/browser/webkit-en-GB-history-axe.json",
+    "ui/browser/firefox-es-ES-history-axe.json",
+    "ui/browser/webkit-editor-axe.json",
+    "ui/browser/firefox-resolved-history-axe.json",
+    "ui/browser/firefox-private-reader-axe.json",
+    "ui/browser/webkit-es-ES-history-axe.json",
+    "ui/browser/chromium-en-GB-history-axe.json",
+    "ui/browser/webkit-validation-keyboard-axe.json",
+    "ui/native/native/result.json",
+    "ui/native/node/result.json"
+  ],
+  "sourceHashesUnchangedWithinGates": true,
+  "scope": "Local creation APIs, durable catalogs, on-demand transport and regression of existing site UI. Resource editor/snapshot references still pending. Desktop browser engines on Linux; not physical devices, Apple signing or radios."
+}

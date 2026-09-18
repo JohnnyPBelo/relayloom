@@ -1,0 +1,26 @@
+
+Running 19 tests using 1 worker
+
+(node:641993) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [firefox] › tests/browser/application-api.spec.ts:11:1 › application API preserves send identity, rejects corrupt retained acceptance, and validates event author/read scope (3.1s)
+  ✓   2 [firefox] › tests/browser/site-api.spec.ts:119:1 › browser site API retains stable address, exact replay and history across reopen; a missing head never falls back (2.3s)
+  ✓   3 [firefox] › tests/browser/site-api.spec.ts:218:3 › v1 readable sites reject forged author, signature and payload; opaque private seeding confers no editing authority (2.5s)
+  ✓   4 [firefox] › tests/browser/site-api.spec.ts:218:3 › v2 readable sites reject forged author, signature and payload; opaque private seeding confers no editing authority (2.5s)
+  ✓   5 [firefox] › tests/browser/site-api.spec.ts:341:1 › storage exhaustion keeps exact authorized publication private and the offline application resumes after reopening (1.7s)
+  ✓   6 [firefox] › tests/browser/site-api.spec.ts:387:1 › concurrent recovered identities require explicit heads and retain both histories after conflict resolution (2.9s)
+  ✓   7 [firefox] › tests/browser/site-network.spec.ts:172:5 › version 1 sites cross RTC, WebSocket and TCP through node, heal a partition and survive with only a restarted reader (10.4s)
+  ✓   8 [firefox] › tests/browser/site-network.spec.ts:172:5 › version 1 sites cross RTC, WebSocket and TCP through native, heal a partition and survive with only a restarted reader (10.5s)
+  ✓   9 [firefox] › tests/browser/site-network.spec.ts:172:5 › version 2 sites cross RTC, WebSocket and TCP through node, heal a partition and survive with only a restarted reader (10.3s)
+  ✓  10 [firefox] › tests/browser/site-network.spec.ts:172:5 › version 2 sites cross RTC, WebSocket and TCP through native, heal a partition and survive with only a restarted reader (9.8s)
+  ✓  11 [firefox] › tests/browser/site-resource-api.spec.ts:12:1 › browser application creates resources once, keeps copy failures recoverable and checks blocking in the actual copy transaction (13.8s)
+  ✓  12 [firefox] › tests/browser/site-resource-api.spec.ts:204:1 › browser application leaves a failed read-back pending and recovers its exact signature after reopening (2.0s)
+  ✓  13 [firefox] › tests/browser/site-resource-api.spec.ts:281:1 › expired browser resource intent keeps its result and requires a new explicit creation (5.7s)
+  ✓  14 [firefox] › tests/browser/site-resource-catalog.spec.ts:11:1 › browser resource creation keeps its signature private until durable preparation, reopens and recovers one exact result (1.1s)
+  ✓  15 [firefox] › tests/browser/site-resource-catalog.spec.ts:116:1 › locking during resource signing aborts the private transaction and invalidates its old catalogue (1.1s)
+  ✓  16 [firefox] › tests/browser/site-resource-network.spec.ts:97:1 › browser resource admission rejects readable malformed bodies, preserves opaque seeding and keeps summaries distinct from full data (2.9s)
+  ✓  17 [firefox] › tests/browser/site-resource-network.spec.ts:221:3 › optional data crosses RTC and WS through node only on request and a restarted browser seeds it after author shutdown (19.8s)
+  ✓  18 [firefox] › tests/browser/site-resource-network.spec.ts:221:3 › optional data crosses RTC and WS through native only on request and a restarted browser seeds it after author shutdown (20.5s)
+  ✓  19 [firefox] › tests/browser/site-revisions.spec.ts:70:1 › real browser, Node and Go agree on signed site snapshots while reading keys cannot edit them (2.6s)
+
+  19 passed (2.1m)

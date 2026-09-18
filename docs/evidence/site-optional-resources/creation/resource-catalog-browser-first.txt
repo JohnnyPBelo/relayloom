@@ -1,0 +1,9 @@
+
+Running 2 tests using 1 worker
+
+(node:134964) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/browser/site-resource-catalog.spec.ts:11:1 › browser resource creation keeps its signature private until durable preparation, reopens and recovers one exact result (589ms)
+  ✓  2 tests/browser/site-resource-catalog.spec.ts:116:1 › locking during resource signing aborts the private transaction and invalidates its old catalogue (423ms)
+
+  2 passed (1.8s)

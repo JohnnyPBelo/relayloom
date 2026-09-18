@@ -1,0 +1,130 @@
+TAP version 13
+# Subtest: node site author interoperates with the other runtime and an author-offline reader
+ok 1 - node site author interoperates with the other runtime and an author-offline reader
+  ---
+  duration_ms: 1756.796444
+  type: 'test'
+  ...
+# Subtest: native site author interoperates with the other runtime and an author-offline reader
+ok 2 - native site author interoperates with the other runtime and an author-offline reader
+  ---
+  duration_ms: 1119.22458
+  type: 'test'
+  ...
+# Subtest: Node and Go installations of the same identity require explicit cross-runtime conflict resolution
+ok 3 - Node and Go installations of the same identity require explicit cross-runtime conflict resolution
+  ---
+  duration_ms: 1188.389134
+  type: 'test'
+  ...
+# (node:616288) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Node and Go resume each other's logical publication on the same encrypted profile database
+ok 4 - Node and Go resume each other's logical publication on the same encrypted profile database
+  ---
+  duration_ms: 4839.071457
+  type: 'test'
+  ...
+# (node:616706) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures into the site namespace
+ok 5 - an authenticated outer SQLite database cannot transpose unpublished signatures into the site namespace
+  ---
+  duration_ms: 778.437679
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures into the resource namespace
+ok 6 - an authenticated outer SQLite database cannot transpose unpublished signatures into the resource namespace
+  ---
+  duration_ms: 60.623321
+  type: 'test'
+  ...
+# Subtest: Node and a real Go process exchange signing-protected site records in the same SQLite database
+ok 7 - Node and a real Go process exchange signing-protected site records in the same SQLite database
+  ---
+  duration_ms: 2306.924091
+  type: 'test'
+  ...
+# Subtest: Node and a real Go process exchange signing-protected resource records in the same SQLite database
+ok 8 - Node and a real Go process exchange signing-protected resource records in the same SQLite database
+  ---
+  duration_ms: 2304.937437
+  type: 'test'
+  ...
+# Subtest: Go rejects a Node encrypted site value transplanted into another authenticated store
+ok 9 - Go rejects a Node encrypted site value transplanted into another authenticated store
+  ---
+  duration_ms: 87.784344
+  type: 'test'
+  ...
+# Subtest: Go rejects a Node encrypted resource value transplanted into another authenticated store
+ok 10 - Go rejects a Node encrypted resource value transplanted into another authenticated store
+  ---
+  duration_ms: 73.885816
+  type: 'test'
+  ...
+# Subtest: node resource API persists quota failures, respects blocking, recovers the same signature across engines and seeds only on request
+ok 11 - node resource API persists quota failures, respects blocking, recovers the same signature across engines and seeds only on request
+  ---
+  duration_ms: 18585.310859
+  type: 'test'
+  ...
+# Subtest: native resource API persists quota failures, respects blocking, recovers the same signature across engines and seeds only on request
+ok 12 - native resource API persists quota failures, respects blocking, recovers the same signature across engines and seeds only on request
+  ---
+  duration_ms: 19066.884197
+  type: 'test'
+  ...
+# Subtest: node expired resource creation retains its ID and never recreates on resume
+ok 13 - node expired resource creation retains its ID and never recreates on resume
+  ---
+  duration_ms: 4838.589823
+  type: 'test'
+  ...
+# Subtest: native expired resource creation retains its ID and never recreates on resume
+ok 14 - native expired resource creation retains its ID and never recreates on resume
+  ---
+  duration_ms: 4728.939775
+  type: 'test'
+  ...
+# (node:625728) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Node and Go resume each other's resource operation on one signing-protected SQLite database
+ok 15 - Node and Go resume each other's resource operation on one signing-protected SQLite database
+  ---
+  duration_ms: 2806.215287
+  type: 'test'
+  ...
+# Subtest: Node recovers an exact resource after Go exits before-commit
+ok 16 - Node recovers an exact resource after Go exits before-commit
+  ---
+  duration_ms: 95.324852
+  type: 'test'
+  ...
+# Subtest: Node recovers an exact resource after Go exits after-commit
+ok 17 - Node recovers an exact resource after Go exits after-commit
+  ---
+  duration_ms: 93.069783
+  type: 'test'
+  ...
+# Subtest: Node recovers an exact resource after Go exits after-copy
+ok 18 - Node recovers an exact resource after Go exits after-copy
+  ---
+  duration_ms: 125.140823
+  type: 'test'
+  ...
+# Subtest: Node recovers an exact resource after Go exits after-ready
+ok 19 - Node recovers an exact resource after Go exits after-ready
+  ---
+  duration_ms: 140.551626
+  type: 'test'
+  ...
+1..19
+# tests 19
+# suites 0
+# pass 19
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 65900.673181

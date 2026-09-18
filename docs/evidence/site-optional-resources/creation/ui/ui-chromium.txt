@@ -1,0 +1,14 @@
+
+Running 7 tests using 1 worker
+
+(node:725766) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/browser/site-publication.spec.ts:137:1 › real UI publishes public and private revisions, reads fixed history and restores original privacy without granting readers authorship (21.5s)
+  ✓  2 [chromium] › tests/browser/site-publication.spec.ts:347:1 › two user-restored identities preserve a visible fork until the UI explicitly reviews and confirms all versions (8.3s)
+  ✓  3 [chromium] › tests/browser/site-publication.spec.ts:452:1 › studio reports local validation, preserves the saved draft and keeps keyboard focus after saving (4.1s)
+  ✓  4 [chromium] › tests/browser/site-publication.spec.ts:504:1 › lost worker publication response keeps the editor frozen and resumes the same version through the UI (23.3s)
+  ✓  5 [chromium] › tests/browser/site-publication.spec.ts:600:1 › application waits for an owned closing lease and never takes a live profile from another tab (3.5s)
+  ✓  6 [chromium] › tests/browser/site-publication.spec.ts:739:3 › publication and history controls work in en-GB and keep authored text across a language change (4.4s)
+  ✓  7 [chromium] › tests/browser/site-publication.spec.ts:739:3 › publication and history controls work in es-ES and keep authored text across a language change (3.8s)
+
+  7 passed (1.2m)

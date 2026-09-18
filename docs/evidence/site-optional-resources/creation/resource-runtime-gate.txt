@@ -1,0 +1,22 @@
+import {spawn, execFileSync} from 'node:child_process';
+import {mkdirSync, writeFileSync, readFileSync, readdirSync, statfsSync, createWriteStream} from 'node:fs';
+import {resolve, join} from 'node:path';
+import {createHash} from 'node:crypto';
+const root=process.cwd(), out=resolve('.cache/resource-runtime-gate'), temp=resolve('.cache/tmp');
+mkdirSync(out,{recursive:true}); mkdirSync(temp,{recursive:true});
+const disk=statfsSync(root); if(disk.bavail*disk.bsize<15*1024**3) throw Error('disk reserve');
+const parent='/home/absint0o/projects/relayloom';
+const loader=parent+'/node_modules/tsx/dist/loader.mjs';
+function sources(){ const paths=execFileSync('git',['ls-files','--cached','--others','--exclude-standard','-z'],{encoding:'utf8'}).split('\0').filter(p=>/^(apps|packages|tests|scripts|native)\//.test(p)); return Object.fromEntries([...new Set(paths)].sort().map(p=>[p,createHash('sha256').update(readFileSync(p)).digest('hex')])); }
+const report={status:'RUNNING',base:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),started:new Date().toISOString(),scope:'Sequential resource creation integration, Node regression, Go race, mixed processes and real desktop browser engines; no editor UI or physical hardware claim',sources:sources(),checks:[]};
+function save(){writeFileSync(join(out,'report.json'),JSON.stringify(report,null,2)+'\n');} save();
+const env={...process.env,TMPDIR:temp,TMP:temp,TEMP:temp,PLAYWRIGHT_BROWSERS_PATH:parent+'/.cache/playwright',XDG_CACHE_HOME:resolve('.cache/runtime-cache')};
+async function run(name,args,extra={}){const start=Date.now(),entry={name,command:[process.execPath,...args],started:new Date().toISOString(),status:'RUNNING'};report.checks.push(entry);save();console.log('START '+name);const log=createWriteStream(join(out,name+'.log'));const code=await new Promise((done,reject)=>{const child=spawn(process.execPath,args,{cwd:root,env:{...env,...extra},stdio:['ignore','pipe','pipe']});child.stdout.pipe(log,{end:false});child.stderr.pipe(log,{end:false});child.once('error',reject);child.once('exit',(code,signal)=>{entry.signal=signal;log.end(()=>done(code));});});entry.exitCode=code;entry.elapsedMs=Date.now()-start;entry.status=code===0?'PASS':'FAIL';save();console.log(entry.status+' '+name);if(code!==0)throw Error(name+' failed');}
+try {
+ await run('node-regression',['--import',loader,'--test','--test-concurrency=1',...readdirSync('tests').filter(p=>p.endsWith('.test.ts')).sort().map(p=>'tests/'+p)]);
+ await run('go-race',['scripts/go.mjs','test','-race','-p=1','./sites','./app']);
+ await run('mixed-processes',['--import',loader,'--test','--test-concurrency=1','tests/native/site-resource-api.test.ts','tests/native/site-resource-catalog.test.ts','tests/native/site-application.test.ts','tests/native/site-catalog.test.ts','tests/native/site-private-storage.test.ts']);
+ for(const engine of ['chromium','firefox','webkit']) await run(engine,[parent+'/node_modules/playwright/cli.js','test','--config','tests/browser/matrix.config.ts','tests/browser/site-resource-catalog.spec.ts','tests/browser/site-resource-api.spec.ts','tests/browser/site-resource-network.spec.ts','tests/browser/site-api.spec.ts','tests/browser/site-network.spec.ts','tests/browser/site-revisions.spec.ts','tests/browser/application-api.spec.ts','--output',join(out,engine+'-artifacts')],{RELAYLOOM_MATRIX_ENGINE:engine});
+ report.sourcesAfter=sources(); if(JSON.stringify(report.sources)!==JSON.stringify(report.sourcesAfter)) throw Error('source changed during gate');
+ report.status='PASS';
+} catch(e){report.status='FAIL';report.error=String(e);process.exitCode=1;} finally{report.finished=new Date().toISOString();save();}

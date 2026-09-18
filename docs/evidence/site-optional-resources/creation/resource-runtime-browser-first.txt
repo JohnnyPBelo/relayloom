@@ -1,0 +1,14 @@
+
+Running 7 tests using 1 worker
+
+(node:276611) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/browser/site-resource-api.spec.ts:12:1 › browser application creates resources once, keeps copy failures recoverable and checks blocking in the actual copy transaction (15.2s)
+  ✓  2 [chromium] › tests/browser/site-resource-api.spec.ts:204:1 › browser application leaves a failed read-back pending and recovers its exact signature after reopening (448ms)
+  ✓  3 [chromium] › tests/browser/site-resource-catalog.spec.ts:11:1 › browser resource creation keeps its signature private until durable preparation, reopens and recovers one exact result (423ms)
+  ✓  4 [chromium] › tests/browser/site-resource-catalog.spec.ts:116:1 › locking during resource signing aborts the private transaction and invalidates its old catalogue (401ms)
+  ✓  5 [chromium] › tests/browser/site-resource-network.spec.ts:97:1 › browser resource admission rejects readable malformed bodies, preserves opaque seeding and keeps summaries distinct from full data (996ms)
+  ✓  6 [chromium] › tests/browser/site-resource-network.spec.ts:221:3 › optional data crosses RTC and WS through node only on request and a restarted browser seeds it after author shutdown (17.4s)
+  ✓  7 [chromium] › tests/browser/site-resource-network.spec.ts:221:3 › optional data crosses RTC and WS through native only on request and a restarted browser seeds it after author shutdown (16.8s)
+
+  7 passed (52.6s)
