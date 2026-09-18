@@ -553,3 +553,10 @@ O suplemento após a matriz108PASS expôs uma perda de edição emFirefox logo d
 
 
 A última matriz after-focus teve uma falha Axe WebKit de contraste em.primary: texto branco com base transparente sob um degradê. O controlo de background-color confirmou rgba(0,0,0,0); acrescentar uma base opaca sob o mesmo degradê. A matriz contrast-final passou8UI e108browsers, fontes estáveis. Não ocultar a falha com uma espera ou exclusão Axe. A consolidação respeita typecheck sem stdout: logSHA256null significa sem ficheiro de saída, não criar um log fictício nem repetir o teste.
+
+
+## Retoma do gate público e confirmação histórica — 18 de Setembro
+
+Após interrupção, o handle3664 e o PID1475015 já não existiam. O relatório RUNNING era apenas estado antigo; conservar cópia e marcar a observação de interrupção sem inventar conclusão. O log continha duas falhas UI. Os traces mostram espera de actionability num contacto e deadline no fim da auditoria multilingue; a repetição dirigida dos três percursos passou sem mudar produto/prazos. Não atribuir a causa a concorrência, RTC ou à nova tabela sem prova.
+
+CI35291208941: Windows/Linux NodePASS, macOS426PASS/1FAIL; restantes jobs não executados. A fixture de admissão ainda recusava qualquer confirmação, embora já existam confirmações históricas válidas. Aguardar a entrega automática reproduziu a falha localmente. Substituir a expectativa obsoleta por controlos mais fortes: ausência antes da admissão, delivery/receipt exactos depois, época/leitores/autoria/cifra correctos, e recusa de receipt legado injectado. Os oito casos Node/Go passaram. Não enfraquecer para simplesmente ignorar confirmações nem consultar um snapshot antigo.

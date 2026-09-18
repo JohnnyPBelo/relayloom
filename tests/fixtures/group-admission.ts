@@ -122,6 +122,15 @@ export async function groupAdmissionJourney(
     assert.equal(state.groupContent.held[0].reason, "missing-private-snapshot");
     assert.equal(state.groupContent.held[0].available, true);
     assert.equal(state.storage.reserved, 1);
+    assert.equal(
+      state.objects.some(
+        (o: any) =>
+          ["receipt", "delivery"].includes(o.kind) &&
+          o.content.target === known.manifest.id,
+      ),
+      false,
+      "held content must not produce delivery or read confirmation before admission",
+    );
     await command(b, {
       action: "snapshot",
       groupId,
@@ -134,6 +143,16 @@ export async function groupAdmissionJourney(
     );
     assert.equal(state.groupContent.held.length, 0);
     assert.equal(state.storage.reserved, 0);
+    // Make the CI interleaving explicit: automatic delivery may already exist
+    // by the time the newly admitted object is observed on a slower host.
+    state = await until(
+      () => b.call("state"),
+      (s) =>
+        s.objects.some(
+          (o: any) =>
+            o.kind === "delivery" && o.content.target === known.manifest.id,
+        ),
+    );
     disconnectA = peer.connectTcp("127.0.0.1", a.tcpPort);
     await until(
       async () => peer.peers,
@@ -149,11 +168,44 @@ export async function groupAdmissionJourney(
       "Accepted only after proof",
     );
     assert.equal(state.groupContent.outbound, false);
-    assert.equal(
-      state.objects.some((o: any) => ["receipt", "delivery"].includes(o.kind)),
-      false,
-      "unfinished outbound must not emit a legacy group confirmation",
+    // The legacy outbound path stays disabled, while the implemented epoch
+    // confirmation path emits minimal historical facts after admission/read.
+    state = await until(
+      () => b.call("state"),
+      (s) =>
+        s.objects.some(
+          (o: any) =>
+            o.kind === "receipt" && o.content.target === known.manifest.id,
+        ),
     );
+    const facts = state.objects.filter(
+      (o: any) =>
+        ["receipt", "delivery"].includes(o.kind) &&
+        o.content.target === known.manifest.id,
+    );
+    assert.deepEqual(facts.map((o: any) => o.kind).sort(), [
+      "delivery",
+      "receipt",
+    ]);
+    for (const fact of facts) {
+      assert.equal(fact.author.id, bob.id);
+      assert.equal(fact.public, false);
+      assert.deepEqual(
+        [...fact.readers].sort(),
+        snapshot.members.map((c: any) => c.id).sort(),
+      );
+      assert.deepEqual(
+        (await b.call("view", { id: fact.id })).content,
+        {
+          type: fact.kind,
+          target: known.manifest.id,
+          conversation: groupId,
+          groupAudience: "historical",
+          targetEpoch: epoch,
+        },
+        "confirmations must carry the exact original epoch binding, never the legacy schema",
+      );
+    }
     const closed = await command(a, {
       action: "close",
       operationId: randomUUID(),
@@ -287,7 +339,22 @@ export async function groupAdmissionJourney(
       snapshot.members,
       60000,
     );
-    for (const denied of [unboundEdit, wrongDelete, staleEdit]) {
+    const unboundReceipt = createBundle(
+      bobIdentity,
+      "receipt",
+      {
+        type: "receipt",
+        target: known.manifest.id,
+      },
+      snapshot.members,
+      60000,
+    );
+    for (const denied of [
+      unboundEdit,
+      wrongDelete,
+      staleEdit,
+      unboundReceipt,
+    ]) {
       send(denied);
       await until(
         () => restored!.call("retrieve", { id: denied.manifest.id }),

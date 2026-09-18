@@ -1,0 +1,31 @@
+
+Running 34 tests using 1 worker
+
+(node:1475171) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › tests/browser/application.spec.ts:75:1 › autonomous Liquid Glass UI owns identity and offline outbox, connects through real RTC, receives signed confirmations and survives reload (14.6s)
+  ✓   2 [chromium] › tests/browser/application.spec.ts:204:1 › autonomous social actions and safe signed site builder persist and remain viewable after author closes (20.3s)
+  ✓   3 [chromium] › tests/browser/application.spec.ts:359:1 › production worker keeps private keys out of replies and recovers an applied send after the UI response is lost (24.1s)
+  ✓   4 [chromium] › tests/browser/application.spec.ts:466:1 › a second tab cannot take ownership of a live application profile and an unknown or corrupt profile is never silently reset (4.4s)
+  ✓   5 [chromium] › tests/browser/application.spec.ts:523:1 › cached application code and encrypted profile reopen when the static host is unavailable, without installing the PWA (4.7s)
+  ✓   6 [chromium] › tests/browser/application.spec.ts:589:1 › corrupted cached worker is rejected offline and recovered only from verified available code (1.6s)
+  ✓   7 [chromium] › tests/browser/connectivity.spec.ts:98:1 › both pending outboxes deliver after completing signalling; modes stay separate and diagnostics contain no secrets (50.7s)
+  ✓   8 [chromium] › tests/browser/connectivity.spec.ts:242:1 › closing while a code is being generated releases the late pending peer (4.9s)
+  ✓   9 [chromium] › tests/browser/contact-relay.spec.ts:121:1 › imported contact immediately appears once, survives reload and becomes the first real DM without a duplicate (6.1s)
+  ✘  10 [chromium] › tests/browser/contact-relay.spec.ts:208:1 › relay consent through the UI gates a real A to B to C path and does not grant B private reading (47.9s)
+(node:1499532) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  11 [chromium] › tests/browser/large-site-draft.spec.ts:14:1 › an allowed large site image saves through the UI and survives encrypted browser restart (24.5s)
+  ✓  12 [chromium] › tests/browser/mobile-navigation.spec.ts:13:1 › a single touch activates compact sidebar destinations after an open conversation hides the dock (1.7s)
+  ✓  13 [chromium] › tests/browser/onboarding-language.spec.ts:13:1 › initial language, product guide and appearance work without altering identity form values (2.2s)
+  ✓  14 [chromium] › tests/browser/onboarding-language.spec.ts:133:1 › English and Spanish identities exchange encrypted messages and files without translating authored text (10.7s)
+  ✓  15 [chromium] › tests/browser/onboarding-language.spec.ts:365:1 › a blocked tab can change UI language while the owning identity remains intact (3.9s)
+  ✓  16 [chromium] › tests/browser/onboarding-language.spec.ts:455:1 › unavailable preference storage and localized form validation never reset a profile (1.5s)
+  ✓  17 [chromium] › tests/browser/onboarding-language.spec.ts:534:1 › saving one preference does not hide a different unsaved preference (902ms)
+  ✓  18 [chromium] › tests/browser/site-data-editor.spec.ts:12:1 › table file import validates before replacement, preserves typed nulls, undoes changes and exports literal CSV safely (8.5s)
+  ✓  19 [chromium] › tests/browser/site-data-editor.spec.ts:337:3 › table controls and import failures use en-GB while authored data retains its language (2.6s)
+  ✓  20 [chromium] › tests/browser/site-data-editor.spec.ts:337:3 › table controls and import failures use es-ES while authored data retains its language (12.7s)
+  ✓  21 [chromium] › tests/browser/site-data-editor.spec.ts:396:1 › real table editor types decimal cells, preserves drafts, publishes signed data and permits read-only queries after the author closes (12.9s)
+  ✘  22 [chromium] › tests/browser/site-language.spec.ts:115:1 › three multilingual identities edit signed pages, preserve original text and seed to a new reader after author closes (1.6m)
+(node:1522701) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

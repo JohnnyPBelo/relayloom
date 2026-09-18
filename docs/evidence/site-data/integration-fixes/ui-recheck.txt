@@ -1,0 +1,10 @@
+
+Running 3 tests using 1 worker
+
+(node:2851161) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/browser/contact-relay.spec.ts:121:1 › imported contact immediately appears once, survives reload and becomes the first real DM without a duplicate (5.3s)
+  ✓  2 [chromium] › tests/browser/contact-relay.spec.ts:208:1 › relay consent through the UI gates a real A to B to C path and does not grant B private reading (32.7s)
+  ✓  3 [chromium] › tests/browser/site-language.spec.ts:115:1 › three multilingual identities edit signed pages, preserve original text and seed to a new reader after author closes (19.3s)
+
+  3 passed (58.3s)

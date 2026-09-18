@@ -1,0 +1,132 @@
+[
+  {
+    "case": "site-language-three-multil-6b44b--reader-after-author-closes-chromium",
+    "slowCalls": [
+      {
+        "t": 276872.989,
+        "method": "click",
+        "ms": 1904,
+        "selector": "internal:role=button[name=\"Crear respuesta\"s]",
+        "expression": "",
+        "error": ""
+      },
+      {
+        "t": 280181.457,
+        "method": "click",
+        "ms": 2417,
+        "selector": "internal:role=button[name=\"Completar conexi\u00f3n\"s]",
+        "expression": "",
+        "error": ""
+      },
+      {
+        "t": 283845.74,
+        "method": "click",
+        "ms": 8187,
+        "selector": "internal:role=dialog >> internal:role=button[name=\"Cerrar\"s]",
+        "expression": "",
+        "error": ""
+      },
+      {
+        "t": 293859.888,
+        "method": "click",
+        "ms": 1795,
+        "selector": "internal:role=region[name=\"Estudio del sitio\"s] >> internal:role=button[name=\"Publicar p\u00e1gina\"s]",
+        "expression": "",
+        "error": ""
+      },
+      {
+        "t": 303993.928,
+        "method": "click",
+        "ms": 1933,
+        "selector": "internal:role=tab[name=\"Recibir c\u00f3digo\"s]",
+        "expression": "",
+        "error": ""
+      },
+      {
+        "t": 307023.451,
+        "method": "click",
+        "ms": 3967,
+        "selector": "internal:role=button[name=\"Crear respuesta\"s]",
+        "expression": "",
+        "error": ""
+      },
+      {
+        "t": 311527.986,
+        "method": "click",
+        "ms": 2970,
+        "selector": "internal:role=button[name=\"Completar conexi\u00f3n\"s]",
+        "expression": "",
+        "error": ""
+      },
+      {
+        "t": 320320.183,
+        "method": "check",
+        "ms": 7531,
+        "selector": "internal:role=region[name=\"Ayudar a la red\"s] >> internal:role=checkbox[name=\"Permitir retransmisi\u00f3n\"s]",
+        "expression": "",
+        "error": ""
+      },
+      {
+        "t": 328606.004,
+        "method": "click",
+        "ms": 1808,
+        "selector": "internal:role=button[name=\"Ver sitio de Autor original\"s]",
+        "expression": "",
+        "error": ""
+      },
+      {
+        "t": 333074.518,
+        "method": "evaluateExpression",
+        "ms": 6818,
+        "selector": "",
+        "expression": "({\n  context,\n  options\n}) => {\n  return window.axe.runPartial(context",
+        "error": ""
+      }
+    ]
+  },
+  {
+    "case": "contact-relay-relay-consen-8e155-not-grant-B-private-reading-chromium",
+    "slowCalls": [
+      {
+        "t": 143102.839,
+        "method": "click",
+        "ms": 2087,
+        "selector": "internal:role=button[name=\"A rede\"s]",
+        "expression": "",
+        "error": ""
+      },
+      {
+        "t": 146814.593,
+        "method": "click",
+        "ms": 3501,
+        "selector": "internal:role=button[name=\"Conversas\"s]",
+        "expression": "",
+        "error": ""
+      },
+      {
+        "t": 150794.351,
+        "method": "click",
+        "ms": 5567,
+        "selector": "internal:role=region[name=\"Lista de conversas\"s] >> internal:role=button[name=/Carlos destino/]",
+        "expression": "",
+        "error": ""
+      },
+      {
+        "t": 157547.229,
+        "method": "click",
+        "ms": 6051,
+        "selector": "internal:role=button[name=\"Conversas\"s]",
+        "expression": "",
+        "error": ""
+      },
+      {
+        "t": 164804.938,
+        "method": "click",
+        "ms": 14539,
+        "selector": "internal:role=region[name=\"Lista de conversas\"s] >> internal:role=button[name=/Alice origem/]",
+        "expression": "",
+        "error": "Timeout 12000ms exceeded."
+      }
+    ]
+  }
+]

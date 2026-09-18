@@ -1,0 +1,58 @@
+TAP version 13
+# Subtest: real Node receivers hold epoch content until its snapshot arrives and keep only accepted history after closure
+ok 1 - real Node receivers hold epoch content until its snapshot arrives and keep only accepted history after closure
+  ---
+  duration_ms: 5404.748393
+  type: 'test'
+  ...
+# Subtest: real Node group automatic delivery and historical read after closure retain original audience
+ok 2 - real Node group automatic delivery and historical read after closure retain original audience
+  ---
+  duration_ms: 6335.271378
+  type: 'test'
+  ...
+# Subtest: actual node/native group admission preserves quarantine and history through node restart
+ok 3 - actual node/native group admission preserves quarantine and history through node restart
+  ---
+  duration_ms: 5153.262148
+  type: 'test'
+  ...
+# Subtest: actual native/node group admission preserves quarantine and history through native restart
+ok 4 - actual native/node group admission preserves quarantine and history through native restart
+  ---
+  duration_ms: 4759.414739
+  type: 'test'
+  ...
+# Subtest: actual native/native group admission preserves quarantine and history through native restart
+ok 5 - actual native/native group admission preserves quarantine and history through native restart
+  ---
+  duration_ms: 4245.478745
+  type: 'test'
+  ...
+# Subtest: real native/node automatic group confirmations preserve historical original readers
+ok 6 - real native/node automatic group confirmations preserve historical original readers
+  ---
+  duration_ms: 3632.795666
+  type: 'test'
+  ...
+# Subtest: real node/native automatic group confirmations preserve historical original readers
+ok 7 - real node/native automatic group confirmations preserve historical original readers
+  ---
+  duration_ms: 5814.75741
+  type: 'test'
+  ...
+# Subtest: real native/native automatic group confirmations preserve historical original readers
+ok 8 - real native/native automatic group confirmations preserve historical original readers
+  ---
+  duration_ms: 5305.523062
+  type: 'test'
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 8
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 41286.074676

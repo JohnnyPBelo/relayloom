@@ -1,0 +1,27 @@
+2026-09-18T00:39:56.2967330Z # Subtest: real Node receivers hold epoch content until its snapshot arrives and keep only accepted history after closure
+2026-09-18T00:39:56.2979470Z not ok 38 - real Node receivers hold epoch content until its snapshot arrives and keep only accepted history after closure
+2026-09-18T00:39:56.2981620Z   ---
+2026-09-18T00:39:56.2982960Z   duration_ms: 5387.39075
+2026-09-18T00:39:56.2992850Z   type: 'test'
+2026-09-18T00:39:56.3002100Z   location: '/Users/runner/work/relayloom/relayloom/tests/group-admission.test.ts:4:1'
+2026-09-18T00:39:56.3004310Z   failureType: 'testCodeFailure'
+2026-09-18T00:39:56.3012270Z   error: |-
+2026-09-18T00:39:56.3022780Z     unfinished outbound must not emit a legacy group confirmation
+2026-09-18T00:39:56.3023350Z     
+2026-09-18T00:39:56.3026240Z     true !== false
+2026-09-18T00:39:56.3027700Z     
+2026-09-18T00:39:56.3029300Z   code: 'ERR_ASSERTION'
+2026-09-18T00:39:56.3032870Z   name: 'AssertionError'
+2026-09-18T00:39:56.3033330Z   expected: false
+2026-09-18T00:39:56.3033670Z   actual: true
+2026-09-18T00:39:56.3033990Z   operator: 'strictEqual'
+2026-09-18T00:39:56.3034310Z   stack: |-
+2026-09-18T00:39:56.3035010Z     groupAdmissionJourney (/Users/runner/work/relayloom/relayloom/tests/fixtures/group-admission.ts:152:12)
+2026-09-18T00:39:56.3036080Z     process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+2026-09-18T00:39:56.3036990Z     async Test.run (node:internal/test_runner/test:1054:7)
+2026-09-18T00:39:56.3037860Z     async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+
+2026-09-18T00:47:10.5829210Z # tests 427
+2026-09-18T00:47:10.5829710Z # pass 426
+2026-09-18T00:47:10.5829950Z # fail 1
+2026-09-18T00:47:10.5830430Z # skipped 0

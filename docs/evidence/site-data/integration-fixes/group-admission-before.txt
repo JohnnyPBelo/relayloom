@@ -1,0 +1,33 @@
+TAP version 13
+# Subtest: real Node receivers hold epoch content until its snapshot arrives and keep only accepted history after closure
+not ok 1 - real Node receivers hold epoch content until its snapshot arrives and keep only accepted history after closure
+  ---
+  duration_ms: 3602.17623
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/tests/group-admission.test.ts:1:94'
+  failureType: 'testCodeFailure'
+  error: |-
+    unfinished outbound must not emit a legacy group confirmation
+    
+    true !== false
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    groupAdmissionJourney (/home/absint0o/projects/relayloom/tests/fixtures/group-admission.ts:158:12)
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3862.325727

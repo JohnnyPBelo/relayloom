@@ -1,0 +1,53 @@
+{
+  "recordedAt": "2026-09-18T06:27:51.766529+00:00",
+  "status": "TARGETED_FIX_VALIDATED_PUBLIC_GATE_PENDING",
+  "sourceBefore": "56578639a333c515f3730c6c047ac0f5eb8cb90b",
+  "ci": {
+    "run": 35291208941,
+    "macosNode": {
+      "pass": 426,
+      "fail": 1,
+      "skipped": 0
+    },
+    "windowsNode": "PASS",
+    "linuxNode": "PASS",
+    "dependentJobs": "SKIPPED"
+  },
+  "reproducedFailure": "Explicitly await automatic historical delivery before the old assertion; it then rejects a legitimate confirmation deterministically.",
+  "fix": "Require no confirmation before admission, then exact private delivery/read facts bound to the original epoch/readers. Reject an injected legacy unbound receipt. Product runtime unchanged.",
+  "tests": [
+    {
+      "command": "node --import tsx --test tests/group-admission.test.ts",
+      "exit": 1,
+      "scope": "Before correction; deterministic failure preserved."
+    },
+    {
+      "command": "node --import tsx --test --test-concurrency=1 tests/group-admission.test.ts tests/group-confirmations.test.ts tests/native/group-admission.test.ts tests/native/group-confirmations.test.ts",
+      "exit": 0,
+      "passed": 8
+    },
+    {
+      "command": "node node_modules/typescript/bin/tsc --noEmit",
+      "exit": 0
+    },
+    {
+      "command": "RELAYLOOM_MATRIX_ENGINE=chromium PLAYWRIGHT_JSON_OUTPUT_FILE=.cache/site-data-integration-fixes/ui-recheck/result.json node scripts/e2e.mjs --config tests/browser/matrix.config.ts tests/browser/contact-relay.spec.ts tests/browser/site-language.spec.ts --reporter=list,json --output .cache/site-data-integration-fixes/ui-recheck/artifacts",
+      "exit": 0,
+      "stats": {
+        "startTime": "2026-09-18T06:25:17.639Z",
+        "duration": 58290.782,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "scope": "Unchanged UI and deadlines. Does not prove a fix of the earlier interrupted run."
+    }
+  ],
+  "limitations": [
+    "The interrupted public gate has no terminal result for its running stage and is not a pass.",
+    "Two UI failures in the partial run: actionability wait while selecting a conversation, and the multilingual journey reaching its test deadline during final accessibility work. Root cause not established.",
+    "The complete public gate and CI of the corrected fixture remain required.",
+    "No physical device/radio/independent-review claim."
+  ]
+}
