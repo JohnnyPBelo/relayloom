@@ -1,0 +1,94 @@
+native-go	Run npm run test:native	﻿2026-09-18T10:04:27.5920859Z ##[group]Run npm run test:native
+native-go	Run npm run test:native	2026-09-18T10:04:27.5921426Z [36;1mnpm run test:native[0m
+native-go	Run npm run test:native	2026-09-18T10:04:27.5974153Z shell: /usr/bin/bash -e {0}
+native-go	Run npm run test:native	2026-09-18T10:04:27.5974607Z ##[endgroup]
+native-go	Run npm run test:native	2026-09-18T10:04:27.6991851Z 
+native-go	Run npm run test:native	2026-09-18T10:04:27.6992502Z > relayloom@0.1.0 test:native
+native-go	Run npm run test:native	2026-09-18T10:04:27.6994993Z > node scripts/go.mjs test -race -p=2 ./core ./transport ./webpeer ./app ./sites ./groups ./groupstore ./groupauthority ./groupaccess ./groupcontrol ./groupnotice ./groupledger ./profilelock ./profilestate ./profilebinding ./profiledb ./sqlitedriver
+native-go	Run npm run test:native	2026-09-18T10:04:27.6996575Z 
+native-go	Run npm run test:native	2026-09-18T10:04:53.1255372Z ok  	github.com/JohnnyPBelo/relayloom/native/core	8.593s
+native-go	Run npm run test:native	2026-09-18T10:04:58.0650116Z ok  	github.com/JohnnyPBelo/relayloom/native/transport	13.235s
+native-go	Run npm run test:native	2026-09-18T10:05:01.8180110Z ok  	github.com/JohnnyPBelo/relayloom/native/webpeer	2.031s
+native-go	Run npm run test:native	2026-09-18T10:15:26.1350459Z panic: test timed out after 10m0s
+native-go	Run npm run test:native	2026-09-18T10:15:26.1351332Z 	running tests:
+native-go	Run npm run test:native	2026-09-18T10:15:26.1352389Z 		TestWebPeerInvalidInputPreservesListenerAndCloseRetiresCapability (0s)
+native-go	Run npm run test:native	2026-09-18T10:15:26.1353108Z 
+native-go	Run npm run test:native	2026-09-18T10:15:26.1353323Z goroutine 1011 [running]:
+native-go	Run npm run test:native	2026-09-18T10:15:26.1354448Z testing.(*M).startAlarm.func1()
+native-go	Run npm run test:native	2026-09-18T10:15:26.1356205Z 	/opt/hostedtoolcache/go/1.26.8/x64/src/testing/testing.go:2802 +0x605
+native-go	Run npm run test:native	2026-09-18T10:15:26.1356940Z created by time.goFunc
+native-go	Run npm run test:native	2026-09-18T10:15:26.1357615Z 	/opt/hostedtoolcache/go/1.26.8/x64/src/time/sleep.go:215 +0x45
+native-go	Run npm run test:native	2026-09-18T10:15:26.1358088Z 
+native-go	Run npm run test:native	2026-09-18T10:15:26.1358310Z goroutine 1 [chan receive]:
+native-go	Run npm run test:native	2026-09-18T10:15:26.1359001Z testing.(*T).Run(0xc0000e4248, {0x1508cdb, 0x41}, 0x1522300)
+native-go	Run npm run test:native	2026-09-18T10:15:26.1359914Z 	/opt/hostedtoolcache/go/1.26.8/x64/src/testing/testing.go:2109 +0xb3e
+native-go	Run npm run test:native	2026-09-18T10:15:26.1360699Z testing.runTests.func1(0xc0000e4248)
+native-go	Run npm run test:native	2026-09-18T10:15:26.1361480Z 	/opt/hostedtoolcache/go/1.26.8/x64/src/testing/testing.go:2585 +0x85
+native-go	Run npm run test:native	2026-09-18T10:15:26.1362280Z testing.tRunner(0xc0000e4248, 0xc0002dfad0)
+native-go	Run npm run test:native	2026-09-18T10:15:26.1363117Z 	/opt/hostedtoolcache/go/1.26.8/x64/src/testing/testing.go:2036 +0x21d
+native-go	Run npm run test:native	2026-09-18T10:15:26.1364892Z testing.runTests({0x14fb0b4, 0x27}, {0x14fe0ac, 0x2b}, 0xc000016150, {0x1bd97e0, 0x51, 0x51}, {0xc2a361af85f428ac, 0x8bb332f77a, ...})
+native-go	Run npm run test:native	2026-09-18T10:15:26.1366237Z 	/opt/hostedtoolcache/go/1.26.8/x64/src/testing/testing.go:2583 +0x9ea
+native-go	Run npm run test:native	2026-09-18T10:15:26.1366953Z testing.(*M).Run(0xc00029a500)
+native-go	Run npm run test:native	2026-09-18T10:15:26.1367700Z 	/opt/hostedtoolcache/go/1.26.8/x64/src/testing/testing.go:2443 +0xf4c
+native-go	Run npm run test:native	2026-09-18T10:15:26.1368320Z main.main()
+native-go	Run npm run test:native	2026-09-18T10:15:26.1368696Z 	_testmain.go:206 +0x165
+native-go	Run npm run test:native	2026-09-18T10:15:26.1368934Z 
+native-go	Run npm run test:native	2026-09-18T10:15:26.1369128Z goroutine 1081 [runnable]:
+native-go	Run npm run test:native	2026-09-18T10:15:26.1370189Z golang.org/x/crypto/scrypt.salsaXOR(0xc000046b98, {0xc000b720c0, 0x1d0, 0x1d0?}, {0xc000b72640, 0x70, 0x70?})
+native-go	Run npm run test:native	2026-09-18T10:15:26.1371677Z 	/home/runner/work/relayloom/relayloom/.cache/go-mod/golang.org/x/crypto@v0.57.0/scrypt/scrypt.go:35 +0xfd8
+native-go	Run npm run test:native	2026-09-18T10:15:26.1373275Z golang.org/x/crypto/scrypt.blockMix(0xc000046b98, {0xc000b72000, 0x200, 0x200}, {0xc000b72400, 0x100, 0x100}, 0x8)
+native-go	Run npm run test:native	2026-09-18T10:15:26.1376439Z 	/home/runner/work/relayloom/relayloom/.cache/go-mod/golang.org/x/crypto@v0.57.0/scrypt/scrypt.go:136 +0x129
+native-go	Run npm run test:native	2026-09-18T10:15:26.1378225Z golang.org/x/crypto/scrypt.smix({0xc0004ca000, 0x400, 0x400}, 0x8, 0x8000, {0xc00687a000, 0x800000, 0x800000}, {0xc000b72000, 0x200, ...})
+native-go	Run npm run test:native	2026-09-18T10:15:26.1379879Z 	/home/runner/work/relayloom/relayloom/.cache/go-mod/golang.org/x/crypto@v0.57.0/scrypt/scrypt.go:166 +0x7a5
+native-go	Run npm run test:native	2026-09-18T10:15:26.1381443Z golang.org/x/crypto/scrypt.Key({0xc000b58a00, 0x24, 0x40}, {0xc000b5afa0, 0x10, 0x10}, 0x8000, 0x8, 0x1, 0x20)
+native-go	Run npm run test:native	2026-09-18T10:15:26.1382903Z 	/home/runner/work/relayloom/relayloom/.cache/go-mod/golang.org/x/crypto@v0.57.0/scrypt/scrypt.go:211 +0x3a5
+native-go	Run npm run test:native	2026-09-18T10:15:26.1384672Z github.com/JohnnyPBelo/relayloom/native/core.passwordKey({0x14f7f59, 0x24}, {0xc000b5afa0, 0x10, 0x10})
+native-go	Run npm run test:native	2026-09-18T10:15:26.1385908Z 	/home/runner/work/relayloom/relayloom/native/core/crypto.go:343 +0x1a5
+native-go	Run npm run test:native	2026-09-18T10:15:26.1387768Z github.com/JohnnyPBelo/relayloom/native/core.ExportVault({{{0xc000b58280, 0x40}, {0x14e2a00, 0x9}, {0xc000b58300, 0x3c}, {0xc000b58380, 0x3c}, {0xc000a13140, 0x58}}, ...}, ...)
+native-go	Run npm run test:native	2026-09-18T10:15:26.1389771Z 	/home/runner/work/relayloom/relayloom/native/core/crypto.go:357 +0x193
+native-go	Run npm run test:native	2026-09-18T10:15:26.1391090Z github.com/JohnnyPBelo/relayloom/native/app.(*Node).Handle(0xc000384508, {0x14e0c5f, 0x5}, 0xc000409e30)
+native-go	Run npm run test:native	2026-09-18T10:15:26.1392275Z 	/home/runner/work/relayloom/relayloom/native/app/node.go:1224 +0xcb5
+native-go	Run npm run test:native	2026-09-18T10:15:26.1393406Z github.com/JohnnyPBelo/relayloom/native/app.nodeFor(0xc000914d88, {0x14e2a00, 0x9})
+native-go	Run npm run test:native	2026-09-18T10:15:26.1394745Z 	/home/runner/work/relayloom/relayloom/native/app/app_test.go:67 +0x268
+native-go	Run npm run test:native	2026-09-18T10:15:26.1396365Z github.com/JohnnyPBelo/relayloom/native/app.TestWebPeerInvalidInputPreservesListenerAndCloseRetiresCapability(0xc000914d88)
+native-go	Run npm run test:native	2026-09-18T10:15:26.1397861Z 	/home/runner/work/relayloom/relayloom/native/app/web_peer_test.go:13 +0x4b
+native-go	Run npm run test:native	2026-09-18T10:15:26.1398696Z testing.tRunner(0xc000914d88, 0x1522300)
+native-go	Run npm run test:native	2026-09-18T10:15:26.1399520Z 	/opt/hostedtoolcache/go/1.26.8/x64/src/testing/testing.go:2036 +0x21d
+native-go	Run npm run test:native	2026-09-18T10:15:26.1400549Z created by testing.(*T).Run in goroutine 1
+native-go	Run npm run test:native	2026-09-18T10:15:26.1401371Z 	/opt/hostedtoolcache/go/1.26.8/x64/src/testing/testing.go:2101 +0xb13
+native-go	Run npm run test:native	2026-09-18T10:15:26.1401873Z 
+native-go	Run npm run test:native	2026-09-18T10:15:26.1402090Z goroutine 1082 [select]:
+native-go	Run npm run test:native	2026-09-18T10:15:26.1402882Z database/sql.(*DB).connectionOpener(0xc000493380, {0x15326e0, 0xc00091e0f0})
+native-go	Run npm run test:native	2026-09-18T10:15:26.1404170Z 	/opt/hostedtoolcache/go/1.26.8/x64/src/database/sql/sql.go:1261 +0xed
+native-go	Run npm run test:native	2026-09-18T10:15:26.1405038Z created by database/sql.OpenDB in goroutine 1081
+native-go	Run npm run test:native	2026-09-18T10:15:26.1405872Z 	/opt/hostedtoolcache/go/1.26.8/x64/src/database/sql/sql.go:841 +0x287
+native-go	Run npm run test:native	2026-09-18T10:15:26.1406377Z 
+native-go	Run npm run test:native	2026-09-18T10:15:26.1406583Z goroutine 1084 [select]:
+native-go	Run npm run test:native	2026-09-18T10:15:26.1407280Z github.com/JohnnyPBelo/relayloom/native/app.NewNode.func4()
+native-go	Run npm run test:native	2026-09-18T10:15:26.1408223Z 	/home/runner/work/relayloom/relayloom/native/app/node.go:142 +0x1fe
+native-go	Run npm run test:native	2026-09-18T10:15:26.1409338Z created by github.com/JohnnyPBelo/relayloom/native/app.NewNode in goroutine 1081
+native-go	Run npm run test:native	2026-09-18T10:15:26.1410414Z 	/home/runner/work/relayloom/relayloom/native/app/node.go:137 +0x15f7
+native-go	Run npm run test:native	2026-09-18T10:15:26.1410917Z 
+native-go	Run npm run test:native	2026-09-18T10:15:26.1411123Z goroutine 1083 [select]:
+native-go	Run npm run test:native	2026-09-18T10:15:26.1412180Z github.com/JohnnyPBelo/relayloom/native/transport.(*Router).Next(0xc000b57320, {0x15326e0, 0xc00091e190})
+native-go	Run npm run test:native	2026-09-18T10:15:26.1413450Z 	/home/runner/work/relayloom/relayloom/native/transport/router.go:263 +0x1d5
+native-go	Run npm run test:native	2026-09-18T10:15:26.1414663Z github.com/JohnnyPBelo/relayloom/native/app.NewNode.func3()
+native-go	Run npm run test:native	2026-09-18T10:15:26.1415601Z 	/home/runner/work/relayloom/relayloom/native/app/node.go:124 +0x128
+native-go	Run npm run test:native	2026-09-18T10:15:26.1416710Z created by github.com/JohnnyPBelo/relayloom/native/app.NewNode in goroutine 1081
+native-go	Run npm run test:native	2026-09-18T10:15:26.1417776Z 	/home/runner/work/relayloom/relayloom/native/app/node.go:121 +0x152d
+native-go	Run npm run test:native	2026-09-18T10:15:26.1418686Z FAIL	github.com/JohnnyPBelo/relayloom/native/app	600.044s
+native-go	Run npm run test:native	2026-09-18T10:15:26.1419547Z ok  	github.com/JohnnyPBelo/relayloom/native/sites	17.161s
+native-go	Run npm run test:native	2026-09-18T10:15:26.1420381Z ok  	github.com/JohnnyPBelo/relayloom/native/groups	4.700s
+native-go	Run npm run test:native	2026-09-18T10:15:26.1421256Z ok  	github.com/JohnnyPBelo/relayloom/native/groupstore	1.366s
+native-go	Run npm run test:native	2026-09-18T10:15:26.1422336Z ok  	github.com/JohnnyPBelo/relayloom/native/groupauthority	180.533s
+native-go	Run npm run test:native	2026-09-18T10:15:26.1423328Z ok  	github.com/JohnnyPBelo/relayloom/native/groupaccess	1.195s
+native-go	Run npm run test:native	2026-09-18T10:15:26.1424483Z ok  	github.com/JohnnyPBelo/relayloom/native/groupcontrol	7.330s
+native-go	Run npm run test:native	2026-09-18T10:15:26.1425428Z ok  	github.com/JohnnyPBelo/relayloom/native/groupnotice	25.229s
+native-go	Run npm run test:native	2026-09-18T10:15:26.1426349Z ok  	github.com/JohnnyPBelo/relayloom/native/groupledger	1.590s
+native-go	Run npm run test:native	2026-09-18T10:15:26.1427232Z ok  	github.com/JohnnyPBelo/relayloom/native/profilelock	1.042s
+native-go	Run npm run test:native	2026-09-18T10:15:26.1428122Z ok  	github.com/JohnnyPBelo/relayloom/native/profilestate	9.581s
+native-go	Run npm run test:native	2026-09-18T10:15:26.1429051Z ok  	github.com/JohnnyPBelo/relayloom/native/profilebinding	1.073s
+native-go	Run npm run test:native	2026-09-18T10:15:26.1430204Z ok  	github.com/JohnnyPBelo/relayloom/native/profiledb	1.497s
+native-go	Run npm run test:native	2026-09-18T10:15:26.1431108Z ok  	github.com/JohnnyPBelo/relayloom/native/sqlitedriver	1.019s
+native-go	Run npm run test:native	2026-09-18T10:15:26.1431732Z FAIL
+native-go	Run npm run test:native	2026-09-18T10:15:26.2306838Z ##[error]Process completed with exit code 1.

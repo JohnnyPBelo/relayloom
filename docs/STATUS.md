@@ -2,6 +2,8 @@
 
 ## Branch de recursos opcionais — 18 de Setembro de 2026
 
+**CI b435608:** Node passou nos três hosts; Go app excedeu o limite acumulado de dez minutos durante a criação de um cofre no início de um teste. Os jobs dependentes foram skipped. O teste local com race passou; o runner passa agora a executar um pacote Go de cada vez, conservando cobertura, race, prazos e parâmetros criptográficos. O resultado remoto desta alteração ainda está pendente. [Log e âmbito](evidence/ci-native-b435).
+
 A criação local está ligada a Node, Go e browser, com persistência cifrada, cópia verificada, idempotência, quotas, bloqueio e expiração. Commits **78cc38c** (catálogos) e **96e35c1** (API/runtime). Passaram **450 testes Node**, Go sites/app com race, **19 testes de interoperabilidade**, **19 por browser (57)** e **23 percursos UI do editor existente**. As 20 auditorias Axe não encontraram violações. Os hashes de 628 ficheiros de fonte correspondem ao commit. [Provas, comandos, capturas e limites](evidence/site-optional-resources/creation) · [Contrato e API](SITE-RESOURCES.md). Não está integrada na interface nem publicada. Documento v3, obtenção pela referência do snapshot e UI de recursos permanecem obrigatórios, juntamente com contribuições/formulários assinados e o restante contrato.
 
 A versão web pública já inclui tabelas v2: fonte 59c9bd1, distribuição f6758222. CI da fonte 1e83db2 terminou com Node nos três hosts, Go, UI nativa, Reticulum, browsers e pacotes desktop aprovados; o percurso iOS falhou na consulta AX da fototeca, depois de o processo Node receber a mensagem privada. Isso não valida o envio da fotografia ou dispositivos físicos. Hardware/radios, paridade completa e revisão independente continuam abertos.
