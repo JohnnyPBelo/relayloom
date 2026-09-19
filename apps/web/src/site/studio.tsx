@@ -1,3 +1,8 @@
+import { ResourceLibrary } from "./resource-library";
+import type {
+  SiteResourceReference,
+  SiteReadScope,
+} from "../../../../packages/content/src/site-resource";
 import { SiteTableEditor } from "./table-editor";
 import { t, tc } from "../i18n/core";
 import React, { useEffect, useId, useRef, useState } from "react";
@@ -78,6 +83,7 @@ const blockIcons: Record<SiteNodeType, LucideIcon> = {
   columns: Columns3,
   posts: Newspaper,
   table: Table2,
+  resource: FilePlus2,
 };
 export function SiteStudio({
   value,
@@ -91,6 +97,7 @@ export function SiteStudio({
   managedFeedback = false,
   publishDisabled = false,
   onActionError,
+  resourceConfig,
 }: {
   value: StudioValue;
   onChange: (v: StudioValue) => void;
@@ -103,7 +110,17 @@ export function SiteStudio({
   managedFeedback?: boolean;
   publishDisabled?: boolean;
   onActionError?: (error: Error) => void;
+  resourceConfig?: {
+    ownerId: string;
+    scope: SiteReadScope;
+    ttlMs: number;
+    active(): boolean;
+  };
 }) {
+  const [resourceChoice, setResourceChoice] = useState<{
+    pageId: string;
+    parent?: string;
+  }>();
   const [pageId, setPage] = useState(value.site.home),
     [selected, setSelected] = useState(""),
     [preview, setPreview] = useState(false),
@@ -194,6 +211,10 @@ export function SiteStudio({
     setSelected("");
   }
   function insert(type: SiteNodeType, parent?: string) {
+    if (type === "resource") {
+      setResourceChoice({ pageId: page.id, parent });
+      return;
+    }
     if (countBlocks(value.site) >= SITE_LIMITS.blocks) {
       setError("Limite de 128 blocos atingido.");
       return;
@@ -215,7 +236,7 @@ export function SiteStudio({
     }
     const node = newBlock(type);
     editDoc((s) => {
-      if (type === "table") s.version = 2;
+      if (type === "table" && s.version < 2) s.version = 2;
       const p = s.pages.find((p) => p.id === page.id)!;
       if (parent)
         p.blocks = mapNodes(p.blocks, parent, (n) => ({
@@ -225,6 +246,30 @@ export function SiteStudio({
       else p.blocks.push(node);
     });
     setSelected(node.id);
+  }
+  function insertResource(reference: SiteResourceReference) {
+    if (!resourceChoice || disabled || !resourceConfig?.active())
+      throw new Error("Aguarda a operação actual antes de inserir o recurso.");
+    const next = { ...value, site: structuredClone(value.site) };
+    const targetPage = next.site.pages.find(
+      (p) => p.id === resourceChoice.pageId,
+    );
+    if (!targetPage) throw new Error("A página de destino já não existe.");
+    const node = newBlock("resource", reference);
+    if (resourceChoice.parent) {
+      const parent = flatten(targetPage.blocks).find(
+        (entry) => entry.node.id === resourceChoice.parent,
+      );
+      if (!parent || parent.node.type !== "columns")
+        throw new Error("A composição de destino já não existe.");
+      parent.node.children = [...(parent.node.children ?? []), node];
+    } else targetPage.blocks.push(node);
+    next.site.version = 3;
+    validateStudio(next);
+    change(next);
+    setPage(targetPage.id);
+    setSelected(node.id);
+    setResourceChoice(undefined);
   }
   function reorder(id: string, offset: number) {
     editDoc((s) => {
@@ -535,6 +580,24 @@ export function SiteStudio({
         aria-busy={working}
       >
         <div className="studio-commandbar">
+          {resourceConfig && (
+            <button
+              type="button"
+              className="secondary"
+              onClick={() =>
+                setResourceChoice({
+                  pageId: page.id,
+                  parent:
+                    chosen?.node.type === "columns"
+                      ? chosen.node.id
+                      : undefined,
+                })
+              }
+            >
+              <FilePlus2 size={16} />
+              {t("Recursos")}
+            </button>
+          )}
           <div className="segmented">
             <button
               aria-pressed={!preview}
@@ -749,7 +812,9 @@ export function SiteStudio({
               >
                 {panel === "blocks" && (
                   <div className="studio-palette">
-                    {SITE_BLOCKS.map((choice) => {
+                    {SITE_BLOCKS.filter(
+                      (choice) => choice !== "resource" || !!resourceConfig,
+                    ).map((choice) => {
                       const Icon = blockIcons[choice];
                       return (
                         <button
@@ -1408,6 +1473,16 @@ export function SiteStudio({
           )}
         </div>
       </fieldset>
+      {resourceChoice && resourceConfig && (
+        <ResourceLibrary
+          ownerId={resourceConfig.ownerId}
+          scope={resourceConfig.scope}
+          ttlMs={resourceConfig.ttlMs}
+          active={() => mounted.current && resourceConfig.active()}
+          onChoose={insertResource}
+          close={() => setResourceChoice(undefined)}
+        />
+      )}
     </section>
   );
   function renderNodes(nodes: SiteNode[]): React.ReactNode {
@@ -1570,9 +1645,14 @@ export function SiteStudio({
                   )}
                 </div>
               ) : (
-                ["image", "gallery", "divider", "spacer", "posts"].includes(
-                  node.type,
-                ) && (
+                [
+                  "image",
+                  "gallery",
+                  "divider",
+                  "spacer",
+                  "posts",
+                  "resource",
+                ].includes(node.type) && (
                   <SiteNodeView
                     node={{ ...node, title: "", body: "" }}
                     assets={value.attachments}

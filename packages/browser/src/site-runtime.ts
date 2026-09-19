@@ -1,3 +1,4 @@
+import { validateSiteResources } from "./site-resource";
 import {
   canonical,
   exactShape,
@@ -16,6 +17,9 @@ type Operation = NonNullable<
 interface Context {
   profile: BrowserProfile;
   blocked(): Promise<readonly string[]>;
+  knownWithdrawals?(
+    readValue: (key: string) => Promise<unknown>,
+  ): Promise<Record<string, string>>;
   readers(ids: unknown): Promise<PublicIdentity[] | "public">;
   publish(bundle: Bundle): void;
   request(ids: string[]): Promise<void>;
@@ -303,17 +307,31 @@ export class BrowserSiteRuntime {
         !exactShape(value, [...fields, "confirmedHeads"]))
     )
       throw new Error("Comando de site inválido");
-    const operation = await this.catalog.createPublication(value.name, {
-      sequence: value.sequence,
-      operationId: value.operationId,
-      expectedBase: value.expectedBase,
-      payload: value.payload,
-      readers: await this.context.readers(value.recipients),
-      ttlMs: value.ttlMs,
-      ...(value.confirmedHeads !== undefined
-        ? { confirmedHeads: value.confirmedHeads }
-        : {}),
-    });
+    const operation = await this.catalog.createPublication(
+      value.name,
+      {
+        sequence: value.sequence,
+        operationId: value.operationId,
+        expectedBase: value.expectedBase,
+        payload: value.payload,
+        readers: await this.context.readers(value.recipients),
+        ttlMs: value.ttlMs,
+        ...(value.confirmedHeads !== undefined
+          ? { confirmedHeads: value.confirmedHeads }
+          : {}),
+      },
+      async (request, readValue) => {
+        const settings = (await readValue("mesh-settings")) as any;
+        const withdrawn =
+          (await this.context.knownWithdrawals?.(readValue)) ?? {};
+        return validateSiteResources(
+          request,
+          this.context.profile,
+          settings?.blocked ?? [],
+          withdrawn,
+        );
+      },
+    );
     const address = siteAddress(this.owner.id, value.name);
     if (["prepared", "committed"].includes(operation.phase))
       this.pending.set(this.slot(value.name, operation), {

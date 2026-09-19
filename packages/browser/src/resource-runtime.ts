@@ -1,3 +1,4 @@
+import { readSiteResource } from "./resource-read";
 import { exactShape, type PublicIdentity } from "../../core/src/protocol";
 import type { SiteReadScope } from "../../content/src/site-resource";
 import type { ResourceOperation } from "../../sites/src/resource-operations";
@@ -6,6 +7,9 @@ import { BrowserProfile } from "./profile";
 
 interface Context {
   profile: BrowserProfile;
+  blocked(): Promise<readonly string[]>;
+  request(id: string): Promise<void>;
+  withdrawn(id: string, authorId: string): Promise<boolean>;
   // Load contacts before entering the catalogue's exclusive transaction.
   readerSnapshot(): Promise<
     (scope: SiteReadScope) => PublicIdentity[] | "public"
@@ -108,6 +112,11 @@ export class BrowserResourceRuntime {
   }
   command(value: any): Promise<any> {
     return this.serial(async () => {
+      if (["inspect", "obtain"].includes(value?.action))
+        return readSiteResource(value, {
+          ...this.context,
+          ensure: () => this.ensure(),
+        });
       if (value?.action === "state" && exactShape(value, ["action"]))
         return this.catalog.state();
       if (

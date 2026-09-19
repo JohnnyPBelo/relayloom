@@ -654,17 +654,20 @@ export class ContentStore {
       this.manifests.delete(id);
     }
   }
-  private read(id: string, touch: boolean): Bundle {
+  private read(id: string, touch: boolean, historical = false): Bundle {
     const path = this.path(id);
     if (!this.index[id]) throw new Error("Conteúdo indisponível neste nó");
     const fileState = this.fileState(id),
       b: Bundle = JSON.parse(fileState.bytes.toString("utf8"));
     if (b.manifest.id !== id) throw new Error("Endereço não corresponde");
-    verifyBundle(b);
-    this.manifests.set(id, {
-      manifest: structuredClone(b.manifest),
-      fingerprint: fileState.fingerprint,
-    });
+    if (historical) verifyStoredBundle(b);
+    else {
+      verifyBundle(b);
+      this.manifests.set(id, {
+        manifest: structuredClone(b.manifest),
+        fingerprint: fileState.fingerprint,
+      });
+    }
     if (touch) this.index[id].accessed = Date.now();
     return b;
   }
@@ -710,6 +713,15 @@ export class ContentStore {
   }
   get(id: string, touch = true): Bundle {
     return this.read(id, touch);
+  }
+  /** Authenticated historical bytes for diagnostics. Callers must still enforce
+   * current expiry before displaying/serving content. Never primes the live cache. */
+  getStored(id: string): Bundle {
+    return this.read(id, false, true);
+  }
+  /** Presence hint only; neither signature validity nor byte availability. */
+  hasRecord(id: string): boolean {
+    return /^[a-f0-9]{64}$/.test(id) && Object.hasOwn(this.index, id);
   }
   has(id: string): boolean {
     return (

@@ -1011,7 +1011,9 @@ func (n *Node) prepareLocked(content Content, recipients any, ttlMS int64) (*pre
 		return nil, err
 	}
 	if text(content["type"]) == "site" {
-		if _, versioned := content["siteRevision"]; versioned {
+		document, _ := content["site"].(map[string]any)
+		version, _ := number(document["version"])
+		if _, versioned := content["siteRevision"]; versioned || version == 3 {
 			return nil, errors.New("use a publicação versionada de sites")
 		}
 	}
@@ -1318,6 +1320,11 @@ func (n *Node) Handle(operation string, body map[string]any) (any, error) {
 		}
 		return r.command(body)
 	case "site-command":
+		if text(body["action"]) == "publish" {
+			if _, err := n.objectsLocked(); err != nil {
+				return nil, err
+			}
+		}
 		s, err := n.sitesLocked()
 		if err != nil {
 			return nil, err

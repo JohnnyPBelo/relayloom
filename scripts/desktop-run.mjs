@@ -21,9 +21,11 @@ const environment = {
   XDG_CACHE_HOME: join(repository, ".cache", "desktop", "xdg-cache"),
   ELECTRON_CACHE: join(repository, ".cache", "electron"),
   ELECTRON_BUILDER_CACHE: join(repository, ".cache", "electron-builder"),
-  TMPDIR: join(repository, ".cache", "desktop", "tmp"),
-  TMP: join(repository, ".cache", "desktop", "tmp"),
-  TEMP: join(repository, ".cache", "desktop", "tmp"),
+  // Chromium adds a scoped directory and socket name; keep the project path
+  // short enough for Unix sockets even when running from a nested worktree.
+  TMPDIR: join(repository, ".cache", "t"),
+  TMP: join(repository, ".cache", "t"),
+  TEMP: join(repository, ".cache", "t"),
 };
 for (const name of [
   "NODE_OPTIONS",

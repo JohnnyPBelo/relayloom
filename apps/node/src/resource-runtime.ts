@@ -1,3 +1,5 @@
+import { readSiteResource } from "./resource-read";
+import type { Identity } from "../../../packages/core/src/protocol";
 import { exactShape } from "../../../packages/core/src/protocol";
 import type {
   ContentStore,
@@ -8,6 +10,9 @@ import { NodeResourceCatalog } from "../../../packages/sites/src/resource-catalo
 import type { ResourceOperation } from "../../../packages/sites/src/resource-operations";
 
 interface Context {
+  identity: Identity;
+  request(id: string): void;
+  withdrawn(id: string, authorId: string): boolean;
   catalog: NodeResourceCatalog;
   store: ContentStore;
   ensure(): void;
@@ -66,6 +71,8 @@ export class ResourceRuntime {
   }
   command(value: any): any {
     this.context.ensure();
+    if (["inspect", "obtain"].includes(value?.action))
+      return readSiteResource(value, this.context);
     if (value?.action === "state" && exactShape(value, ["action"]))
       return this.context.catalog.state();
     if (

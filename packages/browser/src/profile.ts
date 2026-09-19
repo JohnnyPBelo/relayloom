@@ -18,6 +18,7 @@ import {
   seal,
   open,
   verifiedBundle,
+  verifiedStoredBundle,
   decryptBundle,
   decryptStoredBundle,
   hash,
@@ -960,6 +961,13 @@ export class BrowserProfile {
     });
   }
   async getBundle(id: string): Promise<Bundle> {
+    return this.readBundle(id, false);
+  }
+  /** Historical authentication for status only; does not permit serving expired data. */
+  async getStoredBundle(id: string): Promise<Bundle> {
+    return this.readBundle(id, true);
+  }
+  private async readBundle(id: string, historical: boolean): Promise<Bundle> {
     if (!allowedID(id)) throw new Error("Endereço inválido");
     const s = this.active(),
       { value } = await this.state(s);
@@ -967,7 +975,9 @@ export class BrowserProfile {
     const row = await this.read<Sealed>("bundles", id);
     if (!row) throw new Error("Conteúdo ausente do armazenamento");
     const bytes = await open(row, s.key, "relayloom-browser-bundle-v1:" + id);
-    const b = await verifiedBundle(JSON.parse(decoder.decode(bytes)));
+    const b = await (historical ? verifiedStoredBundle : verifiedBundle)(
+      JSON.parse(decoder.decode(bytes)),
+    );
     this.guard(s);
     if (b.manifest.id !== id) throw new Error("Endereço não corresponde");
     return b;

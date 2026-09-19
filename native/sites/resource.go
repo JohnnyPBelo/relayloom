@@ -184,6 +184,18 @@ func resourceScope(value any) (bool, []string, error) {
 	if text, ok := value.(string); ok && text == "public" {
 		return true, nil, nil
 	}
+	// Decoded wire arrays use []any; authenticated runtime metadata uses
+	// []string. Both must cross the same bounded, ordered identity checks.
+	if typed, ok := value.([]string); ok {
+		if len(typed) < 1 || len(typed) > 64 {
+			return false, nil, resourceError()
+		}
+		converted := make([]any, len(typed))
+		for i, id := range typed {
+			converted[i] = id
+		}
+		value = converted
+	}
 	values, ok := value.([]any)
 	if !ok || len(values) < 1 || len(values) > 64 {
 		return false, nil, resourceError()

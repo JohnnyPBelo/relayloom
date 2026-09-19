@@ -80,7 +80,7 @@ func ValidateDocument(v any, attachments any) error {
 	}
 	version, e := docNumber(s["version"])
 	pages, ok := s["pages"].([]any)
-	if e != nil || (version != 1 && version != 2) || !ok || len(pages) < 1 || len(pages) > 12 || !siteText(s["title"], 120) || !siteText(s["description"], 500) || !siteIDPattern.MatchString(docTextValue(s["home"])) {
+	if e != nil || (version != 1 && version != 2 && version != 3) || !ok || len(pages) < 1 || len(pages) > 12 || !siteText(s["title"], 120) || !siteText(s["description"], 500) || !siteIDPattern.MatchString(docTextValue(s["home"])) {
 		return fail()
 	}
 	d, ok := siteShape(s["design"], []string{"font", "width", "radius", "accent"}, nil)
@@ -88,6 +88,7 @@ func ValidateDocument(v any, attachments any) error {
 		return fail()
 	}
 	ids, slugs, nodes := map[string]bool{}, map[string]bool{}, map[string]bool{}
+	resources := map[string]string{}
 	for _, value := range pages {
 		p, ok := siteShape(value, []string{"id", "slug", "title", "blocks"}, nil)
 		if !ok || !siteIDPattern.MatchString(docTextValue(p["id"])) || ids[docTextValue(p["id"])] || !siteSlugPattern.MatchString(docTextValue(p["slug"])) || slugs[docTextValue(p["slug"])] || !siteText(p["title"], 80) || docTrim(docTextValue(p["title"])) == "" {
@@ -122,16 +123,40 @@ func ValidateDocument(v any, attachments any) error {
 			return fail()
 		}
 		for _, value := range list {
-			b, ok := siteShape(value, []string{"id", "type", "title", "body"}, []string{"url", "format", "children", "media", "style", "limit", "data"})
-			if !ok || !siteIDPattern.MatchString(docTextValue(b["id"])) || nodes[docTextValue(b["id"])] || !docContains([]string{"hero", "text", "links", "callout", "heading", "quote", "button", "image", "gallery", "divider", "spacer", "columns", "posts", "table"}, docTextValue(b["type"])) || !siteText(b["title"], 120) || !siteText(b["body"], 4000) {
+			b, ok := siteShape(value, []string{"id", "type", "title", "body"}, []string{"url", "format", "children", "media", "style", "limit", "data", "reference"})
+			if !ok || !siteIDPattern.MatchString(docTextValue(b["id"])) || nodes[docTextValue(b["id"])] || !docContains([]string{"hero", "text", "links", "callout", "heading", "quote", "button", "image", "gallery", "divider", "spacer", "columns", "posts", "table", "resource"}, docTextValue(b["type"])) || !siteText(b["title"], 120) || !siteText(b["body"], 4000) {
 				return fail()
 			}
 			data, hasData := b["data"]
 			if docTextValue(b["type"]) == "table" {
-				if version != 2 || !hasData || ValidateDataTable(data) != nil {
+				if version < 2 || !hasData || ValidateDataTable(data) != nil {
 					return fail()
 				}
 			} else if hasData {
+				return fail()
+			}
+			refValue, hasRef := b["reference"]
+			if docTextValue(b["type"]) == "resource" {
+				if _, hasURL := b["url"]; version != 3 || !hasRef || hasURL {
+					return fail()
+				}
+				ref, err := ParseResourceReference(refValue)
+				if err != nil {
+					return err
+				}
+				encoded, err := core.Canonical(ref)
+				if err != nil {
+					return err
+				}
+				id := docTextValue(ref["bundleId"])
+				if previous, exists := resources[id]; exists && previous != string(encoded) {
+					return fail()
+				}
+				resources[id] = string(encoded)
+				if len(resources) > 32 {
+					return fail()
+				}
+			} else if hasRef {
 				return fail()
 			}
 			nodes[docTextValue(b["id"])] = true
@@ -300,4 +325,41 @@ func docContains(values []string, value string) bool {
 		}
 	}
 	return false
+}
+
+// ResourceBlocks requires an already validated document from an authenticated
+// snapshot. It does not authenticate resource bytes or grant reading rights.
+type ResourceBlock struct {
+	PageID    string         `json:"pageId"`
+	BlockID   string         `json:"blockId"`
+	Reference map[string]any `json:"reference"`
+}
+
+func ResourceBlocks(site map[string]any) ([]ResourceBlock, error) {
+	result := []ResourceBlock{}
+	var visit func([]any, string) error
+	visit = func(nodes []any, pageID string) error {
+		for _, value := range nodes {
+			node := value.(map[string]any)
+			if node["type"] == "resource" {
+				ref, err := ParseResourceReference(node["reference"])
+				if err != nil {
+					return err
+				}
+				result = append(result, ResourceBlock{pageID, docTextValue(node["id"]), ref})
+			}
+			if children, ok := node["children"].([]any); ok {
+				if err := visit(children, pageID); err != nil {
+					return err
+				}
+			}
+		}
+		return nil
+	}
+	for _, raw := range site["pages"].([]any) {
+		if err := visit(raw.(map[string]any)["blocks"].([]any), docTextValue(raw.(map[string]any)["id"])); err != nil {
+			return nil, err
+		}
+	}
+	return result, nil
 }

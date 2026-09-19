@@ -1,0 +1,393 @@
+.resource-library {
+  width: min(980px, calc(100vw - 32px));
+  max-width: 980px;
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  padding: 28px;
+  background: var(--surface);
+  background: color-mix(
+    in srgb,
+    var(--surface) 90%,
+    var(--glass, var(--surface))
+  );
+  backdrop-filter: var(--glass-blur, none);
+  -webkit-backdrop-filter: var(--glass-blur, none);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  color: var(--ink);
+}
+.resource-intro {
+  max-width: 70ch;
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 8px 0 22px;
+}
+.resource-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 6px;
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  margin-bottom: 20px;
+}
+.resource-tabs button {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 10px 16px;
+  flex: 1;
+  border-radius: 12px;
+}
+.resource-tabs button[aria-pressed="true"] {
+  background: var(--surface);
+  box-shadow: 0 3px 10px #123f4010;
+  color: var(--ink);
+  font-weight: 700;
+}
+.resource-search {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0;
+}
+.resource-search label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+.resource-search input {
+  min-width: 0;
+  width: 100%;
+}
+.resource-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.resource-card {
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  background: var(--surface);
+}
+.resource-card h3 {
+  font-size: 17px;
+  overflow-wrap: anywhere;
+  margin: 0 0 7px;
+}
+.resource-card p {
+  margin: 5px 0;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.resource-card-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: auto;
+}
+.resource-card-actions button {
+  min-height: 44px;
+  flex: 1 1 140px;
+  justify-content: center;
+}
+.resource-card-actions button:first-child {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.resource-card-actions button:last-child {
+  font-size: 13px;
+}
+.resource-policy {
+  color: var(--muted);
+  font-size: 13px;
+}
+.resource-policy svg {
+  vertical-align: middle;
+  margin-right: 5px;
+}
+.resource-empty {
+  border: 1px dashed var(--line);
+  border-radius: 20px;
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  padding: 36px 24px;
+  color: var(--muted);
+}
+.resource-empty h3 {
+  color: var(--ink);
+  margin: 14px 0 4px;
+}
+.resource-empty p {
+  max-width: 55ch;
+  line-height: 1.6;
+}
+.resource-drop {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  border: 1px dashed var(--line);
+  border-radius: 20px;
+  padding: 28px 20px;
+  background: var(--soft);
+  text-align: center;
+  margin: 20px 0;
+  overflow-wrap: anywhere;
+}
+.resource-drop input {
+  max-width: 100%;
+  min-height: 44px;
+}
+.resource-drop span {
+  font-size: 13px;
+  color: var(--muted);
+}
+.resource-form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 20px 0;
+}
+.resource-form-row label {
+  flex: 1 1 240px;
+  display: grid;
+  gap: 8px;
+  font-weight: 600;
+}
+.resource-form-row input,
+.resource-form-row select {
+  width: 100%;
+  min-width: 0;
+}
+.resource-create-footer {
+  padding-top: 18px;
+  margin-top: 18px;
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 10px;
+}
+.resource-create-footer p {
+  margin: 0;
+  line-height: 1.6;
+}
+.resource-create-footer p svg {
+  vertical-align: middle;
+  margin-right: 6px;
+}
+.resource-create-footer button {
+  justify-self: end;
+  min-height: 46px;
+  min-width: 190px;
+}
+.resource-pending {
+  border: 1px solid var(--line);
+  background: var(--soft);
+  padding: 16px;
+  border-radius: 16px;
+  margin: 14px 0;
+}
+.resource-pending p {
+  line-height: 1.5;
+}
+.resource-pending button {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.resource-feedback {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink);
+  font-size: 14px;
+}
+.resource-library-preview {
+  border-top: 1px solid var(--line);
+  margin-top: 24px;
+  padding-top: 20px;
+}
+.site-resource {
+  min-width: 0;
+  padding: clamp(18px, 3vw, 30px);
+  color: var(--site-ink, var(--ink));
+  border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+  border-radius: var(--site-radius, 20px);
+  background: var(--site-paper, var(--surface));
+}
+.resource-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+.resource-heading > div {
+  min-width: 0;
+}
+.resource-heading h2 {
+  font-size: clamp(21px, 3vw, 30px);
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+  margin: 5px 0 8px;
+}
+.site-resource .resource-heading p {
+  overflow-wrap: anywhere;
+  line-height: 1.5;
+  font-size: 13px;
+  margin: 0;
+  color: inherit;
+}
+.resource-symbol {
+  display: grid;
+  place-items: center;
+  background: var(--soft);
+  border-radius: 14px;
+  flex: 0 0 48px;
+  min-height: 48px;
+}
+.site-resource .resource-credit {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: inherit;
+  margin: 16px 0;
+}
+.resource-credit code {
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+.site-resource .resource-status {
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 18px 0 12px;
+}
+.site-resource > button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin: 0 8px 10px 0;
+  padding: 10px 14px;
+}
+.site-resource .small-note {
+  color: inherit;
+  font-size: 12px;
+  line-height: 1.6;
+  margin-top: 18px;
+}
+.resource-check {
+  font-size: 13px;
+}
+.resource-size {
+  white-space: nowrap;
+}
+.resource-payload {
+  display: grid;
+  gap: 16px;
+  margin-top: 16px;
+  min-width: 0;
+}
+.resource-payload img,
+.resource-payload video {
+  max-width: 100%;
+  max-height: 500px;
+  object-fit: contain;
+  border-radius: 14px;
+}
+.resource-payload audio {
+  max-width: 100%;
+  width: 100%;
+}
+.resource-download {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 48px;
+  padding: 12px 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow-wrap: anywhere;
+  font-weight: 600;
+}
+.resource-download span {
+  font-size: 12px;
+  font-weight: 400;
+  flex-basis: 100%;
+  color: var(--muted);
+}
+@media (max-width: 650px) {
+  .resource-library {
+    padding: 20px;
+    width: calc(100vw - 16px);
+    max-height: calc(100dvh - 16px);
+    border-radius: 22px;
+  }
+  .resource-grid {
+    grid-template-columns: 1fr;
+  }
+  .resource-tabs button {
+    flex-basis: 120px;
+  }
+  .resource-create-footer button {
+    justify-self: stretch;
+  }
+  .resource-heading {
+    gap: 12px;
+  }
+  .site-resource > button {
+    width: 100%;
+    justify-content: center;
+  }
+  .resource-library .table-editor {
+    max-width: 100%;
+    overflow: auto;
+  }
+}
+
+.resource-card .small-note,
+.site-resource .small-note,
+.resource-create-footer .small-note {
+  text-align: left;
+  display: block;
+}
+
+/* Resource readers belong to the signed site's palette; the library retains
+   the application's glass surface and theme. */
+.site-resource .resource-symbol,
+.studio-surface .site-resource > button.secondary,
+.studio-surface .site-resource p.error {
+  background: var(--site-soft, var(--soft));
+  color: inherit;
+}
+.studio-surface .site-resource > button.secondary,
+.studio-surface .site-resource a.resource-download {
+  border-color: color-mix(in srgb, currentColor 35%, transparent);
+}
+.site-resource .eyebrow,
+.studio-surface .site-resource a.resource-download,
+.site-resource .resource-download span {
+  color: inherit;
+}
+.studio-surface .site-resource p.error {
+  border-color: currentColor;
+  border-inline-start-width: 3px;
+}
+.site-resource :focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 3px;
+}

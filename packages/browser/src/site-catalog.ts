@@ -1,3 +1,4 @@
+import { siteResourceBlocks } from "../../content/src/site";
 import {
   canonical,
   exactShape,
@@ -364,7 +365,14 @@ export class BrowserSiteCatalog {
   }
   /** The logical UI request and its freshly signed snapshot/cipher share one
    * durable preparation. Replays are resolved before creating any new bytes. */
-  createPublication(name: string, input: SitePublicationRequest) {
+  createPublication(
+    name: string,
+    input: SitePublicationRequest,
+    validateResources?: (
+      request: ReturnType<typeof requests.normalize>,
+      readValue: (key: string) => Promise<unknown>,
+    ) => Promise<void>,
+  ) {
     const request = requests.normalize(this.owner, name, input);
     return this.run(async (values, index) => {
       const record = await this.record(values, index, this.owner.id, name);
@@ -408,6 +416,13 @@ export class BrowserSiteCatalog {
         )
       )
         throw new Error("Conclui ou cancela a publicação pendente");
+      if (siteResourceBlocks(request.payload.site).length) {
+        if (!validateResources)
+          throw new Error(
+            "As referências de recursos precisam de verificação antes de publicar",
+          );
+        await validateResources(request, (key) => values.read(key));
+      }
       const bundle = await this.profile.signSiteBundle(
         name,
         request.context.sequence,

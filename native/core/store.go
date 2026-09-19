@@ -397,6 +397,9 @@ func (s *ContentStore) insert(bundle Bundle, pinned, reserved bool) (bool, error
 	return true, nil
 }
 func (s *ContentStore) read(id string, touch bool) (Bundle, error) {
+	return s.readVerified(id, touch, false)
+}
+func (s *ContentStore) readVerified(id string, touch, historical bool) (Bundle, error) {
 	path, err := s.path(id)
 	if err != nil {
 		return Bundle{}, err
@@ -416,14 +419,21 @@ func (s *ContentStore) read(id string, touch bool) (Bundle, error) {
 	if bundle.Manifest.ID != id {
 		return Bundle{}, errors.New("endereço não corresponde")
 	}
-	if err = VerifyBundle(bundle); err != nil {
-		return Bundle{}, err
+	if historical {
+		err = VerifyBundleAt(bundle, bundle.Manifest.Created)
+	} else {
+		err = VerifyBundle(bundle)
 	}
-	f, err := fingerprint(path)
 	if err != nil {
 		return Bundle{}, err
 	}
-	s.manifests[id] = manifestCache{cloneManifest(bundle.Manifest), f}
+	if !historical {
+		f, err := fingerprint(path)
+		if err != nil {
+			return Bundle{}, err
+		}
+		s.manifests[id] = manifestCache{cloneManifest(bundle.Manifest), f}
+	}
 	if touch {
 		entry.Accessed = time.Now().UnixMilli()
 		s.index[id] = entry
@@ -435,6 +445,22 @@ func (s *ContentStore) GetWithTouch(id string, touch bool) (Bundle, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	return s.read(id, touch)
+}
+
+// GetStored authenticates historical bytes without populating the live cache.
+// Callers must enforce current expiry before displaying or serving them.
+func (s *ContentStore) GetStored(id string) (Bundle, error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	return s.readVerified(id, false, true)
+}
+
+// HasRecord is only a local index hint, never authentication or availability.
+func (s *ContentStore) HasRecord(id string) bool {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	_, ok := s.index[id]
+	return ValidAddress(id) && ok
 }
 func (s *ContentStore) Has(id string) bool {
 	s.mu.Lock()

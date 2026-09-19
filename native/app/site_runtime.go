@@ -35,6 +35,11 @@ func inspectSiteBundle(bundle core.Bundle, identity *core.Identity) (*sites.Veri
 		return nil, errors.New("conteúdo de site inválido")
 	}
 	if _, versioned := m["siteRevision"]; !versioned {
+		doc, _ := m["site"].(map[string]any)
+		version, _ := number(doc["version"])
+		if version == 3 {
+			return nil, errors.New("sites versão 3 exigem um snapshot assinado")
+		}
 		return nil, validateContent(Content(m))
 	}
 	verified, err := sites.VerifyContent(m, bundle.Manifest.Author, "")
@@ -479,7 +484,7 @@ func (r *siteRuntime) command(body map[string]any) (any, error) {
 		request["confirmedHeads"] = heads
 	}
 	name := text(body["name"])
-	op, err := r.catalog.CreatePublication(name, request)
+	op, err := r.catalog.CreatePublication(name, request, r.validateResources)
 	if err != nil {
 		return nil, err
 	}

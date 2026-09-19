@@ -1,3 +1,4 @@
+import { siteResourceBlocks } from "../../content/src/site";
 import {
   canonical,
   hash,
@@ -340,7 +341,13 @@ export class NodeSiteCatalog {
   }
   /** The logical UI request and its freshly signed snapshot/cipher share one
    * durable preparation. Replays are resolved before creating any new bytes. */
-  createPublication(name: string, input: SitePublicationRequest) {
+  createPublication(
+    name: string,
+    input: SitePublicationRequest,
+    validateResources?: (
+      request: ReturnType<typeof requests.normalize>,
+    ) => void,
+  ) {
     const request = requests.normalize(this.identity.public, name, input);
     return this.run((values, index) => {
       const record = this.record(values, index, this.identity.public.id, name);
@@ -384,6 +391,13 @@ export class NodeSiteCatalog {
         )
       )
         throw new Error("Conclui ou cancela a publicação pendente");
+      if (siteResourceBlocks(request.payload.site).length) {
+        if (!validateResources)
+          throw new Error(
+            "As referências de recursos precisam de verificação antes de publicar",
+          );
+        validateResources(request);
+      }
       const content = snapshots.create(
         this.identity,
         name,

@@ -1,5 +1,11 @@
 export const siteContent = [
   ["Capa", "Cover", "Portada"],
+  ["Recurso", "Resource", "Recurso"],
+  [
+    "Escolhe primeiro um recurso para este bloco.",
+    "Choose a resource for this block first.",
+    "Elige primero un recurso para este bloque.",
+  ],
   ["Ligação", "Link", "Enlace"],
   ["Destaque", "Callout", "Destacado"],
   ["Título", "Heading", "Título"],

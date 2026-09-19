@@ -1,3 +1,4 @@
+import { SiteResourceView } from "./resource-view";
 import { SiteTableView } from "./table";
 import { t, getLanguage } from "../i18n/core";
 import { api } from "../api";
@@ -146,8 +147,12 @@ export function SiteNodeView({
   load,
   posts = [],
   onNavigate,
+  resourceTarget,
+  resourceAuthor,
 }: {
   node: SiteNode;
+  resourceTarget?: { snapshotId: string; pageId: string };
+  resourceAuthor?: { id: string; name: string };
   assets: Attachment[];
   load?: (index: number) => Promise<Attachment>;
   posts?: DisplayObject[];
@@ -173,6 +178,20 @@ export function SiteNodeView({
         <ArrowUpRight size={16} />
       </a>
     ) : null;
+  if (node.type === "resource" && node.reference)
+    return (
+      <>
+        {node.body && <SiteBody node={node} />}
+        <SiteResourceView
+          reference={node.reference}
+          authorHint={resourceAuthor}
+          title={node.title}
+          target={
+            resourceTarget ? { ...resourceTarget, blockId: node.id } : undefined
+          }
+        />
+      </>
+    );
   if (node.type === "table")
     return (
       <>
@@ -207,6 +226,8 @@ export function SiteNodeView({
                 load={load}
                 posts={posts}
                 onNavigate={onNavigate}
+                resourceTarget={resourceTarget}
+                resourceAuthor={resourceAuthor}
               />
             </section>
           ))}
@@ -400,6 +421,8 @@ export function SiteReader({
             posts={posts}
             load={load}
             onNavigate={setPage}
+            resourceTarget={{ snapshotId: contentId, pageId: page.id }}
+            resourceAuthor={verified.author}
           />
         </section>
       ))}

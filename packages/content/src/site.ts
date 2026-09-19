@@ -1,3 +1,7 @@
+import {
+  parseSiteResourceReference,
+  type SiteResourceReference,
+} from "./site-resource";
 import { safeSiteUrl } from "./site-url";
 export { safeSiteUrl } from "./site-url";
 import { parseSiteTable, type SiteTable } from "./site-data";
@@ -11,6 +15,7 @@ export const SITE_LIMITS = Object.freeze({
   depth: 3,
   bytes: 128 * 1024,
   assets: 4,
+  resources: 32,
 });
 export const SITE_BLOCKS = [
   "hero",
@@ -27,6 +32,7 @@ export const SITE_BLOCKS = [
   "columns",
   "posts",
   "table",
+  "resource",
 ] as const;
 export type SiteNodeType = (typeof SITE_BLOCKS)[number];
 export type SiteNode = {
@@ -40,6 +46,7 @@ export type SiteNode = {
   media?: { attachment: number; alt: string }[];
   limit?: number;
   data?: SiteTable;
+  reference?: SiteResourceReference;
   style?: {
     align?: "left" | "center" | "right";
     tone?: "surface" | "soft" | "accent";
@@ -54,7 +61,7 @@ export type SitePage = {
   blocks: SiteNode[];
 };
 export type SiteDocument = {
-  version: 1 | 2;
+  version: 1 | 2 | 3;
   title: string;
   description: string;
   home: string;
@@ -129,7 +136,7 @@ export function validateSite(
   )
     fail("imagens acima de 2 MB");
   if (
-    ![1, 2].includes(s.version) ||
+    ![1, 2, 3].includes(s.version) ||
     !text(s.title, 120) ||
     !text(s.description, 500) ||
     !id(s.home) ||
@@ -149,7 +156,8 @@ export function validateSite(
     fail("estilo");
   const pages = new Set<string>(),
     slugs = new Set<string>(),
-    nodes = new Set<string>();
+    nodes = new Set<string>(),
+    resources = new Map<string, string>();
   for (const p of s.pages) {
     if (
       !exactShape(p, ["id", "slug", "title", "blocks"]) ||
@@ -180,7 +188,16 @@ export function validateSite(
         !exactShape(
           b,
           ["id", "type", "title", "body"],
-          ["url", "format", "children", "media", "style", "limit", "data"],
+          [
+            "url",
+            "format",
+            "children",
+            "media",
+            "style",
+            "limit",
+            "data",
+            "reference",
+          ],
         ) ||
         !id(b.id) ||
         nodes.has(b.id) ||
@@ -190,11 +207,29 @@ export function validateSite(
       )
         fail("bloco ou identificador repetido");
       if (b.type === "table") {
-        if (s.version !== 2 || !Object.hasOwn(b, "data"))
+        if (s.version < 2 || !Object.hasOwn(b, "data"))
           fail("tabela exige documento versão 2");
         parseSiteTable(b.data);
       } else if (Object.hasOwn(b, "data"))
         fail("dados num bloco que não é tabela");
+      if (b.type === "resource") {
+        if (
+          s.version !== 3 ||
+          !Object.hasOwn(b, "reference") ||
+          Object.hasOwn(b, "url")
+        )
+          fail("recurso exige documento versão 3 e uma referência");
+        const ref = parseSiteResourceReference(b.reference),
+          encoded = canonical(ref);
+        if (
+          resources.has(ref.bundleId) &&
+          resources.get(ref.bundleId) !== encoded
+        )
+          fail("referências divergentes para o mesmo recurso");
+        resources.set(ref.bundleId, encoded);
+        if (resources.size > SITE_LIMITS.resources) fail("demasiados recursos");
+      } else if (Object.hasOwn(b, "reference"))
+        fail("referência num bloco que não é recurso");
       nodes.add(b.id);
       if (nodes.size > SITE_LIMITS.blocks) fail("demasiados blocos");
       if (b.format !== undefined && !["plain", "markdown"].includes(b.format))
@@ -334,4 +369,29 @@ export function draftSummary<T extends { attachments?: Attachment[] }>(
         }
       : {}),
   };
+}
+
+/** Call after validating the document and its enclosing snapshot. Descriptors
+ * remain untrusted until the runtime authenticates and matches the resource. */
+export function siteResourceBlocks(
+  site: SiteDocument,
+): { pageId: string; blockId: string; reference: SiteResourceReference }[] {
+  const result: {
+    pageId: string;
+    blockId: string;
+    reference: SiteResourceReference;
+  }[] = [];
+  function visit(nodes: SiteNode[], pageId: string) {
+    for (const node of nodes) {
+      if (node.type === "resource")
+        result.push({
+          pageId,
+          blockId: node.id,
+          reference: parseSiteResourceReference(node.reference),
+        });
+      if (node.children) visit(node.children, pageId);
+    }
+  }
+  for (const page of site.pages) visit(page.blocks, page.id);
+  return result;
 }

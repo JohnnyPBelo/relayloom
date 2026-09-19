@@ -1,3 +1,7 @@
+import {
+  parseSiteResourceReference,
+  type SiteResourceReference,
+} from "../../../../packages/content/src/site-resource";
 import { t } from "../i18n/core";
 import {
   legacySite,
@@ -28,8 +32,21 @@ export const labels: Record<SiteNodeType, string> = {
   columns: "Colunas",
   posts: "Publicações",
   table: "Tabela",
+  resource: "Recurso",
 };
-export function newBlock(type: SiteNodeType): SiteNode {
+export function newBlock(
+  type: SiteNodeType,
+  reference?: SiteResourceReference,
+): SiteNode {
+  if (type === "resource" && !reference)
+    throw new Error("Escolhe primeiro um recurso para este bloco.");
+  const checkedReference =
+    type === "resource" ? parseSiteResourceReference(reference) : undefined;
+  let resourceTitle = "";
+  for (const character of checkedReference?.name ?? "") {
+    if (resourceTitle.length + character.length > 120) break;
+    resourceTitle += character;
+  }
   return {
     id: crypto.randomUUID(),
     type,
@@ -49,9 +66,11 @@ export function newBlock(type: SiteNodeType): SiteNode {
         columns: "",
         posts: t("Do meu diário"),
         table: t("Dados da comunidade"),
+        resource: resourceTitle,
       } as const
     )[type],
     body: "",
+    ...(type === "resource" ? { reference: checkedReference } : {}),
     ...(type === "columns"
       ? { children: [], style: { columns: 2 as const } }
       : {}),

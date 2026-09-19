@@ -49,15 +49,22 @@ export function SiteVisit({
   useEffect(() => {
     if (observedVersions.current !== knownVersions) {
       observedVersions.current = knownVersions;
-      if (following.current) void load();
+      if (following.current) void load(undefined, undefined, true);
     }
   }, [knownVersions]);
-  async function load(revisionId?: string, legacyId?: string) {
+  async function load(
+    revisionId?: string,
+    legacyId?: string,
+    background = false,
+  ) {
     const own = ++generation.current,
       controller = new AbortController();
     request.current?.abort();
     request.current = controller;
-    setSelected(undefined);
+    // Inventory can catch up after resolve has already opened this snapshot.
+    // Keep its reader mounted during that check so focus and local queries survive.
+    // Explicit navigation still clears immediately; failed/missing heads clear below.
+    if (!background) setSelected(undefined);
     setStatus("loading");
     setError("");
     try {
@@ -106,9 +113,11 @@ export function SiteVisit({
           return;
         }
       }
+      setSelected(undefined);
       setStatus(result.status);
     } catch (e) {
       if (own === generation.current) {
+        setSelected(undefined);
         setError((e as Error).message);
         setStatus("error");
       }

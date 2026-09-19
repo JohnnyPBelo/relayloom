@@ -6,8 +6,12 @@ import { browserCertificateCrypto } from "./certificate-crypto";
 import { decryptBundle } from "./crypto";
 const snapshots = createSiteContentProtocol(browserCertificateCrypto);
 export function verifySiteContent(content: Content, author: PublicIdentity) {
-  if (content.type !== "site" || !Object.hasOwn(content, "siteRevision"))
+  if (content.type !== "site") return null;
+  if (!Object.hasOwn(content, "siteRevision")) {
+    if (content.site?.version === 3)
+      throw new Error("Sites versão 3 exigem um snapshot assinado");
     return null;
+  }
   return snapshots.verify(content, author);
 }
 export async function inspectPublicSite(bundle: Bundle) {

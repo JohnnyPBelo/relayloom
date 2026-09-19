@@ -24,7 +24,7 @@ mkdirSync(join(repository, ".runtime/desktop"), { recursive: true });
 const profile = mkdtempSync(
   join(repository, ".runtime/desktop/packaged-smoke-"),
 );
-const temporary = join(repository, ".cache/desktop/tmp");
+const temporary = join(repository, ".cache/t");
 mkdirSync(temporary, { recursive: true });
 const environment = {
   ...process.env,

@@ -150,6 +150,12 @@ func (r *resourceRuntime) command(body map[string]any) (any, error) {
 		return nil, err
 	}
 	action := text(body["action"])
+	if action == "inspect" || action == "obtain" {
+		if _, err := r.node.objectsLocked(); err != nil {
+			return nil, err
+		}
+		return r.read(body)
+	}
 	if action == "state" && commandShape(body, []string{"action"}, "") {
 		return r.catalog.State()
 	}

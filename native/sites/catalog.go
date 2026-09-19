@@ -397,7 +397,7 @@ func (c *Catalog) Operation(name string, seq int64, id string) (*OperationSummar
 	})
 	return result, e
 }
-func (c *Catalog) CreatePublication(name string, input any) (OperationSummary, error) {
+func (c *Catalog) CreatePublication(name string, input any, validateResources ...func(NormalizedRequest) error) (OperationSummary, error) {
 	var result OperationSummary
 	q, e := NormalizeRequest(c.identity.Public, name, input)
 	if e != nil {
@@ -454,6 +454,18 @@ func (c *Catalog) CreatePublication(name string, input any) (OperationSummary, e
 		}
 		if len(heads) > Predecessors {
 			heads = heads[:Predecessors]
+		}
+		refs, e := ResourceBlocks(q.Payload["site"].(map[string]any))
+		if e != nil {
+			return e
+		}
+		if len(refs) > 0 {
+			if len(validateResources) != 1 || validateResources[0] == nil {
+				return errors.New("as referências de recursos precisam de verificação antes de publicar")
+			}
+			if e = validateResources[0](q); e != nil {
+				return e
+			}
 		}
 		content, e := CreateContent(c.identity, name, q.Context.Sequence, heads, q.Payload)
 		if e != nil {

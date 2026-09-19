@@ -1,3 +1,4 @@
+import { validateResourcePublication } from "./resources";
 import React, {
   useEffect,
   useMemo,
@@ -589,6 +590,17 @@ export function SiteEditor({
         posts={posts}
         busy={frozen}
         header={header}
+        resourceConfig={{
+          ownerId,
+          scope:
+            state.editing?.recipients === "public"
+              ? "public"
+              : [
+                  ...new Set([ownerId, ...(state.editing?.recipients ?? [])]),
+                ].sort(),
+          ttlMs: state.editing?.ttlMs ?? 30 * 86400_000,
+          active: isActive,
+        }}
         managedFeedback
         onActionError={(error) => publisher.report(error)}
         publishDisabled={!canPublish}
@@ -597,6 +609,17 @@ export function SiteEditor({
           await onSaved();
         }}
         onPublish={async (v) => {
+          if (!state.editing?.pending && !state.catalog.pending.length)
+            await validateResourcePublication(
+              v.site,
+              state.editing?.recipients === "public"
+                ? "public"
+                : [
+                    ...new Set([ownerId, ...(state.editing?.recipients ?? [])]),
+                  ].sort(),
+              api,
+              isActive,
+            );
           await publisher.publish(
             v,
             approved ? state.catalog.heads.map((h) => h.id).sort() : undefined,

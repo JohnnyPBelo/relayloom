@@ -286,12 +286,67 @@ for (const backend of ["node", "native"] as const)
         } catch {
           invalidRejected = true;
         }
+        const address = "relayloom:site:" + w.profile.identity.id + "/profile";
+        const catalog = await w.app.call("site-command", {
+          action: "state",
+          address,
+        });
+        const publication = await w.app.call("site-command", {
+          action: "publish",
+          name: "profile",
+          sequence: catalog.nextSequence,
+          operationId: crypto.randomUUID(),
+          expectedBase: catalog.base,
+          recipients: "public",
+          ttlMs: 3600000,
+          payload: {
+            type: "site",
+            blocks: [],
+            theme: "sand",
+            site: {
+              version: 3,
+              title: "Recursos distribuídos",
+              description: "Obtidos por escolha",
+              home: "home",
+              design: {
+                font: "sans",
+                width: "standard",
+                radius: "soft",
+                accent: "#207a70",
+              },
+              pages: [
+                {
+                  id: "home",
+                  slug: "inicio",
+                  title: "Início",
+                  blocks: [
+                    {
+                      id: "optional",
+                      type: "resource",
+                      title: "Arquivo",
+                      body: "",
+                      reference,
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        });
+        if (publication.operation.phase !== "ready")
+          throw Error(publication.error ?? "site not ready");
+        const query = {
+          snapshotId: publication.operation.bundleId,
+          pageId: "home",
+          blockId: "optional",
+        };
         const witness = await w.app.call("publish", {
           content: { type: "post", text: "Ordinary automatic discovery" },
           recipients: "public",
         });
         return {
           reference,
+          query,
           hash: await w.rl.hash(w.rl.canonical(bundle)),
           witness: witness.id,
           payload,
@@ -314,7 +369,9 @@ for (const backend of ["node", "native"] as const)
       }, invitation);
       await until(
         () => native!.call("state"),
-        (s) => s.objects.some((o: any) => o.id === resource.witness),
+        (s) =>
+          s.objects.some((o: any) => o.id === resource.witness) &&
+          s.objects.some((o: any) => o.id === resource.query.snapshotId),
       );
       await new Promise((r) => setTimeout(r, 4600));
       expect(await ids(b)).not.toContain(resource.reference.bundleId);
@@ -323,7 +380,18 @@ for (const backend of ["node", "native"] as const)
           (o: any) => o.id === resource.reference.bundleId,
         ),
       ).toBe(false);
-      await native.call("retrieve", { id: resource.reference.bundleId });
+      expect(
+        (
+          await native.call("resource-command", {
+            action: "inspect",
+            ...resource.query,
+          })
+        ).status,
+      ).toBe("missing");
+      await native.call("resource-command", {
+        action: "obtain",
+        ...resource.query,
+      });
       const arrived = await until(
         () => native!.call("state"),
         (s) => s.objects.some((o: any) => o.id === resource.reference.bundleId),
@@ -351,36 +419,53 @@ for (const backend of ["node", "native"] as const)
       await start(c, "Novo leitor");
       await pair(b, c);
       await expect.poll(() => ids(c)).toContain(resource.witness);
+      await expect.poll(() => ids(c)).toContain(resource.query.snapshotId);
       await new Promise((r) => setTimeout(r, 4600));
       expect(await ids(c)).not.toContain(resource.reference.bundleId);
       await b.evaluate(() => (window as any).mesh.setRelay(false));
       await c.evaluate(
-        (id) => (window as any).app.call("retrieve", { id }),
-        resource.reference.bundleId,
+        (query) =>
+          (window as any).app.call("resource-command", {
+            action: "obtain",
+            ...query,
+          }),
+        resource.query,
       );
       await new Promise((r) => setTimeout(r, 2300));
       expect(await ids(c)).not.toContain(resource.reference.bundleId);
       await b.evaluate(() => (window as any).mesh.setRelay(true));
       await c.evaluate(
-        (id) => (window as any).app.call("retrieve", { id }),
-        resource.reference.bundleId,
+        (query) =>
+          (window as any).app.call("resource-command", {
+            action: "obtain",
+            ...query,
+          }),
+        resource.query,
       );
       await expect.poll(() => ids(c)).toContain(resource.reference.bundleId);
-      const seeded = await c.evaluate(async (reference) => {
-        const w = window as any,
-          bundle = await w.profile.getBundle(reference.bundleId),
-          full = await w.app.call("view", { id: reference.bundleId });
-        w.rl.resources.matchSiteResource(reference, full.content, {
-          id: bundle.manifest.id,
-          authorId: bundle.manifest.author.id,
-          kind: bundle.manifest.kind,
-        });
-        return {
-          hash: await w.rl.hash(w.rl.canonical(bundle)),
-          author: bundle.manifest.author.id,
-          content: full.content,
-        };
-      }, resource.reference);
+      const seeded = await c.evaluate(
+        async ({ reference, query }) => {
+          const w = window as any,
+            bundle = await w.profile.getBundle(reference.bundleId),
+            full = await w.app.call("resource-command", {
+              action: "obtain",
+              ...query,
+            });
+          if (full.status !== "available")
+            throw Error("resource reference did not resolve");
+          w.rl.resources.matchSiteResource(reference, full.content, {
+            id: bundle.manifest.id,
+            authorId: bundle.manifest.author.id,
+            kind: bundle.manifest.kind,
+          });
+          return {
+            hash: await w.rl.hash(w.rl.canonical(bundle)),
+            author: bundle.manifest.author.id,
+            content: full.content,
+          };
+        },
+        { reference: resource.reference, query: resource.query },
+      );
       expect(seeded.hash).toBe(resource.hash);
       expect(seeded.author).toBe(author.id);
       expect(seeded.content).toEqual(resource.payload);
@@ -403,7 +488,7 @@ for (const backend of ["node", "native"] as const)
             exactCiphertext: true,
             authorPreserved: true,
             scope:
-              "Actual browser application creation API, RTC/WS and native process. Editor UI and physical radios not tested.",
+              "Actual browser creation and signed-snapshot reference APIs, RTC/WS and native process. Editor UI and physical radios not tested.",
           },
           null,
           2,

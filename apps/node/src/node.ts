@@ -488,6 +488,16 @@ export class LoomNode extends EventEmitter {
       throw new Error("Estado privado indisponível");
     this.resourceRuntimeOwner = identity;
     this.resourceRuntime = new ResourceRuntime({
+      identity,
+      withdrawn: (id, authorId) => {
+        const m = this.privateState.mutations[id];
+        return (
+          m?.author === authorId && m.deleted === true && m.expires > Date.now()
+        );
+      },
+      request: (id) => {
+        this.retrieve(id);
+      },
       catalog: new NodeResourceCatalog(this.siteDatabase(identity), identity),
       store: this.store,
       ensure: () => {
@@ -513,6 +523,8 @@ export class LoomNode extends EventEmitter {
     return this.resourceRuntime;
   }
   resourceCommand(command: unknown) {
+    if (["inspect", "obtain"].includes((command as any)?.action))
+      this.objects();
     return this.resources().command(command);
   }
   private sites() {
@@ -525,6 +537,12 @@ export class LoomNode extends EventEmitter {
     this.siteRuntimeOwner = identity;
     this.siteRuntime = new SiteRuntime({
       identity,
+      knownWithdrawals: () =>
+        Object.fromEntries(
+          Object.entries(this.privateState.mutations)
+            .filter(([, m]) => m.deleted && m.expires > Date.now())
+            .map(([id, m]) => [id, m.author]),
+        ),
       catalog,
       store: this.store,
       blocked: () => this.config.blocked,
@@ -568,6 +586,7 @@ export class LoomNode extends EventEmitter {
     return this.siteRuntime;
   }
   siteCommand(command: unknown) {
+    if ((command as any)?.action === "publish") this.objects();
     return this.sites().command(command);
   }
   private groupRetries = new Map<string, GroupRetry>();
@@ -1457,7 +1476,10 @@ export class LoomNode extends EventEmitter {
       throw new Error(
         "Guarda recursos opcionais através do gestor de recursos",
       );
-    if (content.type === "site" && Object.hasOwn(content, "siteRevision"))
+    if (
+      content.type === "site" &&
+      (Object.hasOwn(content, "siteRevision") || content.site?.version === 3)
+    )
       throw new Error("Use a publicação versionada de sites");
     if (hasGroupBinding(content))
       throw new Error("O envio neste grupo ainda não está disponível");

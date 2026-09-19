@@ -217,6 +217,12 @@ export class BrowserApplication {
     this.#sites?.close();
     this.#sites = new BrowserSiteRuntime({
       profile: this.profile,
+      knownWithdrawals: async (readValue) =>
+        Object.fromEntries(
+          Object.entries(this.parse(await readValue("application")).mutations)
+            .filter(([, m]) => m.deleted && m.expires > Date.now())
+            .map(([id, m]) => [id, m.author]),
+        ),
       blocked: async () =>
         ((await this.profile.getValue("mesh-settings")) as any)?.blocked ?? [],
       readers: (ids) => this.readers(ids),
@@ -228,6 +234,17 @@ export class BrowserApplication {
     this.#resources?.close();
     this.#resources = new BrowserResourceRuntime({
       profile: this.profile,
+      withdrawn: async (id, authorId) => {
+        const m = (await this.data()).mutations[id];
+        return (
+          m?.author === authorId && m.deleted === true && m.expires > Date.now()
+        );
+      },
+      blocked: async () =>
+        ((await this.profile.getValue("mesh-settings")) as any)?.blocked ?? [],
+      request: async (id) => {
+        await this.network.command("request", { id });
+      },
       readerSnapshot: async () => {
         const data = await this.data(),
           settings = (await this.profile.getValue("mesh-settings")) as any,
@@ -631,7 +648,10 @@ export class BrowserApplication {
       throw new Error(
         "Guarda recursos opcionais através do gestor de recursos",
       );
-    if (content.type === "site" && Object.hasOwn(content, "siteRevision"))
+    if (
+      content.type === "site" &&
+      (Object.hasOwn(content, "siteRevision") || content.site?.version === 3)
+    )
       throw new Error("Publica revisões através do comando de site");
     if (grouped(content))
       throw new Error("Grupos dinâmicos ainda não estão ligados ao motor web");
@@ -994,6 +1014,7 @@ export class BrowserApplication {
     }
     this.owner();
     if (path === "resource-command") {
+      if (["inspect", "obtain"].includes(body?.action)) await this.objects();
       if (!this.#resources) throw new Error("Sessão de recursos bloqueada");
       return this.#resources.command(body);
     }

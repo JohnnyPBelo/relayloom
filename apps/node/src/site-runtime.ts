@@ -1,3 +1,4 @@
+import { validateSiteResources } from "./site-resource";
 import {
   exactShape,
   type Bundle,
@@ -39,7 +40,11 @@ export function inspectSite(bundle: Bundle, identity?: Identity) {
   const content = decryptBundle(bundle, identity) as Content;
   validateContent(content);
   if (content.type !== "site") throw new Error("Conteúdo de site inválido");
-  if (!Object.hasOwn(content, "siteRevision")) return null;
+  if (!Object.hasOwn(content, "siteRevision")) {
+    if (content.site?.version === 3)
+      throw new Error("Sites versão 3 exigem um snapshot assinado");
+    return null;
+  }
   return snapshots.verify(content, bundle.manifest.author);
 }
 interface Context {
@@ -47,6 +52,7 @@ interface Context {
   catalog: NodeSiteCatalog;
   store: ContentStore;
   blocked(): readonly string[];
+  knownWithdrawals?(): Record<string, string>;
   readers(ids: unknown): PublicIdentity[] | "public";
   publish(bundle: Bundle): void;
   request(ids: string[]): void;
@@ -281,17 +287,28 @@ export class SiteRuntime {
         !exactShape(value, [...publicationFields, "confirmedHeads"]))
     )
       throw new Error("Comando de site inválido");
-    const operation = this.context.catalog.createPublication(value.name, {
-      sequence: value.sequence,
-      operationId: value.operationId,
-      expectedBase: value.expectedBase,
-      payload: value.payload,
-      readers: this.context.readers(value.recipients),
-      ttlMs: value.ttlMs,
-      ...(value.confirmedHeads !== undefined
-        ? { confirmedHeads: value.confirmedHeads }
-        : {}),
-    });
+    const operation = this.context.catalog.createPublication(
+      value.name,
+      {
+        sequence: value.sequence,
+        operationId: value.operationId,
+        expectedBase: value.expectedBase,
+        payload: value.payload,
+        readers: this.context.readers(value.recipients),
+        ttlMs: value.ttlMs,
+        ...(value.confirmedHeads !== undefined
+          ? { confirmedHeads: value.confirmedHeads }
+          : {}),
+      },
+      (request) =>
+        validateSiteResources(
+          request,
+          this.context.identity,
+          this.context.store,
+          this.context.blocked(),
+          this.context.knownWithdrawals?.() ?? {},
+        ),
+    );
     const address = siteAddress(this.context.identity.public.id, value.name);
     if (["prepared", "committed"].includes(operation.phase))
       this.pending.set(this.slot(value.name, operation), {
