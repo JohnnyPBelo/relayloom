@@ -1,0 +1,87 @@
+{
+  "status": "PASS",
+  "scope": "One real UI scenario per engine, six site/app palette combinations and Axe before/after retrieval. Full regression remains pending.",
+  "checks": [
+    {
+      "engine": "chromium",
+      "stats": {
+        "startTime": "2026-09-18T14:20:08.393Z",
+        "duration": 20780.841,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "command": [
+        "node",
+        "/home/absint0o/projects/relayloom/node_modules/playwright/cli.js",
+        "test",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "tests/browser/site-resource-review.spec.ts",
+        "--grep",
+        "signed resource reader"
+      ],
+      "env": {
+        "RELAYLOOM_MATRIX_ENGINE": "chromium",
+        "PLAYWRIGHT_BROWSERS_PATH": "/home/absint0o/projects/relayloom/.cache/playwright"
+      }
+    },
+    {
+      "engine": "firefox",
+      "stats": {
+        "startTime": "2026-09-18T14:21:21.867Z",
+        "duration": 31118.143,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "command": [
+        "node",
+        "/home/absint0o/projects/relayloom/node_modules/playwright/cli.js",
+        "test",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "tests/browser/site-resource-review.spec.ts",
+        "--grep",
+        "signed resource reader"
+      ],
+      "env": {
+        "RELAYLOOM_MATRIX_ENGINE": "firefox",
+        "PLAYWRIGHT_BROWSERS_PATH": "/home/absint0o/projects/relayloom/.cache/playwright"
+      }
+    },
+    {
+      "engine": "webkit",
+      "stats": {
+        "startTime": "2026-09-18T14:22:48.113Z",
+        "duration": 30951.921,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "command": [
+        "node",
+        "/home/absint0o/projects/relayloom/node_modules/playwright/cli.js",
+        "test",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "tests/browser/site-resource-review.spec.ts",
+        "--grep",
+        "signed resource reader"
+      ],
+      "env": {
+        "RELAYLOOM_MATRIX_ENGINE": "webkit",
+        "PLAYWRIGHT_BROWSERS_PATH": "/home/absint0o/projects/relayloom/.cache/playwright"
+      }
+    }
+  ],
+  "sources": {
+    "apps/web/src/site/resource-view.tsx": "e6cff5f9a6c25271a392b4fcdbd1ce384bc58de1ceebf7571f7a24c8bd17565d",
+    "apps/web/src/site/resources.css": "69d4f95bec7c68f21d13f434503e7d329094d4ab7d17e9d8cf6c433e27ce6cc3",
+    "apps/web/src/site/visit.tsx": "d23bcca1bb7798b6687271536750402c24691fe50023f1edee25167161e4be08",
+    "tests/browser/site-resource-review.spec.ts": "41ae0f618ac968238c5fb2cd758e62f9b075e6dc73b10ea5cab2f8282226e1ec"
+  }
+}

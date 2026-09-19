@@ -144,3 +144,8 @@ Seguinte: validar a distribuição pública com site-publication/site-worker ago
 Os catálogos e a criação nos três motores estão verificados localmente em 78cc38c/96e35c1. Provas em docs/evidence/site-optional-resources/creation.
 
 Próximo: documento v3 e API que extrai a referência de um snapshot autenticado; biblioteca de recursos, ficheiros e tabelas na UI; testes UI de disponibilidade, pedido explícito, autor offline, partição e privacidade. Depois continuar contribuições/formulários assinados, grupos web dinâmicos, recuperação/rotação/keystore, plataformas/rádios e revisão independente. O objectivo integral mantém-se activo.
+
+
+## Recursos v3 — revisão antes da entrega
+
+Documento v3, referência autenticada e biblioteca/leitor já implementados. Gate integral vivo52729; manter fontes estáveis. Após terminar: reproduzir pedidos sobrepostos, as seis combinações de paleta/app no leitor e associação transitória de URL/ficheiro; corrigir e repetir o âmbito afectado. Rascunho dos testes guardado em `.cache/resource-review-ui.spec.ts`, ainda não executado. Depois curar provas, desktop/RNS, integração preservando iOS1e83db2, publicação exacta/HTTPS. Contribuições/formulários assinados e todo o contrato seguinte mantêm-se obrigatórios.

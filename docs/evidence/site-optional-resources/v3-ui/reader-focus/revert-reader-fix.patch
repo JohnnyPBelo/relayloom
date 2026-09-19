@@ -1,0 +1,40 @@
+--- a/apps/web/src/site/visit.tsx
++++ b/apps/web/src/site/visit.tsx
+@@ -49,22 +49,15 @@
+   useEffect(() => {
+     if (observedVersions.current !== knownVersions) {
+       observedVersions.current = knownVersions;
+-      if (following.current) void load(undefined, undefined, true);
++      if (following.current) void load();
+     }
+   }, [knownVersions]);
+-  async function load(
+-    revisionId?: string,
+-    legacyId?: string,
+-    background = false,
+-  ) {
++  async function load(revisionId?: string, legacyId?: string) {
+     const own = ++generation.current,
+       controller = new AbortController();
+     request.current?.abort();
+     request.current = controller;
+-    // Inventory can catch up after resolve has already opened this snapshot.
+-    // Keep its reader mounted during that check so focus and local queries survive.
+-    // Explicit navigation still clears immediately; failed/missing heads clear below.
+-    if (!background) setSelected(undefined);
++    setSelected(undefined);
+     setStatus("loading");
+     setError("");
+     try {
+@@ -113,11 +106,9 @@
+           return;
+         }
+       }
+-      setSelected(undefined);
+       setStatus(result.status);
+     } catch (e) {
+       if (own === generation.current) {
+-        setSelected(undefined);
+         setError((e as Error).message);
+         setStatus("error");
+       }

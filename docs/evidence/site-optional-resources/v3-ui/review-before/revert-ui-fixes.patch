@@ -1,0 +1,206 @@
+--- a/apps/web/src/site/resource-view.tsx
++++ b/apps/web/src/site/resource-view.tsx
+@@ -9,7 +9,6 @@
+   ShieldCheck,
+ } from "lucide-react";
+ import { api } from "../api";
+-import { resourceInspector } from "./resource-inspection";
+ import { t, getLanguage } from "../i18n/core";
+ import {
+   parseSiteResource,
+@@ -20,13 +19,7 @@
+ import "./resources.css";
+ 
+ export function ResourcePayload({ content }: { content: SiteResource }) {
+-  const [fileURL, setFileURL] = useState<{
+-    content: SiteResource;
+-    url: string;
+-  }>();
+-  // A render may receive new content before the previous effect is cleaned up.
+-  // Never pair that content's name/MIME with the previous file's bytes.
+-  const url = fileURL?.content === content ? fileURL.url : "";
++  const [url, setURL] = useState("");
+   useEffect(() => {
+     if (content.kind !== "file") return;
+     const bytes = Uint8Array.from(atob(content.data), (char) =>
+@@ -35,12 +28,9 @@
+       objectURL = URL.createObjectURL(
+         new Blob([bytes], { type: content.mime }),
+       );
+-    setFileURL({ content, url: objectURL });
++    setURL(objectURL);
+     return () => {
+       URL.revokeObjectURL(objectURL);
+-      setFileURL((current) =>
+-        current?.url === objectURL ? undefined : current,
+-      );
+     };
+   }, [content]);
+   if (content.kind === "table")
+@@ -122,21 +112,18 @@
+     if (!target) return;
+     const own = generation.current,
+       abort = new AbortController();
+-    const isCurrent = () =>
+-      own === generation.current &&
+-      controller.current === abort &&
+-      !abort.signal.aborted;
+     controller.current?.abort();
+     controller.current = abort;
+     clearTimeout(timer.current);
+     setError("");
+     if (action === "obtain") setBusy(true);
+     try {
+-      const result =
+-        action === "inspect"
+-          ? await resourceInspector.inspect(target, abort.signal)
+-          : await api("resource-command", { action, ...target }, abort.signal);
+-      if (!isCurrent()) return;
++      const result = await api(
++        "resource-command",
++        { action, ...target },
++        abort.signal,
++      );
++      if (own !== generation.current) return;
+       if (canonical(result.reference) !== canonical(reference))
+         throw Error("A resposta não corresponde ao recurso desta página.");
+       setStatus(result.status);
+@@ -156,9 +143,10 @@
+         void check("obtain");
+       }
+     } catch (e) {
+-      if (isCurrent()) setError((e as Error).message);
++      if (own === generation.current && !abort.signal.aborted)
++        setError((e as Error).message);
+     } finally {
+-      if (isCurrent()) setBusy(false);
++      if (own === generation.current) setBusy(false);
+     }
+   }
+   const Icon = reference.kind === "table" ? Table2 : FileText;
+@@ -179,9 +167,7 @@
+           <h2>{title || reference.name}</h2>
+           <p>
+             {reference.name} ·{" "}
+-            <span className="resource-size">
+-              {formatResourceBytes(reference.bytes, getLanguage())}
+-            </span>
++            {formatResourceBytes(reference.bytes, getLanguage())}
+           </p>
+         </div>
+       </div>
+--- a/apps/web/src/site/resources.css
++++ b/apps/web/src/site/resources.css
+@@ -4,12 +4,7 @@
+   max-height: calc(100dvh - 32px);
+   overflow: auto;
+   padding: 28px;
+-  background: var(--surface);
+-  background: color-mix(
+-    in srgb,
+-    var(--surface) 90%,
+-    var(--glass, var(--surface))
+-  );
++  background: var(--glass, var(--surface));
+   backdrop-filter: var(--glass-blur, none);
+   -webkit-backdrop-filter: var(--glass-blur, none);
+   box-shadow: var(--shadow);
+@@ -223,10 +218,9 @@
+ .site-resource {
+   min-width: 0;
+   padding: clamp(18px, 3vw, 30px);
+-  color: var(--site-ink, var(--ink));
+-  border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
++  border: 1px solid var(--site-line, var(--line));
+   border-radius: var(--site-radius, 20px);
+-  background: var(--site-paper, var(--surface));
++  background: var(--site-surface, var(--surface));
+ }
+ .resource-heading {
+   display: flex;
+@@ -242,12 +236,12 @@
+   overflow-wrap: anywhere;
+   margin: 5px 0 8px;
+ }
+-.site-resource .resource-heading p {
++.resource-heading p {
+   overflow-wrap: anywhere;
+   line-height: 1.5;
+   font-size: 13px;
+   margin: 0;
+-  color: inherit;
++  color: var(--muted);
+ }
+ .resource-symbol {
+   display: grid;
+@@ -257,20 +251,20 @@
+   flex: 0 0 48px;
+   min-height: 48px;
+ }
+-.site-resource .resource-credit {
++.resource-credit {
+   display: flex;
+   align-items: center;
+   gap: 7px;
+   flex-wrap: wrap;
+   font-size: 12px;
+-  color: inherit;
++  color: var(--muted);
+   margin: 16px 0;
+ }
+ .resource-credit code {
+   font-size: 11px;
+   overflow-wrap: anywhere;
+ }
+-.site-resource .resource-status {
++.resource-status {
+   font-size: 14px;
+   line-height: 1.5;
+   margin: 18px 0 12px;
+@@ -284,16 +278,11 @@
+   padding: 10px 14px;
+ }
+ .site-resource .small-note {
+-  color: inherit;
+-  font-size: 12px;
+   line-height: 1.6;
+   margin-top: 18px;
+ }
+ .resource-check {
+   font-size: 13px;
+-}
+-.resource-size {
+-  white-space: nowrap;
+ }
+ .resource-payload {
+   display: grid;
+@@ -365,29 +354,3 @@
+   text-align: left;
+   display: block;
+ }
+-
+-/* Resource readers belong to the signed site's palette; the library retains
+-   the application's glass surface and theme. */
+-.site-resource .resource-symbol,
+-.studio-surface .site-resource > button.secondary,
+-.studio-surface .site-resource p.error {
+-  background: var(--site-soft, var(--soft));
+-  color: inherit;
+-}
+-.studio-surface .site-resource > button.secondary,
+-.studio-surface .site-resource a.resource-download {
+-  border-color: color-mix(in srgb, currentColor 35%, transparent);
+-}
+-.site-resource .eyebrow,
+-.studio-surface .site-resource a.resource-download,
+-.site-resource .resource-download span {
+-  color: inherit;
+-}
+-.studio-surface .site-resource p.error {
+-  border-color: currentColor;
+-  border-inline-start-width: 3px;
+-}
+-.site-resource :focus-visible {
+-  outline: 3px solid currentColor;
+-  outline-offset: 3px;
+-}

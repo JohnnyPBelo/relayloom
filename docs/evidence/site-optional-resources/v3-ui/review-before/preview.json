@@ -1,0 +1,67 @@
+{
+  "sources": {
+    "blob:http://127.0.0.1:40397/978662ed-6ba0-42f0-8d5c-0f4bccd8eed5": {
+      "mime": "text/plain",
+      "text": "FIRST_FILE_DISTINCT_BYTES"
+    },
+    "blob:http://127.0.0.1:40397/39250467-8ebc-4e2c-b517-e39e2c19bf2f": {
+      "mime": "application/json",
+      "text": "{\"second\":\"distinct JSON bytes\"}"
+    },
+    "blob:http://127.0.0.1:40397/87f1d3ea-dd35-45f2-9dc3-c5b54b129189": {
+      "mime": "text/plain",
+      "text": "FIRST_FILE_DISTINCT_BYTES"
+    }
+  },
+  "boundaries": [
+    {
+      "boundary": "mutation",
+      "href": "blob:http://127.0.0.1:40397/978662ed-6ba0-42f0-8d5c-0f4bccd8eed5",
+      "name": "Primeiro.txt"
+    },
+    {
+      "boundary": "mutation",
+      "href": "blob:http://127.0.0.1:40397/978662ed-6ba0-42f0-8d5c-0f4bccd8eed5",
+      "name": "Primeiro.txt"
+    },
+    {
+      "boundary": "mutation",
+      "href": "blob:http://127.0.0.1:40397/978662ed-6ba0-42f0-8d5c-0f4bccd8eed5",
+      "name": "Segundo.json"
+    },
+    {
+      "boundary": "cleanup",
+      "href": "blob:http://127.0.0.1:40397/978662ed-6ba0-42f0-8d5c-0f4bccd8eed5",
+      "name": "Segundo.json"
+    },
+    {
+      "boundary": "mutation",
+      "href": "blob:http://127.0.0.1:40397/39250467-8ebc-4e2c-b517-e39e2c19bf2f",
+      "name": "Segundo.json"
+    },
+    {
+      "boundary": "mutation",
+      "href": "blob:http://127.0.0.1:40397/39250467-8ebc-4e2c-b517-e39e2c19bf2f",
+      "name": "Segundo.json"
+    },
+    {
+      "boundary": "mutation",
+      "href": "blob:http://127.0.0.1:40397/39250467-8ebc-4e2c-b517-e39e2c19bf2f",
+      "name": "Primeiro.txt"
+    },
+    {
+      "boundary": "cleanup",
+      "href": "blob:http://127.0.0.1:40397/39250467-8ebc-4e2c-b517-e39e2c19bf2f",
+      "name": "Primeiro.txt"
+    },
+    {
+      "boundary": "mutation",
+      "href": "blob:http://127.0.0.1:40397/87f1d3ea-dd35-45f2-9dc3-c5b54b129189",
+      "name": "Primeiro.txt"
+    }
+  ],
+  "revoked": [
+    "blob:http://127.0.0.1:40397/978662ed-6ba0-42f0-8d5c-0f4bccd8eed5",
+    "blob:http://127.0.0.1:40397/39250467-8ebc-4e2c-b517-e39e2c19bf2f"
+  ]
+}

@@ -1,6 +1,6 @@
 # Próximos incrementos do site — desenho, não implementação
 
-Este documento preserva o objectivo expressivo inspirado no ZeroNet depois das tabelas assinadas. Não descreve funcionalidades entregues nem altera o contrato do proprietário. A extensão de tabelas v2 continua em validação em `SITE-DATA-NEXT.md`.
+Este documento preserva o objectivo expressivo inspirado no ZeroNet depois das tabelas assinadas. Não descreve funcionalidades entregues nem altera o contrato do proprietário. As tabelas v2 já estão publicadas. Os recursos opcionais v3 estão implementados e em validação na branch própria; ver `SITE-OPTIONAL-RESOURCES.md`. As secções de contribuições e composição avançada abaixo continuam a ser desenho, não implementação.
 
 ## 1. Dados e ficheiros opcionais
 
@@ -28,6 +28,6 @@ Preparar modelos de comunidade, biblioteca pessoal e directório de recursos, se
 
 ## Ordem de execução e retoma
 
-Terminar o gate das tabelas, integrar a candidata e verificar a distribuição exacta primeiro. Implementar depois os contratos/armazenamento/transporte de opcionais, a aprovação de contribuições e os respectivos controlos UI em marcos separados e reproduzíveis. Alargar os gates sem remover v1/v2 existentes. Repetir a cobertura afectada após cada correcção; executar todos os critérios finais antes de declarar o produto concluído.
+Terminar a revisão e os gates dos recursos opcionais v3, integrar a candidata e verificar a distribuição exacta primeiro. Implementar depois a aprovação de contribuições e os respectivos controlos UI em marcos separados e reproduzíveis. Alargar os gates sem remover v1/v2 existentes. Repetir a cobertura afectada após cada correcção; executar todos os critérios finais antes de declarar o produto concluído.
 
 Continuam activos os restantes requisitos: web sem instalação com paridade, grupos dinâmicos, recuperação/rotação/keystore, todos os SO/meios suportados pelo Reticulum e testes físicos/revisão independente. Não criar ou retomar agentes durante a recuperação sequencial. Não alterar Astra/CopilotUltra, serviços, bridges, permissões ou autenticação.

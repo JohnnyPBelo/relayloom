@@ -1,0 +1,19 @@
+{
+  "status": "PASS_SCOPED",
+  "before": {
+    "available": 64,
+    "errors": 59,
+    "validBlocks": 128,
+    "resourceLeaves": 123,
+    "bytes": 56742
+  },
+  "after": "All123 available, close/reopen while four real replies are held,127total inspections,peak4,last file exact. Four unit tests plus five Chromium/five Firefox/fifteen WebKit executions. Repeated tests are not unique scenarios.",
+  "fixtureCorrections": "The first flat128 fixture correctly violated24siblings. Review helpers now await insertion and exact publication. The delayed inventory fixture holds only real version2 state, not an earlier response that would stop polling. These change fixtures, not API payloads or time limits.",
+  "runtimeSources": {
+    "apps/web/src/site/resource-inspection.ts": "5e568c62b0006b068de88c758ca83f3b56562f123b66f193c9ca199b25f5f1b1",
+    "apps/web/src/site/resource-view.tsx": "035186f246f29c65e81c1c3610cbe08be814d42c165af582efdbcf21878adeac",
+    "apps/web/src/site/resources.css": "69d4f95bec7c68f21d13f434503e7d329094d4ab7d17e9d8cf6c433e27ce6cc3",
+    "apps/web/src/site/visit.tsx": "d23bcca1bb7798b6687271536750402c24691fe50023f1edee25167161e4be08"
+  },
+  "limits": "Linux desktop engines with compact viewports and real browser Worker/storage. No physical mobile/radio or independent-review claim; full final regression and publication remain pending."
+}

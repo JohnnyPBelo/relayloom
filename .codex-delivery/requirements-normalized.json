@@ -1720,9 +1720,17 @@
           "tests/site-data-interop.test.ts",
           "docs/SITE-RESOURCES.md",
           "tests/native/site-resource-api.test.ts",
-          "tests/browser/site-resource-api.spec.ts"
+          "tests/browser/site-resource-api.spec.ts",
+          "docs/evidence/site-optional-resources/v3-ui/pre-review",
+          "docs/evidence/site-optional-resources/v3-ui/review-before",
+          "docs/evidence/site-optional-resources/v3-ui/reader-focus",
+          "tests/browser/site-resource-review.spec.ts",
+          "tests/browser/site-resources-ui.spec.ts",
+          "tests/e2e/site-resources.spec.ts",
+          "tests/native/site-resource-reference.test.ts",
+          "docs/evidence/site-optional-resources/v3-ui/final"
         ],
-        "limits": "Tabelas v2 publicadas na fonte59c9bd1. Recursos opcionais: catálogos e API Node/Go/browser verificados em96e35c1; documento v3, leitura por referência assinada e UI ainda pendentes. Contribuições, revisão independente, paridade e plataformas físicas continuam no contrato integral."
+        "limits": "Tabelas v2 publicadas; recursos v3 implementados e verificados localmente em Node/Go/browser. Gates: 306 execuções de browser, 68 UI Node/Go, quatro unitários, backend com hashes correspondentes, Linux build/run/package/run e RNS/UI. Integração/publicação, contribuições/formulários, revisão independente e plataformas/hardware actuais continuam pendentes."
       },
       "evidence": [
         {
@@ -1781,6 +1789,25 @@
             "docs/SITE-RESOURCES.md"
           ],
           "notes": "450 Node, Go sites/app race, 19 interop, 57 browser API/transport and 23 existing UI regression journeys; 20 Axe reports without violations. No optional resource editor/snapshot-reference API or physical-device claim."
+        },
+        {
+          "kind": "resource-v3-review-controls",
+          "result": "pass-scoped-with-full-final-gate-pending",
+          "paths": [
+            "docs/evidence/site-optional-resources/v3-ui/pre-review",
+            "docs/evidence/site-optional-resources/v3-ui/review-before",
+            "docs/evidence/site-optional-resources/v3-ui/reader-focus"
+          ],
+          "notes": "Gate inicial:461Node,17pacotesGo/race,92interop,5SQLiteC,34UI Node+34UI Go e97porbrowser;659hashes estáveis. Controlos negativos e positivos cobrem pedidos sobrepostos, paletas, URLs de preview e foco com inventário atrasado. A regressão corrente tem101casosporbrowser; ainda não é aprovação integral/publicação/hardware ou revisão independente."
+        },
+        {
+          "kind": "resource-v3-local-final",
+          "result": "pass-scoped",
+          "paths": [
+            "docs/evidence/site-optional-resources/v3-ui/final",
+            "docs/evidence/site-optional-resources/v3-ui/inspection-budget"
+          ],
+          "notes": "102 casos por engine, 34 UI por backend, quatro unitários; desktop e RNS com suplemento após correcção exclusiva dos caminhos temporários. Relatórios conservam falhas e proveniência. Não é publicação, hardware, paridade integral ou revisão independente."
         }
       ]
     },
@@ -1815,9 +1842,17 @@
           "docs/SITE-DATA.md",
           "docs/evidence/site-data/report.json",
           "tests/browser/site-data-editor.spec.ts",
-          "tests/site-data-interop.test.ts"
+          "tests/site-data-interop.test.ts",
+          "docs/evidence/site-optional-resources/v3-ui/pre-review",
+          "docs/evidence/site-optional-resources/v3-ui/review-before",
+          "docs/evidence/site-optional-resources/v3-ui/reader-focus",
+          "tests/browser/site-resource-review.spec.ts",
+          "tests/browser/site-resources-ui.spec.ts",
+          "tests/e2e/site-resources.spec.ts",
+          "tests/native/site-resource-reference.test.ts",
+          "docs/evidence/site-optional-resources/v3-ui/final"
         ],
-        "limits": "Tabelas v2 integradas e verificadas no Linux Node/Go e Chromium/Firefox/WebKit:138Node,Go/race,11interop,8UI nativa e108browser. Publicação web desta extensão pendente; contribuições, opcionais, revisão independente e plataformas físicas continuam por validar/implementar. Contrato integral aberto."
+        "limits": "Tabelas v2 publicadas; recursos v3 implementados e verificados localmente em Node/Go/browser. Gates: 306 execuções de browser, 68 UI Node/Go, quatro unitários, backend com hashes correspondentes, Linux build/run/package/run e RNS/UI. Integração/publicação, contribuições/formulários, revisão independente e plataformas/hardware actuais continuam pendentes."
       },
       "evidence": [
         {
@@ -1861,6 +1896,25 @@
           "result": "pass",
           "timestamp": "2026-09-17",
           "notes": "236 browser/UI tests, two address controls, 36 Axe audits, Linux build/run/package/run. Published source0c6b58a, distribution45ecacdf:17HTTP hashes and13HTTPS journeys. Larger encrypted web drafts preserve exact bytes. Revision catalog remains WIP without app integration; all broader requirements and platform limits remain."
+        },
+        {
+          "kind": "resource-v3-review-controls",
+          "result": "pass-scoped-with-full-final-gate-pending",
+          "paths": [
+            "docs/evidence/site-optional-resources/v3-ui/pre-review",
+            "docs/evidence/site-optional-resources/v3-ui/review-before",
+            "docs/evidence/site-optional-resources/v3-ui/reader-focus"
+          ],
+          "notes": "Gate inicial:461Node,17pacotesGo/race,92interop,5SQLiteC,34UI Node+34UI Go e97porbrowser;659hashes estáveis. Controlos negativos e positivos cobrem pedidos sobrepostos, paletas, URLs de preview e foco com inventário atrasado. A regressão corrente tem101casosporbrowser; ainda não é aprovação integral/publicação/hardware ou revisão independente."
+        },
+        {
+          "kind": "resource-v3-local-final",
+          "result": "pass-scoped",
+          "paths": [
+            "docs/evidence/site-optional-resources/v3-ui/final",
+            "docs/evidence/site-optional-resources/v3-ui/inspection-budget"
+          ],
+          "notes": "102 casos por engine, 34 UI por backend, quatro unitários; desktop e RNS com suplemento após correcção exclusiva dos caminhos temporários. Relatórios conservam falhas e proveniência. Não é publicação, hardware, paridade integral ou revisão independente."
         }
       ]
     },
@@ -1898,9 +1952,17 @@
           "tests/site-data-interop.test.ts",
           "docs/SITE-RESOURCES.md",
           "tests/native/site-resource-api.test.ts",
-          "tests/browser/site-resource-api.spec.ts"
+          "tests/browser/site-resource-api.spec.ts",
+          "docs/evidence/site-optional-resources/v3-ui/pre-review",
+          "docs/evidence/site-optional-resources/v3-ui/review-before",
+          "docs/evidence/site-optional-resources/v3-ui/reader-focus",
+          "tests/browser/site-resource-review.spec.ts",
+          "tests/browser/site-resources-ui.spec.ts",
+          "tests/e2e/site-resources.spec.ts",
+          "tests/native/site-resource-reference.test.ts",
+          "docs/evidence/site-optional-resources/v3-ui/final"
         ],
-        "limits": "Tabelas v2 publicadas na fonte59c9bd1. Recursos opcionais: catálogos e API Node/Go/browser verificados em96e35c1; documento v3, leitura por referência assinada e UI ainda pendentes. Contribuições, revisão independente, paridade e plataformas físicas continuam no contrato integral."
+        "limits": "Tabelas v2 publicadas; recursos v3 implementados e verificados localmente em Node/Go/browser. Gates: 306 execuções de browser, 68 UI Node/Go, quatro unitários, backend com hashes correspondentes, Linux build/run/package/run e RNS/UI. Integração/publicação, contribuições/formulários, revisão independente e plataformas/hardware actuais continuam pendentes."
       },
       "evidence": [
         {
@@ -1962,6 +2024,25 @@
             "docs/SITE-RESOURCES.md"
           ],
           "notes": "450 Node, Go sites/app race, 19 interop, 57 browser API/transport and 23 existing UI regression journeys; 20 Axe reports without violations. No optional resource editor/snapshot-reference API or physical-device claim."
+        },
+        {
+          "kind": "resource-v3-review-controls",
+          "result": "pass-scoped-with-full-final-gate-pending",
+          "paths": [
+            "docs/evidence/site-optional-resources/v3-ui/pre-review",
+            "docs/evidence/site-optional-resources/v3-ui/review-before",
+            "docs/evidence/site-optional-resources/v3-ui/reader-focus"
+          ],
+          "notes": "Gate inicial:461Node,17pacotesGo/race,92interop,5SQLiteC,34UI Node+34UI Go e97porbrowser;659hashes estáveis. Controlos negativos e positivos cobrem pedidos sobrepostos, paletas, URLs de preview e foco com inventário atrasado. A regressão corrente tem101casosporbrowser; ainda não é aprovação integral/publicação/hardware ou revisão independente."
+        },
+        {
+          "kind": "resource-v3-local-final",
+          "result": "pass-scoped",
+          "paths": [
+            "docs/evidence/site-optional-resources/v3-ui/final",
+            "docs/evidence/site-optional-resources/v3-ui/inspection-budget"
+          ],
+          "notes": "102 casos por engine, 34 UI por backend, quatro unitários; desktop e RNS com suplemento após correcção exclusiva dos caminhos temporários. Relatórios conservam falhas e proveniência. Não é publicação, hardware, paridade integral ou revisão independente."
         }
       ]
     },

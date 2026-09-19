@@ -1,14 +1,18 @@
 # RelayLoom — estado verificável
 
-## Branch de recursos opcionais — 18 de Setembro de 2026
+## Recursos opcionais v3 — verificados localmente, 19 de Setembro de 2026
 
-**CI 72e03a7:** Node passou Linux/macOS e falhou Windows; Go e os jobs seguintes não executaram. A reprodução identificou duas leituras do relógio na criação de envelopes Node: o prazo podia diferir do pedido. A correcção usa um único instante, com controlo negativo antes e 33 testes dirigidos aprovados depois. Não relaxa validade ou criptografia; verificação remota ainda pendente. [Provas](evidence/bundle-created-time).
+**Implementado e verificado nesta branch, ainda sem publicação:** documento v3, referências extraídas de snapshots autenticados, biblioteca e leitor partilhados por Node, Go e browser. Ficheiros até 2 MiB, tabelas pesquisáveis/importáveis, privacidade, autoria original, obtenção explícita, preview/download e retoma idempotente. Há limites de 128 blocos/24 irmãos/32 recursos distintos. Uma fila limitada evita que uma composição legítima esgote o orçamento do Worker; fechar/reabrir cancela trabalho ainda não iniciado sem libertar prematuramente chamadas activas. Ler/servir não confere autoridade de assinatura. [Contrato e limites](SITE-RESOURCES.md).
 
-**CI b435608:** Node passou nos três hosts; Go app excedeu o limite acumulado de dez minutos durante a criação de um cofre no início de um teste. Os jobs dependentes foram skipped. O teste local com race passou; o runner passa agora a executar um pacote Go de cada vez, conservando cobertura, race, prazos e parâmetros criptográficos. O resultado remoto desta alteração ainda está pendente. [Log e âmbito](evidence/ci-native-b435).
+**Gates locais aprovados:** 306 execuções de browser (102 Chromium, 102 Firefox, 102 WebKit),34 UI Node+34 UI Go, quatro unitários da fila, typecheck/build, Linux build/run/package/run, oito testes com a referência RNS e três percursos UI através de RNS. Os browsers/UI não tiveram falhas, skips ou retries no gate final. O gate anterior mantém461 testes Node,17 pacotes Go/race,92 interop e cinco pacotesSQLiteC aplicáveis pelos hashes inalterados do backend. Não somar testes repetidos como cenários únicos. [Relatório consolidado, comandos, proveniência e fontes](evidence/site-optional-resources/v3-ui/final).
 
-A criação local está ligada a Node, Go e browser, com persistência cifrada, cópia verificada, idempotência, quotas, bloqueio e expiração. Commits **78cc38c** (catálogos) e **96e35c1** (API/runtime). Passaram **450 testes Node**, Go sites/app com race, **19 testes de interoperabilidade**, **19 por browser (57)** e **23 percursos UI do editor existente**. As 20 auditorias Axe não encontraram violações. Os hashes de 628 ficheiros de fonte correspondem ao commit. [Provas, comandos, capturas e limites](evidence/site-optional-resources/creation) · [Contrato e API](SITE-RESOURCES.md). Não está integrada na interface nem publicada. Documento v3, obtenção pela referência do snapshot e UI de recursos permanecem obrigatórios, juntamente com contribuições/formulários assinados e o restante contrato.
+Foram reproduzidas e corrigidas falhas de pedidos sobrepostos, contraste/paletas, URL/ficheiro transitório, foco com inventário atrasado e capacidade de inspecção. Fixtures passaram a confirmar a inserção/versão e a reter só a resposta real pretendida. Um caminho temporário demasiado longo impediu o primeiro arranque Electron; o suplemento usa temporários mais curtos no próprio projecto e conserva o sandbox. A falha original não foi apagada nem reclassificada. [Controlos negativos e revisão](evidence/site-optional-resources/v3-ui).
 
-A versão web pública já inclui tabelas v2: fonte 59c9bd1, distribuição f6758222. CI da fonte 1e83db2 terminou com Node nos três hosts, Go, UI nativa, Reticulum, browsers e pacotes desktop aprovados; o percurso iOS falhou na consulta AX da fototeca, depois de o processo Node receber a mensagem privada. Isso não valida o envio da fotografia ou dispositivos físicos. Hardware/radios, paridade completa e revisão independente continuam abertos.
+**Pendentes:** integração/publicação desta extensão, apps móveis actuais, dispositivos/rádios físicos, contribuições/formulários assinados, grupos web dinâmicos, recuperação/rotação/keystore, paridade integral e revisão independente. O teste Electron confirmou flags/isolamento/controlo de acesso, não uma auditoria do sandbox no kernel. SériePTY é software; não prova rádio físico. O produto não está concluído nem validado para catástrofes.
+
+**CI 35338021371 /56e105e, anterior ao v3:** Node Windows/macOS/Linux,Go,UI nativa,Reticulum,três pacotesdesktop e browserautónomo passaram. iOS falhou por timeout ao procurar a fototeca, depois de startup/importação da fotografia de teste passarem. Não prova entrega aoNode ou selecção da fotografia nesta execução. Não contém o diagnóstico1e83db2 do principal, a preservar na integração. [Provas e limites](evidence/ios-56e105e).
+
+**Web pública actual:** fonte59c9bd1,distribuiçãof6758222,comtabelasv2. A candidata v3 ainda não substituiu esseHTML.
 
 Os marcos abaixo conservam os estados e limites históricos das respectivas versões.
 
@@ -187,3 +191,6 @@ Os próximos marcos incluem autoridade/armazenamento/outbox/UI de grupos web, ba
 
 
 CI anterior `35026722736`, source `4e4fcc7`, terminou com falha apenas em iOS. Node nos três hosts, Go, pacotes desktop, RNS e browser passaram. Em iOS/Xcode 26.6, o simulador 26.4.1 arrancou, a app foi compilada/instalada e o teste de arranque passou; o percurso funcional saiu 65. Capturas mostram criação de identidade, sem asserção XCTest suficiente para diagnosticar a causa. O WIP UIKit/XCTest continua local e separado deste incremento. Não equivale a execução física ou produto iOS concluído.
+
+
+Fonte deste marco local: `8faad725925149db24bae331691d691a8e7a4f1a`; hashes verificados em `docs/evidence/site-optional-resources/v3-ui/final/source-commit.json`. Ainda sem publicação do v3.

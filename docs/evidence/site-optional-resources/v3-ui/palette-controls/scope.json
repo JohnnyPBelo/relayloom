@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "engine": "chromium",
+      "paletteCombinations": 6,
+      "axeAnalyses": 12,
+      "violations": 0
+    },
+    {
+      "engine": "firefox",
+      "paletteCombinations": 6,
+      "axeAnalyses": 12,
+      "violations": 0
+    },
+    {
+      "engine": "webkit",
+      "paletteCombinations": 6,
+      "axeAnalyses": 12,
+      "violations": 0
+    }
+  ],
+  "scope": "Targeted desktop-engine UI tests on Linux in a compact viewport. Keyboard and full-page Axe, six site/app palette combinations, before/after verified file retrieval. Does not prove physical mobile accessibility or independent review. Full candidate regression is still active."
+}

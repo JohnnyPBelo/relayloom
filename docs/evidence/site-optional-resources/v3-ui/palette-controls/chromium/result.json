@@ -1,0 +1,191 @@
+[
+  {
+    "theme": "light",
+    "palette": "sand",
+    "colors": {
+      "card": "rgb(250, 247, 240)",
+      "paper": "rgb(250, 247, 240)"
+    },
+    "focus": {
+      "style": "solid",
+      "width": "3px",
+      "color": "rgb(33, 61, 56)",
+      "text": "rgb(33, 61, 56)",
+      "parentText": "rgb(33, 61, 56)",
+      "colorRules": [
+        {
+          "selector": "button",
+          "color": "inherit",
+          "priority": ""
+        },
+        {
+          "selector": ".site-resource .resource-symbol, .studio-surface .site-resource > button.secondary, .studio-surface .site-resource p.error",
+          "color": "inherit",
+          "priority": ""
+        }
+      ]
+    },
+    "before": [],
+    "after": []
+  },
+  {
+    "theme": "light",
+    "palette": "forest",
+    "colors": {
+      "card": "rgb(237, 245, 239)",
+      "paper": "rgb(237, 245, 239)"
+    },
+    "focus": {
+      "style": "solid",
+      "width": "3px",
+      "color": "rgb(23, 61, 49)",
+      "text": "rgb(23, 61, 49)",
+      "parentText": "rgb(23, 61, 49)",
+      "colorRules": [
+        {
+          "selector": "button",
+          "color": "inherit",
+          "priority": ""
+        },
+        {
+          "selector": ".site-resource .resource-symbol, .studio-surface .site-resource > button.secondary, .studio-surface .site-resource p.error",
+          "color": "inherit",
+          "priority": ""
+        }
+      ]
+    },
+    "before": [],
+    "after": []
+  },
+  {
+    "theme": "light",
+    "palette": "ink",
+    "colors": {
+      "card": "rgb(23, 45, 49)",
+      "paper": "rgb(23, 45, 49)"
+    },
+    "focus": {
+      "style": "solid",
+      "width": "3px",
+      "color": "rgb(239, 247, 243)",
+      "text": "rgb(239, 247, 243)",
+      "parentText": "rgb(239, 247, 243)",
+      "colorRules": [
+        {
+          "selector": "button",
+          "color": "inherit",
+          "priority": ""
+        },
+        {
+          "selector": ".site-resource .resource-symbol, .studio-surface .site-resource > button.secondary, .studio-surface .site-resource p.error",
+          "color": "inherit",
+          "priority": ""
+        }
+      ]
+    },
+    "before": [],
+    "after": []
+  },
+  {
+    "theme": "dark",
+    "palette": "sand",
+    "colors": {
+      "card": "rgb(250, 247, 240)",
+      "paper": "rgb(250, 247, 240)"
+    },
+    "focus": {
+      "style": "solid",
+      "width": "3px",
+      "color": "rgb(33, 61, 56)",
+      "text": "rgb(33, 61, 56)",
+      "parentText": "rgb(33, 61, 56)",
+      "colorRules": [
+        {
+          "selector": "button",
+          "color": "inherit",
+          "priority": ""
+        },
+        {
+          "selector": ":root[data-theme=\"dark\"] .secondary",
+          "color": "var(--ink)",
+          "priority": ""
+        },
+        {
+          "selector": ".site-resource .resource-symbol, .studio-surface .site-resource > button.secondary, .studio-surface .site-resource p.error",
+          "color": "inherit",
+          "priority": ""
+        }
+      ]
+    },
+    "before": [],
+    "after": []
+  },
+  {
+    "theme": "dark",
+    "palette": "forest",
+    "colors": {
+      "card": "rgb(237, 245, 239)",
+      "paper": "rgb(237, 245, 239)"
+    },
+    "focus": {
+      "style": "solid",
+      "width": "3px",
+      "color": "rgb(23, 61, 49)",
+      "text": "rgb(23, 61, 49)",
+      "parentText": "rgb(23, 61, 49)",
+      "colorRules": [
+        {
+          "selector": "button",
+          "color": "inherit",
+          "priority": ""
+        },
+        {
+          "selector": ":root[data-theme=\"dark\"] .secondary",
+          "color": "var(--ink)",
+          "priority": ""
+        },
+        {
+          "selector": ".site-resource .resource-symbol, .studio-surface .site-resource > button.secondary, .studio-surface .site-resource p.error",
+          "color": "inherit",
+          "priority": ""
+        }
+      ]
+    },
+    "before": [],
+    "after": []
+  },
+  {
+    "theme": "dark",
+    "palette": "ink",
+    "colors": {
+      "card": "rgb(23, 45, 49)",
+      "paper": "rgb(23, 45, 49)"
+    },
+    "focus": {
+      "style": "solid",
+      "width": "3px",
+      "color": "rgb(239, 247, 243)",
+      "text": "rgb(239, 247, 243)",
+      "parentText": "rgb(239, 247, 243)",
+      "colorRules": [
+        {
+          "selector": "button",
+          "color": "inherit",
+          "priority": ""
+        },
+        {
+          "selector": ":root[data-theme=\"dark\"] .secondary",
+          "color": "var(--ink)",
+          "priority": ""
+        },
+        {
+          "selector": ".site-resource .resource-symbol, .studio-surface .site-resource > button.secondary, .studio-surface .site-resource p.error",
+          "color": "inherit",
+          "priority": ""
+        }
+      ]
+    },
+    "before": [],
+    "after": []
+  }
+]

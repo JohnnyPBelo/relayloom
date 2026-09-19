@@ -1,0 +1,360 @@
+{
+  "kind": "consolidated-executed-gates",
+  "provenance": [
+    {
+      "report": ".cache/resources-bounded-final/report.json",
+      "status": "FAIL",
+      "sha256": "14d18d4f3adffec9bf5f2ac003b95692b76b3955b84cb7eeb58040e3e2d0e4ce"
+    },
+    {
+      "report": ".cache/resource-desktop-rns/report.json",
+      "status": "PASS",
+      "sha256": "a252efca37e360ad6aee5cddda16c1213b38775c2eac544be8497ed931473131"
+    }
+  ],
+  "historicalFailures": [
+    {
+      "name": "desktop-run",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "scripts/desktop-run.mjs",
+        "--smoke",
+        "--x11"
+      ],
+      "env": {},
+      "started": "2026-09-19T01:18:13.024Z",
+      "status": "FAIL",
+      "pid": 2730681,
+      "signal": null,
+      "exitCode": 1,
+      "elapsedMs": 509
+    }
+  ],
+  "launcherDifferences": [
+    "scripts/desktop-packaged-smoke.mjs",
+    "scripts/desktop-run.mjs"
+  ],
+  "status": "PASS",
+  "started": "2026-09-19T00:34:19.761Z",
+  "finished": "2026-09-19T01:34:24.939Z",
+  "base": "56e105e07eec76e5783cf9ff5b24d9633583d161",
+  "scope": "Complete current host/UI/desktop/reference-RNS validation with explicit provenance. Earlier backend full gate remains applicable by source hashes. The failed long-socket startup is preserved; only launcher temporary paths changed. No publication, current Android/iOS, physical radio or independent review claim.",
+  "priorFullGate": "../pre-review/report.json",
+  "sourceDifferences": [
+    "apps/web/src/site/resource-inspection.ts",
+    "apps/web/src/site/resource-view.tsx",
+    "apps/web/src/site/resources.css",
+    "apps/web/src/site/visit.tsx",
+    "tests/browser/site-resource-budget.spec.ts",
+    "tests/browser/site-resource-review.spec.ts",
+    "tests/site-resource-inspection.test.ts"
+  ],
+  "checks": [
+    {
+      "name": "inspection-unit",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "--import",
+        "tsx",
+        "--test",
+        "tests/site-resource-inspection.test.ts"
+      ],
+      "env": {},
+      "started": "2026-09-19T00:34:19.793Z",
+      "status": "PASS",
+      "pid": 2323727,
+      "signal": null,
+      "exitCode": 0,
+      "elapsedMs": 236,
+      "originReport": ".cache/resources-bounded-final/report.json"
+    },
+    {
+      "name": "typecheck",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "/home/absint0o/projects/relayloom/node_modules/typescript/bin/tsc",
+        "--noEmit"
+      ],
+      "env": {},
+      "started": "2026-09-19T00:34:20.054Z",
+      "status": "PASS",
+      "pid": 2323784,
+      "signal": null,
+      "exitCode": 0,
+      "elapsedMs": 7417,
+      "originReport": ".cache/resources-bounded-final/report.json"
+    },
+    {
+      "name": "web-build",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "/home/absint0o/projects/relayloom/node_modules/vite/bin/vite.js",
+        "build"
+      ],
+      "env": {},
+      "started": "2026-09-19T00:34:27.496Z",
+      "status": "PASS",
+      "pid": 2324482,
+      "signal": null,
+      "exitCode": 0,
+      "elapsedMs": 2846,
+      "originReport": ".cache/resources-bounded-final/report.json"
+    },
+    {
+      "name": "browser-chromium",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "/home/absint0o/projects/relayloom/node_modules/playwright/cli.js",
+        "test",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "--output",
+        "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/resources-bounded-final/chromium-artifacts"
+      ],
+      "env": {
+        "RELAYLOOM_MATRIX_ENGINE": "chromium"
+      },
+      "started": "2026-09-19T00:34:30.369Z",
+      "status": "PASS",
+      "pid": 2324719,
+      "signal": null,
+      "exitCode": 0,
+      "elapsedMs": 628623,
+      "originReport": ".cache/resources-bounded-final/report.json",
+      "stats": {
+        "startTime": "2026-09-19T00:34:30.783Z",
+        "duration": 628085.608,
+        "expected": 102,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "name": "browser-firefox",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "/home/absint0o/projects/relayloom/node_modules/playwright/cli.js",
+        "test",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "--output",
+        "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/resources-bounded-final/firefox-artifacts"
+      ],
+      "env": {
+        "RELAYLOOM_MATRIX_ENGINE": "firefox"
+      },
+      "started": "2026-09-19T00:44:59.228Z",
+      "status": "PASS",
+      "pid": 2434897,
+      "signal": null,
+      "exitCode": 0,
+      "elapsedMs": 793708,
+      "originReport": ".cache/resources-bounded-final/report.json",
+      "stats": {
+        "startTime": "2026-09-19T00:44:59.682Z",
+        "duration": 793222.6190000001,
+        "expected": 102,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "name": "browser-webkit",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "/home/absint0o/projects/relayloom/node_modules/playwright/cli.js",
+        "test",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "--output",
+        "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/resources-bounded-final/webkit-artifacts"
+      ],
+      "env": {
+        "RELAYLOOM_MATRIX_ENGINE": "webkit"
+      },
+      "started": "2026-09-19T00:58:12.983Z",
+      "status": "PASS",
+      "pid": 2542398,
+      "signal": null,
+      "exitCode": 0,
+      "elapsedMs": 773126,
+      "originReport": ".cache/resources-bounded-final/report.json",
+      "stats": {
+        "startTime": "2026-09-19T00:58:13.432Z",
+        "duration": 772651.478,
+        "expected": 102,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "name": "ui-node",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "/home/absint0o/projects/relayloom/node_modules/playwright/cli.js",
+        "test",
+        "--config",
+        "playwright.config.ts",
+        "--output",
+        "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/resources-bounded-final/ui-node-artifacts"
+      ],
+      "env": {
+        "RELAYLOOM_TEST_BACKEND": "node"
+      },
+      "started": "2026-09-19T01:11:06.176Z",
+      "status": "PASS",
+      "pid": 2672197,
+      "signal": null,
+      "exitCode": 0,
+      "elapsedMs": 221436,
+      "originReport": ".cache/resources-bounded-final/report.json",
+      "stats": {
+        "startTime": "2026-09-19T01:11:06.613Z",
+        "duration": 220978.209,
+        "expected": 34,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "name": "ui-native",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "/home/absint0o/projects/relayloom/node_modules/playwright/cli.js",
+        "test",
+        "--config",
+        "playwright.config.ts",
+        "--output",
+        "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/resources-bounded-final/ui-native-artifacts"
+      ],
+      "env": {
+        "RELAYLOOM_TEST_BACKEND": "native"
+      },
+      "started": "2026-09-19T01:14:47.730Z",
+      "status": "PASS",
+      "pid": 2692285,
+      "signal": null,
+      "exitCode": 0,
+      "elapsedMs": 205050,
+      "originReport": ".cache/resources-bounded-final/report.json",
+      "stats": {
+        "startTime": "2026-09-19T01:14:48.144Z",
+        "duration": 204612.71899999998,
+        "expected": 34,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "name": "desktop-build",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "scripts/desktop-build.mjs"
+      ],
+      "env": {},
+      "started": "2026-09-19T01:18:12.811Z",
+      "status": "PASS",
+      "pid": 2730616,
+      "signal": null,
+      "exitCode": 0,
+      "elapsedMs": 190,
+      "originReport": ".cache/resources-bounded-final/report.json"
+    },
+    {
+      "name": "desktop-run",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "scripts/desktop-run.mjs",
+        "--smoke",
+        "--x11"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "observation": "Executed separately and unified session79948 returned exit0 before this supplement; log and smoke report copied. Start time/duration not inferred.",
+      "originReport": ".cache/resource-desktop-rns/report.json"
+    },
+    {
+      "name": "desktop-package",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "scripts/desktop-package.mjs",
+        "--linux",
+        "--x64",
+        "--dir"
+      ],
+      "started": "2026-09-19T01:28:19.486Z",
+      "status": "PASS",
+      "pid": 2791970,
+      "signal": null,
+      "exitCode": 0,
+      "elapsedMs": 41154,
+      "originReport": ".cache/resource-desktop-rns/report.json"
+    },
+    {
+      "name": "desktop-packaged-run",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "scripts/desktop-packaged-smoke.mjs"
+      ],
+      "started": "2026-09-19T01:29:00.684Z",
+      "status": "PASS",
+      "pid": 2793754,
+      "signal": null,
+      "exitCode": 0,
+      "elapsedMs": 991,
+      "originReport": ".cache/resource-desktop-rns/report.json"
+    },
+    {
+      "name": "reference-rns",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "--import",
+        "tsx",
+        "--test",
+        "--test-concurrency=1",
+        "tests/reticulum/authorization.test.ts",
+        "tests/reticulum/heterogeneous.test.ts",
+        "tests/reticulum/media.test.ts"
+      ],
+      "started": "2026-09-19T01:29:01.730Z",
+      "status": "PASS",
+      "pid": 2794062,
+      "signal": null,
+      "exitCode": 0,
+      "elapsedMs": 217406,
+      "originReport": ".cache/resource-desktop-rns/report.json"
+    },
+    {
+      "name": "rns-ui",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "/home/absint0o/projects/relayloom/node_modules/playwright/cli.js",
+        "test",
+        "--config",
+        "tests/reticulum/ui.config.ts",
+        "--output",
+        "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/resource-desktop-rns/rns-ui-artifacts"
+      ],
+      "started": "2026-09-19T01:32:39.182Z",
+      "status": "PASS",
+      "pid": 2811685,
+      "signal": null,
+      "exitCode": 0,
+      "elapsedMs": 105709,
+      "originReport": ".cache/resource-desktop-rns/report.json",
+      "stats": {
+        "startTime": "2026-09-19T01:32:39.663Z",
+        "duration": 105210.92,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    }
+  ]
+}

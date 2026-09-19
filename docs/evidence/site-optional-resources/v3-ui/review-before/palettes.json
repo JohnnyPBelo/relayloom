@@ -1,0 +1,1318 @@
+[
+  {
+    "theme": "light",
+    "palette": "sand",
+    "colors": {
+      "card": "rgb(249, 252, 252)",
+      "paper": "rgb(250, 247, 240)"
+    },
+    "focus": {
+      "style": "solid",
+      "width": "3px",
+      "color": "rgb(8, 115, 106)"
+    },
+    "before": [],
+    "after": []
+  },
+  {
+    "theme": "light",
+    "palette": "forest",
+    "colors": {
+      "card": "rgb(249, 252, 252)",
+      "paper": "rgb(237, 245, 239)"
+    },
+    "focus": {
+      "style": "solid",
+      "width": "3px",
+      "color": "rgb(8, 115, 106)"
+    },
+    "before": [],
+    "after": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "tags": [
+          "cat.color",
+          "wcag2aa",
+          "wcag143",
+          "TTv5",
+          "TT13.c",
+          "EN-301-549",
+          "EN-9.1.4.3",
+          "ACT",
+          "RGAAv4",
+          "RGAA-3.2.1"
+        ],
+        "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#d1dcaf",
+                  "bgColor": "#f9fcfc",
+                  "contrastRatio": 1.39,
+                  "fontSize": "12.0pt (16px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+                    "target": [
+                      ".site-resource"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.39 (foreground color: #d1dcaf, background color: #f9fcfc, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<a class=\"resource-download\" href=\"blob:http://127.0.0.1:41821/fea9f230-0a34-45ca-a2b2-482788b35ca8\" download=\"Paletas legíveis.txt\">",
+            "target": [
+              ".resource-download"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.39 (foreground color: #d1dcaf, background color: #f9fcfc, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "theme": "light",
+    "palette": "ink",
+    "colors": {
+      "card": "rgb(249, 252, 252)",
+      "paper": "rgb(23, 45, 49)"
+    },
+    "focus": {
+      "style": "solid",
+      "width": "3px",
+      "color": "rgb(8, 115, 106)"
+    },
+    "before": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "tags": [
+          "cat.color",
+          "wcag2aa",
+          "wcag143",
+          "TTv5",
+          "TT13.c",
+          "EN-301-549",
+          "EN-9.1.4.3",
+          "ACT",
+          "RGAAv4",
+          "RGAA-3.2.1"
+        ],
+        "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#eff7f3",
+                  "bgColor": "#f9fcfc",
+                  "contrastRatio": 1.05,
+                  "fontSize": "17.3pt (23px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+                    "target": [
+                      ".site-resource"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 17.3pt (23px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<h2>Paletas legíveis.txt</h2>",
+            "target": [
+              ".resource-heading > div > h2"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 17.3pt (23px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#eff7f3",
+                  "bgColor": "#f9fcfc",
+                  "contrastRatio": 1.05,
+                  "fontSize": "11.3pt (15px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+                    "target": [
+                      ".site-resource"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<p>Paletas legíveis.txt · 29 B</p>",
+            "target": [
+              ".resource-heading > div > p"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#eff7f3",
+                  "bgColor": "#f9fcfc",
+                  "contrastRatio": 1.05,
+                  "fontSize": "11.3pt (15px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+                    "target": [
+                      ".site-resource"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<p class=\"resource-credit\">",
+            "target": [
+              ".resource-credit"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#eff7f3",
+                  "bgColor": "#f9fcfc",
+                  "contrastRatio": 1.05,
+                  "fontSize": "11.3pt (15px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+                    "target": [
+                      ".site-resource"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<span title=\"2831081cec914e841ac1478ce3d992a3bd0ce268c29c63efeb6aab68c91818ea\">Autora das cores</span>",
+            "target": [
+              ".resource-credit > span"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#eff7f3",
+                  "bgColor": "#f9fcfc",
+                  "contrastRatio": 1.05,
+                  "fontSize": "11.3pt (15px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+                    "target": [
+                      ".site-resource"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<p role=\"status\" class=\"resource-status\">Disponível neste dispositivo</p>",
+            "target": [
+              ".resource-status"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#eff7f3",
+                  "bgColor": "#f8fdfb",
+                  "contrastRatio": 1.06,
+                  "fontSize": "9.8pt (13px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<button type=\"button\" class=\"secondary\">",
+                    "target": [
+                      ".site-resource > .secondary[type=\"button\"]"
+                    ]
+                  },
+                  {
+                    "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+                    "target": [
+                      ".site-resource"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.06 (foreground color: #eff7f3, background color: #f8fdfb, font size: 9.8pt (13px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<button type=\"button\" class=\"secondary\">",
+            "target": [
+              ".site-resource > .secondary[type=\"button\"]"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.06 (foreground color: #eff7f3, background color: #f8fdfb, font size: 9.8pt (13px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#eff7f3",
+                  "bgColor": "#f9fcfc",
+                  "contrastRatio": 1.05,
+                  "fontSize": "11.3pt (15px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+                    "target": [
+                      ".site-resource"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<p class=\"small-note\">A tua cópia pode ajudar outras pessoas. A autoria continua a ser do criador.</p>",
+            "target": [
+              ".site-resource > .small-note"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ]
+      }
+    ],
+    "after": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "tags": [
+          "cat.color",
+          "wcag2aa",
+          "wcag143",
+          "TTv5",
+          "TT13.c",
+          "EN-301-549",
+          "EN-9.1.4.3",
+          "ACT",
+          "RGAAv4",
+          "RGAA-3.2.1"
+        ],
+        "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#eff7f3",
+                  "bgColor": "#f9fcfc",
+                  "contrastRatio": 1.05,
+                  "fontSize": "17.3pt (23px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+                    "target": [
+                      ".site-resource"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 17.3pt (23px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<h2>Paletas legíveis.txt</h2>",
+            "target": [
+              ".resource-heading > div > h2"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 17.3pt (23px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#eff7f3",
+                  "bgColor": "#f9fcfc",
+                  "contrastRatio": 1.05,
+                  "fontSize": "11.3pt (15px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+                    "target": [
+                      ".site-resource"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<p>Paletas legíveis.txt · 29 B</p>",
+            "target": [
+              ".resource-heading > div > p"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#eff7f3",
+                  "bgColor": "#f9fcfc",
+                  "contrastRatio": 1.05,
+                  "fontSize": "11.3pt (15px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+                    "target": [
+                      ".site-resource"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<p class=\"resource-credit\">",
+            "target": [
+              ".resource-credit"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#eff7f3",
+                  "bgColor": "#f9fcfc",
+                  "contrastRatio": 1.05,
+                  "fontSize": "11.3pt (15px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+                    "target": [
+                      ".site-resource"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<span title=\"2831081cec914e841ac1478ce3d992a3bd0ce268c29c63efeb6aab68c91818ea\">Autora das cores</span>",
+            "target": [
+              ".resource-credit > span"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#eff7f3",
+                  "bgColor": "#f9fcfc",
+                  "contrastRatio": 1.05,
+                  "fontSize": "11.3pt (15px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+                    "target": [
+                      ".site-resource"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<p role=\"status\" class=\"resource-status\">Disponível neste dispositivo</p>",
+            "target": [
+              ".resource-status"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#eff7f3",
+                  "bgColor": "#f9fcfc",
+                  "contrastRatio": 1.05,
+                  "fontSize": "11.3pt (15px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+                    "target": [
+                      ".site-resource"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<p class=\"small-note\">A tua cópia pode ajudar outras pessoas. A autoria continua a ser do criador.</p>",
+            "target": [
+              ".site-resource > .small-note"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "theme": "dark",
+    "palette": "sand",
+    "colors": {
+      "card": "rgb(23, 44, 57)",
+      "paper": "rgb(250, 247, 240)"
+    },
+    "focus": {
+      "style": "solid",
+      "width": "3px",
+      "color": "rgb(155, 221, 208)"
+    },
+    "before": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "tags": [
+          "cat.color",
+          "wcag2aa",
+          "wcag143",
+          "TTv5",
+          "TT13.c",
+          "EN-301-549",
+          "EN-9.1.4.3",
+          "ACT",
+          "RGAAv4",
+          "RGAA-3.2.1"
+        ],
+        "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#213d38",
+                  "bgColor": "#172c39",
+                  "contrastRatio": 1.22,
+                  "fontSize": "17.3pt (23px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+                    "target": [
+                      ".site-resource"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 17.3pt (23px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<h2>Paletas legíveis.txt</h2>",
+            "target": [
+              ".resource-heading > div > h2"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 17.3pt (23px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#213d38",
+                  "bgColor": "#172c39",
+                  "contrastRatio": 1.22,
+                  "fontSize": "11.3pt (15px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+                    "target": [
+                      ".site-resource"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<p>Paletas legíveis.txt · 29 B</p>",
+            "target": [
+              ".resource-heading > div > p"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#213d38",
+                  "bgColor": "#172c39",
+                  "contrastRatio": 1.22,
+                  "fontSize": "11.3pt (15px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+                    "target": [
+                      ".site-resource"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<p class=\"resource-credit\">",
+            "target": [
+              ".resource-credit"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#213d38",
+                  "bgColor": "#172c39",
+                  "contrastRatio": 1.22,
+                  "fontSize": "11.3pt (15px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+                    "target": [
+                      ".site-resource"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<span title=\"2831081cec914e841ac1478ce3d992a3bd0ce268c29c63efeb6aab68c91818ea\">Autora das cores</span>",
+            "target": [
+              ".resource-credit > span"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#213d38",
+                  "bgColor": "#172c39",
+                  "contrastRatio": 1.22,
+                  "fontSize": "11.3pt (15px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+                    "target": [
+                      ".site-resource"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<p role=\"status\" class=\"resource-status\">Disponível neste dispositivo</p>",
+            "target": [
+              ".resource-status"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#213d38",
+                  "bgColor": "#172c39",
+                  "contrastRatio": 1.22,
+                  "fontSize": "11.3pt (15px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+                    "target": [
+                      ".site-resource"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<p class=\"small-note\">A tua cópia pode ajudar outras pessoas. A autoria continua a ser do criador.</p>",
+            "target": [
+              ".site-resource > .small-note"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ]
+      }
+    ],
+    "after": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "tags": [
+          "cat.color",
+          "wcag2aa",
+          "wcag143",
+          "TTv5",
+          "TT13.c",
+          "EN-301-549",
+          "EN-9.1.4.3",
+          "ACT",
+          "RGAAv4",
+          "RGAA-3.2.1"
+        ],
+        "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#213d38",
+                  "bgColor": "#172c39",
+                  "contrastRatio": 1.22,
+                  "fontSize": "17.3pt (23px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+                    "target": [
+                      ".site-resource"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 17.3pt (23px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<h2>Paletas legíveis.txt</h2>",
+            "target": [
+              ".resource-heading > div > h2"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 17.3pt (23px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#213d38",
+                  "bgColor": "#172c39",
+                  "contrastRatio": 1.22,
+                  "fontSize": "11.3pt (15px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+                    "target": [
+                      ".site-resource"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<p>Paletas legíveis.txt · 29 B</p>",
+            "target": [
+              ".resource-heading > div > p"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#213d38",
+                  "bgColor": "#172c39",
+                  "contrastRatio": 1.22,
+                  "fontSize": "11.3pt (15px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+                    "target": [
+                      ".site-resource"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<p class=\"resource-credit\">",
+            "target": [
+              ".resource-credit"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#213d38",
+                  "bgColor": "#172c39",
+                  "contrastRatio": 1.22,
+                  "fontSize": "11.3pt (15px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+                    "target": [
+                      ".site-resource"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<span title=\"2831081cec914e841ac1478ce3d992a3bd0ce268c29c63efeb6aab68c91818ea\">Autora das cores</span>",
+            "target": [
+              ".resource-credit > span"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#213d38",
+                  "bgColor": "#172c39",
+                  "contrastRatio": 1.22,
+                  "fontSize": "11.3pt (15px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+                    "target": [
+                      ".site-resource"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<p role=\"status\" class=\"resource-status\">Disponível neste dispositivo</p>",
+            "target": [
+              ".resource-status"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#213d38",
+                  "bgColor": "#172c39",
+                  "contrastRatio": 1.22,
+                  "fontSize": "11.3pt (15px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+                    "target": [
+                      ".site-resource"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<p class=\"small-note\">A tua cópia pode ajudar outras pessoas. A autoria continua a ser do criador.</p>",
+            "target": [
+              ".site-resource > .small-note"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "theme": "dark",
+    "palette": "forest",
+    "colors": {
+      "card": "rgb(23, 44, 57)",
+      "paper": "rgb(237, 245, 239)"
+    },
+    "focus": {
+      "style": "solid",
+      "width": "3px",
+      "color": "rgb(155, 221, 208)"
+    },
+    "before": [],
+    "after": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "tags": [
+          "cat.color",
+          "wcag2aa",
+          "wcag143",
+          "TTv5",
+          "TT13.c",
+          "EN-301-549",
+          "EN-9.1.4.3",
+          "ACT",
+          "RGAAv4",
+          "RGAA-3.2.1"
+        ],
+        "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#173d31",
+                  "bgColor": "#172c39",
+                  "contrastRatio": 1.2,
+                  "fontSize": "17.3pt (23px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+                    "target": [
+                      ".site-resource"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.2 (foreground color: #173d31, background color: #172c39, font size: 17.3pt (23px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<h2>Paletas legíveis.txt</h2>",
+            "target": [
+              ".resource-heading > div > h2"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.2 (foreground color: #173d31, background color: #172c39, font size: 17.3pt (23px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#173d31",
+                  "bgColor": "#172c39",
+                  "contrastRatio": 1.2,
+                  "fontSize": "11.3pt (15px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+                    "target": [
+                      ".site-resource"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.2 (foreground color: #173d31, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<p>Paletas legíveis.txt · 29 B</p>",
+            "target": [
+              ".resource-heading > div > p"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.2 (foreground color: #173d31, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#173d31",
+                  "bgColor": "#172c39",
+                  "contrastRatio": 1.2,
+                  "fontSize": "11.3pt (15px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+                    "target": [
+                      ".site-resource"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.2 (foreground color: #173d31, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<p class=\"resource-credit\">",
+            "target": [
+              ".resource-credit"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.2 (foreground color: #173d31, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#173d31",
+                  "bgColor": "#172c39",
+                  "contrastRatio": 1.2,
+                  "fontSize": "11.3pt (15px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+                    "target": [
+                      ".site-resource"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.2 (foreground color: #173d31, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<span title=\"2831081cec914e841ac1478ce3d992a3bd0ce268c29c63efeb6aab68c91818ea\">Autora das cores</span>",
+            "target": [
+              ".resource-credit > span"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.2 (foreground color: #173d31, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#173d31",
+                  "bgColor": "#172c39",
+                  "contrastRatio": 1.2,
+                  "fontSize": "11.3pt (15px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+                    "target": [
+                      ".site-resource"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.2 (foreground color: #173d31, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<p role=\"status\" class=\"resource-status\">Disponível neste dispositivo</p>",
+            "target": [
+              ".resource-status"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.2 (foreground color: #173d31, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#173d31",
+                  "bgColor": "#172c39",
+                  "contrastRatio": 1.2,
+                  "fontSize": "11.3pt (15px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+                    "target": [
+                      ".site-resource"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.2 (foreground color: #173d31, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<p class=\"small-note\">A tua cópia pode ajudar outras pessoas. A autoria continua a ser do criador.</p>",
+            "target": [
+              ".site-resource > .small-note"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.2 (foreground color: #173d31, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "theme": "dark",
+    "palette": "ink",
+    "colors": {
+      "card": "rgb(23, 44, 57)",
+      "paper": "rgb(23, 45, 49)"
+    },
+    "focus": {
+      "style": "solid",
+      "width": "3px",
+      "color": "rgb(155, 221, 208)"
+    },
+    "before": [],
+    "after": []
+  }
+]

@@ -1,0 +1,7 @@
+{
+  "before": "FAIL: same verified snapshot replaced its reader and lost focus",
+  "afterTargeted": "PASS: two Firefox cases, all six palettes plus duplicate inventory and failed-refresh control",
+  "currentFullUI": "RUNNING; see .cache/resources-final-ui/report.json",
+  "beforeSourceSHA256": "02202d4756b0397fc31df8d49417199ee107da3129242774b14305fd9406820d",
+  "scope": "Real UI, two accounts/RTC, only Worker reply timing controlled; no private API injection. Not physical keyboard/screen reader/hardware or independent review."
+}

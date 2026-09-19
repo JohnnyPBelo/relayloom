@@ -571,3 +571,52 @@ No browser, o resolver de contactos tem de consumir snapshot pré-carregado para
 Nos artefactos iOS, a numeração exportada de PNG não é ordemcronológica. OlogXCTest/exportação e todasascapturas têm de ser lidos juntos. Em1e83db2 há mensagem recebida peloNode e falhaAX dafototeca; os avisosCoreData não demonstramcausa. Não inferir fase a partirdeui-03isolado nem dispensara foto.
 
 O gate concluiu: Go/race também passou (app 495,542s; gate anterior 515,3s), assim como 19 testes de interoperabilidade, 57 casos de browser e 23 percursos UI; 20 relatórios Axe sem violações. A diferença para os 92s de Go normal era esperável na execução com race; não a atribuir a deadlock sem evidência. Não foram interrompidos processos nem aumentados prazos. Os hashes de 628 ficheiros do commit 96e35c1 foram comparados com o relatório. A UI dos recursos permanece pendente.
+
+
+## Clock único e fronteira Go de audiências — 18 de Setembro
+
+Dois defeitos reais surgiram fora dos vectores sintácticos. Go recebia []string do runtime e o helper de scope só aceitava []any do decoder; a correcção valida ambos da mesma forma. Node criava created/expires com leituras distintas do relógio; CIWindows apanhou o desvio e o teste de17ms reproduziu-o. Usar um instante, não relaxar o registo nem corrigir a fixture para esconder o problema. A classificação inicial como falha dafixture estava errada e foi corrigida.
+
+CI Go excedeu o orçamento acumulado de10min no início de um teste; não inferir deadlock. O controlo com pacotes sequenciais não chegou a Go, porque Windows falhou primeiro. Guardar essa distinção. O novo CI56e105e é o primeiro que pode verificar a correcção e voltar a medir o gate Go.
+
+
+## UI nativa, idiomas e resultados incertos — 18 de Setembro
+
+O teste nativo publicava só para o dono depois de alternar Público→Privado, pois a UI repõe Só tu. Reescolher explicitamente o leitor nafixture preservou a protecção; Node/Go UIpassaram. Não pressupor que selecções anteriores sobrevivem a mudanças de audiência.
+
+Os screenshots darkmostravam0KiB para um ficheiro não vazio e notas centradas por display:flex global. CorrigidosformatoB/KiB/MiB e displaylocal;Axe/teclado/layout/EN/ESpassaram nos3engines. Os nomescriados pelo utilizador não são traduzidos.
+
+Duas falhas reais controladas no transporte doWorker (request perdidoantes de chegar e reply perdido depois do commit) passaram pelaUI com umUUID e umrecurso, incluindo reload. Não reenvia automaticamente comnovoUUID. A biblioteca usa todo o history local, não a janela de128resultados;137recursos de terceiroforam verificados emduaspáginas reais. Gateintegral emcurso, não tratado comoPASS.
+
+
+## Recursos v3 — fronteiras de leitura e renderização
+
+O gate integral passou, mas três reproduções adicionais confirmaram problemas que a cobertura genérica não observava: finally de inspect limpava busy do obtain seguinte; paleta da app contaminava cartões de sites; mudança de preview associava novo nome ao URL anterior até ao effect. Controlos reais na fronteira Worker/DOM e Axe deram falhas antes das correcções. Não chamar revisão concluída apenas porque a suite genérica passou.
+
+A fixture das seis paletas encontrou também uma remontagem entre locator e scroll. Conservar o resultado inicial e repetir apenas essa observação transitória com prazo limitado; não repetir acções de publicação nem atribuir a falha ao protocolo. As correcções do produto ainda estão por aplicar nesta entrada.
+
+
+## Recursos v3 — precedência e leitor estável
+
+O primeiro ajuste de paleta não vencia as regras globais de tema escuro para botões/links. Recolher selectores e estilos efectivos no browser mostrou a precedência; delimitar regras à superfície/elemento resolveu-a sem !important nem exclusõesAxe. O novo Chromium9passou, mas Firefoxexpôs um problema de foco.
+
+A fixture tabulava para fora do último controlo e podia entrar no chrome do browser; testar a travessia inversa dentro do diálogo evita exigir um comportamento externo à aplicação. Um controlo separado reteve respostas reais de state, abriu a versão2 e libertou o inventário: o mesmo snapshot era resolvido novamente e o leitor desmontava, perdendo foco. Preservar o leitor durante verificações automáticas e limpar em erro/indisponibilidade; navegação explícita continua a limpar. A reprodução negativa e o par positivo/falha de resposta passaram emFirefox, juntamente com as seis paletas. Não corrigir uma perda de foco do produto apenas adicionando uma espera/refocus àfixture.
+
+Rever capturas além deAxe: metadados de recursos herdavam tamanhos de parágrafo do estúdio e separavam29/B emlinhas; selectores locais e unidade semquebra corrigem a intenção visual. A matriz completa final está emexecução; não inferir aprovação antes de acabar.
+
+
+A tipografia local tornou o selector de metadados mais específico e voltou a aplicar a cor --muted da app, antes ultrapassada pelo parágrafo do site. A matriz apanhou a regressão(100PASS/1FAIL Chromium). Fixar simultaneamente a cor herdada e a tipografia em componentes com paleta própria; verificar as seis combinações antes da matriz longa. Não tratar o ajuste tipográfico como apenas tamanho quando partilha uma declaração de cor. Originais preservados; correcção dirigida emcurso.
+
+
+## Confirmação de inserção, polling retido e páginas no limite — 19 de Setembro
+
+Um helper de teste alterava a paleta logo depois de pedir inserção assíncrona. Confirmar biblioteca fechada, bloco visível e número de versão realmente publicado; selectOption pode operar num select de fundo que um utilizador não alcançaria enquanto o diálogo está activo. Preservar as falhas e não atribuir automaticamente a falta de conteúdo àrede.
+
+A fixture de foco retinha qualquer resposta state e esperava depois uma contendo versão2, mas o polling admite só uma actualização pendente. Isso podia bloquear a observação. Reter apenas a resposta real com a versão pretendida, deixando as anteriores circular; nunca fabricar o conteúdo nem aumentar prazos para contornar a falha dafixture.
+
+A página de limite tem de respeitar24irmãos:5composições+123recursos perfazem128blocos válidos. A fixture plana foi correctamente recusada. A página válida reproduziu59recursos semverificação por limite64docliente. Inspecções automáticas passam por uma fila4/limitada; cancelamento remove trabalho nãoiniciado, mas conserva slots de chamadas jáenviadas atéresposta/timeout. Unitários4PASS eUI Chromium/Firefox5cadaPASS; os contadores reais apósfecho/reabertura foram posted127,held4,peak4,com123disponíveis ebytesexactos. A nova regressãocompleta ainda estápendente.
+
+
+## Arranque Electron numa worktree profunda — 19 de Setembro
+
+Browser/UI Node-Go passaram, mas Electron abortouantes de arrancar por socketUnix com116bytes. A raiz .cache/tmp ainda daria108; .cache/t manteve o temporário no projecto e permitiu startup real. Não usar --no-sandbox nem alterar segurança/NSS para contornar uma limitação de caminho. ControlosAPI/isolamento passaram e pacoteLinux arrancou. As duas fontes alteradas são launchers; os hashes de app/engine/UI anteriores permanecem, porisso a continuação cobre os gates afectados eRNSpendente com proveniência explícita, preservando o failoriginal.
