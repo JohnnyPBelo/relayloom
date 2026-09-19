@@ -1,6 +1,6 @@
 # Dados declarativos nos sites
 
-Extensão validada localmente, ainda não incluída na distribuição pública. [Comandos, resultados e falhas corrigidas](evidence/site-data). O estado da execução está em `.codex-delivery/SITE-DATA-NEXT.md` e nos relatórios do gate `scripts/verify-site-data.mjs`. As limitações globais permanecem em [STATUS](STATUS.md).
+Extensão publicada em https://johnnypbelo.github.io/relayloom/, fonte59c9bd1/distribuiçãof6758222. [Verificação HTTPS e percursos reais](evidence/site-data/live). [Comandos, resultados e falhas corrigidas](evidence/site-data). O estado da execução está em `.codex-delivery/SITE-DATA-NEXT.md` e nos relatórios do gate `scripts/verify-site-data.mjs`. As limitações globais permanecem em [STATUS](STATUS.md).
 
 O bloco **Tabela** permite construir directórios, inventários e registos dentro de um site. A autora escolhe colunas de texto, número, sim/não, data ISO ou ligação HTTPS. Os leitores pesquisam, ordenam e paginam os dados no próprio dispositivo; estas operações não alteram a publicação. Não há um servidor de base de dados nem consultas fornecidas pelo autor a executar.
 

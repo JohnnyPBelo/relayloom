@@ -1,0 +1,31 @@
+{
+  "status": "PASS",
+  "scope": "Integrated source: web and Go builds plus complete Node suite. Not UI/public deployment/hardware.",
+  "sourceCommit": "10f037a",
+  "recordedAt": "2026-09-18T00:24:43.028126+00:00",
+  "checks": [
+    {
+      "command": "npm run build",
+      "exitCode": 0,
+      "log": "build.log",
+      "sha256": "acd2ac833a835c2683bd7b951e77f7897f88b6595380359c16be52014c7be353"
+    },
+    {
+      "command": "npm run native:build",
+      "exitCode": 0,
+      "log": "native-build.log",
+      "sha256": "3ac064230880f9200889d5cd559082dea8fda0269451d3792404f4f783660cee"
+    },
+    {
+      "command": "npm test",
+      "exitCode": 0,
+      "log": "node-all.log",
+      "sha256": "7d127ecdf565d5c87faf1df494fc62f79ecb16786b22e4092d96ceb234492fed"
+    }
+  ],
+  "nodeTests": {
+    "pass": 427,
+    "fail": 0,
+    "skip": 0
+  }
+}

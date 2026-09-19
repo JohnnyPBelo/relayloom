@@ -1,6 +1,6 @@
 # Estúdio de sites
 
-Estado actual: o estúdio publicado já inclui [endereço permanente, histórico, privacidade e recuperação](SITE-REVISIONS.md). O código integrado acrescenta [tabelas tipadas](SITE-DATA.md), ainda em validação da distribuição pública. Os números e descrições das etapas abaixo são históricos quando indicam revisões/API ainda pendentes. [Estado verificável](STATUS.md).
+Estado actual: o estúdio publicado já inclui [endereço permanente, histórico, privacidade e recuperação](SITE-REVISIONS.md). A versão pública acrescenta [tabelas tipadas](SITE-DATA.md), com [verificação HTTPS concluída](evidence/site-data/live). Os números e descrições das etapas abaixo são históricos quando indicam revisões/API ainda pendentes. [Estado verificável](STATUS.md).
 
 Incremento de 16 de Setembro de 2026 validado no host. O produto completo e a paridade física de plataformas continuam abertos em [STATUS](STATUS.md). Já está disponível em https://johnnypbelo.github.io/relayloom/ ; 17 ficheiros verificados por hash e 4 testes no URL real passaram. [Evidência](evidence/site-studio/live).
 
@@ -8,7 +8,7 @@ Incremento de 16 de Setembro de 2026 validado no host. O produto completo e a pa
 
 Em **A minha página**, escolha **Modelos** para começar com um caderno editorial, portefólio visual ou espaço de comunidade. Cada modelo tem duas páginas editáveis. Em **Páginas**, acrescente páginas, altere o nome/endereço e escolha a inicial. Uma página ligada a partir de outra não pode ser eliminada enquanto mantiver essas referências.
 
-A paleta dispõe de 13 blocos: capa, texto, ligação, destaque, título, citação, botão, imagem, galeria, separador, espaço, colunas e publicações. Pode aninhar composições, arrastar blocos, duplicá-los e movê-los com as setas. Nas propriedades do bloco, **Mover para composição** também permite alterar a hierarquia por teclado/toque. Os separadores de ferramentas aceitam as setas esquerda/direita, Home e End.
+A paleta dispõe de 14 blocos: capa, texto, ligação, destaque, título, citação, botão, imagem, galeria, separador, espaço, colunas, publicações e tabela. [As tabelas](SITE-DATA.md) incluem dados tipados, CSV/JSON e pesquisa/ordenação local. Pode aninhar composições, arrastar blocos, duplicá-los e movê-los com as setas. Nas propriedades do bloco, **Mover para composição** também permite alterar a hierarquia por teclado/toque. Os separadores de ferramentas aceitam as setas esquerda/direita, Home e End.
 
 **Estilo** permite escolher tipografia, largura, cantos e cor de detalhe; cada bloco tem alinhamento, espaçamento e fundo. **Pré-visualizar** apresenta o mesmo renderer usado pelos leitores, com navegação interna e largura móvel. As imagens são incluídas no site e podem ser reutilizadas em várias páginas, com descrições alternativas.
 
@@ -71,7 +71,7 @@ As capturas e verificações Axe são testes automatizados no Linux. WebKit/Linu
 
 Os controlos na página seleccionada permitem duplicar a composição completa e mover a página na navegação. A cópia recebe IDs e slug próprios; adapta ligações a si mesma e conserva ligações às outras páginas e referências às imagens. O início permanece na página escolhida, independentemente da ordem. Desfazer/refazer e gravação cifrada continuam disponíveis; os botões respeitam os limites e têm alternativa por teclado/toque.
 
-Publicação64363cf da fontebfcb5fc verificada em17assets e12percursosHTTPS, além de135browsers,62UI Node/Go e Android. [Provas](evidence/page-organisation). Endereços estáveis/revisões, contribuições e ficheiros opcionais continuam pendentes.
+Publicação histórica64363cf da fontebfcb5fc verificada em17assets e12percursosHTTPS, além de135browsers,62UI Node/Go e Android. [Provas](evidence/page-organisation). Endereços estáveis/revisões foram entregues depois; contribuições e ficheiros opcionais continuam pendentes.
 
 
 ## Correcção de rascunhos grandes publicada
@@ -79,4 +79,4 @@ Publicação64363cf da fontebfcb5fc verificada em17assets e12percursosHTTPS, al�
 O limite de 2 MiB de imagens do editor não mudou. A versão web anterior guardava o rascunho dentro de um índice privado de 1 MiB; uma imagem permitida pelo editor podia por isso falhar ao guardar. A candidata usa valores privados cifrados separados, até 8 MiB por valor e 32 MiB no total cifrado, mantém leitura de perfis anteriores e grava índice/valor numa só transacção. Os blobs privados não entram no inventário nem podem ser pedidos como bundles. O teste UI recarrega/desbloqueia o perfil e compara a imagem e o projecto exactos. A recuperação de erros não repõe valores vazios silenciosamente. Passaram 236 testes de browser/UI, dois oráculos de endereçamento e os gates Linux; [evidência e âmbito](evidence/private-values). Publicação da fonte `0c6b58a` verificada em 17 hashes HTTP e 13 percursos no URL público.
 
 
-A aplicação Node dispõe agora de uma [API de revisões](SITE-REVISIONS.md), ainda sem controlos no estúdio partilhado. Os testes de API/transporte não substituem a UI de revisões nem as APIs Go/browser pendentes.
+O [estúdio de revisões](SITE-REVISIONS.md) está integrado em Node, Go e browser, com controlos de publicação, audiência, histórico, conflitos e recuperação. A [publicação actual com tabelas](evidence/site-data/live) foi verificada no HTTPS; estes resultados não comprovam dispositivos físicos nem encerram o contrato integral.

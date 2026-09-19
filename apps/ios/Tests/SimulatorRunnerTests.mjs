@@ -7,7 +7,24 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync, readFileSync } from 'nod
 import { DatabaseSync } from 'node:sqlite';
 import { join, resolve } from 'node:path';
 import { tsImport } from 'tsx/esm/api';
-import { startupBeforePhoto, sanitize, selectSimulator, requestedSimulatorVersion, validateOwnedContainer, assertTestSummary, verifySyntheticContainer, removeMatchingRunRecord, requireInactiveCleanupOwner, stopOwnedProcessGroup, stopOwnedAfterFailure, annotatePhotoFailure, recordPeerDiagnostics } from '../../../scripts/ios-simulator.mjs';
+import { startupBeforePhoto, sanitize, selectSimulator, requestedSimulatorVersion, validateOwnedContainer, assertTestSummary, verifySyntheticContainer, removeMatchingRunRecord, requireInactiveCleanupOwner, stopOwnedProcessGroup, stopOwnedAfterFailure, annotatePhotoFailure, recordPeerDiagnostics, recordUIPhases, needsPhotoDiagnostics } from '../../../scripts/ios-simulator.mjs';
+
+test('bounded UI phase diagnostics preserve failed status, reject arbitrary text and select only the incomplete photo stage', () => {
+  const report = { status: 'FAILED', error: 'Owned command failed: execute-ui-test', photoAttachmentRequested: true };
+  recordUIPhases(report, 'a'.repeat(4000) + '\nIOS_SIMULATOR_PHASE private-message-saved\nIOS_SIMULATOR_PHASE photo-picker-requested\n');
+  recordUIPhases(report, 'IOS_SIMULATOR_PHASE photo-picker-requested\nIOS_SIMULATOR_PHASE secret-form-value\n');
+  assert.deepEqual(report.uiPhases, ['private-message-saved', 'photo-picker-requested']);
+  assert.equal(report.lastUIPhase, 'photo-picker-requested');
+  assert.equal(needsPhotoDiagnostics(report), true);
+  assert.equal(report.status, 'FAILED');
+  assert.equal(report.error, 'Owned command failed: execute-ui-test');
+  recordUIPhases(report, 'IOS_SIMULATOR_PHASE photo-picker-ready\nIOS_SIMULATOR_PHASE photo-attachment-saved\nIOS_SIMULATOR_PHASE completed\n');
+  assert.equal(needsPhotoDiagnostics(report), false);
+  assert.equal(report.status, 'FAILED', 'diagnostic completion cannot grant a test pass');
+  assert.equal(needsPhotoDiagnostics({ error: 'Owned command failed: seed-synthetic-photo' }), true);
+  assert.equal(needsPhotoDiagnostics({ error: 'execute-ui-test', photoAttachmentRequested: true, uiPhases: ['identity-created'] }), false);
+  assert.equal(needsPhotoDiagnostics({ error: 'execute-ui-test', photoAttachmentRequested: false, uiPhases: ['photo-picker-requested'] }), false);
+});
 
 test('select only compatible installed iOS runtimes, never unavailable or other platforms', () => {
   const runtime = (identifier, version, available) => ({ identifier: 'com.apple.CoreSimulator.SimRuntime.' + identifier, version, isAvailable: available });

@@ -1,0 +1,25 @@
+
+> relayloom@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 1835 modules transformed.
+rendering chunks...
+computing gzip size...
+../../dist/web/assets/manifest-BWKlX33v.webmanifest         0.32 kB
+../../dist/web/index.html                                   0.81 kB │ gzip:   0.39 kB
+../../dist/web/browser/index.html                           1.17 kB │ gzip:   0.57 kB
+../../dist/web/browser/worker-BVAeI3LD.js                 146.10 kB
+../../dist/web/assets/editor-TdZUp6iQ.css                   2.66 kB │ gzip:   0.85 kB
+../../dist/web/assets/main-DEi_Xkk3.css                    13.87 kB │ gzip:   3.10 kB
+../../dist/web/assets/history-D4SGYxMs.css                 19.34 kB │ gzip:   4.35 kB
+../../dist/web/assets/peers-CBwbv1q3.css                   61.71 kB │ gzip:  12.98 kB
+../../dist/web/assets/modulepreload-polyfill-B5Qt9EMX.js    0.71 kB │ gzip:   0.40 kB
+../../dist/web/assets/visit-Df_B8x1Z.js                     3.55 kB │ gzip:   1.60 kB
+../../dist/web/assets/editor-BbheR3Us.js                   52.02 kB │ gzip:  16.19 kB
+../../dist/web/assets/browser-BylE6TPu.js                  67.92 kB │ gzip:  23.09 kB
+../../dist/web/assets/history-BQsA0MJe.js                 132.90 kB │ gzip:  41.70 kB
+../../dist/web/assets/main-D1Pladqv.js                    148.42 kB │ gzip:  45.48 kB
+../../dist/web/assets/peers-DcVGqp8_.js                   396.94 kB │ gzip: 128.21 kB
+✓ built in 2.75s

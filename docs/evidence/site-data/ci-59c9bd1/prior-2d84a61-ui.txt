@@ -1,0 +1,524 @@
+Command line invocation:
+    /Applications/Xcode_26.6.app/Contents/Developer/usr/bin/xcodebuild -project apps/ios/RelayLoom.xcodeproj -scheme RelayLoomSimulator -configuration Debug -sdk iphonesimulator -destination id=2BB2A55C-C25D-4754-9279-785DEA0F312D -destination-timeout 90 -derivedDataPath /Users/runner/work/relayloom/relayloom/.cache/ios/DerivedData -jobs 2 -disableAutomaticPackageResolution CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= ARCHS=arm64 -resultBundlePath /Users/runner/work/relayloom/relayloom/.cache/ios/simulator/raw/f1d8fc16-88e6-450d-9c45-e48e0854f36f/ui-results.xcresult -parallel-testing-enabled NO -maximum-concurrent-test-simulator-destinations 1 -maximum-parallel-testing-workers 1 -test-timeouts-enabled YES -default-test-execution-time-allowance 360 -maximum-test-execution-time-allowance 420 "-only-testing:RelayLoomUITests/NativeSimulatorTests/testNativeCoreUIAndRecovery" test-without-building
+
+Build settings from command line:
+    ARCHS = arm64
+    CODE_SIGN_IDENTITY = 
+    CODE_SIGNING_ALLOWED = NO
+    CODE_SIGNING_REQUIRED = NO
+    SDKROOT = iphonesimulator26.5
+
+Writing result bundle at path:
+	/Users/runner/work/relayloom/relayloom/.cache/ios/simulator/raw/f1d8fc16-88e6-450d-9c45-e48e0854f36f/ui-results.xcresult
+
+2026-09-17 22:19:50.191427+0000 RelayLoomUITests-Runner[20810:67667] [Default] Running tests...
+2026-09-17 22:19:50.336157+0000 RelayLoomUITests-Runner[20810:68045] [General] Failed to send CA Event for app launch measurements for ca_event_type: 0 event_name: com.apple.app_launch_measurement.FirstFramePresentationMetric
+2026-09-17 22:19:50.381227+0000 RelayLoomUITests-Runner[20810:68045] [General] Failed to send CA Event for app launch measurements for ca_event_type: 1 event_name: com.apple.app_launch_measurement.ExtendedLaunchMetrics
+    t =      nans Interface orientation changed to Portrait
+Test Suite 'Selected tests' started at 2026-09-17 22:19:52.868.
+Test Suite 'RelayLoomUITests.xctest' started at 2026-09-17 22:19:52.869.
+Test Suite 'NativeSimulatorTests' started at 2026-09-17 22:19:52.869.
+Test Case '-[RelayLoomUITests.NativeSimulatorTests testNativeCoreUIAndRecovery]' started.
+    t =     0.00s Start Test at 2026-09-17 22:19:52.871
+    t =     0.15s Set Up
+    t =     0.21s Open org.relayloom.ios
+    t =     0.21s     Launch org.relayloom.ios
+objc[20810]: Class UIAccessibilityLoaderWebShared is implemented in both /Library/Developer/CoreSimulator/Volumes/iOS_23E254a/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.4.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebCore.axbundle/WebCore (0x108c88310) and /Library/Developer/CoreSimulator/Volumes/iOS_23E254a/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.4.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebKit.axbundle/WebKit (0x108a40398). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+    t =    20.68s         Setting up automation session
+    t =    23.01s         Wait for org.relayloom.ios to idle
+    t =    25.03s Waiting 45.0s for WebView (First Match) to exist
+    t =    26.03s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    26.03s         Checking existence of `WebView (First Match)`
+    t =    26.41s Waiting 30.0s for "Get started" Button to exist
+    t =    27.45s     Checking `Expect predicate `existsNoRetry == 1` for object "Get started" Button`
+    t =    27.46s         Checking existence of `"Get started" Button`
+    t =    27.91s         Capturing element debug description
+    t =    28.42s     Checking `Expect predicate `existsNoRetry == 1` for object "Get started" Button`
+    t =    28.42s         Checking existence of `"Get started" Button`
+    t =    28.49s         Capturing element debug description
+    t =    29.42s     Checking `Expect predicate `existsNoRetry == 1` for object "Get started" Button`
+    t =    29.42s         Checking existence of `"Get started" Button`
+    t =    29.49s         Capturing element debug description
+    t =    30.43s     Checking `Expect predicate `existsNoRetry == 1` for object "Get started" Button`
+    t =    30.43s         Checking existence of `"Get started" Button`
+    t =    30.68s         Capturing element debug description
+    t =    31.42s     Checking `Expect predicate `existsNoRetry == 1` for object "Get started" Button`
+    t =    31.42s         Checking existence of `"Get started" Button`
+    t =    31.54s Tap "Get started" Button
+    t =    31.54s     Wait for org.relayloom.ios to idle
+    t =    31.54s     Find the "Get started" Button
+    t =    31.66s     Check for interrupting elements affecting "Get started" Button
+    t =    31.75s     Synthesize event
+    t =    32.09s     Wait for org.relayloom.ios to idle
+    t =    32.49s Waiting 30.0s for "Create identity" Button to exist
+    t =    33.50s     Checking `Expect predicate `existsNoRetry == 1` for object "Create identity" Button`
+    t =    33.50s         Checking existence of `"Create identity" Button`
+    t =    35.66s Find the Target Application 'org.relayloom.ios'
+    t =    35.83s Added attachment named 'relayloom-01-onboarding'
+    t =    35.83s Waiting 30.0s for TextField (First Match) to exist
+    t =    36.86s     Checking `Expect predicate `existsNoRetry == 1` for object TextField (First Match)`
+    t =    36.86s         Checking existence of `TextField (First Match)`
+    t =    37.36s Tap TextField (First Match)
+    t =    37.36s     Wait for org.relayloom.ios to idle
+    t =    37.36s     Find the TextField (First Match)
+    t =    37.68s     Check for interrupting elements affecting "Your name" TextField
+    t =    37.78s     Synthesize event
+    t =    38.09s     Wait for org.relayloom.ios to idle
+    t =    38.10s Type 'iOS Simulator Send...' into "Your name" TextField
+    t =    38.10s     Wait for org.relayloom.ios to idle
+    t =    38.13s     Find the "Your name" TextField
+    t =    38.44s     Check for interrupting elements affecting "Your name" TextField
+    t =    38.82s     Synthesize event
+    t =    39.39s     Wait for org.relayloom.ios to idle
+    t =    39.56s Waiting 30.0s for SecureTextField (First Match) to exist
+    t =    40.63s     Checking `Expect predicate `existsNoRetry == 1` for object SecureTextField (First Match)`
+    t =    40.63s         Checking existence of `SecureTextField (First Match)`
+    t =    40.97s Tap SecureTextField (First Match)
+    t =    40.98s     Wait for org.relayloom.ios to idle
+    t =    40.98s     Find the SecureTextField (First Match)
+    t =    41.26s     Check for interrupting elements affecting "At least 12 characters" SecureTextField
+    t =    41.34s     Synthesize event
+    t =    41.65s     Wait for org.relayloom.ios to idle
+    t =    42.09s Type 'relayloom ios simu...' into "At least 12 characters" SecureTextField
+    t =    42.09s     Wait for org.relayloom.ios to idle
+    t =    42.09s     Find the "At least 12 characters" SecureTextField
+    t =    42.46s     Check for interrupting elements affecting "At least 12 characters" SecureTextField
+    t =    42.53s     Synthesize event
+    t =    43.50s     Wait for org.relayloom.ios to idle
+    t =    43.52s Checking existence of `Keyboard (First Match)`
+    t =    43.88s Get all elements bound by index for: Elements matching predicate 'identifier IN[c] {"Done", "Hide keyboard", "Dismiss keyboard"} OR label IN[c] {"Done", "Hide keyboard", "Dismiss keyboard"}'
+    t =    44.21s Get all elements bound by index for: Elements matching predicate 'identifier IN[c] {"Done", "Hide keyboard", "Dismiss keyboard"} OR label IN[c] {"Done", "Hide keyboard", "Dismiss keyboard"}'
+    t =    44.30s Checking existence of `"relayloom.hide-keyboard" Button`
+    t =    44.41s Find the "relayloom.hide-keyboard" Button
+    t =    44.52s Find the "relayloom.hide-keyboard" Button
+    t =    44.59s Tap "relayloom.hide-keyboard" Button
+    t =    44.59s     Wait for org.relayloom.ios to idle
+    t =    44.59s     Find the "relayloom.hide-keyboard" Button
+    t =    44.67s     Check for interrupting elements affecting "relayloom.hide-keyboard" Button
+    t =    44.73s     Synthesize event
+    t =    45.04s     Wait for org.relayloom.ios to idle
+    t =    46.32s Checking existence of `Keyboard (First Match)`
+IOS_SIMULATOR_PHASE keyboard-dismissed
+    t =    46.46s Waiting 30.0s for "Create identity" Button to exist
+    t =    47.47s     Checking `Expect predicate `existsNoRetry == 1` for object "Create identity" Button`
+    t =    47.48s         Checking existence of `"Create identity" Button`
+    t =    47.56s Tap "Create identity" Button
+    t =    47.56s     Wait for org.relayloom.ios to idle
+    t =    47.56s     Find the "Create identity" Button
+    t =    47.63s     Check for interrupting elements affecting "Create identity" Button
+    t =    47.69s     Synthesize event
+    t =    48.16s     Wait for org.relayloom.ios to idle
+    t =    48.54s Waiting 45.0s for "Search and navigate" Button to exist
+    t =    49.60s     Checking `Expect predicate `existsNoRetry == 1` for object "Search and navigate" Button`
+    t =    49.61s         Checking existence of `"Search and navigate" Button`
+IOS_SIMULATOR_PHASE identity-created
+    t =    50.11s Get all elements bound by index for: Elements matching predicate '"Community" IN identifiers'
+    t =    50.16s Waiting 30.0s for "Open navigation" Button to exist
+    t =    51.20s     Checking `Expect predicate `existsNoRetry == 1` for object "Open navigation" Button`
+    t =    51.20s         Checking existence of `"Open navigation" Button`
+    t =    51.29s Tap "Open navigation" Button
+    t =    51.29s     Wait for org.relayloom.ios to idle
+    t =    51.29s     Find the "Open navigation" Button
+    t =    51.37s     Check for interrupting elements affecting "Open navigation" Button
+    t =    51.40s     Synthesize event
+    t =    51.42s         Scroll element to visible
+    t =    51.42s         Find the "Open navigation" Button
+    t =    51.58s         Computed hit point {27, 69} after scrolling to visible
+    t =    51.88s     Wait for org.relayloom.ios to idle
+    t =    52.89s Get all elements bound by index for: Elements matching predicate '"Community" IN identifiers'
+    t =    52.97s Checking existence of `"Community" Button`
+    t =    53.01s Find the "Community" Button
+    t =    53.08s Find the "Community" Button
+    t =    53.14s Get all elements bound by index for: Elements matching predicate '"Community" IN identifiers'
+    t =    53.21s Checking existence of `"Community" Button`
+    t =    53.29s Find the "Community" Button
+    t =    53.37s Find the "Community" Button
+    t =    53.43s Get all elements bound by index for: Elements matching predicate '"Community" IN identifiers'
+    t =    53.50s Find the "Community" Button
+    t =    53.59s Find the "Community" Button
+    t =    53.65s Find the "Community" Button
+    t =    53.71s Find the "Community" Button
+    t =    53.76s Find the "Community" Button
+IOS_SIMULATOR_NAVIGATION {"candidates":[{"enabled":true,"height":57,"hittable":true,"identifier":"","label":"Community","width":275,"x":13,"y":350}],"destination":"Community","phase":"before-tap"}
+    t =    53.81s Tap "Community" Button
+    t =    53.81s     Wait for org.relayloom.ios to idle
+    t =    53.81s     Find the "Community" Button
+    t =    53.86s     Check for interrupting elements affecting "Community" Button
+    t =    53.92s     Synthesize event
+    t =    54.23s     Wait for org.relayloom.ios to idle
+    t =    54.23s Get all elements bound by index for: Elements matching predicate '"Community" IN identifiers'
+IOS_SIMULATOR_NAVIGATION {"candidates":[],"destination":"Community","phase":"after-tap"}
+    t =    54.28s Waiting 30.0s for "Share something" Button to exist
+    t =    55.34s     Checking `Expect predicate `existsNoRetry == 1` for object "Share something" Button`
+    t =    55.35s         Checking existence of `"Share something" Button`
+    t =    55.42s Tap "Share something" Button
+    t =    55.42s     Wait for org.relayloom.ios to idle
+    t =    55.43s     Find the "Share something" Button
+    t =    55.50s     Check for interrupting elements affecting "Share something" Button
+    t =    55.56s     Synthesize event
+    t =    55.96s     Wait for org.relayloom.ios to idle
+    t =    55.96s Waiting 30.0s for TextView (First Match) to exist
+    t =    57.01s     Checking `Expect predicate `existsNoRetry == 1` for object TextView (First Match)`
+    t =    57.01s         Checking existence of `TextView (First Match)`
+    t =    57.09s Tap TextView (First Match)
+    t =    57.09s     Wait for org.relayloom.ios to idle
+    t =    57.09s     Find the TextView (First Match)
+    t =    57.16s     Check for interrupting elements affecting "An idea, a story, a hello…" TextView
+    t =    57.22s     Synthesize event
+    t =    57.56s     Wait for org.relayloom.ios to idle
+    t =    57.97s Type 'iOS simulator publ...' into "An idea, a story, a hello…" TextView
+    t =    57.97s     Wait for org.relayloom.ios to idle
+    t =    58.03s     Find the "An idea, a story, a hello…" TextView
+    t =    58.69s     Check for interrupting elements affecting "An idea, a story, a hello…" TextView
+    t =    58.82s     Synthesize event
+    t =    60.08s     Wait for org.relayloom.ios to idle
+    t =    60.09s Checking existence of `Keyboard (First Match)`
+    t =    60.57s Get all elements bound by index for: Elements matching predicate 'identifier IN[c] {"Done", "Hide keyboard", "Dismiss keyboard"} OR label IN[c] {"Done", "Hide keyboard", "Dismiss keyboard"}'
+    t =    60.72s Get all elements bound by index for: Elements matching predicate 'identifier IN[c] {"Done", "Hide keyboard", "Dismiss keyboard"} OR label IN[c] {"Done", "Hide keyboard", "Dismiss keyboard"}'
+    t =    60.83s Checking existence of `"relayloom.hide-keyboard" Button`
+    t =    61.00s Find the "relayloom.hide-keyboard" Button
+    t =    61.22s Find the "relayloom.hide-keyboard" Button
+    t =    61.34s Tap "relayloom.hide-keyboard" Button
+    t =    61.34s     Wait for org.relayloom.ios to idle
+    t =    61.34s     Find the "relayloom.hide-keyboard" Button
+    t =    61.44s     Check for interrupting elements affecting "relayloom.hide-keyboard" Button
+    t =    61.54s     Synthesize event
+    t =    61.87s     Wait for org.relayloom.ios to idle
+    t =    63.19s Checking existence of `Keyboard (First Match)`
+IOS_SIMULATOR_PHASE keyboard-dismissed
+    t =    63.23s Waiting 30.0s for "Publish" Button to exist
+    t =    64.26s     Checking `Expect predicate `existsNoRetry == 1` for object "Publish" Button`
+    t =    64.27s         Checking existence of `"Publish" Button`
+    t =    64.32s Tap "Publish" Button
+    t =    64.32s     Wait for org.relayloom.ios to idle
+    t =    64.33s     Find the "Publish" Button
+    t =    64.40s     Check for interrupting elements affecting "Publish" Button
+    t =    64.45s     Synthesize event
+    t =    64.78s     Wait for org.relayloom.ios to idle
+    t =    66.19s Checking existence of `"Publish" Button`
+    t =    66.30s Waiting 30.0s for "iOS simulator public post f1d8fc16-88e6-450d-9c45-e48e0854f36f" StaticText to exist
+    t =    67.33s     Checking `Expect predicate `existsNoRetry == 1` for object "iOS simulator public post f1d8fc16-88e6-450d-9c45-e48e0854f36f" StaticText`
+    t =    67.33s         Checking existence of `"iOS simulator public post f1d8fc16-88e6-450d-9c45-e48e0854f36f" StaticText`
+IOS_SIMULATOR_PHASE post-published
+    t =    67.52s Get all elements bound by index for: Elements matching predicate '"Conversations" IN identifiers'
+    t =    67.57s Waiting 30.0s for "Open navigation" Button to exist
+    t =    68.61s     Checking `Expect predicate `existsNoRetry == 1` for object "Open navigation" Button`
+    t =    68.61s         Checking existence of `"Open navigation" Button`
+    t =    68.66s Tap "Open navigation" Button
+    t =    68.66s     Wait for org.relayloom.ios to idle
+    t =    68.67s     Find the "Open navigation" Button
+    t =    68.73s     Check for interrupting elements affecting "Open navigation" Button
+    t =    68.80s     Synthesize event
+    t =    68.82s         Scroll element to visible
+    t =    68.83s         Find the "Open navigation" Button
+    t =    69.01s         Computed hit point {18, 45} after scrolling to visible
+    t =    69.31s     Wait for org.relayloom.ios to idle
+    t =    70.38s Get all elements bound by index for: Elements matching predicate '"Conversations" IN identifiers'
+    t =    70.44s Checking existence of `"Conversations" Button`
+    t =    70.49s Find the "Conversations" Button
+    t =    70.55s Find the "Conversations" Button
+    t =    70.62s Get all elements bound by index for: Elements matching predicate '"Conversations" IN identifiers'
+    t =    70.67s Checking existence of `"Conversations" Button`
+    t =    70.73s Find the "Conversations" Button
+    t =    70.79s Find the "Conversations" Button
+    t =    70.85s Get all elements bound by index for: Elements matching predicate '"Conversations" IN identifiers'
+    t =    70.91s Find the "Conversations" Button
+    t =    70.99s Find the "Conversations" Button
+    t =    71.03s Find the "Conversations" Button
+    t =    71.11s Find the "Conversations" Button
+    t =    71.17s Find the "Conversations" Button
+IOS_SIMULATOR_NAVIGATION {"candidates":[{"enabled":true,"height":54,"hittable":true,"identifier":"","label":"Conversations","width":255,"x":5,"y":251}],"destination":"Conversations","phase":"before-tap"}
+    t =    71.22s Tap "Conversations" Button
+    t =    71.22s     Wait for org.relayloom.ios to idle
+    t =    71.23s     Find the "Conversations" Button
+    t =    71.30s     Check for interrupting elements affecting "Conversations" Button
+    t =    71.40s     Synthesize event
+    t =    71.72s     Wait for org.relayloom.ios to idle
+    t =    71.73s Get all elements bound by index for: Elements matching predicate '"Conversations" IN identifiers'
+IOS_SIMULATOR_NAVIGATION {"candidates":[],"destination":"Conversations","phase":"after-tap"}
+    t =    71.78s Waiting 30.0s for "Add contact" Button to exist
+    t =    72.79s     Checking `Expect predicate `existsNoRetry == 1` for object "Add contact" Button`
+    t =    72.79s         Checking existence of `"Add contact" Button`
+    t =    72.86s Tap "Add contact" Button
+    t =    72.86s     Wait for org.relayloom.ios to idle
+    t =    72.86s     Find the "Add contact" Button
+    t =    72.95s     Check for interrupting elements affecting "Add contact" Button
+    t =    73.00s     Synthesize event
+    t =    73.31s     Wait for org.relayloom.ios to idle
+    t =    73.32s Waiting 30.0s for TextView (First Match) to exist
+    t =    74.35s     Checking `Expect predicate `existsNoRetry == 1` for object TextView (First Match)`
+    t =    74.35s         Checking existence of `TextView (First Match)`
+    t =    74.42s Tap TextView (First Match)
+    t =    74.42s     Wait for org.relayloom.ios to idle
+    t =    74.42s     Find the TextView (First Match)
+    t =    74.49s     Check for interrupting elements affecting "Paste the identity's JSON card here" TextView
+    t =    74.53s     Synthesize event
+    t =    74.90s     Wait for org.relayloom.ios to idle
+    t =    75.25s Type '{"id":"0753e503ad9...' into "Paste the identity's JSON card here" TextView
+    t =    75.25s     Wait for org.relayloom.ios to idle
+    t =    75.27s     Find the "Paste the identity's JSON card here" TextView
+    t =    75.77s     Check for interrupting elements affecting "Paste the identity's JSON card here" TextView
+    t =    75.84s     Synthesize event
+    t =    81.88s     Wait for org.relayloom.ios to idle
+    t =    81.88s Checking existence of `Keyboard (First Match)`
+    t =    81.94s Get all elements bound by index for: Elements matching predicate 'identifier IN[c] {"Done", "Hide keyboard", "Dismiss keyboard"} OR label IN[c] {"Done", "Hide keyboard", "Dismiss keyboard"}'
+    t =    81.99s Get all elements bound by index for: Elements matching predicate 'identifier IN[c] {"Done", "Hide keyboard", "Dismiss keyboard"} OR label IN[c] {"Done", "Hide keyboard", "Dismiss keyboard"}'
+    t =    82.03s Checking existence of `"relayloom.hide-keyboard" Button`
+    t =    82.09s Find the "relayloom.hide-keyboard" Button
+    t =    82.16s Find the "relayloom.hide-keyboard" Button
+    t =    82.22s Tap "relayloom.hide-keyboard" Button
+    t =    82.22s     Wait for org.relayloom.ios to idle
+    t =    82.24s     Find the "relayloom.hide-keyboard" Button
+    t =    82.30s     Check for interrupting elements affecting "relayloom.hide-keyboard" Button
+    t =    82.36s     Synthesize event
+    t =    82.73s     Wait for org.relayloom.ios to idle
+    t =    83.99s Checking existence of `Keyboard (First Match)`
+IOS_SIMULATOR_PHASE keyboard-dismissed
+    t =    84.04s Waiting 30.0s for "Verify and add" Button to exist
+    t =    85.06s     Checking `Expect predicate `existsNoRetry == 1` for object "Verify and add" Button`
+    t =    85.06s         Checking existence of `"Verify and add" Button`
+    t =    85.25s Tap "Verify and add" Button
+    t =    85.25s     Wait for org.relayloom.ios to idle
+    t =    85.26s     Find the "Verify and add" Button
+    t =    85.40s     Check for interrupting elements affecting "Verify and add" Button
+    t =    85.55s     Synthesize event
+    t =    85.91s     Wait for org.relayloom.ios to idle
+    t =    88.08s Checking existence of `"Verify and add" Button`
+    t =    88.69s Get all elements bound by index for: Elements matching predicate '"Network" IN identifiers'
+    t =    88.79s Waiting 30.0s for "Open navigation" Button to exist
+    t =    89.81s     Checking `Expect predicate `existsNoRetry == 1` for object "Open navigation" Button`
+    t =    89.81s         Checking existence of `"Open navigation" Button`
+    t =    89.99s Tap "Open navigation" Button
+    t =    89.99s     Wait for org.relayloom.ios to idle
+    t =    90.00s     Find the "Open navigation" Button
+    t =    90.14s     Check for interrupting elements affecting "Open navigation" Button
+    t =    90.23s     Synthesize event
+    t =    90.25s         Scroll element to visible
+    t =    90.25s         Find the "Open navigation" Button
+    t =    90.59s         Computed hit point {18, 65} after scrolling to visible
+    t =    90.88s     Wait for org.relayloom.ios to idle
+    t =    91.92s Get all elements bound by index for: Elements matching predicate '"Network" IN identifiers'
+    t =    92.01s Checking existence of `"Network" Button`
+    t =    92.08s Find the "Network" Button
+    t =    92.18s Find the "Network" Button
+    t =    92.25s Get all elements bound by index for: Elements matching predicate '"Network" IN identifiers'
+    t =    92.31s Checking existence of `"Network" Button`
+    t =    92.36s Find the "Network" Button
+    t =    92.41s Find the "Network" Button
+    t =    92.50s Get all elements bound by index for: Elements matching predicate '"Network" IN identifiers'
+    t =    92.56s Find the "Network" Button
+    t =    92.63s Find the "Network" Button
+    t =    92.67s Find the "Network" Button
+    t =    92.75s Find the "Network" Button
+    t =    92.84s Find the "Network" Button
+IOS_SIMULATOR_NAVIGATION {"candidates":[{"enabled":true,"height":54,"hittable":true,"identifier":"","label":"Network","width":255,"x":5,"y":508}],"destination":"Network","phase":"before-tap"}
+    t =    92.91s Tap "Network" Button
+    t =    92.91s     Wait for org.relayloom.ios to idle
+    t =    92.92s     Find the "Network" Button
+    t =    92.98s     Check for interrupting elements affecting "Network" Button
+    t =    93.07s     Synthesize event
+    t =    93.39s     Wait for org.relayloom.ios to idle
+    t =    93.39s Get all elements bound by index for: Elements matching predicate '"Network" IN identifiers'
+IOS_SIMULATOR_NAVIGATION {"candidates":[],"destination":"Network","phase":"after-tap"}
+    t =    93.45s Waiting 30.0s for "Connect a peer" Button to exist
+    t =    94.48s     Checking `Expect predicate `existsNoRetry == 1` for object "Connect a peer" Button`
+    t =    94.49s         Checking existence of `"Connect a peer" Button`
+    t =    94.70s Tap "Connect a peer" Button
+    t =    94.70s     Wait for org.relayloom.ios to idle
+    t =    94.70s     Find the "Connect a peer" Button
+    t =    94.90s     Check for interrupting elements affecting "Connect a peer" Button
+    t =    94.98s     Synthesize event
+    t =    95.29s     Wait for org.relayloom.ios to idle
+    t =    95.29s Waiting 30.0s for TextField (Element at index 1) to exist
+    t =    96.34s     Checking `Expect predicate `existsNoRetry == 1` for object TextField (Element at index 1)`
+    t =    96.34s         Checking existence of `TextField (Element at index 1)`
+    t =    96.38s Tap TextField (Element at index 1)
+    t =    96.38s     Wait for org.relayloom.ios to idle
+    t =    96.38s     Find the TextField (Element at index 1)
+    t =    96.41s     Check for interrupting elements affecting "Port provided by the other node" TextField
+    t =    96.45s     Synthesize event
+    t =    96.89s     Wait for org.relayloom.ios to idle
+    t =    97.19s Type '49229' into "Port provided by the other node" TextField
+    t =    97.19s     Wait for org.relayloom.ios to idle
+    t =    97.49s     Find the "Port provided by the other node" TextField
+    t =    97.70s     Check for interrupting elements affecting "Port provided by the other node" TextField
+    t =    97.84s     Synthesize event
+    t =    98.18s     Wait for org.relayloom.ios to idle
+    t =    98.18s Checking existence of `Keyboard (First Match)`
+    t =    98.22s Get all elements bound by index for: Elements matching predicate 'identifier IN[c] {"Done", "Hide keyboard", "Dismiss keyboard"} OR label IN[c] {"Done", "Hide keyboard", "Dismiss keyboard"}'
+    t =    98.26s Get all elements bound by index for: Elements matching predicate 'identifier IN[c] {"Done", "Hide keyboard", "Dismiss keyboard"} OR label IN[c] {"Done", "Hide keyboard", "Dismiss keyboard"}'
+    t =    98.34s Checking existence of `"relayloom.hide-keyboard" Button`
+    t =    98.44s Find the "relayloom.hide-keyboard" Button
+    t =    98.58s Find the "relayloom.hide-keyboard" Button
+    t =    98.79s Tap "relayloom.hide-keyboard" Button
+    t =    98.79s     Wait for org.relayloom.ios to idle
+    t =    98.79s     Find the "relayloom.hide-keyboard" Button
+    t =    98.91s     Check for interrupting elements affecting "relayloom.hide-keyboard" Button
+    t =    98.95s     Synthesize event
+    t =    99.26s     Wait for org.relayloom.ios to idle
+    t =   100.53s Checking existence of `Keyboard (First Match)`
+IOS_SIMULATOR_PHASE keyboard-dismissed
+    t =   100.56s Waiting 30.0s for "Connect via TCP" Button to exist
+    t =   101.59s     Checking `Expect predicate `existsNoRetry == 1` for object "Connect via TCP" Button`
+    t =   101.59s         Checking existence of `"Connect via TCP" Button`
+    t =   101.63s Tap "Connect via TCP" Button
+    t =   101.63s     Wait for org.relayloom.ios to idle
+    t =   101.64s     Find the "Connect via TCP" Button
+    t =   101.68s     Check for interrupting elements affecting "Connect via TCP" Button
+    t =   101.71s     Synthesize event
+    t =   102.01s     Wait for org.relayloom.ios to idle
+    t =   103.08s Checking existence of `"Connect via TCP" Button`
+    t =   103.15s Get all elements bound by index for: Elements matching predicate '"Conversations" IN identifiers'
+    t =   103.20s Waiting 30.0s for "Open navigation" Button to exist
+    t =   104.21s     Checking `Expect predicate `existsNoRetry == 1` for object "Open navigation" Button`
+    t =   104.21s         Checking existence of `"Open navigation" Button`
+    t =   104.28s Tap "Open navigation" Button
+    t =   104.28s     Wait for org.relayloom.ios to idle
+    t =   104.29s     Find the "Open navigation" Button
+    t =   104.36s     Check for interrupting elements affecting "Open navigation" Button
+    t =   104.42s     Synthesize event
+    t =   104.43s         Scroll element to visible
+    t =   104.43s         Find the "Open navigation" Button
+    t =   104.53s         Computed hit point {18, 65} after scrolling to visible
+    t =   104.81s     Wait for org.relayloom.ios to idle
+    t =   105.86s Get all elements bound by index for: Elements matching predicate '"Conversations" IN identifiers'
+    t =   105.92s Checking existence of `"Conversations" Button`
+    t =   105.97s Find the "Conversations" Button
+    t =   106.03s Find the "Conversations" Button
+    t =   106.10s Get all elements bound by index for: Elements matching predicate '"Conversations" IN identifiers'
+    t =   106.18s Checking existence of `"Conversations" Button`
+    t =   106.23s Find the "Conversations" Button
+    t =   106.29s Find the "Conversations" Button
+    t =   106.36s Get all elements bound by index for: Elements matching predicate '"Conversations" IN identifiers'
+    t =   106.42s Find the "Conversations" Button
+    t =   106.48s Find the "Conversations" Button
+    t =   106.54s Find the "Conversations" Button
+    t =   106.61s Find the "Conversations" Button
+    t =   106.69s Find the "Conversations" Button
+IOS_SIMULATOR_NAVIGATION {"candidates":[{"enabled":true,"height":54,"hittable":true,"identifier":"","label":"Conversations","width":255,"x":5,"y":265}],"destination":"Conversations","phase":"before-tap"}
+    t =   106.74s Tap "Conversations" Button
+    t =   106.75s     Wait for org.relayloom.ios to idle
+    t =   106.75s     Find the "Conversations" Button
+    t =   106.80s     Check for interrupting elements affecting "Conversations" Button
+    t =   106.85s     Synthesize event
+    t =   107.14s     Wait for org.relayloom.ios to idle
+    t =   107.14s Get all elements bound by index for: Elements matching predicate '"Conversations" IN identifiers'
+IOS_SIMULATOR_NAVIGATION {"candidates":[],"destination":"Conversations","phase":"after-tap"}
+    t =   107.18s Waiting 30.0s for "New conversation" Button to exist
+    t =   108.19s     Checking `Expect predicate `existsNoRetry == 1` for object "New conversation" Button`
+    t =   108.19s         Checking existence of `"New conversation" Button`
+    t =   108.24s Tap "New conversation" Button
+    t =   108.24s     Wait for org.relayloom.ios to idle
+    t =   108.24s     Find the "New conversation" Button
+    t =   108.28s     Check for interrupting elements affecting "New conversation" Button
+    t =   108.32s     Synthesize event
+    t =   108.61s     Wait for org.relayloom.ios to idle
+    t =   108.61s Checking existence of `"Write a message" TextView`
+    t =   108.65s Checking existence of `"Back to conversations" Button`
+    t =   108.68s Waiting 30.0s for Button (First Match) to exist
+    t =   109.72s     Checking `Expect predicate `existsNoRetry == 1` for object Button (First Match)`
+    t =   109.72s         Checking existence of `Button (First Match)`
+    t =   109.75s Tap Button (First Match)
+    t =   109.75s     Wait for org.relayloom.ios to idle
+    t =   109.75s     Find the Button (First Match)
+    t =   109.78s     Check for interrupting elements affecting "iOS Simulator Recipient 0753e503…7820" Button
+    t =   109.81s     Synthesize event
+    t =   110.11s     Wait for org.relayloom.ios to idle
+    t =   110.11s Waiting 30.0s for "Write a message" TextView to exist
+    t =   111.19s     Checking `Expect predicate `existsNoRetry == 1` for object "Write a message" TextView`
+    t =   111.19s         Checking existence of `"Write a message" TextView`
+    t =   111.24s Waiting 30.0s for "iOS Simulator Recipient" StaticText to exist
+    t =   112.27s     Checking `Expect predicate `existsNoRetry == 1` for object "iOS Simulator Recipient" StaticText`
+    t =   112.27s         Checking existence of `"iOS Simulator Recipient" StaticText`
+    t =   112.31s Find the "iOS Simulator Recipient" StaticText
+    t =   112.37s Waiting 30.0s for "Write a message" TextView to exist
+    t =   113.39s     Checking `Expect predicate `existsNoRetry == 1` for object "Write a message" TextView`
+    t =   113.39s         Checking existence of `"Write a message" TextView`
+    t =   113.45s Tap "Write a message" TextView
+    t =   113.45s     Wait for org.relayloom.ios to idle
+    t =   113.46s     Find the "Write a message" TextView
+    t =   113.51s     Check for interrupting elements affecting "Write a message…" TextView
+    t =   113.57s     Synthesize event
+    t =   113.88s     Wait for org.relayloom.ios to idle
+    t =   113.89s Type 'iOS simulator priv...' into "Write a message…" TextView
+    t =   113.89s     Wait for org.relayloom.ios to idle
+    t =   113.90s     Find the "Write a message…" TextView
+    t =   113.97s     Check for interrupting elements affecting "Write a message…" TextView
+    t =   114.03s     Synthesize event
+    t =   114.04s         Get number of matches for: Elements containing elements matching predicate 'hasKeyboardFocus == 1'
+    t =   115.90s     Wait for org.relayloom.ios to idle
+    t =   115.92s Waiting 30.0s for "Send message" Button to exist
+    t =   116.95s     Checking `Expect predicate `existsNoRetry == 1` for object "Send message" Button`
+    t =   116.95s         Checking existence of `"Send message" Button`
+    t =   117.55s Tap "Send message" Button
+    t =   117.55s     Wait for org.relayloom.ios to idle
+    t =   117.56s     Find the "Send message" Button
+    t =   117.90s     Check for interrupting elements affecting "Send message" Button
+    t =   117.97s     Synthesize event
+    t =   118.29s     Wait for org.relayloom.ios to idle
+    t =   118.57s Waiting 30.0s for "iOS simulator private message f1d8fc16-88e6-450d-9c45-e48e0854f36f" StaticText to exist
+    t =   119.59s     Checking `Expect predicate `existsNoRetry == 1` for object "iOS simulator private message f1d8fc16-88e6-450d-9c45-e48e0854f36f" StaticText`
+    t =   119.59s         Checking existence of `"iOS simulator private message f1d8fc16-88e6-450d-9c45-e48e0854f36f" StaticText`
+    t =   119.70s Checking existence of `Keyboard (First Match)`
+    t =   119.77s Find the Target Application 'org.relayloom.ios'
+    t =   119.96s Added attachment named 'relayloom-02-private-message'
+IOS_SIMULATOR_PHASE private-message-saved
+    t =   119.96s Get all elements bound by index for: Elements matching predicate '"Attach file" IN identifiers'
+    t =   120.04s Find the "Attach file" Any
+    t =   120.14s Tap "Attach file" Other
+    t =   120.14s     Wait for org.relayloom.ios to idle
+    t =   120.14s     Find the "Attach file" Other
+    t =   120.24s     Check for interrupting elements affecting "Attach file" Other
+    t =   120.33s     Synthesize event
+    t =   120.64s     Wait for org.relayloom.ios to idle
+    t =   121.00s Waiting 15.0s for Button (First Match) to exist
+    t =   122.06s     Checking `Expect predicate `existsNoRetry == 1` for object Button (First Match)`
+    t =   122.06s         Checking existence of `Button (First Match)`
+    t =   122.54s Tap Button (First Match)
+    t =   122.55s     Wait for org.relayloom.ios to idle
+    t =   122.57s     Find the Button (First Match)
+    t =   122.79s     Check for interrupting elements affecting "Fototeca" Button
+    t =   122.86s     Synthesize event
+    t =   123.21s     Wait for org.relayloom.ios to idle
+    t =   124.31s Added attachment named 'ios-photo-picker-before-cell-query'
+    t =   125.32s Get all elements bound by index for: Descendants matching type Cell
+    t =   126.37s Get all elements bound by index for: Descendants matching type Cell
+    t =   129.36s Get all elements bound by index for: Descendants matching type Cell
+    t =   134.32s Get all elements bound by index for: Descendants matching type Cell
+    t =   136.40s Get all elements bound by index for: Descendants matching type Cell
+    t =   137.39s Get all elements bound by index for: Descendants matching type Cell
+    t =   138.39s Get all elements bound by index for: Descendants matching type Cell
+    t =   139.39s Get all elements bound by index for: Descendants matching type Cell
+    t =   140.39s Get all elements bound by index for: Descendants matching type Cell
+    t =   141.32s Get all elements bound by index for: Descendants matching type Cell
+    t =   142.32s Get all elements bound by index for: Descendants matching type Cell
+    t =   143.34s Get all elements bound by index for: Descendants matching type Cell
+    t =   144.32s Get all elements bound by index for: Descendants matching type Cell
+/Users/runner/work/relayloom/relayloom/apps/ios/UITests/NativeSimulatorTests.swift:316: error: -[RelayLoomUITests.NativeSimulatorTests testNativeCoreUIAndRecovery] : Failed to resolve query: Failed to resolve remote element AX element pid: 25332, elementOrHash.elementID: 9860570260096657167.9999. (Underlying Error: Interrupted by waiter.)
+    t =   154.87s Tear Down
+Test Case '-[RelayLoomUITests.NativeSimulatorTests testNativeCoreUIAndRecovery]' failed (155.929 seconds).
+Test Suite 'NativeSimulatorTests' failed at 2026-09-17 22:22:28.801.
+	 Executed 1 test, with 1 failure (0 unexpected) in 155.929 (155.931) seconds
+Test Suite 'RelayLoomUITests.xctest' failed at 2026-09-17 22:22:28.801.
+	 Executed 1 test, with 1 failure (0 unexpected) in 155.929 (155.932) seconds
+Test Suite 'Selected tests' failed at 2026-09-17 22:22:28.802.
+	 Executed 1 test, with 1 failure (0 unexpected) in 155.929 (155.934) seconds
+2026-09-17 22:22:41.071809+0000 RelayLoomUITests-Runner[20810:68045] [Default] Xcode took 11.93 seconds to acknowledge that testing finished.
+
+Test session results, code coverage, and logs:
+	/Users/runner/work/relayloom/relayloom/.cache/ios/simulator/raw/f1d8fc16-88e6-450d-9c45-e48e0854f36f/ui-results.xcresult
+
+Testing started
+--- xcodebuild: WARNING: Using the first of multiple matching destinations:
+{ platform:iOS Simulator, arch:arm64, id:2BB2A55C-C25D-4754-9279-785DEA0F312D, OS:26.4.1, name:RelayLoom-CI-f1d8fc16-88e6-450d-9c45-e48e0854f36f }
+{ platform:iOS Simulator, arch:x86_64, id:2BB2A55C-C25D-4754-9279-785DEA0F312D, OS:26.4.1, name:RelayLoom-CI-f1d8fc16-88e6-450d-9c45-e48e0854f36f }
+2026-09-17 22:19:55.528 xcodebuild[20145:65795] [MT] IDELaunchParametersSnapshot: The operation couldn’t be completed. (DebuggerLLDB.DebuggerVersionStore.StoreError error 0.)
+2026-09-17 22:19:55.528 xcodebuild[20145:65795] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-09-17 22:24:18.945 xcodebuild[20145:65795] [MT] IDETestOperationsObserverDebug: 280.125 elapsed -- Testing started completed.
+2026-09-17 22:24:18.946 xcodebuild[20145:65795] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-09-17 22:24:18.946 xcodebuild[20145:65795] [MT] IDETestOperationsObserverDebug: 280.125 sec, +280.125 sec -- end
+Failing tests:
+	NativeSimulatorTests.testNativeCoreUIAndRecovery()
+
+** TEST EXECUTE FAILED **
+

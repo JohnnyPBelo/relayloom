@@ -562,6 +562,12 @@ Após interrupção, o handle3664 e o PID1475015 já não existiam. O relatório
 CI35291208941: Windows/Linux NodePASS, macOS426PASS/1FAIL; restantes jobs não executados. A fixture de admissão ainda recusava qualquer confirmação, embora já existam confirmações históricas válidas. Aguardar a entrega automática reproduziu a falha localmente. Substituir a expectativa obsoleta por controlos mais fortes: ausência antes da admissão, delivery/receipt exactos depois, época/leitores/autoria/cifra correctos, e recusa de receipt legado injectado. Os oito casos Node/Go passaram. Não enfraquecer para simplesmente ignorar confirmações nem consultar um snapshot antigo.
 
 
+## Artefactos ignorados e etapa real iOS — 18 de Setembro
+
+`rg --files` não lista os.log ignorados. Antes de concluir que um artefacto falta, usar o caminho declarado no manifesto ou listagem limitada com no-ignore. O ZIP e os ficheiros descarregados deram o mesmoSHA; os logs2d84a61/59c9bd1 mostram mensagem recebida e falha AX do picker, apesar de capturas de setup. A captura sozinha não estabelece a etapa final.
+
+O novo diagnóstico só guarda fases conhecidas/limitadas e observação do par, sem concederPASS. PhotosUI/PHPicker do simulador próprio entram no filtro de logs quando a selecção falha, dentro do prazo/reserva existentes.25testes host e estáticaPASS; não são execução Apple. Não alterar permissões ou escolher coordenadas com base numa grelha que não foi observada.
+
 ## Recursos opcionais: bloqueio e cópia exacta — 18 de Setembro
 
 A criação fica em stage privado até existir intenção durável; ready só pode seguir uma releitura verificada do ContentStore. Um put bem sucedido não prova a cópia exacta: o teste browser injecta falha após guardar e a retomada conserva assinatura/ID. Repetições não dependem de resolver cartões outra vez. O catálogo autentica o stage historicamente antes de tratar expiração, evitando mascarar corrupção como prazo ultrapassado.

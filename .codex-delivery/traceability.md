@@ -239,6 +239,10 @@ FR-038/FR-040: controlos de histórico, leitores, prazo, versão de partida, ide
 FR-038/039/040 e CON-002: documento v2 com tabelas, tipos/CSV/JSON/undo, consulta local, assinaturas e seed em Node/Go/browser. Commits09a2422/10f037a, provas emdocs/evidence/site-data:138Node,Go/race,11interop,8UI nativa e108browser. Correcções com falhas preservadas e repetição dos gates afectados. Publicação web ainda pendente; contribuições, opcionais, revisão independente e plataformas físicas continuam em aberto. Não fechar paridade completa por este incremento.
 
 
+## Publicação das tabelas — 18 de Setembro de 2026
+
+FR-038/039/040: fonte59c9bd1, distribuiçãof6758222, Pages35317766195. Gate público102UI normal+108UI distribuição+1entreprocessos; HTTPS19hashes,15percursos de páginas/tabelas e1entreprocessos com mensagens/anexo/reload offline. Provas emdocs/evidence/site-data/live. A tentativa anterior interrompida e os seus dois timeouts continuam registados; passes seguintes não demonstram a causa original. O contrato completo permanece parcial; ficheiros opcionais/contribuições, revisão independente e hardware/plataformas continuam abertos.
+
 ## Criação de recursos opcionais — 18 de Setembro (gate em curso)
 
 FR-038/FR-040, FR-024–027 e CON-002: catálogos persistentes e APIs Node/Go/browser para criar/retomar recursos sem broadcast, com leitura de cópia exacta, audiência, quotas, UUID/sequência e expiração. Inicialmente passaram2percursos Node↔Go,7Chromium e os gates de catálogos descritos no plano. A regressão Node completa passou450testes; os restantes gates estão emcurso. docs/SITE-RESOURCES.md distingue essa implementação de documento v3, obtenção por snapshot e UI ainda pendentes. Sem novoresultado dehardware ourevisãoindependente; a inspiraçãoZeroNet mantém-se parcial. Não considerar biblioteca/API como entrega completa das páginas.
@@ -247,3 +251,8 @@ Gate acima concluído: 78cc38c/96e35c1, 450 Node, Go sites/app com race, 19 test
 
 
 FR-038/FR-040/CON-002 — recursos v3 implementados na UI e nos motores; permanecem parciais/em curso. Gate anterior à revisão: 461 Node, 17 pacotes Go/race, 92 interop, 5 SQLite C, 34 UI Node + 34 UI Go, 97 por browser (291), typecheck/builds PASS; 659 hashes estáveis. Provas em docs/evidence/site-optional-resources/v3-ui/pre-review. Testes novos para concorrência de leitura, paletas e URLs em execução contra o produto ainda sem correcções. Não cobre aprovação pós-revisão, distribuição pública, dispositivos físicos ou revisão independente.
+
+
+## Recursos v3 verificados localmente e integração — 19 de Setembro
+
+FR-038/039/040 continuam parciais. Código8faad72: 306execuçõesbrowser,68UI Node/Go,4unitários,backend porhashes,desktopLinux eRNS8+3UI PASS, comfalhasanteriorespreservadas. Integração do principal1e83db2 altera sótrês fontes de testes/diagnósticoiOS;25host+2estáticospassaram, semexecuçãoApple. Todosos64ficheirosWIPanteriores foram preservados. Provas docs/evidence/site-optional-resources/v3-ui/final e integration. Publicação v3, contribuições, paridade/hardware e revisãoindependente continuamabertos.

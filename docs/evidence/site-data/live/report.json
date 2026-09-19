@@ -1,0 +1,236 @@
+{
+  "status": "PASS_FOR_PUBLISHED_SCOPE",
+  "sourceCommit": "59c9bd1a4b8aa2efa03d37c8758ef943e0de37ee",
+  "deploymentCommit": "f6758222a5e7b993ebb5970b8653a4090596941c",
+  "url": "https://johnnypbelo.github.io/relayloom/",
+  "recordedAt": "2026-09-18T07:20:34.736Z",
+  "httpFiles": 19,
+  "defaultUICases": 102,
+  "defaultUI": {
+    "chromium": {
+      "startTime": "2026-09-18T06:28:29.254Z",
+      "duration": 299958.52999999997,
+      "expected": 34,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "firefox": {
+      "startTime": "2026-09-18T06:33:29.761Z",
+      "duration": 372566.515,
+      "expected": 34,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "webkit": {
+      "startTime": "2026-09-18T06:39:42.852Z",
+      "duration": 410345.427,
+      "expected": 34,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  "publicMatrix": {
+    "startTime": "2026-09-18T06:46:36.878Z",
+    "duration": 1063421.899,
+    "expected": 108,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "liveSiteUI": {
+    "startTime": "2026-09-18T07:07:05.519Z",
+    "duration": 138855.469,
+    "expected": 15,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "liveMessageProcesses": {
+    "startTime": "2026-09-18T07:10:33.398Z",
+    "duration": 15238.121,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "commands": [
+    "node scripts/verify-public-web.mjs",
+    "node scripts/publish-web.mjs --publish",
+    "node .cache/site-data-integrated/live/verify-http.mjs 59c9bd1a4b8aa2efa03d37c8758ef943e0de37ee",
+    "RELAYLOOM_LAUNCH_URL=https://johnnypbelo.github.io/relayloom RELAYLOOM_SITE_LIVE_URL=https://johnnypbelo.github.io/relayloom RELAYLOOM_EXPECTED_WEB_SOURCE=59c9bd1a4b8aa2efa03d37c8758ef943e0de37ee node scripts/e2e.mjs --config .cache/site-data-integrated/live/site-ui.config.ts",
+    "RELAYLOOM_LAUNCH_URL=https://johnnypbelo.github.io/relayloom node scripts/e2e.mjs --config tests/browser/launch.config.ts"
+  ],
+  "scope": "Exact published HTTPS artifact; 15 site journeys across Chromium/Firefox/WebKit and one independent Chromium+Firefox process journey. No physical devices, Safari, radios or complete-product claim.",
+  "messageReport": {
+    "status": "PASS",
+    "date": "2026-09-18T07:10:48.067Z",
+    "url": "https://johnnypbelo.github.io/relayloom",
+    "scope": "published-https",
+    "engines": {
+      "chromium": "153.0.8010.12",
+      "firefox": "155.0"
+    },
+    "separateBrowserProcesses": true,
+    "physicalDevices": false,
+    "daemon": false,
+    "messagesBothDirections": true,
+    "readReceipt": true,
+    "exactAttachmentBytes": 63488,
+    "authorClosedAndReaderOfflineReload": true,
+    "requests": [
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/browser/index.html"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/assets/browser-E53v7JmO.js"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/assets/peers-CZcIgrpA.js"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/assets/peers-CBwbv1q3.css"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/browser/worker-BVAeI3LD.js"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/assets/main-DKwEj31h.js"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/assets/main-DEi_Xkk3.css"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/browser/sw.js"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/assets/browser-E53v7JmO.js"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/assets/editor-C0ELaHW8.js"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/assets/editor-TdZUp6iQ.css"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/assets/history-BJewurhL.js"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/assets/history-D4SGYxMs.css"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/assets/main-DEi_Xkk3.css"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/assets/main-DKwEj31h.js"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/assets/manifest-BWKlX33v.webmanifest"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/assets/peers-CBwbv1q3.css"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/assets/peers-CZcIgrpA.js"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/assets/site-studio-notices.txt"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/assets/visit-8WrGMGRs.js"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/browser/icon.svg"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/browser/index.html"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/browser/manifest.webmanifest"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/browser/worker-BVAeI3LD.js"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/browser/index.html"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/assets/browser-E53v7JmO.js"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/assets/peers-CZcIgrpA.js"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/assets/peers-CBwbv1q3.css"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/browser/worker-BVAeI3LD.js"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/assets/main-DKwEj31h.js"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/assets/main-DEi_Xkk3.css"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/browser/index.html"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/assets/browser-E53v7JmO.js"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/assets/peers-CZcIgrpA.js"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/browser/worker-BVAeI3LD.js"
+      },
+      {
+        "method": "GET",
+        "url": "https://johnnypbelo.github.io/relayloom/assets/main-DKwEj31h.js"
+      }
+    ],
+    "errors": []
+  },
+  "limitations": [
+    "The prior interrupted public run had two UI failures; directed and complete later passes do not establish their original cause.",
+    "The historical Firefox RTC closure remains unexplained.",
+    "Optional resources/contributions, full platform parity, physical radios/Apple signing and independent review remain open."
+  ]
+}

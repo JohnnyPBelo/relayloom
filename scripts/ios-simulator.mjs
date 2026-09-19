@@ -35,6 +35,26 @@ export function sanitize(value) {
     .replace(/((?:token|capability)["']?\s*[:=]\s*["']?)[^\s"'&#<>]+/gi, '$1[redacted]')
     .replace(/\b[a-f0-9]{64}\b/gi, '[redacted-64-hex]');
 }
+const uiPhases = new Set(['identity-created', 'post-published', 'keyboard-dismissed',
+  'private-message-saved', 'photo-picker-requested', 'photo-picker-ready',
+  'photo-attachment-saved', 'node-peer-reply-read', 'background-resume-recovered',
+  'process-relaunch-recovered', 'completed', 'failure-keyboard-visible', 'failure-keyboard-hidden']);
+/** Diagnostic markers only. Neither a marker nor a partial journey can pass
+ * the XCTest/peer/storage gate; no form values or raw hierarchy are retained. */
+export function recordUIPhases(report, text) {
+  for (const match of String(text).slice(-2048).matchAll(/(?:^|\n)IOS_SIMULATOR_PHASE ([a-z-]{1,48})(?=\r?\n|$)/g)) {
+    const phase = match[1];
+    if (!uiPhases.has(phase)) continue;
+    report.uiPhases ??= [];
+    if (!report.uiPhases.includes(phase)) report.uiPhases.push(phase);
+    report.lastUIPhase = phase;
+  }
+}
+export function needsPhotoDiagnostics(report) {
+  return !!(String(report.error ?? '').includes('seed-synthetic-photo') ||
+    report.photoAttachmentRequested && report.uiPhases?.includes('photo-picker-requested') &&
+    !report.uiPhases.includes('photo-attachment-saved'));
+}
 function version(value) {
   if (!/^\d+(?:\.\d+){0,2}$/.test(String(value))) return -1;
   const [major, minor = 0, patch = 0] = String(value).split('.').map(Number);
@@ -112,7 +132,7 @@ export async function annotatePhotoFailure(report, owned, tool) {
   try {
     const result = await tool('photo-fixture-diagnostics', 'xcrun', [
       'simctl', 'spawn', owned.udid, 'log', 'show', '--last', '2m', '--style', 'compact',
-      '--predicate', 'process == "photolibraryd" OR process == "assetsd" OR process == "mstreamd"',
+      '--predicate', 'process == "photolibraryd" OR process == "assetsd" OR process == "mstreamd" OR process CONTAINS[c] "PhotosUI" OR process CONTAINS[c] "PHPicker" OR eventMessage CONTAINS[c] "PhotoPicker"',
     ], 15_000, { allowFailure: true });
     report.photoDiagnostics = { captured: result.code === 0 && !result.failure, exitCode: result.code,
       ...(result.failure ? { error: sanitize(result.failure.message) } : {}) };
@@ -267,6 +287,7 @@ async function main(argv) {
       size += data.length;
       if (label === 'execute-ui-test') {
         observation = (observation + data.toString()).slice(-2048);
+        recordUIPhases(report, observation);
         if (observation.includes('IOS_SIMULATOR_PHASE identity-created')) report.simulatorExecuted = true;
       }
       if (size > maxLogBytes) kill(new Error('Bounded tool output exceeded')); else target.push(data);
@@ -413,6 +434,7 @@ async function main(argv) {
     await tool('install-owned-app', 'xcrun', ['simctl', 'install', udid, app]);
     await startupBeforePhoto(tool, { common, result: join(raw, 'startup-results.xcresult'), udid, photoPath: fixtures.photoAttachment ? join(root, 'apps/ios/Tests/Fixtures/synthetic-photo.png') : null }, report);
     const peerEvidence = { runtime: 'real production Node engine in owned child process', relayForOthers: false, recipientID: recipient.id, senderID: null, messages: [], replyReadConfirmed: false };
+    report.peerObservation = peerEvidence;
     let replyID;
     context.watch = (async () => {
       while (!context.watchStop && Date.now() < deadline) {
@@ -452,7 +474,7 @@ async function main(argv) {
     report.status = 'PASSED';
   } catch (error) {
     failure = error; report.status = 'FAILED'; report.error = sanitize(error.message);
-    if (context.owned && report.simulatorBooted && report.error.includes('seed-synthetic-photo')) {
+    if (context.owned && report.simulatorBooted && needsPhotoDiagnostics(report)) {
       // Keep this diagnostic inside the original global deadline and reserve;
       // no restart, timeout inflation, permission grant or service mutation.
       if (Date.now() + 20_000 < deadline && diskFree() >= reserveBytes + 4 * 1024 ** 2) {
