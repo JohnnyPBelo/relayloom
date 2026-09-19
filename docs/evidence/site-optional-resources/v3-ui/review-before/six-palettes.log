@@ -1,0 +1,1500 @@
+
+Running 1 test using 1 worker
+
+(node:3123331) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [chromium] › tests/browser/site-resource-review.spec.ts:265:1 › signed resource reader follows all site palettes independently of the application theme (21.7s)
+
+
+  1) [chromium] › tests/browser/site-resource-review.spec.ts:265:1 › signed resource reader follows all site palettes independently of the application theme 
+
+    Error: light/sand card uses the site's paper
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "rgb(250, 247, 240)"
+    Received: "rgb(249, 252, 252)"
+
+      320 |             theme + "/" + palette + " card uses the site's paper",
+      321 |           )
+    > 322 |           .toBe(colors.paper);
+          |            ^
+      323 |         const button = visit.getByRole("button", {
+      324 |           name: "Obter ficheiro",
+      325 |           exact: true,
+        at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-resource-review.spec.ts:322:12
+
+    Error: light/forest card uses the site's paper
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "rgb(237, 245, 239)"
+    Received: "rgb(249, 252, 252)"
+
+      320 |             theme + "/" + palette + " card uses the site's paper",
+      321 |           )
+    > 322 |           .toBe(colors.paper);
+          |            ^
+      323 |         const button = visit.getByRole("button", {
+      324 |           name: "Obter ficheiro",
+      325 |           exact: true,
+        at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-resource-review.spec.ts:322:12
+
+    Error: light/forest after
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 58
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+    +     "help": "Elements must meet minimum color contrast ratio thresholds",
+    +     "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+    +     "id": "color-contrast",
+    +     "impact": "serious",
+    +     "nodes": Array [
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#f9fcfc",
+    +               "contrastRatio": 1.39,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#d1dcaf",
+    +               "fontSize": "12.0pt (16px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.39 (foreground color: #d1dcaf, background color: #f9fcfc, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+    +                 "target": Array [
+    +                   ".site-resource",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.39 (foreground color: #d1dcaf, background color: #f9fcfc, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<a class=\"resource-download\" href=\"blob:http://127.0.0.1:41821/fea9f230-0a34-45ca-a2b2-482788b35ca8\" download=\"Paletas legíveis.txt\">",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".resource-download",
+    +         ],
+    +       },
+    +     ],
+    +     "tags": Array [
+    +       "cat.color",
+    +       "wcag2aa",
+    +       "wcag143",
+    +       "TTv5",
+    +       "TT13.c",
+    +       "EN-301-549",
+    +       "EN-9.1.4.3",
+    +       "ACT",
+    +       "RGAAv4",
+    +       "RGAA-3.2.1",
+    +     ],
+    +   },
+    + ]
+
+      368 |         expect
+      369 |           .soft(after.violations, theme + "/" + palette + " after")
+    > 370 |           .toEqual([]);
+          |            ^
+      371 |         await visit
+      372 |           .getByRole("button", { name: "Fechar", exact: true })
+      373 |           .click();
+        at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-resource-review.spec.ts:370:12
+
+    Error: light/ink card uses the site's paper
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "rgb(23, 45, 49)"
+    Received: "rgb(249, 252, 252)"
+
+      320 |             theme + "/" + palette + " card uses the site's paper",
+      321 |           )
+    > 322 |           .toBe(colors.paper);
+          |            ^
+      323 |         const button = visit.getByRole("button", {
+      324 |           name: "Obter ficheiro",
+      325 |           exact: true,
+        at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-resource-review.spec.ts:322:12
+
+    Error: light/ink before
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  -   1
+    + Received  + 274
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+    +     "help": "Elements must meet minimum color contrast ratio thresholds",
+    +     "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+    +     "id": "color-contrast",
+    +     "impact": "serious",
+    +     "nodes": Array [
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#f9fcfc",
+    +               "contrastRatio": 1.05,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#eff7f3",
+    +               "fontSize": "17.3pt (23px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 17.3pt (23px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+    +                 "target": Array [
+    +                   ".site-resource",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 17.3pt (23px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<h2>Paletas legíveis.txt</h2>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".resource-heading > div > h2",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#f9fcfc",
+    +               "contrastRatio": 1.05,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#eff7f3",
+    +               "fontSize": "11.3pt (15px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+    +                 "target": Array [
+    +                   ".site-resource",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<p>Paletas legíveis.txt · 29 B</p>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".resource-heading > div > p",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#f9fcfc",
+    +               "contrastRatio": 1.05,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#eff7f3",
+    +               "fontSize": "11.3pt (15px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+    +                 "target": Array [
+    +                   ".site-resource",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<p class=\"resource-credit\">",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".resource-credit",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#f9fcfc",
+    +               "contrastRatio": 1.05,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#eff7f3",
+    +               "fontSize": "11.3pt (15px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+    +                 "target": Array [
+    +                   ".site-resource",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<span title=\"2831081cec914e841ac1478ce3d992a3bd0ce268c29c63efeb6aab68c91818ea\">Autora das cores</span>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".resource-credit > span",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#f9fcfc",
+    +               "contrastRatio": 1.05,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#eff7f3",
+    +               "fontSize": "11.3pt (15px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+    +                 "target": Array [
+    +                   ".site-resource",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<p role=\"status\" class=\"resource-status\">Disponível neste dispositivo</p>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".resource-status",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#f8fdfb",
+    +               "contrastRatio": 1.06,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#eff7f3",
+    +               "fontSize": "9.8pt (13px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.06 (foreground color: #eff7f3, background color: #f8fdfb, font size: 9.8pt (13px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<button type=\"button\" class=\"secondary\">",
+    +                 "target": Array [
+    +                   ".site-resource > .secondary[type=\"button\"]",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+    +                 "target": Array [
+    +                   ".site-resource",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.06 (foreground color: #eff7f3, background color: #f8fdfb, font size: 9.8pt (13px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<button type=\"button\" class=\"secondary\">",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".site-resource > .secondary[type=\"button\"]",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#f9fcfc",
+    +               "contrastRatio": 1.05,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#eff7f3",
+    +               "fontSize": "11.3pt (15px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+    +                 "target": Array [
+    +                   ".site-resource",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<p class=\"small-note\">A tua cópia pode ajudar outras pessoas. A autoria continua a ser do criador.</p>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".site-resource > .small-note",
+    +         ],
+    +       },
+    +     ],
+    +     "tags": Array [
+    +       "cat.color",
+    +       "wcag2aa",
+    +       "wcag143",
+    +       "TTv5",
+    +       "TT13.c",
+    +       "EN-301-549",
+    +       "EN-9.1.4.3",
+    +       "ACT",
+    +       "RGAAv4",
+    +       "RGAA-3.2.1",
+    +     ],
+    +   },
+    + ]
+
+      365 |         expect
+      366 |           .soft(before.violations, theme + "/" + palette + " before")
+    > 367 |           .toEqual([]);
+          |            ^
+      368 |         expect
+      369 |           .soft(after.violations, theme + "/" + palette + " after")
+      370 |           .toEqual([]);
+        at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-resource-review.spec.ts:367:12
+
+    Error: light/ink after
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  -   1
+    + Received  + 233
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+    +     "help": "Elements must meet minimum color contrast ratio thresholds",
+    +     "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+    +     "id": "color-contrast",
+    +     "impact": "serious",
+    +     "nodes": Array [
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#f9fcfc",
+    +               "contrastRatio": 1.05,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#eff7f3",
+    +               "fontSize": "17.3pt (23px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 17.3pt (23px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+    +                 "target": Array [
+    +                   ".site-resource",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 17.3pt (23px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<h2>Paletas legíveis.txt</h2>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".resource-heading > div > h2",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#f9fcfc",
+    +               "contrastRatio": 1.05,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#eff7f3",
+    +               "fontSize": "11.3pt (15px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+    +                 "target": Array [
+    +                   ".site-resource",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<p>Paletas legíveis.txt · 29 B</p>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".resource-heading > div > p",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#f9fcfc",
+    +               "contrastRatio": 1.05,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#eff7f3",
+    +               "fontSize": "11.3pt (15px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+    +                 "target": Array [
+    +                   ".site-resource",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<p class=\"resource-credit\">",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".resource-credit",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#f9fcfc",
+    +               "contrastRatio": 1.05,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#eff7f3",
+    +               "fontSize": "11.3pt (15px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+    +                 "target": Array [
+    +                   ".site-resource",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<span title=\"2831081cec914e841ac1478ce3d992a3bd0ce268c29c63efeb6aab68c91818ea\">Autora das cores</span>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".resource-credit > span",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#f9fcfc",
+    +               "contrastRatio": 1.05,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#eff7f3",
+    +               "fontSize": "11.3pt (15px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+    +                 "target": Array [
+    +                   ".site-resource",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<p role=\"status\" class=\"resource-status\">Disponível neste dispositivo</p>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".resource-status",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#f9fcfc",
+    +               "contrastRatio": 1.05,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#eff7f3",
+    +               "fontSize": "11.3pt (15px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+    +                 "target": Array [
+    +                   ".site-resource",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.05 (foreground color: #eff7f3, background color: #f9fcfc, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<p class=\"small-note\">A tua cópia pode ajudar outras pessoas. A autoria continua a ser do criador.</p>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".site-resource > .small-note",
+    +         ],
+    +       },
+    +     ],
+    +     "tags": Array [
+    +       "cat.color",
+    +       "wcag2aa",
+    +       "wcag143",
+    +       "TTv5",
+    +       "TT13.c",
+    +       "EN-301-549",
+    +       "EN-9.1.4.3",
+    +       "ACT",
+    +       "RGAAv4",
+    +       "RGAA-3.2.1",
+    +     ],
+    +   },
+    + ]
+
+      368 |         expect
+      369 |           .soft(after.violations, theme + "/" + palette + " after")
+    > 370 |           .toEqual([]);
+          |            ^
+      371 |         await visit
+      372 |           .getByRole("button", { name: "Fechar", exact: true })
+      373 |           .click();
+        at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-resource-review.spec.ts:370:12
+
+    Error: dark/sand card uses the site's paper
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "rgb(250, 247, 240)"
+    Received: "rgb(23, 44, 57)"
+
+      320 |             theme + "/" + palette + " card uses the site's paper",
+      321 |           )
+    > 322 |           .toBe(colors.paper);
+          |            ^
+      323 |         const button = visit.getByRole("button", {
+      324 |           name: "Obter ficheiro",
+      325 |           exact: true,
+        at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-resource-review.spec.ts:322:12
+
+    Error: dark/sand before
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  -   1
+    + Received  + 233
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+    +     "help": "Elements must meet minimum color contrast ratio thresholds",
+    +     "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+    +     "id": "color-contrast",
+    +     "impact": "serious",
+    +     "nodes": Array [
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#172c39",
+    +               "contrastRatio": 1.22,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#213d38",
+    +               "fontSize": "17.3pt (23px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 17.3pt (23px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+    +                 "target": Array [
+    +                   ".site-resource",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 17.3pt (23px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<h2>Paletas legíveis.txt</h2>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".resource-heading > div > h2",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#172c39",
+    +               "contrastRatio": 1.22,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#213d38",
+    +               "fontSize": "11.3pt (15px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+    +                 "target": Array [
+    +                   ".site-resource",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<p>Paletas legíveis.txt · 29 B</p>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".resource-heading > div > p",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#172c39",
+    +               "contrastRatio": 1.22,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#213d38",
+    +               "fontSize": "11.3pt (15px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+    +                 "target": Array [
+    +                   ".site-resource",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<p class=\"resource-credit\">",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".resource-credit",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#172c39",
+    +               "contrastRatio": 1.22,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#213d38",
+    +               "fontSize": "11.3pt (15px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+    +                 "target": Array [
+    +                   ".site-resource",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<span title=\"2831081cec914e841ac1478ce3d992a3bd0ce268c29c63efeb6aab68c91818ea\">Autora das cores</span>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".resource-credit > span",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#172c39",
+    +               "contrastRatio": 1.22,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#213d38",
+    +               "fontSize": "11.3pt (15px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+    +                 "target": Array [
+    +                   ".site-resource",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<p role=\"status\" class=\"resource-status\">Disponível neste dispositivo</p>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".resource-status",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#172c39",
+    +               "contrastRatio": 1.22,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#213d38",
+    +               "fontSize": "11.3pt (15px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+    +                 "target": Array [
+    +                   ".site-resource",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<p class=\"small-note\">A tua cópia pode ajudar outras pessoas. A autoria continua a ser do criador.</p>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".site-resource > .small-note",
+    +         ],
+    +       },
+    +     ],
+    +     "tags": Array [
+    +       "cat.color",
+    +       "wcag2aa",
+    +       "wcag143",
+    +       "TTv5",
+    +       "TT13.c",
+    +       "EN-301-549",
+    +       "EN-9.1.4.3",
+    +       "ACT",
+    +       "RGAAv4",
+    +       "RGAA-3.2.1",
+    +     ],
+    +   },
+    + ]
+
+      365 |         expect
+      366 |           .soft(before.violations, theme + "/" + palette + " before")
+    > 367 |           .toEqual([]);
+          |            ^
+      368 |         expect
+      369 |           .soft(after.violations, theme + "/" + palette + " after")
+      370 |           .toEqual([]);
+        at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-resource-review.spec.ts:367:12
+
+    Error: dark/sand after
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  -   1
+    + Received  + 233
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+    +     "help": "Elements must meet minimum color contrast ratio thresholds",
+    +     "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+    +     "id": "color-contrast",
+    +     "impact": "serious",
+    +     "nodes": Array [
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#172c39",
+    +               "contrastRatio": 1.22,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#213d38",
+    +               "fontSize": "17.3pt (23px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 17.3pt (23px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+    +                 "target": Array [
+    +                   ".site-resource",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 17.3pt (23px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<h2>Paletas legíveis.txt</h2>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".resource-heading > div > h2",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#172c39",
+    +               "contrastRatio": 1.22,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#213d38",
+    +               "fontSize": "11.3pt (15px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+    +                 "target": Array [
+    +                   ".site-resource",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<p>Paletas legíveis.txt · 29 B</p>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".resource-heading > div > p",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#172c39",
+    +               "contrastRatio": 1.22,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#213d38",
+    +               "fontSize": "11.3pt (15px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+    +                 "target": Array [
+    +                   ".site-resource",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<p class=\"resource-credit\">",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".resource-credit",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#172c39",
+    +               "contrastRatio": 1.22,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#213d38",
+    +               "fontSize": "11.3pt (15px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+    +                 "target": Array [
+    +                   ".site-resource",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<span title=\"2831081cec914e841ac1478ce3d992a3bd0ce268c29c63efeb6aab68c91818ea\">Autora das cores</span>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".resource-credit > span",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#172c39",
+    +               "contrastRatio": 1.22,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#213d38",
+    +               "fontSize": "11.3pt (15px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+    +                 "target": Array [
+    +                   ".site-resource",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<p role=\"status\" class=\"resource-status\">Disponível neste dispositivo</p>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".resource-status",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#172c39",
+    +               "contrastRatio": 1.22,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#213d38",
+    +               "fontSize": "11.3pt (15px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+    +                 "target": Array [
+    +                   ".site-resource",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.22 (foreground color: #213d38, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<p class=\"small-note\">A tua cópia pode ajudar outras pessoas. A autoria continua a ser do criador.</p>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".site-resource > .small-note",
+    +         ],
+    +       },
+    +     ],
+    +     "tags": Array [
+    +       "cat.color",
+    +       "wcag2aa",
+    +       "wcag143",
+    +       "TTv5",
+    +       "TT13.c",
+    +       "EN-301-549",
+    +       "EN-9.1.4.3",
+    +       "ACT",
+    +       "RGAAv4",
+    +       "RGAA-3.2.1",
+    +     ],
+    +   },
+    + ]
+
+      368 |         expect
+      369 |           .soft(after.violations, theme + "/" + palette + " after")
+    > 370 |           .toEqual([]);
+          |            ^
+      371 |         await visit
+      372 |           .getByRole("button", { name: "Fechar", exact: true })
+      373 |           .click();
+        at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-resource-review.spec.ts:370:12
+
+    Error: dark/forest card uses the site's paper
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "rgb(237, 245, 239)"
+    Received: "rgb(23, 44, 57)"
+
+      320 |             theme + "/" + palette + " card uses the site's paper",
+      321 |           )
+    > 322 |           .toBe(colors.paper);
+          |            ^
+      323 |         const button = visit.getByRole("button", {
+      324 |           name: "Obter ficheiro",
+      325 |           exact: true,
+        at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-resource-review.spec.ts:322:12
+
+    Error: dark/forest after
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  -   1
+    + Received  + 233
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+    +     "help": "Elements must meet minimum color contrast ratio thresholds",
+    +     "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+    +     "id": "color-contrast",
+    +     "impact": "serious",
+    +     "nodes": Array [
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#172c39",
+    +               "contrastRatio": 1.2,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#173d31",
+    +               "fontSize": "17.3pt (23px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.2 (foreground color: #173d31, background color: #172c39, font size: 17.3pt (23px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+    +                 "target": Array [
+    +                   ".site-resource",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.2 (foreground color: #173d31, background color: #172c39, font size: 17.3pt (23px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<h2>Paletas legíveis.txt</h2>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".resource-heading > div > h2",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#172c39",
+    +               "contrastRatio": 1.2,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#173d31",
+    +               "fontSize": "11.3pt (15px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.2 (foreground color: #173d31, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+    +                 "target": Array [
+    +                   ".site-resource",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.2 (foreground color: #173d31, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<p>Paletas legíveis.txt · 29 B</p>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".resource-heading > div > p",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#172c39",
+    +               "contrastRatio": 1.2,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#173d31",
+    +               "fontSize": "11.3pt (15px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.2 (foreground color: #173d31, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+    +                 "target": Array [
+    +                   ".site-resource",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.2 (foreground color: #173d31, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<p class=\"resource-credit\">",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".resource-credit",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#172c39",
+    +               "contrastRatio": 1.2,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#173d31",
+    +               "fontSize": "11.3pt (15px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.2 (foreground color: #173d31, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+    +                 "target": Array [
+    +                   ".site-resource",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.2 (foreground color: #173d31, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<span title=\"2831081cec914e841ac1478ce3d992a3bd0ce268c29c63efeb6aab68c91818ea\">Autora das cores</span>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".resource-credit > span",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#172c39",
+    +               "contrastRatio": 1.2,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#173d31",
+    +               "fontSize": "11.3pt (15px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.2 (foreground color: #173d31, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+    +                 "target": Array [
+    +                   ".site-resource",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.2 (foreground color: #173d31, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<p role=\"status\" class=\"resource-status\">Disponível neste dispositivo</p>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".resource-status",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#172c39",
+    +               "contrastRatio": 1.2,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#173d31",
+    +               "fontSize": "11.3pt (15px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.2 (foreground color: #173d31, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"site-resource\" data-resource-id=\"d092d41f8ebec33b28ccd202b7af2c4330aef5073bf966e405b4e095717fff0f\">",
+    +                 "target": Array [
+    +                   ".site-resource",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.2 (foreground color: #173d31, background color: #172c39, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<p class=\"small-note\">A tua cópia pode ajudar outras pessoas. A autoria continua a ser do criador.</p>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".site-resource > .small-note",
+    +         ],
+    +       },
+    +     ],
+    +     "tags": Array [
+    +       "cat.color",
+    +       "wcag2aa",
+    +       "wcag143",
+    +       "TTv5",
+    +       "TT13.c",
+    +       "EN-301-549",
+    +       "EN-9.1.4.3",
+    +       "ACT",
+    +       "RGAAv4",
+    +       "RGAA-3.2.1",
+    +     ],
+    +   },
+    + ]
+
+      368 |         expect
+      369 |           .soft(after.violations, theme + "/" + palette + " after")
+    > 370 |           .toEqual([]);
+          |            ^
+      371 |         await visit
+      372 |           .getByRole("button", { name: "Fechar", exact: true })
+      373 |           .click();
+        at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-resource-review.spec.ts:370:12
+
+    Error: dark/ink card uses the site's paper
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "rgb(23, 45, 49)"
+    Received: "rgb(23, 44, 57)"
+
+      320 |             theme + "/" + palette + " card uses the site's paper",
+      321 |           )
+    > 322 |           .toBe(colors.paper);
+          |            ^
+      323 |         const button = visit.getByRole("button", {
+      324 |           name: "Obter ficheiro",
+      325 |           exact: true,
+        at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-resource-review.spec.ts:322:12
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .cache/resource-palettes-before-artifacts/site-resource-review-signe-1994b-ly-of-the-application-theme-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .cache/resource-palettes-before-artifacts/site-resource-review-signe-1994b-ly-of-the-application-theme-chromium/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: .cache/resource-palettes-before-artifacts/site-resource-review-signe-1994b-ly-of-the-application-theme-chromium/error-context.md
+
+    Error Context: .cache/resource-palettes-before-artifacts/site-resource-review-signe-1994b-ly-of-the-application-theme-chromium/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    .cache/resource-palettes-before-artifacts/site-resource-review-signe-1994b-ly-of-the-application-theme-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace .cache/resource-palettes-before-artifacts/site-resource-review-signe-1994b-ly-of-the-application-theme-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › tests/browser/site-resource-review.spec.ts:265:1 › signed resource reader follows all site palettes independently of the application theme 

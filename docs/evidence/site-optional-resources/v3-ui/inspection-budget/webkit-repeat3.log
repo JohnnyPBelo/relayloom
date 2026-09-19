@@ -1,0 +1,26 @@
+
+Running 15 tests using 1 worker
+
+(node:2266203) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [webkit] › tests/browser/site-resource-budget.spec.ts:160:1 › the maximum valid page inspects every resource without exhausting the browser command budget (18.6s)
+  ✓   2 [webkit] › tests/browser/site-resource-review.spec.ts:160:1 › resource polling keeps the obtain action busy until its own real Worker reply arrives (13.3s)
+  ✓   3 [webkit] › tests/browser/site-resource-review.spec.ts:275:1 › signed resource reader follows all site palettes independently of the application theme (28.2s)
+  ✓   4 [webkit] › tests/browser/site-resource-review.spec.ts:490:1 › switching resource previews never associates a new filename or MIME with the previous file URL (4.0s)
+  ✓   5 [webkit] › tests/browser/site-resource-review.spec.ts:609:1 › late site inventory preserves an already verified reader and focus; failed refresh clears the old view (34.8s)
+(node:2280625) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   6 [webkit] › tests/browser/site-resource-budget.spec.ts:160:1 › the maximum valid page inspects every resource without exhausting the browser command budget (18.9s)
+  ✓   7 [webkit] › tests/browser/site-resource-review.spec.ts:160:1 › resource polling keeps the obtain action busy until its own real Worker reply arrives (13.5s)
+  ✓   8 [webkit] › tests/browser/site-resource-review.spec.ts:275:1 › signed resource reader follows all site palettes independently of the application theme (28.7s)
+  ✓   9 [webkit] › tests/browser/site-resource-review.spec.ts:490:1 › switching resource previews never associates a new filename or MIME with the previous file URL (3.9s)
+  ✓  10 [webkit] › tests/browser/site-resource-review.spec.ts:609:1 › late site inventory preserves an already verified reader and focus; failed refresh clears the old view (36.5s)
+(node:2296328) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  11 [webkit] › tests/browser/site-resource-budget.spec.ts:160:1 › the maximum valid page inspects every resource without exhausting the browser command budget (19.4s)
+  ✓  12 [webkit] › tests/browser/site-resource-review.spec.ts:160:1 › resource polling keeps the obtain action busy until its own real Worker reply arrives (13.7s)
+  ✓  13 [webkit] › tests/browser/site-resource-review.spec.ts:275:1 › signed resource reader follows all site palettes independently of the application theme (29.1s)
+  ✓  14 [webkit] › tests/browser/site-resource-review.spec.ts:490:1 › switching resource previews never associates a new filename or MIME with the previous file URL (4.0s)
+  ✓  15 [webkit] › tests/browser/site-resource-review.spec.ts:609:1 › late site inventory preserves an already verified reader and focus; failed refresh clears the old view (36.6s)
+
+  15 passed (5.1m)

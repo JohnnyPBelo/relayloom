@@ -1,0 +1,55 @@
+
+Running 1 test using 1 worker
+
+(node:3348286) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [firefox] › tests/browser/site-resource-review.spec.ts:558:1 › late site inventory preserves an already verified reader and focus; failed refresh clears the old view (34.0s)
+
+
+  1) [firefox] › tests/browser/site-resource-review.spec.ts:558:1 › late site inventory preserves an already verified reader and focus; failed refresh clears the old view 
+
+    Error: metadata about the same verified snapshot must not replace the reader
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 2
+    + Received  + 2
+
+      Object {
+    -   "connected": true,
+    -   "focused": true,
+    +   "connected": false,
+    +   "focused": false,
+      }
+
+      623 |     const retained = await original!.evaluate(el => ({connected:el.isConnected,focused:document.activeElement === el}));
+      624 |     writeFileSync(out+"/same-head.json",JSON.stringify({control,retained},null,2));
+    > 625 |     expect.soft(retained,"metadata about the same verified snapshot must not replace the reader").toEqual({connected:true,focused:true});
+          |                                                                                                   ^
+      626 |     // The next real resolve reply is lost. A failed refresh must stop showing the
+      627 |     // previous snapshot instead of silently presenting it as the current head.
+      628 |     await b.evaluate(() => { (window as any).siteStateControl.dropResolve = true; });
+        at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-resource-review.spec.ts:625:99
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .cache/resource-reader-before-artifacts/site-resource-review-late--520f7-refresh-clears-the-old-view-firefox/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .cache/resource-reader-before-artifacts/site-resource-review-late--520f7-refresh-clears-the-old-view-firefox/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: .cache/resource-reader-before-artifacts/site-resource-review-late--520f7-refresh-clears-the-old-view-firefox/error-context.md
+
+    Error Context: .cache/resource-reader-before-artifacts/site-resource-review-late--520f7-refresh-clears-the-old-view-firefox/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    .cache/resource-reader-before-artifacts/site-resource-review-late--520f7-refresh-clears-the-old-view-firefox/trace.zip
+    Usage:
+
+        npx playwright show-trace .cache/resource-reader-before-artifacts/site-resource-review-late--520f7-refresh-clears-the-old-view-firefox/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [firefox] › tests/browser/site-resource-review.spec.ts:558:1 › late site inventory preserves an already verified reader and focus; failed refresh clears the old view 

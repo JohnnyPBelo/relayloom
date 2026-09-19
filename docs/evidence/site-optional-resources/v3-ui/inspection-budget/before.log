@@ -1,0 +1,77 @@
+
+Running 1 test using 1 worker
+
+(node:2045249) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [chromium] › tests/browser/site-resource-budget.spec.ts:156:1 › the maximum valid page inspects every resource without exhausting the browser command budget (21.9s)
+
+
+  1) [chromium] › tests/browser/site-resource-budget.spec.ts:156:1 › the maximum valid page inspects every resource without exhausting the browser command budget 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('dialog', { name: 'Página de Autora da página extensa', exact: true }).locator('.resource-status').filter({ hasText: 'Disponível neste dispositivo' })
+    Expected: 123
+    Received: 64
+    Timeout:  15000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('dialog', { name: 'Página de Autora da página extensa', exact: true }).locator('.resource-status').filter({ hasText: 'Disponível neste dispositivo' }) with timeout 15000ms
+      - waiting for getByRole('dialog', { name: 'Página de Autora da página extensa', exact: true }).locator('.resource-status').filter({ hasText: 'Disponível neste dispositivo' })
+        2 × locator resolved to 4 elements
+          - unexpected value "4"
+        - locator resolved to 5 elements
+        - unexpected value "5"
+        - locator resolved to 6 elements
+        - unexpected value "6"
+        - locator resolved to 8 elements
+        - unexpected value "8"
+        - locator resolved to 13 elements
+        - unexpected value "13"
+        - locator resolved to 19 elements
+        - unexpected value "19"
+        - locator resolved to 26 elements
+        - unexpected value "26"
+        - locator resolved to 31 elements
+        - unexpected value "31"
+        - locator resolved to 37 elements
+        - unexpected value "37"
+        - locator resolved to 43 elements
+        - unexpected value "43"
+        - locator resolved to 49 elements
+        - unexpected value "49"
+        - locator resolved to 54 elements
+        - unexpected value "54"
+        - locator resolved to 60 elements
+        - unexpected value "60"
+        19 × locator resolved to 64 elements
+           - unexpected value "64"
+
+
+      180 |   try {
+      181 |     await expect(visit.locator(".site-resource")).toHaveCount(123);
+    > 182 |     await expect(visit.locator(".resource-status").filter({hasText:"Disponível neste dispositivo"})).toHaveCount(123);
+          |                                                                                                      ^
+      183 |     await expect(visit.getByRole("alert")).toHaveCount(0);
+      184 |     await visit.getByRole("button",{name:"Obter ficheiro",exact:true}).last().click();
+      185 |     await expect(visit.getByRole("link",{name:/Guardar ficheiro/})).toHaveCount(1);
+        at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-resource-budget.spec.ts:182:102
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .cache/resource-budget-valid-before-artifacts/site-resource-budget-the-m-1d9be--the-browser-command-budget-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: .cache/resource-budget-valid-before-artifacts/site-resource-budget-the-m-1d9be--the-browser-command-budget-chromium/error-context.md
+
+    Error Context: .cache/resource-budget-valid-before-artifacts/site-resource-budget-the-m-1d9be--the-browser-command-budget-chromium/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    .cache/resource-budget-valid-before-artifacts/site-resource-budget-the-m-1d9be--the-browser-command-budget-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace .cache/resource-budget-valid-before-artifacts/site-resource-budget-the-m-1d9be--the-browser-command-budget-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › tests/browser/site-resource-budget.spec.ts:156:1 › the maximum valid page inspects every resource without exhausting the browser command budget 

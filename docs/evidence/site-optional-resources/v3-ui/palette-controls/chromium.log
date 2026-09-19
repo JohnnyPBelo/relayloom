@@ -1,0 +1,8 @@
+
+Running 1 test using 1 worker
+
+(node:3469760) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/browser/site-resource-review.spec.ts:265:1 › signed resource reader follows all site palettes independently of the application theme (20.1s)
+
+  1 passed (20.8s)

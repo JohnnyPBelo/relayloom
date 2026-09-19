@@ -1,0 +1,58 @@
+TAP version 13
+# Subtest: real RNS delivery rejects forged authorship and corrupted ciphertext, accepts the control and deduplicates replay
+ok 1 - real RNS delivery rejects forged authorship and corrupted ciphertext, accepts the control and deduplicates replay
+  ---
+  duration_ms: 6738.650227
+  type: 'test'
+  ...
+# Subtest: node origin: reference Reticulum routes RelayLoom through TCP and serial PTY with partition/heal and offline seeding
+ok 2 - node origin: reference Reticulum routes RelayLoom through TCP and serial PTY with partition/heal and offline seeding
+  ---
+  duration_ms: 45105.896056
+  type: 'test'
+  ...
+# Subtest: native origin: reference Reticulum routes RelayLoom through TCP and serial PTY with partition/heal and offline seeding
+ok 3 - native origin: reference Reticulum routes RelayLoom through TCP and serial PTY with partition/heal and offline seeding
+  ---
+  duration_ms: 42599.032578
+  type: 'test'
+  ...
+# Subtest: TCP to UDPInterface: consent gates private delivery, queued partition recovery and author-offline seeding
+ok 4 - TCP to UDPInterface: consent gates private delivery, queued partition recovery and author-offline seeding
+  ---
+  duration_ms: 20831.556536
+  type: 'test'
+  ...
+# Subtest: TCP to BackboneInterface: consent gates private delivery, queued partition recovery and author-offline seeding
+ok 5 - TCP to BackboneInterface: consent gates private delivery, queued partition recovery and author-offline seeding
+  ---
+  duration_ms: 26089.090006
+  type: 'test'
+  ...
+# Subtest: TCP to KISSInterface: consent gates private delivery, queued partition recovery and author-offline seeding
+ok 6 - TCP to KISSInterface: consent gates private delivery, queued partition recovery and author-offline seeding
+  ---
+  duration_ms: 23638.864716
+  type: 'test'
+  ...
+# Subtest: TCP to AX25KISSInterface: consent gates private delivery, queued partition recovery and author-offline seeding
+ok 7 - TCP to AX25KISSInterface: consent gates private delivery, queued partition recovery and author-offline seeding
+  ---
+  duration_ms: 23335.285985
+  type: 'test'
+  ...
+# Subtest: TCP to BluetoothNusSimulatedGatt: consent gates private delivery, queued partition recovery and author-offline seeding
+ok 8 - TCP to BluetoothNusSimulatedGatt: consent gates private delivery, queued partition recovery and author-offline seeding
+  ---
+  duration_ms: 28486.935195
+  type: 'test'
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 8
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 217373.643495

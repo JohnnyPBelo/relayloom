@@ -1,0 +1,12 @@
+
+Running 5 tests using 1 worker
+
+(node:2167237) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/browser/site-resource-budget.spec.ts:160:1 › the maximum valid page inspects every resource without exhausting the browser command budget (19.0s)
+  ✓  2 [chromium] › tests/browser/site-resource-review.spec.ts:160:1 › resource polling keeps the obtain action busy until its own real Worker reply arrives (10.3s)
+  ✓  3 [chromium] › tests/browser/site-resource-review.spec.ts:275:1 › signed resource reader follows all site palettes independently of the application theme (22.1s)
+  ✓  4 [chromium] › tests/browser/site-resource-review.spec.ts:490:1 › switching resource previews never associates a new filename or MIME with the previous file URL (3.4s)
+  ✓  5 [chromium] › tests/browser/site-resource-review.spec.ts:609:1 › late site inventory preserves an already verified reader and focus; failed refresh clears the old view (31.4s)
+
+  5 passed (1.5m)
