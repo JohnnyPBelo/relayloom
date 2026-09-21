@@ -1,0 +1,64 @@
+{
+  "status": "PASS_SCOPED_AUTHENTICATED_LOOKUP",
+  "base": "d20d4cef2dcc52b72762aef3f74289fcec7d7fc5",
+  "at": "2026-09-21T23:26:19.317880+00:00",
+  "scope": "Real form metadata lookup API and admission context Node/Go/browser. No submission, journal, inbox or approval workflow yet.",
+  "sources": {
+    "apps/node/src/contribution-read.ts": "a3c2d8e15f6212cca84008b66edb24562bf572e79c69435a153a9018f2b5f9b2",
+    "apps/node/src/node.ts": "1e96a0ccb9d35247a43975a91a68093fffc310a250902c93633badab677390eb",
+    "apps/node/src/server.ts": "ebbaa1e05861a543ee93f00ec6380dfbc86bac52055689d24ede6a7330f20a48",
+    "native/app/contribution_read.go": "3472dd006f5e55262e0532cef5e7f81ae44881b4144f5acf161b647aee059b1b",
+    "native/app/node.go": "fbf89a9da48473b809b9190379106e993858c2e702ab60eb541b508390c81296",
+    "native/app/server.go": "c9037b4445d51586faa61e6b862e2f6660460d4ee1953cc11613ef28e5120e21",
+    "native/sites/contribution.go": "692e7f93ca3536a54970a833b7a87e97875d9172daf2ab9d9a2f8daf7cb45138",
+    "native/sites/contribution_context.go": "46b86bae0f4f484b586aa240126ea24b3edcbfbc725ed2bb0356631117a0b4a0",
+    "packages/browser/src/application.ts": "36ed1865ca66b5a5233633adfcf5e401de0e1af8a211419b4f25225a895da2f8",
+    "packages/browser/src/contribution-read.ts": "81b76035e716eecca4e7e2677d23f554263bbf1a094e8ee2ff917e5f3f3222c9",
+    "packages/sites/src/contribution-context.ts": "3434624328e888c1c5b35b54a71ba8bec1fb97e74dcb410dbe604c316a90ceb8",
+    "packages/sites/src/contribution-protocol.ts": "d8b192fc2e46185f56c87362098129b6dc8994de20b3859b8297fcba3aca9dd8",
+    "tests/browser/site-contribution-context.spec.ts": "8f8c9708ddf4c12956d22a6880f07e695031af5406d660114db7970c1befc043",
+    "tests/browser/site-contribution-worker.spec.ts": "2b39c08c4b82834c6f743e0427987b56e409dab304b30d9f574d1b2ba10b774a",
+    "tests/fixtures/site-form.ts": "5ff6f27bef40fa8e7068b671eade30ff216cfd95b519b0efb0e853c53cf6d70d",
+    "tests/native/site-contribution-context.test.ts": "6c2fc704b431f163454a9f05a74c1f6760ad71c16c4c5120cccbf6552ab3e269",
+    "tests/site-contribution-context.test.ts": "a02e966ce70a7ef3eb20270be700eb892cfda7a3d66c37786be2a2275e835023"
+  },
+  "checks": {
+    "nodeContracts": 10,
+    "goSitesRace": "PASS",
+    "goAppDirectedRace": 3,
+    "nativeBuild": "PASS",
+    "webBuild": "PASS",
+    "typecheck": "PASS",
+    "realMultiProcess": 2,
+    "browserContext": {
+      "chromium": 1,
+      "firefox": 2,
+      "webkit": 2
+    },
+    "productionWorker": {
+      "chromium": 2,
+      "firefox": 1,
+      "webkit": 1
+    }
+  },
+  "commands": [
+    "node node_modules/typescript/bin/tsc --noEmit",
+    "node --import tsx --test --test-concurrency=1 tests/site-contribution-context.test.ts tests/site-contribution.test.ts tests/site-contribution-interop.test.ts",
+    "node scripts/go.mjs test -race -p=1 ./sites -count=1",
+    "node scripts/go.mjs test -race -p=1 ./app -run '^Test(Version4RequiresOwnerSnapshot|SiteDocumentSharedVectors|VersionedSiteFallbackUsesSharedNodeSemantics)$' -count=1",
+    "node scripts/native-build.mjs",
+    "node --import tsx --test --test-concurrency=1 tests/native/site-contribution-context.test.ts",
+    "node node_modules/vite/bin/vite.js build",
+    "RELAYLOOM_MATRIX_ENGINE=chromium node scripts/e2e.mjs --config tests/browser/matrix.config.ts tests/browser/site-contribution-context.spec.ts",
+    "RELAYLOOM_MATRIX_ENGINE=chromium node scripts/e2e.mjs --config tests/browser/matrix.config.ts tests/browser/site-contribution-worker.spec.ts",
+    "RELAYLOOM_MATRIX_ENGINE=firefox node scripts/e2e.mjs --config tests/browser/matrix.config.ts tests/browser/site-contribution-context.spec.ts",
+    "RELAYLOOM_MATRIX_ENGINE=firefox node scripts/e2e.mjs --config tests/browser/matrix.config.ts tests/browser/site-contribution-worker.spec.ts",
+    "RELAYLOOM_MATRIX_ENGINE=webkit node scripts/e2e.mjs --config tests/browser/matrix.config.ts tests/browser/site-contribution-context.spec.ts",
+    "RELAYLOOM_MATRIX_ENGINE=webkit node scripts/e2e.mjs --config tests/browser/matrix.config.ts tests/browser/site-contribution-worker.spec.ts"
+  ],
+  "notes": [
+    "Browser counts include the certificate test in Firefox/WebKit context runs and Chromium worker run; do not count those as extra metadata scenarios.",
+    "First process run refused startup below15GiB. Second used a wrong fixture settings call for blocking; corrected to action/block and asserted state before checking refusal. Failures preserved.",
+    "No physical devices, radio, Apple signing, current deployment or independent review evidence."
+  ]
+}

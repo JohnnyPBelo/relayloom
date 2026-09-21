@@ -74,3 +74,22 @@ Todas as fronteiras de publicação/admissão foram alargadas de v3 para v3 ou p
 Gates locais: 79 Node, 24 vectores de documento TS/Go (8 aceites/16 recusados), typecheck, Go sites/race e três testes Go app de admissão/compatibilidade com race, build e dois casos por browser (Chromium/Firefox/WebKit). O caso de catálogo usa assinatura/cifra e IndexedDB reais; o outro usa a UI existente de copiar páginas. Provas: docs/evidence/site-contributions/document-v4. Não são testes UI de envio/aprovação de contribuições.
 
 Ainda obrigatórios: resolver o contexto de formulário a partir do snapshot autenticado na API, journal privado e replay, transporte/inbox, bloqueio/prazos/quotas, aprovação/rejeição/reconciliação CAS, proveniência das linhas e UI PT/EN/ES. O CI35661349213 está a testar 0a85d7d, anterior a este incremento; não fazer push que o cancele sem necessidade. A distribuição HTTPS permanece 7fdb76a/0fdbd1b9.
+
+## Integração actual: contexto autenticado e preparação privada
+
+O turno anterior constituiu progresso: commits, execução de gates e fundação v4 verificável. Nesta continuação a fonte de verdade é a worktree d20d4ce e o CI35661349213, ainda em curso para0a85d7d. Nenhum agente foi criado/retomado; manter execução sequencial e a reserva de15GiB.
+
+Primeiro ligar `contribution-command` com uma consulta de formulário por snapshotId/pageId/formId. O motor autentica/desencripta a cópia local, extrai tabela/formulário/revisão/audiência do mesmo snapshot e verifica as regras do visitante; o cliente não fornece contexto de autoridade. Revalidar bloqueio, retirada, prazo e geração de sessão nas fronteiras assíncronas. A resposta de metadados não é uma autorização reutilizável: criar/retomar deverá resolver de novo o contexto pelo motor. Não assinar, pedir à rede nem publicar durante a consulta.
+
+Depois ligar o journal privado de intenção, com UUID/sequência/fingerprint, estados e resultados limitados e persistentes, assinatura preservada após perda de resposta, contrapressão e domínio próprio derivado da posse da chave de assinatura. Transporte, inbox, aprovação e UI continuam a seguir, sem activar uma paleta sem fluxo funcional.
+
+
+## Consulta autenticada integrada — 22 de Setembro
+
+`contribution-command/form` já está ligado a Node HTTP, Go HTTP e BrowserApplication/worker. Extrai o contexto do snapshot cifrado local, sem aceitar esquema/ACL do cliente. Consulta não assina, envia ou pede à rede; devolve metadados sem as linhas da tabela. Node/Go confirmam bloqueio/retirada em estado local; browser revalida a geração, prazo e política, lendo bloqueio+mutations na mesma transacção privada. A resposta descritiva não será aceite como autorização de submissão.
+
+Dez testes Node, Go sites/race, três testes Go app/race, builds, dois percursos de processos TCP e contextos/worker nos três browsers passaram. Processos: prova de bytes privados presentes sem chave, falta de autorização, bloqueio real, retirada, versão histórica e seeder reiniciado com autor desligado/cópia antes ausente. Browser: intenção mutável, bloqueio/retirada/prazo/lock durante resposta retida, unlock e ausência sem pedido de rede. Provas: docs/evidence/site-contributions/authenticated-context.
+
+A primeira execução parou por reserva de disco (<15GiB). Oito cópias ignored/linux-unpacked antigas foram removidas após lsof, preservando os AppImages e todos os hashes de WIP/source. Depois a fixture usava settings para bloquear; corrigida para action/block com estado assertado. Esses resultados estão preservados; os dois processos finais passaram. Último espaço: cerca de16GiB, margem pequena; revalidar antes de novo gate.
+
+Segue journal/submissão: ler CONTRIBUTION-JOURNAL-NOTES.md. Resolver a diferença entre envio privado e consentimento de publicação antes de integrar; preservar a recusa de promoção privada→pública. Todo o envio/inbox/aprovação/proveniência/UI continua pendente.

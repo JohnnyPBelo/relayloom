@@ -1,0 +1,124 @@
+{
+  "config": {
+    "argv": [
+      "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+      "/home/absint0o/projects/relayloom/.cache/site-optional-resources/node_modules/playwright/cli.js",
+      "test",
+      "--config",
+      "tests/browser/matrix.config.ts",
+      "tests/browser/site-contribution-context.spec.ts",
+      "--output",
+      ".cache/contribution-context-chromium-artifacts"
+    ],
+    "configFile": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/matrix.config.ts",
+    "rootDir": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/contribution-context-chromium-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "*.spec.ts"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/browser-matrix/chromium/playwright.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "site-contribution-context.spec.ts",
+      "file": "site-contribution-context.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "form inspection uses authenticated browser state and invalidates delayed replies after block, withdrawal, expiry or lock",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3024,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-21T23:06:26.033Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d208b2ff6e904a4f74d7-7fec0049c41417fac672",
+          "file": "site-contribution-context.spec.ts",
+          "line": 13,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-21T23:06:25.519Z",
+    "duration": 3858.9569999999994,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

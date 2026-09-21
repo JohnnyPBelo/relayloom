@@ -1,0 +1,66 @@
+{
+  "description": {
+    "target": {
+      "site": "relayloom:site:7464de6d546f7ae1712f79a180094772c9a38e7f2add0ddda004b31adc2313a2/profile",
+      "snapshotId": "7eb7851f4b76e645b1b585bc7810d700ac437b49793913b0e3bc0c663194954b",
+      "revisionId": "816f7decb65622d1807d09cbdcbf9e53245fd16a3d842cf5cafce28ed9c9b3fb",
+      "pageId": "entry",
+      "formId": "form"
+    },
+    "owner": {
+      "boxKey": "MCowBQYDK2VuAyEAPI67n156A40gLT/OBm3RCYjfcG0NPvKT4zXZg7bObEA=",
+      "id": "7464de6d546f7ae1712f79a180094772c9a38e7f2add0ddda004b31adc2313a2",
+      "name": "Dona",
+      "proof": "I3i/EFV8KIzm/GdqINec4GPWMRnN4xektY/pO66wCp/vUe+Lw4v91VnayqZZ9wiO/3wTCG0gYCwAmOR8GCd2Cg==",
+      "signKey": "MCowBQYDK2VwAyEAebIHIRzldElRcwSOxuLHdpp/V0Ej/iEUmjRY3s8K8y4="
+    },
+    "title": "Inscreve um lugar",
+    "description": "O dono vai rever a proposta.",
+    "fields": [
+      {
+        "id": "name",
+        "label": "Nome",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "count",
+        "label": "Quantidade",
+        "type": "number",
+        "required": false
+      },
+      {
+        "id": "open",
+        "label": "Aberto",
+        "type": "boolean",
+        "required": true
+      }
+    ],
+    "contributors": [
+      "6cf9f48df62f4cb5c3c7c8ee6954fbfa461d709a97744f2a0a119e0d8eacf3b4"
+    ],
+    "siteScope": "public",
+    "schemaHash": "6310151b4f5b3f93be8e6929872636c1e59ad48c2f98063cd230e4d595d7656a",
+    "expires": 1790035804143
+  },
+  "notAllowed": true,
+  "fakeContext": true,
+  "noReadKey": true,
+  "historical": true,
+  "privateReaders": [
+    "6cf9f48df62f4cb5c3c7c8ee6954fbfa461d709a97744f2a0a119e0d8eacf3b4",
+    "7464de6d546f7ae1712f79a180094772c9a38e7f2add0ddda004b31adc2313a2"
+  ],
+  "expectedReaders": [
+    "6cf9f48df62f4cb5c3c7c8ee6954fbfa461d709a97744f2a0a119e0d8eacf3b4",
+    "7464de6d546f7ae1712f79a180094772c9a38e7f2add0ddda004b31adc2313a2"
+  ],
+  "capturedOriginal": true,
+  "signatures": 0,
+  "blocked": true,
+  "withdrawn": true,
+  "expired": true,
+  "locked": true,
+  "recoveredSameSchema": true,
+  "missingWithoutNetwork": true
+}

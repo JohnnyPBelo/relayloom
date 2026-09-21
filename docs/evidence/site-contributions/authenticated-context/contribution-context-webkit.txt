@@ -1,0 +1,9 @@
+
+Running 2 tests using 1 worker
+
+(node:2130880) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [webkit] › tests/browser/site-contribution-context.spec.ts:13:1 › form inspection uses authenticated browser state and invalidates delayed replies after block, withdrawal, expiry or lock (3.5s)
+  ✓  2 [webkit] › tests/browser/site-contribution.spec.ts:50:1 › browser visitor certificates interoperate with Node and Go while encrypted proposals and publication consent remain separate (1.3s)
+
+  2 passed (5.6s)

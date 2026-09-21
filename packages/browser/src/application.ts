@@ -1,3 +1,5 @@
+import { readContributionForm } from "./contribution-read";
+import { parseContributionFormLookup } from "../../sites/src/contribution-context";
 import { BrowserResourceRuntime } from "./resource-runtime";
 import { parseSiteResourceRead } from "./resource-read";
 import { validateSiteEditingContext } from "../../sites/src/editing";
@@ -651,7 +653,8 @@ export class BrowserApplication {
       );
     if (
       content.type === "site" &&
-      (Object.hasOwn(content, "siteRevision") || (content.site?.version ?? 0) >= 3)
+      (Object.hasOwn(content, "siteRevision") ||
+        (content.site?.version ?? 0) >= 3)
     )
       throw new Error("Publica revisões através do comando de site");
     if (grouped(content))
@@ -1008,6 +1011,8 @@ export class BrowserApplication {
       this.guard(generation);
       return result;
     }
+    if (path === "contribution-command")
+      body = parseContributionFormLookup(body);
     const run = this.#queue.then(() => this.execute(path, body));
     this.#queue = run.then(
       () => {},
@@ -1030,6 +1035,31 @@ export class BrowserApplication {
       }
     }
     this.owner();
+    if (path === "contribution-command") {
+      const generation = this.#generation;
+      await this.objects();
+      this.guard(generation);
+      return readContributionForm(body, {
+        profile: this.profile,
+        ensure: () => this.guard(generation),
+        // One private transaction gives blocking and withdrawal the same revision.
+        // Do not call profile methods from inside this exclusive callback.
+        policy: (id, author) =>
+          this.profile.transactValues(async (values) => {
+            const settings = (await values.get("mesh-settings")) as any;
+            const data = this.parse(await values.get("application"));
+            this.guard(generation);
+            const m = data.mutations[id];
+            return {
+              blocked: settings?.blocked ?? [],
+              withdrawn:
+                m?.author === author &&
+                m.deleted === true &&
+                m.expires > Date.now(),
+            };
+          }),
+      });
+    }
     if (path === "resource-command") {
       if (["inspect", "obtain"].includes(body?.action)) await this.objects();
       if (!this.#resources) throw new Error("Sessão de recursos bloqueada");

@@ -212,6 +212,35 @@ export function createSiteContributionProtocol(crypto: CertificateCrypto) {
       }),
     );
   }
+  /** Policy over a runtime-derived authenticated snapshot, never caller authority. */
+  function authorizeContext(
+    context: ContributionFormContext,
+    contributorId: string,
+    now: number,
+  ) {
+    target(context.target);
+    requireThat(
+      hashID(contributorId) &&
+        time(now) &&
+        time(context.snapshotExpires) &&
+        context.snapshotExpires > now,
+      "contexto expirado ou identidade inválida",
+    );
+    const bound = bindSiteForm(context.form, context.table);
+    const scope = parseContributionScope(context.siteScope),
+      { ownerId } = parseSiteAddress(context.target.site);
+    requireThat(
+      scope === "public" ||
+        (scope.includes(ownerId) && scope.includes(contributorId)),
+      "autor sem leitura do site",
+    );
+    requireThat(
+      bound.form.contributors === "readers" ||
+        bound.form.contributors.includes(contributorId),
+      "autor sem permissão de proposta",
+    );
+    return bound;
+  }
   /** Check the proposal against authenticated source data. A runtime must still
    * enforce blocking, current-head CAS, durable replay controls and owner consent
    * before adopting anything. This method does not sign or mutate a page. */
@@ -231,21 +260,10 @@ export function createSiteContributionProtocol(crypto: CertificateCrypto) {
       canonical(b.target) === canonical(context.target),
       "base ou formulário diferentes",
     );
-    const { form, table } = bindSiteForm(context.form, context.table);
+    const { form, table } = authorizeContext(context, b.contributor.id, now);
     requireThat(b.schemaHash === schemaHash(form, table), "esquema diferente");
     matchContributionValues(form, table, b.values);
-    const siteScope = parseContributionScope(context.siteScope),
-      { ownerId } = parseSiteAddress(b.target.site);
-    requireThat(
-      siteScope === "public" ||
-        (siteScope.includes(ownerId) && siteScope.includes(b.contributor.id)),
-      "autor sem leitura do site",
-    );
-    requireThat(
-      form.contributors === "readers" ||
-        form.contributors.includes(b.contributor.id),
-      "autor sem permissão de proposta",
-    );
+    const siteScope = parseContributionScope(context.siteScope);
     requireThat(
       b.created - now <= SITE_CONTRIBUTION_LIMITS.clockSkewMs &&
         b.expires > now &&
@@ -258,5 +276,5 @@ export function createSiteContributionProtocol(crypto: CertificateCrypto) {
     );
     return proposal;
   }
-  return { create, verify, schemaHash, verifyForForm };
+  return { create, verify, schemaHash, verifyForForm, authorizeContext };
 }

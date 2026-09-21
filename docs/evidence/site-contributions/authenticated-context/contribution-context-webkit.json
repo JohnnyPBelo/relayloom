@@ -1,0 +1,173 @@
+{
+  "config": {
+    "argv": [
+      "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+      "/home/absint0o/projects/relayloom/.cache/site-optional-resources/node_modules/playwright/cli.js",
+      "test",
+      "--config",
+      "tests/browser/matrix.config.ts",
+      "tests/browser/site-contribution-context.spec.ts",
+      "tests/browser/site-contribution.spec.ts",
+      "--output",
+      ".cache/contribution-context-webkit-artifacts"
+    ],
+    "configFile": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/matrix.config.ts",
+    "rootDir": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/contribution-context-webkit-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "*.spec.ts"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/browser-matrix/webkit/playwright.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "site-contribution-context.spec.ts",
+      "file": "site-contribution-context.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "form inspection uses authenticated browser state and invalidates delayed replies after block, withdrawal, expiry or lock",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3532,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-21T23:12:26.221Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d208b2ff6e904a4f74d7-8c4f2668f3769048c878",
+          "file": "site-contribution-context.spec.ts",
+          "line": 13,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "site-contribution.spec.ts",
+      "file": "site-contribution.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "browser visitor certificates interoperate with Node and Go while encrypted proposals and publication consent remain separate",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1263,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-21T23:12:30.047Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "contract-scope",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiUEFTUyIsCiAgImJyb3dzZXIiOiAid2Via2l0IiwKICAibm9kZUFuZEdvU2lnbmF0dXJlc1ZlcmlmaWVkIjogdHJ1ZSwKICAiZW5jcnlwdGVkUHJvcG9zYWwiOiB0cnVlLAogICJvd25lckFwcHJvdmFsSW1wbGVtZW50ZWQiOiBmYWxzZSwKICAic2NvcGUiOiAiQWN0dWFsIGJyb3dzZXIgY3J5cHRvIGFuZCBwdWJsaWMgY2VydGlmaWNhdGUgR28gZml4dHVyZTsgbm90IGFwcGxpY2F0aW9uIHJ1bnRpbWUsIGNvbnRyaWJ1dG9yIGluYm94LCBwZXJzaXN0ZW5jZS9yZXBsYXkgb3IgdXNlciBpbnRlcmZhY2UuIgp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "74a528995bbcde0caf16-84e9c52c0be36c06e18a",
+          "file": "site-contribution.spec.ts",
+          "line": 50,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-21T23:12:25.808Z",
+    "duration": 5591.883,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

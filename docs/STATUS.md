@@ -1,5 +1,13 @@
 # RelayLoom — estado verificável
 
+## Consulta de formulários integrada — 22 de Setembro de 2026
+
+Node, Go e browser/worker já resolvem um formulário a partir do snapshot assinado/cifrado real, verificando contribuidores, leitura, bloqueio, retirada, prazo e sessão. A consulta só devolve campos/metadados; não assina nem publica propostas. Não aceita contexto de autorização enviado pela UI.
+
+Passaram dez testes Node, Go sites/race, três testes Go app com race, builds, dois percursos reais Node↔Go por TCP e consultas/contextos/worker nos três browsers. Os controlos incluem snapshot privado presente sem chave, autor offline/seeder reiniciado, resposta atrasada depois de bloqueio/retirada/lock e nenhuma requisição de rede para consulta ausente. [Provas, comandos e falhas das primeiras fixtures](evidence/site-contributions/authenticated-context).
+
+**Ainda faltam journal/replay, submissão/transporte/inbox, aprovação/reconciliação/proveniência e UI completa de formulários.** A web pública não foi alterada. O CI35661349213 continua a testar0a85d7d, anterior a v4/contexto local; não confundir os âmbitos. Reserva de disco recuperada com remoção de cópias regeneráveis dentro do projecto, preservando WIP/AppImages; cerca de16GiB livres na última leitura.
+
 ## Fundação de formulários v4 — código local, ainda sem envio/revisão
 
 O novo documento liga formulários a tabelas locais tipadas, recusa destinos/esquemas inválidos e conserva referências ao duplicar páginas ou composições. As fronteiras Node/Go/browser exigem revisão assinada para v3 e posteriores. O caminho genérico de browser passou a recusar antes de assinar; a publicação autorizada pelo catálogo continua idempotente. O bloco permanece fora da paleta até existir o fluxo funcional.

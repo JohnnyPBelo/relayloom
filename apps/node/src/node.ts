@@ -1,3 +1,5 @@
+import { parseContributionFormLookup } from "../../../packages/sites/src/contribution-context";
+import { readContributionForm } from "./contribution-read";
 import { ResourceRuntime } from "./resource-runtime";
 import { NodeResourceCatalog } from "../../../packages/sites/src/resource-catalog";
 import { validateSiteEditingContext } from "../../../packages/sites/src/editing";
@@ -521,6 +523,24 @@ export class LoomNode extends EventEmitter {
       },
     });
     return this.resourceRuntime;
+  }
+  contributionCommand(command: unknown) {
+    const identity = this.requireIdentity(),
+      lookup = parseContributionFormLookup(command);
+    this.objects();
+    if (this.requireIdentity() !== identity)
+      throw Error("Sessão de formulário bloqueada");
+    return readContributionForm(lookup, {
+      identity,
+      store: this.store,
+      blocked: () => this.config.blocked,
+      withdrawn: (id, author) => {
+        const m = this.privateState.mutations[id];
+        return (
+          m?.author === author && m.deleted === true && m.expires > Date.now()
+        );
+      },
+    });
   }
   resourceCommand(command: unknown) {
     if (["inspect", "obtain"].includes((command as any)?.action))
@@ -1478,7 +1498,8 @@ export class LoomNode extends EventEmitter {
       );
     if (
       content.type === "site" &&
-      (Object.hasOwn(content, "siteRevision") || (content.site?.version ?? 0) >= 3)
+      (Object.hasOwn(content, "siteRevision") ||
+        (content.site?.version ?? 0) >= 3)
     )
       throw new Error("Use a publicação versionada de sites");
     if (hasGroupBinding(content))

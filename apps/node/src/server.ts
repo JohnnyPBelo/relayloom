@@ -120,6 +120,8 @@ export async function serve(
               return json(200, { ok: true });
             case "/api/site-draft-load":
               return json(200, node.loadDraft());
+            case "/api/contribution-command":
+              return json(200, node.contributionCommand(body));
             case "/api/resource-command":
               return json(200, node.resourceCommand(body));
             case "/api/site-command":

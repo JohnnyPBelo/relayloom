@@ -161,6 +161,37 @@ type ContributionFormContext struct {
 	SnapshotExpires int64
 }
 
+// AuthorizeContributionContext applies the same rules for inspection and signing.
+// The application must resolve this context from an authenticated local snapshot.
+func AuthorizeContributionContext(context ContributionFormContext, contributor string, now int64) error {
+	if !core.ValidAddress(contributor) || now < 0 || now > MaxSequence || context.SnapshotExpires <= now || context.SnapshotExpires > MaxSequence {
+		return contributionError()
+	}
+	target, err := contributionTarget(context.Target)
+	if err != nil {
+		return err
+	}
+	form, _, err := BindSiteForm(context.Form, context.Table)
+	if err != nil {
+		return err
+	}
+	public, readers, err := resourceScope(context.SiteScope)
+	if err != nil {
+		return err
+	}
+	owner, _, _ := ParseAddress(target["site"].(string))
+	if !public && (!docContains(readers, owner) || !docContains(readers, contributor)) {
+		return contributionError()
+	}
+	if form["contributors"] != "readers" {
+		_, allowed, err := resourceScope(form["contributors"])
+		if err != nil || !docContains(allowed, contributor) {
+			return contributionError()
+		}
+	}
+	return nil
+}
+
 func VerifyContributionForForm(value any, context ContributionFormContext, now int64) (map[string]any, error) {
 	cert, err := VerifyContribution(value)
 	if err != nil {
@@ -190,20 +221,9 @@ func VerifyContributionForForm(value any, context ContributionFormContext, now i
 	if _, err = MatchContributionValues(form, table, b["values"]); err != nil {
 		return nil, err
 	}
-	public, readers, err := resourceScope(context.SiteScope)
-	if err != nil {
-		return nil, err
-	}
 	author := b["contributor"].(map[string]any)["id"].(string)
-	owner, _, _ := ParseAddress(expected["site"].(string))
-	if !public && (!docContains(readers, owner) || !docContains(readers, author)) {
-		return nil, contributionError()
-	}
-	if form["contributors"] != "readers" {
-		_, allowed, err := resourceScope(form["contributors"])
-		if err != nil || !docContains(allowed, author) {
-			return nil, contributionError()
-		}
+	if err = AuthorizeContributionContext(context, author, now); err != nil {
+		return nil, err
 	}
 	created, _ := docNumber(b["created"])
 	expires, _ := docNumber(b["expires"])

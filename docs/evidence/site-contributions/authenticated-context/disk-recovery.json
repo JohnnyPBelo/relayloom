@@ -1,0 +1,106 @@
+{
+  "at": "2026-09-21T22:58:02.882014+00:00",
+  "scope": "Remove only ignored, unused linux-unpacked copies from eight old RelayLoom worktrees. Preserve each AppImage, all source/WIP/docs/evidence/profiles and the active worktree package. No process was stopped.",
+  "status": "DONE",
+  "beforeFreeBytes": 14422913024,
+  "afterFreeBytes": 16996786176,
+  "removedBytes": 2572334785,
+  "retained": [
+    {
+      "worktree": "/home/absint0o/projects/relayloom/.cache/u",
+      "removed": "/home/absint0o/projects/relayloom/.cache/u/dist/desktop-installers/linux-unpacked",
+      "retainedAppImage": "/home/absint0o/projects/relayloom/.cache/u/dist/desktop-installers/RelayLoom-0.1.0-linux-x86_64.AppImage",
+      "retainedAppImageBytes": 127122218,
+      "retainedAppImageHash": "dcd516a884ca5ce3296f3d48ba13dc6e9d098054af536cc617574c15aeb7a415",
+      "statusBefore": "b039b593c4e2a22701d0070ce804911ee4135be61807a38e6023efeb09ef8880",
+      "statusAfter": "b039b593c4e2a22701d0070ce804911ee4135be61807a38e6023efeb09ef8880",
+      "diffBefore": "21a33d56f863c17b7501de9c7c4ac33cf99bb574cb3133a5d9b5114eacafdfa6",
+      "diffAfter": "21a33d56f863c17b7501de9c7c4ac33cf99bb574cb3133a5d9b5114eacafdfa6",
+      "lsofExit": 1
+    },
+    {
+      "worktree": "/home/absint0o/projects/relayloom/.cache/p",
+      "removed": "/home/absint0o/projects/relayloom/.cache/p/dist/desktop-installers/linux-unpacked",
+      "retainedAppImage": "/home/absint0o/projects/relayloom/.cache/p/dist/desktop-installers/RelayLoom-0.1.0-linux-x86_64.AppImage",
+      "retainedAppImageBytes": 127122222,
+      "retainedAppImageHash": "211a93e5949831eb61c0c800474c28c41341930da889c931f5843537fa46e460",
+      "statusBefore": "1acde4c47ef54ed11ff04708ee216902979ef168888b036ec911b443b0b9337a",
+      "statusAfter": "1acde4c47ef54ed11ff04708ee216902979ef168888b036ec911b443b0b9337a",
+      "diffBefore": "0d8815135a8c4a24ccf5c263f6f322dd7f2cb04b74b26f044d2445c2bbd8e735",
+      "diffAfter": "0d8815135a8c4a24ccf5c263f6f322dd7f2cb04b74b26f044d2445c2bbd8e735",
+      "lsofExit": 1
+    },
+    {
+      "worktree": "/home/absint0o/projects/relayloom/.cache/w",
+      "removed": "/home/absint0o/projects/relayloom/.cache/w/dist/desktop-installers/linux-unpacked",
+      "retainedAppImage": "/home/absint0o/projects/relayloom/.cache/w/dist/desktop-installers/RelayLoom-0.1.0-linux-x86_64.AppImage",
+      "retainedAppImageBytes": 127155132,
+      "retainedAppImageHash": "37f115b071d6c92c0786991e94c0eab459c1d042bd61ab17e1e557f37424652f",
+      "statusBefore": "d20f9d4b7fe3cba163bfe6929e4ce92a2265eaf5e003306c2d1f797ccc451d2b",
+      "statusAfter": "d20f9d4b7fe3cba163bfe6929e4ce92a2265eaf5e003306c2d1f797ccc451d2b",
+      "diffBefore": "4b0a5603a5090f6fb9a057cbc3743c50206de1b2a453f1ee4880f4a3d8c73ce6",
+      "diffAfter": "4b0a5603a5090f6fb9a057cbc3743c50206de1b2a453f1ee4880f4a3d8c73ce6",
+      "lsofExit": 1
+    },
+    {
+      "worktree": "/home/absint0o/projects/relayloom/.cache/br",
+      "removed": "/home/absint0o/projects/relayloom/.cache/br/dist/desktop-installers/linux-unpacked",
+      "retainedAppImage": "/home/absint0o/projects/relayloom/.cache/br/dist/desktop-installers/RelayLoom-0.1.0-linux-x86_64.AppImage",
+      "retainedAppImageBytes": 127351857,
+      "retainedAppImageHash": "192cb626d6a52ea56534944a00573c5060edc22f0fdfa2e6241813940e6f6771",
+      "statusBefore": "6a711ca58230a8ad9aafabb444d97db196a2c79fae3d40d1cb651d4b35a5ed9b",
+      "statusAfter": "6a711ca58230a8ad9aafabb444d97db196a2c79fae3d40d1cb651d4b35a5ed9b",
+      "diffBefore": "da18d0c9ce3f7d40ec4fb239ae5fba4bfd13c7ed527b4da20744c92bafb5c932",
+      "diffAfter": "da18d0c9ce3f7d40ec4fb239ae5fba4bfd13c7ed527b4da20744c92bafb5c932",
+      "lsofExit": 1
+    },
+    {
+      "worktree": "/home/absint0o/projects/relayloom/.cache/rn",
+      "removed": "/home/absint0o/projects/relayloom/.cache/rn/dist/desktop-installers/linux-unpacked",
+      "retainedAppImage": "/home/absint0o/projects/relayloom/.cache/rn/dist/desktop-installers/RelayLoom-0.1.0-linux-x86_64.AppImage",
+      "retainedAppImageBytes": 127159202,
+      "retainedAppImageHash": "8e12597d2de568f8089119fcb9ee7c377c04c6044c3f3777099b1f95e83194a1",
+      "statusBefore": "bf722fe61cc132aadc2935486a330cafad3268243951cb7a1b19a36a3ce79eb1",
+      "statusAfter": "bf722fe61cc132aadc2935486a330cafad3268243951cb7a1b19a36a3ce79eb1",
+      "diffBefore": "effd5d66428a2eb9cda82778fb0903f93e6e35556b1d92c9c61294dff1236649",
+      "diffAfter": "effd5d66428a2eb9cda82778fb0903f93e6e35556b1d92c9c61294dff1236649",
+      "lsofExit": 1
+    },
+    {
+      "worktree": "/home/absint0o/projects/relayloom/.cache/gc",
+      "removed": "/home/absint0o/projects/relayloom/.cache/gc/dist/desktop-installers/linux-unpacked",
+      "retainedAppImage": "/home/absint0o/projects/relayloom/.cache/gc/dist/desktop-installers/RelayLoom-0.1.0-linux-x86_64.AppImage",
+      "retainedAppImageBytes": 127737080,
+      "retainedAppImageHash": "320a3cfe7a6a6d6ba1dc62f0221f03ff79a7fce18fdce99ace668562c3fbeee8",
+      "statusBefore": "76d4e51566df3f811a02524abfff49a9ff4037ef6f9a617bfe029fb3189ab0e3",
+      "statusAfter": "76d4e51566df3f811a02524abfff49a9ff4037ef6f9a617bfe029fb3189ab0e3",
+      "diffBefore": "7eaf4f0d0416f1bf09f0d986925c46bffea0b069e23b9e3dffa1b1d0d7e89f2e",
+      "diffAfter": "7eaf4f0d0416f1bf09f0d986925c46bffea0b069e23b9e3dffa1b1d0d7e89f2e",
+      "lsofExit": 1
+    },
+    {
+      "worktree": "/home/absint0o/projects/relayloom/.cache/wr",
+      "removed": "/home/absint0o/projects/relayloom/.cache/wr/dist/desktop-installers/linux-unpacked",
+      "retainedAppImage": "/home/absint0o/projects/relayloom/.cache/wr/dist/desktop-installers/RelayLoom-0.1.0-linux-x86_64.AppImage",
+      "retainedAppImageBytes": 127351880,
+      "retainedAppImageHash": "038afc94e5fdafd39c349ab775a030fd98bd4c3c21fb3bf215eac1e1eede4cef",
+      "statusBefore": "f6ac8213d021dab6ad4c0c04613fdc75323dab57a99aafe3c4e5c814b74dce35",
+      "statusAfter": "f6ac8213d021dab6ad4c0c04613fdc75323dab57a99aafe3c4e5c814b74dce35",
+      "diffBefore": "37a9d9c0c5410816c6e5b4e966fd30f99232d7e4cc82bf4e61a2755b7bfee771",
+      "diffAfter": "37a9d9c0c5410816c6e5b4e966fd30f99232d7e4cc82bf4e61a2755b7bfee771",
+      "lsofExit": 1
+    },
+    {
+      "worktree": "/home/absint0o/projects/relayloom/.cache/bm",
+      "removed": "/home/absint0o/projects/relayloom/.cache/bm/dist/desktop-installers/linux-unpacked",
+      "retainedAppImage": "/home/absint0o/projects/relayloom/.cache/bm/dist/desktop-installers/RelayLoom-0.1.0-linux-x86_64.AppImage",
+      "retainedAppImageBytes": 127761676,
+      "retainedAppImageHash": "c63567ef5864cc964dab8eeb5efe722e31c4b0cebad628b070539f95b89bca15",
+      "statusBefore": "f067e23a5a7cb169161a72120dd6b34170093c1f068ced8f984112229945dba7",
+      "statusAfter": "f067e23a5a7cb169161a72120dd6b34170093c1f068ced8f984112229945dba7",
+      "diffBefore": "9ad8e925d480279d0391dfcb297e34ca703b445a8e9bc02b5748c0c4733a2de5",
+      "diffAfter": "9ad8e925d480279d0391dfcb297e34ca703b445a8e9bc02b5748c0c4733a2de5",
+      "lsofExit": 1
+    }
+  ]
+}

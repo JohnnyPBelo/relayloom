@@ -1313,6 +1313,8 @@ func (n *Node) Handle(operation string, body map[string]any) (any, error) {
 		return map[string]any{"vault": vault}, err
 	case "group-command":
 		return n.groupCommandLocked(body)
+	case "contribution-command":
+		return n.contributionFormLocked(body)
 	case "resource-command":
 		r, err := n.resourcesLocked()
 		if err != nil {

@@ -1,0 +1,173 @@
+{
+  "config": {
+    "argv": [
+      "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+      "/home/absint0o/projects/relayloom/.cache/site-optional-resources/node_modules/playwright/cli.js",
+      "test",
+      "--config",
+      "tests/browser/matrix.config.ts",
+      "tests/browser/site-contribution-context.spec.ts",
+      "tests/browser/site-contribution.spec.ts",
+      "--output",
+      ".cache/contribution-context-firefox-artifacts"
+    ],
+    "configFile": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/matrix.config.ts",
+    "rootDir": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/contribution-context-firefox-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "*.spec.ts"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/browser-matrix/firefox/playwright.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "site-contribution-context.spec.ts",
+      "file": "site-contribution-context.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "form inspection uses authenticated browser state and invalidates delayed replies after block, withdrawal, expiry or lock",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5258,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-21T23:10:01.442Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d208b2ff6e904a4f74d7-8337a5e15ef022324f91",
+          "file": "site-contribution-context.spec.ts",
+          "line": 13,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "site-contribution.spec.ts",
+      "file": "site-contribution.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "browser visitor certificates interoperate with Node and Go while encrypted proposals and publication consent remain separate",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1304,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-21T23:10:07.526Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "contract-scope",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiUEFTUyIsCiAgImJyb3dzZXIiOiAiZmlyZWZveCIsCiAgIm5vZGVBbmRHb1NpZ25hdHVyZXNWZXJpZmllZCI6IHRydWUsCiAgImVuY3J5cHRlZFByb3Bvc2FsIjogdHJ1ZSwKICAib3duZXJBcHByb3ZhbEltcGxlbWVudGVkIjogZmFsc2UsCiAgInNjb3BlIjogIkFjdHVhbCBicm93c2VyIGNyeXB0byBhbmQgcHVibGljIGNlcnRpZmljYXRlIEdvIGZpeHR1cmU7IG5vdCBhcHBsaWNhdGlvbiBydW50aW1lLCBjb250cmlidXRvciBpbmJveCwgcGVyc2lzdGVuY2UvcmVwbGF5IG9yIHVzZXIgaW50ZXJmYWNlLiIKfQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "74a528995bbcde0caf16-04edb2bc4b5b0763372c",
+          "file": "site-contribution.spec.ts",
+          "line": 50,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-21T23:10:00.945Z",
+    "duration": 8300.393,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

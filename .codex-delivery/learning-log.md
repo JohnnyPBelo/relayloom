@@ -665,3 +665,10 @@ Os commits de protocolo, desempenho e relay foram separados sem mudar os bytes d
 Adicionar uma versão ao parser exige procurar todas as comparações exactas de versão nas fronteiras de assinatura/admissão. Um guard de BrowserApplication.prepare ainda cobria só v3: v4 era assinado e recusado mais tarde, sem publicação. O controlo demonstrou a diferença 1→0 assinaturas ao antecipar a recusa. Não chamar a assinatura desnecessária uma publicação bem-sucedida nem confundir erros iniciais de fixture (campo owner e fase ready) com defeitos do runtime. Os controlos e as falhas de typecheck de vectores deliberadamente malformados foram preservados.
 
 Duplicar um documento com referências exige mapear primeiro todos os IDs novos e só depois copiar nós/referências; isso resolve destinos declarados depois do formulário e mantém referências externas intactas. A UI v1-v3 de duplicação passou nos três browsers. Formulários ainda sem fluxo completo ficam fora da paleta; aceitar o esquema não implica afirmar envio/aprovação implementados.
+
+
+## Consulta de autoridade e reserva de disco — 22 de Setembro
+
+Bloqueio e retirada lidos separadamente no browser podem pertencer a revisões privadas distintas. A nova consulta de formulário lê ambos na mesma transactValues e verifica geração/prazo depois do await; não reentrar nas funções do perfil dentro dessa transacção. A resposta é metadado, não uma capacidade entregue à UI para futuras assinaturas.
+
+Espaço livre caiu de18para14GiB sem um download nosso que o explicasse; não atribuir a causa sem prova. A CLI recusou o arranque como deve. Remover apenas cópias descompactadas ignored de oito pacotes antigos, após lsof, conservando AppImage/hash e WIP/diff, recuperou2,4GiB. O teste seguinte revelou um erro da fixture: settings não é a API de bloqueio. Usar action/block e assertar o estado antes do oráculo. Nunca interpretar ausência de rejeição como defeito do runtime sem confirmar que a precondição foi realmente aplicada.
