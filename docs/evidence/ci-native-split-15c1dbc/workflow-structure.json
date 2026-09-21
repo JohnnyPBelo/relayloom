@@ -1,0 +1,17 @@
+{
+  "status": "PASS_STATIC",
+  "retainedCommands": [
+    "npm run test:native",
+    "npm run test:native:cgo-storage",
+    "npm run test:interop"
+  ],
+  "sequence": [
+    "native-node",
+    "native-go",
+    "native-interop",
+    "native-ui"
+  ],
+  "perJobMinutes": 25,
+  "permissionsAndConcurrencyUnchanged": true,
+  "scope": "Workflow structure only; execution still requires CI."
+}

@@ -50,8 +50,8 @@ jobs:
   native-go:
     needs: native-node
     runs-on: ubuntu-latest
-    # Domain/race/interop retain their existing bounds. Run35150603062 passed
-    # these checks, then reached25m during UI; the UI now runs in a dependent job.
+    # Keep the full race and C storage gates. Run35413693543 passed these,
+    # then hit the cumulative 25m job limit during interoperability.
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
@@ -68,6 +68,24 @@ jobs:
       - run: npm run test:native
       - name: C SQLite storage contract on the host (not Android execution)
         run: npm run test:native:cgo-storage
+
+  native-interop:
+    needs: native-go
+    runs-on: ubuntu-latest
+    # Sequential, separately bounded: no test/race deadline or coverage removed.
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.26.8"
+          cache: false
+      - run: npm ci --ignore-scripts
+      - run: npm run build
+      - run: npm run native:build
       - run: npm run test:interop
       - uses: actions/upload-artifact@v4
         if: always()
@@ -81,7 +99,7 @@ jobs:
           retention-days: 7
 
   native-ui:
-    needs: native-go
+    needs: native-interop
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
