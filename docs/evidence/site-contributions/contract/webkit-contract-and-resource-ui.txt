@@ -1,0 +1,21 @@
+
+Running 14 tests using 1 worker
+
+(node:265751) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [webkit] › tests/browser/site-contribution.spec.ts:50:1 › browser visitor certificates interoperate with Node and Go while encrypted proposals and publication consent remain separate (1.4s)
+  ✓   2 [webkit] › tests/browser/site-resource-api.spec.ts:12:1 › browser application creates resources once, keeps copy failures recoverable and checks blocking in the actual copy transaction (7.5s)
+  ✓   3 [webkit] › tests/browser/site-resource-api.spec.ts:204:1 › browser application leaves a failed read-back pending and recovers its exact signature after reopening (638ms)
+  ✓   4 [webkit] › tests/browser/site-resource-api.spec.ts:281:1 › expired browser resource intent keeps its result and requires a new explicit creation (5.0s)
+  ✓   5 [webkit] › tests/browser/site-resource-budget.spec.ts:160:1 › the maximum valid page inspects every resource without exhausting the browser command budget (11.1s)
+  ✓   6 [webkit] › tests/browser/site-resource-parallel.spec.ts:11:1 › read-only resource checks can progress together while every reply still checks blocking and session ownership (1.2s)
+  ✓   7 [webkit] › tests/browser/site-resource-reference.spec.ts:12:1 › browser signed-page resource API separates inspection from obtaining bytes and preserves third-party authorship (1.7s)
+  ✓   8 [webkit] › tests/browser/site-resource-reference.spec.ts:341:1 › browser resource inspection rejects corrupted IndexedDB bytes and never returns an expired file (8.5s)
+  ✓   9 [webkit] › tests/browser/site-resource-review.spec.ts:160:1 › resource polling keeps the obtain action busy until its own real Worker reply arrives (13.7s)
+  ✓  10 [webkit] › tests/browser/site-resource-review.spec.ts:275:1 › signed resource reader follows all site palettes independently of the application theme (29.9s)
+  ✓  11 [webkit] › tests/browser/site-resource-review.spec.ts:490:1 › switching resource previews never associates a new filename or MIME with the previous file URL (4.2s)
+  ✓  12 [webkit] › tests/browser/site-resource-review.spec.ts:609:1 › late site inventory preserves an already verified reader and focus; failed refresh clears the old view (34.8s)
+  ✓  13 [webkit] › tests/browser/site-resources-ui.spec.ts:12:1 › resource library builds a private table through the UI and prevents accidental public publication (8.2s)
+  ✓  14 [webkit] › tests/browser/site-resources-ui.spec.ts:272:1 › three accounts create, publish and retrieve optional files entirely through the UI; a restarted reader seeds after the author closes (25.9s)
+
+  14 passed (2.6m)

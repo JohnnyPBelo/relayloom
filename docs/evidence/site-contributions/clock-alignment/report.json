@@ -1,0 +1,59 @@
+{
+  "status": "PASS_SCOPED_CONTRACT",
+  "vectors": {
+    "status": "PASS",
+    "vectors": 48,
+    "accepted": 11,
+    "rejected": 37,
+    "nodePortableGoAgree": true,
+    "goSignatureVerifiedByBothAdapters": true,
+    "scope": "Proposal/schema contract and actual crypto only. Not runtime admission, replay persistence, owner approval, transport or UI integration."
+  },
+  "nodeTests": 8,
+  "sources": {
+    "packages/content/src/site-form.ts": "332e457f0f6367ac444d1eef079ccd38815b50c8af739f4c02a278c59e2a3f26",
+    "packages/sites/src/contribution-protocol.ts": "bd1b5aa0c4f42210c2aca9ac641ef7c00958ae10e8a6ba1fc1facaaa864edd6e",
+    "native/sites/form.go": "e6026cbf5ce38f8657e7a643534edb76c726a1a72f6500eeb7ce1b8722f50583",
+    "native/sites/contribution.go": "fa4f30b36ba3ab2e0250d5d5560f8ca1c3509aab395fcdf46dd418f52bbee6cc",
+    "native/sites/contribution_test.go": "4a419baa8f4085186d6de7806cb297f797fb93265c45a947ce477750fceb3c67",
+    "tests/site-contribution.test.ts": "6049fa628dbf679bfe6af53a23cfb7ca7256a5170400752ccc4a13b8fd37f5db",
+    "tests/site-contribution-interop.test.ts": "c28d80c461f43c634a65d4a5d8463663ca44e95a8eeeb77494b37053990caeee",
+    "tests/browser/site-contribution.spec.ts": "f1014b6e23b167b6fce85678c7fbae795086eb5988f8d352bdd015ac24178708"
+  },
+  "browsers": {
+    "chromium": {
+      "stats": {
+        "startTime": "2026-09-21T18:16:10.938Z",
+        "duration": 21057.967,
+        "expected": 12,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "scope": "12 directed routing/relay/contribution cases; one is the contribution crypto interoperability test."
+    },
+    "firefox": {
+      "stats": {
+        "startTime": "2026-09-21T18:22:09.220Z",
+        "duration": 35006.572,
+        "expected": 12,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "scope": "12 directed routing/relay/contribution cases; one is the contribution crypto interoperability test."
+    },
+    "webkit": {
+      "stats": {
+        "startTime": "2026-09-21T21:52:33.901Z",
+        "duration": 30532.484,
+        "expected": 12,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "scope": "12 directed routing/relay/contribution cases; one is the contribution crypto interoperability test."
+    }
+  },
+  "scope": "Standalone certificates/schema/crypto only. No document v4, private journal, inbox, runtime/API, owner approval or contribution UI. Initial 46-vector evidence is preserved separately."
+}

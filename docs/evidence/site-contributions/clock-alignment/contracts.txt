@@ -1,0 +1,58 @@
+TAP version 13
+# Subtest: Node, portable crypto and Go agree on visitor proposals, schemas and negative authorization vectors
+ok 1 - Node, portable crypto and Go agree on visitor proposals, schemas and negative authorization vectors
+  ---
+  duration_ms: 1324.181867
+  type: 'test'
+  ...
+# Subtest: declarative form binds all typed columns, preserves zero/false and never executes values
+ok 2 - declarative form binds all typed columns, preserves zero/false and never executes values
+  ---
+  duration_ms: 5.646068
+  type: 'test'
+  ...
+# Subtest: form and value parsing reject active accessors, sparse lists, unknown fields and oversized inputs
+ok 3 - form and value parsing reject active accessors, sparse lists, unknown fields and oversized inputs
+  ---
+  duration_ms: 0.68263
+  type: 'test'
+  ...
+# Subtest: Node visitor signatures verify across adapters but cannot become owner revisions
+ok 4 - Node visitor signatures verify across adapters but cannot become owner revisions
+  ---
+  duration_ms: 62.620812
+  type: 'test'
+  ...
+# Subtest: portable visitor signatures verify across adapters but cannot become owner revisions
+ok 5 - portable visitor signatures verify across adapters but cannot become owner revisions
+  ---
+  duration_ms: 47.432072
+  type: 'test'
+  ...
+# Subtest: site/form/schema/base and the visitor's maximum publication audience are bound independently
+ok 6 - site/form/schema/base and the visitor's maximum publication audience are bound independently
+  ---
+  duration_ms: 11.221031
+  type: 'test'
+  ...
+# Subtest: expiry and clock checks apply to admission, while historical signatures stay verifiable
+ok 7 - expiry and clock checks apply to admission, while historical signatures stay verifiable
+  ---
+  duration_ms: 19.012782
+  type: 'test'
+  ...
+# Subtest: private submission remains encrypted even when the visitor consents to later public adoption
+ok 8 - private submission remains encrypted even when the visitor consents to later public adoption
+  ---
+  duration_ms: 12.674516
+  type: 'test'
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 8
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1947.667857

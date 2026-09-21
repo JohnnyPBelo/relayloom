@@ -1,6 +1,6 @@
 # Próximos incrementos do site — desenho, não implementação
 
-Este documento preserva o objectivo expressivo inspirado no ZeroNet depois das tabelas assinadas. Não descreve funcionalidades entregues nem altera o contrato do proprietário. As tabelas v2 já estão publicadas. Os recursos opcionais v3 estão implementados e em validação na branch própria; ver `SITE-OPTIONAL-RESOURCES.md`. As secções de contribuições e composição avançada abaixo continuam a ser desenho, não implementação.
+Este documento preserva o objectivo expressivo inspirado no ZeroNet depois das tabelas assinadas. Não descreve funcionalidades entregues nem altera o contrato do proprietário. As tabelas v2 já estão publicadas. Os recursos opcionais v3 estão implementados e publicados; ver `SITE-OPTIONAL-RESOURCES.md`. O contrato criptográfico de contribuições começou a ser implementado e testado em SITE-CONTRIBUTIONS-IMPLEMENTATION.md; a integração de aprovação, persistência, transporte e UI continua pendente. As secções abaixo descrevem o destino completo, não funcionalidades já entregues.
 
 ## 1. Dados e ficheiros opcionais
 
