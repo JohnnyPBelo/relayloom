@@ -1,0 +1,7 @@
+ios-simulator-build	Execute native iOS UI and real Node peer on one installed simulator	﻿2026-09-21T23:11:52.4553680Z ##[group]Run node scripts/ios-simulator.mjs --runtime=26.4.1
+ios-simulator-build	Execute native iOS UI and real Node peer on one installed simulator	2026-09-21T23:11:52.4554140Z [36;1mnode scripts/ios-simulator.mjs --runtime=26.4.1[0m
+ios-simulator-build	Execute native iOS UI and real Node peer on one installed simulator	2026-09-21T23:11:52.5623870Z shell: /bin/bash -e {0}
+ios-simulator-build	Execute native iOS UI and real Node peer on one installed simulator	2026-09-21T23:11:52.5624090Z ##[endgroup]
+ios-simulator-build	Execute native iOS UI and real Node peer on one installed simulator	2026-09-21T23:19:13.3039470Z iOS simulator gate failed: Owned command timed out: seed-synthetic-photo
+ios-simulator-build	Execute native iOS UI and real Node peer on one installed simulator	2026-09-21T23:19:13.3043220Z {"kind":"IOS_REAL_SIMULATOR_GATE","status":"FAILED","simulatorExecuted":false,"physicalDeviceExecuted":false,"evidence":".cache/ios/simulator/evidence/376aaed8-a85f-4eb4-82fa-02a4edf6c8be","cleanup":{"udid":"0ADA9C93-F8BC-4AA5-863B-6E3BA02A96F8","deleted":true,"onlyCreatedDeviceTouched":true}}
+ios-simulator-build	Execute native iOS UI and real Node peer on one installed simulator	2026-09-21T23:19:13.3524520Z ##[error]Process completed with exit code 1.

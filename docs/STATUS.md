@@ -1,12 +1,20 @@
 # RelayLoom — estado verificável
 
+## CI do marco0a85d7d concluído — 22 de Setembro
+
+**CI35661349213 terminou FAILURE apenas em iOS.** Passaram Node Windows/macOS/Linux, Go/race, interoperabilidade, UI nativa, referência Reticulum, os três pacotes desktop e **107 testes de browser**. A página extensa passou em10,144s, confirmando a correcção de desempenho naquela fonte sem alterar o prazo.
+
+Em iOS, build/install/startup XCTest passaram; a preparação da fotografia expirou após60,433s e o percurso funcional não arrancou. Os21ficheiros dos manifestos de execução/cleanup foram conferidos. Isso não prova mensagem/fotografia entregue nem estabelece a causa do bloqueio. [Resultados e artefactos](evidence/ci-0a85d7d).
+
+As fontes v4/contexto/journal locais posteriores a0a85d7d não pertencem a esseCI. O HTML público permanece7fdb76a/0fdbd1b9, sem actualização neste incremento. A preparação privada descrita nos documentos de implementação ainda não é uma UI de envio/aprovação.
+
 ## Consulta de formulários integrada — 22 de Setembro de 2026
 
 Node, Go e browser/worker já resolvem um formulário a partir do snapshot assinado/cifrado real, verificando contribuidores, leitura, bloqueio, retirada, prazo e sessão. A consulta só devolve campos/metadados; não assina nem publica propostas. Não aceita contexto de autorização enviado pela UI.
 
 Passaram dez testes Node, Go sites/race, três testes Go app com race, builds, dois percursos reais Node↔Go por TCP e consultas/contextos/worker nos três browsers. Os controlos incluem snapshot privado presente sem chave, autor offline/seeder reiniciado, resposta atrasada depois de bloqueio/retirada/lock e nenhuma requisição de rede para consulta ausente. [Provas, comandos e falhas das primeiras fixtures](evidence/site-contributions/authenticated-context).
 
-**Ainda faltam journal/replay, submissão/transporte/inbox, aprovação/reconciliação/proveniência e UI completa de formulários.** A web pública não foi alterada. O CI35661349213 continua a testar0a85d7d, anterior a v4/contexto local; não confundir os âmbitos. Reserva de disco recuperada com remoção de cópias regeneráveis dentro do projecto, preservando WIP/AppImages; cerca de16GiB livres na última leitura.
+**Ainda faltam journal/replay, submissão/transporte/inbox, aprovação/reconciliação/proveniência e UI completa de formulários.** A web pública não foi alterada. O CI35661349213 testou0a85d7d, anterior a v4/contexto local; o resultado final está acima, sem confundir os âmbitos. Reserva de disco recuperada com remoção de cópias regeneráveis dentro do projecto, preservando WIP/AppImages; cerca de16GiB livres na última leitura.
 
 ## Fundação de formulários v4 — código local, ainda sem envio/revisão
 
@@ -14,7 +22,7 @@ O novo documento liga formulários a tabelas locais tipadas, recusa destinos/esq
 
 Passaram **79 testes Node**, **24 vectores TS/Go**, typecheck, Go sites/race, três testes de admissão/compatibilidade Go app com race, build e **dois casos por browser** (catálogo cifrado real e UI existente de duplicação). [Comandos, fontes e controlos](evidence/site-contributions/document-v4). Ainda faltam journal/replay, contexto autenticado na API, envio/inbox, aprovação/reconciliação/proveniência e UI de contribuições; não há alegação de paridade ou produto concluído.
 
-O CI **35661349213** está em curso para **0a85d7d**, com as correcções da secção seguinte, e não inclui a fundação v4 local. A publicação pública continua **7fdb76a/0fdbd1b9**. Nenhum teste físico ou revisão independente foi acrescentado.
+O CI **35661349213** testou **0a85d7d**, com as correcções da secção seguinte, e não incluiu a fundação v4 local; o resultado final está registado no início deste documento. A publicação pública continua **7fdb76a/0fdbd1b9**. Nenhum teste físico ou revisão independente foi acrescentado.
 
 ## Correcções locais verificadas — 21 de Setembro de 2026
 
