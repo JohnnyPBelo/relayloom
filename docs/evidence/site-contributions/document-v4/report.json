@@ -1,0 +1,156 @@
+{
+  "status": "PASS_SCOPED_DOCUMENT_FOUNDATION",
+  "started": "2026-09-21T22:18:31.500930+00:00",
+  "base": "0a85d7d945acb48464a25a431f39ce82c35db0c3",
+  "scope": "Document v4/form schema binding, copying and early signed-site admission only. No submission/inbox/owner approval UI yet. Public deployment unchanged.",
+  "sources": {
+    "apps/node/src/node.ts": "ab8c5ff48921a893492833dc1da39393413cdd3c0473cfe231902b7579eab76d",
+    "apps/node/src/site-runtime.ts": "cd3ac6f4721619a2c0e86b60502bc5c3f68a819f03c76917c7b5b43dc00faf9b",
+    "apps/web/src/site/model.ts": "b77e11a67595290f6efd8c4ffe74fe1197266f80bae709c2a85ec340ba0bec28",
+    "apps/web/src/site/studio.tsx": "34a238174b808a57a6503d9b7f7c9b19659a930ce94679cbe17bc2d4d1774a63",
+    "native/app/node.go": "f7dcadc921a1bab55084fabe870acc97a4333be76fcffb483322a70234e05662",
+    "native/app/site_form_admission_test.go": "4565e0f473420c503c5180ed5bb066a9398cc93200a9ac47769395ca37299cfe",
+    "native/app/site_runtime.go": "52d31892dd1127be6c3a3f9ebcd9c2fdbce4fd92a5c1dee95b5654c05994b8f1",
+    "native/sites/document.go": "ca99d7b519dfcedb83ed6a03b2fa36ff6319bcf7ec7135a1b9e606d4a0219d28",
+    "packages/browser/src/application.ts": "e13b98338ed3893f3bbaa0fbff70b54d322b3b314cba8f0e9b9123789a3a21a3",
+    "packages/browser/src/site-content.ts": "b1b8bd588f8cdd2e6a1434314e1ecbf7a94609f5c965be037ce456661d37986d",
+    "packages/content/src/site.ts": "d97ac58081f8591721baf7d7a6feeaa8961f0fe11a944ae3a49679dc331089e7",
+    "tests/browser/site-form-document.spec.ts": "f31a93c219e5657153b7c97ee7f5f6af42522ea2015f9e784a7172a92c2ee062",
+    "tests/fixtures/site-documents.json": "0aced650573db9584b09c7c0129e1cc765be36d4f71ef0aec84c2b0586eae43c",
+    "tests/site-form-document.test.ts": "7094034ebe7b0c9352633bf8f6f3935f00dc940f4ce9d4718972d201cc9531d1",
+    "tests/site-resource-document.test.ts": "5c4b56d64bec340b5e9647b0779d480538aca5f80ad867cc0a847b518d69b4d5"
+  },
+  "commands": [
+    "node node_modules/typescript/bin/tsc --noEmit",
+    "node --import tsx --test --test-concurrency=1 tests/site-form-document.test.ts tests/site-resource-document.test.ts tests/site-document.test.ts tests/site-content.test.ts tests/site-pages.test.ts tests/site-editing.test.ts",
+    "node scripts/go.mjs test -race -p=1 ./sites -count=1",
+    "node scripts/go.mjs test -race -p=1 ./app -run '^Test(Version4RequiresOwnerSnapshot|SiteDocumentSharedVectors|VersionedSiteFallbackUsesSharedNodeSemantics)$' -count=1"
+  ],
+  "finished": "2026-09-21T22:21:37.350900+00:00",
+  "nodeTests": 79,
+  "go": [
+    "sites full race suite",
+    "app race: TestVersion4RequiresOwnerSnapshot, TestSiteDocumentSharedVectors, TestVersionedSiteFallbackUsesSharedNodeSemantics"
+  ],
+  "vectors": {
+    "status": "PASS",
+    "vectors": 24,
+    "accepted": 8,
+    "rejected": 16,
+    "scope": "Document v4 shape and local schema binding only, not contribution submission or approval."
+  },
+  "browserGate": {
+    "status": "PASS",
+    "started": "2026-09-21T22:18:31.500930+00:00",
+    "base": "0a85d7d945acb48464a25a431f39ce82c35db0c3",
+    "scope": "Document v4/form schema binding, copying and early signed-site admission only. No submission/inbox/owner approval UI yet. Public deployment unchanged. Real browser catalogue tests and regression of the existing UI page-copy journey, not a forms submission UI.",
+    "sources": {
+      "apps/node/src/node.ts": "ab8c5ff48921a893492833dc1da39393413cdd3c0473cfe231902b7579eab76d",
+      "apps/node/src/site-runtime.ts": "cd3ac6f4721619a2c0e86b60502bc5c3f68a819f03c76917c7b5b43dc00faf9b",
+      "apps/web/src/site/model.ts": "b77e11a67595290f6efd8c4ffe74fe1197266f80bae709c2a85ec340ba0bec28",
+      "apps/web/src/site/studio.tsx": "34a238174b808a57a6503d9b7f7c9b19659a930ce94679cbe17bc2d4d1774a63",
+      "native/app/node.go": "f7dcadc921a1bab55084fabe870acc97a4333be76fcffb483322a70234e05662",
+      "native/app/site_form_admission_test.go": "4565e0f473420c503c5180ed5bb066a9398cc93200a9ac47769395ca37299cfe",
+      "native/app/site_runtime.go": "52d31892dd1127be6c3a3f9ebcd9c2fdbce4fd92a5c1dee95b5654c05994b8f1",
+      "native/sites/document.go": "ca99d7b519dfcedb83ed6a03b2fa36ff6319bcf7ec7135a1b9e606d4a0219d28",
+      "packages/browser/src/application.ts": "e13b98338ed3893f3bbaa0fbff70b54d322b3b314cba8f0e9b9123789a3a21a3",
+      "packages/browser/src/site-content.ts": "b1b8bd588f8cdd2e6a1434314e1ecbf7a94609f5c965be037ce456661d37986d",
+      "packages/content/src/site.ts": "d97ac58081f8591721baf7d7a6feeaa8961f0fe11a944ae3a49679dc331089e7",
+      "tests/browser/site-form-document.spec.ts": "f31a93c219e5657153b7c97ee7f5f6af42522ea2015f9e784a7172a92c2ee062",
+      "tests/fixtures/site-documents.json": "0aced650573db9584b09c7c0129e1cc765be36d4f71ef0aec84c2b0586eae43c",
+      "tests/site-form-document.test.ts": "7094034ebe7b0c9352633bf8f6f3935f00dc940f4ce9d4718972d201cc9531d1",
+      "tests/site-resource-document.test.ts": "5c4b56d64bec340b5e9647b0779d480538aca5f80ad867cc0a847b518d69b4d5"
+    },
+    "commands": [
+      "node node_modules/typescript/bin/tsc --noEmit",
+      "node --import tsx --test --test-concurrency=1 tests/site-form-document.test.ts tests/site-resource-document.test.ts tests/site-document.test.ts tests/site-content.test.ts tests/site-pages.test.ts tests/site-editing.test.ts",
+      "node scripts/go.mjs test -race -p=1 ./sites -count=1",
+      "node scripts/go.mjs test -race -p=1 ./app -run '^Test(Version4RequiresOwnerSnapshot|SiteDocumentSharedVectors|VersionedSiteFallbackUsesSharedNodeSemantics)$' -count=1"
+    ],
+    "checks": [
+      {
+        "name": "build",
+        "command": [
+          "node",
+          "node_modules/vite/bin/vite.js",
+          "build"
+        ],
+        "env": {},
+        "status": "PASS",
+        "started": "2026-09-21T22:18:48.937Z",
+        "pid": 1912625,
+        "exitCode": 0,
+        "finished": "2026-09-21T22:18:51.923Z"
+      },
+      {
+        "name": "chromium",
+        "command": [
+          "node",
+          "scripts/e2e.mjs",
+          "--config",
+          "tests/browser/matrix.config.ts",
+          "tests/browser/site-form-document.spec.ts",
+          "tests/browser/site-pages.spec.ts",
+          "--output",
+          "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/site-form-v4-browser-final/chromium-artifacts"
+        ],
+        "env": {
+          "RELAYLOOM_MATRIX_ENGINE": "chromium"
+        },
+        "status": "PASS",
+        "started": "2026-09-21T22:18:51.925Z",
+        "pid": 1912885,
+        "exitCode": 0,
+        "finished": "2026-09-21T22:19:07.314Z"
+      },
+      {
+        "name": "firefox",
+        "command": [
+          "node",
+          "scripts/e2e.mjs",
+          "--config",
+          "tests/browser/matrix.config.ts",
+          "tests/browser/site-form-document.spec.ts",
+          "tests/browser/site-pages.spec.ts",
+          "--output",
+          "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/site-form-v4-browser-final/firefox-artifacts"
+        ],
+        "env": {
+          "RELAYLOOM_MATRIX_ENGINE": "firefox"
+        },
+        "status": "PASS",
+        "started": "2026-09-21T22:19:07.316Z",
+        "pid": 1913947,
+        "exitCode": 0,
+        "finished": "2026-09-21T22:19:28.627Z"
+      },
+      {
+        "name": "webkit",
+        "command": [
+          "node",
+          "scripts/e2e.mjs",
+          "--config",
+          "tests/browser/matrix.config.ts",
+          "tests/browser/site-form-document.spec.ts",
+          "tests/browser/site-pages.spec.ts",
+          "--output",
+          "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/site-form-v4-browser-final/webkit-artifacts"
+        ],
+        "env": {
+          "RELAYLOOM_MATRIX_ENGINE": "webkit"
+        },
+        "status": "PASS",
+        "started": "2026-09-21T22:19:28.631Z",
+        "pid": 1915483,
+        "exitCode": 0,
+        "finished": "2026-09-21T22:19:47.190Z"
+      }
+    ],
+    "finished": "2026-09-21T22:19:47.191Z"
+  },
+  "limitations": [
+    "No form submission, contribution inbox, private replay journal, owner approval/reconciliation or row provenance yet.",
+    "The form type is not exposed in the palette.",
+    "No public deployment or full-regression/platform claim for these new v4 sources. CI35661349213 tests the earlier source0a85d7d."
+  ]
+}

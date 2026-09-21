@@ -1,0 +1,5 @@
+tests/site-form-document.test.ts(125,33): error TS2339: Property 'url' does not exist on type '{ pageId: string; blockId: string; }'.
+tests/site-form-document.test.ts(127,56): error TS2339: Property 'script' does not exist on type 'SiteForm'.
+tests/site-form-document.test.ts(136,13): error TS2322: Type '"public"' is not assignable to type 'string[] | "readers"'.
+tests/site-form-document.test.ts(264,31): error TS2345: Argument of type 'SiteSnapshotContent' is not assignable to parameter of type 'Content'.
+  Index signature for type 'string' is missing in type 'SiteSnapshotContent'.

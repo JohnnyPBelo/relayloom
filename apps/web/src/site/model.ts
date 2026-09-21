@@ -33,11 +33,14 @@ export const labels: Record<SiteNodeType, string> = {
   posts: "Publicações",
   table: "Tabela",
   resource: "Recurso",
+  form: "Formulário",
 };
 export function newBlock(
   type: SiteNodeType,
   reference?: SiteResourceReference,
 ): SiteNode {
+  if (type === "form")
+    throw new Error("O fluxo de contribuições ainda não está disponível.");
   if (type === "resource" && !reference)
     throw new Error("Escolhe primeiro um recurso para este bloco.");
   const checkedReference =
@@ -67,6 +70,7 @@ export function newBlock(
         posts: t("Do meu diário"),
         table: t("Dados da comunidade"),
         resource: resourceTitle,
+        form: "",
       } as const
     )[type],
     body: "",
@@ -149,11 +153,26 @@ export function mapNodes(
   });
 }
 export function cloneNode(node: SiteNode): SiteNode {
-  return {
-    ...structuredClone(node),
-    id: crypto.randomUUID(),
-    ...(node.children ? { children: node.children.map(cloneNode) } : {}),
-  };
+  const copies = new Map(
+    flatten([node]).map(({ node }) => [node.id, crypto.randomUUID()]),
+  );
+  const copy = (source: SiteNode): SiteNode => ({
+    ...structuredClone(source),
+    id: copies.get(source.id)!,
+    ...(source.form && copies.has(source.form.table.blockId)
+      ? {
+          form: {
+            ...structuredClone(source.form),
+            table: {
+              ...source.form.table,
+              blockId: copies.get(source.form.table.blockId)!,
+            },
+          },
+        }
+      : {}),
+    ...(source.children ? { children: source.children.map(copy) } : {}),
+  });
+  return copy(node);
 }
 export function countBlocks(site: SiteDocument) {
   return site.pages.reduce((n, p) => n + flatten(p.blocks).length, 0);
@@ -187,9 +206,23 @@ export function duplicatePage(value: StudioValue, pageId: string) {
   }
   // New node/page identities keep edits independent. A self-link follows the
   // copied page; links to other pages and references to shared images stay intact.
+  const copies = new Map(
+    flatten(source.blocks).map(({ node }) => [node.id, crypto.randomUUID()]),
+  );
   const copy = (node: SiteNode): SiteNode => ({
     ...structuredClone(node),
-    id: crypto.randomUUID(),
+    id: copies.get(node.id)!,
+    ...(node.form?.table.pageId === pageId
+      ? {
+          form: {
+            ...structuredClone(node.form),
+            table: {
+              pageId: id,
+              blockId: copies.get(node.form.table.blockId)!,
+            },
+          },
+        }
+      : {}),
     ...(node.url === "page:" + pageId ? { url: "page:" + id } : {}),
     ...(node.children ? { children: node.children.map(copy) } : {}),
   });

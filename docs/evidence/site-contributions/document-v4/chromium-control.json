@@ -1,0 +1,23 @@
+{
+  "unsignedFailure": "Publica revisões através do comando de site",
+  "unsignedSignatures": 0,
+  "unpublished": true,
+  "phase": "ready",
+  "sameResult": true,
+  "ownerBound": true,
+  "form": {
+    "contributors": "readers",
+    "domain": "relayloom/site-form/1",
+    "fields": [
+      {
+        "column": "name",
+        "required": true
+      }
+    ],
+    "table": {
+      "blockId": "table",
+      "pageId": "home"
+    }
+  },
+  "invalidDenied": true
+}

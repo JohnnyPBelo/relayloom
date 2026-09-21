@@ -1,0 +1,169 @@
+{
+  "config": {
+    "argv": [
+      "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+      "/home/absint0o/projects/relayloom/.cache/site-optional-resources/node_modules/playwright/cli.js",
+      "test",
+      "--config",
+      "tests/browser/matrix.config.ts",
+      "tests/browser/site-form-document.spec.ts",
+      "--output",
+      ".cache/site-form-v4-before-artifacts"
+    ],
+    "configFile": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/matrix.config.ts",
+    "rootDir": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/site-form-v4-before-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "*.spec.ts"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/browser-matrix/chromium/playwright.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "site-form-document.spec.ts",
+      "file": "site-form-document.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "v4 forms require the site catalogue before signing; schema binding survives a real encrypted browser snapshot",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 654,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"Publica revisões através do comando de site\"\u001b[39m\nReceived: \u001b[31m\"Sites versão 3 ou posterior exigem um snapshot assinado\"\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"Publica revisões através do comando de site\"\u001b[39m\nReceived: \u001b[31m\"Sites versão 3 ou posterior exigem um snapshot assinado\"\u001b[39m\n    at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-form-document.spec.ts:147:34",
+                    "location": {
+                      "file": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-form-document.spec.ts",
+                      "column": 34,
+                      "line": 147
+                    },
+                    "snippet": "  145 |     JSON.stringify(result, null, 2) + \"\\n\",\n  146 |   );\n> 147 |   expect(result.unsignedFailure).toBe(\n      |                                  ^\n  148 |     \"Publica revisões através do comando de site\",\n  149 |   );\n  150 |   expect(result.unsignedSignatures).toBe(0);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-form-document.spec.ts",
+                        "column": 34,
+                        "line": 147
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"Publica revisões através do comando de site\"\u001b[39m\nReceived: \u001b[31m\"Sites versão 3 ou posterior exigem um snapshot assinado\"\u001b[39m\n\n  145 |     JSON.stringify(result, null, 2) + \"\\n\",\n  146 |   );\n> 147 |   expect(result.unsignedFailure).toBe(\n      |                                  ^\n  148 |     \"Publica revisões através do comando de site\",\n  149 |   );\n  150 |   expect(result.unsignedSignatures).toBe(0);\n    at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-form-document.spec.ts:147:34"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-21T22:16:44.940Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/site-form-v4-before-artifacts/site-form-document-v4-form-4e58e--encrypted-browser-snapshot-chromium/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/site-form-v4-before-artifacts/site-form-document-v4-form-4e58e--encrypted-browser-snapshot-chromium/error-context.md"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/site-form-v4-before-artifacts/site-form-document-v4-form-4e58e--encrypted-browser-snapshot-chromium/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/site-form-v4-before-artifacts/site-form-document-v4-form-4e58e--encrypted-browser-snapshot-chromium/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-form-document.spec.ts",
+                    "column": 34,
+                    "line": 147
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "9a5b9bf14891b2288ba3-68692ecf394f043c9e3d",
+          "file": "site-form-document.spec.ts",
+          "line": 12,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-21T22:16:44.482Z",
+    "duration": 1478.5149999999999,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

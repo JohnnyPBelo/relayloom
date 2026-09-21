@@ -41,8 +41,8 @@ export function inspectSite(bundle: Bundle, identity?: Identity) {
   validateContent(content);
   if (content.type !== "site") throw new Error("Conteúdo de site inválido");
   if (!Object.hasOwn(content, "siteRevision")) {
-    if (content.site?.version === 3)
-      throw new Error("Sites versão 3 exigem um snapshot assinado");
+    if ((content.site?.version ?? 0) >= 3)
+      throw new Error("Sites versão 3 ou posterior exigem um snapshot assinado");
     return null;
   }
   return snapshots.verify(content, bundle.manifest.author);

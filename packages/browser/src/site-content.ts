@@ -8,8 +8,8 @@ const snapshots = createSiteContentProtocol(browserCertificateCrypto);
 export function verifySiteContent(content: Content, author: PublicIdentity) {
   if (content.type !== "site") return null;
   if (!Object.hasOwn(content, "siteRevision")) {
-    if (content.site?.version === 3)
-      throw new Error("Sites versão 3 exigem um snapshot assinado");
+    if ((content.site?.version ?? 0) >= 3)
+      throw new Error("Sites versão 3 ou posterior exigem um snapshot assinado");
     return null;
   }
   return snapshots.verify(content, author);

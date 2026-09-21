@@ -1,12 +1,20 @@
 # RelayLoom — estado verificável
 
+## Fundação de formulários v4 — código local, ainda sem envio/revisão
+
+O novo documento liga formulários a tabelas locais tipadas, recusa destinos/esquemas inválidos e conserva referências ao duplicar páginas ou composições. As fronteiras Node/Go/browser exigem revisão assinada para v3 e posteriores. O caminho genérico de browser passou a recusar antes de assinar; a publicação autorizada pelo catálogo continua idempotente. O bloco permanece fora da paleta até existir o fluxo funcional.
+
+Passaram **79 testes Node**, **24 vectores TS/Go**, typecheck, Go sites/race, três testes de admissão/compatibilidade Go app com race, build e **dois casos por browser** (catálogo cifrado real e UI existente de duplicação). [Comandos, fontes e controlos](evidence/site-contributions/document-v4). Ainda faltam journal/replay, contexto autenticado na API, envio/inbox, aprovação/reconciliação/proveniência e UI de contribuições; não há alegação de paridade ou produto concluído.
+
+O CI **35661349213** está em curso para **0a85d7d**, com as correcções da secção seguinte, e não inclui a fundação v4 local. A publicação pública continua **7fdb76a/0fdbd1b9**. Nenhum teste físico ou revisão independente foi acrescentado.
+
 ## Correcções locais verificadas — 21 de Setembro de 2026
 
 Código `def424f`/`5f6a929`: inspecções readonly concorrentes e limitadas, partilha apenas de pedidos simultâneos (sem cache de autorização) e pausa de relay sem fechar o canal do tráfego próprio. O controlo de página extensa passou com 123 referências verificadas em 10,6 s; nenhum prazo foi aumentado. Os controlos negativos reproduzem o erro anterior e mantêm erros alheios/corrupção como rejeições.
 
 Passaram typecheck, 33 contratos, Go sites/race, build, **107 WebKit**, **um percurso de recursos Node + um Go**, e Linux build/run/package/run. Os **12 casos dirigidos por engine** cobrem as últimas alterações de relay/relógio. Os passes integrais anteriores de 104 Chromium e 104 Firefox mantêm a sua proveniência e os oito ficheiros alterados estão enumerados; não os apresentar como novas matrizes integrais. [Provas e comandos](evidence/site-resource-performance).
 
-O contrato autónomo de contribuições (`995861d`) passou 48 vectores Node/portátil/Go e assinaturas/cifra em browsers reais. **Ainda faltam documento v4, persistência/journal, transporte/inbox, aprovação/reconciliação, proveniência das linhas e UI de formulários.** [Provas de contrato](evidence/site-contributions/clock-alignment). A versão pública permanece identificada na secção seguinte, sem estas novas correcções. Novo CI e publicação da candidata ainda pendentes; nenhum passe de aparelhos/radios/Apple ou revisão independente foi acrescentado.
+O contrato autónomo de contribuições (`995861d`) passou 48 vectores Node/portátil/Go e assinaturas/cifra em browsers reais. **Nesse commit ainda faltavam documento v4, persistência/journal, transporte/inbox, aprovação/reconciliação, proveniência das linhas e UI de formulários.** [Provas de contrato](evidence/site-contributions/clock-alignment). A versão pública permanece identificada na secção seguinte, sem estas novas correcções. Novo CI e publicação da candidata ainda pendentes; nenhum passe de aparelhos/radios/Apple ou revisão independente foi acrescentado.
 
 ## Recursos v3 publicados e verificados no HTTPS — 21 de Setembro de 2026
 

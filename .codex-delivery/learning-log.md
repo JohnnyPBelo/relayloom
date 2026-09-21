@@ -658,3 +658,10 @@ O envelope aceitava300000ms de diferença, mas o certificado novo exigia criaç�
 O handle do último Firefox já tinha desaparecido, mas o log terminal e o relatório JSON confirmavam 12 PASS; recolher essa evidência evitou repetir o teste. A nova execução dirigida WebKit também passou 12 casos. O gate final conserva os 104 passes Chromium e 104 Firefox anteriores como resultados daquela fonte, e documenta os oito ficheiros alterados depois; não muda a data/hash de um passe antigo. O WebKit completo, UI Node/Go e Linux são executados como continuação delimitada.
 
 Os commits de protocolo, desempenho e relay foram separados sem mudar os bytes durante o gate. Os hashes antes/depois cobrem essa situação; o HEAD inicial sozinho não identifica WIP testado. Logs CI preservados contêm espaços finais originais e provocam avisos de diff --check: manter os bytes/manifestos da evidência, validar a higiene do código separadamente e não afirmar que todos os logs passaram essa verificação.
+
+
+## Documento v4 e guards de versões
+
+Adicionar uma versão ao parser exige procurar todas as comparações exactas de versão nas fronteiras de assinatura/admissão. Um guard de BrowserApplication.prepare ainda cobria só v3: v4 era assinado e recusado mais tarde, sem publicação. O controlo demonstrou a diferença 1→0 assinaturas ao antecipar a recusa. Não chamar a assinatura desnecessária uma publicação bem-sucedida nem confundir erros iniciais de fixture (campo owner e fase ready) com defeitos do runtime. Os controlos e as falhas de typecheck de vectores deliberadamente malformados foram preservados.
+
+Duplicar um documento com referências exige mapear primeiro todos os IDs novos e só depois copiar nós/referências; isso resolve destinos declarados depois do formulário e mantém referências externas intactas. A UI v1-v3 de duplicação passou nos três browsers. Formulários ainda sem fluxo completo ficam fora da paleta; aceitar o esquema não implica afirmar envio/aprovação implementados.

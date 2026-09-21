@@ -37,8 +37,8 @@ func inspectSiteBundle(bundle core.Bundle, identity *core.Identity) (*sites.Veri
 	if _, versioned := m["siteRevision"]; !versioned {
 		doc, _ := m["site"].(map[string]any)
 		version, _ := number(doc["version"])
-		if version == 3 {
-			return nil, errors.New("sites versão 3 exigem um snapshot assinado")
+		if version >= 3 {
+			return nil, errors.New("sites versão 3 ou posterior exigem um snapshot assinado")
 		}
 		return nil, validateContent(Content(m))
 	}

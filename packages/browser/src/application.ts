@@ -651,7 +651,7 @@ export class BrowserApplication {
       );
     if (
       content.type === "site" &&
-      (Object.hasOwn(content, "siteRevision") || content.site?.version === 3)
+      (Object.hasOwn(content, "siteRevision") || (content.site?.version ?? 0) >= 3)
     )
       throw new Error("Publica revisões através do comando de site");
     if (grouped(content))

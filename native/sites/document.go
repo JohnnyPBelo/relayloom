@@ -80,7 +80,7 @@ func ValidateDocument(v any, attachments any) error {
 	}
 	version, e := docNumber(s["version"])
 	pages, ok := s["pages"].([]any)
-	if e != nil || (version != 1 && version != 2 && version != 3) || !ok || len(pages) < 1 || len(pages) > 12 || !siteText(s["title"], 120) || !siteText(s["description"], 500) || !siteIDPattern.MatchString(docTextValue(s["home"])) {
+	if e != nil || (version != 1 && version != 2 && version != 3 && version != 4) || !ok || len(pages) < 1 || len(pages) > 12 || !siteText(s["title"], 120) || !siteText(s["description"], 500) || !siteIDPattern.MatchString(docTextValue(s["home"])) {
 		return fail()
 	}
 	d, ok := siteShape(s["design"], []string{"font", "width", "radius", "accent"}, nil)
@@ -89,6 +89,9 @@ func ValidateDocument(v any, attachments any) error {
 	}
 	ids, slugs, nodes := map[string]bool{}, map[string]bool{}, map[string]bool{}
 	resources := map[string]string{}
+	locations := map[string]string{}
+	allNodes := map[string]map[string]any{}
+	forms := []map[string]any{}
 	for _, value := range pages {
 		p, ok := siteShape(value, []string{"id", "slug", "title", "blocks"}, nil)
 		if !ok || !siteIDPattern.MatchString(docTextValue(p["id"])) || ids[docTextValue(p["id"])] || !siteSlugPattern.MatchString(docTextValue(p["slug"])) || slugs[docTextValue(p["slug"])] || !siteText(p["title"], 80) || docTrim(docTextValue(p["title"])) == "" {
@@ -116,15 +119,15 @@ func ValidateDocument(v any, attachments any) error {
 	if assetBytes > 2*1024*1024 {
 		return fail()
 	}
-	var visit func(any, int) error
-	visit = func(value any, depth int) error {
+	var visit func(any, int, string) error
+	visit = func(value any, depth int, pageID string) error {
 		list, ok := value.([]any)
 		if !ok || (depth > 3 && len(list) > 0) || len(list) > 24 {
 			return fail()
 		}
 		for _, value := range list {
-			b, ok := siteShape(value, []string{"id", "type", "title", "body"}, []string{"url", "format", "children", "media", "style", "limit", "data", "reference"})
-			if !ok || !siteIDPattern.MatchString(docTextValue(b["id"])) || nodes[docTextValue(b["id"])] || !docContains([]string{"hero", "text", "links", "callout", "heading", "quote", "button", "image", "gallery", "divider", "spacer", "columns", "posts", "table", "resource"}, docTextValue(b["type"])) || !siteText(b["title"], 120) || !siteText(b["body"], 4000) {
+			b, ok := siteShape(value, []string{"id", "type", "title", "body"}, []string{"url", "format", "children", "media", "style", "limit", "data", "reference", "form"})
+			if !ok || !siteIDPattern.MatchString(docTextValue(b["id"])) || nodes[docTextValue(b["id"])] || !docContains([]string{"hero", "text", "links", "callout", "heading", "quote", "button", "image", "gallery", "divider", "spacer", "columns", "posts", "table", "resource", "form"}, docTextValue(b["type"])) || !siteText(b["title"], 120) || !siteText(b["body"], 4000) {
 				return fail()
 			}
 			data, hasData := b["data"]
@@ -137,7 +140,7 @@ func ValidateDocument(v any, attachments any) error {
 			}
 			refValue, hasRef := b["reference"]
 			if docTextValue(b["type"]) == "resource" {
-				if _, hasURL := b["url"]; version != 3 || !hasRef || hasURL {
+				if _, hasURL := b["url"]; version < 3 || !hasRef || hasURL {
 					return fail()
 				}
 				ref, err := ParseResourceReference(refValue)
@@ -159,6 +162,21 @@ func ValidateDocument(v any, attachments any) error {
 			} else if hasRef {
 				return fail()
 			}
+			formValue, hasForm := b["form"]
+			if docTextValue(b["type"]) == "form" {
+				if _, hasURL := b["url"]; version != 4 || !hasForm || hasURL {
+					return fail()
+				}
+				form, err := ParseSiteForm(formValue)
+				if err != nil {
+					return err
+				}
+				forms = append(forms, form)
+			} else if hasForm {
+				return fail()
+			}
+			locations[docTextValue(b["id"])] = pageID
+			allNodes[docTextValue(b["id"])] = b
 			nodes[docTextValue(b["id"])] = true
 			if len(nodes) > 128 {
 				return fail()
@@ -200,7 +218,7 @@ func ValidateDocument(v any, attachments any) error {
 				if docTextValue(b["type"]) != "columns" {
 					return fail()
 				}
-				if err := visit(children, depth+1); err != nil {
+				if err := visit(children, depth+1, pageID); err != nil {
 					return err
 				}
 			}
@@ -239,8 +257,19 @@ func ValidateDocument(v any, attachments any) error {
 	}
 	for _, v := range pages {
 		p, _ := v.(map[string]any)
-		if e := visit(p["blocks"], 1); e != nil {
+		if e := visit(p["blocks"], 1, docTextValue(p["id"])); e != nil {
 			return e
+		}
+	}
+	for _, form := range forms {
+		target := form["table"].(map[string]any)
+		id := target["blockId"].(string)
+		destination := allNodes[id]
+		if destination == nil || locations[id] != target["pageId"] || destination["type"] != "table" {
+			return fail()
+		}
+		if _, _, err := BindSiteForm(form, destination["data"]); err != nil {
+			return err
 		}
 	}
 	encoded, err := core.Canonical(v)

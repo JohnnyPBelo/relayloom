@@ -1013,7 +1013,7 @@ func (n *Node) prepareLocked(content Content, recipients any, ttlMS int64) (*pre
 	if text(content["type"]) == "site" {
 		document, _ := content["site"].(map[string]any)
 		version, _ := number(document["version"])
-		if _, versioned := content["siteRevision"]; versioned || version == 3 {
+		if _, versioned := content["siteRevision"]; versioned || version >= 3 {
 			return nil, errors.New("use a publicação versionada de sites")
 		}
 	}

@@ -1478,7 +1478,7 @@ export class LoomNode extends EventEmitter {
       );
     if (
       content.type === "site" &&
-      (Object.hasOwn(content, "siteRevision") || content.site?.version === 3)
+      (Object.hasOwn(content, "siteRevision") || (content.site?.version ?? 0) >= 3)
     )
       throw new Error("Use a publicação versionada de sites");
     if (hasGroupBinding(content))

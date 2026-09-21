@@ -1,0 +1,11 @@
+# Documento v4 — fundação de formulários, ainda sem fluxo de contribuições
+
+Implementação local posterior a 0a85d7d. O documento liga formulários declarativos a tabelas do mesmo snapshot, inclusive noutra página e em composições. Valida campos/ordem/tipos/regras, conserva o limite global e recusa destinos inexistentes ou execução remota. Recursos v3 continuam válidos em v4. Duplicação remapeia referências internas e preserva referências para páginas externas à cópia. Paleta de formulários ainda não exposta.
+
+Passaram 79 testes Node,24 vectores TS/Go (8 aceites/16 recusados), typecheck, Go sites/race, três testes de admissão/compatibilidade Go app com race, build e dois casos por browser Chromium/Firefox/WebKit. Um caso exercita o catálogo real/IndexedDB e assinatura/cifra; o outro verifica a UI existente de copiar/reordenar páginas, rascunho cifrado e leitura com autor desligado. **Não são percursos UI de enviar/aprovar contribuições.** Comandos e hashes em report.json.
+
+A procura de fronteiras detectou um guard antigo no browser: o caminho genérico assinava um documento v4 e depois a admissão recusava-o. Não era publicação aceite: o controlo anterior regista unpublished=true, uma assinatura e erro de snapshot. O guard agora recusa antes de assinar; o catálogo autorizado continua ready e a repetição conserva o mesmo bundle. O controlo anterior válido e os três positivos estão preservados.
+
+O primeiro fixture lia ownerId em vez de owner.id e esperava a fase copied em vez de ready; foi corrigido antes do controlo negativo definitivo. A primeira verificação de tipos também apontou casts necessários apenas nos vectores deliberadamente malformados e a forma estrutural do tipo Content. Esses resultados iniciais permanecem separados, sem os apresentar como defeitos do produto nem apagar falhas.
+
+Journal privado/replay, envio/inbox, autorização extraída de contexto autenticado pela API, aprovação/rejeição/reconciliação CAS, proveniência de linhas e UI de formulários continuam pendentes. A versão HTTPS não mudou e o CI35661349213 valida 0a85d7d, anterior a esta fundação. Não inferir revisão independente, hardware, todas as plataformas ou produto concluído. O driver de browsers requer o snapshot local de fontes indicado; os comandos em report.json permitem reprodução independente.

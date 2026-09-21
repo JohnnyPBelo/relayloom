@@ -84,6 +84,7 @@ const blockIcons: Record<SiteNodeType, LucideIcon> = {
   posts: Newspaper,
   table: Table2,
   resource: FilePlus2,
+  form: Table2,
 };
 export function SiteStudio({
   value,
@@ -264,7 +265,7 @@ export function SiteStudio({
         throw new Error("A composição de destino já não existe.");
       parent.node.children = [...(parent.node.children ?? []), node];
     } else targetPage.blocks.push(node);
-    next.site.version = 3;
+    if (next.site.version < 3) next.site.version = 3;
     validateStudio(next);
     change(next);
     setPage(targetPage.id);
@@ -813,7 +814,9 @@ export function SiteStudio({
                 {panel === "blocks" && (
                   <div className="studio-palette">
                     {SITE_BLOCKS.filter(
-                      (choice) => choice !== "resource" || !!resourceConfig,
+                      (choice) =>
+                        choice !== "form" &&
+                        (choice !== "resource" || !!resourceConfig),
                     ).map((choice) => {
                       const Icon = blockIcons[choice];
                       return (

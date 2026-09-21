@@ -163,3 +163,6 @@ Próxima implementação: formulários declarativos e propostas assinadas pelo v
 Handle 29159 terminou com código 0: typecheck, 33 contratos, Go sites/race, build, 107 WebKit, recursos UI Node/Go e pacote Linux executado. Curadoria em docs/evidence/site-resource-performance. Não repetir este gate sem novas alterações ou falha que o justifique. Chromium/Firefox completos anteriores mantêm fonte própria e os 12 casos dirigidos por engine cobrem a alteração final.
 
 Enviar os marcos separados e verificar o CI; depois integrar documento v4, contexto autenticado, journal privado/replay, inbox e aprovação, proveniência e UI PT/EN/ES com três contas reais. A versão pública só recebe artefactos exactos validados. Toda a cobertura de grupos web, recuperação/rotação/keystore, plataformas/meios, hardware e revisão independente mantém-se.
+
+
+A fundação do documento v4 foi implementada depois desse push: esquema ligado a tabela, cópias com referências e fronteiras de assinatura em Node/Go/browser. Gate delimitado com 79 testes Node, 24 vectores, Go/race, build e seis casos de browser PASS. Próxima fase: contexto autenticado da API e journal privado/replay, depois inbox/aprovação/proveniência e UI real. CI35661349213 está em curso para 0a85d7d; preservar essa execução e o HTML público actual. A regressão completa v4 continua pendente.

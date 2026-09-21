@@ -8,7 +8,7 @@ O produto **não está concluído**. Preservar todo o `PROJECT-BRIEF.md`: messen
 - Principal: `/home/absint0o/projects/relayloom`, branch `codex/setup-languages`, HEAD `1e83db22ff9b7b9a65a400601b891312a3188960`. O seu WIP histórico permanece separado. Não resetar, apagar, copiar árvores antigas por cima, nem usar `git add -A`.
 - Marcos novos: `995861d` contrato autónomo de contribuições; `def424f` inspecções de recursos; `5f6a929` corrida de pausa de relay; `564c280` evidência do CI anterior. Ver `git log -6 --oneline` para o commit de documentação posterior e confirmar origin antes de enviar.
 - Commits e pushes normais autorizados; nunca force-push, segredos ou merge de PR sem autorização. WIP restante inclui relatórios/capturas antigos e o symlink node_modules: preservar, não incluir indiscriminadamente.
-- Última leitura: **19 GiB livres**, reserva obrigatória de 15 GiB. Revalidar antes de builds/downloads. Uma execução pesada local de cada vez; dependências/caches no projecto.
+- Última leitura: **18 GiB livres**, reserva obrigatória de 15 GiB. Revalidar antes de builds/downloads. Uma execução pesada local de cada vez; dependências/caches no projecto.
 
 ## Publicação que existe realmente
 
@@ -51,3 +51,18 @@ Hardware/rádios físicos, assinatura Apple, todas as plataformas efectivamente 
 4. Antes de actualizar HTML, validar artefactos exactos da distribuição e os percursos HTTPS; publicação existente permanece até esse gate. Não reduzir cobertura nem relaxar limites para passar.
 
 O histórico integral desta retoma foi preservado em `.codex-delivery/history/RESUME-before-resource-relay-final.md`. A execução sequencial tem prioridade sobre a delegação até indicação contrária do proprietário.
+
+
+## Actualização mais recente — documento v4 (posterior ao gate anterior)
+
+Push confirmado de **0a85d7d** para origin/codex/site-optional-resources. CI **35661349213** arrancou: Linux/Windows em curso, macOS em fila na última leitura. Não reenviar commits sucessivos cancelando esse CI sem necessidade.
+
+Nenhum teste local está vivo. 85184 terminou com código 2 por typecheck do novo fixture (nenhum Go arrancou); 8073 terminou 0 depois das correcções; 41369 terminou 0; 12342/90874 são controlos negativos terminados com código 1. Todos os resultados foram recolhidos.
+
+Fontes v4 locais posteriores a 0a85d7d: documento/form-schema TS/Go, remapeamento ao copiar páginas/composições, compatibilidade de recursos e guards >= 3 nas seis fronteiras de publicação/admissão. O bloco form está oculto na paleta; envio e aprovação ainda não estão implementados. Os testes foram ampliados sem reduzir os anteriores.
+
+Gate: **79 Node, 24 vectores (8 aceites/16 recusados), typecheck, Go sites/race, três testes Go app dirigidos com race, build e dois casos por browser (seis no total)**. O primeiro caso de browser usa catálogo/IndexedDB/assinatura/cifra reais; o segundo usa a UI de páginas existente. Não chamar esses seis casos de UI de formulários. A regressão completa da candidata v4 e o seu CI continuam pendentes.
+
+Provas: `docs/evidence/site-contributions/document-v4`; relatórios locais `.cache/site-form-v4-current-source.json` e `.cache/site-form-v4-browser-final/report.json`. O guard BrowserApplication.prepare assinava antes de a admissão recusar; controlo anterior: uma assinatura e unpublished=true; depois: zero assinaturas. Erros iniciais de fixture/typecheck foram preservados e corrigidos, sem mascarar a causa. A fase v4 não está no CI 0a85d7d nem no HTML público.
+
+Continuar com contexto de formulário derivado de snapshot autenticado na API, journal privado/replay, envio/inbox, aprovação/reconciliação/proveniência e UI real PT/EN/ES, conforme `SITE-CONTRIBUTIONS-IMPLEMENTATION.md`. Não declarar conclusão nem reduzir os restantes requisitos. Antes de novas alterações, consultar git log/status para o commit local que guarda v4 e as suas provas.

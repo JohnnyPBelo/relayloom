@@ -100,6 +100,9 @@ test("Node and Go agree on v3 reference vectors, legacy compatibility and exact 
     cases.push({ name, site, valid });
   };
   add("v3 file", true);
+  add("v4 file", true, (s) => {
+    s.version = 4;
+  });
   add("v3 optional table", true, (s) => {
     s.pages[0].blocks[0].reference = describeSiteResource(
       {
@@ -121,11 +124,11 @@ test("Node and Go agree on v3 reference vectors, legacy compatibility and exact 
       data: authoredTable(),
     });
   });
-  for (const version of [1, 2, 4])
+  for (const version of [1, 2, 5])
     add("reference forbidden in version " + version, false, (s) => {
       s.version = version;
     });
-  for (const version of [1, 2, 3])
+  for (const version of [1, 2, 3, 4])
     add("empty document version " + version, true, (s) => {
       s.version = version;
       s.pages[0].blocks = [];

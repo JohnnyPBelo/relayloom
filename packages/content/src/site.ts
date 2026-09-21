@@ -1,3 +1,4 @@
+import { bindSiteForm, parseSiteForm, type SiteForm } from "./site-form";
 import {
   parseSiteResourceReference,
   type SiteResourceReference,
@@ -33,6 +34,7 @@ export const SITE_BLOCKS = [
   "posts",
   "table",
   "resource",
+  "form",
 ] as const;
 export type SiteNodeType = (typeof SITE_BLOCKS)[number];
 export type SiteNode = {
@@ -47,6 +49,7 @@ export type SiteNode = {
   limit?: number;
   data?: SiteTable;
   reference?: SiteResourceReference;
+  form?: SiteForm;
   style?: {
     align?: "left" | "center" | "right";
     tone?: "surface" | "soft" | "accent";
@@ -61,7 +64,7 @@ export type SitePage = {
   blocks: SiteNode[];
 };
 export type SiteDocument = {
-  version: 1 | 2 | 3;
+  version: 1 | 2 | 3 | 4;
   title: string;
   description: string;
   home: string;
@@ -136,7 +139,7 @@ export function validateSite(
   )
     fail("imagens acima de 2 MB");
   if (
-    ![1, 2, 3].includes(s.version) ||
+    ![1, 2, 3, 4].includes(s.version) ||
     !text(s.title, 120) ||
     !text(s.description, 500) ||
     !id(s.home) ||
@@ -157,7 +160,9 @@ export function validateSite(
   const pages = new Set<string>(),
     slugs = new Set<string>(),
     nodes = new Set<string>(),
-    resources = new Map<string, string>();
+    resources = new Map<string, string>(),
+    located = new Map<string, { pageId: string; node: SiteNode }>(),
+    forms: SiteForm[] = [];
   for (const p of s.pages) {
     if (
       !exactShape(p, ["id", "slug", "title", "blocks"]) ||
@@ -174,7 +179,7 @@ export function validateSite(
     slugs.add(p.slug);
   }
   if (!pages.has(s.home)) fail("página inicial inexistente");
-  function visit(blocks: SiteNode[], depth: number) {
+  function visit(blocks: SiteNode[], depth: number, pageId: string) {
     if (
       (depth > SITE_LIMITS.depth &&
         Array.isArray(blocks) &&
@@ -197,6 +202,7 @@ export function validateSite(
             "limit",
             "data",
             "reference",
+            "form",
           ],
         ) ||
         !id(b.id) ||
@@ -214,7 +220,7 @@ export function validateSite(
         fail("dados num bloco que não é tabela");
       if (b.type === "resource") {
         if (
-          s.version !== 3 ||
+          s.version < 3 ||
           !Object.hasOwn(b, "reference") ||
           Object.hasOwn(b, "url")
         )
@@ -230,6 +236,17 @@ export function validateSite(
         if (resources.size > SITE_LIMITS.resources) fail("demasiados recursos");
       } else if (Object.hasOwn(b, "reference"))
         fail("referência num bloco que não é recurso");
+      if (b.type === "form") {
+        if (
+          s.version !== 4 ||
+          !Object.hasOwn(b, "form") ||
+          Object.hasOwn(b, "url")
+        )
+          fail("formulário exige documento versão 4 e um esquema local");
+        forms.push(parseSiteForm(b.form));
+      } else if (Object.hasOwn(b, "form"))
+        fail("esquema num bloco que não é formulário");
+      located.set(b.id, { pageId, node: b });
       nodes.add(b.id);
       if (nodes.size > SITE_LIMITS.blocks) fail("demasiados blocos");
       if (b.format !== undefined && !["plain", "markdown"].includes(b.format))
@@ -260,7 +277,7 @@ export function validateSite(
       }
       if (b.children !== undefined) {
         if (b.type !== "columns") fail("filhos num bloco que não é composição");
-        visit(b.children, depth + 1);
+        visit(b.children, depth + 1, pageId);
       }
       if (b.media !== undefined) {
         if (
@@ -292,7 +309,17 @@ export function validateSite(
         fail("limite de publicações");
     }
   }
-  for (const p of s.pages) visit(p.blocks, 1);
+  for (const p of s.pages) visit(p.blocks, 1, p.id);
+  for (const form of forms) {
+    const destination = located.get(form.table.blockId);
+    if (
+      !destination ||
+      destination.pageId !== form.table.pageId ||
+      destination.node.type !== "table"
+    )
+      fail("tabela do formulário inexistente neste documento");
+    bindSiteForm(form, destination!.node.data);
+  }
   if (new TextEncoder().encode(canonical(s)).length > SITE_LIMITS.bytes)
     fail("documento maior que 128 KiB");
 }
@@ -394,4 +421,34 @@ export function siteResourceBlocks(
   }
   for (const page of site.pages) visit(page.blocks, page.id);
   return result;
+}
+
+/** Resolve only inside an already authenticated and validated document. Callers
+ * must never replace these schemas with fields supplied by the UI command. */
+export function siteFormBlocks(site: SiteDocument) {
+  const nodes: { pageId: string; node: SiteNode }[] = [];
+  function visit(blocks: SiteNode[], pageId: string) {
+    for (const node of blocks) {
+      nodes.push({ pageId, node });
+      if (node.children) visit(node.children, pageId);
+    }
+  }
+  for (const page of site.pages) visit(page.blocks, page.id);
+  return nodes
+    .filter((entry) => entry.node.type === "form")
+    .map((entry) => {
+      const form = parseSiteForm(entry.node.form);
+      const destination = nodes.find(
+        (value) =>
+          value.pageId === form.table.pageId &&
+          value.node.id === form.table.blockId,
+      );
+      if (!destination || destination.node.type !== "table")
+        throw Error("Tabela do formulário inexistente");
+      return {
+        pageId: entry.pageId,
+        blockId: entry.node.id,
+        ...bindSiteForm(form, destination.node.data),
+      };
+    });
 }

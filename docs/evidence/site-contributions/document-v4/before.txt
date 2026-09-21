@@ -1,0 +1,42 @@
+
+Running 1 test using 1 worker
+
+(node:1905099) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [chromium] › tests/browser/site-form-document.spec.ts:12:1 › v4 forms require the site catalogue before signing; schema binding survives a real encrypted browser snapshot (551ms)
+
+
+  1) [chromium] › tests/browser/site-form-document.spec.ts:12:1 › v4 forms require the site catalogue before signing; schema binding survives a real encrypted browser snapshot 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "Publica revisões através do comando de site"
+    Received: "Sites versão 3 ou posterior exigem um snapshot assinado"
+
+      145 |     JSON.stringify(result, null, 2) + "\n",
+      146 |   );
+    > 147 |   expect(result.unsignedFailure).toBe(
+          |                                  ^
+      148 |     "Publica revisões através do comando de site",
+      149 |   );
+      150 |   expect(result.unsignedSignatures).toBe(0);
+        at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-form-document.spec.ts:147:34
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .cache/site-form-v4-before-valid-artifacts/site-form-document-v4-form-4e58e--encrypted-browser-snapshot-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: .cache/site-form-v4-before-valid-artifacts/site-form-document-v4-form-4e58e--encrypted-browser-snapshot-chromium/error-context.md
+
+    Error Context: .cache/site-form-v4-before-valid-artifacts/site-form-document-v4-form-4e58e--encrypted-browser-snapshot-chromium/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    .cache/site-form-v4-before-valid-artifacts/site-form-document-v4-form-4e58e--encrypted-browser-snapshot-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace .cache/site-form-v4-before-valid-artifacts/site-form-document-v4-form-4e58e--encrypted-browser-snapshot-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › tests/browser/site-form-document.spec.ts:12:1 › v4 forms require the site catalogue before signing; schema binding survives a real encrypted browser snapshot 
