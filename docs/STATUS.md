@@ -1,12 +1,20 @@
 # RelayLoom — estado verificável
 
+## Correcções locais verificadas — 21 de Setembro de 2026
+
+Código `def424f`/`5f6a929`: inspecções readonly concorrentes e limitadas, partilha apenas de pedidos simultâneos (sem cache de autorização) e pausa de relay sem fechar o canal do tráfego próprio. O controlo de página extensa passou com 123 referências verificadas em 10,6 s; nenhum prazo foi aumentado. Os controlos negativos reproduzem o erro anterior e mantêm erros alheios/corrupção como rejeições.
+
+Passaram typecheck, 33 contratos, Go sites/race, build, **107 WebKit**, **um percurso de recursos Node + um Go**, e Linux build/run/package/run. Os **12 casos dirigidos por engine** cobrem as últimas alterações de relay/relógio. Os passes integrais anteriores de 104 Chromium e 104 Firefox mantêm a sua proveniência e os oito ficheiros alterados estão enumerados; não os apresentar como novas matrizes integrais. [Provas e comandos](evidence/site-resource-performance).
+
+O contrato autónomo de contribuições (`995861d`) passou 48 vectores Node/portátil/Go e assinaturas/cifra em browsers reais. **Ainda faltam documento v4, persistência/journal, transporte/inbox, aprovação/reconciliação, proveniência das linhas e UI de formulários.** [Provas de contrato](evidence/site-contributions/clock-alignment). A versão pública permanece identificada na secção seguinte, sem estas novas correcções. Novo CI e publicação da candidata ainda pendentes; nenhum passe de aparelhos/radios/Apple ou revisão independente foi acrescentado.
+
 ## Recursos v3 publicados e verificados no HTTPS — 21 de Setembro de 2026
 
 **Fonte runtime 7fdb76a5de5869efa6ebdd721bc7e8f5efac68af; distribuição 0fdbd1b9563540a5bc28c74d669668e948aa7667.** Pages 35622927304 terminou SUCCESS. A biblioteca de ficheiros/tabelas e as referências v3 estão em https://johnnypbelo.github.io/relayloom/. Os 20 artefactos HTTP conferiram por hash/tamanho; passaram seis percursos de recursos em Chromium/Firefox/WebKit e um entre processos independentes, com mensagens, anexo exacto e reabertura offline. [Provas e comandos](evidence/site-optional-resources/v3-ui/live).
 
 Antes de publicar, passaram 135 percursos na compilação normal, 141 na distribuição e um entre processos. A primeira matriz pública teve 121/141 aprovados; os restantes falharam sobretudo em ICE/sinalização, com sinais WebKit sem candidatos num trace. Um controlo e seis repetições passaram depois com artefactos idênticos. A causa dessa ocorrência não está demonstrada como resolvida. A retoma conservou a proveniência e acrescentou apenas diagnóstico de falha; não alterou protocolo, STUN, permissões ou prazos.
 
-CI 35618030583 / 7fdb76a: Node nas três plataformas, Go, interoperabilidade e UI nativa passaram; Reticulum e pacotes Windows/macOS/Linux também passaram; iOS e browser autónomo continuavam em execução na última consulta. O CI anterior foi cancelado ao ultrapassar 25 minutos cumulativos; Go/interoperabilidade foram separados em jobs sequenciais, mantendo cobertura e prazos internos. [Provas](evidence/ci-native-split-15c1dbc). Não é validação de hardware, Safari real ou prontidão para catástrofes.
+CI 35618030583 / 7fdb76a terminou: Node nas três plataformas, Go, interoperabilidade, UI nativa, Reticulum e pacotes Windows/macOS/Linux passaram. A matriz web teve 101/102 aprovados: a página no limite chegou a 116 de 123 referências dentro de 15 segundos. O iOS compilou e passou o arranque, mas a importação da fotografia de teste ficou bloqueada antes do percurso funcional. [Resultados exactos](evidence/ci-7fdb76a). A correcção local de desempenho passou o gate delimitado abaixo: leituras concorrentes limitadas e partilha apenas de pedidos de estado simultâneos da mesma referência, sem cache de autorização. A versão HTTPS ainda usa o código anterior. O CI anterior foi cancelado ao ultrapassar 25 minutos cumulativos; Go/interoperabilidade foram separados em jobs sequenciais, mantendo cobertura e prazos internos. [Provas](evidence/ci-native-split-15c1dbc). Não é validação de hardware, Safari real ou prontidão para catástrofes.
 
 Continuam obrigatórios o resto do contrato, contribuições/formulários, grupos web dinâmicos, recuperação/rotação/keystore, plataformas/radios e revisão independente. As secções seguintes registam os marcos e limites anteriores.
 
@@ -207,3 +215,8 @@ CI anterior `35026722736`, source `4e4fcc7`, terminou com falha apenas em iOS. N
 
 
 Fonte deste marco local: `8faad725925149db24bae331691d691a8e7a4f1a`; hashes verificados em `docs/evidence/site-optional-resources/v3-ui/final/source-commit.json`. Ainda sem publicação do v3.
+
+
+## Contribuições de visitantes — contrato em desenvolvimento local
+
+Foi iniciado o contrato declarativo de formulários e propostas assinadas em TS/Go. Passaram os primeiros testes de estrutura, valores, domínio, assinatura de visitante, audiência consentida, validade e vínculo à base/esquema, incluindo46vectores e assinaturas entre Node, Go e o adaptador portátil. Um teste em browsers reais verifica cifra privada e a assinatura nos três runtimes. Ainda não há integração de formulários, caixa de propostas, armazenamento/replay, aprovação pelo dono ou publicação de contribuições na UI. Estas funcionalidades continuam pendentes no contrato completo.

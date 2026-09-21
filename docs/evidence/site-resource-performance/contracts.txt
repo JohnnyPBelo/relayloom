@@ -1,0 +1,210 @@
+TAP version 13
+# Subtest: complete declarative snapshots bind a signed revision to the payload and envelope signing owner
+ok 1 - complete declarative snapshots bind a signed revision to the payload and envelope signing owner
+  ---
+  duration_ms: 79.276822
+  type: 'test'
+  ...
+# Subtest: snapshots reject unsigned additions, malformed declarative documents and changed signed payloads
+ok 2 - snapshots reject unsigned additions, malformed declarative documents and changed signed payloads
+  ---
+  duration_ms: 5.016854
+  type: 'test'
+  ...
+# Subtest: Node, portable crypto and Go agree on visitor proposals, schemas and negative authorization vectors
+ok 3 - Node, portable crypto and Go agree on visitor proposals, schemas and negative authorization vectors
+  ---
+  duration_ms: 923.152188
+  type: 'test'
+  ...
+# Subtest: declarative form binds all typed columns, preserves zero/false and never executes values
+ok 4 - declarative form binds all typed columns, preserves zero/false and never executes values
+  ---
+  duration_ms: 6.104312
+  type: 'test'
+  ...
+# Subtest: form and value parsing reject active accessors, sparse lists, unknown fields and oversized inputs
+ok 5 - form and value parsing reject active accessors, sparse lists, unknown fields and oversized inputs
+  ---
+  duration_ms: 0.861786
+  type: 'test'
+  ...
+# Subtest: Node visitor signatures verify across adapters but cannot become owner revisions
+ok 6 - Node visitor signatures verify across adapters but cannot become owner revisions
+  ---
+  duration_ms: 64.579282
+  type: 'test'
+  ...
+# Subtest: portable visitor signatures verify across adapters but cannot become owner revisions
+ok 7 - portable visitor signatures verify across adapters but cannot become owner revisions
+  ---
+  duration_ms: 49.511608
+  type: 'test'
+  ...
+# Subtest: site/form/schema/base and the visitor's maximum publication audience are bound independently
+ok 8 - site/form/schema/base and the visitor's maximum publication audience are bound independently
+  ---
+  duration_ms: 13.716581
+  type: 'test'
+  ...
+# Subtest: expiry and clock checks apply to admission, while historical signatures stay verifiable
+ok 9 - expiry and clock checks apply to admission, while historical signatures stay verifiable
+  ---
+  duration_ms: 20.228067
+  type: 'test'
+  ...
+# Subtest: private submission remains encrypted even when the visitor consents to later public adoption
+ok 10 - private submission remains encrypted even when the visitor consents to later public adoption
+  ---
+  duration_ms: 10.410514
+  type: 'test'
+  ...
+# Subtest: v3 accepts bounded optional references and duplicates a page without transferring resource authorship
+ok 11 - v3 accepts bounded optional references and duplicates a page without transferring resource authorship
+  ---
+  duration_ms: 8.748919
+  type: 'test'
+  ...
+# Subtest: Node and Go agree on v3 reference vectors, legacy compatibility and exact resource limits
+ok 12 - Node and Go agree on v3 reference vectors, legacy compatibility and exact resource limits
+  ---
+  duration_ms: 451.207373
+  type: 'test'
+  ...
+# Subtest: reference descriptors reject getters without executing them
+ok 13 - reference descriptors reject getters without executing them
+  ---
+  duration_ms: 0.455334
+  type: 'test'
+  ...
+# Subtest: resource insertion preserves the original filename while bounding a Unicode heading
+ok 14 - resource insertion preserves the original filename while bounding a Unicode heading
+  ---
+  duration_ms: 0.357931
+  type: 'test'
+  ...
+# Subtest: automatic resource checks bound concurrency and retain each authenticated target
+ok 15 - automatic resource checks bound concurrency and retain each authenticated target
+  ---
+  duration_ms: 5.179258
+  type: 'test'
+  ...
+# Subtest: aborting an active view cannot release its real request slot early
+ok 16 - aborting an active view cannot release its real request slot early
+  ---
+  duration_ms: 1.121763
+  type: 'test'
+  ...
+# Subtest: queued cancellation never reaches the runtime and a failed request advances the queue
+ok 17 - queued cancellation never reaches the runtime and a failed request advances the queue
+  ---
+  duration_ms: 0.820618
+  type: 'test'
+  ...
+# Subtest: queue exhaustion preserves admitted checks and already-aborted work never starts
+ok 18 - queue exhaustion preserves admitted checks and already-aborted work never starts
+  ---
+  duration_ms: 0.913312
+  type: 'test'
+  ...
+# Subtest: identical reference checks coalesce only in flight and return independent result objects
+ok 19 - identical reference checks coalesce only in flight and return independent result objects
+  ---
+  duration_ms: 0.675727
+  type: 'test'
+  ...
+# Subtest: reference coalescing separates snapshots, pages and descriptor changes
+ok 20 - reference coalescing separates snapshots, pages and descriptor changes
+  ---
+  duration_ms: 0.835145
+  type: 'test'
+  ...
+# Subtest: one cancelled consumer does not cancel its live sibling; abandoned views cannot be revived
+ok 21 - one cancelled consumer does not cancel its live sibling; abandoned views cannot be revived
+  ---
+  duration_ms: 1.944145
+  type: 'test'
+  ...
+# Subtest: shared-request failures reject every caller and do not become cached success
+ok 22 - shared-request failures reject every caller and do not become cached success
+  ---
+  duration_ms: 0.676748
+  type: 'test'
+  ...
+# Subtest: coalesced observers remain bounded even when they share one runtime request
+ok 23 - coalesced observers remain bounded even when they share one runtime request
+  ---
+  duration_ms: 0.702607
+  type: 'test'
+  ...
+# (node:1708754) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: resource UI controller recovers a lost committed reply without creating another signature
+ok 24 - resource UI controller recovers a lost committed reply without creating another signature
+  ---
+  duration_ms: 186.836779
+  type: 'test'
+  ...
+# Subtest: resource UI retries an unconfirmed request only on explicit action and with the same UUID and payload
+ok 25 - resource UI retries an unconfirmed request only on explicit action and with the same UUID and payload
+  ---
+  duration_ms: 169.380168
+  type: 'test'
+  ...
+# Subtest: closing a resource UI session fences an in-flight result while the durable library remains recoverable
+ok 26 - closing a resource UI session fences an in-flight result while the durable library remains recoverable
+  ---
+  duration_ms: 163.68396
+  type: 'test'
+  ...
+# Subtest: resource library walks real history beyond the operation journal and retains third-party creators
+ok 27 - resource library walks real history beyond the operation journal and retains third-party creators
+  ---
+  duration_ms: 1313.343528
+  type: 'test'
+  ...
+# Subtest: resource sizes never round a nonempty small file down to zero
+ok 28 - resource sizes never round a nonempty small file down to zero
+  ---
+  duration_ms: 16.489649
+  type: 'test'
+  ...
+# Subtest: a table descriptor pins its complete canonical payload and returns owned data
+ok 29 - a table descriptor pins its complete canonical payload and returns owned data
+  ---
+  duration_ms: 9.147757
+  type: 'test'
+  ...
+# Subtest: verification of real encrypted envelopes precedes descriptor matching; a reader's valid signature cannot replace the referenced author
+ok 30 - verification of real encrypted envelopes precedes descriptor matching; a reader's valid signature cannot replace the referenced author
+  ---
+  duration_ms: 16.272703
+  type: 'test'
+  ...
+# Subtest: files have canonical base64, exact decoded boundaries and no executable rendering type
+ok 31 - files have canonical base64, exact decoded boundaries and no executable rendering type
+  ---
+  duration_ms: 55.894974
+  type: 'test'
+  ...
+# Subtest: a private resource never becomes public by reference and reader sets cannot silently expand
+ok 32 - a private resource never becomes public by reference and reader sets cannot silently expand
+  ---
+  duration_ms: 0.5971
+  type: 'test'
+  ...
+# Subtest: descriptor and nested data getters are refused without access, including reader arrays
+ok 33 - descriptor and nested data getters are refused without access, including reader arrays
+  ---
+  duration_ms: 0.702256
+  type: 'test'
+  ...
+1..33
+# tests 33
+# suites 0
+# pass 33
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4882.506383

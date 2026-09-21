@@ -1,0 +1,19 @@
+
+Running 12 tests using 1 worker
+
+(node:826226) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › tests/browser/relay-policy-race.spec.ts:65:3 › relay policy race during request distinguishes a cancelled local response from an invalid peer frame (1.0s)
+  ✓   2 [chromium] › tests/browser/relay-policy-race.spec.ts:65:3 › relay policy race during serve distinguishes a cancelled local response from an invalid peer frame (877ms)
+  ✓   3 [chromium] › tests/browser/relay-policy-race.spec.ts:65:3 › relay policy race during unrelated-error distinguishes a cancelled local response from an invalid peer frame (717ms)
+  ✓   4 [chromium] › tests/browser/routing.spec.ts:83:1 › automatic A-B-C mesh: consent controls, own sends while paused, partition/heal and restarted reader takeover with author offline (6.9s)
+  ✓   5 [chromium] › tests/browser/routing.spec.ts:211:1 › one network owner per profile and concurrent consent/preferences do not resurrect revoked relay (499ms)
+  ✓   6 [chromium] › tests/browser/routing.spec.ts:269:1 › fragment scheduling preempts bulk with SOS, gives bulk a fair turn, and cancels relayed bytes without closing own traffic (3.1s)
+  ✓   7 [chromium] › tests/browser/routing.spec.ts:475:1 › packet bounds reject expiry, hop loops and tampering; retained flood is bounded (127ms)
+  ✓   8 [chromium] › tests/browser/routing.spec.ts:539:1 › low-power defers bulk on a live link, keeps SOS moving and never revives an expired queued packet (1.6s)
+  ✓   9 [chromium] › tests/browser/routing.spec.ts:597:1 › browser routing packets cross real native TCP routers; native packet bytes verify in the browser and corruption never forwards (790ms)
+  ✓  10 [chromium] › tests/browser/routing.spec.ts:745:1 › opaque packet corruption is rejected by the browser mesh before storage or forwarding, with valid controls on both sides (1.3s)
+  ✓  11 [chromium] › tests/browser/routing.spec.ts:830:1 › managed relay revocation cancels an in-flight forwarded packet and keeps an authored SOS on that same open link (2.4s)
+  ✓  12 [chromium] › tests/browser/site-contribution.spec.ts:50:1 › browser visitor certificates interoperate with Node and Go while encrypted proposals and publication consent remain separate (722ms)
+
+  12 passed (21.1s)

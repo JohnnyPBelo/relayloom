@@ -1,0 +1,19 @@
+{
+  "scope": "Sanitised trace timing; no SDP, addresses, keys or private payloads retained. Historical source trace remains local.",
+  "scenario": "Firefox v1 RTC-WebSocket-TCP via Go",
+  "observedStage": "rtc.peer.offer before the first publication",
+  "offerMilliseconds": 61743.89500000002,
+  "records": {
+    "before": {
+      "callId": "call@5691",
+      "startTime": 416371.078,
+      "method": "evaluateExpression"
+    },
+    "after": {
+      "callId": "call@5691",
+      "endTime": 478114.973
+    }
+  },
+  "originalFailure": "90000ms test timeout; the remaining suite is still running.",
+  "cause": "Not established; the trace does not attribute the delayed browser promise to resource inspection, Go transport or external load."
+}

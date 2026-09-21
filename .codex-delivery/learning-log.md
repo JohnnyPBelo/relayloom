@@ -633,3 +633,28 @@ Browser/UI Node-Go passaram, mas Electron abortouantes de arrancar por socketUni
 A matriz pública terminou121PASS/20FAIL, concentrados emICE/sinalização; otraceWebKit apresentavaoferta/respostasemcandidatos. Não inferircausadeconcorrência oubugdosrecursos. Reproduçãocurta1WebKit+6Firefox/WebKitpassoucomartefactosidênticos e semmudarrede/protocolo/permissões/prazos. Preservar afalha, recolher sódiagnósticos semdadospessoais e voltar àmatrizcompleta; estes passes não provamcorrecçãoda causa histórica.
 
 CIcancelled não significa automaticamenteutilizadorcancelou: anotação105821119727confirmaexcesso25m. Go/race eSQLiteCtinhamPASS;interopficouinterrompido. Separarinterop numjob dependente, mantendoordem,cobertura e limitesinternos, resolveoorçamentoagregadosemrelaxarostestes. Validar grafo/comandosestaticamente e exigirexecuçãoCI posterior.
+
+
+## CI no limite de composição e inspecções repetidas — 21 de Setembro
+
+CI7fdb76a teve101/102browser: o leitor extenso avançou até116/123 no prazo, com chamadas serializadas emduasfilas internas. Separar consultas readonly de mutações exige guards degeração/bloqueio e controlo negativo sob leitura retida. O teste demonstrou1antes/4depois e recusou resultados apósblock/lock;13Chromiumpassaram.
+
+A fila UI ainda repetia inspecções do mesmo recurso. Coalescer apenas enquanto o pedido estáactivo e por snapshot/página/descritorcompleto reduz o trabalho sem guardar autorizações nem agruparobtains. Quando todososconsumidores cancelam, remover ojobdosregistose conservar apenas oslotactivo atéresposta/timeout. Uma vistanova gera novaautenticação, comprovada pelo controlo2pedidos/123refs. Noveunitáriospassaram; otesteUI ficou7,8snestamáquina,masexigeCI antesdealegarcorrecçãoremota.
+
+O testeanterior de fecho assumia os4slotscheios; comcoalescing só havia1pedido, logo iniciaroutro respeitaoorçamento. Adaptarooráculoparaprovar novarequisição/semreutilizarrespostaabandonada, não mexernosdeadlinesnemdescartarcancelamento.
+
+
+## Pausa de relay durante uma resposta automática
+
+O erro de consentimento local escapava de Mesh.receive após um await de leitura/hash e era classificado pelo transporte como frame inválido. Não apanhar todos os erros nem comparar a mensagem. Um tipo dedicado identifica apenas a revogação observada dentro do router; Mesh consome o controlo válido sem responder automaticamente, mantendo o canal para tráfego próprio. Os controlos reproduziram falha antes, passaram depois, e mantiveram corrupção/erros alheios (incluindo mensagem idêntica) como rejeições. Prova de WebKit15PASS não substitui a regressão restante nem explica o atraso separado de criação de ofertaRTC.
+
+## Desvio de relógio no contrato ainda não integrado
+
+O envelope aceitava300000ms de diferença, mas o certificado novo exigia criação nãofutura. Um controlo com60s demonstrou a divergência. Alinhar Node/portátil/Go na política existente e testar300000/300001 com validade do snapshot suficientemente longa para não mascarar a causa. Não aumentar validade máxima, tolerar expiração ou alterar relógioOS. Os vectores passaram de46para48 com11aceites/37recusados; UI/runtime de contribuições continuam pendentes.
+
+
+## Retoma e proveniência das matrizes — 21 de Setembro
+
+O handle do último Firefox já tinha desaparecido, mas o log terminal e o relatório JSON confirmavam 12 PASS; recolher essa evidência evitou repetir o teste. A nova execução dirigida WebKit também passou 12 casos. O gate final conserva os 104 passes Chromium e 104 Firefox anteriores como resultados daquela fonte, e documenta os oito ficheiros alterados depois; não muda a data/hash de um passe antigo. O WebKit completo, UI Node/Go e Linux são executados como continuação delimitada.
+
+Os commits de protocolo, desempenho e relay foram separados sem mudar os bytes durante o gate. Os hashes antes/depois cobrem essa situação; o HEAD inicial sozinho não identifica WIP testado. Logs CI preservados contêm espaços finais originais e provocam avisos de diff --check: manter os bytes/manifestos da evidência, validar a higiene do código separadamente e não afirmar que todos os logs passaram essa verificação.

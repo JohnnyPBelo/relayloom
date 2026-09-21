@@ -156,3 +156,10 @@ Documento v3, referência autenticada e biblioteca/leitor já implementados. Gat
 Publicação exacta 0fdbd1b9 da fonte runtime7fdb76a: 20 hashes HTTPS, seis UI de recursos e um entre processos PASS. O gate de distribuição 141+1 passou após preservar a tentativa com ICE sem candidatos; causa histórica ainda não resolvida. A documentação/provas/harness podem ser commitados localmente; adiar o push até CI35618030583 terminar para não o cancelar.
 
 Próxima implementação: formulários declarativos e propostas assinadas pelo visitante, com regras de contribuidores e audiência explícitas; aprovação/rejeição pelo dono sem transferir autoria, replay limitado/persistente, reconciliação de base/esquema e contribuição privada sem promoção involuntária. Protocolos TS/Go, UI/runtime nos três motores e percursos reais de três contas são obrigatórios. A fase não substitui grupos web dinâmicos, backup/rotação/keystore, apps móveis e hardware/meios, nem revisão independente. Manter trabalho sequencial e limites de armazenamento.
+
+
+## Gate das correcções concluído — 21 de Setembro
+
+Handle 29159 terminou com código 0: typecheck, 33 contratos, Go sites/race, build, 107 WebKit, recursos UI Node/Go e pacote Linux executado. Curadoria em docs/evidence/site-resource-performance. Não repetir este gate sem novas alterações ou falha que o justifique. Chromium/Firefox completos anteriores mantêm fonte própria e os 12 casos dirigidos por engine cobrem a alteração final.
+
+Enviar os marcos separados e verificar o CI; depois integrar documento v4, contexto autenticado, journal privado/replay, inbox e aprovação, proveniência e UI PT/EN/ES com três contas reais. A versão pública só recebe artefactos exactos validados. Toda a cobertura de grupos web, recuperação/rotação/keystore, plataformas/meios, hardware e revisão independente mantém-se.

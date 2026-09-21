@@ -1,0 +1,346 @@
+{
+  "status": "PASS_SCOPED",
+  "base": "7f67d1ded82505c3387ddfa4c0fa8346c0b5d0ce",
+  "sourceCandidate": "5f6a929",
+  "sourceProvenance": "The gate started from base 7f67d1d plus captured WIP. That unchanged code was committed while the gate ran as 995861d, def424f and 5f6a929. Source hashes before/after are authoritative.",
+  "scope": "Final WebKit regression, native resource UI and Linux packaging after the reproduced relay-pause race fix and clock alignment. Complete Chromium104 and Firefox104 passes before these two narrow changes remain in resource-performance-full/resumed; current directed routing/relay/contribution suites passed12 in each engine, recorded separately. No old report is relabelled as a current-source full run. Also checks the new standalone visitor-contribution contract; that contract has no application/API/inbox/approval/form UI integration yet. Previous unaffected Node/Go/transport gates are recorded separately. No updated deployment, physical-device/radio, Apple signing or independent review claim.",
+  "started": "2026-09-21T21:54:06.628Z",
+  "finished": "2026-09-21T22:08:35.652Z",
+  "checks": [
+    {
+      "name": "typecheck",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit"
+      ],
+      "env": {},
+      "status": "PASS",
+      "started": "2026-09-21T21:54:06.914Z",
+      "pid": 1706272,
+      "signal": null,
+      "exitCode": 0,
+      "elapsedMs": 8702
+    },
+    {
+      "name": "contracts",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "--import",
+        "tsx",
+        "--test",
+        "--test-concurrency=1",
+        "tests/site-contribution.test.ts",
+        "tests/site-contribution-interop.test.ts",
+        "tests/site-resource-inspection.test.ts",
+        "tests/site-resource-ui-controller.test.ts",
+        "tests/site-resource-document.test.ts",
+        "tests/site-resource.test.ts",
+        "tests/site-content.test.ts"
+      ],
+      "env": {},
+      "status": "PASS",
+      "started": "2026-09-21T21:54:15.643Z",
+      "pid": 1708316,
+      "signal": null,
+      "exitCode": 0,
+      "elapsedMs": 4917
+    },
+    {
+      "name": "go-sites-race",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "scripts/go.mjs",
+        "test",
+        "-race",
+        "-p=1",
+        "./sites",
+        "-count=1"
+      ],
+      "env": {},
+      "status": "PASS",
+      "started": "2026-09-21T21:54:20.587Z",
+      "pid": 1709075,
+      "signal": null,
+      "exitCode": 0,
+      "elapsedMs": 14354
+    },
+    {
+      "name": "web-build",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "node_modules/vite/bin/vite.js",
+        "build"
+      ],
+      "env": {},
+      "status": "PASS",
+      "started": "2026-09-21T21:54:34.975Z",
+      "pid": 1710429,
+      "signal": null,
+      "exitCode": 0,
+      "elapsedMs": 3605
+    },
+    {
+      "name": "browser-webkit",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "--output",
+        "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/resource-relay-final/webkit-artifacts"
+      ],
+      "env": {
+        "RELAYLOOM_MATRIX_ENGINE": "webkit"
+      },
+      "status": "PASS",
+      "started": "2026-09-21T21:54:38.608Z",
+      "pid": 1712713,
+      "signal": null,
+      "exitCode": 0,
+      "elapsedMs": 774618,
+      "stats": {
+        "startTime": "2026-09-21T21:54:39.122Z",
+        "duration": 774068.427,
+        "expected": 107,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "name": "resource-ui-node",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "scripts/e2e.mjs",
+        "--config",
+        "playwright.config.ts",
+        "tests/e2e/site-resources.spec.ts",
+        "--output",
+        "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/resource-relay-final/node-artifacts"
+      ],
+      "env": {
+        "RELAYLOOM_TEST_BACKEND": "node"
+      },
+      "status": "PASS",
+      "started": "2026-09-21T22:07:33.309Z",
+      "pid": 1854640,
+      "signal": null,
+      "exitCode": 0,
+      "elapsedMs": 11624,
+      "stats": {
+        "startTime": "2026-09-21T22:07:33.791Z",
+        "duration": 11122.221,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "name": "resource-ui-native",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "scripts/e2e.mjs",
+        "--config",
+        "playwright.config.ts",
+        "tests/e2e/site-resources.spec.ts",
+        "--output",
+        "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/resource-relay-final/native-artifacts"
+      ],
+      "env": {
+        "RELAYLOOM_TEST_BACKEND": "native"
+      },
+      "status": "PASS",
+      "started": "2026-09-21T22:07:44.957Z",
+      "pid": 1855428,
+      "signal": null,
+      "exitCode": 0,
+      "elapsedMs": 10771,
+      "stats": {
+        "startTime": "2026-09-21T22:07:45.410Z",
+        "duration": 10294.336,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "name": "desktop-build",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "scripts/desktop-build.mjs"
+      ],
+      "env": {},
+      "status": "PASS",
+      "started": "2026-09-21T22:07:55.753Z",
+      "pid": 1856324,
+      "signal": null,
+      "exitCode": 0,
+      "elapsedMs": 163
+    },
+    {
+      "name": "desktop-run",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "scripts/desktop-run.mjs",
+        "--smoke",
+        "--x11"
+      ],
+      "env": {},
+      "status": "PASS",
+      "started": "2026-09-21T22:07:55.940Z",
+      "pid": 1856393,
+      "signal": null,
+      "exitCode": 0,
+      "elapsedMs": 1568
+    },
+    {
+      "name": "desktop-package",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "scripts/desktop-package.mjs",
+        "--linux",
+        "--x64",
+        "--dir"
+      ],
+      "env": {},
+      "status": "PASS",
+      "started": "2026-09-21T22:07:57.531Z",
+      "pid": 1856580,
+      "signal": null,
+      "exitCode": 0,
+      "elapsedMs": 37067
+    },
+    {
+      "name": "desktop-packaged-run",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "scripts/desktop-packaged-smoke.mjs"
+      ],
+      "env": {},
+      "status": "PASS",
+      "started": "2026-09-21T22:08:34.622Z",
+      "pid": 1859821,
+      "signal": null,
+      "exitCode": 0,
+      "elapsedMs": 1006
+    }
+  ],
+  "priorFullPasses": [
+    {
+      "name": "browser-chromium",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "--output",
+        "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/resource-performance-full/chromium-artifacts"
+      ],
+      "env": {
+        "RELAYLOOM_MATRIX_ENGINE": "chromium"
+      },
+      "status": "PASS",
+      "started": "2026-09-21T17:01:11.122Z",
+      "pid": 326288,
+      "signal": null,
+      "exitCode": 0,
+      "elapsedMs": 641602,
+      "origin": ".cache/resource-performance-full/report.json",
+      "stats": {
+        "startTime": "2026-09-21T17:01:11.624Z",
+        "duration": 641050.006,
+        "expected": 104,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "name": "browser-firefox",
+      "command": [
+        "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "--output",
+        "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/resource-performance-resumed/firefox-artifacts"
+      ],
+      "env": {
+        "RELAYLOOM_MATRIX_ENGINE": "firefox"
+      },
+      "status": "PASS",
+      "started": "2026-09-21T17:30:43.781Z",
+      "originReport": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/resource-performance-resumed/report.json",
+      "pid": 524839,
+      "signal": null,
+      "exitCode": 0,
+      "elapsedMs": 777552,
+      "origin": ".cache/resource-performance-resumed/report.json",
+      "stats": {
+        "startTime": "2026-09-21T17:30:44.248Z",
+        "duration": 777052.729,
+        "expected": 104,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    }
+  ],
+  "directed": [
+    {
+      "engine": "chromium",
+      "command": "RELAYLOOM_MATRIX_ENGINE=chromium node scripts/e2e.mjs --config tests/browser/matrix.config.ts tests/browser/relay-policy-race.spec.ts tests/browser/routing.spec.ts tests/browser/site-contribution.spec.ts --output .cache/relay-clock-chromium-artifacts",
+      "stats": {
+        "startTime": "2026-09-21T18:16:10.938Z",
+        "duration": 21057.967,
+        "expected": 12,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "engine": "firefox",
+      "command": "RELAYLOOM_MATRIX_ENGINE=firefox node scripts/e2e.mjs --config tests/browser/matrix.config.ts tests/browser/relay-policy-race.spec.ts tests/browser/routing.spec.ts tests/browser/site-contribution.spec.ts --output .cache/relay-clock-firefox-artifacts",
+      "stats": {
+        "startTime": "2026-09-21T18:22:09.220Z",
+        "duration": 35006.572,
+        "expected": 12,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "engine": "webkit",
+      "command": "RELAYLOOM_MATRIX_ENGINE=webkit node scripts/e2e.mjs --config tests/browser/matrix.config.ts tests/browser/relay-policy-race.spec.ts tests/browser/routing.spec.ts tests/browser/site-contribution.spec.ts --output .cache/relay-clock-webkit-artifacts",
+      "stats": {
+        "startTime": "2026-09-21T21:52:33.901Z",
+        "duration": 30532.484,
+        "expected": 12,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    }
+  ],
+  "sourceChangesAfterPriorGate": [
+    "native/sites/contribution.go",
+    "packages/browser/src/mesh.ts",
+    "packages/browser/src/router.ts",
+    "packages/sites/src/contribution-protocol.ts",
+    "tests/browser/relay-policy-race.spec.ts",
+    "tests/browser/site-contribution.spec.ts",
+    "tests/site-contribution-interop.test.ts",
+    "tests/site-contribution.test.ts"
+  ],
+  "limitations": [
+    "Contribution certificates are not integrated forms/inbox/approval/UI.",
+    "No current remote-CI result is inferred.",
+    "Historical RTC candidate absence/slow Firefox offer cause remains unresolved.",
+    "No physical hardware/radio, actual Safari/iOS, Apple signing or independent review result."
+  ]
+}

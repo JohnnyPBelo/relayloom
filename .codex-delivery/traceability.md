@@ -261,3 +261,10 @@ FR-038/039/040 continuam parciais. Código8faad72: 306execuçõesbrowser,68UI No
 ## Publicação dos recursos v3 — 21 de Setembro de 2026
 
 FR-038/039/040 e INT-009: fonte runtime 7fdb76a, distribuição 0fdbd1b9; vinte hashes HTTPS, seis percursos de recursos em três browsers e um de mensagens/anexo entre processos independentes passaram. Gate prévio 135 UI normal e 141 distribuição + um entre processos, com proveniência da retoma e falhas anteriores preservadas. Provas em docs/evidence/site-optional-resources/v3-ui/live. Continuam parciais: contribuições/formulários, grupos web, recuperação/rotação, plataformas/hardware actuais e revisão independente. A ausência histórica de candidatos ICE não foi demonstrada como resolvida pelos passes seguintes.
+
+
+## Desempenho, relay e contrato de contribuições — 21 de Setembro
+
+FR-038/039/040 e INT-009 continuam parciais. Código def424f/5f6a929: gate local 107 WebKit, 2 UI de recursos Node/Go, 33 contratos, Go sites/race e Linux build/run/package/run PASS. Os 12 casos dirigidos por engine e os passes anteriores 104 Chromium/104 Firefox conservam proveniência; oito ficheiros mudaram depois dessas matrizes anteriores. Provas em docs/evidence/site-resource-performance, incluindo falhas antes/depois e página com 123 referências.
+
+995861d contém um contrato autónomo de contribuição assinado e limitado, verificado com 48 vectores e browsers reais. Não implementa ainda envio/aprovação pela aplicação nem fecha contribuições, paridade, plataformas/hardware ou revisão independente. A publicação HTTPS permanece 7fdb76a/0fdbd1b9 até novo gate de distribuição.

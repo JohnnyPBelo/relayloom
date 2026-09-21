@@ -1,0 +1,53 @@
+
+Running 1 test using 1 worker
+
+(node:292901) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [chromium] › tests/browser/site-resource-parallel.spec.ts:11:1 › read-only resource checks can progress together while every reply still checks blocking and session ownership (888ms)
+
+
+  1) [chromium] › tests/browser/site-resource-parallel.spec.ts:11:1 › read-only resource checks can progress together while every reply still checks blocking and session ownership 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+    @@ -1,8 +1,8 @@
+      Array [
+        Object {
+    -     "hasPayload": false,
+    +     "hasPayload": true,
+          "status": "available",
+        },
+        Object {
+          "hasPayload": false,
+          "status": "available",
+
+      153 |     }
+      154 |     const first = await page.evaluate(() => (window as any).readResults);
+    > 155 |     expect(first).toEqual(
+          |                   ^
+      156 |       Array(4).fill({ status: "available", hasPayload: false }),
+      157 |     );
+      158 |     await page.evaluate(() => (window as any).startReads());
+        at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-resource-parallel.spec.ts:155:19
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .cache/resource-read-intent-before-artifacts/site-resource-parallel-rea-5c2b4-cking-and-session-ownership-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: .cache/resource-read-intent-before-artifacts/site-resource-parallel-rea-5c2b4-cking-and-session-ownership-chromium/error-context.md
+
+    Error Context: .cache/resource-read-intent-before-artifacts/site-resource-parallel-rea-5c2b4-cking-and-session-ownership-chromium/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    .cache/resource-read-intent-before-artifacts/site-resource-parallel-rea-5c2b4-cking-and-session-ownership-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace .cache/resource-read-intent-before-artifacts/site-resource-parallel-rea-5c2b4-cking-and-session-ownership-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › tests/browser/site-resource-parallel.spec.ts:11:1 › read-only resource checks can progress together while every reply still checks blocking and session ownership 

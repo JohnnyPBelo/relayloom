@@ -1,0 +1,238 @@
+[
+  {
+    "close": {
+      "reason": "invalid-frame",
+      "at": 2767,
+      "counters": {
+        "sent": 53303,
+        "received": 0,
+        "accepted": 0,
+        "rejected": 1
+      },
+      "resources": {
+        "outgoingBytes": 1783,
+        "incomingBytes": 0,
+        "queuedBytes": 669,
+        "outgoing": 1,
+        "incoming": 0,
+        "completed": 0
+      }
+    },
+    "closeReason": "invalid-frame",
+    "closed": true,
+    "counters": {
+      "sent": 53303,
+      "received": 0,
+      "accepted": 0,
+      "rejected": 1
+    },
+    "resources": {
+      "outgoingBytes": 0,
+      "incomingBytes": 0,
+      "queuedBytes": 0,
+      "outgoing": 0,
+      "incoming": 0,
+      "completed": 0
+    },
+    "frames": [
+      {
+        "direction": "send",
+        "t": "part",
+        "id": "2a9ce37d28d3",
+        "index": 0,
+        "count": 1,
+        "at": 2379
+      },
+      {
+        "direction": "send",
+        "t": "part",
+        "id": "1ea4e964a6b1",
+        "index": 0,
+        "count": 1,
+        "at": 2379
+      },
+      {
+        "direction": "receive",
+        "t": "ack",
+        "id": "2a9ce37d28d3",
+        "at": 2394
+      },
+      {
+        "direction": "receive",
+        "t": "ack",
+        "id": "1ea4e964a6b1",
+        "at": 2394
+      },
+      {
+        "direction": "receive",
+        "t": "part",
+        "id": "0b56dd157c94",
+        "index": 0,
+        "count": 1,
+        "at": 2395
+      },
+      {
+        "direction": "send",
+        "t": "part",
+        "id": "40027ca52358",
+        "index": 0,
+        "count": 99,
+        "at": 2547
+      },
+      {
+        "direction": "send",
+        "t": "part",
+        "id": "40027ca52358",
+        "index": 1,
+        "count": 99,
+        "at": 2548
+      },
+      {
+        "direction": "send",
+        "t": "part",
+        "id": "40027ca52358",
+        "index": 2,
+        "count": 99,
+        "at": 2549
+      },
+      {
+        "direction": "send",
+        "t": "drop",
+        "id": "40027ca52358",
+        "at": 2550
+      },
+      {
+        "direction": "send",
+        "t": "part",
+        "id": "6d448d6c57e6",
+        "index": 0,
+        "count": 1,
+        "at": 2694
+      },
+      {
+        "direction": "receive",
+        "t": "ack",
+        "id": "6d448d6c57e6",
+        "at": 2706
+      }
+    ]
+  },
+  {
+    "close": {
+      "reason": "remote",
+      "at": 2566,
+      "counters": {
+        "sent": 835,
+        "received": 2532,
+        "accepted": 3,
+        "rejected": 0
+      },
+      "resources": {
+        "outgoingBytes": 354,
+        "incomingBytes": 0,
+        "queuedBytes": 0,
+        "outgoing": 1,
+        "incoming": 0,
+        "completed": 0
+      }
+    },
+    "closeReason": "remote",
+    "closed": true,
+    "counters": {
+      "sent": 835,
+      "received": 2532,
+      "accepted": 3,
+      "rejected": 0
+    },
+    "resources": {
+      "outgoingBytes": 0,
+      "incomingBytes": 0,
+      "queuedBytes": 0,
+      "outgoing": 0,
+      "incoming": 0,
+      "completed": 0
+    },
+    "frames": [
+      {
+        "direction": "receive",
+        "t": "part",
+        "id": "2a9ce37d28d3",
+        "index": 0,
+        "count": 1,
+        "at": 2179
+      },
+      {
+        "direction": "receive",
+        "t": "part",
+        "id": "1ea4e964a6b1",
+        "index": 0,
+        "count": 1,
+        "at": 2179
+      },
+      {
+        "direction": "send",
+        "t": "ack",
+        "id": "2a9ce37d28d3",
+        "at": 2182
+      },
+      {
+        "direction": "send",
+        "t": "ack",
+        "id": "1ea4e964a6b1",
+        "at": 2184
+      },
+      {
+        "direction": "send",
+        "t": "part",
+        "id": "0b56dd157c94",
+        "index": 0,
+        "count": 1,
+        "at": 2185
+      },
+      {
+        "direction": "receive",
+        "t": "part",
+        "id": "40027ca52358",
+        "index": 0,
+        "count": 99,
+        "at": 2347
+      },
+      {
+        "direction": "receive",
+        "t": "part",
+        "id": "40027ca52358",
+        "index": 1,
+        "count": 99,
+        "at": 2349
+      },
+      {
+        "direction": "receive",
+        "t": "part",
+        "id": "40027ca52358",
+        "index": 2,
+        "count": 99,
+        "at": 2350
+      },
+      {
+        "direction": "receive",
+        "t": "drop",
+        "id": "40027ca52358",
+        "at": 2350
+      },
+      {
+        "direction": "receive",
+        "t": "part",
+        "id": "6d448d6c57e6",
+        "index": 0,
+        "count": 1,
+        "at": 2492
+      },
+      {
+        "direction": "send",
+        "t": "ack",
+        "id": "6d448d6c57e6",
+        "at": 2503
+      }
+    ]
+  }
+]
