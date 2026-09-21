@@ -1,4 +1,5 @@
 import { BrowserResourceRuntime } from "./resource-runtime";
+import { parseSiteResourceRead } from "./resource-read";
 import { validateSiteEditingContext } from "../../sites/src/editing";
 import { draftSummary } from "../../content/src/site";
 import { summarizeSiteResource } from "../../content/src/site-resource";
@@ -990,6 +991,22 @@ export class BrowserApplication {
     if (path === "lock") {
       this.lock();
       return { ok: true };
+    }
+    if (path === "resource-command" && body?.action === "inspect") {
+      // Inspection neither signs nor requests content nor mutates its store.
+      // Keep it out of the mutation queue so bounded read work can overlap I/O.
+      this.owner();
+      // Capture the read-only intent before the first await; a mutable caller
+      // must not turn it into an obtain or change targets while state is read.
+      const request = parseSiteResourceRead(body);
+      const generation = this.#generation,
+        resources = this.#resources;
+      await this.objects();
+      this.guard(generation);
+      if (!resources) throw new Error("Sessão de recursos bloqueada");
+      const result = await resources.command(request);
+      this.guard(generation);
+      return result;
     }
     const run = this.#queue.then(() => this.execute(path, body));
     this.#queue = run.then(

@@ -134,7 +134,7 @@ export function SiteResourceView({
     try {
       const result =
         action === "inspect"
-          ? await resourceInspector.inspect(target, abort.signal)
+          ? await resourceInspector.inspect(target, abort.signal, reference)
           : await api("resource-command", { action, ...target }, abort.signal);
       if (!isCurrent()) return;
       if (canonical(result.reference) !== canonical(reference))

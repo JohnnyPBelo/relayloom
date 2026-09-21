@@ -8,16 +8,12 @@ import type { BrowserProfile } from "./profile";
 import { verifySiteContent } from "./site-content";
 import { verifiedBundle } from "./crypto";
 
-export async function readSiteResource(
-  value: any,
-  context: {
-    profile: BrowserProfile;
-    ensure(): void;
-    blocked(): Promise<readonly string[]>;
-    request(id: string): Promise<void>;
-    withdrawn(id: string, authorId: string): Promise<boolean>;
-  },
-) {
+export function parseSiteResourceRead(value: any): {
+  action: "inspect" | "obtain";
+  snapshotId: string;
+  pageId: string;
+  blockId: string;
+} {
   if (
     !exactShape(value, ["action", "snapshotId", "pageId", "blockId"]) ||
     !["inspect", "obtain"].includes(value.action) ||
@@ -29,7 +25,25 @@ export async function readSiteResource(
     !/^[A-Za-z0-9_-]{1,64}$/.test(value.blockId)
   )
     throw Error("Pedido de recurso do site inválido");
-  const { action, snapshotId, pageId, blockId } = value;
+  return {
+    action: value.action,
+    snapshotId: value.snapshotId,
+    pageId: value.pageId,
+    blockId: value.blockId,
+  };
+}
+
+export async function readSiteResource(
+  value: any,
+  context: {
+    profile: BrowserProfile;
+    ensure(): void;
+    blocked(): Promise<readonly string[]>;
+    request(id: string): Promise<void>;
+    withdrawn(id: string, authorId: string): Promise<boolean>;
+  },
+) {
+  const { action, snapshotId, pageId, blockId } = parseSiteResourceRead(value);
   const snapshot = await context.profile.getBundle(snapshotId),
     blocked = await context.blocked();
   context.ensure();

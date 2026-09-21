@@ -1,26 +1,35 @@
 import { api, type API } from "../api";
 import { SITE_LIMITS } from "../../../../packages/content/src/site";
+import { canonical } from "../../../../packages/core/src/protocol";
+import {
+  parseSiteResourceReference,
+  type SiteResourceReference,
+} from "../../../../packages/content/src/site-resource";
 
 export interface ResourceTarget {
   snapshotId: string;
   pageId: string;
   blockId: string;
 }
-interface Job {
-  body: ResourceTarget & { action: "inspect" };
+interface Observer {
   signal?: AbortSignal;
-  settled: boolean;
   abort(): void;
   resolve(value: any): void;
   reject(error: unknown): void;
 }
-
-/** Automatic checks must leave room for navigation, messaging and explicit reads.
- * A cancelled caller cannot free an active slot until its real request settles:
- * aborting a UI promise does not cancel the work already sent to the Worker. */
+interface Job {
+  body: ResourceTarget & { action: "inspect" };
+  key: string;
+  observers: Set<Observer>;
+}
+/** Concurrent status checks for the same reference in one authenticated page
+ * may share an in-flight request. Results are never cached after completion and
+ * explicit obtains keep their own target-specific authorisation. */
 export class ResourceInspector {
   private active = 0;
+  private observers = 0;
   private waiting: Job[] = [];
+  private jobs = new Map<string, Job>();
   constructor(
     private perform: API,
     private parallel = 4,
@@ -36,69 +45,111 @@ export class ResourceInspector {
     )
       throw new Error("Orçamento de leitura inválido");
   }
-  inspect(target: ResourceTarget, signal?: AbortSignal): Promise<any> {
+  inspect(
+    target: ResourceTarget,
+    signal?: AbortSignal,
+    reference?: SiteResourceReference,
+  ): Promise<any> {
     if (signal?.aborted)
       return Promise.reject(
         new DOMException("Operação cancelada", "AbortError"),
       );
-    if (this.waiting.length >= this.queued)
+    let key: string;
+    try {
+      key = canonical(
+        reference === undefined
+          ? target
+          : {
+              snapshotId: target.snapshotId,
+              pageId: target.pageId,
+              reference: parseSiteResourceReference(reference),
+            },
+      );
+    } catch (error) {
+      return Promise.reject(error);
+    }
+    let job = this.jobs.get(key);
+    if (
+      this.observers >= this.queued + this.parallel ||
+      (!job && this.waiting.length >= this.queued)
+    )
       return Promise.reject(new Error("Há demasiadas operações em curso"));
-    return new Promise((resolve, reject) => {
-      const job: Job = {
+    if (!job) {
+      job = {
+        key,
         body: {
           action: "inspect",
           snapshotId: target.snapshotId,
           pageId: target.pageId,
           blockId: target.blockId,
         },
+        observers: new Set(),
+      };
+      this.jobs.set(key, job);
+      this.waiting.push(job);
+    }
+    const current = job;
+    return new Promise((resolve, reject) => {
+      const observer: Observer = {
         signal,
-        settled: false,
         resolve,
         reject,
         abort: () => {
-          if (job.settled) return;
-          job.settled = true;
-          signal?.removeEventListener("abort", job.abort);
-          const index = this.waiting.indexOf(job);
-          if (index >= 0) this.waiting.splice(index, 1);
+          if (!current.observers.delete(observer)) return;
+          this.observers--;
+          signal?.removeEventListener("abort", observer.abort);
           reject(new DOMException("Operação cancelada", "AbortError"));
+          if (!current.observers.size) {
+            // New views/sessions must never join an abandoned request. Its actual
+            // active slot remains occupied until the runtime reply/timeout.
+            if (this.jobs.get(key) === current) this.jobs.delete(key);
+            const index = this.waiting.indexOf(current);
+            if (index >= 0) this.waiting.splice(index, 1);
+          }
         },
       };
-      signal?.addEventListener("abort", job.abort, { once: true });
-      this.waiting.push(job);
+      this.observers++;
+      current.observers.add(observer);
+      signal?.addEventListener("abort", observer.abort, { once: true });
       this.drain();
     });
+  }
+  private finish(job: Job, value: any, failed = false, error?: unknown) {
+    if (this.jobs.get(job.key) === job) this.jobs.delete(job.key);
+    for (const observer of job.observers) {
+      this.observers--;
+      observer.signal?.removeEventListener("abort", observer.abort);
+      if (failed) observer.reject(error);
+      else {
+        try {
+          observer.resolve(structuredClone(value));
+        } catch (error) {
+          observer.reject(error);
+        }
+      }
+    }
+    job.observers.clear();
   }
   private drain() {
     while (this.active < this.parallel && this.waiting.length) {
       const job = this.waiting.shift()!;
-      if (job.settled) continue;
+      if (!job.observers.size) continue;
       this.active++;
       void Promise.resolve()
         .then(() =>
-          job.settled ? undefined : this.perform("resource-command", job.body),
+          job.observers.size
+            ? this.perform("resource-command", job.body)
+            : undefined,
         )
         .then(
-          (value) => {
-            if (!job.settled) {
-              job.settled = true;
-              job.resolve(value);
-            }
-          },
-          (error) => {
-            if (!job.settled) {
-              job.settled = true;
-              job.reject(error);
-            }
-          },
+          (value) => this.finish(job, value),
+          (error) => this.finish(job, undefined, true, error),
         )
         .finally(() => {
-          job.signal?.removeEventListener("abort", job.abort);
           this.active--;
           this.drain();
         });
     }
   }
 }
-
 export const resourceInspector = new ResourceInspector(api);

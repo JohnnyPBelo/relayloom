@@ -111,8 +111,20 @@ export class BrowserResourceRuntime {
     }
   }
   command(value: any): Promise<any> {
+    if (value?.action === "inspect") {
+      const read = async () => {
+        this.ensure();
+        const result = await readSiteResource(value, {
+          ...this.context,
+          ensure: () => this.ensure(),
+        });
+        this.ensure();
+        return result;
+      };
+      return read();
+    }
     return this.serial(async () => {
-      if (["inspect", "obtain"].includes(value?.action))
+      if (value?.action === "obtain")
         return readSiteResource(value, {
           ...this.context,
           ensure: () => this.ensure(),

@@ -287,10 +287,15 @@ test("the maximum valid page inspects every resource without exhausting the brow
           requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
         ),
     );
-    // Closing cancels waiting work, but cannot release active request slots early.
-    expect(
-      await page.evaluate(() => (window as any).inspectionBudget.posted),
-    ).toBe(pending);
+    // All repeated references share one pending check. Reopening must create a
+    // fresh check rather than rejoining the abandoned view's response.
+    expect(pending).toBe(1);
+    await expect
+      .poll(() => page.evaluate(() => (window as any).inspectionBudget.posted))
+      .toBe(2);
+    await expect
+      .poll(() => page.evaluate(() => (window as any).inspectionBudget.held))
+      .toBe(2);
     await page.evaluate(() => (window as any).releaseInspections());
     await expect(
       visit
@@ -312,7 +317,7 @@ test("the maximum valid page inspects every resource without exhausting the brow
       "ONE_VERIFIED_RESOURCE_MANY_REFERENCES",
     );
     const budget = await page.evaluate(() => (window as any).inspectionBudget);
-    expect(budget.posted).toBe(pending + 123);
+    expect(budget.posted).toBe(pending + 1); // Identical references share only this in-flight check.
     expect(budget.peak).toBeLessThan(64);
     writeFileSync(out + "/cancellation.json", JSON.stringify(budget, null, 2));
   } finally {
