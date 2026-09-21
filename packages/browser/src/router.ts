@@ -47,6 +47,15 @@ export interface BrowserRouterOptions {
 }
 const rank = (p: Priority) => (p === "sos" ? 0 : p === "normal" ? 1 : 2);
 
+/** Local consent changed while preparing automatic relay work. This is not an
+ * invalid incoming packet and must never hide other validation/storage errors. */
+export class RelayRevokedError extends Error {
+  constructor() {
+    super("Relay desactivado");
+    this.name = "RelayRevokedError";
+  }
+}
+
 /** Async store-and-forward with native-compatible packet IDs and bounded in-memory retry state. */
 export class BrowserRouter {
   readonly id: string;
@@ -289,7 +298,7 @@ export class BrowserRouter {
     const packet = await createPacket(this.id, payload, priority, ttlMs);
     await this.options.validate(packet.payload);
     if (this.#stopped) throw new Error("Router encerrado");
-    if (relayOnly && !this.#relaying) throw new Error("Relay desactivado");
+    if (relayOnly && !this.#relaying) throw new RelayRevokedError();
     if (this.#seen.has(packet.id)) return packet.id;
     const value = this.retain(packet, relayOnly);
     this.remember(packet);

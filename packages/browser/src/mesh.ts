@@ -14,7 +14,7 @@ export interface MeshProfile {
   getBundle(id: string): Promise<Bundle>;
   putBundle(bundle: Bundle): Promise<string>;
 }
-import { BrowserRouter, type BrowserRoute } from "./router";
+import { BrowserRouter, RelayRevokedError, type BrowserRoute } from "./router";
 import type { Priority } from "./packet";
 
 type Wire =
@@ -247,12 +247,7 @@ export class BrowserMesh {
         .slice(0, 8)
         .filter((id) => this.mark("request:" + id, 5000));
       if (missing.length)
-        await this.router.broadcast(
-          { type: "request", ids: missing },
-          "normal",
-          120_000,
-          true,
-        );
+        await this.relayResponse({ type: "request", ids: missing }, "normal");
     } else {
       for (const id of wire.ids.slice(0, 8)) {
         if (!this.mark("serve:" + id, 1000)) continue;
@@ -264,13 +259,22 @@ export class BrowserMesh {
         }
         if (this.#settings.blocked.includes(bundle.manifest.author.id))
           continue;
-        await this.router.broadcast(
+        await this.relayResponse(
           { type: "bundle", bundle },
           bundle.manifest.kind === "alert" ? "sos" : "bulk",
-          120_000,
-          true,
         );
       }
+    }
+  }
+  private async relayResponse(wire: Wire, priority: Priority): Promise<void> {
+    try {
+      await this.router.broadcast(wire, priority, 120_000, true);
+    } catch (error) {
+      // The valid incoming inventory/request was consumed, but local consent
+      // can disappear during an awaited read/hash. Send no automatic response;
+      // keep the link available for owned traffic. Other failures still reject
+      // admission and receive no success ACK from the transport.
+      if (!(error instanceof RelayRevokedError)) throw error;
     }
   }
   async request(id: string): Promise<void> {
