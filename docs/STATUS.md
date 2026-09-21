@@ -1,6 +1,16 @@
 # RelayLoom — estado verificável
 
-## Recursos opcionais v3 — verificados localmente, 19 de Setembro de 2026
+## Recursos v3 publicados e verificados no HTTPS — 21 de Setembro de 2026
+
+**Fonte runtime 7fdb76a5de5869efa6ebdd721bc7e8f5efac68af; distribuição 0fdbd1b9563540a5bc28c74d669668e948aa7667.** Pages 35622927304 terminou SUCCESS. A biblioteca de ficheiros/tabelas e as referências v3 estão em https://johnnypbelo.github.io/relayloom/. Os 20 artefactos HTTP conferiram por hash/tamanho; passaram seis percursos de recursos em Chromium/Firefox/WebKit e um entre processos independentes, com mensagens, anexo exacto e reabertura offline. [Provas e comandos](evidence/site-optional-resources/v3-ui/live).
+
+Antes de publicar, passaram 135 percursos na compilação normal, 141 na distribuição e um entre processos. A primeira matriz pública teve 121/141 aprovados; os restantes falharam sobretudo em ICE/sinalização, com sinais WebKit sem candidatos num trace. Um controlo e seis repetições passaram depois com artefactos idênticos. A causa dessa ocorrência não está demonstrada como resolvida. A retoma conservou a proveniência e acrescentou apenas diagnóstico de falha; não alterou protocolo, STUN, permissões ou prazos.
+
+CI 35618030583 / 7fdb76a: Node nas três plataformas, Go, interoperabilidade e UI nativa passaram; Reticulum e pacotes Windows/macOS/Linux também passaram; iOS e browser autónomo continuavam em execução na última consulta. O CI anterior foi cancelado ao ultrapassar 25 minutos cumulativos; Go/interoperabilidade foram separados em jobs sequenciais, mantendo cobertura e prazos internos. [Provas](evidence/ci-native-split-15c1dbc). Não é validação de hardware, Safari real ou prontidão para catástrofes.
+
+Continuam obrigatórios o resto do contrato, contribuições/formulários, grupos web dinâmicos, recuperação/rotação/keystore, plataformas/radios e revisão independente. As secções seguintes registam os marcos e limites anteriores.
+
+## Validação local anterior à publicação — 19 de Setembro de 2026 (histórico)
 
 **Implementado e verificado nesta branch, ainda sem publicação:** documento v3, referências extraídas de snapshots autenticados, biblioteca e leitor partilhados por Node, Go e browser. Ficheiros até 2 MiB, tabelas pesquisáveis/importáveis, privacidade, autoria original, obtenção explícita, preview/download e retoma idempotente. Há limites de 128 blocos/24 irmãos/32 recursos distintos. Uma fila limitada evita que uma composição legítima esgote o orçamento do Worker; fechar/reabrir cancela trabalho ainda não iniciado sem libertar prematuramente chamadas activas. Ler/servir não confere autoridade de assinatura. [Contrato e limites](SITE-RESOURCES.md).
 
@@ -12,7 +22,7 @@ Foram reproduzidas e corrigidas falhas de pedidos sobrepostos, contraste/paletas
 
 **CI 35338021371 /56e105e, anterior ao v3:** Node Windows/macOS/Linux,Go,UI nativa,Reticulum,três pacotesdesktop e browserautónomo passaram. iOS falhou por timeout ao procurar a fototeca, depois de startup/importação da fotografia de teste passarem. Não prova entrega aoNode ou selecção da fotografia nesta execução. Essa execução não contém o diagnóstico1e83db2 do principal. A integração local já o preserva:25testes host e duas verificações estáticas passaram, sem compilar/executar iOS. [Provas e limites](evidence/ios-56e105e).
 
-**Web pública actual:** fonte59c9bd1,distribuiçãof6758222,comtabelasv2. A candidata v3 ainda não substituiu esseHTML.
+**Publicação existente nessa data:** fonte 59c9bd1, distribuição f6758222, com tabelas v2. Foi substituída pela distribuição v3 identificada no início deste documento.
 
 Os marcos abaixo conservam os estados e limites históricos das respectivas versões.
 

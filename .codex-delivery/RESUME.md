@@ -333,3 +333,73 @@ Apósconclusão: curadorfinal temde aceitar a consolidação com2scriptsdiferent
 Código v3/UI e correcções committed em8faad72(57ficheiros). Todos os663hashes do relatório consolidado coincidem com os ficheiros e gitdiffHEADnos caminhos de fonte estávazio. Ainda nãofoi feito push. Gates locais consolidadosPASS em .cache/resources-verified/report.json e docs/evidence/site-optional-resources/v3-ui/final, com falha original de socketpreservada e suplemento19374PASS. Sem testesactivos; handles4347FAIL e19374PASS/79948PASS foram recolhidos.
 
 Próximoimediato: commit separado das notas/guias/provascuradas (excluir capturasgeradas antigas fora dos directórios escolhidos), integrar1e83db2do principal no ramode recursos preservandoas3fontesiOS/diagnósticos e todososWIP, verificarâmbitoafectado, pushnormal. Depoisaplicar/verificarrascunhospublic/HTTPS e publicar exacto. OHTMLactualaindaé59c9bd1/f6758222. Contribuições/formulários, gruposweb,backup/rotação/keystore,plataformas/hardware e revisãoindependente continuamnoobjectivo. Esta continuação foi progressoconcreto,gates ecommit, não bloqueio nemprodutoconcluído.
+
+
+## Commits enviados e distribuição em validação — 19 de Setembro
+
+Publicados no ramo codex/site-optional-resources:8faad725925149db24bae331691d691a8e7a4f1a(código),ee53cdd(provas/guias),cc4d761(logs curados explicitamente adicionados apesar de*.log ignorado),15c1dbcdece81b437f120570c42a1f1bf9e20a67(integração local do principal1e83db2). Pushnormal confirmado, semforce/PRmerge. Todosos64WIPpré-integração preservadosporhash. Só trêsfontesiOSdeteste/diagnóstico diferemda candidataaprovada;25host+2estáticasPASS,semAppleexecution. CI35413693543/15c1dbc foi observadoqueued; ainda semresultadoremoto.
+
+**Gateactualúnico:** handle71298, `node scripts/verify-public-web.mjs`, driver .cache/resource-public-gate-driver.log, relatório .cache/public-web/gate/report.json. Conserve fontes/artefactos enquantoexecuta. Inclui os novos recursos/limites/revisão naUI normal e distribuição/3engines, além deprocessosindependentes. node_modules e.cache/playwright desta worktree sãoagorasymlinkspara dependênciascachedo mesmoprojecto, semdownloads. Trêsficheirostest/script estãoWIPparaestegate: scripts/verify-public-web.mjs,tests/browser/public.config.ts,tests/browser/site-resources-ui.spec.ts. Oúltimopassa auiHostpara testesHTTPSexplícitos e observa pedidos/APIpelobrowser. Ainda não commitados; validarantes.
+
+4347foiFAILapenaspelocaminhodesocketElectron,19374suplementoPASS(8RNS+3UI,package/runLinux),26060hostIOSPASS,6189pushPASS; todosrecolhidos. Provasconsolidadas emdocs/evidence/site-optional-resources/v3-ui/final; fonte8faad72comparada663hashes. Ocurador anterior.recursos-final geroureportPASSconsolidado comproveniência, não alteroufalhasoriginais. OHTMLpublicoaindaé59c9bd1/f6758222. Próximo: terminar71298,corrigirfalhas,confirmarCIsemcancelarporpushprematuro,commitarharness,generar/publicarexactoscomscripts/publish-web.mjs evalidarHTTPScomrecursos e doisprocessos. Depoiscontribuições/formulários,gruposweb,backup/rotação/keystore,plataformas/radioserevisãoindependente. Não marcarobjectivocomplete/blocked;continuamuitasacçõespossíveis.
+
+
+## Gate público71298 — primeira fase UI aprovada
+
+Typecheck/conversation-address/default-buildPASS;default-ui-chromium45PASS(7,6min). Ohandle71298foiconfirmadovivo;seguirFirefox/WebKit,public-build/matrizpublicaeprocessosindependentes. Fontesdos3ficheirosharnessWIPcongeladasduranteogate. CI35413693543observadoemexecução/fila,semconclusãoainda;usarresultadoactualantesdequalquerpushquenãodevacancelá-lo. Objectivoactivo;esta continuação foi observação deprogresso eesperaverificada.
+
+
+## Gate público71298 — Chromium45PASS eFirefox45PASS
+
+Ambas as fases UI normal passaram(7,6min/9,2min); seguirWebKit e depoisbuild/matriz de distribuição eprocessosindependentes. Ohandle71298 foirevalidado vivo, semreinício. CI35413693543: testesNodeWindows/Linux concluídosSUCCESS naúltimaconsulta;macOSemexecução,semconclusão global. Não cancelar CI comnovo push enquanto houver trabalho emcurso semnecessidade.
+
+Esta continuação recolheu resultadosnovos eesperaverificada;objectivointegralactivo. FontesdoharnessWIPmantidas,HTMLpublicoaindanãoalterado.
+
+
+## Gate público71298 — UI normal135PASS; distribuição activa
+
+Default-ui:45Chromium+45Firefox+45WebKitPASS(último10,1min). Public-buildPASS. Faseactualpublic-matrix sobre dist/public-web com prefixo/relayloom; depoisprocessosindependentes. Handle71298foiconfirmadovivo,nenhumreinício. Fontes eartefactoscongelados,HTMLremotoaindanãomudou.
+
+CI35413693543: NodeWindows/macOS/Linux SUCCESS; native-go emexecução naúltimaconsulta. Ainda não declararCIglobalPASS ouApple/hardwarevalidado. Esta continuação recolheu fases completas novas eesperaverificada. Seguirgate,curar,commitarharnessquandoCIactualterminarsemcancelamentoindevido,publicarartefactosexactosevalidarHTTPS. Objectivoactivo.
+
+
+## Matriz de distribuição — Chromium47PASS; Firefox emcurso
+
+A compilação pública contém20artefactos; webSources/webArtifacts corresponderam porigualdadeexacta aos hashesdo gate duranteaexecução. Public-matrix passou os47casosChromium e iniciouFirefox; ainda não terminou a matriz nem o teste entreprocessos. Handle71298foiconfirmadovivo. DefaultUI45×3mantémPASS; não somar comos102×3como cenáriosúnicos. Fonte eartefactoscongelados;HTMLremotosemmudança. Continuaromesmogate,semreinício.
+
+
+## Retoma21Setembro — falha pública preservada; recuperação dirigida eCIdividido
+
+Ohandle71298já não existe; reportfinalFAIL(public-matrix,terminou19Set02:42). A matriz teve121PASS/20FAIL:Chromium47PASS,Firefox42PASS/5FAIL,WebKit32PASS/15FAIL. Falhas sobretudo na aberturaRTC. Artefactosoriginais preservados em .cache/resource-public-first-gate e .cache/resource-public-first-matrix-report.json. Dois exemplos deSDP no traceWebKit tinham0candidatos; não foi estabelecido o motivo. Não inventarcorrecção ouatribuira concorrência/rede semprova.
+
+Um percursoWebKit(40971exit0) e seisrepetiçõesFirefox/WebKit(34539exit0) passaram comomesmobuild/artifacts. Foi acrescentada a tests/browser/connectivity.spec.ts apenas recolha limitada/semendereços/chaves dos estados jáprojectadospelaUI emcasodefalha. Typecheck35307PASS; comparação provou20artefactosidênticos eapenasessa diferençanosinputsweb. Semalterarprotocolo,deadlines,STUN,permissões oudefiniçõesdobrowser.
+
+**Testeactual:** handle69889, driver .cache/resource-public-resume-driver.log, relatório .cache/resource-public-resume/report.json, script .cache/resume-resource-public-gate.mjs. Repete141casos da distribuição e depoisdoisprocessos, conservando as fasesdefaultUI135PASS/builds porproveniência ehashes; loggingDEBUGpw:browser sólo paraesta execução. Só apósPASS escreve orelatório consolidadoesperadopelopublicador. Não editarfontes/artefactosnemrelançarsemrevalidarhandle.
+
+CI35413693543/15c1dbc foiCANCELLED pelo limite de25m:anotaçãoconfirmada. Node3OS,Go/race eSQLiteCpassaram;interop interrompido e jobsseguintesskipped. Workflowdivididoemnative-go→native-interop→native-ui,25mcada,mesmoscomandos/prazos/permissões/concorrência. Commit7fdb76aenviadosemforce,provas docs/evidence/ci-native-split-15c1dbc. NovorunverificarporSHA; ainda não declararworkflowexecutadoPASS. Não alterarserviços/bridges/modelos. Root.WIP64preservado;produtonãoconcluído,HTMLv3aindanãopublicado.
+
+
+## Retoma pública69889 — Chromium47PASS eFirefoxactivo
+
+Handle69889confirmadovivo; Chromium47PASS/0FAIL na matrizretomada. Firefoxemcurso,semalteraçõesaoartefacto/protocolo. O novoCI35618030583/7fdb76a iniciou,WindowsNodejáSUCCESS naúltimaconsulta;restantespendentes. Estadohistórico121/141 eausênciaICEcontinuampreservados/nãoexplicadoscomocausaresolvida. Esta continuação recolheu umafasecompletae espera verificada;objectivoactivo.
+
+
+## Retoma69889 — Chromium47PASS/Firefox47PASS; WebKit activo
+
+Ambos os engines terminaram47percursos semfalhas na matrizretomada. WebKitinicioueprimeiro percursoPASS. Handle69889revalidado vivo; fonte/artefactosmantidos,apenasdiagnóstico defalha nafixture. A falhaoriginal20casospermanece histórica/semcausacompletaestabelecida. CI35618030583:Node3plataformasSUCCESS,native-goemexecução naúltimaconsulta. Continuarpublic-matrix e depoisdoisprocessos; nãopublicarantesPASS/igualdadehashes. Esta continuação teveprogressodefase+esperaverificada;objectivoactivo.
+
+
+## Gate públicoPASS ePagesempublicação — 21 de Setembro
+
+Retoma69889terminouPASS:141/141matrizdistribuição,1/1entreprocessos,zerofalhas/skips;135UI default anteriores preservadas porproveniência,20artefactos/hashesenquadrados. Oresultado antigo121/141mantém-secomcausaincompleta(ICEsemcandidatosobservados),nãoreescritocomocorrigido. Relatório consolidadoactual .cache/public-web/gate/report.json (e .cache/resource-public-resume/report.json). Handle69889recolhido0.
+
+Código runtime estálimpoemrelaçãoaHEAD7fdb76a(enviado);WIPéapenasverificação/documentação. Prova .cache/public-runtime-source.json. Para não cancelar CI35618030583emcurso, apublicação usa ocommitruntimejáenviado;oharnesspodesercommitado/enviado quandoesseCIterminar. Publicadorautorizado validousources/artifacts e fezpushnormal: distribuição0fdbd1b9563540a5bc28c74d669668e948aa7667 dafonte7fdb76a5de5869efa6ebdd721bc7e8f5efac68af. Handle41897recolhido0, statusDEPLOYMENT_REQUESTED. Pages35622927304foiobservadoemexecução;confirmarconclusão.
+
+Próximo: depoisdePagesPASS, `RELAYLOOM_LIVE_OUTPUT=.cache/resource-live node .cache/verify-resource-live.mjs` (scriptpreparado, aindanãoexecutado). Verifica release/20hashesHTTPS,2UIrecursosporbrowser e1entreprocessos,semactualizaçõesaosdadosdoutilizador. Se falhar, preservar tentativa e diagnosticar; não chamarpublicadoverificadoainda. CI35618030583:Node3OS+native-goPASS,native-interopemexecução naúltimaconsulta. Nãointerromper. Objectivointegralcontinua,plataformas/hardware/contribuições/gruposweb/backup/rotação/revisãoindependentependentes.
+
+
+## HTTPSv3 publicado e verificado — 21 de Setembro
+
+Pages35622927304SUCCESS. Distribuição0fdbd1b9563540a5bc28c74d669668e948aa7667,fonteruntime7fdb76a5de5869efa6ebdd721bc7e8f5efac68af. Verificação live handle28275terminouPASS(recolhido0):20hashes/tamanhosHTTP,6UIrecursos(2porengine),1entreprocessosChromium/Firefox com mensagens/anexo/recoveryoffline. Provascuradas docs/evidence/site-optional-resources/v3-ui/live. README/STATUS/SITE-RESOURCES actualizados emWIPparaapublicação; ainda precisamcommit posterior. Não afirmar doisdispositivosfísicosouprodutocompleto.
+
+CI35618030583: Node3OS,Go,interop eUI nativaSUCCESS; RNS/iOS/Windows package emexecução,mac packagequeued,LinuxpackageSUCCESS naúltimaconsulta. NÃO fazerpush que cancele esseCI. QuatroficheirosharnessWIP continuam(verify-public-web,public.config,site-resources-ui,connectivity diagnóstico) e documentação/provas ainda porcommit. O runtime publicado corresponde aoHEAD7fdb76a; haverharnessWIPnão significacódigoderuntimeporpublicar (ver public-runtime-source.json). Seguinte: recolherCI,curarlogs/passescandidatos semsegredos,commitarharness/docs/provas econtinuarAndroid/iOS/assinadascontribuições/gruposweb/backup/rotação/keystore/meios/revisãoindependente,semreduzirobjectivo. Nãomarcarcomplete/blocked.

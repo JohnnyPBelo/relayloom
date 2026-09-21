@@ -1,0 +1,13 @@
+{
+  "runtimeSourceCommit": "7fdb76a5de5869efa6ebdd721bc7e8f5efac68af",
+  "runtimePaths": [
+    "apps/web",
+    "packages",
+    "package.json",
+    "package-lock.json",
+    "vite.config.ts",
+    "docs/licenses/site-studio"
+  ],
+  "runtimeCleanAgainstCommit": true,
+  "note": "Uncommitted changes are verification harness/docs only. Publishing the existing pushed runtime commit does not cancel its ongoing CI; harness commit/push can follow CI completion."
+}

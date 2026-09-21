@@ -1,0 +1,10 @@
+
+Running 2 tests using 1 worker
+
+(node:4170527) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+RelayLoom UI target: https://johnnypbelo.github.io/relayloom
+  ✓  1 [chromium] › tests/browser/site-resources-ui.spec.ts:12:1 › resource library builds a private table through the UI and prevents accidental public publication (6.9s)
+  ✓  2 [chromium] › tests/browser/site-resources-ui.spec.ts:272:1 › three accounts create, publish and retrieve optional files entirely through the UI; a restarted reader seeds after the author closes (22.1s)
+
+  2 passed (29.8s)

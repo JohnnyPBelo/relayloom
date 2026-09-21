@@ -1,11 +1,12 @@
 import { test, expect, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { mkdirSync, writeFileSync, readFileSync } from "node:fs";
-import { appHost } from "./app-host";
+import { uiHost } from "./app-host";
 const password = "resource UI account fixture passphrase";
-let host: Awaited<ReturnType<typeof appHost>>;
+let host: Awaited<ReturnType<typeof uiHost>>;
+const forbiddenRequests: string[] = [];
 test.beforeAll(async () => {
-  host = await appHost();
+  host = await uiHost();
 });
 
 test("resource library builds a private table through the UI and prevents accidental public publication", async ({
@@ -146,9 +147,13 @@ test("resource library builds a private table through the UI and prevents accide
 });
 test.afterAll(async () => {
   await host.close();
-  expect(host.requests.some((path) => path.startsWith("/api/"))).toBe(false);
+  expect(forbiddenRequests).toEqual([]);
 });
 async function enter(page: Page, name: string) {
+  page.on("request", (request) => {
+    if (/\/api\//.test(new URL(request.url()).pathname))
+      forbiddenRequests.push(new URL(request.url()).pathname);
+  });
   await page.goto(host.url + "/browser/index.html");
   await page.getByRole("button", { name: "Começar", exact: true }).click();
   await page.getByLabel("Como te chamas?").fill(name);

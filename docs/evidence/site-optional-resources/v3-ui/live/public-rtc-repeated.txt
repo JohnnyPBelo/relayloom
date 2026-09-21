@@ -1,0 +1,23 @@
+
+Running 6 tests using 1 worker
+
+(node:3747819) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [firefox] › tests/browser/connectivity.spec.ts:98:1 › both pending outboxes deliver after completing signalling; modes stay separate and diagnostics contain no secrets (17.1s)
+(node:3752951) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  2 [firefox] › tests/browser/connectivity.spec.ts:98:1 › both pending outboxes deliver after completing signalling; modes stay separate and diagnostics contain no secrets (17.1s)
+(node:3755574) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  3 [firefox] › tests/browser/connectivity.spec.ts:98:1 › both pending outboxes deliver after completing signalling; modes stay separate and diagnostics contain no secrets (17.1s)
+(node:3758612) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  4 [webkit] › tests/browser/connectivity.spec.ts:98:1 › both pending outboxes deliver after completing signalling; modes stay separate and diagnostics contain no secrets (18.2s)
+(node:3763674) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  5 [webkit] › tests/browser/connectivity.spec.ts:98:1 › both pending outboxes deliver after completing signalling; modes stay separate and diagnostics contain no secrets (20.1s)
+(node:3767555) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  6 [webkit] › tests/browser/connectivity.spec.ts:98:1 › both pending outboxes deliver after completing signalling; modes stay separate and diagnostics contain no secrets (17.9s)
+
+  6 passed (1.9m)

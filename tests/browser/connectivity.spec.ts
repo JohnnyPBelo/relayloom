@@ -233,6 +233,28 @@ test("both pending outboxes deliver after completing signalling; modes stay sepa
         .locator(".bubble")
         .getByText("Mensagem pendente de Bruno", { exact: true }),
     ).toHaveCount(1);
+  } catch (error) {
+    // Keep only the product's address/key-free connection states on failure.
+    // This does not modify signalling, retry the connection or extend its deadline.
+    const diagnostics: Record<string, unknown> = {};
+    for (const [label, p] of [["a", a], ["b", b]] as const) {
+      try {
+        const summary = p.getByText("Diagnóstico desta ligação", { exact: true });
+        if (await summary.count() !== 1) { diagnostics[label] = { available: false }; continue; }
+        if (!await summary.evaluate(el => el.closest("details")?.open === true))
+          await summary.click({ timeout: 1000 });
+        const value = JSON.parse(await p.getByLabel("Diagnóstico sem dados pessoais").innerText({ timeout: 1000 }));
+        const safe: Record<string, unknown> = {};
+        for (const key of ["connection", "ice", "gathering", "signalling", "channel", "reason"])
+          safe[key] = value[key] === null || (typeof value[key] === "string" && /^[a-z-]{1,40}$/.test(value[key])) ? value[key] : "unavailable";
+        for (const key of ["version", "sent", "received"])
+          if (Number.isSafeInteger(value[key]) && value[key] >= 0) safe[key] = value[key];
+        if (typeof value.closed === "boolean") safe.closed = value.closed;
+        diagnostics[label] = safe;
+      } catch { diagnostics[label] = { available: false }; }
+    }
+    writeFileSync(out + `/failure-states-${info.repeatEachIndex}.json`, JSON.stringify(diagnostics, null, 2));
+    throw error;
   } finally {
     await ca.close();
     await cb.close();

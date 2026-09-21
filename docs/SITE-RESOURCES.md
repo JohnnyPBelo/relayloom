@@ -1,8 +1,8 @@
 # Recursos opcionais de sites — implementação em curso
 
-**Implementado localmente, ainda sem publicação:** biblioteca, leitura por referência e documento v3 estão ligados à UI. Passaram os percursos dirigidos nos três browsers e na UI Node/Go, incluindo ficheiro, tabela, privacidade, perda de pedido/resposta, autor desligado e seeder reiniciado. Idiomas EN/ES, ecrã compacto, tema escuro, movimento reduzido e foco foram exercitados. A regressão local consolidada passou:306browser,68 UI Node/Go,unitários,backend correspondente,desktopLinux eRNS. Integração/distribuição e revisão independente continuam pendentes. O HTML público não mudou.
+**Publicado e verificado no HTTPS:** a biblioteca, leitura por referência e documento v3 estão disponíveis em https://johnnypbelo.github.io/relayloom/. Fonte runtime `7fdb76a`, distribuição `0fdbd1b9`. Foram verificados 20 artefactos HTTP, seis percursos UI de recursos nos três browsers e mensagens/anexo entre processos independentes. [Provas, comandos e limites](evidence/site-optional-resources/v3-ui/live).
 
-Este incremento está na árvore `codex/site-optional-resources`. Não está integrado na versão pública. O estúdio publicado ainda não permite anexar estes recursos. O produto completo e a revisão independente continuam pendentes.
+Os gates locais cobrem Node, Go, browser, privacidade, recuperação de pedidos, author-offline/seeder reiniciado, idiomas, foco e composições no limite. O produto completo, as apps móveis actuais, o hardware e a revisão independente permanecem pendentes.
 
 Um recurso contém um ficheiro até 2 MiB ou uma tabela declarativa (64 KiB, 256 linhas e 12 colunas). O envelope é assinado pelo criador e pode ter leitores privados ou ser público. A referência fixa o ID do envelope, autor, nome, tipo, tamanho e hash do payload canónico completo. Não é uma URL executável. HTML, SVG, JavaScript, SQL e módulos remotos não são executados pelo site.
 
@@ -56,4 +56,4 @@ Continuam obrigatórios os gates finais, revisão independente, integração/pub
 Formulários e contribuições de visitantes serão operações assinadas pelo visitante e aprovadas separadamente pelo dono. Não fazem parte da criação local de recursos agora implementada. A inspiração ZeroNet não implica compatibilidade de protocolo, scripts remotos ou alterações por quem apenas possui chaves de leitura.
 
 
-Fonte deste marco local: `8faad725925149db24bae331691d691a8e7a4f1a`; hashes verificados em `docs/evidence/site-optional-resources/v3-ui/final/source-commit.json`. Ainda sem publicação do v3.
+Fonte deste marco local: `8faad725925149db24bae331691d691a8e7a4f1a`; hashes verificados em `docs/evidence/site-optional-resources/v3-ui/final/source-commit.json`. A publicação HTTPS posterior está identificada no início deste guia.

@@ -149,3 +149,10 @@ Próximo: documento v3 e API que extrai a referência de um snapshot autenticado
 ## Recursos v3 — revisão antes da entrega
 
 Documento v3, referência autenticada e biblioteca/leitor já implementados. Gate integral vivo52729; manter fontes estáveis. Após terminar: reproduzir pedidos sobrepostos, as seis combinações de paleta/app no leitor e associação transitória de URL/ficheiro; corrigir e repetir o âmbito afectado. Rascunho dos testes guardado em `.cache/resource-review-ui.spec.ts`, ainda não executado. Depois curar provas, desktop/RNS, integração preservando iOS1e83db2, publicação exacta/HTTPS. Contribuições/formulários assinados e todo o contrato seguinte mantêm-se obrigatórios.
+
+
+## Recurso v3 publicado; contribuições assinadas a seguir — 21 de Setembro
+
+Publicação exacta 0fdbd1b9 da fonte runtime7fdb76a: 20 hashes HTTPS, seis UI de recursos e um entre processos PASS. O gate de distribuição 141+1 passou após preservar a tentativa com ICE sem candidatos; causa histórica ainda não resolvida. A documentação/provas/harness podem ser commitados localmente; adiar o push até CI35618030583 terminar para não o cancelar.
+
+Próxima implementação: formulários declarativos e propostas assinadas pelo visitante, com regras de contribuidores e audiência explícitas; aprovação/rejeição pelo dono sem transferir autoria, replay limitado/persistente, reconciliação de base/esquema e contribuição privada sem promoção involuntária. Protocolos TS/Go, UI/runtime nos três motores e percursos reais de três contas são obrigatórios. A fase não substitui grupos web dinâmicos, backup/rotação/keystore, apps móveis e hardware/meios, nem revisão independente. Manter trabalho sequencial e limites de armazenamento.

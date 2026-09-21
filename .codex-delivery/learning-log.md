@@ -626,3 +626,10 @@ A página de limite tem de respeitar24irmãos:5composições+123recursos perfaze
 ## Arranque Electron numa worktree profunda — 19 de Setembro
 
 Browser/UI Node-Go passaram, mas Electron abortouantes de arrancar por socketUnix com116bytes. A raiz .cache/tmp ainda daria108; .cache/t manteve o temporário no projecto e permitiu startup real. Não usar --no-sandbox nem alterar segurança/NSS para contornar uma limitação de caminho. ControlosAPI/isolamento passaram e pacoteLinux arrancou. As duas fontes alteradas são launchers; os hashes de app/engine/UI anteriores permanecem, porisso a continuação cobre os gates afectados eRNSpendente com proveniência explícita, preservando o failoriginal.
+
+
+## Falha pública de ligação e limite cumulativoCI — 21 de Setembro
+
+A matriz pública terminou121PASS/20FAIL, concentrados emICE/sinalização; otraceWebKit apresentavaoferta/respostasemcandidatos. Não inferircausadeconcorrência oubugdosrecursos. Reproduçãocurta1WebKit+6Firefox/WebKitpassoucomartefactosidênticos e semmudarrede/protocolo/permissões/prazos. Preservar afalha, recolher sódiagnósticos semdadospessoais e voltar àmatrizcompleta; estes passes não provamcorrecçãoda causa histórica.
+
+CIcancelled não significa automaticamenteutilizadorcancelou: anotação105821119727confirmaexcesso25m. Go/race eSQLiteCtinhamPASS;interopficouinterrompido. Separarinterop numjob dependente, mantendoordem,cobertura e limitesinternos, resolveoorçamentoagregadosemrelaxarostestes. Validar grafo/comandosestaticamente e exigirexecuçãoCI posterior.

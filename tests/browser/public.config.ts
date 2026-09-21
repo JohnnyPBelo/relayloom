@@ -18,6 +18,11 @@ export default defineConfig({
     "site-pages.spec.ts",
     "large-site-draft.spec.ts",
     "mobile-navigation.spec.ts",
+    "site-resource-budget.spec.ts",
+    "site-resources-ui.spec.ts",
+    "site-resource-languages.spec.ts",
+    "site-resource-recovery-ui.spec.ts",
+    "site-resource-review.spec.ts",
     "public-distribution.checks.ts",
   ],
   projects: ["chromium", "firefox", "webkit"].map((name) => ({

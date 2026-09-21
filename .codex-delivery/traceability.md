@@ -256,3 +256,8 @@ FR-038/FR-040/CON-002 — recursos v3 implementados na UI e nos motores; permane
 ## Recursos v3 verificados localmente e integração — 19 de Setembro
 
 FR-038/039/040 continuam parciais. Código8faad72: 306execuçõesbrowser,68UI Node/Go,4unitários,backend porhashes,desktopLinux eRNS8+3UI PASS, comfalhasanteriorespreservadas. Integração do principal1e83db2 altera sótrês fontes de testes/diagnósticoiOS;25host+2estáticospassaram, semexecuçãoApple. Todosos64ficheirosWIPanteriores foram preservados. Provas docs/evidence/site-optional-resources/v3-ui/final e integration. Publicação v3, contribuições, paridade/hardware e revisãoindependente continuamabertos.
+
+
+## Publicação dos recursos v3 — 21 de Setembro de 2026
+
+FR-038/039/040 e INT-009: fonte runtime 7fdb76a, distribuição 0fdbd1b9; vinte hashes HTTPS, seis percursos de recursos em três browsers e um de mensagens/anexo entre processos independentes passaram. Gate prévio 135 UI normal e 141 distribuição + um entre processos, com proveniência da retoma e falhas anteriores preservadas. Provas em docs/evidence/site-optional-resources/v3-ui/live. Continuam parciais: contribuições/formulários, grupos web, recuperação/rotação, plataformas/hardware actuais e revisão independente. A ausência histórica de candidatos ICE não foi demonstrada como resolvida pelos passes seguintes.
