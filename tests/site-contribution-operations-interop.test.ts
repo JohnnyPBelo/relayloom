@@ -84,6 +84,8 @@ test("Node, portable and Go contribution journals agree on canonical requests, r
     certificate?: any;
     sequence?: number;
     operationId?: string;
+    descriptor?: any;
+    bundleHash?: string;
   };
   const vectors: Vector[] = [];
   const add = (
@@ -293,6 +295,139 @@ test("Node, portable and Go contribution journals agree on canonical requests, r
     sequence: 131,
     operationId: retained.operations[0].operationId,
   });
+  const descriptor = {
+    bundleId: "d".repeat(64),
+    bundleHash: "e".repeat(64),
+    bytes: 1024,
+  };
+  const queued = node.queue(
+      signed.record,
+      owner.public.id,
+      signed.operation,
+      descriptor,
+    ),
+    copied = node.copied(
+      queued.record,
+      owner.public.id,
+      queued.operation,
+      descriptor.bundleHash,
+    );
+  add("queue signed envelope", "queue", true, {
+    record: signed.record,
+    descriptor,
+  });
+  add("repeat queue", "queue", true, {
+    record: queued.record,
+    handle: queued.operation,
+    descriptor,
+  });
+  add("copied queue retains copy flag on retry", "queue", true, {
+    record: copied.record,
+    handle: copied.operation,
+    descriptor,
+  });
+  add("queue requires signature", "queue", false, {
+    record: prepared.record,
+    descriptor,
+  });
+  add("queue retry cannot swap bytes", "queue", false, {
+    record: queued.record,
+    handle: queued.operation,
+    descriptor: { ...descriptor, bytes: 1025 },
+  });
+  add("copy original envelope", "copied", true, {
+    record: queued.record,
+    handle: queued.operation,
+    bundleHash: descriptor.bundleHash,
+  });
+  add("copy other envelope refused", "copied", false, {
+    record: queued.record,
+    handle: queued.operation,
+    bundleHash: "f".repeat(64),
+  });
+  add(
+    "queued certificate binding remains historical",
+    "checkCertificate",
+    true,
+    { record: queued.record, handle: queued.operation },
+  );
+  add("cancel queued", "cancel", true, {
+    record: queued.record,
+    handle: queued.operation,
+  });
+  add("expire queued keeps descriptor", "expire", true, {
+    record: queued.record,
+    now: queued.operation.expires,
+  });
+  add(
+    "queued needs descriptor",
+    "validate",
+    false,
+    { record: queued.record },
+    (v) => delete v.record.operations[0].transport,
+  );
+  add(
+    "signed forbids descriptor",
+    "validate",
+    false,
+    { record: queued.record },
+    (v) => (v.record.operations[0].phase = "signed"),
+  );
+  const syntheticQueue = (count: number, bytes = 1024) => ({
+    domain: initial.domain,
+    ownerId: owner.public.id,
+    nextSequence: count + 1,
+    operations: Array.from({ length: count }, (_, i) => ({
+      ...structuredClone(queued.operation),
+      sequence: i + 1,
+      operationId: randomUUID(),
+      certificateId: i.toString(16).padStart(64, "0"),
+      transport: {
+        ...descriptor,
+        bundleId: (i + 1).toString(16).padStart(64, "0"),
+        bytes,
+        copied: false,
+      },
+    })),
+  });
+  add("32 queued operations", "validate", true, { record: syntheticQueue(32) });
+  add("33 queued operations refused", "validate", false, {
+    record: syntheticQueue(33),
+  });
+  add("32 MiB queue boundary", "validate", true, {
+    record: syntheticQueue(8, 4 * 1024 * 1024),
+  });
+  add(
+    "queue byte limit enforced",
+    "validate",
+    false,
+    { record: syntheticQueue(8, 4 * 1024 * 1024) },
+    (v) => v.record.operations[0].transport.bytes++,
+  );
+  add("single stage byte boundary", "validate", true, {
+    record: syntheticQueue(1, 6 * 1024 * 1024 + 16384),
+  });
+  add("single stage byte excess", "validate", false, {
+    record: syntheticQueue(1, 6 * 1024 * 1024 + 16385),
+  });
+  const blockedWindow = structuredClone(retained);
+  blockedWindow.operations[0] = {
+    ...blockedWindow.operations[0],
+    phase: "queued",
+    certificateId: "f".repeat(64),
+    transport: { ...descriptor, copied: false },
+  };
+  const nextRequest = { ...input, sequence: 131, operationId: randomUUID() };
+  add("cannot evict pending oldest result", "prepare", false, {
+    record: blockedWindow,
+    input: nextRequest,
+  });
+  const unblockedWindow = structuredClone(blockedWindow);
+  unblockedWindow.operations[0].phase = "cancelled";
+  add("terminal oldest result permits next intent", "prepare", true, {
+    record: unblockedWindow,
+    input: nextRequest,
+  });
   const run = (
     registry: ReturnType<typeof createContributionOperations>,
     v: Vector,
@@ -308,6 +443,18 @@ test("Node, portable and Go contribution journals agree on canonical requests, r
         return registry.prepare(v.record, v.owner, v.input, v.context, v.now!);
       case "sign":
         return registry.signed(
+          v.record,
+          v.owner,
+          v.handle,
+          v.input,
+          v.certificate,
+        );
+      case "queue":
+        return registry.queue(v.record, v.owner, v.handle, v.descriptor);
+      case "copied":
+        return registry.copied(v.record, v.owner, v.handle, v.bundleHash!);
+      case "checkCertificate":
+        return registry.checkCertificate(
           v.record,
           v.owner,
           v.handle,

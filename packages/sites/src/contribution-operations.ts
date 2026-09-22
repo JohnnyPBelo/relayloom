@@ -20,6 +20,9 @@ import {
 export const CONTRIBUTION_JOURNAL_LIMITS = Object.freeze({
   operations: 128,
   bytes: 1024 * 1024,
+  queued: 32,
+  queuedBytes: 32 * 1024 * 1024,
+  stageBytes: 6 * 1024 * 1024 + 16384,
 });
 export interface ContributionCreationRequest {
   sequence: number;
@@ -35,12 +38,18 @@ export interface ContributionOperation {
   sequence: number;
   operationId: string;
   fingerprint: string;
-  phase: "prepared" | "signed" | "cancelled" | "expired";
+  phase: "prepared" | "signed" | "queued" | "cancelled" | "expired";
   target: ContributionTarget;
   schemaHash: string;
   created: number;
   expires: number;
   certificateId: string | null;
+  transport?: {
+    bundleId: string;
+    bundleHash: string;
+    bytes: number;
+    copied: boolean;
+  };
 }
 export interface ContributionCreationRecord {
   domain: "relayloom/contribution-creation/1";
@@ -175,21 +184,24 @@ export function createContributionOperations(crypto: CertificateCrypto) {
       "resultados retidos em falta",
     );
     let last = r.nextSequence - ops.length - 1,
-      pending = 0;
+      pending = 0,
+      queued = 0,
+      queuedBytes = 0;
     const seen = new Set<string>();
     for (const op of ops) {
+      const fields = [
+        "sequence",
+        "operationId",
+        "fingerprint",
+        "phase",
+        "target",
+        "schemaHash",
+        "created",
+        "expires",
+        "certificateId",
+      ];
       insist(
-        exactShape(op, [
-          "sequence",
-          "operationId",
-          "fingerprint",
-          "phase",
-          "target",
-          "schemaHash",
-          "created",
-          "expires",
-          "certificateId",
-        ]),
+        exactShape(op, fields) || exactShape(op, [...fields, "transport"]),
         "operação",
       );
       insist(
@@ -203,7 +215,9 @@ export function createContributionOperations(crypto: CertificateCrypto) {
         "sequência ou identidade",
       );
       insist(
-        ["prepared", "signed", "cancelled", "expired"].includes(op.phase) &&
+        ["prepared", "signed", "queued", "cancelled", "expired"].includes(
+          op.phase,
+        ) &&
           clock(op.created) &&
           clock(op.expires) &&
           op.expires > op.created &&
@@ -240,11 +254,43 @@ export function createContributionOperations(crypto: CertificateCrypto) {
         op.phase !== "signed" || hashID(op.certificateId),
         "assinatura em falta",
       );
+      if (Object.hasOwn(op, "transport")) {
+        insist(
+          !active(op) &&
+            hashID(op.certificateId) &&
+            exactShape(op.transport, [
+              "bundleId",
+              "bundleHash",
+              "bytes",
+              "copied",
+            ]),
+          "transporte inválido",
+        );
+        const t = op.transport!;
+        insist(
+          hashID(t.bundleId) &&
+            hashID(t.bundleHash) &&
+            positive(t.bytes) &&
+            t.bytes <= CONTRIBUTION_JOURNAL_LIMITS.stageBytes &&
+            typeof t.copied === "boolean",
+          "descritor de transporte",
+        );
+      }
+      if (op.phase === "queued") {
+        insist(op.transport, "intenção de transporte em falta");
+        queued++;
+        queuedBytes += op.transport.bytes;
+      }
       if (active(op)) pending++;
       last = op.sequence;
       seen.add(op.operationId);
     }
     insist(pending <= 1, "preparação já pendente");
+    insist(
+      queued <= CONTRIBUTION_JOURNAL_LIMITS.queued &&
+        queuedBytes <= CONTRIBUTION_JOURNAL_LIMITS.queuedBytes,
+      "orçamento da fila",
+    );
     insist(
       new TextEncoder().encode(canonical(r)).length <=
         CONTRIBUTION_JOURNAL_LIMITS.bytes,
@@ -298,6 +344,11 @@ export function createContributionOperations(crypto: CertificateCrypto) {
         record.nextSequence < Number.MAX_SAFE_INTEGER,
       "pedido retirado ou preparação pendente",
     );
+    insist(
+      record.operations.length < CONTRIBUTION_JOURNAL_LIMITS.operations ||
+        record.operations[0].phase !== "queued",
+      "a janela retida ainda contém envios pendentes",
+    );
     protocol.authorizeContext(context, ownerId, now);
     insist(
       q.snapshotId === context.target.snapshotId &&
@@ -348,7 +399,7 @@ export function createContributionOperations(crypto: CertificateCrypto) {
     );
     return { record: found.record, operation: found.operation };
   }
-  function signed(
+  function boundCertificate(
     input: unknown,
     ownerId: string,
     op: ContributionOperation,
@@ -378,6 +429,31 @@ export function createContributionOperations(crypto: CertificateCrypto) {
       "certificado diferente da intenção",
     );
     insist(
+      found.operation.certificateId === null ||
+        found.operation.certificateId === cert.id,
+      "certificado retido diferente",
+    );
+    return { ...found, certificate: cert };
+  }
+  function checkCertificate(
+    input: unknown,
+    ownerId: string,
+    op: ContributionOperation,
+    raw: unknown,
+    certificate: SiteContribution,
+  ) {
+    return boundCertificate(input, ownerId, op, raw, certificate).certificate;
+  }
+  function signed(
+    input: unknown,
+    ownerId: string,
+    op: ContributionOperation,
+    raw: unknown,
+    certificate: SiteContribution,
+  ) {
+    const found = boundCertificate(input, ownerId, op, raw, certificate),
+      cert = found.certificate;
+    insist(
       found.operation.phase === "prepared" ||
         (found.operation.phase === "signed" &&
           found.operation.certificateId === cert.id),
@@ -393,17 +469,75 @@ export function createContributionOperations(crypto: CertificateCrypto) {
       operation: structuredClone(current),
     };
   }
+  function queue(
+    input: unknown,
+    ownerId: string,
+    op: ContributionOperation,
+    descriptor: Omit<NonNullable<ContributionOperation["transport"]>, "copied">,
+  ) {
+    const found = handle(input, ownerId, op);
+    insist(
+      exactShape(descriptor, ["bundleId", "bundleHash", "bytes"]),
+      "descritor de fila",
+    );
+    if (found.operation.phase === "queued") {
+      const { copied: _copied, ...retained } = found.operation.transport!;
+      insist(
+        canonical(retained) === canonical(descriptor),
+        "envelope repetido com outros bytes",
+      );
+      return found;
+    }
+    insist(
+      found.operation.phase === "signed" &&
+        hashID(found.operation.certificateId),
+      "proposta ainda não assinada",
+    );
+    const current = found.record.operations.find(
+      (v) => v.sequence === op.sequence,
+    )!;
+    current.phase = "queued";
+    current.transport = { ...descriptor, copied: false };
+    return {
+      record: validate(found.record, ownerId),
+      operation: structuredClone(current),
+    };
+  }
+  function copied(
+    input: unknown,
+    ownerId: string,
+    op: ContributionOperation,
+    bundleHash: string,
+  ) {
+    const found = handle(input, ownerId, op);
+    insist(
+      found.operation.phase === "queued" &&
+        found.operation.transport?.bundleHash === bundleHash,
+      "cópia diferente ou não autorizada",
+    );
+    const current = found.record.operations.find(
+      (v) => v.sequence === op.sequence,
+    )!;
+    current.transport!.copied = true;
+    return {
+      record: validate(found.record, ownerId),
+      operation: structuredClone(current),
+    };
+  }
   function expire(input: unknown, ownerId: string, now: number) {
     const r = validate(input, ownerId);
     insist(clock(now), "relógio");
     for (const op of r.operations)
-      if (active(op) && op.expires <= now) op.phase = "expired";
+      if ((active(op) || op.phase === "queued") && op.expires <= now)
+        op.phase = "expired";
     return validate(r, ownerId);
   }
   function cancel(input: unknown, ownerId: string, op: ContributionOperation) {
     const found = handle(input, ownerId, op);
     insist(
-      active(found.operation) || found.operation.phase === "cancelled",
+      active(found.operation) ||
+        found.operation.phase === "queued" ||
+        found.operation.phase === "cancelled",
       "resultado terminal",
     );
     found.record.operations.find((v) => v.sequence === op.sequence)!.phase =
@@ -417,6 +551,9 @@ export function createContributionOperations(crypto: CertificateCrypto) {
     lookup,
     prepare,
     signed,
+    checkCertificate,
+    queue,
+    copied,
     expire,
     cancel,
   };

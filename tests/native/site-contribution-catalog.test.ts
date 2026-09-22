@@ -738,3 +738,116 @@ test(
     }
   },
 );
+
+test("repeated Go cancellation of an old operation cannot remove the current preparation", () => {
+  const f = fixture();
+  let db = f.store;
+  try {
+    const catalog = new NodeContributionCatalog(db, f.identity, () => f.now),
+      first = catalog.prepare(f.request, () => f.source, allow);
+    catalog.cancel(first);
+    const second = catalog.prepare(
+      { ...f.request, sequence: 2, operationId: randomUUID() },
+      () => f.source,
+      allow,
+    );
+    db.close();
+    const result = run(f, [
+      { action: "cancel", handle: first },
+      { action: "sign", handle: second },
+    ]);
+    assert.equal(result[1].phase, "signed");
+    db = reopen(f);
+    assert.equal(
+      new NodeContributionCatalog(db, f.identity, () => f.now).state()
+        .nextSequence,
+      3,
+    );
+  } finally {
+    db.close();
+    rmSync(f.directory, { recursive: true, force: true });
+  }
+});
+
+for (const creator of ["node", "go"] as const)
+  test(`${creator} queues before public copying, recovers bytes and frees only its own preparation slot`, () => {
+    const f = fixture();
+    let db = f.store;
+    try {
+      let c = new NodeContributionCatalog(db, f.identity, () => f.now);
+      const signed = c.sign(
+        c.prepare(f.request, () => f.source, allow),
+        allow,
+      );
+      c.seal(signed, allow);
+      const bundle = c.authorizedBundle(signed, allow)!;
+      let queued: any;
+      if (creator === "node") queued = c.queue(signed, allow);
+      db.close();
+      if (creator === "go")
+        queued = run(f, [{ action: "queue", handle: signed }])[0];
+      const result = run(f, [
+        { action: "bundle", handle: signed },
+        { action: "source", handle: signed },
+        { action: "copied", handle: signed, bundle },
+      ]);
+      assert.deepEqual(result[0], bundle);
+      assert.deepEqual(result[1], f.source);
+      assert.equal(result[2].transport.copied, true);
+      const next = { ...f.request, sequence: 2, operationId: randomUUID() };
+      const second = run(f, [{ action: "prepare", request: next }])[0];
+      assert.equal(second.phase, "prepared");
+      assert.equal(queued.phase, "queued");
+      db = reopen(f);
+      c = new NodeContributionCatalog(db, f.identity, () => f.now);
+      assert.deepEqual(c.authorizedBundle(queued, allow), bundle);
+      c.cancel(queued);
+      c.cancel(queued);
+      assert.equal(c.sign(second, allow).phase, "signed");
+      db.close();
+      assert.equal(run(f, [{ action: "state" }])[0].nextSequence, 3);
+    } finally {
+      db.close();
+      rmSync(f.directory, { recursive: true, force: true });
+    }
+  });
+for (const mode of ["before-queue-commit", "after-queue"] as const)
+  test(`Go exit ${mode} retains either the signed stage or its durable queued replacement`, () => {
+    const f = fixture();
+    let db = f.store;
+    try {
+      let c = new NodeContributionCatalog(db, f.identity, () => f.now);
+      const signed = c.sign(
+        c.prepare(f.request, () => f.source, allow),
+        allow,
+      );
+      c.seal(signed, allow);
+      const bundle = c.authorizedBundle(signed, allow);
+      db.close();
+      const child = run(f, [{ action: "queue", handle: signed }], { mode });
+      assert.equal(
+        child.status,
+        mode === "before-queue-commit" ? 87 : 88,
+        child.stdout + child.stderr,
+      );
+      db = reopen(f);
+      c = new NodeContributionCatalog(db, f.identity, () => f.now);
+      assert.equal(
+        c.state().operations[0].phase,
+        mode === "before-queue-commit" ? "signed" : "queued",
+      );
+      const queued = c.queue(signed, allow);
+      assert.deepEqual(c.authorizedBundle(queued, allow), bundle);
+      assert.equal(
+        c.prepare(
+          { ...f.request, sequence: 2, operationId: randomUUID() },
+          () => f.source,
+          allow,
+        ).phase,
+        "prepared",
+      );
+    } finally {
+      db.close();
+      rmSync(f.directory, { recursive: true, force: true });
+    }
+  });

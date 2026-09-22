@@ -53,6 +53,16 @@ func TestContributionOperationsWorker(t *testing.T) {
 			var r, op map[string]any
 			r, op, check = SignContributionIntent(v["record"], owner, contributionHandle(v["handle"].(map[string]any)), v["input"], v["certificate"])
 			result = map[string]any{"record": r, "operation": op}
+		case "queue":
+			var record, op map[string]any
+			record, op, check = QueueContributionIntent(v["record"], owner, contributionHandle(v["handle"].(map[string]any)), v["descriptor"])
+			result = map[string]any{"record": record, "operation": op}
+		case "copied":
+			var record, op map[string]any
+			record, op, check = MarkContributionCopied(v["record"], owner, contributionHandle(v["handle"].(map[string]any)), docTextValue(v["bundleHash"]))
+			result = map[string]any{"record": record, "operation": op}
+		case "checkCertificate":
+			result, check = CheckContributionCertificateBinding(v["record"], owner, contributionHandle(v["handle"].(map[string]any)), v["input"], v["certificate"])
 		case "expire":
 			result, check = ExpireContributionIntent(v["record"], owner, now)
 		case "cancel":

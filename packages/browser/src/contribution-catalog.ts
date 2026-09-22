@@ -96,6 +96,93 @@ export class BrowserContributionCatalog {
       now,
     );
   }
+  private queueKey(op: ContributionOperation) {
+    insist(op.certificateId, "Certificado da fila em falta");
+    return "contribution:" + op.certificateId + ":stage";
+  }
+  private async verifyStage(
+    raw: unknown,
+    op: ContributionOperation,
+    record: ContributionCreationRecord,
+  ): Promise<Stage> {
+    insist(
+      exactShape(raw, ["request", "source", "certificate"]) ||
+        exactShape(raw, ["request", "source", "certificate", "envelope"]),
+      "Preparação de proposta em falta",
+    );
+    const stage = raw as Stage;
+    const checked = registry.request(stage.request, this.owner.id);
+    insist(
+      checked.fingerprint === op.fingerprint &&
+        checked.request.sequence === op.sequence &&
+        checked.request.operationId === op.operationId,
+      "Intenção privada diferente",
+    );
+    const found = await this.source(checked.request, stage.source, op.created);
+    this.ensure();
+    insist(
+      canonical(found.context.target) === canonical(op.target) &&
+        protocol.schemaHash(found.context.form, found.context.table) ===
+          op.schemaHash,
+      "Snapshot preparado diferente",
+    );
+    insist(
+      op.expires ===
+        Math.min(
+          op.created + checked.request.ttlMs,
+          found.context.snapshotExpires,
+        ),
+      "Prazo privado diferente da intenção",
+    );
+    if (op.phase === "prepared")
+      insist(stage.certificate === null, "Assinatura sem autorização guardada");
+    else {
+      insist(stage.certificate !== null, "Assinatura preparada em falta");
+      registry.checkCertificate(
+        record,
+        this.owner.id,
+        op,
+        stage.request,
+        stage.certificate,
+      );
+      protocol.verifyForSubmission(
+        stage.certificate,
+        found.context,
+        op.created,
+      );
+    }
+    if (Object.hasOwn(stage, "envelope")) {
+      insist(
+        (op.phase === "signed" || op.phase === "queued") && stage.envelope,
+        "Envelope sem proposta assinada",
+      );
+      await this.verifyEnvelope(stage.envelope, stage.certificate!);
+      this.ensure();
+    }
+
+    if (op.phase === "queued") {
+      insist(stage.envelope && op.transport, "Envelope da fila em falta");
+      insist(
+        stage.envelope.manifest.id === op.transport.bundleId &&
+          browserCertificateCrypto.hash(canonical(stage.envelope)) ===
+            op.transport.bundleHash &&
+          new TextEncoder().encode(canonical(stage)).length ===
+            op.transport.bytes,
+        "Payload da fila diferente do descritor",
+      );
+    }
+    return stage;
+  }
+  private async queuedStage(
+    values: ProfileValueTransaction,
+    record: ContributionCreationRecord,
+    op: ContributionOperation,
+  ) {
+    insist(op.phase === "queued", "Operação não está em fila");
+    const raw = await values.get(this.queueKey(op));
+    this.ensure();
+    return this.verifyStage(raw, op, record);
+  }
   private async run<T>(
     fn: (
       values: ProfileValueTransaction,
@@ -120,74 +207,29 @@ export class BrowserContributionCatalog {
       const op = record.operations.find(pending);
       let stage: Stage | null = null;
       if (op) {
-        insist(
-          exactShape(raw, ["request", "source", "certificate"]) ||
-            exactShape(raw, ["request", "source", "certificate", "envelope"]),
-          "Preparação de proposta em falta",
-        );
-        stage = raw as Stage;
-        const checked = registry.request(stage.request, this.owner.id);
-        insist(
-          checked.fingerprint === op.fingerprint &&
-            checked.request.sequence === op.sequence &&
-            checked.request.operationId === op.operationId,
-          "Intenção privada diferente",
-        );
-        const found = await this.source(
-          checked.request,
-          stage.source,
-          op.created,
-        );
+        stage = await this.verifyStage(raw, op, record);
         this.ensure();
-        insist(
-          canonical(found.context.target) === canonical(op.target) &&
-            protocol.schemaHash(found.context.form, found.context.table) ===
-              op.schemaHash,
-          "Snapshot preparado diferente",
+      } else insist(raw === null, "Preparação sem operação pendente");
+      const now = this.now(),
+        expired = record.operations.filter(
+          (value) =>
+            (pending(value) || value.phase === "queued") &&
+            value.expires <= now,
         );
-        insist(
-          op.expires ===
-            Math.min(
-              op.created + checked.request.ttlMs,
-              found.context.snapshotExpires,
-            ),
-          "Prazo privado diferente da intenção",
-        );
-        if (op.phase === "prepared")
-          insist(
-            stage.certificate === null,
-            "Assinatura sem autorização guardada",
-          );
-        else {
-          insist(stage.certificate !== null, "Assinatura preparada em falta");
-          registry.signed(
-            record,
-            this.owner.id,
-            op,
-            stage.request,
-            stage.certificate,
-          );
-          protocol.verifyForSubmission(
-            stage.certificate,
-            found.context,
-            op.created,
-          );
-        }
-        if (Object.hasOwn(stage, "envelope")) {
-          insist(
-            op.phase === "signed" && stage.envelope,
-            "Envelope sem proposta assinada",
-          );
-          await this.verifyEnvelope(stage.envelope, stage.certificate!);
+      for (const value of expired) {
+        if (value.phase === "queued") {
+          await this.queuedStage(values, record, value);
           this.ensure();
-        }
-        if (op.expires <= this.now()) {
-          record = registry.expire(record, this.owner.id, this.now());
+          await values.remove(this.queueKey(value));
+        } else {
           await values.remove(this.key + ":stage");
-          values.set(this.key + ":record", record);
           stage = null;
         }
-      } else insist(raw === null, "Preparação sem operação pendente");
+      }
+      if (expired.length) {
+        record = registry.expire(record, this.owner.id, now);
+        values.set(this.key + ":record", record);
+      }
       const result = await fn(values, record, stage);
       this.ensure();
       return result;
@@ -348,7 +390,11 @@ export class BrowserContributionCatalog {
         found && found.fingerprint === op.fingerprint,
         "Preparação desconhecida",
       );
-      if (found.phase !== "signed") return null;
+      if (found.phase === "queued") {
+        stage = await this.queuedStage(values, record, found);
+        this.ensure();
+      }
+      if (!["signed", "queued"].includes(found.phase)) return null;
       insist(stage?.certificate, "Assinatura em falta");
       const source = await this.source(stage.request, stage.source, this.now());
       this.ensure();
@@ -373,7 +419,12 @@ export class BrowserContributionCatalog {
         found && found.fingerprint === op.fingerprint,
         "Preparação desconhecida",
       );
-      if (found.phase !== "signed") return { operation: found, bundleId: null };
+      if (found.phase === "queued") {
+        stage = await this.queuedStage(values, record, found);
+        this.ensure();
+      }
+      if (!["signed", "queued"].includes(found.phase))
+        return { operation: found, bundleId: null };
       insist(stage?.certificate, "Proposta assinada indisponível");
       const source = await this.source(stage.request, stage.source, this.now());
       this.ensure();
@@ -415,7 +466,12 @@ export class BrowserContributionCatalog {
         found && found.fingerprint === op.fingerprint,
         "Preparação desconhecida",
       );
-      if (found.phase !== "signed" || !stage?.envelope) return null;
+      if (found.phase === "queued") {
+        stage = await this.queuedStage(values, record, found);
+        this.ensure();
+      }
+      if (!["signed", "queued"].includes(found.phase) || !stage?.envelope)
+        return null;
       insist(stage.certificate, "Assinatura em falta");
       const source = await this.source(stage.request, stage.source, this.now());
       this.ensure();
@@ -439,11 +495,124 @@ export class BrowserContributionCatalog {
       return bundle;
     });
   }
+  queue(op: ContributionOperation, allow: Policy) {
+    return this.run(async (values, record, stage) => {
+      const found = registry.lookup(
+        record,
+        this.owner.id,
+        op.sequence,
+        op.operationId,
+      ).operation;
+      insist(
+        found && found.fingerprint === op.fingerprint,
+        "Preparação desconhecida",
+      );
+      if (["queued", "expired", "cancelled"].includes(found.phase))
+        return found;
+      insist(
+        found.phase === "signed" && stage?.certificate && stage.envelope,
+        "Envelope privado ainda indisponível",
+      );
+      const source = await this.source(stage.request, stage.source, this.now());
+      this.ensure();
+      await allow(values, source.context.target.snapshotId, source.owner.id);
+      this.ensure();
+      protocol.verifyForSubmission(
+        stage.certificate,
+        source.context,
+        this.now(),
+      );
+      const descriptor = {
+        bundleId: stage.envelope.manifest.id,
+        bundleHash: browserCertificateCrypto.hash(canonical(stage.envelope)),
+        bytes: new TextEncoder().encode(canonical(stage)).length,
+      };
+      const queued = registry.queue(record, this.owner.id, found, descriptor),
+        key = this.queueKey(queued.operation);
+      const previous = await values.get(key);
+      this.ensure();
+      insist(previous === null, "Slot privado de fila já ocupado");
+      values.set(key, stage);
+      values.set(this.key + ":record", queued.record);
+      await values.remove(this.key + ":stage");
+      return queued.operation;
+    });
+  }
+  markCopied(op: ContributionOperation, copied: Bundle) {
+    return this.run(async (values, record) => {
+      const found = registry.lookup(
+        record,
+        this.owner.id,
+        op.sequence,
+        op.operationId,
+      ).operation;
+      insist(
+        found &&
+          found.fingerprint === op.fingerprint &&
+          found.phase === "queued",
+        "Envio desconhecido",
+      );
+      const stage = await this.queuedStage(values, record, found);
+      this.ensure();
+      await this.verifyEnvelope(copied, stage.certificate!);
+      this.ensure();
+      const next = registry.copied(
+        record,
+        this.owner.id,
+        found,
+        browserCertificateCrypto.hash(canonical(copied)),
+      );
+      values.set(this.key + ":record", next.record);
+      return next.operation;
+    });
+  }
+  queuedSource(op: ContributionOperation, allow: Policy) {
+    return this.run(async (values, record) => {
+      const found = registry.lookup(
+        record,
+        this.owner.id,
+        op.sequence,
+        op.operationId,
+      ).operation;
+      insist(
+        found &&
+          found.fingerprint === op.fingerprint &&
+          found.phase === "queued",
+        "Envio desconhecido",
+      );
+      const stage = await this.queuedStage(values, record, found);
+      this.ensure();
+      const source = await this.source(stage.request, stage.source, this.now());
+      this.ensure();
+      await allow(values, source.context.target.snapshotId, source.owner.id);
+      this.ensure();
+      protocol.verifyForSubmission(
+        stage.certificate,
+        source.context,
+        this.now(),
+      );
+      return JSON.parse(canonical(stage.source)) as Bundle;
+    });
+  }
   cancel(op: ContributionOperation) {
     return this.run(async (values, record) => {
+      const found = registry.lookup(
+        record,
+        this.owner.id,
+        op.sequence,
+        op.operationId,
+      ).operation;
+      insist(
+        found && found.fingerprint === op.fingerprint,
+        "Operação desconhecida",
+      );
       const next = registry.cancel(record, this.owner.id, op);
+      if (found.phase === "queued") {
+        await this.queuedStage(values, record, found);
+        this.ensure();
+        await values.remove(this.queueKey(found));
+      } else if (pending(found)) await values.remove(this.key + ":stage");
       values.set(this.key + ":record", next);
-      await values.remove(this.key + ":stage");
       return next.operations.find((v) => v.sequence === op.sequence)!;
     });
   }

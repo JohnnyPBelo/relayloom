@@ -45,6 +45,117 @@ func (s *contributionStage) value() map[string]any {
 	return value
 }
 
+func (c *ContributionCatalog) queueKey(op map[string]any) string {
+	return "contribution:" + docTextValue(op["certificateId"]) + ":stage"
+}
+func (c *ContributionCatalog) verifyStage(raw any, op, record map[string]any) (*contributionStage, error) {
+	entry, err := object(raw, "request", "source", "certificate")
+	if err != nil {
+		entry, err = object(raw, "request", "source", "certificate", "envelope")
+	}
+	if err != nil {
+		return nil, privateIntegrity("preparação de proposta inválida")
+	}
+	request, fingerprint, err := ContributionCreationRequest(entry["request"], c.identity.Public.ID)
+	if err != nil {
+		return nil, privateIntegrity("pedido preparado inválido")
+	}
+	if fingerprint != op["fingerprint"] || !creationEqual(request["sequence"], op["sequence"]) || request["operationId"] != op["operationId"] {
+		return nil, privateIntegrity("intenção privada diferente")
+	}
+	encoded, err := core.Canonical(entry["source"])
+	if err != nil {
+		return nil, err
+	}
+	source, err := core.DecodeBundle(encoded)
+	if err != nil {
+		return nil, privateIntegrity("snapshot preparado ilegível")
+	}
+	created, _ := contributionClock(op["created"])
+	resolved, err := c.source(request, source, created)
+	if err != nil {
+		return nil, privateIntegrity("snapshot preparado inválido")
+	}
+	schema, err := ContributionSchemaHash(resolved.Context.Form, resolved.Context.Table)
+	if err != nil {
+		return nil, err
+	}
+	if !creationEqual(resolved.Context.Target, op["target"]) || schema != op["schemaHash"] {
+		return nil, privateIntegrity("snapshot preparado diferente")
+	}
+	ttl, _ := creationNumber(request["ttlMs"])
+	expires, _ := contributionClock(op["expires"])
+	if expires != min(created+ttl, resolved.Context.SnapshotExpires) {
+		return nil, privateIntegrity("prazo privado diferente da intenção")
+	}
+	certificate := entry["certificate"]
+	if op["phase"] == "prepared" {
+		if certificate != nil {
+			return nil, privateIntegrity("assinatura sem autorização guardada")
+		}
+	} else {
+		if certificate == nil {
+			return nil, privateIntegrity("assinatura preparada em falta")
+		}
+		if _, err = CheckContributionCertificateBinding(record, c.identity.Public.ID, contributionHandle(op), request, certificate); err != nil {
+			return nil, privateIntegrity("assinatura preparada diferente")
+		}
+		if _, err = VerifyContributionForSubmission(certificate, resolved.Context, created); err != nil {
+			return nil, privateIntegrity("certificado preparado não autorizado")
+		}
+	}
+	stage := &contributionStage{request: request, source: source, certificate: certificate}
+	if rawEnvelope, present := entry["envelope"]; present {
+		if op["phase"] != "signed" && op["phase"] != "queued" {
+			return nil, privateIntegrity("envelope sem proposta assinada")
+		}
+		bytes, err := core.Canonical(rawEnvelope)
+		if err != nil {
+			return nil, err
+		}
+		envelope, err := core.DecodeBundle(bytes)
+		if err != nil {
+			return nil, privateIntegrity("envelope preparado inválido")
+		}
+		if err = c.verifyEnvelope(envelope, certificate); err != nil {
+			return nil, err
+		}
+		stage.envelope = &envelope
+	}
+
+	if op["phase"] == "queued" {
+		transport, ok := op["transport"].(map[string]any)
+		if !ok || stage.envelope == nil {
+			return nil, privateIntegrity("envelope da fila em falta")
+		}
+		envBytes, err := core.Canonical(*stage.envelope)
+		if err != nil {
+			return nil, err
+		}
+		stageBytes, err := core.Canonical(stage.value())
+		if err != nil {
+			return nil, err
+		}
+		size, _ := creationNumber(transport["bytes"])
+		if stage.envelope.Manifest.ID != transport["bundleId"] || core.Hash(envBytes) != transport["bundleHash"] || int64(len(stageBytes)) != size {
+			return nil, privateIntegrity("payload da fila diferente do descritor")
+		}
+	}
+	return stage, nil
+}
+func (c *ContributionCatalog) queuedStage(values *PrivateRecords, record, op map[string]any) (*contributionStage, error) {
+	if op["phase"] != "queued" {
+		return nil, contributionJournalError()
+	}
+	raw, present, err := values.Read(c.queueKey(op))
+	if err != nil {
+		return nil, err
+	}
+	if !present {
+		return nil, privateIntegrity("payload da fila em falta")
+	}
+	return c.verifyStage(raw, op, record)
+}
 func (c *ContributionCatalog) run(callback func(*PrivateRecords, map[string]any, *contributionStage) error) error {
 	return c.database.Update(func(tx *groupstore.Tx) error {
 		return RunContributionPrivate(tx, c.identity, func(values *PrivateRecords) error {
@@ -86,95 +197,43 @@ func (c *ContributionCatalog) run(callback func(*PrivateRecords, map[string]any,
 				if !staged {
 					return privateIntegrity("preparação de proposta em falta")
 				}
-				entry, err := object(raw, "request", "source", "certificate")
-				if err != nil {
-					entry, err = object(raw, "request", "source", "certificate", "envelope")
-				}
-				if err != nil {
-					return privateIntegrity("preparação de proposta inválida")
-				}
-				request, fingerprint, err := ContributionCreationRequest(entry["request"], c.identity.Public.ID)
-				if err != nil {
-					return privateIntegrity("pedido preparado inválido")
-				}
-				if fingerprint != op["fingerprint"] || !creationEqual(request["sequence"], op["sequence"]) || request["operationId"] != op["operationId"] {
-					return privateIntegrity("intenção privada diferente")
-				}
-				encoded, err := core.Canonical(entry["source"])
+				stage, err = c.verifyStage(raw, op, record)
 				if err != nil {
 					return err
-				}
-				source, err := core.DecodeBundle(encoded)
-				if err != nil {
-					return privateIntegrity("snapshot preparado ilegível")
-				}
-				created, _ := contributionClock(op["created"])
-				resolved, err := c.source(request, source, created)
-				if err != nil {
-					return privateIntegrity("snapshot preparado inválido")
-				}
-				schema, err := ContributionSchemaHash(resolved.Context.Form, resolved.Context.Table)
-				if err != nil {
-					return err
-				}
-				if !creationEqual(resolved.Context.Target, op["target"]) || schema != op["schemaHash"] {
-					return privateIntegrity("snapshot preparado diferente")
-				}
-				ttl, _ := creationNumber(request["ttlMs"])
-				expires, _ := contributionClock(op["expires"])
-				if expires != min(created+ttl, resolved.Context.SnapshotExpires) {
-					return privateIntegrity("prazo privado diferente da intenção")
-				}
-				certificate := entry["certificate"]
-				if op["phase"] == "prepared" {
-					if certificate != nil {
-						return privateIntegrity("assinatura sem autorização guardada")
-					}
-				} else {
-					if certificate == nil {
-						return privateIntegrity("assinatura preparada em falta")
-					}
-					if _, _, err = SignContributionIntent(record, c.identity.Public.ID, contributionHandle(op), request, certificate); err != nil {
-						return privateIntegrity("assinatura preparada diferente")
-					}
-					if _, err = VerifyContributionForSubmission(certificate, resolved.Context, created); err != nil {
-						return privateIntegrity("certificado preparado não autorizado")
-					}
-				}
-				stage = &contributionStage{request: request, source: source, certificate: certificate}
-				if rawEnvelope, present := entry["envelope"]; present {
-					if op["phase"] != "signed" {
-						return privateIntegrity("envelope sem proposta assinada")
-					}
-					bytes, err := core.Canonical(rawEnvelope)
-					if err != nil {
-						return err
-					}
-					envelope, err := core.DecodeBundle(bytes)
-					if err != nil {
-						return privateIntegrity("envelope preparado inválido")
-					}
-					if err = c.verifyEnvelope(envelope, certificate); err != nil {
-						return err
-					}
-					stage.envelope = &envelope
-				}
-				now := c.now()
-				if expires <= now {
-					record, err = ExpireContributionIntent(record, c.identity.Public.ID, now)
-					if err != nil {
-						return err
-					}
-					if err = values.Remove(c.key + ":stage"); err != nil {
-						return err
-					}
-					if err = values.Write(c.key+":record", record); err != nil {
-						return err
-					}
-					stage = nil
 				}
 			} else if staged {
 				return privateIntegrity("preparação sem operação pendente")
+			}
+			now := c.now()
+			expired := false
+			for _, raw := range record["operations"].([]any) {
+				op := raw.(map[string]any)
+				expires, _ := contributionClock(op["expires"])
+				if (contributionPending(op) || op["phase"] == "queued") && expires <= now {
+					if op["phase"] == "queued" {
+						if _, err = c.queuedStage(values, record, op); err != nil {
+							return err
+						}
+						if err = values.Remove(c.queueKey(op)); err != nil {
+							return err
+						}
+					} else {
+						if err = values.Remove(c.key + ":stage"); err != nil {
+							return err
+						}
+						stage = nil
+					}
+					expired = true
+				}
+			}
+			if expired {
+				record, err = ExpireContributionIntent(record, c.identity.Public.ID, now)
+				if err != nil {
+					return err
+				}
+				if err = values.Write(c.key+":record", record); err != nil {
+					return err
+				}
 			}
 			return callback(values, record, stage)
 		})
@@ -337,12 +396,18 @@ func (c *ContributionCatalog) Sign(handle ContributionHandle, allow Contribution
 }
 func (c *ContributionCatalog) AuthorizedCertificate(handle ContributionHandle, allow ContributionPolicy) (map[string]any, error) {
 	var result map[string]any
-	err := c.run(func(_ *PrivateRecords, record map[string]any, stage *contributionStage) error {
+	err := c.run(func(values *PrivateRecords, record map[string]any, stage *contributionStage) error {
 		_, op, err := contributionJournalHandle(record, c.identity.Public.ID, handle)
 		if err != nil {
 			return err
 		}
-		if op["phase"] != "signed" {
+		if op["phase"] == "queued" {
+			stage, err = c.queuedStage(values, record, op)
+			if err != nil {
+				return err
+			}
+		}
+		if op["phase"] != "signed" && op["phase"] != "queued" {
 			return nil
 		}
 		if stage == nil || stage.certificate == nil {
@@ -368,7 +433,13 @@ func (c *ContributionCatalog) Seal(handle ContributionHandle, allow Contribution
 		if err != nil {
 			return err
 		}
-		if op["phase"] != "signed" {
+		if op["phase"] == "queued" {
+			stage, err = c.queuedStage(values, record, op)
+			if err != nil {
+				return err
+			}
+		}
+		if op["phase"] != "signed" && op["phase"] != "queued" {
 			result = map[string]any{"operation": op, "bundleId": nil}
 			return nil
 		}
@@ -416,12 +487,18 @@ func (c *ContributionCatalog) Seal(handle ContributionHandle, allow Contribution
 }
 func (c *ContributionCatalog) AuthorizedBundle(handle ContributionHandle, allow ContributionPolicy) (*core.Bundle, error) {
 	var result *core.Bundle
-	err := c.run(func(_ *PrivateRecords, record map[string]any, stage *contributionStage) error {
+	err := c.run(func(values *PrivateRecords, record map[string]any, stage *contributionStage) error {
 		_, op, err := contributionJournalHandle(record, c.identity.Public.ID, handle)
 		if err != nil {
 			return err
 		}
-		if op["phase"] != "signed" || stage == nil || stage.envelope == nil {
+		if op["phase"] == "queued" {
+			stage, err = c.queuedStage(values, record, op)
+			if err != nil {
+				return err
+			}
+		}
+		if (op["phase"] != "signed" && op["phase"] != "queued") || stage == nil || stage.envelope == nil {
 			return nil
 		}
 		if stage.certificate == nil {
@@ -457,9 +534,139 @@ func (c *ContributionCatalog) AuthorizedBundle(handle ContributionHandle, allow 
 	})
 	return result, err
 }
+func (c *ContributionCatalog) Queue(handle ContributionHandle, allow ContributionPolicy) (map[string]any, error) {
+	var result map[string]any
+	err := c.run(func(values *PrivateRecords, record map[string]any, stage *contributionStage) error {
+		_, op, err := contributionJournalHandle(record, c.identity.Public.ID, handle)
+		if err != nil {
+			return err
+		}
+		if op["phase"] == "queued" || op["phase"] == "expired" || op["phase"] == "cancelled" {
+			result = op
+			return nil
+		}
+		if op["phase"] != "signed" {
+			return contributionJournalError()
+		}
+		if stage == nil || stage.certificate == nil || stage.envelope == nil {
+			return privateIntegrity("envelope privado ainda indisponível")
+		}
+
+		source, err := c.source(stage.request, stage.source, c.now())
+		if err != nil {
+			return err
+		}
+		target := source.Context.Target.(map[string]any)
+		if err = allow(docTextValue(target["snapshotId"]), source.Owner.ID); err != nil {
+			return err
+		}
+		if _, err = VerifyContributionForSubmission(stage.certificate, source.Context, c.now()); err != nil {
+			return err
+		}
+		bytes, err := core.Canonical(stage.value())
+		if err != nil {
+			return err
+		}
+		envelopeBytes, err := core.Canonical(*stage.envelope)
+		if err != nil {
+			return err
+		}
+		next, queued, err := QueueContributionIntent(record, c.identity.Public.ID, handle, map[string]any{"bundleId": stage.envelope.Manifest.ID, "bundleHash": core.Hash(envelopeBytes), "bytes": len(bytes)})
+		if err != nil {
+			return err
+		}
+		key := c.queueKey(queued)
+		if _, exists, err := values.Read(key); err != nil {
+			return err
+		} else if exists {
+			return privateIntegrity("slot privado de fila já ocupado")
+		}
+		if err = values.Write(key, stage.value()); err != nil {
+			return err
+		}
+		if err = values.Write(c.key+":record", next); err != nil {
+			return err
+		}
+		if err = values.Remove(c.key + ":stage"); err != nil {
+			return err
+		}
+		result = queued
+		return nil
+	})
+	return result, err
+}
+func (c *ContributionCatalog) MarkCopied(handle ContributionHandle, copied core.Bundle) (map[string]any, error) {
+	var result map[string]any
+	err := c.run(func(values *PrivateRecords, record map[string]any, _ *contributionStage) error {
+		_, op, err := contributionJournalHandle(record, c.identity.Public.ID, handle)
+		if err != nil {
+			return err
+		}
+		stage, err := c.queuedStage(values, record, op)
+		if err != nil {
+			return err
+		}
+		if err = c.verifyEnvelope(copied, stage.certificate); err != nil {
+			return err
+		}
+		bytes, err := core.Canonical(copied)
+		if err != nil {
+			return err
+		}
+		next, updated, err := MarkContributionCopied(record, c.identity.Public.ID, handle, core.Hash(bytes))
+		if err != nil {
+			return err
+		}
+		if err = values.Write(c.key+":record", next); err != nil {
+			return err
+		}
+		result = updated
+		return nil
+	})
+	return result, err
+}
+func (c *ContributionCatalog) QueuedSource(handle ContributionHandle, allow ContributionPolicy) (*core.Bundle, error) {
+	var result *core.Bundle
+	err := c.run(func(values *PrivateRecords, record map[string]any, _ *contributionStage) error {
+		_, op, err := contributionJournalHandle(record, c.identity.Public.ID, handle)
+		if err != nil {
+			return err
+		}
+		stage, err := c.queuedStage(values, record, op)
+		if err != nil {
+			return err
+		}
+		source, err := c.source(stage.request, stage.source, c.now())
+		if err != nil {
+			return err
+		}
+		target := source.Context.Target.(map[string]any)
+		if err = allow(docTextValue(target["snapshotId"]), source.Owner.ID); err != nil {
+			return err
+		}
+		if _, err = VerifyContributionForSubmission(stage.certificate, source.Context, c.now()); err != nil {
+			return err
+		}
+		bytes, err := core.Canonical(stage.source)
+		if err != nil {
+			return err
+		}
+		owned, err := core.DecodeBundle(bytes)
+		if err != nil {
+			return err
+		}
+		result = &owned
+		return nil
+	})
+	return result, err
+}
 func (c *ContributionCatalog) Cancel(handle ContributionHandle) (map[string]any, error) {
 	var result map[string]any
 	err := c.run(func(values *PrivateRecords, record map[string]any, _ *contributionStage) error {
+		_, previous, err := contributionJournalHandle(record, c.identity.Public.ID, handle)
+		if err != nil {
+			return err
+		}
 		updated, err := CancelContributionIntent(record, c.identity.Public.ID, handle)
 		if err != nil {
 			return err
@@ -467,8 +674,17 @@ func (c *ContributionCatalog) Cancel(handle ContributionHandle) (map[string]any,
 		if err = values.Write(c.key+":record", updated); err != nil {
 			return err
 		}
-		if err = values.Remove(c.key + ":stage"); err != nil {
-			return err
+		if previous["phase"] == "queued" {
+			if _, err = c.queuedStage(values, record, previous); err != nil {
+				return err
+			}
+			if err = values.Remove(c.queueKey(previous)); err != nil {
+				return err
+			}
+		} else if contributionPending(previous) {
+			if err = values.Remove(c.key + ":stage"); err != nil {
+				return err
+			}
 		}
 		_, result, _, err = LookupContributionOperation(updated, c.identity.Public.ID, handle.Sequence, handle.OperationID)
 		return err

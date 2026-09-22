@@ -545,3 +545,154 @@ test("browser retains one private encrypted envelope across reopen and cancels a
   expect(result.grant).toBe("public");
   expect(result.publicInventoryEmpty).toBe(true);
 });
+
+test("repeating cancellation of an old proposal preserves a different active preparation", async ({
+  page,
+}) => {
+  await page.goto(host.url);
+  const result = await page.evaluate(async (payload: any) => {
+    const r = (window as any).rl,
+      p = await r.BrowserProfile.connect(
+        "proposal-cancel-isolation-" + crypto.randomUUID(),
+      );
+    try {
+      await p.setup("Dona", "separate proposal cancellation passphrase");
+      const source = await p.signSiteBundle(
+          "profile",
+          1,
+          [],
+          payload,
+          "public",
+          3600000,
+        ),
+        catalog = new r.BrowserContributionCatalog(p),
+        allow = async () => {};
+      const q = {
+        sequence: 1,
+        operationId: crypto.randomUUID(),
+        snapshotId: source.manifest.id,
+        pageId: "entry",
+        formId: "form",
+        values: { name: "First", count: 0, open: false },
+        publicationScope: "public",
+        ttlMs: 60000,
+      };
+      const first = await catalog.prepare(q, async () => source, allow);
+      await catalog.cancel(first);
+      const second = await catalog.prepare(
+        {
+          ...q,
+          sequence: 2,
+          operationId: crypto.randomUUID(),
+          values: { ...q.values, name: "Second" },
+        },
+        async () => source,
+        allow,
+      );
+      await catalog.cancel(first);
+      const signed = await catalog.sign(second, allow);
+      return {
+        sequence: signed.sequence,
+        phase: signed.phase,
+        next: (await catalog.state()).nextSequence,
+      };
+    } finally {
+      await p.close();
+    }
+  }, formPayload());
+  expect(result).toEqual({ sequence: 2, phase: "signed", next: 3 });
+});
+
+test("browser queued handoff keeps source and envelope private, supports a second intent and preserves packet identity after expiry", async ({
+  page,
+}) => {
+  await page.goto(host.url);
+  const result = await page.evaluate(async (payload: any) => {
+    const r = (window as any).rl,
+      p = await r.BrowserProfile.connect(
+        "queued-handoff-" + crypto.randomUUID(),
+      ),
+      password = "browser queued transport passphrase";
+    try {
+      const owner = await p.setup("Dona", password),
+        source = await p.signSiteBundle(
+          "profile",
+          1,
+          [],
+          payload,
+          "public",
+          3600000,
+        );
+      let now = Date.now();
+      const catalog = new r.BrowserContributionCatalog(p, () => now),
+        allow = async () => {};
+      const q = {
+        sequence: 1,
+        operationId: crypto.randomUUID(),
+        snapshotId: source.manifest.id,
+        pageId: "entry",
+        formId: "form",
+        values: { name: "PRIVATE_QUEUED_HANDOFF", count: 0, open: false },
+        publicationScope: [owner.id],
+        ttlMs: 60000,
+      };
+      const signed = await catalog.sign(
+        await catalog.prepare(q, async () => source, allow),
+        allow,
+      );
+      await catalog.seal(signed, allow);
+      const before = await catalog.authorizedBundle(signed, allow);
+      const queued = await catalog.queue(signed, allow),
+        second = await catalog.prepare(
+          {
+            ...q,
+            sequence: 2,
+            operationId: crypto.randomUUID(),
+            ttlMs: 120000,
+          },
+          async () => source,
+          allow,
+        );
+      const after = await catalog.authorizedBundle(queued, allow),
+        proof = await catalog.queuedSource(queued, allow),
+        inventoryBefore = await p.ids();
+      await p.putBundle(after, true);
+      const copy = await catalog.markCopied(
+        queued,
+        await p.getBundle(after.manifest.id),
+      );
+      const record = (await catalog.state()).operations[0];
+      now = queued.expires;
+      const expired = (await catalog.state()).operations[0],
+        stillSecond = await catalog.sign(second, allow);
+      return {
+        phase: queued.phase,
+        copiedInitially: queued.transport.copied,
+        sameBytes: JSON.stringify(before) === JSON.stringify(after),
+        source: proof.manifest.id,
+        expectedSource: source.manifest.id,
+        privateInventory: inventoryBefore.length,
+        copy: copy.transport.copied,
+        recordCopy: record.transport.copied,
+        expired: expired.phase,
+        keptId: expired.transport.bundleId === before.manifest.id,
+        second: stillSecond.phase,
+      };
+    } finally {
+      await p.close();
+    }
+  }, formPayload());
+  expect(result).toEqual({
+    phase: "queued",
+    copiedInitially: false,
+    sameBytes: true,
+    source: result.expectedSource,
+    expectedSource: result.expectedSource,
+    privateInventory: 0,
+    copy: true,
+    recordCopy: true,
+    expired: "expired",
+    keptId: true,
+    second: "signed",
+  });
+});

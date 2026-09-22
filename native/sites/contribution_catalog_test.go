@@ -91,6 +91,9 @@ func TestContributionCatalogWorker(t *testing.T) {
 	if mode == "before-envelope-commit" {
 		code = 85
 	}
+	if mode == "before-queue-commit" {
+		code = 87
+	}
 	holdDir := ""
 	if input["holdBeforeCommit"] == true {
 		holdDir = filepath.Dir(full)
@@ -158,6 +161,20 @@ func TestContributionCatalogWorker(t *testing.T) {
 			value, err = catalog.Seal(h, policy)
 		case "bundle":
 			value, err = catalog.AuthorizedBundle(h, policy)
+		case "queue":
+			value, err = catalog.Queue(h, policy)
+		case "source":
+			value, err = catalog.QueuedSource(h, policy)
+		case "copied":
+			bytes, e := core.Canonical(command["bundle"])
+			if e != nil {
+				t.Fatal(e)
+			}
+			bundle, e := core.DecodeBundle(bytes)
+			if e != nil {
+				t.Fatal(e)
+			}
+			value, err = catalog.MarkCopied(h, bundle)
 		case "certificate":
 			value, err = catalog.AuthorizedCertificate(h, policy)
 		case "cancel":
@@ -189,6 +206,9 @@ func TestContributionCatalogWorker(t *testing.T) {
 		}
 		if mode == "after-envelope" && command["action"] == "seal" {
 			os.Exit(86)
+		}
+		if mode == "after-queue" && command["action"] == "queue" {
+			os.Exit(88)
 		}
 	}
 	bytes, err := core.Canonical(results)

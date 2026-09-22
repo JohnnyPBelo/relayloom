@@ -7,6 +7,9 @@ import (
 
 const ContributionOperationLimit = 128
 const ContributionRecordBytes = 1024 * 1024
+const ContributionQueueLimit = 32
+const ContributionQueueBytes = 32 * 1024 * 1024
+const ContributionStageBytes = 6*1024*1024 + 16384
 const contributionCreationDomain = "relayloom/contribution-creation/1"
 
 func contributionJournalError() error { return errors.New("registo de proposta inválido") }
@@ -76,9 +79,13 @@ func ValidateContributionRecord(value any, owner string) (map[string]any, error)
 		return nil, contributionJournalError()
 	}
 	seen := map[string]bool{}
-	active := 0
+	active, queued := 0, 0
+	var queuedBytes int64
 	for i, raw := range ops {
 		op, err := object(raw, "sequence", "operationId", "fingerprint", "phase", "target", "schemaHash", "created", "expires", "certificateId")
+		if err != nil {
+			op, err = object(raw, "sequence", "operationId", "fingerprint", "phase", "target", "schemaHash", "created", "expires", "certificateId", "transport")
+		}
 		if err != nil {
 			return nil, err
 		}
@@ -91,7 +98,7 @@ func ValidateContributionRecord(value any, owner string) (map[string]any, error)
 		created, e1 := contributionClock(op["created"])
 		expires, e2 := contributionClock(op["expires"])
 		phase := docTextValue(op["phase"])
-		if e1 != nil || e2 != nil || expires <= created || expires-created > ContributionLifetimeMS || !docContains([]string{"prepared", "signed", "cancelled", "expired"}, phase) {
+		if e1 != nil || e2 != nil || expires <= created || expires-created > ContributionLifetimeMS || !docContains([]string{"prepared", "signed", "queued", "cancelled", "expired"}, phase) {
 			return nil, contributionJournalError()
 		}
 		if _, err = contributionTarget(op["target"]); err != nil {
@@ -104,11 +111,35 @@ func ValidateContributionRecord(value any, owner string) (map[string]any, error)
 		if phase == "prepared" && cert != nil || phase == "signed" && cert == nil {
 			return nil, contributionJournalError()
 		}
+		transport, present := op["transport"]
+		if present {
+			if contributionPending(op) || cert == nil {
+				return nil, contributionJournalError()
+			}
+			t, err := object(transport, "bundleId", "bundleHash", "bytes", "copied")
+			if err != nil {
+				return nil, err
+			}
+			size, err := creationNumber(t["bytes"])
+			_, boolean := t["copied"].(bool)
+			if err != nil || size > ContributionStageBytes || !boolean || !core.ValidAddress(docTextValue(t["bundleId"])) || !core.ValidAddress(docTextValue(t["bundleHash"])) {
+				return nil, contributionJournalError()
+			}
+		}
+		if phase == "queued" {
+			if !present {
+				return nil, contributionJournalError()
+			}
+			t := transport.(map[string]any)
+			size, _ := creationNumber(t["bytes"])
+			queued++
+			queuedBytes += size
+		}
 		if contributionPending(op) {
 			active++
 		}
 	}
-	if active > 1 {
+	if active > 1 || queued > ContributionQueueLimit || queuedBytes > ContributionQueueBytes {
 		return nil, contributionJournalError()
 	}
 	return creationClone(r, ContributionRecordBytes)
@@ -161,6 +192,9 @@ func PrepareContributionIntent(value any, owner string, input any, context Contr
 		if contributionPending(raw.(map[string]any)) {
 			return nil, nil, contributionJournalError()
 		}
+	}
+	if len(ops) >= ContributionOperationLimit && ops[0].(map[string]any)["phase"] == "queued" {
+		return nil, nil, contributionJournalError()
 	}
 	if err = AuthorizeContributionContext(context, owner, now); err != nil {
 		return nil, nil, err
@@ -230,27 +264,41 @@ func contributionJournalHandle(value any, owner string, h ContributionHandle) (m
 	}
 	return record, op, nil
 }
+func CheckContributionCertificateBinding(value any, owner string, h ContributionHandle, input any, certificate any) (map[string]any, error) {
+	_, op, err := contributionJournalHandle(value, owner, h)
+	if err != nil {
+		return nil, err
+	}
+	q, fingerprint, err := ContributionCreationRequest(input, owner)
+	if err != nil {
+		return nil, err
+	}
+	seq, _ := creationNumber(q["sequence"])
+	if fingerprint != op["fingerprint"] || seq != h.Sequence || q["operationId"] != h.OperationID {
+		return nil, contributionJournalError()
+	}
+	cert, err := VerifyContribution(certificate)
+	if err != nil {
+		return nil, err
+	}
+	b := cert["body"].(map[string]any)
+	card := b["contributor"].(map[string]any)
+	if card["id"] != owner || b["operationId"] != h.OperationID || !creationEqual(b["target"], op["target"]) || b["schemaHash"] != op["schemaHash"] || !creationEqual(b["created"], op["created"]) || !creationEqual(b["expires"], op["expires"]) || !creationEqual(b["values"], q["values"]) || !creationEqual(b["publicationScope"], q["publicationScope"]) {
+		return nil, contributionJournalError()
+	}
+	if op["certificateId"] != nil && op["certificateId"] != cert["id"] {
+		return nil, contributionJournalError()
+	}
+	return cert, nil
+}
 func SignContributionIntent(value any, owner string, h ContributionHandle, input any, certificate any) (map[string]any, map[string]any, error) {
 	record, op, err := contributionJournalHandle(value, owner, h)
 	if err != nil {
 		return nil, nil, err
 	}
-	q, fingerprint, err := ContributionCreationRequest(input, owner)
+	cert, err := CheckContributionCertificateBinding(value, owner, h, input, certificate)
 	if err != nil {
 		return nil, nil, err
-	}
-	seq, _ := creationNumber(q["sequence"])
-	if fingerprint != op["fingerprint"] || seq != h.Sequence || q["operationId"] != h.OperationID {
-		return nil, nil, contributionJournalError()
-	}
-	cert, err := VerifyContribution(certificate)
-	if err != nil {
-		return nil, nil, err
-	}
-	b := cert["body"].(map[string]any)
-	card := b["contributor"].(map[string]any)
-	if card["id"] != owner || b["operationId"] != h.OperationID || !creationEqual(b["target"], op["target"]) || b["schemaHash"] != op["schemaHash"] || !creationEqual(b["created"], op["created"]) || !creationEqual(b["expires"], op["expires"]) || !creationEqual(b["values"], q["values"]) || !creationEqual(b["publicationScope"], q["publicationScope"]) {
-		return nil, nil, contributionJournalError()
 	}
 	if op["phase"] != "prepared" && (op["phase"] != "signed" || op["certificateId"] != cert["id"]) {
 		return nil, nil, contributionJournalError()
@@ -275,7 +323,7 @@ func ExpireContributionIntent(value any, owner string, now int64) (map[string]an
 	for _, raw := range record["operations"].([]any) {
 		op := raw.(map[string]any)
 		expires, _ := contributionClock(op["expires"])
-		if contributionPending(op) && expires <= now {
+		if (contributionPending(op) || op["phase"] == "queued") && expires <= now {
 			op["phase"] = "expired"
 		}
 	}
@@ -286,9 +334,58 @@ func CancelContributionIntent(value any, owner string, h ContributionHandle) (ma
 	if err != nil {
 		return nil, err
 	}
-	if !contributionPending(op) && op["phase"] != "cancelled" {
+	if !contributionPending(op) && op["phase"] != "queued" && op["phase"] != "cancelled" {
 		return nil, contributionJournalError()
 	}
 	op["phase"] = "cancelled"
 	return ValidateContributionRecord(record, owner)
+}
+
+func QueueContributionIntent(value any, owner string, h ContributionHandle, input any) (map[string]any, map[string]any, error) {
+	record, op, err := contributionJournalHandle(value, owner, h)
+	if err != nil {
+		return nil, nil, err
+	}
+	descriptor, err := object(input, "bundleId", "bundleHash", "bytes")
+	if err != nil {
+		return nil, nil, err
+	}
+	if op["phase"] == "queued" {
+		current := op["transport"].(map[string]any)
+		if !creationEqual(map[string]any{"bundleId": current["bundleId"], "bundleHash": current["bundleHash"], "bytes": current["bytes"]}, descriptor) {
+			return nil, nil, contributionJournalError()
+		}
+		return record, op, nil
+	}
+	if op["phase"] != "signed" || !core.ValidAddress(docTextValue(op["certificateId"])) {
+		return nil, nil, contributionJournalError()
+	}
+	op["phase"] = "queued"
+	op["transport"] = map[string]any{"bundleId": descriptor["bundleId"], "bundleHash": descriptor["bundleHash"], "bytes": descriptor["bytes"], "copied": false}
+	record, err = ValidateContributionRecord(record, owner)
+	if err != nil {
+		return nil, nil, err
+	}
+	result, err := creationClone(op, ContributionRecordBytes)
+	return record, result, err
+}
+func MarkContributionCopied(value any, owner string, h ContributionHandle, bundleHash string) (map[string]any, map[string]any, error) {
+	record, op, err := contributionJournalHandle(value, owner, h)
+	if err != nil {
+		return nil, nil, err
+	}
+	if op["phase"] != "queued" {
+		return nil, nil, contributionJournalError()
+	}
+	transport := op["transport"].(map[string]any)
+	if transport["bundleHash"] != bundleHash {
+		return nil, nil, contributionJournalError()
+	}
+	transport["copied"] = true
+	record, err = ValidateContributionRecord(record, owner)
+	if err != nil {
+		return nil, nil, err
+	}
+	result, err := creationClone(op, ContributionRecordBytes)
+	return record, result, err
 }

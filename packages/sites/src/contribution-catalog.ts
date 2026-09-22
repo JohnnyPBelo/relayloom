@@ -44,6 +44,9 @@ const pending = (op: ContributionOperation) =>
 function insist(ok: unknown, reason: string): asserts ok {
   if (!ok) throw new RegistryIntegrityError(reason);
 }
+function requireOperation(ok: unknown, reason: string): asserts ok {
+  if (!ok) throw new Error(reason);
+}
 /** Private preparation only: no application endpoint or transport is wired yet.
  * prepare commits the source and intent WITHOUT a visitor signature. sign is a
  * later transaction and never returns a signature before its actual commit. */
@@ -86,6 +89,87 @@ export class NodeContributionCatalog {
       now,
     );
   }
+  private queueKey(op: ContributionOperation) {
+    insist(op.certificateId, "Certificado da fila em falta");
+    return "contribution:" + op.certificateId + ":stage";
+  }
+  private verifyStage(
+    raw: unknown,
+    op: ContributionOperation,
+    record: ContributionCreationRecord,
+  ): Stage {
+    insist(
+      exactShape(raw, ["request", "source", "certificate"]) ||
+        exactShape(raw, ["request", "source", "certificate", "envelope"]),
+      "Preparação de proposta em falta",
+    );
+    const stage = raw as Stage;
+    const checked = registry.request(stage.request, this.identity.public.id);
+    insist(
+      checked.fingerprint === op.fingerprint &&
+        checked.request.sequence === op.sequence &&
+        checked.request.operationId === op.operationId,
+      "Intenção privada diferente",
+    );
+    const found = this.source(checked.request, stage.source, op.created);
+    insist(
+      canonical(found.context.target) === canonical(op.target) &&
+        protocol.schemaHash(found.context.form, found.context.table) ===
+          op.schemaHash,
+      "Snapshot preparado diferente",
+    );
+    insist(
+      op.expires ===
+        Math.min(
+          op.created + checked.request.ttlMs,
+          found.context.snapshotExpires,
+        ),
+      "Prazo privado diferente da intenção",
+    );
+    if (op.phase === "prepared")
+      insist(stage.certificate === null, "Assinatura sem autorização guardada");
+    else {
+      insist(stage.certificate !== null, "Assinatura preparada em falta");
+      registry.checkCertificate(
+        record,
+        this.identity.public.id,
+        op,
+        stage.request,
+        stage.certificate,
+      );
+      protocol.verifyForSubmission(
+        stage.certificate,
+        found.context,
+        op.created,
+      );
+    }
+    if (Object.hasOwn(stage, "envelope")) {
+      insist(
+        (op.phase === "signed" || op.phase === "queued") && stage.envelope,
+        "Envelope sem proposta assinada",
+      );
+      this.verifyEnvelope(stage.envelope, stage.certificate!);
+    }
+
+    if (op.phase === "queued") {
+      insist(stage.envelope && op.transport, "Envelope da fila em falta");
+      insist(
+        stage.envelope.manifest.id === op.transport.bundleId &&
+          hash(canonical(stage.envelope)) === op.transport.bundleHash &&
+          Buffer.byteLength(canonical(stage)) === op.transport.bytes,
+        "Payload da fila diferente do descritor",
+      );
+    }
+    return stage;
+  }
+  private queuedStage(
+    values: SitePrivateRecords,
+    record: ContributionCreationRecord,
+    op: ContributionOperation,
+  ) {
+    insist(op.phase === "queued", "Operação não está em fila");
+    return this.verifyStage(values.read(this.queueKey(op)), op, record);
+  }
   private run<T>(
     fn: (
       values: SitePrivateRecords,
@@ -108,75 +192,27 @@ export class NodeContributionCatalog {
         const op = record.operations.find(pending);
         let stage: Stage | null = null;
         if (op) {
-          insist(
-            exactShape(raw, ["request", "source", "certificate"]) ||
-              exactShape(raw, ["request", "source", "certificate", "envelope"]),
-            "Preparação de proposta em falta",
+          stage = this.verifyStage(raw, op, record);
+        } else insist(raw === null, "Preparação sem operação pendente");
+        const now = this.now(),
+          expired = record.operations.filter(
+            (value) =>
+              (pending(value) || value.phase === "queued") &&
+              value.expires <= now,
           );
-          stage = raw as Stage;
-          const checked = registry.request(
-            stage.request,
-            this.identity.public.id,
-          );
-          insist(
-            checked.fingerprint === op.fingerprint &&
-              checked.request.sequence === op.sequence &&
-              checked.request.operationId === op.operationId,
-            "Intenção privada diferente",
-          );
-          const found = this.source(checked.request, stage.source, op.created);
-          insist(
-            canonical(found.context.target) === canonical(op.target) &&
-              protocol.schemaHash(found.context.form, found.context.table) ===
-                op.schemaHash,
-            "Snapshot preparado diferente",
-          );
-          insist(
-            op.expires ===
-              Math.min(
-                op.created + checked.request.ttlMs,
-                found.context.snapshotExpires,
-              ),
-            "Prazo privado diferente da intenção",
-          );
-          if (op.phase === "prepared")
-            insist(
-              stage.certificate === null,
-              "Assinatura sem autorização guardada",
-            );
-          else {
-            insist(stage.certificate !== null, "Assinatura preparada em falta");
-            registry.signed(
-              record,
-              this.identity.public.id,
-              op,
-              stage.request,
-              stage.certificate,
-            );
-            protocol.verifyForSubmission(
-              stage.certificate,
-              found.context,
-              op.created,
-            );
-          }
-          if (Object.hasOwn(stage, "envelope")) {
-            insist(
-              op.phase === "signed" && stage.envelope,
-              "Envelope sem proposta assinada",
-            );
-            this.verifyEnvelope(stage.envelope, stage.certificate!);
-          }
-          if (op.expires <= this.now()) {
-            record = registry.expire(
-              record,
-              this.identity.public.id,
-              this.now(),
-            );
+        for (const value of expired) {
+          if (value.phase === "queued") {
+            this.queuedStage(values, record, value);
+            values.remove(this.queueKey(value));
+          } else {
             values.remove(this.key + ":stage");
-            values.write(this.key + ":record", record);
             stage = null;
           }
-        } else insist(raw === null, "Preparação sem operação pendente");
+        }
+        if (expired.length) {
+          record = registry.expire(record, this.identity.public.id, now);
+          values.write(this.key + ":record", record);
+        }
         return fn(values, record, stage);
       }),
     );
@@ -222,13 +258,13 @@ export class NodeContributionCatalog {
         q.operationId,
       );
       if (found.operation) {
-        insist(
+        requireOperation(
           found.operation.fingerprint === checked.fingerprint,
           "Pedido de proposta repetido com outros valores",
         );
         return found.operation;
       }
-      insist(
+      requireOperation(
         !found.retired &&
           record.nextSequence === q.sequence &&
           !record.operations.some(pending),
@@ -265,7 +301,7 @@ export class NodeContributionCatalog {
         op.sequence,
         op.operationId,
       ).operation;
-      insist(
+      requireOperation(
         found && found.fingerprint === op.fingerprint,
         "Preparação desconhecida",
       );
@@ -303,18 +339,20 @@ export class NodeContributionCatalog {
     op: ContributionOperation,
     allow: (snapshotId: string, siteOwnerId: string) => void,
   ) {
-    return this.run((_values, record, stage) => {
+    return this.run((values, record, stage) => {
       const found = registry.lookup(
         record,
         this.identity.public.id,
         op.sequence,
         op.operationId,
       ).operation;
-      insist(
+      requireOperation(
         found && found.fingerprint === op.fingerprint,
         "Preparação desconhecida",
       );
-      if (found.phase !== "signed") return null;
+      if (found.phase === "queued")
+        stage = this.queuedStage(values, record, found);
+      if (!["signed", "queued"].includes(found.phase)) return null;
       insist(stage?.certificate, "Assinatura em falta");
       const source = this.source(stage.request, stage.source, this.now());
       allow(source.context.target.snapshotId, source.owner.id);
@@ -336,11 +374,14 @@ export class NodeContributionCatalog {
         op.sequence,
         op.operationId,
       ).operation;
-      insist(
+      requireOperation(
         found && found.fingerprint === op.fingerprint,
         "Preparação desconhecida",
       );
-      if (found.phase !== "signed") return { operation: found, bundleId: null };
+      if (found.phase === "queued")
+        stage = this.queuedStage(values, record, found);
+      if (!["signed", "queued"].includes(found.phase))
+        return { operation: found, bundleId: null };
       insist(stage?.certificate, "Proposta assinada indisponível");
       const source = this.source(stage.request, stage.source, this.now());
       allow(source.context.target.snapshotId, source.owner.id);
@@ -374,18 +415,21 @@ export class NodeContributionCatalog {
     op: ContributionOperation,
     allow: (snapshotId: string, ownerId: string) => void,
   ) {
-    return this.run((_values, record, stage) => {
+    return this.run((values, record, stage) => {
       const found = registry.lookup(
         record,
         this.identity.public.id,
         op.sequence,
         op.operationId,
       ).operation;
-      insist(
+      requireOperation(
         found && found.fingerprint === op.fingerprint,
         "Preparação desconhecida",
       );
-      if (found.phase !== "signed" || !stage?.envelope) return null;
+      if (found.phase === "queued")
+        stage = this.queuedStage(values, record, found);
+      if (!["signed", "queued"].includes(found.phase) || !stage?.envelope)
+        return null;
       insist(stage.certificate, "Assinatura em falta");
       const source = this.source(stage.request, stage.source, this.now());
       allow(source.context.target.snapshotId, source.owner.id);
@@ -403,11 +447,129 @@ export class NodeContributionCatalog {
       return bundle;
     });
   }
+  queue(
+    op: ContributionOperation,
+    allow: (snapshotId: string, ownerId: string) => void,
+  ) {
+    return this.run((values, record, stage) => {
+      const found = registry.lookup(
+        record,
+        this.identity.public.id,
+        op.sequence,
+        op.operationId,
+      ).operation;
+      requireOperation(
+        found && found.fingerprint === op.fingerprint,
+        "Preparação desconhecida",
+      );
+      if (
+        found.phase === "queued" ||
+        found.phase === "expired" ||
+        found.phase === "cancelled"
+      )
+        return found;
+      requireOperation(
+        found.phase === "signed" && stage?.certificate && stage.envelope,
+        "Envelope privado ainda indisponível",
+      );
+      const source = this.source(stage.request, stage.source, this.now());
+      allow(source.context.target.snapshotId, source.owner.id);
+      protocol.verifyForSubmission(
+        stage.certificate,
+        source.context,
+        this.now(),
+      );
+      const descriptor = {
+        bundleId: stage.envelope.manifest.id,
+        bundleHash: hash(canonical(stage.envelope)),
+        bytes: Buffer.byteLength(canonical(stage)),
+      };
+      const queued = registry.queue(
+          record,
+          this.identity.public.id,
+          found,
+          descriptor,
+        ),
+        key = this.queueKey(queued.operation);
+      insist(values.read(key) === null, "Slot privado de fila já ocupado");
+      values.write(key, stage);
+      values.write(this.key + ":record", queued.record);
+      values.remove(this.key + ":stage");
+      return queued.operation;
+    });
+  }
+  markCopied(op: ContributionOperation, copied: Bundle) {
+    return this.run((values, record) => {
+      const found = registry.lookup(
+        record,
+        this.identity.public.id,
+        op.sequence,
+        op.operationId,
+      ).operation;
+      requireOperation(
+        found &&
+          found.fingerprint === op.fingerprint &&
+          found.phase === "queued",
+        "Envio desconhecido",
+      );
+      const stage = this.queuedStage(values, record, found);
+      this.verifyEnvelope(copied, stage.certificate!);
+      const next = registry.copied(
+        record,
+        this.identity.public.id,
+        found,
+        hash(canonical(copied)),
+      );
+      values.write(this.key + ":record", next.record);
+      return next.operation;
+    });
+  }
+  queuedSource(
+    op: ContributionOperation,
+    allow: (snapshotId: string, ownerId: string) => void,
+  ) {
+    return this.run((values, record) => {
+      const found = registry.lookup(
+        record,
+        this.identity.public.id,
+        op.sequence,
+        op.operationId,
+      ).operation;
+      requireOperation(
+        found &&
+          found.fingerprint === op.fingerprint &&
+          found.phase === "queued",
+        "Envio desconhecido",
+      );
+      const stage = this.queuedStage(values, record, found),
+        source = this.source(stage.request, stage.source, this.now());
+      allow(source.context.target.snapshotId, source.owner.id);
+      protocol.verifyForSubmission(
+        stage.certificate,
+        source.context,
+        this.now(),
+      );
+      return JSON.parse(canonical(stage.source)) as Bundle;
+    });
+  }
   cancel(op: ContributionOperation) {
     return this.run((values, record) => {
+      const found = registry.lookup(
+        record,
+        this.identity.public.id,
+        op.sequence,
+        op.operationId,
+      ).operation;
+      requireOperation(
+        found && found.fingerprint === op.fingerprint,
+        "Operação desconhecida",
+      );
       const next = registry.cancel(record, this.identity.public.id, op);
+      if (found.phase === "queued") {
+        this.queuedStage(values, record, found);
+        values.remove(this.queueKey(found));
+      } else if (pending(found)) values.remove(this.key + ":stage");
       values.write(this.key + ":record", next);
-      values.remove(this.key + ":stage");
       return next.operations.find((v) => v.sequence === op.sequence)!;
     });
   }
