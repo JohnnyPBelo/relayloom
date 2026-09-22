@@ -1,0 +1,25 @@
+{
+  "reason": "fixture called nonexistent wire.close and prevented finally cleanup after both assertions ended",
+  "root": 2982476,
+  "ownedChildren": [
+    {
+      "pid": 2982482,
+      "data": null,
+      "kind": "node"
+    },
+    {
+      "pid": 2982502,
+      "data": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/node-iHsV4E",
+      "kind": "node"
+    },
+    {
+      "pid": 2984977,
+      "data": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/node-grwKpa",
+      "kind": "relayloom"
+    }
+  ],
+  "appShutdown": "SIGTERM, waited for both exits",
+  "workerShutdown": "SIGTERM to owned failed test worker only",
+  "profiles": "preserved for diagnosis",
+  "unrelatedProcessesTouched": false
+}

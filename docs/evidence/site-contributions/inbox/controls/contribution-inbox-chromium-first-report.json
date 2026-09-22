@@ -1,0 +1,237 @@
+{
+  "config": {
+    "argv": [
+      "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+      "/home/absint0o/projects/relayloom/.cache/site-optional-resources/node_modules/playwright/cli.js",
+      "test",
+      "--config",
+      "tests/browser/matrix.config.ts",
+      "tests/browser/site-contribution-inbox.spec.ts",
+      "--output",
+      ".cache/contribution-inbox-chromium-artifacts"
+    ],
+    "configFile": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/matrix.config.ts",
+    "rootDir": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/contribution-inbox-chromium-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "*.spec.ts"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/browser-matrix/chromium/playwright.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "site-contribution-inbox.spec.ts",
+      "file": "site-contribution-inbox.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "browser durable proposal inbox reopen-conflict preserves original authority and never fabricates approval",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 845,
+                  "error": {
+                    "message": "Error: sameSource\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                    "stack": "Error: sameSource\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-contribution-inbox.spec.ts:233:36",
+                    "location": {
+                      "file": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-contribution-inbox.spec.ts",
+                      "column": 36,
+                      "line": 233
+                    },
+                    "snippet": "  231 |         \"metadataOnly\",\n  232 |       ] as const)\n> 233 |         expect(result[name], name).toBe(true);\n      |                                    ^\n  234 |     }\n  235 |   });\n  236 |"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-contribution-inbox.spec.ts",
+                        "column": 36,
+                        "line": 233
+                      },
+                      "message": "Error: sameSource\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  231 |         \"metadataOnly\",\n  232 |       ] as const)\n> 233 |         expect(result[name], name).toBe(true);\n      |                                    ^\n  234 |     }\n  235 |   });\n  236 |\n    at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-contribution-inbox.spec.ts:233:36"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-22T16:38:19.700Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/contribution-inbox-chromium-artifacts/site-contribution-inbox-br-6f5fa-d-never-fabricates-approval-chromium/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/contribution-inbox-chromium-artifacts/site-contribution-inbox-br-6f5fa-d-never-fabricates-approval-chromium/error-context.md"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/contribution-inbox-chromium-artifacts/site-contribution-inbox-br-6f5fa-d-never-fabricates-approval-chromium/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/contribution-inbox-chromium-artifacts/site-contribution-inbox-br-6f5fa-d-never-fabricates-approval-chromium/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-contribution-inbox.spec.ts",
+                    "column": 36,
+                    "line": 233
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "b5a8dccfcd7fb602a33d-010f8244650d8b55d6f2",
+          "file": "site-contribution-inbox.spec.ts",
+          "line": 17,
+          "column": 3
+        },
+        {
+          "title": "browser durable proposal inbox lock-source preserves original authority and never fabricates approval",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 731,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-22T16:38:21.071Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b5a8dccfcd7fb602a33d-21f45254e1c550d6f1a9",
+          "file": "site-contribution-inbox.spec.ts",
+          "line": 17,
+          "column": 3
+        },
+        {
+          "title": "browser durable proposal inbox corruption-expiry preserves original authority and never fabricates approval",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 598,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-22T16:38:21.936Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b5a8dccfcd7fb602a33d-40a5ac2a356f1cdf301f",
+          "file": "site-contribution-inbox.spec.ts",
+          "line": 17,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-22T16:38:19.235Z",
+    "duration": 3353.833,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

@@ -290,3 +290,12 @@ Não conclui submissão/outbox/inbox/aprovação/proveniência/UI nem os restant
 ## Submissão privada integrada — 22 de Setembro
 
 FR-038/039/040 e CON-002 permanecem parciais. 5a1921c/07b509e ligam fila privada recuperável e API/transporte Node/Go/browser; inbox ainda só candidatos. Gate505Node,17pacotesGo/race,35processos,49casos porenginePASS. Uma correcção final de cancelamento/expiração apósawait foi reproduzida e passou gate separado16casos porengine/typecheck/build; provas e deltas exactos em docs/evidence/site-contributions/submission. Público7fdb76a/0fdbd1b inalterado. Faltam inbox durável/replay, recuperação de fonte, recibos, aprovação/CAS/reconciliação/proveniência/UI, além dos restantes requisitos de plataformas/rádios/grupos web/rotação e revisão independente. Próxima implementação: CONTRIBUTION-INBOX-NEXT.md.
+
+
+## Marco de inbox guardado — estado final local
+
+Código **a3e09fd/55b0d4e**, workflow **eb2a5b4**. Gate amplo terminouPASS (514Node/17pacotesGo-race/66processos/60casos porengine). Revisão de quota terminouPASS (20Node,Go app/sites-race,41processos,19casos porengine).732hashes antes/depois e contra o código commitado conferem. Handles13269/44836 e todos os controlos anteriores foram recolhidos; nenhum teste local deste incremento permanece vivo. Provas completas em docs/evidence/site-contributions/inbox, com negativos/positivos e auditoria do erro de teardown.
+
+FR-038/039/040 permanecem parciais: já há inbox durável naAPI, mas faltam obtenção da origem apenas na fila privada, gestão de recusas/purga, recibos assinados, aprovação/reconciliação/CAS/proveniência e UI completa. Candidatas sem fonte continuam limitadas e podem exercer contrapressão; não prometer resistência geral a spam/sybil nem activar a paleta antes da revisão. Todos os restantes requisitos de grupos web, recuperação/rotação/keystore, plataformas/rádios, acessibilidade e revisão independente mantêm-se.
+
+CI2948284 foi cancelado por15min acumulados após505Node+34UI UbuntuPASS; restantesplataformasNodePASS e jobs seguintesSKIPPED. A alteração de organização ainda necessitaCIremoto. Público7fdb76a/0fdbd1b inalterado; não declarar produto concluído.

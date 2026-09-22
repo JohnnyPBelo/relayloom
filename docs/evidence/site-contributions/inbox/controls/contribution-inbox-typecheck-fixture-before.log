@@ -1,0 +1,7 @@
+
+> relayloom@0.1.0 typecheck
+> tsc --noEmit
+
+tests/site-contribution-inbox.test.ts(172,9): error TS2345: Argument of type 'string' is not assignable to parameter of type '`${string}-${string}-${string}-${string}-${string}`'.
+tests/site-contribution-inbox.test.ts(375,23): error TS2345: Argument of type 'string' is not assignable to parameter of type '`${string}-${string}-${string}-${string}-${string}`'.
+tests/site-contribution-inbox.test.ts(391,7): error TS2345: Argument of type 'string' is not assignable to parameter of type '`${string}-${string}-${string}-${string}-${string}`'.

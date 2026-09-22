@@ -714,3 +714,14 @@ Auto-revisão adicional: antes de fechar o marco, provar cancelamento enquanto b
 Depois de o gate amplo passar505Node,17pacotesGo/race,35processos e49casos porbrowser, um teste adicional reteve uma leitura de política real já concluída, sem reter a transacção IndexedDB. O cancelamento conseguiu confirmar cancelled/retirar pacote enquanto canServe continuava pendente. Ao libertar a resposta, canServe devolvia true. O mesmo acontecia ao atingir o prazo durante a espera; fechar o runtime continuava correctamente recusado. Resultado anterior:2FAIL/1PASS, preservado em contribution-serve-race-before.log/report.json.
 
 Corrigido BrowserContributionRuntime.canServe para revalidar a mesma entrada allowed e o prazo depois do await, além da geração/sessão. Não é recolha de bytes já enviados; impede uma autorização assíncrona retida de ressuscitar permissão local. Repetir os três controlos, reconstruir e executar guards/RTC/worker deprodução/catálogos nos três engines. O gate amplo anterior conserva a fonte original; só o browser/harness/teste desta correcção mudam. Não apresentar505Node/Go como execuções novas depois da correcção browser.
+
+
+## Inbox durável: persistência não equivale a admissão de formulário
+
+Os testes dirigidos e o gate amplo provaram cópias privadas/reabertura/corrupção/quotas, mas uma revisão posterior encontrou pressão indevida de propostas não autorizadas cujo source já era conhecido. Não basta ocultar linhas inválidas: verificar essa fonte antes da reserva privada evita gastar a quota de revisão em pedidos já recusáveis. Controlos TCP com positivo no mesmo canal falharam emNode/Go antes e passaram depois. Fontes ainda desconhecidas continuam limitadas e requerem o fluxo de recusa/obtenção/revisão, não uma declaração de disponibilidade universal.
+
+Um finally deve usar a API real e garantir as restantes limpezas se a primeira falhar. O teste novo usou wire.close inexistente, mascarando as asserções e deixando dois processos próprios; diagnóstico por PID/cwd, paragem apenas desses fixtures e repetição com await wire.stop. Nunca transformar essa primeira falha em evidência de produto, nem parar processos alheios.
+
+O oracle de conservação de source deve comparar canonical/estrutura, não a ordem de JSON.stringify. A falha browser foi só de ordem; nenhuma alteração de produto foi necessária para esse caso. Erros de integridade do registo/prova browser têm tipo próprio para não serem engolidos como recusas normais de política.
+
+CI35753597485/2948284 passou505Node+34UI Ubuntu mas terminoucancelled por15min acumulados, confirmado nas anotaçõesGitHub. Separar os mesmos comandos em jobs sequenciais, sem reduzir cobertura/deadlines dos testes; não atribuir a HTTP408 ou concorrência sem prova. Workfloweditado ainda exigeCIremoto.

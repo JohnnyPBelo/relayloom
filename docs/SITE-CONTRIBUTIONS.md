@@ -32,11 +32,15 @@ O runtime copia para a store de transporte e relê o envelope antes de marcar `t
 
 Uma proposta é sempre privada para visitante e dono (um leitor se forem a mesma identidade), mesmo quando a concessão permite uma publicação pública. O relay sem chave pode conservar e encaminhar bytes verificados; não passa a ser autor ou leitor. Quando legível, a aplicação verifica também a assinatura interna e o vínculo ao envelope antes de guardar/apresentar. O estado periódico omite os valores da proposta.
 
-## Caixa de candidatos — integração parcial
+## Inbox durável — aprovação ainda pendente
 
-`inbox` enumera candidatos cujo certificado, contribuidores, esquema e fonte assinada puderam ser verificados. `verified-candidate` não é uma decisão durável, recibo ou aprovação. Se falta a fonte, devolve `missing-source`, sem valores apresentados como autorizados. O mesmo certificado em envelopes diferentes não duplica a lista.
+Node/Go/browser conservam agora envelope, certificado e origem autenticada numa área privada separada da cache de relay. A recepção regista antes de o dono abrir a consulta; perder ou expulsar as cópias normais da cache não elimina a prova de uma candidata já verificada. `inbox` devolve `durable: true`, mas `verified-candidate` continua a não ser recibo, decisão ou aprovação.
 
-Ainda falta um journal durável que detecte também certificados conflitantes do mesmo autor/UUID, conserve decisões sob quotas e coordene recibos/reconciliação. A fila do remetente preserva a fonte original, mas a sua recuperação automática pelo dono ainda não está ligada. Não activar a paleta antes do percurso completo.
+Sem fonte, fica `missing-source`, sem valores apresentados como autorizados. Uma fonte que chega depois pode ser validada e conservada. Quando a fonte já está disponível, as permissões são verificadas antes da reserva privada; pedidos não autorizados não ocupam a quota da inbox por essa via. Bloqueio, retirada e prazo continuam a ser aplicados à leitura.
+
+A mesma assinatura em envelopes diferentes não duplica nem substitui a proposta. Certificados diferentes do mesmo autor/UUID são conflitos limitados, preservando a primeira prova. A inbox tem até 256 entradas, 64 pendentes, 32 pendentes por contribuidor e 32 MiB de provas, sujeitos também ao armazenamento global. Expiração remove provas e conserva metadados durante 30 dias após o maior prazo observado. Não há memória infinita de UUIDs nem expulsão silenciosa de pendentes.
+
+A fila do visitante conserva a origem, mas a recuperação automática quando ela só existe nessa área privada ainda falta. Recusa/purga controlada, recibos, decisão/CAS/reconciliação e proveniência continuam por integrar. [Provas, controlos e limites](evidence/site-contributions/inbox). A paleta mantém-se oculta.
 
 ## Autoria e aprovação
 
@@ -46,7 +50,7 @@ A integração seguinte tem de conservar a proposta original na proveniência do
 
 ## Ainda obrigatório
 
-- Inbox durável, replay por autor/operação, recuperação da fonte histórica e recibos verificáveis.
+- Recuperação da fonte histórica apenas na fila privada, gestão de recusas/purga e recibos verificáveis.
 - Aprovação/rejeição, conflitos/CAS, recibos, reconciliação e proveniência das linhas.
 - Composição de formulários e caixa de revisão na UI PT/EN/ES, Liquid Glass, teclado/toque, acessibilidade e testes com três contas reais.
 - Regressão completa dos motores e plataformas, publicação dos artefactos exactos e revisão independente. Nenhum teste de software substitui validação de hardware ou rádio.

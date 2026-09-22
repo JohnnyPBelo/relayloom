@@ -1,0 +1,26 @@
+
+Running 19 tests using 1 worker
+
+(node:3092216) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [firefox] › tests/browser/site-contribution-copy.spec.ts:12:3 › proposal copy rechecks block and never reports an unavailable envelope as copied (2.5s)
+  ✓   2 [firefox] › tests/browser/site-contribution-copy.spec.ts:12:3 › proposal copy rechecks withdraw and never reports an unavailable envelope as copied (1.6s)
+  ✓   3 [firefox] › tests/browser/site-contribution-copy.spec.ts:12:3 › proposal copy rechecks lock and never reports an unavailable envelope as copied (2.1s)
+  ✓   4 [firefox] › tests/browser/site-contribution-copy.spec.ts:12:3 › proposal copy rechecks lost-copy and never reports an unavailable envelope as copied (1.6s)
+  ✓   5 [firefox] › tests/browser/site-contribution-inbox.spec.ts:12:1 › available form permissions are checked before uninvited browser proposals reserve private inbox capacity (3.9s)
+  ✓   6 [firefox] › tests/browser/site-contribution-inbox.spec.ts:141:3 › browser durable proposal inbox reopen-conflict preserves original authority and never fabricates approval (1.6s)
+  ✓   7 [firefox] › tests/browser/site-contribution-inbox.spec.ts:141:3 › browser durable proposal inbox lock-source preserves original authority and never fabricates approval (1.4s)
+  ✓   8 [firefox] › tests/browser/site-contribution-inbox.spec.ts:141:3 › browser durable proposal inbox corruption-expiry preserves original authority and never fabricates approval (1.3s)
+  ✓   9 [firefox] › tests/browser/site-contribution-send.spec.ts:122:5 › private form proposals web-to-native cross RTC and WebSocket with node and an intermediary without a reading key (3.9s)
+  ✓  10 [firefox] › tests/browser/site-contribution-send.spec.ts:122:5 › private form proposals native-to-web cross RTC and WebSocket with node and an intermediary without a reading key (3.1s)
+  ✓  11 [firefox] › tests/browser/site-contribution-send.spec.ts:122:5 › private form proposals web-to-native cross RTC and WebSocket with native and an intermediary without a reading key (2.6s)
+  ✓  12 [firefox] › tests/browser/site-contribution-send.spec.ts:122:5 › private form proposals native-to-web cross RTC and WebSocket with native and an intermediary without a reading key (2.9s)
+  ✓  13 [firefox] › tests/browser/site-contribution-send.spec.ts:282:1 › two autonomous browser accounts send a private form proposal through real RTC while the sender relay is paused (3.9s)
+  ✓  14 [firefox] › tests/browser/site-contribution-send.spec.ts:451:1 › browser reception journals the original source before review and survives actual cache eviction with the RTC sender closed (4.1s)
+  ✓  15 [firefox] › tests/browser/site-contribution-serve-race.spec.ts:13:3 › in-flight proposal authorization cannot survive cancel while its policy read is retained (1.2s)
+  ✓  16 [firefox] › tests/browser/site-contribution-serve-race.spec.ts:13:3 › in-flight proposal authorization cannot survive expire while its policy read is retained (1.2s)
+  ✓  17 [firefox] › tests/browser/site-contribution-serve-race.spec.ts:13:3 › in-flight proposal authorization cannot survive close while its policy read is retained (1.1s)
+  ✓  18 [firefox] › tests/browser/site-contribution-worker.spec.ts:53:1 › production worker describes an authenticated form after UI setup and unlock without exposing keys or accepting caller authority (2.0s)
+  ✓  19 [firefox] › tests/browser/site-contribution-worker.spec.ts:146:1 › production workers recover queued proposals offline and send through the UI-established RTC link without reviving cancellation (9.7s)
+
+  19 passed (53.6s)

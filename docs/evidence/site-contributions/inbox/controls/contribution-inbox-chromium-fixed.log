@@ -1,0 +1,10 @@
+
+Running 3 tests using 1 worker
+
+(node:2324528) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/browser/site-contribution-inbox.spec.ts:17:3 › browser durable proposal inbox reopen-conflict preserves original authority and never fabricates approval (784ms)
+  ✓  2 [chromium] › tests/browser/site-contribution-inbox.spec.ts:17:3 › browser durable proposal inbox lock-source preserves original authority and never fabricates approval (684ms)
+  ✓  3 [chromium] › tests/browser/site-contribution-inbox.spec.ts:17:3 › browser durable proposal inbox corruption-expiry preserves original authority and never fabricates approval (586ms)
+
+  3 passed (2.7s)

@@ -1,0 +1,58 @@
+TAP version 13
+# Subtest: node refuses public or forged proposals before storage and withholds unauthorized candidates
+ok 1 - node refuses public or forged proposals before storage and withholds unauthorized candidates
+  ---
+  duration_ms: 1318.457089
+  type: 'test'
+  ...
+# Subtest: native refuses public or forged proposals before storage and withholds unauthorized candidates
+ok 2 - native refuses public or forged proposals before storage and withholds unauthorized candidates
+  ---
+  duration_ms: 833.172233
+  type: 'test'
+  ...
+# Subtest: node unauthorized proposals for an available form cannot fill the private inbox ahead of an allowed contributor
+ok 3 - node unauthorized proposals for an available form cannot fill the private inbox ahead of an allowed contributor
+  ---
+  duration_ms: 9501.976624
+  type: 'test'
+  ...
+# Subtest: native unauthorized proposals for an available form cannot fill the private inbox ahead of an allowed contributor
+ok 4 - native unauthorized proposals for an available form cannot fill the private inbox ahead of an allowed contributor
+  ---
+  duration_ms: 8728.649488
+  type: 'test'
+  ...
+# Subtest: node journals a received proposal before inbox is opened and retains its source after cache-file loss and sender exit
+ok 5 - node journals a received proposal before inbox is opened and retains its source after cache-file loss and sender exit
+  ---
+  duration_ms: 1221.840826
+  type: 'test'
+  ...
+# Subtest: native journals a received proposal before inbox is opened and retains its source after cache-file loss and sender exit
+ok 6 - native journals a received proposal before inbox is opened and retains its source after cache-file loss and sender exit
+  ---
+  duration_ms: 939.1817
+  type: 'test'
+  ...
+# Subtest: node keeps an out-of-order proposal unverified until the actual authenticated source reaches the owner
+ok 7 - node keeps an out-of-order proposal unverified until the actual authenticated source reaches the owner
+  ---
+  duration_ms: 2691.326075
+  type: 'test'
+  ...
+# Subtest: native keeps an out-of-order proposal unverified until the actual authenticated source reaches the owner
+ok 8 - native keeps an out-of-order proposal unverified until the actual authenticated source reaches the owner
+  ---
+  duration_ms: 2625.984842
+  type: 'test'
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 8
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 28152.151179

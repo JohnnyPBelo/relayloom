@@ -1,0 +1,260 @@
+TAP version 13
+# Subtest: node refuses public or forged proposals before storage and withholds unauthorized candidates
+ok 1 - node refuses public or forged proposals before storage and withholds unauthorized candidates
+  ---
+  duration_ms: 1332.316569
+  type: 'test'
+  ...
+# Subtest: native refuses public or forged proposals before storage and withholds unauthorized candidates
+ok 2 - native refuses public or forged proposals before storage and withholds unauthorized candidates
+  ---
+  duration_ms: 835.851988
+  type: 'test'
+  ...
+# Subtest: node unauthorized proposals for an available form cannot fill the private inbox ahead of an allowed contributor
+ok 3 - node unauthorized proposals for an available form cannot fill the private inbox ahead of an allowed contributor
+  ---
+  duration_ms: 9380.355761
+  type: 'test'
+  ...
+# Subtest: native unauthorized proposals for an available form cannot fill the private inbox ahead of an allowed contributor
+ok 4 - native unauthorized proposals for an available form cannot fill the private inbox ahead of an allowed contributor
+  ---
+  duration_ms: 8746.379898
+  type: 'test'
+  ...
+# Subtest: node journals a received proposal before inbox is opened and retains its source after cache-file loss and sender exit
+ok 5 - node journals a received proposal before inbox is opened and retains its source after cache-file loss and sender exit
+  ---
+  duration_ms: 1223.798317
+  type: 'test'
+  ...
+# Subtest: native journals a received proposal before inbox is opened and retains its source after cache-file loss and sender exit
+ok 6 - native journals a received proposal before inbox is opened and retains its source after cache-file loss and sender exit
+  ---
+  duration_ms: 910.539138
+  type: 'test'
+  ...
+# Subtest: node keeps an out-of-order proposal unverified until the actual authenticated source reaches the owner
+ok 7 - node keeps an out-of-order proposal unverified until the actual authenticated source reaches the owner
+  ---
+  duration_ms: 2689.311167
+  type: 'test'
+  ...
+# Subtest: native keeps an out-of-order proposal unverified until the actual authenticated source reaches the owner
+ok 8 - native keeps an out-of-order proposal unverified until the actual authenticated source reaches the owner
+  ---
+  duration_ms: 2620.769161
+  type: 'test'
+  ...
+# (node:3084617) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: node inbox persists an original proposal that the other process verifies and reopens with the same encrypted source
+ok 9 - node inbox persists an original proposal that the other process verifies and reopens with the same encrypted source
+  ---
+  duration_ms: 5497.693685
+  type: 'test'
+  ...
+# Subtest: go inbox persists an original proposal that the other process verifies and reopens with the same encrypted source
+ok 10 - go inbox persists an original proposal that the other process verifies and reopens with the same encrypted source
+  ---
+  duration_ms: 5443.365795
+  type: 'test'
+  ...
+# Subtest: Go inbox process exit before-commit during admit preserves the exact committed boundary
+ok 11 - Go inbox process exit before-commit during admit preserves the exact committed boundary
+  ---
+  duration_ms: 2227.31328
+  type: 'test'
+  ...
+# Subtest: Go inbox process exit after-command during admit preserves the exact committed boundary
+ok 12 - Go inbox process exit after-command during admit preserves the exact committed boundary
+  ---
+  duration_ms: 2235.721088
+  type: 'test'
+  ...
+# Subtest: Go inbox process exit before-commit during source preserves the exact committed boundary
+ok 13 - Go inbox process exit before-commit during source preserves the exact committed boundary
+  ---
+  duration_ms: 2295.224252
+  type: 'test'
+  ...
+# Subtest: Go inbox process exit after-command during source preserves the exact committed boundary
+ok 14 - Go inbox process exit after-command during source preserves the exact committed boundary
+  ---
+  duration_ms: 2307.408992
+  type: 'test'
+  ...
+# Subtest: native inbox refuses block/corruption and collects expired proof without erasing replay metadata
+ok 15 - native inbox refuses block/corruption and collects expired proof without erasing replay metadata
+  ---
+  duration_ms: 5351.601912
+  type: 'test'
+  ...
+# Subtest: node private proposals cross TCP/serial and an opaque seeder takes over after sender exit
+ok 16 - node private proposals cross TCP/serial and an opaque seeder takes over after sender exit
+  ---
+  duration_ms: 5179.287534
+  type: 'test'
+  ...
+# Subtest: native private proposals cross TCP/serial and an opaque seeder takes over after sender exit
+ok 17 - native private proposals cross TCP/serial and an opaque seeder takes over after sender exit
+  ---
+  duration_ms: 4851.838605
+  type: 'test'
+  ...
+# Subtest: node sends a private site proposal over real TCP and the owner resolves its signed form
+ok 18 - node sends a private site proposal over real TCP and the owner resolves its signed form
+  ---
+  duration_ms: 878.877182
+  type: 'test'
+  ...
+# Subtest: native sends a private site proposal over real TCP and the owner resolves its signed form
+ok 19 - native sends a private site proposal over real TCP and the owner resolves its signed form
+  ---
+  duration_ms: 876.619048
+  type: 'test'
+  ...
+# Subtest: node restarts a private proposal queue and heals a partition without renewing its envelope
+ok 20 - node restarts a private proposal queue and heals a partition without renewing its envelope
+  ---
+  duration_ms: 1587.460366
+  type: 'test'
+  ...
+# Subtest: native restarts a private proposal queue and heals a partition without renewing its envelope
+ok 21 - native restarts a private proposal queue and heals a partition without renewing its envelope
+  ---
+  duration_ms: 1485.373034
+  type: 'test'
+  ...
+# (node:3087706) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from site into the resource namespace
+ok 22 - an authenticated outer SQLite database cannot transpose unpublished signatures from site into the resource namespace
+  ---
+  duration_ms: 793.072094
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from resource into the site namespace
+ok 23 - an authenticated outer SQLite database cannot transpose unpublished signatures from resource into the site namespace
+  ---
+  duration_ms: 57.736742
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from site into the contribution namespace
+ok 24 - an authenticated outer SQLite database cannot transpose unpublished signatures from site into the contribution namespace
+  ---
+  duration_ms: 52.58927
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution into the site namespace
+ok 25 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution into the site namespace
+  ---
+  duration_ms: 54.337909
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from resource into the contribution namespace
+ok 26 - an authenticated outer SQLite database cannot transpose unpublished signatures from resource into the contribution namespace
+  ---
+  duration_ms: 52.551118
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution into the resource namespace
+ok 27 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution into the resource namespace
+  ---
+  duration_ms: 56.223334
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from site into the contribution-inbox namespace
+ok 28 - an authenticated outer SQLite database cannot transpose unpublished signatures from site into the contribution-inbox namespace
+  ---
+  duration_ms: 53.131106
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-inbox into the site namespace
+ok 29 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-inbox into the site namespace
+  ---
+  duration_ms: 50.469555
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from resource into the contribution-inbox namespace
+ok 30 - an authenticated outer SQLite database cannot transpose unpublished signatures from resource into the contribution-inbox namespace
+  ---
+  duration_ms: 50.628172
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-inbox into the resource namespace
+ok 31 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-inbox into the resource namespace
+  ---
+  duration_ms: 51.458149
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution into the contribution-inbox namespace
+ok 32 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution into the contribution-inbox namespace
+  ---
+  duration_ms: 54.10903
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-inbox into the contribution namespace
+ok 33 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-inbox into the contribution namespace
+  ---
+  duration_ms: 50.751353
+  type: 'test'
+  ...
+# Subtest: Node and a real Go process exchange signing-protected site records in the same SQLite database
+ok 34 - Node and a real Go process exchange signing-protected site records in the same SQLite database
+  ---
+  duration_ms: 2282.55843
+  type: 'test'
+  ...
+# Subtest: Node and a real Go process exchange signing-protected resource records in the same SQLite database
+ok 35 - Node and a real Go process exchange signing-protected resource records in the same SQLite database
+  ---
+  duration_ms: 2291.224752
+  type: 'test'
+  ...
+# Subtest: Node and a real Go process exchange signing-protected contribution records in the same SQLite database
+ok 36 - Node and a real Go process exchange signing-protected contribution records in the same SQLite database
+  ---
+  duration_ms: 2273.635908
+  type: 'test'
+  ...
+# Subtest: Node and a real Go process exchange signing-protected contribution-inbox records in the same SQLite database
+ok 37 - Node and a real Go process exchange signing-protected contribution-inbox records in the same SQLite database
+  ---
+  duration_ms: 2301.090674
+  type: 'test'
+  ...
+# Subtest: Go rejects a Node encrypted site value transplanted into another authenticated store
+ok 38 - Go rejects a Node encrypted site value transplanted into another authenticated store
+  ---
+  duration_ms: 68.567233
+  type: 'test'
+  ...
+# Subtest: Go rejects a Node encrypted resource value transplanted into another authenticated store
+ok 39 - Go rejects a Node encrypted resource value transplanted into another authenticated store
+  ---
+  duration_ms: 61.050958
+  type: 'test'
+  ...
+# Subtest: Go rejects a Node encrypted contribution value transplanted into another authenticated store
+ok 40 - Go rejects a Node encrypted contribution value transplanted into another authenticated store
+  ---
+  duration_ms: 62.296483
+  type: 'test'
+  ...
+# Subtest: Go rejects a Node encrypted contribution-inbox value transplanted into another authenticated store
+ok 41 - Go rejects a Node encrypted contribution-inbox value transplanted into another authenticated store
+  ---
+  duration_ms: 60.446774
+  type: 'test'
+  ...
+1..41
+# tests 41
+# suites 0
+# pass 41
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 80359.07643

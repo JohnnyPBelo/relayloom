@@ -1,0 +1,26 @@
+
+Running 19 tests using 1 worker
+
+(node:3088962) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › tests/browser/site-contribution-copy.spec.ts:12:3 › proposal copy rechecks block and never reports an unavailable envelope as copied (858ms)
+  ✓   2 [chromium] › tests/browser/site-contribution-copy.spec.ts:12:3 › proposal copy rechecks withdraw and never reports an unavailable envelope as copied (740ms)
+  ✓   3 [chromium] › tests/browser/site-contribution-copy.spec.ts:12:3 › proposal copy rechecks lock and never reports an unavailable envelope as copied (885ms)
+  ✓   4 [chromium] › tests/browser/site-contribution-copy.spec.ts:12:3 › proposal copy rechecks lost-copy and never reports an unavailable envelope as copied (751ms)
+  ✓   5 [chromium] › tests/browser/site-contribution-inbox.spec.ts:12:1 › available form permissions are checked before uninvited browser proposals reserve private inbox capacity (1.6s)
+  ✓   6 [chromium] › tests/browser/site-contribution-inbox.spec.ts:141:3 › browser durable proposal inbox reopen-conflict preserves original authority and never fabricates approval (738ms)
+  ✓   7 [chromium] › tests/browser/site-contribution-inbox.spec.ts:141:3 › browser durable proposal inbox lock-source preserves original authority and never fabricates approval (668ms)
+  ✓   8 [chromium] › tests/browser/site-contribution-inbox.spec.ts:141:3 › browser durable proposal inbox corruption-expiry preserves original authority and never fabricates approval (606ms)
+  ✓   9 [chromium] › tests/browser/site-contribution-send.spec.ts:122:5 › private form proposals web-to-native cross RTC and WebSocket with node and an intermediary without a reading key (1.8s)
+  ✓  10 [chromium] › tests/browser/site-contribution-send.spec.ts:122:5 › private form proposals native-to-web cross RTC and WebSocket with node and an intermediary without a reading key (1.9s)
+  ✓  11 [chromium] › tests/browser/site-contribution-send.spec.ts:122:5 › private form proposals web-to-native cross RTC and WebSocket with native and an intermediary without a reading key (1.4s)
+  ✓  12 [chromium] › tests/browser/site-contribution-send.spec.ts:122:5 › private form proposals native-to-web cross RTC and WebSocket with native and an intermediary without a reading key (1.6s)
+  ✓  13 [chromium] › tests/browser/site-contribution-send.spec.ts:282:1 › two autonomous browser accounts send a private form proposal through real RTC while the sender relay is paused (1.7s)
+  ✓  14 [chromium] › tests/browser/site-contribution-send.spec.ts:451:1 › browser reception journals the original source before review and survives actual cache eviction with the RTC sender closed (1.6s)
+  ✓  15 [chromium] › tests/browser/site-contribution-serve-race.spec.ts:13:3 › in-flight proposal authorization cannot survive cancel while its policy read is retained (570ms)
+  ✓  16 [chromium] › tests/browser/site-contribution-serve-race.spec.ts:13:3 › in-flight proposal authorization cannot survive expire while its policy read is retained (540ms)
+  ✓  17 [chromium] › tests/browser/site-contribution-serve-race.spec.ts:13:3 › in-flight proposal authorization cannot survive close while its policy read is retained (529ms)
+  ✓  18 [chromium] › tests/browser/site-contribution-worker.spec.ts:53:1 › production worker describes an authenticated form after UI setup and unlock without exposing keys or accepting caller authority (1.3s)
+  ✓  19 [chromium] › tests/browser/site-contribution-worker.spec.ts:146:1 › production workers recover queued proposals offline and send through the UI-established RTC link without reviving cancellation (7.4s)
+
+  19 passed (28.1s)

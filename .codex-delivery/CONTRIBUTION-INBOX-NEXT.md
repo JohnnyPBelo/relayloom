@@ -1,6 +1,6 @@
 # Próxima implementação: inbox durável e revisão do dono
 
-Este documento é plano, não funcionalidade implementada. Depende do gate da fila/envio em `.cache/contribution-submission-final-1/report.json`. Não recomeçar catálogos/envelopes nem activar a paleta enquanto a revisão/aprovação/publicação não estiver funcional. Manter o contrato completo, execução sequencial, reserva de disco e fonte privada cifrada.
+Os pontos de journal/catálogos/recepção já estão implementados em a3e09fd/55b0d4e. Consultar CONTRIBUTION-INBOX-IMPLEMENTATION.md e as provas de inbox para o estado real. Este documento conserva o plano integral; os itens de source apenas na fila privada, recibos, recusa/aprovação/CAS/proveniência/UI continuam pendentes. Manter o contrato completo, execução sequencial, reserva de disco e fonte privada cifrada.
 
 ## Limite actual que tem de desaparecer
 

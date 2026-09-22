@@ -1,0 +1,40 @@
+TAP version 13
+# Subtest: node unauthorized proposals for an available form cannot fill the private inbox ahead of an allowed contributor
+not ok 1 - node unauthorized proposals for an available form cannot fill the private inbox ahead of an allowed contributor
+  ---
+  duration_ms: 26206.10643
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/native/site-contribution-admission.test.ts:1:4545'
+  failureType: 'testCodeFailure'
+  error: 'wire.close is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/native/site-contribution-admission.test.ts:342:14)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: native unauthorized proposals for an available form cannot fill the private inbox ahead of an allowed contributor
+not ok 2 - native unauthorized proposals for an available form cannot fill the private inbox ahead of an allowed contributor
+  ---
+  duration_ms: 25682.446007
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/native/site-contribution-admission.test.ts:1:4545'
+  failureType: 'testCodeFailure'
+  error: 'wire.close is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/native/site-contribution-admission.test.ts:342:14)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 0
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 250677.854188

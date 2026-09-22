@@ -1,0 +1,23 @@
+{
+  "sourceCommit": "eb2a5b4e323fc259b9bdd879725804a896b94ff1",
+  "implementationCommits": [
+    "a3e09fd",
+    "55b0d4e"
+  ],
+  "ciCommit": "eb2a5b4",
+  "verifiedSourceFiles": 732,
+  "mismatches": [],
+  "broaderGate": "gate.json",
+  "postReviewGate": "reviewed/gate.json",
+  "delta": [
+    "apps/node/src/contribution-runtime.ts",
+    "native/app/contribution_runtime.go",
+    "native/sites/contribution_inbox_catalog.go",
+    "packages/browser/src/contribution-inbox.ts",
+    "packages/browser/src/contribution-runtime.ts",
+    "packages/sites/src/contribution-inbox-catalog.ts",
+    "tests/browser/site-contribution-inbox.spec.ts",
+    "tests/native/site-contribution-admission.test.ts"
+  ],
+  "scope": "Final source matches the reviewed gate; the broader gate precedes the listed available-source admission fix."
+}

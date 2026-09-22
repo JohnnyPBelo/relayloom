@@ -1,0 +1,49 @@
+
+Running 3 tests using 1 worker
+
+(node:2320498) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [chromium] › tests/browser/site-contribution-inbox.spec.ts:17:3 › browser durable proposal inbox reopen-conflict preserves original authority and never fabricates approval (845ms)
+(node:2320731) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  2 [chromium] › tests/browser/site-contribution-inbox.spec.ts:17:3 › browser durable proposal inbox lock-source preserves original authority and never fabricates approval (731ms)
+  ✓  3 [chromium] › tests/browser/site-contribution-inbox.spec.ts:17:3 › browser durable proposal inbox corruption-expiry preserves original authority and never fabricates approval (598ms)
+
+
+  1) [chromium] › tests/browser/site-contribution-inbox.spec.ts:17:3 › browser durable proposal inbox reopen-conflict preserves original authority and never fabricates approval 
+
+    Error: sameSource
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      231 |         "metadataOnly",
+      232 |       ] as const)
+    > 233 |         expect(result[name], name).toBe(true);
+          |                                    ^
+      234 |     }
+      235 |   });
+      236 |
+        at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-contribution-inbox.spec.ts:233:36
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .cache/contribution-inbox-chromium-artifacts/site-contribution-inbox-br-6f5fa-d-never-fabricates-approval-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: .cache/contribution-inbox-chromium-artifacts/site-contribution-inbox-br-6f5fa-d-never-fabricates-approval-chromium/error-context.md
+
+    Error Context: .cache/contribution-inbox-chromium-artifacts/site-contribution-inbox-br-6f5fa-d-never-fabricates-approval-chromium/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    .cache/contribution-inbox-chromium-artifacts/site-contribution-inbox-br-6f5fa-d-never-fabricates-approval-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace .cache/contribution-inbox-chromium-artifacts/site-contribution-inbox-br-6f5fa-d-never-fabricates-approval-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › tests/browser/site-contribution-inbox.spec.ts:17:3 › browser durable proposal inbox reopen-conflict preserves original authority and never fabricates approval 
+  2 passed (3.4s)

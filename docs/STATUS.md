@@ -1,6 +1,17 @@
 # RelayLoom — estado verificável
 
 
+## Inbox privada com origem persistente — 22 de Setembro
+
+**a3e09fd/55b0d4e:** journal e catálogos Node/Go/browser ligados à recepção automática. Reempacotamento não duplica; conflitos por autor/UUID preservam a primeira prova. A fonte autenticada continua disponível à inbox depois de perder a cache normal e desligar o emissor. Uma origem ausente não concede permissão para mostrar dados como proposta verificada.
+
+Gate amplo: **514 Node, 17 pacotes Go/race, 66 testes entre processos, builds e 60 percursos por engine**. Revisão posterior reproduziu ocupação indevida de quota por propostas sem permissão para uma origem já disponível; corrigida antes da reserva. Novo gate: **20 Node afectados, Go app/sites-race, 41 processos, builds e 19 casos por engine**. Os gates mantêm as suas fontes e não devem ser somados como cenários distintos. 732 hashes finais conferem com os commits. [Provas e falhas das fixtures/produto](evidence/site-contributions/inbox).
+
+**Ainda faltam recibos, recusa/aprovação/CAS/reconciliação/proveniência e UI completa.** Falta obter uma origem apenas conservada na fila privada do visitante; candidatas sem origem verificável ainda precisam do fluxo de recusa/purga e controlo de pressão. Paleta oculta; HTML público 7fdb76a/0fdbd1b inalterado. Paridade completa, dispositivos/rádios e revisão independente continuam em aberto.
+
+CI35753597485/2948284 terminou CANCELLED por limite acumulado de 15 minutos, confirmado pela anotação GitHub, depois de passar 505 Node + 34 UI Ubuntu. Windows/macOS com sucesso; jobs posteriores skipped. **eb2a5b4** separa Node UI/Linux num job sequencial com os mesmos comandos/cobertura; o novo workflow ainda exige execução remota. [Causa exacta e validação local](evidence/ci-2948284-budget).
+
+
 ## Fila e transporte privado de propostas — 22 de Setembro
 
 **5a1921c/07b509e:** fila recuperável, API de envio, cópia verificada e transporte privado implementados em Node/Go/browser. A inbox actual mostra candidatos, não decisões duráveis ou aprovação. Faltam replay por autor/operação, recibos, reconciliação/CAS/proveniência, recuperação automática da fonte e UI completa. Paleta oculta; HTML público inalterado. [Comportamento e limites](SITE-CONTRIBUTIONS.md).

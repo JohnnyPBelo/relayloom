@@ -1,0 +1,86 @@
+TAP version 13
+# (node:2298011) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: private inbox preserves verified source and proposal across reopening, separately from sender staging
+ok 1 - private inbox preserves verified source and proposal across reopening, separately from sender staging
+  ---
+  duration_ms: 153.453795
+  type: 'test'
+  ...
+# Subtest: repackaging is idempotent and a conflicting visitor UUID cannot replace the original candidate
+ok 2 - repackaging is idempotent and a conflicting visitor UUID cannot replace the original candidate
+  ---
+  duration_ms: 121.733626
+  type: 'test'
+  ...
+# Subtest: an interrupted admission/source transaction rolls back without losing the earlier proof
+ok 3 - an interrupted admission/source transaction rolls back without losing the earlier proof
+  ---
+  duration_ms: 79.420608
+  type: 'test'
+  ...
+# Subtest: expiry removes private payloads but keeps replay metadata for the bounded retention window
+ok 4 - expiry removes private payloads but keeps replay metadata for the bounded retention window
+  ---
+  duration_ms: 108.025937
+  type: 'test'
+  ...
+# Subtest: unreadable/public proposals, wrong source and revoked policy never become verified candidates
+ok 5 - unreadable/public proposals, wrong source and revoked policy never become verified candidates
+  ---
+  duration_ms: 95.927084
+  type: 'test'
+  ...
+# Subtest: tampered retained evidence is an integrity failure, never repaired into a new proposal
+not ok 6 - tampered retained evidence is an integrity failure, never repaired into a new proposal
+  ---
+  duration_ms: 78.758246
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/site-contribution-inbox.test.ts:1:8340'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /closed/i. Input:
+    
+    'Error: Registo fechado, incerto ou já em transacção'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+  error: 'Registo fechado, incerto ou já em transacção'
+  stack: |-
+    ProtectedGroupStore.execute (/home/absint0o/projects/relayloom/.cache/site-optional-resources/packages/groups/src/storage.ts:462:13)
+    ProtectedGroupStore.transaction (/home/absint0o/projects/relayloom/.cache/site-optional-resources/packages/groups/src/storage.ts:606:17)
+    NodeContributionInbox.run (/home/absint0o/projects/relayloom/.cache/site-optional-resources/packages/sites/src/contribution-inbox-catalog.ts:134:26)
+    NodeContributionInbox.state (/home/absint0o/projects/relayloom/.cache/site-optional-resources/packages/sites/src/contribution-inbox-catalog.ts:187:17)
+    <anonymous> (/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/site-contribution-inbox.test.ts:325:27)
+    getActual (node:assert:609:5)
+    Function.throws (node:assert:757:24)
+    TestContext.<anonymous> (/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/site-contribution-inbox.test.ts:325:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/site-contribution-inbox.test.ts:325:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: journal quotas preserve pending entries and conflict floods have bounded descriptors and writes
+ok 7 - journal quotas preserve pending entries and conflict floods have bounded descriptors and writes
+  ---
+  duration_ms: 135.242513
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 6
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1022.394815
