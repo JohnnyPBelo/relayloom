@@ -1,3 +1,5 @@
+import { createContributionEnvelopeProtocol } from "./contribution-envelope";
+import { createBundleAt } from "../../core/src/index";
 import {
   canonical,
   hash,
@@ -31,10 +33,12 @@ interface Stage {
   request: ContributionCreationRequest;
   source: Bundle;
   certificate: SiteContribution | null;
+  envelope?: Bundle;
 }
 const registry = createContributionOperations(nodeCertificateCrypto),
   resolver = createContributionContextResolver(nodeCertificateCrypto),
-  protocol = createSiteContributionProtocol(nodeCertificateCrypto);
+  protocol = createSiteContributionProtocol(nodeCertificateCrypto),
+  envelopes = createContributionEnvelopeProtocol(nodeCertificateCrypto);
 const pending = (op: ContributionOperation) =>
   op.phase === "prepared" || op.phase === "signed";
 function insist(ok: unknown, reason: string): asserts ok {
@@ -105,7 +109,8 @@ export class NodeContributionCatalog {
         let stage: Stage | null = null;
         if (op) {
           insist(
-            exactShape(raw, ["request", "source", "certificate"]),
+            exactShape(raw, ["request", "source", "certificate"]) ||
+              exactShape(raw, ["request", "source", "certificate", "envelope"]),
             "Preparação de proposta em falta",
           );
           stage = raw as Stage;
@@ -154,6 +159,13 @@ export class NodeContributionCatalog {
               op.created,
             );
           }
+          if (Object.hasOwn(stage, "envelope")) {
+            insist(
+              op.phase === "signed" && stage.envelope,
+              "Envelope sem proposta assinada",
+            );
+            this.verifyEnvelope(stage.envelope, stage.certificate!);
+          }
           if (op.expires <= this.now()) {
             record = registry.expire(
               record,
@@ -168,6 +180,18 @@ export class NodeContributionCatalog {
         return fn(values, record, stage);
       }),
     );
+  }
+  private verifyEnvelope(bundle: Bundle, certificate: SiteContribution) {
+    verifyStoredBundle(bundle);
+    const value = envelopes.match(
+      bundle,
+      decryptStoredBundle(bundle, this.identity),
+    );
+    insist(
+      canonical(value.proposal) === canonical(certificate),
+      "Envelope de outra preparação",
+    );
+    return JSON.parse(canonical(bundle)) as Bundle;
   }
   state() {
     return this.run((_v, record) => structuredClone(record));
@@ -251,6 +275,8 @@ export class NodeContributionCatalog {
         source = this.source(stage.request, stage.source, now);
       allow(source.context.target.snapshotId, source.owner.id);
       if (found.phase === "signed") return found;
+      if (found.expires <= this.now())
+        throw Error("A proposta expirou durante a verificação de política");
       const certificate = protocol.create(this.identity, {
         target: source.context.target,
         schemaHash: found.schemaHash,
@@ -260,7 +286,7 @@ export class NodeContributionCatalog {
         values: stage.request.values,
         publicationScope: stage.request.publicationScope,
       });
-      protocol.verifyForSubmission(certificate, source.context, now);
+      protocol.verifyForSubmission(certificate, source.context, this.now());
       const signed = registry.signed(
         record,
         this.identity.public.id,
@@ -297,6 +323,84 @@ export class NodeContributionCatalog {
         source.context,
         this.now(),
       );
+    });
+  }
+  seal(
+    op: ContributionOperation,
+    allow: (snapshotId: string, ownerId: string) => void,
+  ) {
+    return this.run((values, record, stage) => {
+      const found = registry.lookup(
+        record,
+        this.identity.public.id,
+        op.sequence,
+        op.operationId,
+      ).operation;
+      insist(
+        found && found.fingerprint === op.fingerprint,
+        "Preparação desconhecida",
+      );
+      if (found.phase !== "signed") return { operation: found, bundleId: null };
+      insist(stage?.certificate, "Proposta assinada indisponível");
+      const source = this.source(stage.request, stage.source, this.now());
+      allow(source.context.target.snapshotId, source.owner.id);
+      protocol.verifyForSubmission(
+        stage.certificate,
+        source.context,
+        this.now(),
+      );
+      const envelope =
+        stage.envelope ??
+        createBundleAt(
+          this.identity,
+          "site-contribution",
+          { type: "site-contribution", proposal: stage.certificate },
+          [source.owner],
+          found.expires - found.created,
+          found.created,
+        );
+      const checked = this.verifyEnvelope(envelope, stage.certificate);
+      protocol.verifyForSubmission(
+        stage.certificate,
+        source.context,
+        this.now(),
+      );
+      if (!stage.envelope)
+        values.write(this.key + ":stage", { ...stage, envelope: checked });
+      return { operation: found, bundleId: checked.manifest.id };
+    });
+  }
+  authorizedBundle(
+    op: ContributionOperation,
+    allow: (snapshotId: string, ownerId: string) => void,
+  ) {
+    return this.run((_values, record, stage) => {
+      const found = registry.lookup(
+        record,
+        this.identity.public.id,
+        op.sequence,
+        op.operationId,
+      ).operation;
+      insist(
+        found && found.fingerprint === op.fingerprint,
+        "Preparação desconhecida",
+      );
+      if (found.phase !== "signed" || !stage?.envelope) return null;
+      insist(stage.certificate, "Assinatura em falta");
+      const source = this.source(stage.request, stage.source, this.now());
+      allow(source.context.target.snapshotId, source.owner.id);
+      protocol.verifyForSubmission(
+        stage.certificate,
+        source.context,
+        this.now(),
+      );
+      const bundle = this.verifyEnvelope(stage.envelope, stage.certificate);
+      protocol.verifyForSubmission(
+        stage.certificate,
+        source.context,
+        this.now(),
+      );
+      return bundle;
     });
   }
   cancel(op: ContributionOperation) {

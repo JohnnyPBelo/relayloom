@@ -431,3 +431,30 @@ test("preparation quota failure rolls back stage and sequence before any signatu
     rmSync(f.directory, { recursive: true, force: true });
   }
 });
+
+test("a proposal expiring during the policy check cannot commit a new signature", () => {
+  const f = fixture();
+  let now = Date.now();
+  try {
+    const catalog = new NodeContributionCatalog(
+        f.database,
+        f.identity,
+        () => now,
+      ),
+      op = catalog.prepare(
+        { ...f.request, ttlMs: 1000 },
+        () => f.source,
+        allow,
+      );
+    assert.throws(() =>
+      catalog.sign(op, () => {
+        now = op.expires;
+      }),
+    );
+    assert.equal(catalog.state().operations[0].phase, "expired");
+    assert.equal(catalog.authorizedCertificate(op, allow), null);
+  } finally {
+    f.database.close();
+    rmSync(f.directory, { recursive: true, force: true });
+  }
+});

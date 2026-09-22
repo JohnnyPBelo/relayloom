@@ -1,3 +1,4 @@
+import { createContributionEnvelopeProtocol } from "../../sites/src/contribution-envelope";
 import {
   canonical,
   exactShape,
@@ -22,6 +23,7 @@ interface Stage {
   request: ContributionCreationRequest;
   source: Bundle;
   certificate: SiteContribution | null;
+  envelope?: Bundle;
 }
 type Policy = (
   values: ProfileValueTransaction,
@@ -30,7 +32,8 @@ type Policy = (
 ) => Promise<void>;
 const registry = createContributionOperations(browserCertificateCrypto),
   resolver = createContributionContextResolver(browserCertificateCrypto),
-  protocol = createSiteContributionProtocol(browserCertificateCrypto);
+  protocol = createSiteContributionProtocol(browserCertificateCrypto),
+  envelopes = createContributionEnvelopeProtocol(browserCertificateCrypto);
 const pending = (op: ContributionOperation) =>
   op.phase === "prepared" || op.phase === "signed";
 function insist(ok: unknown, reason: string): asserts ok {
@@ -118,7 +121,8 @@ export class BrowserContributionCatalog {
       let stage: Stage | null = null;
       if (op) {
         insist(
-          exactShape(raw, ["request", "source", "certificate"]),
+          exactShape(raw, ["request", "source", "certificate"]) ||
+            exactShape(raw, ["request", "source", "certificate", "envelope"]),
           "Preparação de proposta em falta",
         );
         stage = raw as Stage;
@@ -169,6 +173,14 @@ export class BrowserContributionCatalog {
             op.created,
           );
         }
+        if (Object.hasOwn(stage, "envelope")) {
+          insist(
+            op.phase === "signed" && stage.envelope,
+            "Envelope sem proposta assinada",
+          );
+          await this.verifyEnvelope(stage.envelope, stage.certificate!);
+          this.ensure();
+        }
         if (op.expires <= this.now()) {
           record = registry.expire(record, this.owner.id, this.now());
           await values.remove(this.key + ":stage");
@@ -180,6 +192,20 @@ export class BrowserContributionCatalog {
       this.ensure();
       return result;
     });
+  }
+  private async verifyEnvelope(raw: Bundle, certificate: SiteContribution) {
+    const bundle = await verifiedStoredBundle(raw);
+    this.ensure();
+    const value = envelopes.match(
+      bundle,
+      await this.profile.decryptStaging(bundle),
+    );
+    this.ensure();
+    insist(
+      canonical(value.proposal) === canonical(certificate),
+      "Envelope de outra preparação",
+    );
+    return bundle;
   }
   state() {
     return this.run(async (_values, record) => structuredClone(record));
@@ -285,6 +311,8 @@ export class BrowserContributionCatalog {
       await allow(values, source.context.target.snapshotId, source.owner.id);
       this.ensure();
       if (found.phase === "signed") return found;
+      if (found.expires <= this.now())
+        throw Error("A proposta expirou durante a verificação de política");
       const certificate = await this.profile.signSiteContribution({
         target: source.context.target,
         schemaHash: found.schemaHash,
@@ -331,6 +359,84 @@ export class BrowserContributionCatalog {
         source.context,
         this.now(),
       );
+    });
+  }
+  seal(op: ContributionOperation, allow: Policy) {
+    return this.run(async (values, record, stage) => {
+      const found = registry.lookup(
+        record,
+        this.owner.id,
+        op.sequence,
+        op.operationId,
+      ).operation;
+      insist(
+        found && found.fingerprint === op.fingerprint,
+        "Preparação desconhecida",
+      );
+      if (found.phase !== "signed") return { operation: found, bundleId: null };
+      insist(stage?.certificate, "Proposta assinada indisponível");
+      const source = await this.source(stage.request, stage.source, this.now());
+      this.ensure();
+      await allow(values, source.context.target.snapshotId, source.owner.id);
+      this.ensure();
+      protocol.verifyForSubmission(
+        stage.certificate,
+        source.context,
+        this.now(),
+      );
+      const envelope =
+        stage.envelope ??
+        (await this.profile.sealSiteContribution(
+          stage.certificate,
+          source.owner,
+        ));
+      this.ensure();
+      const checked = await this.verifyEnvelope(envelope, stage.certificate);
+      this.ensure();
+      protocol.verifyForSubmission(
+        stage.certificate,
+        source.context,
+        this.now(),
+      );
+      if (!stage.envelope)
+        values.set(this.key + ":stage", { ...stage, envelope: checked });
+      return { operation: found, bundleId: checked.manifest.id };
+    });
+  }
+  authorizedBundle(op: ContributionOperation, allow: Policy) {
+    return this.run(async (values, record, stage) => {
+      const found = registry.lookup(
+        record,
+        this.owner.id,
+        op.sequence,
+        op.operationId,
+      ).operation;
+      insist(
+        found && found.fingerprint === op.fingerprint,
+        "Preparação desconhecida",
+      );
+      if (found.phase !== "signed" || !stage?.envelope) return null;
+      insist(stage.certificate, "Assinatura em falta");
+      const source = await this.source(stage.request, stage.source, this.now());
+      this.ensure();
+      await allow(values, source.context.target.snapshotId, source.owner.id);
+      this.ensure();
+      protocol.verifyForSubmission(
+        stage.certificate,
+        source.context,
+        this.now(),
+      );
+      const bundle = await this.verifyEnvelope(
+        stage.envelope,
+        stage.certificate,
+      );
+      this.ensure();
+      protocol.verifyForSubmission(
+        stage.certificate,
+        source.context,
+        this.now(),
+      );
+      return bundle;
     });
   }
   cancel(op: ContributionOperation) {

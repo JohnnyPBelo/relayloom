@@ -1,3 +1,5 @@
+import { createContributionEnvelopeProtocol } from "../../sites/src/contribution-envelope";
+import { parseSiteAddress } from "../../sites/src/protocol";
 import {
   createSiteContributionProtocol,
   type ContributionRequest,
@@ -14,6 +16,7 @@ import type {
 import {
   createIdentity,
   createBundle,
+  createBundleAt,
   exportVault,
   importVault,
   hkdf,
@@ -393,6 +396,28 @@ export class BrowserProfile {
     ).create(session.identity, request);
     this.guard(session);
     return result;
+  }
+  async sealSiteContribution(proposal: unknown, owner: PublicIdentity) {
+    const session = this.active(),
+      envelopes = createContributionEnvelopeProtocol(browserCertificateCrypto);
+    const content = envelopes.content({ type: "site-contribution", proposal });
+    const body = content.proposal.body;
+    if (
+      body.contributor.id !== session.identity.public.id ||
+      parseSiteAddress(body.target.site).ownerId !== owner.id
+    )
+      throw Error("Autor ou destinatário da proposta inválido");
+    const bundle = await createBundleAt(
+      session.identity,
+      "site-contribution",
+      content,
+      [owner],
+      body.expires - body.created,
+      body.created,
+    );
+    this.guard(session);
+    envelopes.match(bundle, content);
+    return bundle;
   }
   async decryptStaging(value: Bundle): Promise<unknown> {
     const session = this.active(),

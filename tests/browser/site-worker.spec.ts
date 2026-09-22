@@ -121,6 +121,8 @@ test("production worker publishes and recovers exact site requests, refuses forg
       const denied = [];
       for (const operation of [
         "signSiteBundle",
+        "signSiteContribution",
+        "sealSiteContribution",
         "decryptStaging",
         "transactValues",
       ]) {
@@ -148,7 +150,7 @@ test("production worker publishes and recovers exact site requests, refuses forg
       id: initial.result.operation.bundleId,
       title: payload.site.title,
       count: 1,
-      denied: [true, true, true],
+      denied: [true, true, true, true, true],
       secretLeak: false,
     });
     const author = createIdentity("True snapshot owner"),
