@@ -1,5 +1,6 @@
 import { ContributionRuntime } from "./contribution-runtime";
 import { NodeContributionCatalog } from "../../../packages/sites/src/contribution-catalog";
+import { NodeContributionInbox } from "../../../packages/sites/src/contribution-inbox-catalog";
 import { inspectContribution } from "./contribution-content";
 import { summarizeContribution } from "../../../packages/content/src/site-contribution";
 import { ResourceRuntime } from "./resource-runtime";
@@ -539,6 +540,10 @@ export class LoomNode extends EventEmitter {
     this.contributionRuntime = new ContributionRuntime({
       identity,
       catalog: new NodeContributionCatalog(
+        this.siteDatabase(identity),
+        identity,
+      ),
+      incoming: new NodeContributionInbox(
         this.siteDatabase(identity),
         identity,
       ),
@@ -1970,6 +1975,13 @@ export class LoomNode extends EventEmitter {
           )
             this.objects(); // Admit the verified target before a put can evict it.
         }
+        if (
+          this.identity &&
+          payload.bundle.manifest.kind === "site-contribution"
+        )
+          this.contributions().receive(payload.bundle);
+        if (this.identity && payload.bundle.manifest.kind === "site")
+          this.contributions().receiveSource(payload.bundle);
         if (this.store.put(payload.bundle)) {
           this.routes.set(payload.bundle.manifest.id, route);
           if (this.routes.size > 1000)

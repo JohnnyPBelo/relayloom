@@ -215,3 +215,136 @@ for (const backend of ["node", "native"] as const)
       }
     },
   );
+
+for (const backend of ["node", "native"] as const)
+  test(
+    `${backend} unauthorized proposals for an available form cannot fill the private inbox ahead of an allowed contributor`,
+    { timeout: 60000 },
+    async () => {
+      const owner = await launch(undefined, 0, 0, backend),
+        visitor = createIdentity("Allowed contributor"),
+        outsiders = [
+          createIdentity("Not invited one"),
+          createIdentity("Not invited two"),
+        ],
+        wire = new Router();
+      try {
+        const a = await owner.call("setup", {
+            name: "Restricted form owner",
+            password,
+          }),
+          payload = formPayload([visitor.public.id]),
+          address = "relayloom:site:" + a.id + "/profile",
+          state = await owner.call("site-command", {
+            action: "state",
+            address,
+          }),
+          site = (
+            await owner.call("site-command", {
+              action: "publish",
+              name: "profile",
+              sequence: state.nextSequence,
+              operationId: randomUUID(),
+              expectedBase: state.base,
+              payload,
+              recipients: "public",
+              ttlMs: 3600000,
+            })
+          ).operation,
+          content = (await owner.call("view", { id: site.bundleId })).content,
+          binding = siteFormBlocks(payload.site)[0],
+          protocol = createSiteContributionProtocol(nodeCertificateCrypto);
+        const envelope = (
+          author: ReturnType<typeof createIdentity>,
+          text: string,
+        ) => {
+          const now = Date.now(),
+            p = protocol.create(author, {
+              target: {
+                site: address,
+                snapshotId: site.bundleId,
+                revisionId: content.siteRevision.id,
+                pageId: "entry",
+                formId: "form",
+              },
+              schemaHash: protocol.schemaHash(binding.form, binding.table),
+              operationId: randomUUID(),
+              created: now,
+              expires: now + 180000,
+              values: { name: text, count: 0, open: false },
+              publicationScope: "public",
+            });
+          return {
+            proposal: p,
+            bundle: createBundleAt(
+              author,
+              "site-contribution",
+              { type: "site-contribution", proposal: p },
+              [a],
+              180000,
+              now,
+            ),
+          };
+        };
+        wire.connectTcp("127.0.0.1", owner.tcpPort);
+        await until(
+          async () => wire.peers,
+          (peers) => peers.some((p) => p.connected),
+        );
+        for (let i = 0; i < 64; i++) {
+          const { bundle } = envelope(
+            outsiders[Math.floor(i / 32)],
+            "NOT_INVITED_" + i,
+          );
+          wire.broadcast({ type: "bundle", bundle });
+          await until(
+            async () =>
+              existsSync(
+                join(owner.dir, "store/objects", bundle.manifest.id + ".json"),
+              ),
+            Boolean,
+          );
+        }
+        assert.deepEqual(
+          (await owner.call("contribution-command", { action: "inbox" })).items,
+          [],
+        );
+        const permitted = envelope(
+          visitor,
+          "AUTHORIZED_AFTER_UNINVITED_TRAFFIC",
+        );
+        wire.broadcast({ type: "bundle", bundle: permitted.bundle });
+        // A positive ordinary packet proves the data connection remained usable.
+        const now = Date.now(),
+          positive = createBundleAt(
+            visitor,
+            "post",
+            { type: "post", text: "LIVE_CHANNEL_AFTER_UNINVITED_TRAFFIC" },
+            "public",
+            180000,
+            now,
+          );
+        wire.broadcast({ type: "bundle", bundle: positive });
+        await until(
+          () => owner.call("state"),
+          (s) => s.objects.some((o: any) => o.id === positive.manifest.id),
+        );
+        const inbox = await until(
+          () => owner.call("contribution-command", { action: "inbox" }),
+          (v) => v.items.some((i: any) => i.id === permitted.proposal.id),
+        );
+        assert.equal(inbox.items.length, 1);
+        assert.equal(
+          inbox.items[0].values.name,
+          "AUTHORIZED_AFTER_UNINVITED_TRAFFIC",
+        );
+      } finally {
+        try {
+          await wire.stop();
+        } finally {
+          await owner.stop();
+        }
+        rmSync(owner.dir, { recursive: true, force: true });
+      }
+    },
+  );

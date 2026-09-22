@@ -521,6 +521,20 @@ func (n *Node) receiveLocked(delivery transport.Delivery) error {
 				}
 			}
 		}
+		if n.identity != nil && (b.Manifest.Kind == "site-contribution" || b.Manifest.Kind == "site") {
+			r, e := n.contributionsLocked()
+			if e != nil {
+				return e
+			}
+			if b.Manifest.Kind == "site-contribution" {
+				e = r.receive(b)
+			} else {
+				e = r.receiveSource(b)
+			}
+			if e != nil {
+				return e
+			}
+		}
 		added, err := n.Store.Put(b, false)
 		if err != nil {
 			return err

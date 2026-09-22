@@ -1,5 +1,6 @@
 import { BrowserContributionCatalog } from "../../packages/browser/src/contribution-catalog";
 import { BrowserContributionRuntime } from "../../packages/browser/src/contribution-runtime";
+import { BrowserContributionInbox } from "../../packages/browser/src/contribution-inbox";
 import { BrowserSiteCatalog } from "../../packages/browser/src/site-catalog";
 import { BrowserResourceCatalog } from "../../packages/browser/src/resource-catalog";
 // Test-only exports. Never included in the shipped client or a served control API.
@@ -33,6 +34,7 @@ Object.assign(window, {
     BrowserResourceCatalog,
     BrowserContributionCatalog,
     BrowserContributionRuntime,
+    BrowserContributionInbox,
     PRIVATE_VALUE_LIMITS,
     BrowserMesh,
     resources,

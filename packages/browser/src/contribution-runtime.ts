@@ -1,3 +1,8 @@
+import {
+  BrowserContributionInbox,
+  ContributionInboxIntegrityError,
+} from "./contribution-inbox";
+import type { ContributionInboxEntry } from "../../sites/src/contribution-inbox";
 import type { Bundle } from "../../core/src/protocol";
 import { canonical } from "../../core/src/protocol";
 import { BrowserProfile, type ProfileValueTransaction } from "./profile";
@@ -10,13 +15,9 @@ import {
 import { contributionCommandShape } from "../../sites/src/contribution-command";
 import { readContributionForm } from "./contribution-read";
 import { createContributionEnvelopeProtocol } from "../../sites/src/contribution-envelope";
-import { createContributionContextResolver } from "../../sites/src/contribution-context";
-import { createSiteContributionProtocol } from "../../sites/src/contribution-protocol";
 import { parseSiteAddress } from "../../sites/src/protocol";
 const registry = createContributionOperations(browserCertificateCrypto),
-  envelopes = createContributionEnvelopeProtocol(browserCertificateCrypto),
-  resolver = createContributionContextResolver(browserCertificateCrypto),
-  certificates = createSiteContributionProtocol(browserCertificateCrypto);
+  envelopes = createContributionEnvelopeProtocol(browserCertificateCrypto);
 interface Context {
   profile: BrowserProfile;
   policy(
@@ -33,6 +34,7 @@ interface Context {
 }
 export class BrowserContributionRuntime {
   private catalog: BrowserContributionCatalog;
+  private incoming: BrowserContributionInbox;
   private generation: number;
   private closed = false;
   private tail = Promise.resolve();
@@ -42,6 +44,7 @@ export class BrowserContributionRuntime {
   private publishedAt = new Map<string, number>();
   constructor(private context: Context) {
     this.catalog = new BrowserContributionCatalog(context.profile);
+    this.incoming = new BrowserContributionInbox(context.profile);
     this.generation = context.profile.sessionGeneration;
   }
   private ensure() {
@@ -277,81 +280,142 @@ export class BrowserContributionRuntime {
       return this.finish(found.operation);
     });
   }
+  private expectedFailure(error: unknown) {
+    this.ensure();
+    if (error instanceof ContributionInboxIntegrityError) throw error;
+  }
+  receive(input: Bundle) {
+    const bundle = JSON.parse(canonical(input)) as Bundle;
+    return this.serial(() => this.receiveNow(bundle));
+  }
+  receiveSource(input: Bundle) {
+    this.ensure();
+    if (input.manifest.author.id !== this.context.profile.identity!.id)
+      return Promise.resolve();
+    const bundle = JSON.parse(canonical(input)) as Bundle;
+    return this.serial(async () => {
+      for (const entry of (await this.incoming.state()).entries) {
+        this.ensure();
+        if (
+          entry.phase === "missing-source" &&
+          entry.target.snapshotId === bundle.manifest.id
+        )
+          await this.completeSource(entry, bundle);
+      }
+    });
+  }
+  private async receiveNow(bundle: Bundle) {
+    this.ensure();
+    const owner = this.context.profile.identity!.id;
+    if (
+      bundle.manifest.kind !== "site-contribution" ||
+      !bundle.manifest.keys.some((k) => k.reader === owner)
+    )
+      return;
+    const content = envelopes.match(
+      bundle,
+      await this.context.profile.decrypt(bundle),
+    );
+    this.ensure();
+    if (parseSiteAddress(content.proposal.body.target.site).ownerId !== owner)
+      return;
+    let source: Bundle | undefined;
+    try {
+      source = await this.context.profile.getBundle(
+        content.proposal.body.target.snapshotId,
+      );
+    } catch {
+      this.ensure();
+    }
+    this.ensure();
+    if (source) {
+      try {
+        await this.incoming.checkSource(bundle, source);
+      } catch (error) {
+        this.expectedFailure(error);
+        return;
+      }
+    }
+    const result = await this.incoming.admit(bundle, this.policy);
+    this.ensure();
+    if (result.outcome !== "conflict")
+      await this.completeSource(result.entry, source);
+  }
+  private async completeSource(
+    entry: ContributionInboxEntry,
+    supplied?: Bundle,
+  ) {
+    if (entry.phase !== "missing-source") return;
+    let source: Bundle;
+    try {
+      source =
+        supplied ??
+        (await this.context.profile.getBundle(entry.target.snapshotId));
+    } catch {
+      this.ensure();
+      return;
+    }
+    this.ensure();
+    try {
+      await this.incoming.attachSource(entry.id, source, this.policy);
+    } catch (error) {
+      this.expectedFailure(error);
+    }
+  }
   private async inbox() {
     const items: any[] = [],
-      seen = new Set<string>(),
-      owner = this.context.profile.identity!.id;
-    for (const id of await this.context.profile.ids()) {
-      this.ensure();
+      ids = await this.context.profile.ids(),
+      present = new Set(ids);
+    this.ensure();
+    // Upgrade still-live pre-inbox cache entries without inventing a reception.
+    for (const id of ids) {
       try {
         const bundle = await this.context.profile.getBundle(id);
         this.ensure();
-        if (bundle.manifest.kind !== "site-contribution") continue;
-        const content = envelopes.match(
-          bundle,
-          await this.context.profile.decrypt(bundle),
-        );
+        if (bundle.manifest.kind === "site-contribution")
+          await this.receiveNow(bundle);
+      } catch (error) {
+        this.expectedFailure(error);
+      }
+    }
+    for (const entry of (await this.incoming.state()).entries) {
+      this.ensure();
+      if (entry.phase === "expired") continue;
+      try {
+        await this.completeSource(entry);
+        const current = await this.incoming.read(entry.id, this.policy);
         this.ensure();
-        const p = content.proposal,
-          b = p.body;
-        if (parseSiteAddress(b.target.site).ownerId !== owner || seen.has(p.id))
-          continue;
-        seen.add(p.id);
-        const policies = () =>
-          this.context.profile.transactValues(async (values) => {
-            await this.policy(values, b.target.snapshotId, b.contributor.id);
-            await this.policy(values, b.target.snapshotId, owner);
-          });
-        await policies();
-        this.ensure();
-        const base = {
-          id: p.id,
-          bundleId: id,
-          contributor: b.contributor,
-          target: b.target,
-          created: b.created,
-          expires: b.expires,
-        };
-        let source: Bundle;
-        try {
-          source = await this.context.profile.getBundle(b.target.snapshotId);
-        } catch {
-          items.push({ ...base, status: "missing-source" });
+        if (!current || current.entry.phase === "expired") continue;
+        const e = current.entry,
+          base = {
+            id: e.id,
+            bundleId: e.proof!.bundleId,
+            contributorId: e.contributorId,
+            operationId: e.operationId,
+            target: e.target,
+            created: e.created,
+            expires: e.expires,
+            conflicts: e.conflicts,
+            conflictOverflow: e.conflictOverflow,
+          };
+        if (!current.proposal) {
+          if (!present.has(e.target.snapshotId))
+            items.push({ ...base, status: "missing-source" });
           continue;
         }
-        this.ensure();
-        await this.context.profile.transactValues((values) =>
-          this.policy(values, source.manifest.id, source.manifest.author.id),
-        );
-        this.ensure();
-        const resolved = resolver.resolve(
-          {
-            action: "form",
-            snapshotId: source.manifest.id,
-            pageId: b.target.pageId,
-            formId: b.target.formId,
-          },
-          source,
-          await this.context.profile.decrypt(source),
-          b.contributor.id,
-          Date.now(),
-        );
-        this.ensure();
-        certificates.verifyForSubmission(p, resolved.context, Date.now());
-        await policies();
-        this.ensure();
-        certificates.verifyForSubmission(p, resolved.context, Date.now());
+        const b = current.proposal.body;
         items.push({
           ...base,
+          contributor: b.contributor,
           status: "verified-candidate",
           values: b.values,
           publicationScope: b.publicationScope,
           schemaHash: b.schemaHash,
         });
-      } catch {
-        this.ensure();
+      } catch (error) {
+        this.expectedFailure(error);
       }
     }
-    return { items: items.slice(-128), scope: "candidates" };
+    return { items, scope: "candidates", durable: true };
   }
 }

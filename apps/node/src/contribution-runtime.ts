@@ -4,27 +4,25 @@ import {
   canonical,
   hash,
   verifyBundle,
-  decryptBundle,
   type Identity,
   type Bundle,
   type ContentStore,
 } from "../../../packages/core/src/index";
 import { nodeCertificateCrypto } from "../../../packages/core/src/certificate-crypto";
 import { NodeContributionCatalog } from "../../../packages/sites/src/contribution-catalog";
+import { NodeContributionInbox } from "../../../packages/sites/src/contribution-inbox-catalog";
+import type { ContributionInboxEntry } from "../../../packages/sites/src/contribution-inbox";
 import {
   createContributionOperations,
   type ContributionOperation,
 } from "../../../packages/sites/src/contribution-operations";
 import { contributionCommandShape } from "../../../packages/sites/src/contribution-command";
-import { createContributionContextResolver } from "../../../packages/sites/src/contribution-context";
-import { createSiteContributionProtocol } from "../../../packages/sites/src/contribution-protocol";
 import { parseSiteAddress } from "../../../packages/sites/src/protocol";
-const operations = createContributionOperations(nodeCertificateCrypto),
-  resolver = createContributionContextResolver(nodeCertificateCrypto),
-  certificates = createSiteContributionProtocol(nodeCertificateCrypto);
+const operations = createContributionOperations(nodeCertificateCrypto);
 interface Context {
   identity: Identity;
   catalog: NodeContributionCatalog;
+  incoming: NodeContributionInbox;
   store: ContentStore;
   ensure(): void;
   blocked(): readonly string[];
@@ -186,70 +184,113 @@ export class ContributionRuntime {
     }
     return this.finish(found.operation);
   }
-  /** Readable candidates, not durable owner decisions or receipt of approval. */
+  /** Reception persists evidence separately from relay cache and human decisions. */
+  receive(bundle: Bundle) {
+    this.context.ensure();
+    const content = inspectContribution(bundle, this.context.identity);
+    if (
+      !content ||
+      parseSiteAddress(content.proposal.body.target.site).ownerId !==
+        this.context.identity.public.id
+    )
+      return;
+    let source: Bundle | undefined;
+    try {
+      source = this.context.store.get(
+        content.proposal.body.target.snapshotId,
+        false,
+      );
+    } catch {
+      /* Keep a bounded candidate while its source is missing. */
+    }
+    if (source) {
+      try {
+        this.context.incoming.checkSource(bundle, source);
+      } catch {
+        this.context.ensure();
+        return;
+      }
+    }
+    const result = this.context.incoming.admit(bundle, this.policy);
+    if (result.outcome !== "conflict")
+      this.completeSource(result.entry, source);
+  }
+  receiveSource(bundle: Bundle) {
+    this.context.ensure();
+    if (bundle.manifest.author.id !== this.context.identity.public.id) return;
+    for (const entry of this.context.incoming.state().entries)
+      if (
+        entry.phase === "missing-source" &&
+        entry.target.snapshotId === bundle.manifest.id
+      )
+        this.completeSource(entry, bundle);
+  }
+  private completeSource(entry: ContributionInboxEntry, supplied?: Bundle) {
+    if (entry.phase !== "missing-source") return;
+    let source: Bundle;
+    try {
+      source =
+        supplied ?? this.context.store.get(entry.target.snapshotId, false);
+    } catch {
+      return;
+    }
+    try {
+      this.context.incoming.attachSource(entry.id, source, this.policy);
+    } catch {
+      // An invalid/unauthorized source does not confer form authority. A private
+      // integrity failure locks the profile through the database wrapper.
+      this.context.ensure();
+    }
+  }
+  /** Durable candidates; verification still does not mean owner approval. */
   private inbox() {
     const items: any[] = [];
-    const seen = new Set<string>();
+    // Recover readable, still-live envelopes saved by versions before this inbox.
     for (const m of this.context.store.list()) {
-      if (
-        m.kind !== "site-contribution" ||
-        this.context.blocked().includes(m.author.id)
-      )
-        continue;
+      if (m.kind !== "site-contribution") continue;
       try {
-        const bundle = this.context.store.get(m.id, false),
-          content = inspectContribution(bundle, this.context.identity);
-        if (!content) continue;
-        const p = content.proposal,
-          b = p.body;
-        if (
-          parseSiteAddress(b.target.site).ownerId !==
-            this.context.identity.public.id ||
-          seen.has(p.id)
-        )
-          continue;
-        seen.add(p.id);
-        this.policy(b.target.snapshotId, this.context.identity.public.id);
+        this.receive(this.context.store.get(m.id, false));
+      } catch {
+        this.context.ensure();
+      }
+    }
+    for (const entry of this.context.incoming.state().entries) {
+      if (entry.phase === "expired") continue;
+      try {
+        this.completeSource(entry);
+        const current = this.context.incoming.read(entry.id, this.policy);
+        if (!current || current.entry.phase === "expired") continue;
+        const e = current.entry;
         const base = {
-          id: p.id,
-          bundleId: m.id,
-          contributor: b.contributor,
-          target: b.target,
-          created: b.created,
-          expires: b.expires,
+          id: e.id,
+          bundleId: e.proof!.bundleId,
+          contributorId: e.contributorId,
+          operationId: e.operationId,
+          target: e.target,
+          created: e.created,
+          expires: e.expires,
+          conflicts: e.conflicts,
+          conflictOverflow: e.conflictOverflow,
         };
-        let source: Bundle;
-        try {
-          source = this.context.store.get(b.target.snapshotId, false);
-        } catch {
-          items.push({ ...base, status: "missing-source" });
+        if (!current.proposal) {
+          // A present but invalid source is not a reviewable missing-source row.
+          if (!this.context.store.has(e.target.snapshotId))
+            items.push({ ...base, status: "missing-source" });
           continue;
         }
-        this.policy(source.manifest.id, source.manifest.author.id);
-        const context = resolver.resolve(
-          {
-            action: "form",
-            snapshotId: source.manifest.id,
-            pageId: b.target.pageId,
-            formId: b.target.formId,
-          },
-          source,
-          decryptBundle(source, this.context.identity),
-          b.contributor.id,
-          Date.now(),
-        );
-        certificates.verifyForSubmission(p, context.context, Date.now());
+        const b = current.proposal.body;
         items.push({
           ...base,
+          contributor: b.contributor,
           status: "verified-candidate",
           values: b.values,
           publicationScope: b.publicationScope,
           schemaHash: b.schemaHash,
         });
       } catch {
-        /* Invalid or unauthorized candidates do not become reviewable rows. */
+        this.context.ensure();
       }
     }
-    return { items: items.slice(-128), scope: "candidates" };
+    return { items, scope: "candidates", durable: true };
   }
 }

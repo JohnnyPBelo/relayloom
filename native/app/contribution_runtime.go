@@ -12,6 +12,7 @@ type contributionRuntime struct {
 	node      *Node
 	owner     *core.Identity
 	catalog   *sites.ContributionCatalog
+	incoming  *sites.ContributionInbox
 	nextRetry int64
 	allowed   map[string]map[string]any
 	published map[string]int64
@@ -25,7 +26,7 @@ func (n *Node) contributionsLocked() (*contributionRuntime, error) {
 		return n.contributionRuntime, nil
 	}
 	owner := n.identity
-	n.contributionRuntime = &contributionRuntime{node: n, owner: owner, catalog: sites.NewContributionCatalog(n.siteDatabaseLocked(owner), *owner), allowed: map[string]map[string]any{}, published: map[string]int64{}}
+	n.contributionRuntime = &contributionRuntime{node: n, owner: owner, catalog: sites.NewContributionCatalog(n.siteDatabaseLocked(owner), *owner), incoming: sites.NewContributionInbox(n.siteDatabaseLocked(owner), *owner), allowed: map[string]map[string]any{}, published: map[string]int64{}}
 	return n.contributionRuntime, nil
 }
 func (r *contributionRuntime) ensure() error {
@@ -290,64 +291,145 @@ func (r *contributionRuntime) command(body map[string]any) (any, error) {
 	return r.finish(op)
 }
 
-// These are readable, authorized candidates, not durable decisions or approvals.
+// Receive preserves owner evidence before the ordinary relay cache may evict it.
+func (r *contributionRuntime) receive(bundle core.Bundle) error {
+	if err := r.ensure(); err != nil {
+		return err
+	}
+	content, err := inspectContributionBundle(bundle, r.owner)
+	if err != nil {
+		return err
+	}
+	if content == nil {
+		return nil
+	}
+	p := content["proposal"].(map[string]any)
+	b := p["body"].(map[string]any)
+	target := b["target"].(map[string]any)
+	owner, _, _ := sites.ParseAddress(text(target["site"]))
+	if owner != r.owner.Public.ID {
+		return nil
+	}
+	var source *core.Bundle
+	if available, e := r.node.Store.GetWithTouch(text(target["snapshotId"]), false); e == nil {
+		if e = r.incoming.CheckSource(bundle, available); e != nil {
+			return r.ensure()
+		}
+		source = &available
+	}
+	result, err := r.incoming.Admit(bundle, r.policy)
+	if err != nil {
+		return err
+	}
+	if result["outcome"] != "conflict" {
+		return r.completeSource(result["entry"].(map[string]any), source)
+	}
+	return nil
+}
+func (r *contributionRuntime) receiveSource(bundle core.Bundle) error {
+	if err := r.ensure(); err != nil {
+		return err
+	}
+	if bundle.Manifest.Author.ID != r.owner.Public.ID {
+		return nil
+	}
+	state, err := r.incoming.State()
+	if err != nil {
+		return err
+	}
+	for _, raw := range state["entries"].([]any) {
+		e := raw.(map[string]any)
+		target := e["target"].(map[string]any)
+		if e["phase"] == "missing-source" && target["snapshotId"] == bundle.Manifest.ID {
+			if err = r.completeSource(e, &bundle); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+func (r *contributionRuntime) completeSource(entry map[string]any, supplied *core.Bundle) error {
+	if entry["phase"] != "missing-source" {
+		return nil
+	}
+	var source core.Bundle
+	var err error
+	if supplied != nil {
+		source = *supplied
+	} else {
+		target := entry["target"].(map[string]any)
+		source, err = r.node.Store.GetWithTouch(text(target["snapshotId"]), false)
+		if err != nil {
+			return nil
+		}
+	}
+	if _, err = r.incoming.AttachSource(text(entry["id"]), source, r.policy); err != nil {
+		return r.ensure()
+	}
+	return nil
+}
+
+// Durable candidates remain separate from owner approval and receipts.
 func (r *contributionRuntime) inbox() (any, error) {
 	items := []any{}
-	seen := map[string]bool{}
 	for _, m := range r.node.Store.List() {
-		if m.Kind != "site-contribution" || contains(r.node.config.Blocked, m.Author.ID) {
+		if m.Kind != "site-contribution" {
 			continue
 		}
 		bundle, err := r.node.Store.GetWithTouch(m.ID, false)
 		if err != nil {
 			continue
 		}
-		content, err := inspectContributionBundle(bundle, r.owner)
-		if err != nil || content == nil {
+		if err = r.receive(bundle); err != nil {
+			if e := r.ensure(); e != nil {
+				return nil, e
+			}
+		}
+	}
+	state, err := r.incoming.State()
+	if err != nil {
+		return nil, err
+	}
+	for _, raw := range state["entries"].([]any) {
+		entry := raw.(map[string]any)
+		if entry["phase"] == "expired" {
 			continue
 		}
-		p := content["proposal"].(map[string]any)
-		body := p["body"].(map[string]any)
-		target := body["target"].(map[string]any)
-		owner, _, _ := sites.ParseAddress(text(target["site"]))
-		id := text(p["id"])
-		if owner != r.owner.Public.ID || seen[id] {
-			continue
+		if err = r.completeSource(entry, nil); err != nil {
+			return nil, err
 		}
-		seen[id] = true
-		if r.policy(text(target["snapshotId"]), r.owner.Public.ID) != nil {
-			continue
-		}
-		base := map[string]any{"id": id, "bundleId": m.ID, "contributor": body["contributor"], "target": target, "created": body["created"], "expires": body["expires"]}
-		source, err := r.node.Store.GetWithTouch(text(target["snapshotId"]), false)
+		current, err := r.incoming.Read(text(entry["id"]), r.policy)
 		if err != nil {
-			base["status"] = "missing-source"
-			items = append(items, base)
+			if e := r.ensure(); e != nil {
+				return nil, e
+			}
 			continue
 		}
-		if r.policy(source.Manifest.ID, source.Manifest.Author.ID) != nil {
+		if current == nil {
 			continue
 		}
-		value, err := core.DecryptBundle(source, r.owner)
-		if err != nil {
+		e := current["entry"].(map[string]any)
+		if e["phase"] == "expired" {
 			continue
 		}
-		contributor := body["contributor"].(map[string]any)
-		resolved, err := sites.ResolveContributionForm(map[string]any{"action": "form", "snapshotId": source.Manifest.ID, "pageId": target["pageId"], "formId": target["formId"]}, source, value, text(contributor["id"]), time.Now().UnixMilli())
-		if err != nil {
+		proof := e["proof"].(map[string]any)
+		target := e["target"].(map[string]any)
+		base := map[string]any{"id": e["id"], "bundleId": proof["bundleId"], "contributorId": e["contributorId"], "operationId": e["operationId"], "target": target, "created": e["created"], "expires": e["expires"], "conflicts": e["conflicts"], "conflictOverflow": e["conflictOverflow"]}
+		p, ok := current["proposal"].(map[string]any)
+		if !ok {
+			if !r.node.Store.Has(text(target["snapshotId"])) {
+				base["status"] = "missing-source"
+				items = append(items, base)
+			}
 			continue
 		}
-		if _, err = sites.VerifyContributionForSubmission(p, resolved.Context, time.Now().UnixMilli()); err != nil {
-			continue
-		}
+		b := p["body"].(map[string]any)
 		base["status"] = "verified-candidate"
-		base["values"] = body["values"]
-		base["publicationScope"] = body["publicationScope"]
-		base["schemaHash"] = body["schemaHash"]
+		base["contributor"] = b["contributor"]
+		base["values"] = b["values"]
+		base["publicationScope"] = b["publicationScope"]
+		base["schemaHash"] = b["schemaHash"]
 		items = append(items, base)
 	}
-	if len(items) > 128 {
-		items = items[len(items)-128:]
-	}
-	return map[string]any{"items": items, "scope": "candidates"}, nil
+	return map[string]any{"items": items, "scope": "candidates", "durable": true}, nil
 }

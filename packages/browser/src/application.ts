@@ -690,6 +690,14 @@ export class BrowserApplication {
       }
     }
     this.guard(generation);
+    if (bundle.manifest.kind === "site-contribution") {
+      if (!this.#contributions) throw Error("Sessão de propostas bloqueada");
+      await this.#contributions.receive(bundle);
+    } else if (bundle.manifest.kind === "site") {
+      if (!this.#contributions) throw Error("Sessão de propostas bloqueada");
+      await this.#contributions.receiveSource(bundle);
+    }
+    this.guard(generation);
     await this.profile.putBundle(bundle);
     const cached = this.#cache.get(bundle.manifest.id);
     if (cached) {

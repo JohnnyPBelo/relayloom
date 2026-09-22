@@ -1,83 +1,96 @@
 import { test, expect, type Page } from "@playwright/test";
 import { staticHarness } from "./static-harness";
 import { formPayload } from "../fixtures/site-form";
+import { launch, password, until } from "../helpers";
+import { rmSync } from "node:fs";
 let host: Awaited<ReturnType<typeof staticHarness>>;
 test.beforeAll(async () => {
   host = await staticHarness();
 });
+
 test.afterAll(async () => {
   await host.close();
   expect(host.requests.some((p) => p.startsWith("/api/"))).toBe(false);
 });
-async function start(page: Page, name: string) {
+async function start(page: Page, name: string, profileName?: string) {
   await page.goto(host.url);
-  return page.evaluate(async (name) => {
-    const r = (window as any).rl,
-      p = await r.BrowserProfile.connect(
-        "proposal-send-" + crypto.randomUUID(),
-      );
-    let mesh: any;
-    const app = new r.BrowserApplication(p, {
-      publish: (bundle: any) => {
-        if (!mesh) throw Error("fixture mesh missing");
-        const f = (window as any).proposalFixture;
-        if (
-          f?.holdPublications &&
-          bundle.manifest.kind === "site-contribution"
-        ) {
-          f.publicationWaiting = true;
-          f.delayedPublication = (async () => {
-            await new Promise<void>(
-              (resolve) => (f.releasePublication = resolve),
+  return page.evaluate(
+    async ({ name, profileName }) => {
+      const r = (window as any).rl,
+        p = await r.BrowserProfile.connect(
+          profileName ?? "proposal-send-" + crypto.randomUUID(),
+        );
+      if (profileName) await p.unlock("real RTC proposal fixture passphrase");
+      let mesh: any;
+      const app = new r.BrowserApplication(p, {
+        publish: (bundle: any) => {
+          if (!mesh) throw Error("fixture mesh missing");
+          const f = (window as any).proposalFixture;
+          if (
+            f?.holdPublications &&
+            bundle.manifest.kind === "site-contribution"
+          ) {
+            f.publicationWaiting = true;
+            f.delayedPublication = (async () => {
+              await new Promise<void>(
+                (resolve) => (f.releasePublication = resolve),
+              );
+              return mesh.router.broadcast(
+                { type: "bundle", bundle },
+                "normal",
+              );
+            })();
+          } else
+            void mesh.router.broadcast({ type: "bundle", bundle }, "normal");
+        },
+        command: async (op: string, body: any) => {
+          if (op === "relay") return mesh.setRelay(body.value);
+          if (op === "low-power") return mesh.setLowPower(body.value);
+          if (op === "block") return mesh.setBlocked(body.id, body.value);
+          if (op === "request") return mesh.request(body.id);
+          if (op === "cancel-owned-bundle")
+            return mesh.router.cancelLocal(
+              (v: any) =>
+                v?.type === "bundle" && v.bundle.manifest.id === body.id,
             );
-            return mesh.router.broadcast({ type: "bundle", bundle }, "normal");
-          })();
-        } else void mesh.router.broadcast({ type: "bundle", bundle }, "normal");
-      },
-      command: async (op: string, body: any) => {
-        if (op === "relay") return mesh.setRelay(body.value);
-        if (op === "low-power") return mesh.setLowPower(body.value);
-        if (op === "block") return mesh.setBlocked(body.id, body.value);
-        if (op === "request") return mesh.request(body.id);
-        if (op === "cancel-owned-bundle")
-          return mesh.router.cancelLocal(
-            (v: any) =>
-              v?.type === "bundle" && v.bundle.manifest.id === body.id,
-          );
-        throw Error("unexpected network command");
-      },
-      state: () => ({
-        peers: mesh?.router.peers ?? [],
-        counters: {},
-        error: "",
-      }),
-      context: () => {},
-    });
-    await app.call("setup", {
-      name,
-      password: "real RTC proposal fixture passphrase",
-    });
-    const profile = {
-      get name() {
-        return p.name;
-      },
-      get locked() {
-        return p.locked;
-      },
-      get identity() {
-        return p.identity;
-      },
-      getValue: (key: string) => p.getValue(key),
-      setValue: (key: string, value: any) => p.setValue(key, value),
-      ids: () => p.ids(),
-      getBundle: (id: string) => app.bundleForTransport(id),
-      putBundle: (bundle: any) => app.ingest(bundle),
-    };
-    mesh = await r.BrowserMesh.start(profile);
-    await mesh.setRelay(true);
-    Object.assign(window, { proposalFixture: { app, p, mesh } });
-    return p.identity;
-  }, name);
+          throw Error("unexpected network command");
+        },
+        state: () => ({
+          peers: mesh?.router.peers ?? [],
+          counters: {},
+          error: "",
+        }),
+        context: () => {},
+      });
+      if (!profileName)
+        await app.call("setup", {
+          name,
+          password: "real RTC proposal fixture passphrase",
+        });
+      const profile = {
+        get name() {
+          return p.name;
+        },
+        get locked() {
+          return p.locked;
+        },
+        get identity() {
+          return p.identity;
+        },
+        getValue: (key: string) => p.getValue(key),
+        setValue: (key: string, value: any) => p.setValue(key, value),
+        ids: () => p.ids(),
+        getBundle: (id: string) => app.bundleForTransport(id),
+        putBundle: (bundle: any) => app.ingest(bundle),
+      };
+      mesh = await r.BrowserMesh.start(profile);
+      if (profileName) await app.open();
+      await mesh.setRelay(true);
+      Object.assign(window, { proposalFixture: { app, p, mesh } });
+      return p.identity;
+    },
+    { name, profileName },
+  );
 }
 async function link(a: Page, b: Page) {
   const offer = await a.evaluate(async () => {
@@ -103,6 +116,168 @@ async function link(a: Page, b: Page) {
     )
     .toBe("connected");
 }
+
+for (const backend of ["node", "native"] as const)
+  for (const direction of ["web-to-native", "native-to-web"] as const)
+    test(`private form proposals ${direction} cross RTC and WebSocket with ${backend} and an intermediary without a reading key`, async ({
+      browser,
+    }) => {
+      const native = await launch(undefined, 0, -1, backend),
+        contexts = [await browser.newContext(), await browser.newContext()],
+        pages = [await contexts[0].newPage(), await contexts[1].newPage()],
+        [web, relay] = pages;
+      const callWeb = (
+        page: Page,
+        operation: string,
+        body?: unknown,
+      ): Promise<any> =>
+        page.evaluate(
+          ({ operation, body }) =>
+            (window as any).proposalFixture.app.call(operation, body),
+          { operation, body },
+        );
+      try {
+        const n = await native.call("setup", {
+            name: "Native participant",
+            password,
+          }),
+          a = await start(web, "Web participant"),
+          r = await start(relay, "Relay without a reading key");
+        await native.call("settings", { relay: true });
+        await link(web, relay);
+        const invitation = await native.call("web-peer", { origin: host.url });
+        await relay.evaluate(async (invitation) => {
+          const f = (window as any).proposalFixture;
+          f.ws = f.mesh.router.connectWebSocket(invitation);
+          await f.ws.peer.link.ready();
+        }, invitation);
+        const topology = await until(
+          () => native.call("state"),
+          (s) =>
+            s.peers.some((p: any) => p.medium === "websocket" && p.connected),
+        );
+        expect(topology.tcpPort).toBe(-1);
+        expect(topology.peers.map((p: any) => p.medium)).toEqual(["websocket"]);
+        expect(
+          await web.evaluate(() =>
+            (window as any).proposalFixture.mesh.router.peers.map(
+              (p: any) => p.medium,
+            ),
+          ),
+        ).toEqual(["webrtc"]);
+        const owner = direction === "web-to-native" ? n : a,
+          visitor = direction === "web-to-native" ? a : n,
+          ownerCall = (op: string, body?: unknown) =>
+            direction === "web-to-native"
+              ? native.call(op, body)
+              : callWeb(web, op, body),
+          visitorCall = (op: string, body?: unknown) =>
+            direction === "web-to-native"
+              ? callWeb(web, op, body)
+              : native.call(op, body),
+          address = "relayloom:site:" + owner.id + "/profile",
+          state = await ownerCall("site-command", { action: "state", address }),
+          site = (
+            await ownerCall("site-command", {
+              action: "publish",
+              name: "profile",
+              sequence: state.nextSequence,
+              operationId: crypto.randomUUID(),
+              expectedBase: state.base,
+              payload: formPayload([visitor.id]),
+              recipients: "public",
+              ttlMs: 3600000,
+            })
+          ).operation;
+        await expect
+          .poll(async () =>
+            (await visitorCall("state")).objects.some(
+              (o: any) => o.id === site.bundleId,
+            ),
+          )
+          .toBe(true);
+        await visitorCall("settings", { relay: false });
+        const request = {
+            action: "submit",
+            sequence: 1,
+            operationId: crypto.randomUUID(),
+            snapshotId: site.bundleId,
+            pageId: "entry",
+            formId: "form",
+            values: {
+              name: "PRIVATE_WEB_NATIVE_PROPOSAL_68421",
+              count: 0,
+              open: false,
+            },
+            publicationScope: [owner.id, visitor.id].sort(),
+            ttlMs: 180000,
+          },
+          sent = await visitorCall("contribution-command", request);
+        expect(sent.error).toBeUndefined();
+        expect(sent.operation.transport.copied).toBe(true);
+        await expect
+          .poll(
+            async () =>
+              (
+                await ownerCall("contribution-command", { action: "inbox" })
+              ).items.find((i: any) => i.id === sent.operation.certificateId)
+                ?.values,
+          )
+          .toEqual(request.values);
+        const received = await ownerCall("contribution-command", {
+          action: "inbox",
+        });
+        expect(received.durable).toBe(true);
+        expect(received.items[0].contributor.id).toBe(visitor.id);
+        expect(received.items[0].publicationScope).toEqual(
+          request.publicationScope,
+        );
+        const opaque = await relay.evaluate(async (id) => {
+          const f = (window as any).proposalFixture,
+            bundle = await f.p.getBundle(id);
+          let refused = false;
+          try {
+            await f.app.call("view", { id });
+          } catch {
+            refused = true;
+          }
+          return {
+            refused,
+            readers: bundle.manifest.keys.map((k: any) => k.reader),
+            author: bundle.manifest.author.id,
+            inbox: await f.app.call("contribution-command", {
+              action: "inbox",
+            }),
+          };
+        }, sent.operation.transport.bundleId);
+        expect(opaque.refused).toBe(true);
+        expect(opaque.readers).not.toContain(r.id);
+        expect(opaque.author).toBe(visitor.id);
+        expect(opaque.inbox.items).toEqual([]);
+        if (direction === "web-to-native") {
+          const view = await native.call("view", {
+            id: sent.operation.transport.bundleId,
+          });
+          expect(view.route.medium).toBe("websocket");
+          expect(view.route.hops).toHaveLength(2);
+        }
+      } finally {
+        for (const page of pages)
+          if (!page.isClosed())
+            await page
+              .evaluate(async () => {
+                const f = (window as any).proposalFixture;
+                if (f) {
+                  await f.mesh.close();
+                  f.app.close();
+                }
+              })
+              .catch(() => {});
+        for (const context of contexts) await context.close();
+        await native.stop();
+        rmSync(native.dir, { recursive: true, force: true });
+      }
+    });
 
 test("two autonomous browser accounts send a private form proposal through real RTC while the sender relay is paused", async ({
   browser,
@@ -270,5 +445,150 @@ test("two autonomous browser accounts send a private form proposal through real 
           })
           .catch(() => {});
     for (const c of contexts) await c.close();
+  }
+});
+
+test("browser reception journals the original source before review and survives actual cache eviction with the RTC sender closed", async ({
+  browser,
+}) => {
+  const contexts = [await browser.newContext(), await browser.newContext()],
+    pages = [await contexts[0].newPage(), await contexts[1].newPage()],
+    [owner, sender] = pages;
+  try {
+    const a = await start(owner, "Dona com inbox"),
+      b = await start(sender, "Visitante offline");
+    await link(owner, sender);
+    const site = await owner.evaluate(
+      async ({ payload, visitor }) => {
+        const f = (window as any).proposalFixture;
+        payload.site.pages[0].blocks[0].children![0].form!.contributors = [
+          visitor.id,
+        ];
+        const state = await f.app.call("site-command", {
+          action: "state",
+          address: "relayloom:site:" + f.p.identity.id + "/profile",
+        });
+        return (
+          await f.app.call("site-command", {
+            action: "publish",
+            name: "profile",
+            sequence: state.nextSequence,
+            operationId: crypto.randomUUID(),
+            expectedBase: state.base,
+            payload,
+            recipients: "public",
+            ttlMs: 3600000,
+          })
+        ).operation;
+      },
+      { payload: formPayload(), visitor: b },
+    );
+    await expect
+      .poll(() =>
+        sender.evaluate(() => (window as any).proposalFixture.p.ids()),
+      )
+      .toContain(site.bundleId);
+    const sent = await sender.evaluate(
+      async ({ id, owner }) => {
+        const f = (window as any).proposalFixture;
+        return f.app.call("contribution-command", {
+          action: "submit",
+          sequence: 1,
+          operationId: crypto.randomUUID(),
+          snapshotId: id,
+          pageId: "entry",
+          formId: "form",
+          values: {
+            name: "PRIVATE_INBOX_SURVIVES_BROWSER_EVICTION",
+            count: 0,
+            open: false,
+          },
+          publicationScope: [owner.id, f.p.identity.id].sort(),
+          ttlMs: 180000,
+        });
+      },
+      { id: site.bundleId, owner: a },
+    );
+    expect(sent.error).toBeUndefined();
+    await expect
+      .poll(() => owner.evaluate(() => (window as any).proposalFixture.p.ids()))
+      .toContain(sent.operation.transport.bundleId);
+    await sender.evaluate(async () => {
+      const f = (window as any).proposalFixture;
+      await f.mesh.close();
+      f.app.close();
+    });
+    await contexts[1].close();
+    expect(sender.isClosed()).toBe(true);
+    const profileName = await owner.evaluate(
+      async ({ source, proposal }) => {
+        const f = (window as any).proposalFixture;
+        await f.mesh.close();
+        // No inbox read yet. These are the actual production cache operations.
+        await f.p.pin(source, false);
+        await f.p.pin(proposal, false);
+        await f.p.changeQuota(1024);
+        const ids = await f.p.ids();
+        if (ids.includes(source) || ids.includes(proposal))
+          throw Error("cache pressure failed to remove both ordinary copies");
+        const name = f.p.name;
+        f.app.close();
+        return name;
+      },
+      { source: site.bundleId, proposal: sent.operation.transport.bundleId },
+    );
+    expect(await start(owner, "Dona com inbox", profileName)).toEqual(a);
+    const recovered = await owner.evaluate(async (visitor) => {
+      const f = (window as any).proposalFixture,
+        inbox = await f.app.call("contribution-command", { action: "inbox" }),
+        ids = await f.p.ids();
+      await f.app.call("action", {
+        action: "block",
+        target: visitor.id,
+        value: true,
+      });
+      const blocked = await f.app.call("contribution-command", {
+        action: "inbox",
+      });
+      await f.app.call("action", {
+        action: "block",
+        target: visitor.id,
+        value: false,
+      });
+      const unblocked = await f.app.call("contribution-command", {
+        action: "inbox",
+      });
+      return { inbox, ids, blocked, unblocked, peers: f.mesh.router.peers };
+    }, b);
+    expect(recovered.ids).toEqual([]);
+    expect(recovered.peers).toEqual([]);
+    expect(recovered.inbox.durable).toBe(true);
+    expect(recovered.inbox.items).toHaveLength(1);
+    expect(recovered.inbox.items[0]).toMatchObject({
+      id: sent.operation.certificateId,
+      bundleId: sent.operation.transport.bundleId,
+      status: "verified-candidate",
+      contributor: { id: b.id },
+      values: {
+        name: "PRIVATE_INBOX_SURVIVES_BROWSER_EVICTION",
+        count: 0,
+        open: false,
+      },
+    });
+    expect(recovered.blocked.items).toEqual([]);
+    expect(recovered.unblocked.items).toEqual(recovered.inbox.items);
+  } finally {
+    for (const page of pages)
+      if (!page.isClosed())
+        await page
+          .evaluate(async () => {
+            const f = (window as any).proposalFixture;
+            if (f) {
+              await f.mesh.close();
+              f.app.close();
+            }
+          })
+          .catch(() => {});
+    for (const context of contexts) await context.close();
   }
 });
