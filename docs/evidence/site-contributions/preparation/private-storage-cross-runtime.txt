@@ -1,0 +1,184 @@
+TAP version 13
+# (node:2272158) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from site into the resource namespace
+ok 1 - an authenticated outer SQLite database cannot transpose unpublished signatures from site into the resource namespace
+  ---
+  duration_ms: 2101.078635
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from resource into the site namespace
+ok 2 - an authenticated outer SQLite database cannot transpose unpublished signatures from resource into the site namespace
+  ---
+  duration_ms: 74.939666
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from site into the contribution namespace
+ok 3 - an authenticated outer SQLite database cannot transpose unpublished signatures from site into the contribution namespace
+  ---
+  duration_ms: 81.080009
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution into the site namespace
+ok 4 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution into the site namespace
+  ---
+  duration_ms: 70.039559
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from resource into the contribution namespace
+ok 5 - an authenticated outer SQLite database cannot transpose unpublished signatures from resource into the contribution namespace
+  ---
+  duration_ms: 73.000791
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution into the resource namespace
+ok 6 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution into the resource namespace
+  ---
+  duration_ms: 74.941099
+  type: 'test'
+  ...
+# Subtest: Node and a real Go process exchange signing-protected site records in the same SQLite database
+ok 7 - Node and a real Go process exchange signing-protected site records in the same SQLite database
+  ---
+  duration_ms: 2303.298112
+  type: 'test'
+  ...
+# Subtest: Node and a real Go process exchange signing-protected resource records in the same SQLite database
+ok 8 - Node and a real Go process exchange signing-protected resource records in the same SQLite database
+  ---
+  duration_ms: 2319.377329
+  type: 'test'
+  ...
+# Subtest: Node and a real Go process exchange signing-protected contribution records in the same SQLite database
+ok 9 - Node and a real Go process exchange signing-protected contribution records in the same SQLite database
+  ---
+  duration_ms: 2290.949368
+  type: 'test'
+  ...
+# Subtest: Go rejects a Node encrypted site value transplanted into another authenticated store
+ok 10 - Go rejects a Node encrypted site value transplanted into another authenticated store
+  ---
+  duration_ms: 90.777892
+  type: 'test'
+  ...
+# Subtest: Go rejects a Node encrypted resource value transplanted into another authenticated store
+ok 11 - Go rejects a Node encrypted resource value transplanted into another authenticated store
+  ---
+  duration_ms: 96.250181
+  type: 'test'
+  ...
+# Subtest: Go rejects a Node encrypted contribution value transplanted into another authenticated store
+ok 12 - Go rejects a Node encrypted contribution value transplanted into another authenticated store
+  ---
+  duration_ms: 85.5235
+  type: 'test'
+  ...
+# (node:2274480) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: intent commits without a visitor signature; later signing survives reopen with private consent and no public store
+ok 13 - intent commits without a visitor signature; later signing survives reopen with private consent and no public store
+  ---
+  duration_ms: 145.335173
+  type: 'test'
+  ...
+# Subtest: failed transactions and changed policy retain a prepared intent without handing out a signature
+ok 14 - failed transactions and changed policy retain a prepared intent without handing out a signature
+  ---
+  duration_ms: 84.316808
+  type: 'test'
+  ...
+# Subtest: expiry and cancellation keep retired sequence outcomes and never renew a signature
+ok 15 - expiry and cancellation keep retired sequence outcomes and never renew a signature
+  ---
+  duration_ms: 716.748189
+  type: 'test'
+  ...
+# Subtest: private contribution storage refuses missing-stage without resetting an intent
+ok 16 - private contribution storage refuses missing-stage without resetting an intent
+  ---
+  duration_ms: 56.074355
+  type: 'test'
+  ...
+# Subtest: private contribution storage refuses wrong-source without resetting an intent
+ok 17 - private contribution storage refuses wrong-source without resetting an intent
+  ---
+  duration_ms: 52.509261
+  type: 'test'
+  ...
+# Subtest: private contribution storage refuses read-key without resetting an intent
+ok 18 - private contribution storage refuses read-key without resetting an intent
+  ---
+  duration_ms: 38.347899
+  type: 'test'
+  ...
+# Subtest: real abrupt process exit before-intent-commit preserves the intent and fixed certificate identity
+ok 19 - real abrupt process exit before-intent-commit preserves the intent and fixed certificate identity
+  ---
+  duration_ms: 252.442521
+  type: 'test'
+  ...
+# Subtest: real abrupt process exit after-intent preserves the intent and fixed certificate identity
+ok 20 - real abrupt process exit after-intent preserves the intent and fixed certificate identity
+  ---
+  duration_ms: 250.970431
+  type: 'test'
+  ...
+# Subtest: real abrupt process exit after-signature preserves the intent and fixed certificate identity
+ok 21 - real abrupt process exit after-signature preserves the intent and fixed certificate identity
+  ---
+  duration_ms: 267.009272
+  type: 'test'
+  ...
+# Subtest: preparation quota failure rolls back stage and sequence before any signature exists
+ok 22 - preparation quota failure rolls back stage and sequence before any signature exists
+  ---
+  duration_ms: 104.002467
+  type: 'test'
+  ...
+# (node:2274744) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: private site staging survives SQLite restart and does not expose signatures to the reading secret
+ok 23 - private site staging survives SQLite restart and does not expose signatures to the reading secret
+  ---
+  duration_ms: 105.615141
+  type: 'test'
+  ...
+# Subtest: private resource staging survives SQLite restart and does not expose signatures to the reading secret
+ok 24 - private resource staging survives SQLite restart and does not expose signatures to the reading secret
+  ---
+  duration_ms: 86.925729
+  type: 'test'
+  ...
+# Subtest: private contribution staging survives SQLite restart and does not expose signatures to the reading secret
+ok 25 - private contribution staging survives SQLite restart and does not expose signatures to the reading secret
+  ---
+  duration_ms: 85.920906
+  type: 'test'
+  ...
+# Subtest: private staging quota failure aborts all record changes even when its error is caught
+ok 26 - private staging quota failure aborts all record changes even when its error is caught
+  ---
+  duration_ms: 60.402791
+  type: 'test'
+  ...
+# Subtest: private record handles expire at the synchronous transaction boundary
+ok 27 - private record handles expire at the synchronous transaction boundary
+  ---
+  duration_ms: 15.905843
+  type: 'test'
+  ...
+# Subtest: missing and transposed ciphertext are rejected even inside an otherwise authentic outer database
+ok 28 - missing and transposed ciphertext are rejected even inside an otherwise authentic outer database
+  ---
+  duration_ms: 78.617031
+  type: 'test'
+  ...
+1..28
+# tests 28
+# suites 0
+# pass 28
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 12651.435676

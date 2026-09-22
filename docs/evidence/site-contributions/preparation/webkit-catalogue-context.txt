@@ -1,0 +1,11 @@
+
+Running 4 tests using 1 worker
+
+(node:2261936) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [webkit] › tests/browser/site-contribution-catalog.spec.ts:13:1 › browser contribution intent and signature commit separately, survive reopening and abort signing on lock without publishing (1.4s)
+  ✓  2 [webkit] › tests/browser/site-contribution-catalog.spec.ts:214:1 › browser catalogue expiry preserves the old result and missing staging is an integrity error (521ms)
+  ✓  3 [webkit] › tests/browser/site-contribution-context.spec.ts:13:1 › form inspection uses authenticated browser state and invalidates delayed replies after block, withdrawal, expiry or lock (3.1s)
+  ✓  4 [webkit] › tests/browser/site-contribution.spec.ts:50:1 › browser visitor certificates interoperate with Node and Go while encrypted proposals and publication consent remain separate (1.3s)
+
+  4 passed (7.2s)

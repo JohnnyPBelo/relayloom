@@ -166,3 +166,10 @@ Enviar os marcos separados e verificar o CI; depois integrar documento v4, conte
 
 
 A fundação do documento v4 foi implementada depois desse push: esquema ligado a tabela, cópias com referências e fronteiras de assinatura em Node/Go/browser. Gate delimitado com 79 testes Node, 24 vectores, Go/race, build e seis casos de browser PASS. Próxima fase: contexto autenticado da API e journal privado/replay, depois inbox/aprovação/proveniência e UI real. CI35661349213 está em curso para 0a85d7d; preservar essa execução e o HTML público actual. A regressão completa v4 continua pendente.
+
+
+## Preparação privada concluída como módulo, integração continua
+
+Gate76653 terminado0:494Node,build ecatálogoFirefox/WebKit;ChromiumdirigidoPASS. Registos ecomandos emdocs/evidence/site-contributions/preparation. Não repetir a suite por desconhecer umhandle; as fontes estão commitadas em6749483. Próximo trabalho concreto: portar contribution-operations/contribution-catalog paraGo e testar a mesmaSQLite nas duasdirecções com crashes/quotas/corrupção; depois ligar preparação/submissão àAPI com contexto autenticado, envelope/outbox/inbox, aprovação/proveniência eUI.
+
+O CI anterior0a85d7d acabou com falha só na importação de fotografia iOS, antes do percursofuncional. Novo push normal pode agora arrancar sem cancelar esseCI. Confirmar origin/run depois de enviar o novo marco. O HTML público mantém a distribuição verificada existente; não publicar WIP nem inferir que gates antigos cobrem novosbytes.

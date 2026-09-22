@@ -93,3 +93,22 @@ Dez testes Node, Go sites/race, três testes Go app/race, builds, dois percursos
 A primeira execução parou por reserva de disco (<15GiB). Oito cópias ignored/linux-unpacked antigas foram removidas após lsof, preservando os AppImages e todos os hashes de WIP/source. Depois a fixture usava settings para bloquear; corrigida para action/block com estado assertado. Esses resultados estão preservados; os dois processos finais passaram. Último espaço: cerca de16GiB, margem pequena; revalidar antes de novo gate.
 
 Segue journal/submissão: ler CONTRIBUTION-JOURNAL-NOTES.md. Resolver a diferença entre envio privado e consentimento de publicação antes de integrar; preservar a recusa de promoção privada→pública. Todo o envio/inbox/aprovação/proveniência/UI continua pendente.
+
+## Preparação durável implementada parcialmente — 22 de Setembro
+
+A candidata acrescenta o journal puro e os catálogos Node/browser. A primeira transacção guarda pedido/snapshot e metadados sem assinatura do visitante; a segunda assina, preservando UUID/valores/concessão/tempos. O resultado assinado só sai depois do commit. Há uma preparação activa,128resultados/1MiB, expiração/cancelamento e recusa de replay com sequência antiga. O namespace privado contribution tem codec Node/Go e testes reais entre SQLite/processos. **O catálogo/máquina de estados Go ainda não está portado. Os catálogos não estão ligados a um comando de submissão.**
+
+`verifyForSubmission` e `verifyPublicationScope` separam envio privado e divulgação posterior;57vectores(14aceites/43recusados) TS/Go cobrem a distinção, além de controlos em browsers reais. `verifyForForm` mantém a composição compatível das duas. Verificar uma concessão não aprova, publica, renova prazo ou faz CAS.
+
+Passaram inicialmente33testes Node relacionados,28testes de storage/catálogo/interop,10testes finais de catálogo e4casos dirigidos por browser, mais worker/contrato. Não somar repetições como testes únicos. Um erro de fixture reutilizava uma sessão de storage correctamente fechada por falha de integridade; outro comparava ordem textual de JSON em vez de estrutura. Originais preservados.
+
+A primeira suite Node completa terminou **493PASS/1FAIL de494**, com tradução `Formulário` em falta. A revisão também encontrou aceitação de lacunas no parser do journal. Ambas corrigidas: EN/ES e sequência retida exactamente contígua. Catorze testes dirigidos e dois casos Chromium passaram; o controlo sintético mudou de aceitação para recusa da lacuna, conservando o positivo.
+
+**Gate actual76653**, `.cache/contribution-journal-consolidated/report.json`: repete os102ficheiros da suite Node (comparados exactamente com o glob original), depois build e2casosFirefox/2WebKit afectados. Fonte congelada no report; não alterar apps/packages/native/tests/scripts até terminar. Não confundir a suite anterior com um passe global da fonte corrigida. O produto e envio/inbox/aprovação/UI continuam por concluir.
+
+
+## Gate corrigido concluído
+
+Handle76653 terminou/recolhido0: **494 testes Node PASS**, build PASS, dois casos Firefox e dois WebKit PASS. Os dois Chromium afectados já tinham passado; não houve falhas/skips no gate corrigido. Todos os693hashes de fonte antes/depois coincidem. A tradução e a lacuna do parser foram corrigidas antes desta repetição integral. Provas curadas em docs/evidence/site-contributions/preparation; o relatório conserva o FAIL anterior e os controlos, sem reescrever proveniência.
+
+Commits: b8a8a9e separa submissão/concessão;6749483 guarda o journal Node/browser, domínio privado Node/Go, controlos e tradução. ac54af4 tinha ligado a consulta form aos três motores. Nenhum deles implementa ainda submit/outbox/inbox/approval/UI nem o catálogo Go. Continuar essa integração; não repetir os gates terminados sem novas alterações que o justifiquem.

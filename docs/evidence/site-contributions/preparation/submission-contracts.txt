@@ -1,0 +1,70 @@
+TAP version 13
+# Subtest: form query is a copied closed locator, never executable input or caller-supplied permission
+ok 1 - form query is a copied closed locator, never executable input or caller-supplied permission
+  ---
+  duration_ms: 1.305197
+  type: 'test'
+  ...
+# Subtest: real snapshot lookup authenticates author, reader access and visitor policy without returning table rows
+ok 2 - real snapshot lookup authenticates author, reader access and visitor policy without returning table rows
+  ---
+  duration_ms: 155.455798
+  type: 'test'
+  ...
+# Subtest: Node, portable crypto and Go agree on visitor proposals, schemas and negative authorization vectors
+ok 3 - Node, portable crypto and Go agree on visitor proposals, schemas and negative authorization vectors
+  ---
+  duration_ms: 1418.946909
+  type: 'test'
+  ...
+# Subtest: declarative form binds all typed columns, preserves zero/false and never executes values
+ok 4 - declarative form binds all typed columns, preserves zero/false and never executes values
+  ---
+  duration_ms: 5.233823
+  type: 'test'
+  ...
+# Subtest: form and value parsing reject active accessors, sparse lists, unknown fields and oversized inputs
+ok 5 - form and value parsing reject active accessors, sparse lists, unknown fields and oversized inputs
+  ---
+  duration_ms: 0.656802
+  type: 'test'
+  ...
+# Subtest: Node visitor signatures verify across adapters but cannot become owner revisions
+ok 6 - Node visitor signatures verify across adapters but cannot become owner revisions
+  ---
+  duration_ms: 67.338024
+  type: 'test'
+  ...
+# Subtest: portable visitor signatures verify across adapters but cannot become owner revisions
+ok 7 - portable visitor signatures verify across adapters but cannot become owner revisions
+  ---
+  duration_ms: 46.535491
+  type: 'test'
+  ...
+# Subtest: site/form/schema/base and the visitor's maximum publication audience are bound independently
+ok 8 - site/form/schema/base and the visitor's maximum publication audience are bound independently
+  ---
+  duration_ms: 11.582877
+  type: 'test'
+  ...
+# Subtest: expiry and clock checks apply to admission, while historical signatures stay verifiable
+ok 9 - expiry and clock checks apply to admission, while historical signatures stay verifiable
+  ---
+  duration_ms: 27.395194
+  type: 'test'
+  ...
+# Subtest: private submission remains encrypted even when the visitor consents to later public adoption
+ok 10 - private submission remains encrypted even when the visitor consents to later public adoption
+  ---
+  duration_ms: 10.013134
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2400.240823

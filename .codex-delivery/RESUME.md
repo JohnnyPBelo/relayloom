@@ -1,68 +1,62 @@
-# RelayLoom — retoma, 21 de Setembro de 2026
+# RelayLoom — retoma, 22 de Setembro de 2026
 
-O produto **não está concluído**. Preservar todo o `PROJECT-BRIEF.md`: messenger/social P2P cifrado, sites expressivos inspirados no ZeroNet, Windows/Android/macOS/iOS/Linux e web autónoma com paridade, Reticulum/meios agnósticos, setup, PT/EN/ES e Liquid Glass. Só este projecto. Manter Astra/Copilot Ultra e recuperação sequencial: **não criar nem retomar agentes**, nem alterar providers, bridges, modelos, autenticação, permissões ou serviços. Checkpoint adicional de manutenção cancelado.
+**Objectivo integral activo; produto não concluído.** Manter PROJECT-BRIEF.md: messenger/social P2P cifrado, editor expressivo inspirado no ZeroNet, Windows/Android/macOS/iOS/Linux e web autónoma com paridade, Reticulum/meios agnósticos, setup, PT/EN/ES e Liquid Glass. Só este projecto. Astra/Copilot Ultra intacto. Recuperação sequencial: **não criar nem retomar agentes**. Não alterar modelos/providers/bridges, autenticação, permissões, serviços ou outros projectos. Checkpoint extra de manutenção cancelado.
 
-## Onde continuar
+## Localização e preservação
 
 - Worktree activa: `/home/absint0o/projects/relayloom/.cache/site-optional-resources`, branch `codex/site-optional-resources`.
-- Principal: `/home/absint0o/projects/relayloom`, branch `codex/setup-languages`, HEAD `1e83db22ff9b7b9a65a400601b891312a3188960`. O seu WIP histórico permanece separado. Não resetar, apagar, copiar árvores antigas por cima, nem usar `git add -A`.
-- Marcos novos: `995861d` contrato autónomo de contribuições; `def424f` inspecções de recursos; `5f6a929` corrida de pausa de relay; `564c280` evidência do CI anterior. Ver `git log -6 --oneline` para o commit de documentação posterior e confirmar origin antes de enviar.
-- Commits e pushes normais autorizados; nunca force-push, segredos ou merge de PR sem autorização. WIP restante inclui relatórios/capturas antigos e o symlink node_modules: preservar, não incluir indiscriminadamente.
-- Última leitura: **18 GiB livres**, reserva obrigatória de 15 GiB. Revalidar antes de builds/downloads. Uma execução pesada local de cada vez; dependências/caches no projecto.
+- Principal: `/home/absint0o/projects/relayloom`, branch `codex/setup-languages`, HEAD1e83db22ff9b7b9a65a400601b891312a3188960. O seu WIP histórico está separado e preservado. Nunca git add -A, reset, force-push ou merge de PR sem aprovação.
+- Commits novos locais: **d20d4ce** documento v4; **ac54af4** consulta de formulário; **0746edf** provas CI; **b8a8a9e** submissão/concessão; **6749483** journal Node/browser e codec privado Node/Go. Ver git log/status para o commit de documentação posterior. Origin estava0a85d7d antes do push final deste incremento; confirmar a nota final ou consultar origin.
+- WIP restante inclui capturas/JSON antigos e symlink node_modules; preservar e não incluir indiscriminadamente. Nenhum código de outras worktrees foi copiado sobre esta.
+- **Disco: cerca de15,9GiB livres**, reserva15GiB. Verificar antes de cada gate pesado. Dependências/caches no projecto; uma execução pesada local de cada vez.
 
-## Publicação que existe realmente
+## Estado actual do código
 
-https://johnnypbelo.github.io/relayloom/ — runtime **7fdb76a5de5869efa6ebdd721bc7e8f5efac68af**, distribuição **0fdbd1b9563540a5bc28c74d669668e948aa7667**, Pages35622927304 SUCCESS. V3 com recursos está publicado; as correcções recentes e formulários não estão no URL. Vinte artefactos HTTPS conferidos, seis percursos de recursos nos três motores e um entre processos Chromium/Firefox com mensagens/anexo/reabertura offline PASS. Provas: `docs/evidence/site-optional-resources/v3-ui/live`.
+O documento v4 contém formulários declarativos ligados a tabelas do mesmo snapshot; valida campos/tipos/regras/destino e remapeia referências internas ao duplicar páginas/composições. Recursos v3 continuam válidos. As seis fronteiras de assinatura/admissão exigem revisão assinada para v3 e posteriores. **A paleta de formulários continua oculta.**
 
-## Gates concluídos — não retomar como processos vivos
+`contribution-command` com `action: form` está ligado em Node HTTP, Go HTTP e BrowserApplication/worker. Recebe apenas snapshotId/pageId/formId; autentica/desencripta e extrai o contexto do snapshot real, sem aceitar esquema/ACL do cliente. Verifica contribuidores/leitura/bloqueio/retirada/prazo/sessão. Resposta contém campos/metadados, sem linhas da tabela ou chaves; não assina/publica/pede à rede. Browser lê blocked+mutations na mesma transacção. A futura submissão deve resolver novamente o contexto, nunca confiar nessa resposta enviada pela UI.
 
-**Nenhum teste/processo local deste incremento permanece em curso.** Handle29159 terminou/recolhido0; 86072 terminou/recolhido0. Firefox15505 já não existia, mas log terminal e JSON confirmam12PASS em35s. Não repetir essas suites por falta de handle.
+`verifyForSubmission` é distinto de `verifyPublicationScope`; `verifyForForm` mantém a composição antiga. Proposta privada pode ser enviada ao dono de site público sem consentir publicação pública.57vectores TS/Go (14aceites/43recusados) e browsers verificam a distinção. Concessão não é aprovação, CAS ou prazo válido.
 
-- `.cache/resource-relay-final/report.json`: typecheck, **33 contratos**, Go sites/race, build web, **107 WebKit**, **1 UI recursos Node + 1 Go**, Linux build/run/package/run, tudo PASS. Browser/UI sem skips, falhas ou flaky. Driver `.cache/resource-relay-final.mjs`; não sobrescreve relatórios existentes.
-- `.cache/relay-clock-{chromium,firefox,webkit}-report.json`: **12 por engine** após mudanças de relay/relógio, todos PASS.
-- `.cache/resource-performance-full/report.json` (FAIL histórico) contém Chromium104PASS e Firefox103/104 com oferta RTC lenta. `.cache/resource-performance-resumed/report.json` (FAIL histórico) contém Firefox104PASS e WebKit103/104 com corrida de relay. Só oito ficheiros mudaram depois, enumerados na curadoria; os passes anteriores conservam fonte própria, não são matrizes integrais reexecutadas na fonte final.
-- Provas finais e comandos: `docs/evidence/site-resource-performance`. Curador local `.cache/curate-resource-relay-final.mjs` já executado; recusa substituir provas. Falhas/negativos estão preservados, incluindo intenção mutável `inspect→obtain` e erro alheio com a mesma mensagem de revogação.
-- Página válida:128blocos/123referências, todas verificadas em10,6s neste WebKit, prazo15s mantido. Coalescing apenas simultâneo, sem cache de autorização; reabertura `posted2/held2/peak2`.
-- Electron passou arranque/controlo de acesso/pacote; não é auditoria do sandbox do kernel. Aviso NSS original conservado, sem alterar configurações. Daemons criados pelos testes terminaram normalmente.
+**Journal e catálogos Node/browser implementados como módulos internos:** primeiro commit guarda intenção+snapshot de origem sem certificado do visitante; segundo commit assina e conserva certificado. Repetição/reabertura mantém UUID/valores/concessão/tempos. Estados prepared/signed/cancelled/expired; uma preparação activa,128resultados/1MiB, janela final contígua e contador monotónico. Stage fica fora do inventário público. Quota/corrupção/sessão antiga recusam sem criar outro resultado. Namespace privado contribution em Node/Go deriva de posse da chave de assinatura, com AAD próprio. O codec Go está implementado e interoperável, **mas o catálogo/máquina de estados Go ainda não**.
 
-## O que foi corrigido e o que continua pendente
+**Ainda não existe API de submissão/envio, envelope/outbox/inbox, aprovação/rejeição/reconciliação CAS, proveniência de linhas ou UI de contribuições.** Os estados internos não significam enviado/entregue/aprovado. Ler docs/SITE-CONTRIBUTIONS.md, .codex-delivery/SITE-CONTRIBUTIONS-IMPLEMENTATION.md, CONTRIBUTION-CATALOG-REVIEW.md e CONTRIBUTION-JOURNAL-NOTES.md.
 
-As inspecções readonly passam fora das filas de mutação com guards de sessão. A intenção é validada e copiada antes do primeiro await; bloqueio/lock invalidam respostas. A UI agrupa apenas pedidos simultâneos por snapshot/página/descritor completo, conserva slots enquanto chamadas reais acabam e clona respostas por consumidor; obtains continuam individuais.
+## Testes terminados — nenhum teste local vivo
 
-`RelayRevokedError` identifica a revogação local no router. Só respostas automáticas capturam esse tipo; ficam sem responder após pausa mas mantêm o canal para tráfego próprio. Erros alheios/corrupção continuam a rejeitar admissão. As duas falhas negativas foram reproduzidas e 15 controlos repetidos passaram. Isto não demonstra resolução da ausência histórica de candidatos ICE nem da oferta Firefox de61,7s; três repetições e matriz seguinte passaram sem causa estabelecida.
+**Todos os handles locais foram recolhidos.**76653 terminou0;72078 terminou1 (falha histórica corrigida). Não reabrir como vivos nem repetir suites por falta de handle.
 
-Contribuições: esquema e certificado TS/Go, domínio, snapshot/revisão/formulário, UUID, valores, assinatura, validade e concessão máxima de publicação. Transporte cifrado privado e consentimento de divulgação futura são distintos. Tolerância300000ms igual ao envelope, com fronteiras300000/300001 testadas. Oito Node PASS, **48 vectores (11 aceites/37 recusados)** Node/portátil/Go, assinatura Go nos dois sentidos e browsers reais PASS. Evidência inicial46vectores preservada em `contract`; novas provas em `docs/evidence/site-contributions/clock-alignment`.
+- Gate final `.cache/contribution-journal-consolidated/report.json`: **494 Node PASS**, build PASS, **2 Firefox + 2 WebKit PASS** depois das correcções. Os102ficheiros de testes coincidem exactamente com o glob original. Hashes antes/depois de693fontes coincidem. Driver `.cache/contribution-journal-consolidate.mjs`; recusa sobrepor relatório.
+- Chromium dirigido após correcção: **2PASS** em `.cache/contribution-review-fixes-chromium-report.json`; typecheck e14testes Node dirigidos PASS.
+- Antes: Go sites/race PASS;28casos conjuntos de catálogo/storage/interop,10casos finais de catálogo, quatro casos de catálogo/contexto/cripto por browser e suplementos de worker PASS. São subconjuntos/repetições; não somar como cenários únicos.
+- Consulta autenticada:10Node,Go sites/race,3Go app/race,builds,2percursos de processos TCP Node↔Go e contexto/worker nos três browsers PASS. Controlo com autor offline, seeder reiniciado, cópia antes ausente, bytes privados presentes sem chave, bloqueio/retirada e leituras históricas.
+- Node journal: SIGKILL real em Linux antes/depois do commit de intenção e depois do commit de assinatura; recuperação e identidade/prazo fixos PASS. Variante Windows usa exit86 imediato sem cleanup JavaScript e ainda aguarda CI. Browser: assinatura retida+lock faz rollback para prepared; reabre, retoma, expira e rejeita stage/retention corrompidos.
+- Provas curadas: `docs/evidence/site-contributions/{document-v4,authenticated-context,preparation}`. Curador `.cache/curate-contribution-journal.mjs` já executado; não substituir provas.
 
-**Contribuições ainda não estão integradas na aplicação.** Ler `.codex-delivery/SITE-CONTRIBUTIONS-IMPLEMENTATION.md`: documento v4/form block, contexto derivado de snapshot autenticado, journal privado/replay, transporte/inbox, aprovação/rejeição/reconciliação CAS, proveniência de linhas e UI PT/EN/ES. Três contas reais e controlos de privacidade/restart/perda de resposta/quotas/autor offline obrigatórios. Não oferecer botões que não funcionem. A inspiração ZeroNet não autoriza scripts/HTML/SQL arbitrários.
+### Falhas preservadas
 
-## CI e plataformas
+A primeira suite integral72078 deu493PASS/1FAIL de494 por rótulo Formulário sem EN/ES; corrigido antes da repetição494/494. O parser aceitava uma lacuna sintética no journal; agora exige comprimento/janela final exactos. `.cache/contribution-retention-{before,after}.json` preserva positivo e negativo. Mudaram só quatro ficheiros depois da primeira suite: i18n/studio.ts, contribution-operations.ts e os dois testes de catálogo. A prova final enumera-os.
 
-CI **35618030583 /7fdb76a** terminou FAILURE: Node nos três SO, Go/race, interop, UI nativa, RNS e pacotes desktop PASS; browser101/102 falhou desempenho (116/123), motivando a correcção actual. iOS build/install/startup PASS em26.4.1/Xcode26.6, mas `simctl addmedia` timeout60s impediu o teste UI funcional. Não afirmar mensagem/foto entregue nessa execução nem atribuí-la à falha AX de execuções anteriores. Vinte artefactos iOS conferidos; `docs/evidence/ci-7fdb76a` contém provas curadas/manifesto.
+Fixtures iniciais foram corrigidas: usar action/block (settings não bloqueia), reabrir storage depois de falha de integridade, e comparar estrutura em vez de ordem textual do JSON. Os logs originais permanecem. O JSON dos quatro casos WebKit foi sobrescrito pelo reporter seguinte; log terminal e observação real preservados, sem inventar relatório original. A repetição final captura JSON correctamente.
 
-CI anterior35413693543 expirou25m cumulativos eminterop; jobs foram separados sem reduzir cobertura/prazos/permissões e35618030583 confirmou essa divisão. Novo CI das correcções deve ser acompanhado depois do push; não inferir passe remoto do gate local.
+## CI e publicação
 
-Hardware/rádios físicos, assinatura Apple, todas as plataformas efectivamente executadas, paridade integral e revisão independente continuam abertos/bloqueados conforme `docs/STATUS.md`. Não declarar prontidão para catástrofes. Grupos web dinâmicos, backup/rotação/keystore e restantes requisitos mantêm-se.
+**CI35661349213 /0a85d7d terminou FAILURE apenas no iOS.** Node Windows/macOS/Linux,Go/race,interop,UI nativa,RNS,três pacotesdesktop e107browser PASS. Página extensa10144ms dentro do prazo15s. iOS26.4.1:build/install/startup XCTestPASS; seed-synthetic-photo expirou60433ms antes do percursofuncional.21ficheiros de execução/cleanup conferidos por hash. Provas `docs/evidence/ci-0a85d7d`. Não atribuir mensagens/fotografias entregues a essa execução, nem inferir a causa do bloqueio. O CI não inclui v4/contexto/journal posteriores.
 
-## Retoma exacta
+Web pública: https://johnnypbelo.github.io/relayloom/ . Runtime **7fdb76a5de5869efa6ebdd721bc7e8f5efac68af**, distribuição **0fdbd1b9563540a5bc28c74d669668e948aa7667**, Pages35622927304SUCCESS. V3 com recursos publicado; novas correcções/formulários ainda não.20artefactos HTTPS,6percursos de recursos nos três browsers e1entreprocessos com mensagens/anexo/reload offline PASS. Provas em `docs/evidence/site-optional-resources/v3-ui/live`. Nova publicação exige artefactos exactos e gate HTTPS, nunca simples existência de WIP.
 
-1. Na worktree activa, ler este ficheiro e `PROJECT-BRIEF.md`; consultar `git status --short`, `git log -6 --oneline` e espaço livre. Preservar WIP. Não repetir gates já terminados.
-2. Confirmar push/origin e CI com `gh run list --repo JohnnyPBelo/relayloom --branch codex/site-optional-resources --limit 3 --json databaseId,headSha,status,conclusion`. Não cancelar um CI em curso com pushes sucessivos sem necessidade.
-3. Continuar integração real dos formulários. Actualizar TS/Go e fronteiras de assinatura v3→v4 em conjunto; duplicação deve remapear referências internas e inserir recurso não pode rebaixar versão. Ligar armazenamento/runtime/UI antes de alegar funcionalidade entregue.
-4. Antes de actualizar HTML, validar artefactos exactos da distribuição e os percursos HTTPS; publicação existente permanece até esse gate. Não reduzir cobertura nem relaxar limites para passar.
+O gate anterior de recursos/relay terminou PASS e está em `docs/evidence/site-resource-performance`:107WebKit,2UI recursos Node/Go,33contratos,Go/race,Linuxbuild/run/package/run;12dirigidos porengine. A corrida de pausa de relay foi reproduzida/corrigida com erro tipado. Isso não prova resolver ausência histórica de candidatosICE ou ofertaFirefox de61,7s. Essas ocorrências mantêm causa por esclarecer.
 
-O histórico integral desta retoma foi preservado em `.codex-delivery/history/RESUME-before-resource-relay-final.md`. A execução sequencial tem prioridade sobre a delegação até indicação contrária do proprietário.
+## Espaço e higiene
 
+A reserva da CLI recusou um gate quando havia14GiB; não foi alterada. Foram removidas apenas cópias ignored/linux-unpacked de8worktrees antigas, após lsof sem uso; AppImages, fontes/WIP e respectivos hashes preservados. Depois removeram-se4arquivos de download inactivos (JDK/Android/electron) com instalações mantidas. Não foram removidos perfis, provas, imagensOS, ferramentas instaladas, código ou processos. Auditorias `.cache/disk-recovery-21-sep.json` e `disk-recovery-22-sep.json`. Causas externas de crescimento não foram investigadas; não aceder a outros projectos/ficheiros pessoais.
 
-## Actualização mais recente — documento v4 (posterior ao gate anterior)
+## Próxima execução concreta
 
-Push confirmado de **0a85d7d** para origin/codex/site-optional-resources. CI **35661349213** arrancou: Linux/Windows em curso, macOS em fila na última leitura. Não reenviar commits sucessivos cancelando esse CI sem necessidade.
+1. Confirmar gitstatus/log/origin e espaço. Consultar CI do novo push, sem cancelar execuções com pushes repetidos. Não repetir os gates terminados sem novas alterações/falha relevante.
+2. **Portar contribution-operations e contribution-catalog para Go**, usando RunContributionPrivate. Preservar formato canónico e fonte autenticada; obter os mesmos vectores e transacções. Testar retoma Node↔Go sobre a mesmaSQLite e morte antes/depois dos commits, quotas, corrupção, leitura vsassinatura e retenção.
+3. Ligar preparação/submissão nos três motores, com contexto resolvido novamente e política revalidada dentro da transacção. Nunca receber source/context/ACL do cliente. Envelope privado exacto, validade fixa, cópia verificável e outbox/inbox; não renovar prazo numa retoma. Node/browser createBundle usa Date.now internamente e precisa de uma solução explícita para os tempos fixos (Go já tem CreateBundleAt).
+4. Decisão do dono durável, CAS/reconciliação de base/esquema/audiência, recibos verificáveis e proveniência. Só então activar paleta e UI PT/EN/ES; testar três contas, perda de resposta, partition/heal, autor offline, falhas de autorização/corrupção, acessibilidade e desenho.
+5. Executar os gates integrais da candidata antes da publicação/entrega. Mantêm-se grupos web dinâmicos, backup/rotação/keystore, todos os SO/meios, hardware/radios, assinatura Apple e revisão independente. Nenhum passe de software demonstra prontidão para catástrofes. Não marcar complete/blocked: ainda há implementação útil autorizada.
 
-Nenhum teste local está vivo. 85184 terminou com código 2 por typecheck do novo fixture (nenhum Go arrancou); 8073 terminou 0 depois das correcções; 41369 terminou 0; 12342/90874 são controlos negativos terminados com código 1. Todos os resultados foram recolhidos.
-
-Fontes v4 locais posteriores a 0a85d7d: documento/form-schema TS/Go, remapeamento ao copiar páginas/composições, compatibilidade de recursos e guards >= 3 nas seis fronteiras de publicação/admissão. O bloco form está oculto na paleta; envio e aprovação ainda não estão implementados. Os testes foram ampliados sem reduzir os anteriores.
-
-Gate: **79 Node, 24 vectores (8 aceites/16 recusados), typecheck, Go sites/race, três testes Go app dirigidos com race, build e dois casos por browser (seis no total)**. O primeiro caso de browser usa catálogo/IndexedDB/assinatura/cifra reais; o segundo usa a UI de páginas existente. Não chamar esses seis casos de UI de formulários. A regressão completa da candidata v4 e o seu CI continuam pendentes.
-
-Provas: `docs/evidence/site-contributions/document-v4`; relatórios locais `.cache/site-form-v4-current-source.json` e `.cache/site-form-v4-browser-final/report.json`. O guard BrowserApplication.prepare assinava antes de a admissão recusar; controlo anterior: uma assinatura e unpublished=true; depois: zero assinaturas. Erros iniciais de fixture/typecheck foram preservados e corrigidos, sem mascarar a causa. A fase v4 não está no CI 0a85d7d nem no HTML público.
-
-Continuar com contexto de formulário derivado de snapshot autenticado na API, journal privado/replay, envio/inbox, aprovação/reconciliação/proveniência e UI real PT/EN/ES, conforme `SITE-CONTRIBUTIONS-IMPLEMENTATION.md`. Não declarar conclusão nem reduzir os restantes requisitos. Antes de novas alterações, consultar git log/status para o commit local que guarda v4 e as suas provas.
+O histórico desta retoma está em `.codex-delivery/history/RESUME-before-contribution-preparation.md`, e os históricos anteriores foram preservados. O turno produziu código e provas reais; classifica-se como progresso.

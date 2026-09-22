@@ -672,3 +672,12 @@ Duplicar um documento com referências exige mapear primeiro todos os IDs novos 
 Bloqueio e retirada lidos separadamente no browser podem pertencer a revisões privadas distintas. A nova consulta de formulário lê ambos na mesma transactValues e verifica geração/prazo depois do await; não reentrar nas funções do perfil dentro dessa transacção. A resposta é metadado, não uma capacidade entregue à UI para futuras assinaturas.
 
 Espaço livre caiu de18para14GiB sem um download nosso que o explicasse; não atribuir a causa sem prova. A CLI recusou o arranque como deve. Remover apenas cópias descompactadas ignored de oito pacotes antigos, após lsof, conservando AppImage/hash e WIP/diff, recuperou2,4GiB. O teste seguinte revelou um erro da fixture: settings não é a API de bloqueio. Usar action/block e assertar o estado antes do oráculo. Nunca interpretar ausência de rejeição como defeito do runtime sem confirmar que a precondição foi realmente aplicada.
+
+
+## Intenção antes da assinatura e conservação de histórico
+
+O catálogo deve guardar a intenção antes de assinar, em transacções distintas, para tornar observável e recuperável cada fronteira. Os testes com processo terminado antes/depois de commit e depois da assinatura confirmaram ausência/estado esperado sem renovar tempos. Falha de integridade fecha a sessão de storage: testar reabertura legítima, não exigir continuação da sessão invalidada. Comparar estrutura/canonical de JSON, não a ordem de propriedades de JSON.stringify.
+
+A revisão encontrou que ordenar sequências e limitar a lista não prova que nenhuma operação retida desapareceu. Exigir comprimento min(nextSequence-1,128) e a janela contígua final. O controlo antes/depois e a corrupção deliberada do registo privado nos browsers passaram após a correcção. A suite integral detectou uma tradução escondida na tabela de rótulos v4; corrigir EN/ES e repetir a suite inteira, não descartar por a paleta ainda estar oculta. Segunda execução494/494 PASS.
+
+O reporter de matriz usa um caminho fixo por engine e uma execução posterior sobrescreveu o JSON WebKit dos quatro casos. Preservar o log terminal e a observação própria, declarar a ausência e capturar o JSON da repetição final. Não fabricar um relatório original. Os drivers de gate devem copiar o relatório imediatamente depois de cada fase.

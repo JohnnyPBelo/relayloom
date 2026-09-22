@@ -271,3 +271,10 @@ FR-038/039/040 e INT-009 continuam parciais. Código def424f/5f6a929: gate local
 
 
 FR-038/039/040, continuação v4 local: vínculo declarativo formulário→tabela, cópia com referências, compatibilidade v1-v3 e admissão por revisão assinada passaram 79 testes Node, 24 vectores TS/Go, Go/race, build e seis casos de browser. Provas em docs/evidence/site-contributions/document-v4. Continuam parciais: journal/replay, transporte/inbox, aprovação/reconciliação/proveniência, UI de contribuições e restante contrato. CI35661349213 cobre 0a85d7d, anterior a este incremento; não atribuir-lhe validação de v4. A regressão completa v4 continua pendente.
+
+
+## Contribuições: consulta e preparação privada — 22 de Setembro
+
+FR-038/039/040 e CON-002 continuam parciais. ac54af4 liga consulta de contexto assinado/cifrado a Node/Go/browser, com dois processos TCP e gates de contexto/worker. b8a8a9e separa submissão/divulgação;6749483 implementa journal e catálogo Node/browser e codec privado Go. 494 Node PASS após corrigir tradução e janela de resultados; build, catálogo nos três browsers, Go sites/race e interop de storage com positivos/negativos PASS. Provas em docs/evidence/site-contributions/authenticated-context e preparation.
+
+Ainda faltam catálogo Go, submissão/transporte/outbox/inbox, aprovação/reconciliação/proveniência, UI e restante contrato integral. O CI35661349213 da fonte anterior0a85d7d passou107browser e todos os jobs excepto iOSseed-synthetic-photo; não abrange os commits novos. A publicação permanece7fdb76a/0fdbd1b9. Nenhuma alegação de todos os dispositivos testados ou prontidão para catástrofes.

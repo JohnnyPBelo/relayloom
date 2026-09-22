@@ -1,0 +1,51 @@
+{
+  "noSignatureDuringPrepare": true,
+  "noVisitorCertificate": true,
+  "emptyStoreAfterPrepare": true,
+  "prepared": {
+    "sequence": 1,
+    "operationId": "13bb9327-6992-43b6-a52b-a8cc28be189a",
+    "fingerprint": "867db4e05c49f8ab425ddd1f92b48a7bba80f2474509b6c2c2058bbcb97d43c7",
+    "phase": "prepared",
+    "target": {
+      "site": "relayloom:site:4e1b0b6a63c388bdc2fd035bef3eca8cf5e15311c738b0b1872f684b209c0c03/profile",
+      "snapshotId": "2a5241c7419ef3df0d1394c5dab2952ccb9604467937d65344f8e210756af76c",
+      "revisionId": "32ee57c81a853cb8c4bb5364abbb52594a00d2262f4ced255a742b9cc1cfae1e",
+      "pageId": "entry",
+      "formId": "form"
+    },
+    "schemaHash": "51af47ee79c0565caf8b82ba255f5629ba6599d4b3df7fe8d6be8614995a04c3",
+    "created": 1790035453356,
+    "expires": 1790035513356,
+    "certificateId": null
+  },
+  "repeated": {
+    "certificateId": null,
+    "created": 1790035453356,
+    "expires": 1790035513356,
+    "fingerprint": "867db4e05c49f8ab425ddd1f92b48a7bba80f2474509b6c2c2058bbcb97d43c7",
+    "operationId": "13bb9327-6992-43b6-a52b-a8cc28be189a",
+    "phase": "prepared",
+    "schemaHash": "51af47ee79c0565caf8b82ba255f5629ba6599d4b3df7fe8d6be8614995a04c3",
+    "sequence": 1,
+    "target": {
+      "formId": "form",
+      "pageId": "entry",
+      "revisionId": "32ee57c81a853cb8c4bb5364abbb52594a00d2262f4ced255a742b9cc1cfae1e",
+      "site": "relayloom:site:4e1b0b6a63c388bdc2fd035bef3eca8cf5e15311c738b0b1872f684b209c0c03/profile",
+      "snapshotId": "2a5241c7419ef3df0d1394c5dab2952ccb9604467937d65344f8e210756af76c"
+    }
+  },
+  "lockedSigningRejected": true,
+  "phaseAfterLock": "prepared",
+  "signedPhase": "signed",
+  "certificateFixed": true,
+  "sameCert": true,
+  "callsAfterSign": 2,
+  "blocked": true,
+  "cancelled": "cancelled",
+  "retained": "cancelled",
+  "reused": true,
+  "noPublishedAtEnd": true,
+  "noPlaintextAtRest": true
+}

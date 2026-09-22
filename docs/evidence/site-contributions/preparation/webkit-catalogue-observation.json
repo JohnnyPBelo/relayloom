@@ -1,0 +1,51 @@
+{
+  "noSignatureDuringPrepare": true,
+  "noVisitorCertificate": true,
+  "emptyStoreAfterPrepare": true,
+  "prepared": {
+    "sequence": 1,
+    "operationId": "f3ef04b6-ad2b-431b-aaf2-f12830325b6b",
+    "fingerprint": "c03d1a61607d0aae06ae7cb5af2e37f2c51d8d246f612767e57353f70a023659",
+    "phase": "prepared",
+    "target": {
+      "site": "relayloom:site:1e3db40397c469f3b121d94f9206054e160da3e713a1eb959295f2a5d62ccc50/profile",
+      "snapshotId": "57b91fbc3022bbde53c58ab2d92743b2b4eee30b5fe842315caff937da7381a1",
+      "revisionId": "4226509e7f18c40301e367db4449c9e1bcb58c5e95fd0077fcd16e27c12be10b",
+      "pageId": "entry",
+      "formId": "form"
+    },
+    "schemaHash": "064b94adc5d4817ad02563187bd4b4805be32f16aae3518b5217cac44021cbd3",
+    "created": 1790035457505,
+    "expires": 1790035517505,
+    "certificateId": null
+  },
+  "repeated": {
+    "certificateId": null,
+    "created": 1790035457505,
+    "expires": 1790035517505,
+    "fingerprint": "c03d1a61607d0aae06ae7cb5af2e37f2c51d8d246f612767e57353f70a023659",
+    "operationId": "f3ef04b6-ad2b-431b-aaf2-f12830325b6b",
+    "phase": "prepared",
+    "schemaHash": "064b94adc5d4817ad02563187bd4b4805be32f16aae3518b5217cac44021cbd3",
+    "sequence": 1,
+    "target": {
+      "formId": "form",
+      "pageId": "entry",
+      "revisionId": "4226509e7f18c40301e367db4449c9e1bcb58c5e95fd0077fcd16e27c12be10b",
+      "site": "relayloom:site:1e3db40397c469f3b121d94f9206054e160da3e713a1eb959295f2a5d62ccc50/profile",
+      "snapshotId": "57b91fbc3022bbde53c58ab2d92743b2b4eee30b5fe842315caff937da7381a1"
+    }
+  },
+  "lockedSigningRejected": true,
+  "phaseAfterLock": "prepared",
+  "signedPhase": "signed",
+  "certificateFixed": true,
+  "sameCert": true,
+  "callsAfterSign": 2,
+  "blocked": true,
+  "cancelled": "cancelled",
+  "retained": "cancelled",
+  "reused": true,
+  "noPublishedAtEnd": true,
+  "noPlaintextAtRest": true
+}

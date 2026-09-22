@@ -1,8 +1,8 @@
-# Próxima integração de propostas — notas técnicas, ainda não implementadas
+# Integração de propostas — desenho e estado parcial
 
 O contexto autenticado já foi ligado à consulta contribution-command/form em Node/Go/browser. A resposta é descrição para a UI, não uma capacidade de autorização. Criar uma proposta terá de resolver novamente a referência pelo motor. Não aceitar um ContributionFormContext enviado pelo cliente.
 
-## Fronteiras a implementar
+## Fronteiras do desenho
 
 1. Pedido fechado: sequência, UUID, snapshotId/pageId/formId, valores, concessão máxima de publicação e prazo escolhido. O motor deriva endereço/revisão/esquema/autor/tempos e valida o visitante a partir do snapshot real. O hash do pedido inclui toda a intenção; resposta perdida repete a mesma intenção e consulta o resultado, não gera outro UUID/data/nonce.
 2. Persistir a intenção **antes de assinar**. Estados separados de preparação e cópia/entrega; não imitar o catálogo de recursos como se a sua única transacção após assinar já cumprisse essa exigência. Guardar a cópia autenticada do snapshot de origem na área privada permite retomar após expulsão do cache público. Não usar metadados avulsos do cliente como substituto dessa prova.
@@ -23,3 +23,6 @@ Antes do journal, separar a verificação de **submissão** da verificação de 
 Ligar envio/outbox e inbox privados; decisão do dono durável antes de publicar; revisão aprovada com CAS e prova da contribuição na linha. Mudança de base/esquema/audiência exige reconciliação, com concessão do visitante preservada. Edição posterior do dono não se apresenta como assinatura do visitante sobre valores novos. O visitante deve receber estado verificável; uma etiqueta local não basta.
 
 Só activar a paleta/UI após esses caminhos funcionarem. Testar três contas pela interface, offline, perda de resposta/restart, processos Node↔Go, browsers, assinatura/leitura distintas, adulteração, quotas e concorrência. Os limites de hardware, Apple, grupos web, recuperação/rotação/keystore e revisão independente continuam no contrato integral.
+
+
+Actualização: a separação submissão/concessão foi implementada em TS/Go, preservando verifyForForm como composição compatível. O journal puro e catálogos Node/browser já guardam intenção e assinam em commits separados, com testes; namespace privado contribution também existe em Go. Ainda faltam máquina de estados/catálogo Go, API de preparação/envio, envelope/outbox/inbox, decisão e UI. Ver CONTRIBUTION-CATALOG-REVIEW.md. Estas notas iniciais não devem ser lidas como um relatório de implementação integral.

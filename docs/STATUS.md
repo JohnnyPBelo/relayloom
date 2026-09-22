@@ -1,5 +1,13 @@
 # RelayLoom — estado verificável
 
+## Preparação privada de contribuições — 22 de Setembro
+
+Código **b8a8a9e/6749483**: concessão de divulgação separada do envio privado; journal e catálogos Node/browser com intenção guardada antes de assinar, tempos fixos, reabertura idempotente, cancelamento/expiração e resultados limitados. O codec privado contribution é interoperável entre Node e Go, com a chave de assinatura separada da chave de leitura.
+
+A regressão corrigida passou **494 testes Node**, build e os casos de catálogo afectados em Chromium/Firefox/WebKit. Passaram também Go sites/race, 57 vectores de contrato (14 aceites/43 recusados), SQLite entre processos e os controlos de worker/contexto. Não somar subconjuntos/repetições como cenários únicos. A primeira suite teve 493/494 por tradução em falta; essa falha e o controlo de lacunas no journal foram corrigidos, preservados e seguidos da repetição integral. [Fontes, comandos, falhas e âmbito](evidence/site-contributions/preparation).
+
+**Ainda faltam a máquina de estados/catálogo Go, API de preparação/submissão, envelope/outbox/inbox, aprovação/reconciliação/proveniência e UI completa.** A consulta form já funciona nos três motores, mas os catálogos ainda são internos. Nenhum novo gate de plataforma ou publicação é inferido do resultado local. [Descrição funcional](SITE-CONTRIBUTIONS.md). A web pública permanece7fdb76a/0fdbd1b9.
+
 ## CI do marco0a85d7d concluído — 22 de Setembro
 
 **CI35661349213 terminou FAILURE apenas em iOS.** Passaram Node Windows/macOS/Linux, Go/race, interoperabilidade, UI nativa, referência Reticulum, os três pacotes desktop e **107 testes de browser**. A página extensa passou em10,144s, confirmando a correcção de desempenho naquela fonte sem alterar o prazo.

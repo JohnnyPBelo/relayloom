@@ -1,0 +1,81 @@
+TAP version 13
+# (node:2213750) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: intent commits without a visitor signature; later signing survives reopen with private consent and no public store
+ok 1 - intent commits without a visitor signature; later signing survives reopen with private consent and no public store
+  ---
+  duration_ms: 128.844214
+  type: 'test'
+  ...
+# Subtest: failed transactions and changed policy retain a prepared intent without handing out a signature
+ok 2 - failed transactions and changed policy retain a prepared intent without handing out a signature
+  ---
+  duration_ms: 88.644242
+  type: 'test'
+  ...
+# Subtest: expiry and cancellation keep retired sequence outcomes and never renew a signature
+ok 3 - expiry and cancellation keep retired sequence outcomes and never renew a signature
+  ---
+  duration_ms: 713.685597
+  type: 'test'
+  ...
+# Subtest: private contribution storage refuses missing-stage without resetting an intent
+ok 4 - private contribution storage refuses missing-stage without resetting an intent
+  ---
+  duration_ms: 47.003057
+  type: 'test'
+  ...
+# Subtest: private contribution storage refuses wrong-source without resetting an intent
+ok 5 - private contribution storage refuses wrong-source without resetting an intent
+  ---
+  duration_ms: 45.826712
+  type: 'test'
+  ...
+# Subtest: private contribution storage refuses read-key without resetting an intent
+not ok 6 - private contribution storage refuses read-key without resetting an intent
+  ---
+  duration_ms: 30.342409
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/site-contribution-catalog.test.ts:1:7445'
+  failureType: 'testCodeFailure'
+  error: 'Registo fechado, incerto ou já em transacção'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    ProtectedGroupStore.execute (/home/absint0o/projects/relayloom/.cache/site-optional-resources/packages/groups/src/storage.ts:462:13)
+    ProtectedGroupStore.transaction (/home/absint0o/projects/relayloom/.cache/site-optional-resources/packages/groups/src/storage.ts:606:17)
+    NodeContributionCatalog.run (/home/absint0o/projects/relayloom/.cache/site-optional-resources/packages/sites/src/contribution-catalog.ts:88:26)
+    NodeContributionCatalog.state (/home/absint0o/projects/relayloom/.cache/site-optional-resources/packages/sites/src/contribution-catalog.ts:161:17)
+    TestContext.<anonymous> (/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/site-contribution-catalog.test.ts:279:30)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  ...
+# Subtest: real abrupt process exit before-intent-commit preserves the intent and fixed certificate identity
+ok 7 - real abrupt process exit before-intent-commit preserves the intent and fixed certificate identity
+  ---
+  duration_ms: 300.474858
+  type: 'test'
+  ...
+# Subtest: real abrupt process exit after-intent preserves the intent and fixed certificate identity
+ok 8 - real abrupt process exit after-intent preserves the intent and fixed certificate identity
+  ---
+  duration_ms: 273.842264
+  type: 'test'
+  ...
+# Subtest: real abrupt process exit after-signature preserves the intent and fixed certificate identity
+ok 9 - real abrupt process exit after-signature preserves the intent and fixed certificate identity
+  ---
+  duration_ms: 277.735383
+  type: 'test'
+  ...
+1..9
+# tests 9
+# suites 0
+# pass 8
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2153.387089

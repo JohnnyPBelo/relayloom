@@ -1,0 +1,48 @@
+
+Running 2 tests using 1 worker
+
+(node:2241559) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [chromium] › tests/browser/site-contribution-catalog.spec.ts:13:1 › browser contribution intent and signature commit separately, survive reopening and abort signing on lock without publishing (1.2s)
+(node:2241832) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  2 [chromium] › tests/browser/site-contribution-catalog.spec.ts:213:1 › browser catalogue expiry preserves the old result and missing staging is an integrity error (394ms)
+
+
+  1) [chromium] › tests/browser/site-contribution-catalog.spec.ts:13:1 › browser contribution intent and signature commit separately, survive reopening and abort signing on lock without publishing 
+
+    Error: repeatedSame
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      203 |     "noPlaintextAtRest",
+      204 |   ] as const)
+    > 205 |     expect(result[key], key).toBe(true);
+          |                              ^
+      206 |   expect(result.phaseAfterLock).toBe("prepared");
+      207 |   expect(result.signedPhase).toBe("signed");
+      208 |   expect(result.cancelled).toBe("cancelled");
+        at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-contribution-catalog.spec.ts:205:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .cache/contribution-journal-chromium-artifacts/site-contribution-catalog--0dde5--on-lock-without-publishing-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: .cache/contribution-journal-chromium-artifacts/site-contribution-catalog--0dde5--on-lock-without-publishing-chromium/error-context.md
+
+    Error Context: .cache/contribution-journal-chromium-artifacts/site-contribution-catalog--0dde5--on-lock-without-publishing-chromium/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    .cache/contribution-journal-chromium-artifacts/site-contribution-catalog--0dde5--on-lock-without-publishing-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace .cache/contribution-journal-chromium-artifacts/site-contribution-catalog--0dde5--on-lock-without-publishing-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › tests/browser/site-contribution-catalog.spec.ts:13:1 › browser contribution intent and signature commit separately, survive reopening and abort signing on lock without publishing 
+  1 passed (3.0s)

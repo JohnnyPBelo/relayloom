@@ -1,0 +1,72 @@
+TAP version 13
+# (node:2275593) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: intent commits without a visitor signature; later signing survives reopen with private consent and no public store
+ok 1 - intent commits without a visitor signature; later signing survives reopen with private consent and no public store
+  ---
+  duration_ms: 142.948147
+  type: 'test'
+  ...
+# Subtest: failed transactions and changed policy retain a prepared intent without handing out a signature
+ok 2 - failed transactions and changed policy retain a prepared intent without handing out a signature
+  ---
+  duration_ms: 87.509634
+  type: 'test'
+  ...
+# Subtest: expiry and cancellation keep retired sequence outcomes and never renew a signature
+ok 3 - expiry and cancellation keep retired sequence outcomes and never renew a signature
+  ---
+  duration_ms: 720.979853
+  type: 'test'
+  ...
+# Subtest: private contribution storage refuses missing-stage without resetting an intent
+ok 4 - private contribution storage refuses missing-stage without resetting an intent
+  ---
+  duration_ms: 53.615375
+  type: 'test'
+  ...
+# Subtest: private contribution storage refuses wrong-source without resetting an intent
+ok 5 - private contribution storage refuses wrong-source without resetting an intent
+  ---
+  duration_ms: 51.990699
+  type: 'test'
+  ...
+# Subtest: private contribution storage refuses read-key without resetting an intent
+ok 6 - private contribution storage refuses read-key without resetting an intent
+  ---
+  duration_ms: 49.481484
+  type: 'test'
+  ...
+# Subtest: real abrupt process exit before-intent-commit preserves the intent and fixed certificate identity
+ok 7 - real abrupt process exit before-intent-commit preserves the intent and fixed certificate identity
+  ---
+  duration_ms: 260.739107
+  type: 'test'
+  ...
+# Subtest: real abrupt process exit after-intent preserves the intent and fixed certificate identity
+ok 8 - real abrupt process exit after-intent preserves the intent and fixed certificate identity
+  ---
+  duration_ms: 259.995743
+  type: 'test'
+  ...
+# Subtest: real abrupt process exit after-signature preserves the intent and fixed certificate identity
+ok 9 - real abrupt process exit after-signature preserves the intent and fixed certificate identity
+  ---
+  duration_ms: 277.426374
+  type: 'test'
+  ...
+# Subtest: preparation quota failure rolls back stage and sequence before any signature exists
+ok 10 - preparation quota failure rolls back stage and sequence before any signature exists
+  ---
+  duration_ms: 99.799537
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2215.633597

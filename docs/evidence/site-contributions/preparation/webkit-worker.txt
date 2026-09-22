@@ -1,0 +1,8 @@
+
+Running 1 test using 1 worker
+
+(node:2283448) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [webkit] › tests/browser/site-contribution-worker.spec.ts:5:1 › production worker describes an authenticated form after UI setup and unlock without exposing keys or accepting caller authority (2.5s)
+
+  1 passed (3.1s)

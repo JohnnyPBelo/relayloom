@@ -1,0 +1,18 @@
+{
+  "noSignatureDuringPrepare": true,
+  "noVisitorCertificate": true,
+  "emptyStoreAfterPrepare": true,
+  "repeatedSame": false,
+  "lockedSigningRejected": true,
+  "phaseAfterLock": "prepared",
+  "signedPhase": "signed",
+  "certificateFixed": true,
+  "sameCert": true,
+  "callsAfterSign": 2,
+  "blocked": true,
+  "cancelled": "cancelled",
+  "retained": "cancelled",
+  "reused": true,
+  "noPublishedAtEnd": true,
+  "noPlaintextAtRest": true
+}

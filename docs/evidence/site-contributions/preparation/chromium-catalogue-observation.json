@@ -1,0 +1,51 @@
+{
+  "noSignatureDuringPrepare": true,
+  "noVisitorCertificate": true,
+  "emptyStoreAfterPrepare": true,
+  "prepared": {
+    "sequence": 1,
+    "operationId": "01c18980-9ea3-46e8-877b-74937a2ddc8b",
+    "fingerprint": "93cde1294782a9d2e528ddbcb6c3da971448c2fbfb39f7a16e86f5b33c91ad23",
+    "phase": "prepared",
+    "target": {
+      "site": "relayloom:site:5bf13ee02643fb30845826507a33ce74634e26b6f4343a5b13624a80bd0be13d/profile",
+      "snapshotId": "03bc72217d76dc61b5cb292fdf914747cd2b6fc1cfcc5a8bcbe124fdd607fcdc",
+      "revisionId": "3011c1ca41def994ed5a054261415ab106fcfb0c64d08b5ed1e3e69257cb4404",
+      "pageId": "entry",
+      "formId": "form"
+    },
+    "schemaHash": "f9e264d5941f576d4b26297982f482c959f7a4debdac149d932870371c60a511",
+    "created": 1790034936115,
+    "expires": 1790034996115,
+    "certificateId": null
+  },
+  "repeated": {
+    "certificateId": null,
+    "created": 1790034936115,
+    "expires": 1790034996115,
+    "fingerprint": "93cde1294782a9d2e528ddbcb6c3da971448c2fbfb39f7a16e86f5b33c91ad23",
+    "operationId": "01c18980-9ea3-46e8-877b-74937a2ddc8b",
+    "phase": "prepared",
+    "schemaHash": "f9e264d5941f576d4b26297982f482c959f7a4debdac149d932870371c60a511",
+    "sequence": 1,
+    "target": {
+      "formId": "form",
+      "pageId": "entry",
+      "revisionId": "3011c1ca41def994ed5a054261415ab106fcfb0c64d08b5ed1e3e69257cb4404",
+      "site": "relayloom:site:5bf13ee02643fb30845826507a33ce74634e26b6f4343a5b13624a80bd0be13d/profile",
+      "snapshotId": "03bc72217d76dc61b5cb292fdf914747cd2b6fc1cfcc5a8bcbe124fdd607fcdc"
+    }
+  },
+  "lockedSigningRejected": true,
+  "phaseAfterLock": "prepared",
+  "signedPhase": "signed",
+  "certificateFixed": true,
+  "sameCert": true,
+  "callsAfterSign": 2,
+  "blocked": true,
+  "cancelled": "cancelled",
+  "retained": "cancelled",
+  "reused": true,
+  "noPublishedAtEnd": true,
+  "noPlaintextAtRest": true
+}

@@ -1,0 +1,96 @@
+TAP version 13
+# Subtest: language variants resolve to supported choices and invalid selection preserves the current language
+ok 1 - language variants resolve to supported choices and invalid selection preserves the current language
+  ---
+  duration_ms: 0.939572
+  type: 'test'
+  ...
+# Subtest: context and interpolation preserve raw names without recursively translating parameters
+ok 2 - context and interpolation preserve raw names without recursively translating parameters
+  ---
+  duration_ms: 0.328586
+  type: 'test'
+  ...
+# Subtest: every catalog entry is unique, nonempty and retains all named parameters in both languages
+ok 3 - every catalog entry is unique, nonempty and retains all named parameters in both languages
+  ---
+  duration_ms: 6.944
+  type: 'test'
+  ...
+# Subtest: literal UI lookups and state-label maps all have catalog entries
+ok 4 - literal UI lookups and state-label maps all have catalog entries
+  ---
+  duration_ms: 165.967503
+  type: 'test'
+  ...
+# (node:2331558) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: intent commits without a visitor signature; later signing survives reopen with private consent and no public store
+ok 5 - intent commits without a visitor signature; later signing survives reopen with private consent and no public store
+  ---
+  duration_ms: 122.80783
+  type: 'test'
+  ...
+# Subtest: failed transactions and changed policy retain a prepared intent without handing out a signature
+ok 6 - failed transactions and changed policy retain a prepared intent without handing out a signature
+  ---
+  duration_ms: 70.803063
+  type: 'test'
+  ...
+# Subtest: expiry and cancellation keep retired sequence outcomes and never renew a signature
+ok 7 - expiry and cancellation keep retired sequence outcomes and never renew a signature
+  ---
+  duration_ms: 688.214434
+  type: 'test'
+  ...
+# Subtest: private contribution storage refuses missing-stage without resetting an intent
+ok 8 - private contribution storage refuses missing-stage without resetting an intent
+  ---
+  duration_ms: 33.653779
+  type: 'test'
+  ...
+# Subtest: private contribution storage refuses wrong-source without resetting an intent
+ok 9 - private contribution storage refuses wrong-source without resetting an intent
+  ---
+  duration_ms: 32.686746
+  type: 'test'
+  ...
+# Subtest: private contribution storage refuses read-key without resetting an intent
+ok 10 - private contribution storage refuses read-key without resetting an intent
+  ---
+  duration_ms: 26.996868
+  type: 'test'
+  ...
+# Subtest: real abrupt process exit before-intent-commit preserves the intent and fixed certificate identity
+ok 11 - real abrupt process exit before-intent-commit preserves the intent and fixed certificate identity
+  ---
+  duration_ms: 266.279673
+  type: 'test'
+  ...
+# Subtest: real abrupt process exit after-intent preserves the intent and fixed certificate identity
+ok 12 - real abrupt process exit after-intent preserves the intent and fixed certificate identity
+  ---
+  duration_ms: 242.743314
+  type: 'test'
+  ...
+# Subtest: real abrupt process exit after-signature preserves the intent and fixed certificate identity
+ok 13 - real abrupt process exit after-signature preserves the intent and fixed certificate identity
+  ---
+  duration_ms: 245.298625
+  type: 'test'
+  ...
+# Subtest: preparation quota failure rolls back stage and sequence before any signature exists
+ok 14 - preparation quota failure rolls back stage and sequence before any signature exists
+  ---
+  duration_ms: 92.678889
+  type: 'test'
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 14
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3083.088957
