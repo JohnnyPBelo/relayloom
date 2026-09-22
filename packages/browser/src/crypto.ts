@@ -409,6 +409,37 @@ export async function createBundle(
   readers: PublicIdentity[] | "public",
   ttlMs = 30 * 86400_000,
 ): Promise<Bundle> {
+  return assembleBundle(identity, kind, payload, readers, ttlMs);
+}
+/** Internal durable-envelope support. A saved creation time fixes expiry; this
+ * does not admit an expired envelope or expose a signing RPC. */
+export async function createBundleAt(
+  identity: Identity,
+  kind: string,
+  payload: unknown,
+  readers: PublicIdentity[] | "public",
+  ttlMs: number,
+  created: number,
+): Promise<Bundle> {
+  if (
+    !Number.isSafeInteger(created) ||
+    created < 0 ||
+    !Number.isSafeInteger(ttlMs) ||
+    ttlMs < 1000 ||
+    ttlMs > 365 * 86400_000 ||
+    created > Number.MAX_SAFE_INTEGER - ttlMs
+  )
+    throw new Error("Metadados temporais inválidos");
+  return assembleBundle(identity, kind, payload, readers, ttlMs, created);
+}
+async function assembleBundle(
+  identity: Identity,
+  kind: string,
+  payload: unknown,
+  readers: PublicIdentity[] | "public",
+  ttlMs: number,
+  fixedCreated?: number,
+): Promise<Bundle> {
   const bytes = utf8(canonical(payload));
   if (bytes.length > MAX_CONTENT) throw new Error("Conteúdo excede 4 MiB");
   if (
@@ -448,7 +479,7 @@ export async function createBundle(
     }
     const keys: KeyEnvelope[] = [];
     for (const reader of access) keys.push(await wrap(key, reader));
-    const created = Date.now();
+    const created = fixedCreated ?? Date.now();
     const body: ManifestBody = {
       version: 1,
       author: owner.public,

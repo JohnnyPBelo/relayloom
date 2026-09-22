@@ -274,6 +274,53 @@ export function createBundle(
   readers: PublicIdentity[] | "public",
   ttlMs = 30 * 86400_000,
 ): Bundle {
+  return assembleBundle(identity, kind, payload, readers, ttlMs);
+}
+/** Internal durable-envelope support. A saved creation time fixes expiry; this
+ * does not admit an expired envelope or expose a signing RPC. */
+export function createBundleAt(
+  identity: Identity,
+  kind: string,
+  payload: unknown,
+  readers: PublicIdentity[] | "public",
+  ttlMs: number,
+  created: number,
+): Bundle {
+  if (
+    !Number.isSafeInteger(created) ||
+    created < 0 ||
+    !Number.isSafeInteger(ttlMs) ||
+    ttlMs < 1000 ||
+    ttlMs > 365 * 86400_000 ||
+    created > Number.MAX_SAFE_INTEGER - ttlMs
+  )
+    throw new Error("Metadados temporais inválidos");
+  if (
+    !validateIdentity(identity.public) ||
+    b64(
+      createPublicKey(privateKey(identity.signSecret)).export({
+        type: "spki",
+        format: "der",
+      }),
+    ) !== identity.public.signKey ||
+    b64(
+      createPublicKey(privateKey(identity.boxSecret)).export({
+        type: "spki",
+        format: "der",
+      }),
+    ) !== identity.public.boxKey
+  )
+    throw new Error("Chaves privadas diferentes da identidade");
+  return assembleBundle(identity, kind, payload, readers, ttlMs, created);
+}
+function assembleBundle(
+  identity: Identity,
+  kind: string,
+  payload: unknown,
+  readers: PublicIdentity[] | "public",
+  ttlMs: number,
+  fixedCreated?: number,
+): Bundle {
   const bytes = Buffer.from(canonical(payload));
   if (bytes.length > MAX_CONTENT) throw new Error("Conteúdo excede 4 MiB");
   if (
@@ -303,7 +350,7 @@ export function createBundle(
     chunks[id] = b64(chunk);
     refs.push({ hash: id, size: chunk.length });
   }
-  const created = Date.now();
+  const created = fixedCreated ?? Date.now();
   const body: ManifestBody = {
     version: 1,
     author: identity.public,
