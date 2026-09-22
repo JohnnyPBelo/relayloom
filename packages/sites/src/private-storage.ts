@@ -23,7 +23,13 @@ const DOMAIN = "relayloom/site-private/1";
 const RESOURCE_DOMAIN = "relayloom/site-resource-private/1";
 const CONTRIBUTION_DOMAIN = "relayloom/site-contribution-private/1";
 const INBOX_DOMAIN = "relayloom/site-contribution-inbox-private/1";
-type Namespace = "site" | "resource" | "contribution" | "contribution-inbox";
+const RECEIPT_DOMAIN = "relayloom/site-contribution-receipt-private/1";
+type Namespace =
+  | "site"
+  | "resource"
+  | "contribution"
+  | "contribution-inbox"
+  | "contribution-receipt";
 export const SITE_PRIVATE_LIMITS = Object.freeze({
   bytes: 6 * 1024 * 1024 + 16384,
   chunkBytes: 512 * 1024,
@@ -41,7 +47,9 @@ function checkedKey(key: string, namespace: Namespace) {
         ? /^resource:[a-f0-9]{64}:(record|stage)$/
         : namespace === "contribution"
           ? /^contribution:[a-f0-9]{64}:(record|stage)$/
-          : /^contribution-inbox:[a-f0-9]{64}:(record|stage)$/
+          : namespace === "contribution-inbox"
+            ? /^contribution-inbox:[a-f0-9]{64}:(record|stage)$/
+            : /^contribution-receipt:[a-f0-9]{64}:stage$/
     ).test(key),
     "Chave privada de site inválida",
   );
@@ -93,6 +101,13 @@ export class SitePrivateRecords {
   ): T {
     return this.session(tx, identity, fn, "contribution-inbox");
   }
+  static runContributionReceipt<T>(
+    tx: RegistryTransaction,
+    identity: Identity,
+    fn: (records: SitePrivateRecords) => T,
+  ): T {
+    return this.session(tx, identity, fn, "contribution-receipt");
+  }
   private static session<T>(
     tx: RegistryTransaction,
     identity: Identity,
@@ -103,7 +118,8 @@ export class SitePrivateRecords {
       namespace === "site" ||
         namespace === "resource" ||
         namespace === "contribution" ||
-        namespace === "contribution-inbox",
+        namespace === "contribution-inbox" ||
+        namespace === "contribution-receipt",
       "Espaço privado inválido",
     );
     if (
@@ -153,7 +169,9 @@ export class SitePrivateRecords {
         ? RESOURCE_DOMAIN
         : this.namespace === "contribution"
           ? CONTRIBUTION_DOMAIN
-          : INBOX_DOMAIN;
+          : this.namespace === "contribution-inbox"
+            ? INBOX_DOMAIN
+            : RECEIPT_DOMAIN;
   }
   private aad(key: string) {
     return Buffer.from(

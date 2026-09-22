@@ -18,6 +18,7 @@ for (const namespace of [
   "resource",
   "contribution",
   "contribution-inbox",
+  "contribution-receipt",
 ] as const)
   test(`private ${namespace} staging survives SQLite restart and does not expose signatures to the reading secret`, () => {
     const runPrivate =
@@ -27,7 +28,11 @@ for (const namespace of [
           ? SitePrivateRecords.runResource.bind(SitePrivateRecords)
           : namespace === "contribution"
             ? SitePrivateRecords.runContribution.bind(SitePrivateRecords)
-            : SitePrivateRecords.runContributionInbox.bind(SitePrivateRecords);
+            : namespace === "contribution-inbox"
+              ? SitePrivateRecords.runContributionInbox.bind(SitePrivateRecords)
+              : SitePrivateRecords.runContributionReceipt.bind(
+                  SitePrivateRecords,
+                );
     const domain =
       namespace === "site"
         ? "relayloom/site-private/1"
@@ -35,7 +40,9 @@ for (const namespace of [
           ? "relayloom/site-resource-private/1"
           : namespace === "contribution"
             ? "relayloom/site-contribution-private/1"
-            : "relayloom/site-contribution-inbox-private/1";
+            : namespace === "contribution-inbox"
+              ? "relayloom/site-contribution-inbox-private/1"
+              : "relayloom/site-contribution-receipt-private/1";
     const key = namespace + ":" + hash("private staging key") + ":stage";
     const dir = projectTemp("site-private-"),
       owner = createIdentity("Staging owner"),

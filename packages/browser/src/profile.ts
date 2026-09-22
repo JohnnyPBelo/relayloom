@@ -1,3 +1,7 @@
+import {
+  createContributionReceiptProtocol,
+  type ContributionReceiptRequest,
+} from "../../sites/src/contribution-receipt";
 import { createContributionEnvelopeProtocol } from "../../sites/src/contribution-envelope";
 import { parseSiteAddress } from "../../sites/src/protocol";
 import {
@@ -389,6 +393,45 @@ export class BrowserProfile {
     return bundle;
   }
   // Internal signing helper; no Worker RPC exposes it directly.
+  async signContributionReceipt(
+    request: ContributionReceiptRequest,
+    owner: PublicIdentity,
+  ) {
+    const session = this.active();
+    if (owner.id !== session.identity.public.id)
+      throw Error("Dono do recibo inválido");
+    const result = createContributionReceiptProtocol(
+      browserCertificateCrypto,
+    ).create({ ...session.identity, public: owner }, request);
+    this.guard(session);
+    return result;
+  }
+  async sealContributionReceipt(input: unknown, recipient: PublicIdentity) {
+    const session = this.active(),
+      protocol = createContributionReceiptProtocol(browserCertificateCrypto),
+      content = protocol.content({
+        type: "site-contribution-receipt",
+        receipt: input,
+      }),
+      body = content.receipt.body;
+    if (
+      body.owner.id !== session.identity.public.id ||
+      body.owner.boxKey !== session.identity.public.boxKey ||
+      recipient.id !== body.contributorId
+    )
+      throw Error("Dono ou destinatário do recibo inválido");
+    const result = await createBundleAt(
+      { ...session.identity, public: body.owner },
+      "site-contribution-receipt",
+      content,
+      [recipient],
+      body.expires - body.created,
+      body.created,
+    );
+    this.guard(session);
+    protocol.matchEnvelope(result, content);
+    return result;
+  }
   async signSiteContribution(request: ContributionRequest) {
     const session = this.active();
     const result = createSiteContributionProtocol(

@@ -535,3 +535,125 @@ test("dismissal cannot hide corruption in private proof", () => {
     rmSync(f.directory, { recursive: true, force: true });
   }
 });
+
+for (const purge of ["dismiss", "expire"] as const)
+  test(`owner receipt intent survives ${purge} and resumes one exact private envelope after reopen`, () => {
+    const f = fixture();
+    let db = f.database,
+      now = f.now;
+    try {
+      const storeId = db.storeId();
+      let c = new NodeContributionInbox(db, f.owner, () => now);
+      const cert = f.certificate();
+      c.admit(f.envelope(cert), allow);
+      assert.equal(c.state().entries[0].receipt, undefined);
+      assert.throws(() => c.signReceipt(cert.id, allow));
+      const verified = c.attachSource(cert.id, f.source, allow);
+      assert.equal(verified.receipt?.phase, "prepared");
+      assert.equal(verified.receipt?.request.verifiedAt, f.now);
+      assert.equal(verified.receipt?.request.created, f.now);
+      assert.deepEqual(
+        db.transaction((tx) => tx.keys("contribution-receipt:")),
+        [],
+      );
+      if (purge === "dismiss") c.dismiss(cert.id, c.state().revision);
+      else {
+        now = cert.body.expires;
+        c.state();
+      }
+      db.close();
+      db = new ProtectedGroupStore(f.path, f.owner, {
+        expectedStoreId: storeId,
+      });
+      c = new NodeContributionInbox(db, f.owner, () => now);
+      const blocked = () => {
+        throw Error("blocked");
+      };
+      assert.throws(() => c.signReceipt(cert.id, blocked), /blocked/);
+      const signed = c.signReceipt(cert.id, allow);
+      assert.equal(signed.receipt?.phase, "signed");
+      assert.equal(c.receiptBundle(cert.id, allow), null);
+      assert.deepEqual(c.signReceipt(cert.id, allow), signed);
+      const queued = c.sealReceipt(cert.id, allow),
+        original = c.receiptBundle(cert.id, allow)!;
+      assert.equal(queued.receipt?.transport?.copied, false);
+      assert.equal(original.manifest.publicKey, null);
+      assert.deepEqual(
+        original.manifest.keys.map((k) => k.reader).sort(),
+        [f.owner.public.id, f.visitor.public.id].sort(),
+      );
+      const plaintext = decryptStoredBundle(original, f.visitor) as any;
+      assert.equal(plaintext.receipt.body.verifiedAt, f.now);
+      assert.equal(plaintext.receipt.body.certificateId, cert.id);
+      assert(!JSON.stringify(plaintext).includes("PRIVATE_INBOX_VALUE_78415"));
+      db.close();
+      db = new ProtectedGroupStore(f.path, f.owner, {
+        expectedStoreId: storeId,
+      });
+      c = new NodeContributionInbox(db, f.owner, () => now);
+      assert.deepEqual(c.sealReceipt(cert.id, allow), queued);
+      assert.deepEqual(c.receiptBundle(cert.id, allow), original);
+      assert.throws(() => c.receiptBundle(cert.id, blocked), /blocked/);
+      assert.equal(
+        c.copyReceipt(cert.id, original, allow).receipt?.transport?.copied,
+        true,
+      );
+      assert.deepEqual(c.receiptBundle(cert.id, allow), original);
+      const revision = c.state().revision;
+      c.copyReceipt(cert.id, original, allow);
+      assert.equal(c.state().revision, revision);
+      now = verified.receipt!.request.expires;
+      const expired = c.state().entries[0];
+      assert.equal(expired.receipt?.phase, "expired");
+      assert.equal(expired.receipt?.stage, null);
+      assert.equal(expired.verifiedAt, f.now);
+      assert.deepEqual(
+        db.transaction((tx) => tx.keys("contribution-receipt:")),
+        [],
+      );
+      assert.throws(() => c.receiptBundle(cert.id, allow));
+    } finally {
+      db.close();
+      rmSync(f.directory, { recursive: true, force: true });
+    }
+  });
+
+for (const terminal of [false, true])
+  test(`legacy ${terminal ? "discarded" : "verified"} inbox migrates only from retained authenticated source`, () => {
+    const f = fixture();
+    try {
+      const c = new NodeContributionInbox(f.database, f.owner, () => f.now),
+        cert = f.certificate();
+      c.admit(f.envelope(cert), allow);
+      c.attachSource(cert.id, f.source, allow);
+      if (terminal) c.dismiss(cert.id, c.state().revision);
+      f.database.transaction((tx) =>
+        SitePrivateRecords.runContributionInbox(tx, f.owner, (v) => {
+          const key = tx
+              .keys("contribution-inbox:")
+              .find((k) => k.endsWith(":record"))!,
+            record = v.read(key) as any;
+          delete record.entries[0].receipt;
+          v.write(key, record);
+        }),
+      );
+      assert.equal(c.state().entries[0].receipt, undefined);
+      const read = c.read(cert.id, allow)!;
+      assert.equal(
+        read.entry.receipt?.phase,
+        terminal ? undefined : "prepared",
+      );
+      assert.equal(
+        read.entry.receipt?.request.verifiedAt,
+        terminal ? undefined : f.now,
+      );
+      assert.deepEqual(
+        f.database.transaction((tx) => tx.keys("contribution-receipt:")),
+        [],
+      );
+      if (terminal) assert.throws(() => c.signReceipt(cert.id, allow));
+    } finally {
+      f.database.close();
+      rmSync(f.directory, { recursive: true, force: true });
+    }
+  });

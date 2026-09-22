@@ -7,6 +7,7 @@ import (
 	"github.com/JohnnyPBelo/relayloom/native/groupstore"
 	"os"
 	"testing"
+	"time"
 )
 
 type inboxCrashDatabase struct{ store *groupstore.Store }
@@ -20,6 +21,31 @@ func (d inboxCrashDatabase) Update(fn func(*groupstore.Tx) error) error {
 		return nil
 	})
 }
+
+type inboxHoldDatabase struct {
+	store *groupstore.Store
+	path  string
+}
+
+func (d inboxHoldDatabase) Update(fn func(*groupstore.Tx) error) error {
+	return d.store.Update(func(tx *groupstore.Tx) error {
+		if err := fn(tx); err != nil {
+			return err
+		}
+		if err := os.WriteFile(d.path+".ready", []byte("receipt transaction held"), 0600); err != nil {
+			return err
+		}
+		deadline := time.Now().Add(10 * time.Second)
+		for time.Now().Before(deadline) {
+			if _, err := os.Stat(d.path + ".release"); err == nil {
+				return nil
+			}
+			time.Sleep(10 * time.Millisecond)
+		}
+		return errors.New("parent did not release owned receipt transaction")
+	})
+}
+
 func TestContributionInboxCatalogWorker(t *testing.T) {
 	path := os.Getenv("RELAYLOOM_INBOX_CATALOG_CONTROL")
 	if path == "" {
@@ -42,6 +68,7 @@ func TestContributionInboxCatalogWorker(t *testing.T) {
 		Blocked  bool            `json:"blocked"`
 		Crash    string          `json:"crash"`
 		Output   string          `json:"output"`
+		Hold     string          `json:"hold"`
 	}
 	if err = json.Unmarshal(data, &input); err != nil {
 		t.Fatal(err)
@@ -54,6 +81,9 @@ func TestContributionInboxCatalogWorker(t *testing.T) {
 	var database CatalogDatabase = store
 	if input.Crash == "before-commit" {
 		database = inboxCrashDatabase{store}
+	}
+	if input.Hold != "" {
+		database = inboxHoldDatabase{store, input.Hold}
 	}
 	c := NewContributionInbox(database, input.Identity)
 	if input.Now != nil {
@@ -69,6 +99,18 @@ func TestContributionInboxCatalogWorker(t *testing.T) {
 	switch input.Action {
 	case "state":
 		result, err = c.State()
+	case "sign-receipt":
+		result, err = c.SignReceipt(input.ID, allow)
+	case "seal-receipt":
+		result, err = c.SealReceipt(input.ID, allow)
+	case "receipt-bundle":
+		result, err = c.ReceiptBundle(input.ID, allow)
+	case "copy-receipt":
+		var b core.Bundle
+		b, err = core.DecodeBundle(input.Envelope)
+		if err == nil {
+			result, err = c.CopyReceipt(input.ID, b, allow)
+		}
 	case "dismiss":
 		result, err = c.Dismiss(input.ID, input.Revision)
 	case "read":

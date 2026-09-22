@@ -1,4 +1,13 @@
-import { canonical, exactShape } from "../../core/src/protocol";
+import {
+  createReceiptOperations,
+  RECEIPT_STORAGE_LIMITS,
+  type ReceiptOperation,
+} from "./contribution-receipt-operations";
+import {
+  canonical,
+  exactShape,
+  type PublicIdentity,
+} from "../../core/src/protocol";
 import type { CertificateCrypto } from "../../core/src/certificate-types";
 import { parseSiteAddress } from "./protocol";
 import {
@@ -34,6 +43,7 @@ export interface ContributionInboxEntry {
   retainUntil: number;
   phase: "missing-source" | "verified-candidate" | "expired" | "dismissed";
   dismissedAt?: number;
+  receipt?: ReceiptOperation;
   verifiedAt: number | null;
   expiredAt: number | null;
   proof: ContributionInboxProof | null;
@@ -85,7 +95,8 @@ function descriptor(value: unknown): asserts value is ContributionInboxProof {
  * must authenticate the envelope/source and persist their exact bytes together
  * with this record using the signing-owned private transaction. */
 export function createContributionInboxProtocol(crypto: CertificateCrypto) {
-  const certificates = createSiteContributionProtocol(crypto);
+  const certificates = createSiteContributionProtocol(crypto),
+    receipts = createReceiptOperations(crypto);
   function validate(input: unknown, ownerId: string): ContributionInboxRecord {
     insist(
       id(ownerId) &&
@@ -108,12 +119,14 @@ export function createContributionInboxProtocol(crypto: CertificateCrypto) {
       allCertificates = new Set<string>(),
       operations = new Set<string>(),
       authors = new Map<string, number>();
+    let receiptBytes = 0;
     let bytes = 0,
       pending = 0;
     for (const e of r.entries) {
       insist(
         exactShape(e, [
           ...(Object.hasOwn(e, "dismissedAt") ? ["dismissedAt"] : []),
+          ...(Object.hasOwn(e, "receipt") ? ["receipt"] : []),
           "id",
           "contributorId",
           "operationId",
@@ -218,6 +231,10 @@ export function createContributionInboxProtocol(crypto: CertificateCrypto) {
         bytes += e.proof.bytes;
         authors.set(e.contributorId, (authors.get(e.contributorId) ?? 0) + 1);
       }
+      if (Object.hasOwn(e, "receipt")) {
+        const receipt = receipts.validate(e.receipt, ownerId, e);
+        receiptBytes += receipt.stage?.bytes ?? 0;
+      }
       insist(
         Array.isArray(e.conflicts) &&
           e.conflicts.length <= CONTRIBUTION_INBOX_LIMITS.conflicts &&
@@ -250,7 +267,8 @@ export function createContributionInboxProtocol(crypto: CertificateCrypto) {
       );
     }
     insist(
-      pending <= CONTRIBUTION_INBOX_LIMITS.pending &&
+      receiptBytes <= RECEIPT_STORAGE_LIMITS.totalStageBytes &&
+        pending <= CONTRIBUTION_INBOX_LIMITS.pending &&
         bytes <= CONTRIBUTION_INBOX_LIMITS.totalProofBytes &&
         [...authors.values()].every(
           (n) => n <= CONTRIBUTION_INBOX_LIMITS.pendingPerContributor,
@@ -401,11 +419,34 @@ export function createContributionInboxProtocol(crypto: CertificateCrypto) {
       entry: record.entries.find((e) => e.id === certificateId)!,
     };
   }
-  function expire(input: unknown, ownerId: string, now: number) {
+  function expire(
+    input: unknown,
+    ownerId: string,
+    now: number,
+    proofBudget = Number.MAX_SAFE_INTEGER,
+  ) {
     const r = validate(input, ownerId);
-    insist(clock(now), "relógio");
-    let changed = false;
+    insist(clock(now) && clock(proofBudget), "relógio ou orçamento de limpeza");
+    let changed = false,
+      remaining = proofBudget;
     for (const e of r.entries) {
+      const dueReceipt =
+        e.receipt &&
+        e.receipt.phase !== "expired" &&
+        e.receipt.request.expires <= now;
+      const cost =
+        Number(e.proof !== null && e.expires <= now) +
+        Number(!!dueReceipt && e.receipt!.stage !== null);
+      if (cost > remaining) continue;
+      remaining -= cost;
+      if (
+        e.receipt &&
+        e.receipt.phase !== "expired" &&
+        e.receipt.request.expires <= now
+      ) {
+        e.receipt = receipts.expire(e.receipt, ownerId, e, now);
+        changed = true;
+      }
       if (e.proof !== null && e.expires <= now) {
         e.phase = "expired";
         e.proof = null;
@@ -414,7 +455,10 @@ export function createContributionInboxProtocol(crypto: CertificateCrypto) {
       }
     }
     const before = r.entries.length;
-    r.entries = r.entries.filter((e) => e.retainUntil > now);
+    r.entries = r.entries.filter(
+      (e) =>
+        e.retainUntil > now || e.proof !== null || e.receipt?.stage != null,
+    );
     return changed || before !== r.entries.length ? advance(r) : r;
   }
   function dismiss(
@@ -449,7 +493,70 @@ export function createContributionInboxProtocol(crypto: CertificateCrypto) {
       entry: record.entries.find((e) => e.id === certificateId)!,
     };
   }
+  function prepareReceipt(
+    input: unknown,
+    owner: PublicIdentity,
+    certificate: unknown,
+  ) {
+    const r = validate(input, owner.id),
+      p = certificates.verify(certificate),
+      e = r.entries.find((e) => e.id === p.id);
+    insist(
+      e && e.proof && e.phase === "verified-candidate",
+      "candidata não verificada",
+    );
+    const expected = receipts.prepare(e.receipt?.owner ?? owner, e, p);
+    if (e.receipt) {
+      insist(
+        e.receipt.fingerprint === expected.fingerprint,
+        "outra intenção de recibo",
+      );
+      return { record: r, entry: e };
+    }
+    e.receipt = expected;
+    const record = advance(r);
+    return { record, entry: record.entries.find((e) => e.id === p.id)! };
+  }
+  function updateReceipt(
+    input: unknown,
+    ownerId: string,
+    id: string,
+    receipt: unknown,
+  ) {
+    const r = validate(input, ownerId),
+      e = r.entries.find((e) => e.id === id);
+    insist(e?.receipt, "intenção de recibo em falta");
+    const next = receipts.validate(receipt, ownerId, e);
+    insist(
+      next.fingerprint === e.receipt.fingerprint,
+      "intenção de recibo substituída",
+    );
+    if (canonical(next) === canonical(e.receipt))
+      return { record: r, entry: e };
+    const old = e.receipt;
+    insist(
+      ["prepared:signed", "signed:queued", "queued:queued"].includes(
+        old.phase + ":" + next.phase,
+      ) &&
+        (old.certificateId === null ||
+          next.certificateId === old.certificateId),
+      "transição de recibo inválida",
+    );
+    if (old.phase === "queued") {
+      const expected = structuredClone(old);
+      expected.transport!.copied = true;
+      insist(
+        !old.transport!.copied && canonical(next) === canonical(expected),
+        "cópia reescrita",
+      );
+    }
+    e.receipt = next;
+    const record = advance(r);
+    return { record, entry: record.entries.find((e) => e.id === id)! };
+  }
   return {
+    prepareReceipt,
+    updateReceipt,
     initial,
     validate,
     observe,

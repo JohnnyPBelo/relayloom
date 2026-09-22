@@ -1,3 +1,8 @@
+import { createContributionInboxProtocol } from "../../packages/sites/src/contribution-inbox";
+import { createSiteContributionProtocol } from "../../packages/sites/src/contribution-protocol";
+import { createContributionReceiptProtocol } from "../../packages/sites/src/contribution-receipt";
+import { createReceiptOperations } from "../../packages/sites/src/contribution-receipt-operations";
+import { browserCertificateCrypto } from "../../packages/browser/src/certificate-crypto";
 import { BrowserContributionCatalog } from "../../packages/browser/src/contribution-catalog";
 import { BrowserContributionRuntime } from "../../packages/browser/src/contribution-runtime";
 import {
@@ -27,6 +32,13 @@ import { BrowserRouter } from "../../packages/browser/src/router";
 import * as packet from "../../packages/browser/src/packet";
 Object.assign(window, {
   rl: {
+    receiptOperations: createReceiptOperations(browserCertificateCrypto),
+    inboxProtocol: createContributionInboxProtocol(browserCertificateCrypto),
+    proposalProtocol: createSiteContributionProtocol(browserCertificateCrypto),
+    receiptProtocol: createContributionReceiptProtocol(
+      browserCertificateCrypto,
+    ),
+    certificateCrypto: browserCertificateCrypto,
     ...crypto,
     BrowserApplication,
     groups: browserGroupCertificates,

@@ -24,11 +24,13 @@ const privateOverhead = 61
 const privateDomain = "relayloom/site-private/1"
 const resourcePrivateDomain = "relayloom/site-resource-private/1"
 const contributionPrivateDomain = "relayloom/site-contribution-private/1"
+const contributionReceiptPrivateDomain = "relayloom/site-contribution-receipt-private/1"
 const contributionInboxPrivateDomain = "relayloom/site-contribution-inbox-private/1"
 
 var privateKeyPattern = regexp.MustCompile(`^site:[a-f0-9]{64}:(record|stage)$`)
 var resourcePrivateKeyPattern = regexp.MustCompile(`^resource:[a-f0-9]{64}:(record|stage)$`)
 var contributionPrivateKeyPattern = regexp.MustCompile(`^contribution:[a-f0-9]{64}:(record|stage)$`)
+var contributionReceiptPrivateKeyPattern = regexp.MustCompile(`^contribution-receipt:[a-f0-9]{64}:stage$`)
 var contributionInboxPrivateKeyPattern = regexp.MustCompile(`^contribution-inbox:[a-f0-9]{64}:(record|stage)$`)
 
 type PrivateRecords struct {
@@ -57,8 +59,11 @@ func RunContributionPrivate(tx *groupstore.Tx, identity core.Identity, callback 
 func RunContributionInboxPrivate(tx *groupstore.Tx, identity core.Identity, callback func(*PrivateRecords) error) error {
 	return runPrivateNamespace(tx, identity, callback, "contribution-inbox")
 }
+func RunContributionReceiptPrivate(tx *groupstore.Tx, identity core.Identity, callback func(*PrivateRecords) error) error {
+	return runPrivateNamespace(tx, identity, callback, "contribution-receipt")
+}
 func runPrivateNamespace(tx *groupstore.Tx, identity core.Identity, callback func(*PrivateRecords) error, namespace string) error {
-	if namespace != "site" && namespace != "resource" && namespace != "contribution" && namespace != "contribution-inbox" {
+	if namespace != "site" && namespace != "resource" && namespace != "contribution" && namespace != "contribution-inbox" && namespace != "contribution-receipt" {
 		return tx.Abort(privateIntegrity("espaço privado inválido"))
 	}
 	owner, err := tx.Owner()
@@ -96,6 +101,8 @@ func (r *PrivateRecords) check(key string) error {
 		pattern = resourcePrivateKeyPattern
 	} else if r.namespace == "contribution" {
 		pattern = contributionPrivateKeyPattern
+	} else if r.namespace == "contribution-receipt" {
+		pattern = contributionReceiptPrivateKeyPattern
 	} else if r.namespace == "contribution-inbox" {
 		pattern = contributionInboxPrivateKeyPattern
 	}
@@ -110,6 +117,9 @@ func (r *PrivateRecords) domain() string {
 	}
 	if r.namespace == "contribution" {
 		return contributionPrivateDomain
+	}
+	if r.namespace == "contribution-receipt" {
+		return contributionReceiptPrivateDomain
 	}
 	if r.namespace == "contribution-inbox" {
 		return contributionInboxPrivateDomain

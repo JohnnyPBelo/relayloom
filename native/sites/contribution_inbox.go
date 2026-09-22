@@ -50,10 +50,13 @@ func ValidateContributionInbox(value any, owner string) (map[string]any, error) 
 	seen, operations := map[string]bool{}, map[string]bool{}
 	authors := map[string]int{}
 	pending := 0
-	var total int64
+	var total, receiptBytes int64
 	for _, raw := range entries {
 		fields := []string{"id", "contributorId", "operationId", "target", "created", "expires", "observedAt", "retainUntil", "phase", "verifiedAt", "expiredAt", "proof", "conflicts", "conflictOverflow"}
 		if row, ok := raw.(map[string]any); ok {
+			if _, present := row["receipt"]; present {
+				fields = append(fields, "receipt")
+			}
 			if _, present := row["dismissedAt"]; present {
 				fields = append(fields, "dismissedAt")
 			}
@@ -128,6 +131,16 @@ func ValidateContributionInbox(value any, owner string) (map[string]any, error) 
 			pending++
 			authors[author]++
 		}
+		if raw, present := e["receipt"]; present {
+			op, err := ValidateReceiptOperation(raw, owner, e)
+			if err != nil {
+				return nil, err
+			}
+			if stage, ok := op["stage"].(map[string]any); ok {
+				n, _ := creationNumber(stage["bytes"])
+				receiptBytes += n
+			}
+		}
 		conflicts, ok := e["conflicts"].([]any)
 		overflow, boolean := e["conflictOverflow"].(bool)
 		if !ok || len(conflicts) > ContributionInboxConflicts || !boolean || overflow && len(conflicts) != ContributionInboxConflicts {
@@ -152,7 +165,7 @@ func ValidateContributionInbox(value any, owner string) (map[string]any, error) 
 			return nil, inboxError()
 		}
 	}
-	if pending > ContributionInboxPending || total > ContributionInboxTotalBytes {
+	if pending > ContributionInboxPending || total > ContributionInboxTotalBytes || receiptBytes > ReceiptTotalStageBytes {
 		return nil, inboxError()
 	}
 	for _, count := range authors {
@@ -311,6 +324,17 @@ func ExpireContributionInbox(value any, owner string, now int64) (map[string]any
 		e := raw.(map[string]any)
 		expires, _ := contributionClock(e["expires"])
 		retained, _ := contributionClock(e["retainUntil"])
+		if op, ok := e["receipt"].(map[string]any); ok && op["phase"] != "expired" {
+			deadline, _ := contributionClock(op["request"].(map[string]any)["expires"])
+			if deadline <= now {
+				next, err := ExpireReceiptOperation(op, owner, e, now)
+				if err != nil {
+					return nil, err
+				}
+				e["receipt"] = next
+				changed = true
+			}
+		}
 		if e["proof"] != nil && expires <= now {
 			e["phase"] = "expired"
 			e["proof"] = nil
@@ -383,4 +407,87 @@ func ContributionInboxManagement(value any, owner string) (map[string]any, error
 		entries = append(entries, row)
 	}
 	return map[string]any{"revision": r["revision"], "entries": entries}, nil
+}
+
+func PrepareInboxReceipt(value any, owner core.PublicIdentity, certificate any) (map[string]any, map[string]any, error) {
+	r, err := ValidateContributionInbox(value, owner.ID)
+	if err != nil {
+		return nil, nil, err
+	}
+	p, err := VerifyContribution(certificate)
+	if err != nil {
+		return nil, nil, err
+	}
+	e := inboxEntry(r, docTextValue(p["id"]))
+	if e == nil || e["proof"] == nil || e["phase"] != "verified-candidate" {
+		return nil, nil, inboxError()
+	}
+	signer := owner
+	if old, ok := e["receipt"].(map[string]any); ok {
+		signer, err = receiptCard(old["owner"])
+		if err != nil {
+			return nil, nil, err
+		}
+	}
+	expected, err := PrepareReceiptOperation(signer, e, p)
+	if err != nil {
+		return nil, nil, err
+	}
+	if old, ok := e["receipt"].(map[string]any); ok {
+		if old["fingerprint"] != expected["fingerprint"] {
+			return nil, nil, inboxError()
+		}
+		return r, e, nil
+	}
+	e["receipt"] = expected
+	r, err = advanceInbox(r)
+	if err != nil {
+		return nil, nil, err
+	}
+	return r, inboxEntry(r, docTextValue(p["id"])), nil
+}
+func UpdateInboxReceipt(value any, owner, id string, receipt any) (map[string]any, map[string]any, error) {
+	r, err := ValidateContributionInbox(value, owner)
+	if err != nil {
+		return nil, nil, err
+	}
+	e := inboxEntry(r, id)
+	if e == nil {
+		return nil, nil, inboxError()
+	}
+	old, ok := e["receipt"].(map[string]any)
+	if !ok {
+		return nil, nil, inboxError()
+	}
+	next, err := ValidateReceiptOperation(receipt, owner, e)
+	if err != nil {
+		return nil, nil, err
+	}
+	if next["fingerprint"] != old["fingerprint"] {
+		return nil, nil, inboxError()
+	}
+	if creationEqual(next, old) {
+		return r, e, nil
+	}
+	transition := docTextValue(old["phase"]) + ":" + docTextValue(next["phase"])
+	if !docContains([]string{"prepared:signed", "signed:queued", "queued:queued"}, transition) || (old["certificateId"] != nil && next["certificateId"] != old["certificateId"]) {
+		return nil, nil, inboxError()
+	}
+	if old["phase"] == "queued" {
+		expected, _ := resourceClone(old)
+		t := expected["transport"].(map[string]any)
+		if t["copied"] == true {
+			return nil, nil, inboxError()
+		}
+		t["copied"] = true
+		if !creationEqual(next, expected) {
+			return nil, nil, inboxError()
+		}
+	}
+	e["receipt"] = next
+	r, err = advanceInbox(r)
+	if err != nil {
+		return nil, nil, err
+	}
+	return r, inboxEntry(r, id), nil
 }

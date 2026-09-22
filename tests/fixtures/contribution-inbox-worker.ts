@@ -7,6 +7,8 @@ if (!path) throw Error("parent-owned inbox fixture required");
 const raw = readFileSync(path);
 if (raw.length > 16 * 1024 * 1024) throw Error("oversized fixture");
 const input = JSON.parse(raw.toString("utf8"));
+if (input.started)
+  writeFileSync(input.started, "owned Node writer started", { mode: 0o600 });
 const store = new ProtectedGroupStore(input.database, input.identity, {
   expectedStoreId: input.storeId,
 });
@@ -25,7 +27,26 @@ try {
     input.identity,
     () => input.now,
   );
-  const result = inbox.dismiss(input.id, input.revision);
+  let result: unknown;
+  switch (input.action ?? "dismiss") {
+    case "dismiss":
+      result = inbox.dismiss(input.id, input.revision);
+      break;
+    case "source":
+      result = inbox.attachSource(input.id, input.source, () => {});
+      break;
+    case "sign-receipt":
+      result = inbox.signReceipt(input.id, () => {});
+      break;
+    case "seal-receipt":
+      result = inbox.sealReceipt(input.id, () => {});
+      break;
+    case "copy-receipt":
+      result = inbox.copyReceipt(input.id, input.envelope, () => {});
+      break;
+    default:
+      throw Error("unknown parent-owned action");
+  }
   if (input.crash === "after-command") process.exit(83);
   writeFileSync(input.output, JSON.stringify(result), { mode: 0o600 });
 } finally {

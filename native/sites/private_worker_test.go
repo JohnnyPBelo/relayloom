@@ -46,6 +46,8 @@ func TestPrivateRecordsInteropWorker(t *testing.T) {
 		run = RunResourcePrivate
 	} else if input.Namespace == "contribution" {
 		run = RunContributionPrivate
+	} else if input.Namespace == "contribution-receipt" {
+		run = RunContributionReceiptPrivate
 	} else if input.Namespace == "contribution-inbox" {
 		run = RunContributionInboxPrivate
 	} else if input.Namespace != "" && input.Namespace != "site" {

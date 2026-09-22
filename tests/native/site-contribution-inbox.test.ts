@@ -1,9 +1,10 @@
+import { setTimeout as delay } from "node:timers/promises";
 import test, { before, after } from "node:test";
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
-import { readFileSync, writeFileSync, rmSync } from "node:fs";
+import { readFileSync, writeFileSync, rmSync, existsSync } from "node:fs";
 import { join } from "node:path";
-import { spawnSync } from "node:child_process";
+import { spawnSync, spawn } from "node:child_process";
 import {
   createIdentity,
   createBundleAt,
@@ -458,3 +459,331 @@ for (const crash of ["before-commit", "after-command"] as const)
       rmSync(f.directory, { recursive: true, force: true });
     }
   });
+
+for (const first of ["node", "go"] as const)
+  test(`${first} receipt intent, signature, exact envelope and copy survive cross-runtime reopen after proposal disposal`, () => {
+    const f = fixture();
+    try {
+      node(f, (c) => c.admit(f.envelope, allow));
+      const verified =
+        first === "node"
+          ? node(f, (c) => c.attachSource(f.cert.id, f.source, allow))
+          : go(f, "source").value;
+      assert.equal(verified.receipt.phase, "prepared");
+      assert.deepEqual(
+        go(f, "state").value,
+        node(f, (c) => c.state()),
+      );
+      node(f, (c) => c.dismiss(f.cert.id, c.state().revision));
+      assert.match(
+        go(f, "sign-receipt", { blocked: true }).error,
+        /policy block/,
+      );
+      const signed =
+        first === "node"
+          ? go(f, "sign-receipt").value
+          : node(f, (c) => c.signReceipt(f.cert.id, allow));
+      assert.equal(signed.receipt.phase, "signed");
+      assert.equal(go(f, "receipt-bundle").value, null);
+      const queued =
+        first === "node"
+          ? node(f, (c) => c.sealReceipt(f.cert.id, allow))
+          : go(f, "seal-receipt").value;
+      assert.equal(queued.receipt.phase, "queued");
+      const bundle = node(f, (c) => c.receiptBundle(f.cert.id, allow))!;
+      assert.deepEqual(go(f, "receipt-bundle").value, bundle);
+      assert.deepEqual(
+        node(f, (c) => c.sealReceipt(f.cert.id, allow)),
+        queued,
+      );
+      assert.deepEqual(go(f, "seal-receipt").value, queued);
+      const plain = decryptStoredBundle(bundle, f.visitor) as any;
+      assert.equal(plain.receipt.body.certificateId, f.cert.id);
+      assert.equal(plain.receipt.body.verifiedAt, f.now);
+      assert(!canonical(plain).includes("DURABLE_INBOX_NODE_GO"));
+      const copied = go(f, "copy-receipt", { envelope: bundle }).value;
+      assert.equal(copied.receipt.transport.copied, true);
+      assert.deepEqual(
+        node(f, (c) => c.copyReceipt(f.cert.id, bundle, allow)),
+        copied,
+      );
+      const future = f.cert.body.expires;
+      assert.deepEqual(go(f, "receipt-bundle", { now: future }).value, bundle);
+      assert.deepEqual(
+        node(f, (c) => c.receiptBundle(f.cert.id, allow), future),
+        bundle,
+      );
+      const expired = go(f, "state", {
+        now: verified.receipt.request.expires,
+      }).value;
+      assert.equal(expired.entries[0].receipt.phase, "expired");
+      assert.equal(expired.entries[0].receipt.stage, null);
+      assert.deepEqual(
+        node(f, (_c, db) =>
+          db.transaction((tx) => tx.keys("contribution-receipt:")),
+        ),
+        [],
+      );
+    } finally {
+      rmSync(f.directory, { recursive: true, force: true });
+    }
+  });
+for (const action of [
+  "source",
+  "sign-receipt",
+  "seal-receipt",
+  "copy-receipt",
+] as const)
+  for (const crash of ["before-commit", "after-command"] as const)
+    test(`Go receipt ${action} exit ${crash} preserves exactly the committed signing boundary`, () => {
+      const f = fixture();
+      try {
+        node(f, (c) => c.admit(f.envelope, allow));
+        if (action !== "source")
+          node(f, (c) => c.attachSource(f.cert.id, f.source, allow));
+        if (["seal-receipt", "copy-receipt"].includes(action))
+          node(f, (c) => c.signReceipt(f.cert.id, allow));
+        if (action === "copy-receipt")
+          node(f, (c) => c.sealReceipt(f.cert.id, allow));
+        const before = node(f, (c) => c.state()),
+          envelope =
+            action === "copy-receipt"
+              ? node(f, (c) => c.receiptBundle(f.cert.id, allow))
+              : f.envelope;
+        go(f, action, { crash, envelope });
+        const after = node(f, (c) => c.state());
+        if (crash === "before-commit") assert.deepEqual(after, before);
+        else if (action === "copy-receipt")
+          assert.equal(after.entries[0].receipt?.transport?.copied, true);
+        else
+          assert.equal(
+            after.entries[0].receipt?.phase,
+            action === "source"
+              ? "prepared"
+              : action === "sign-receipt"
+                ? "signed"
+                : "queued",
+          );
+        const replay = go(f, action, { envelope }).value;
+        assert(replay.receipt);
+        if (action === "seal-receipt")
+          assert.deepEqual(
+            go(f, "receipt-bundle").value,
+            node(f, (c) => c.receiptBundle(f.cert.id, allow)),
+          );
+      } finally {
+        rmSync(f.directory, { recursive: true, force: true });
+      }
+    });
+
+for (const action of [
+  "source",
+  "sign-receipt",
+  "seal-receipt",
+  "copy-receipt",
+] as const)
+  for (const crash of ["before-commit", "after-command"] as const)
+    test(`Node receipt ${action} exit ${crash} is recoverable in the Go catalogue`, () => {
+      const f = fixture();
+      try {
+        node(f, (c) => c.admit(f.envelope, allow));
+        if (action !== "source")
+          node(f, (c) => c.attachSource(f.cert.id, f.source, allow));
+        if (["seal-receipt", "copy-receipt"].includes(action))
+          node(f, (c) => c.signReceipt(f.cert.id, allow));
+        if (action === "copy-receipt")
+          node(f, (c) => c.sealReceipt(f.cert.id, allow));
+        const before = node(f, (c) => c.state()),
+          envelope =
+            action === "copy-receipt"
+              ? node(f, (c) => c.receiptBundle(f.cert.id, allow))
+              : f.envelope,
+          control = join(f.directory, "receipt-node-crash.json");
+        writeFileSync(
+          control,
+          JSON.stringify({
+            database: f.path,
+            storeId: f.storeId,
+            identity: f.owner,
+            now: f.now,
+            id: f.cert.id,
+            source: f.source,
+            envelope,
+            action,
+            crash,
+            output: control + ".result",
+          }),
+          { mode: 0o600 },
+        );
+        const stopped = spawnSync(
+          process.execPath,
+          ["--import", "tsx", "tests/fixtures/contribution-inbox-worker.ts"],
+          {
+            encoding: "utf8",
+            timeout: 15000,
+            env: { ...process.env, RELAYLOOM_NODE_INBOX_CONTROL: control },
+          },
+        );
+        assert.equal(stopped.status, 83, stopped.stdout + stopped.stderr);
+        const after = go(f, "state").value;
+        if (crash === "before-commit") assert.deepEqual(after, before);
+        else if (action === "copy-receipt")
+          assert.equal(after.entries[0].receipt.transport.copied, true);
+        else
+          assert.equal(
+            after.entries[0].receipt.phase,
+            action === "source"
+              ? "prepared"
+              : action === "sign-receipt"
+                ? "signed"
+                : "queued",
+          );
+        const replay = go(f, action, { envelope }).value;
+        assert(replay.receipt);
+        if (action === "seal-receipt")
+          assert.deepEqual(
+            go(f, "receipt-bundle").value,
+            node(f, (c) => c.receiptBundle(f.cert.id, allow)),
+          );
+      } finally {
+        rmSync(f.directory, { recursive: true, force: true });
+      }
+    });
+
+test("tampered owner receipt preparation is rejected across both storage engines", () => {
+  const f = fixture();
+  try {
+    node(f, (c, db) => {
+      c.admit(f.envelope, allow);
+      c.attachSource(f.cert.id, f.source, allow);
+      c.signReceipt(f.cert.id, allow);
+      db.transaction((tx) =>
+        SitePrivateRecords.runContributionReceipt(tx, f.owner, (v) => {
+          const key = "contribution-receipt:" + f.cert.id + ":stage",
+            stage = v.read(key) as any;
+          stage.receipt.signature = "A".repeat(88);
+          v.write(key, stage);
+        }),
+      );
+    });
+    assert.equal(go(f, "seal-receipt").integrity, true);
+    assert.throws(
+      () => node(f, (c) => c.sealReceipt(f.cert.id, allow)),
+      /recibo/i,
+    );
+  } finally {
+    rmSync(f.directory, { recursive: true, force: true });
+  }
+});
+
+test(
+  "concurrent Go and Node receipt writers commit one envelope while the losing writer observes the committed bytes",
+  { timeout: 30000 },
+  async () => {
+    const f = fixture(),
+      children: ReturnType<typeof spawn>[] = [],
+      held = join(f.directory, "held-receipt"),
+      resultGo = held + ".go-result",
+      resultNode = held + ".node-result";
+    const start = (command: string, args: string[], env: NodeJS.ProcessEnv) => {
+      const child = spawn(command, args, {
+        env,
+        stdio: ["ignore", "pipe", "pipe"],
+      });
+      children.push(child);
+      let output = "";
+      child.stdout?.on("data", (d) => {
+        output = (output + d).slice(-16000);
+      });
+      child.stderr?.on("data", (d) => {
+        output = (output + d).slice(-16000);
+      });
+      const done = new Promise<number | null>((resolve, reject) => {
+        child.once("error", reject);
+        child.once("close", resolve);
+      });
+      void done.catch(() => {});
+      return { child, done, output: () => output };
+    };
+    try {
+      node(f, (c) => {
+        c.admit(f.envelope, allow);
+        c.attachSource(f.cert.id, f.source, allow);
+        c.signReceipt(f.cert.id, allow);
+      });
+      const base = {
+          database: f.path,
+          storeId: f.storeId,
+          identity: f.owner,
+          now: f.now,
+          id: f.cert.id,
+          action: "seal-receipt",
+        },
+        goPath = held + ".go.json",
+        nodePath = held + ".node.json";
+      writeFileSync(
+        goPath,
+        JSON.stringify({ ...base, hold: held, output: resultGo }),
+        { mode: 0o600 },
+      );
+      const goWriter = start(
+        worker,
+        ["-test.run=^TestContributionInboxCatalogWorker$"],
+        { ...process.env, RELAYLOOM_INBOX_CATALOG_CONTROL: goPath },
+      );
+      const untilFile = async (path: string) => {
+        const until = Date.now() + 5000;
+        while (!existsSync(path) && Date.now() < until) await delay(10);
+        assert(existsSync(path), "owned writer marker missing: " + path);
+      };
+      await untilFile(held + ".ready");
+      writeFileSync(
+        nodePath,
+        JSON.stringify({
+          ...base,
+          started: held + ".node-started",
+          output: resultNode,
+        }),
+        { mode: 0o600 },
+      );
+      const nodeWriter = start(
+        process.execPath,
+        ["--import", "tsx", "tests/fixtures/contribution-inbox-worker.ts"],
+        { ...process.env, RELAYLOOM_NODE_INBOX_CONTROL: nodePath },
+      );
+      await untilFile(held + ".node-started");
+      await delay(150);
+      assert.equal(
+        existsSync(resultNode),
+        false,
+        "Node cannot return a second envelope while Go owns the commit",
+      );
+      assert.equal(nodeWriter.child.exitCode, null);
+      writeFileSync(held + ".release", "release owned writer", { mode: 0o600 });
+      assert.equal(await goWriter.done, 0, goWriter.output());
+      assert.equal(await nodeWriter.done, 0, nodeWriter.output());
+      const g = JSON.parse(readFileSync(resultGo, "utf8")).value,
+        n = JSON.parse(readFileSync(resultNode, "utf8"));
+      assert.deepEqual(g, n);
+      assert.equal(g.receipt.phase, "queued");
+      assert.deepEqual(
+        go(f, "receipt-bundle").value,
+        node(f, (c) => c.receiptBundle(f.cert.id, allow)),
+      );
+    } finally {
+      if (!existsSync(held + ".release"))
+        writeFileSync(held + ".release", "cleanup owned writer", {
+          mode: 0o600,
+        });
+      for (const child of children)
+        if (child.exitCode === null && child.signalCode === null) {
+          const closed = new Promise<void>((resolve) =>
+            child.once("close", () => resolve()),
+          );
+          child.kill("SIGTERM");
+          await closed;
+        }
+      rmSync(f.directory, { recursive: true, force: true });
+    }
+  },
+);

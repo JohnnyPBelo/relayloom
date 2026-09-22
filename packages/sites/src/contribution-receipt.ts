@@ -158,6 +158,18 @@ export function createContributionReceiptProtocol(crypto: CertificateCrypto) {
     );
     return JSON.parse(bounded(value));
   }
+  function request(
+    input: unknown,
+    owner: PublicIdentity,
+  ): ContributionReceiptRequest {
+    insist(exactShape(input, fields), "intenção");
+    body({
+      domain: "relayloom/site-contribution-receipt/1",
+      owner,
+      ...(input as ContributionReceiptRequest),
+    });
+    return JSON.parse(bounded(input));
+  }
   function create(
     identity: Identity,
     request: ContributionReceiptRequest,
@@ -223,5 +235,5 @@ export function createContributionReceiptProtocol(crypto: CertificateCrypto) {
     );
     return value;
   }
-  return { create, verify, matchProposal, content, matchEnvelope };
+  return { create, verify, matchProposal, content, matchEnvelope, request };
 }

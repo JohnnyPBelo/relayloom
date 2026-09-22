@@ -105,15 +105,29 @@ test("production worker describes an authenticated form after UI setup and unloc
       } catch {
         rejected = true;
       }
+      const privateReceiptHelpers = [];
+      for (const operation of [
+        "signContributionReceipt",
+        "sealContributionReceipt",
+      ]) {
+        try {
+          await w.formRPC(operation, {}, "profile");
+          privateReceiptHelpers.push(false);
+        } catch {
+          privateReceiptHelpers.push(true);
+        }
+      }
       return {
         query,
         description,
+        privateReceiptHelpers,
         rejected,
         owner: state.identity.id,
         leak: w.formSecretLeak,
       };
     }, formPayload());
     expect(saved.rejected).toBe(true);
+    expect(saved.privateReceiptHelpers).toEqual([true, true]);
     expect(saved.leak).toBe(false);
     expect(saved.description.owner.id).toBe(saved.owner);
     expect(JSON.stringify(saved.description)).not.toContain(formRowSentinel);

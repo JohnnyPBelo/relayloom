@@ -160,3 +160,18 @@ func MatchContributionReceiptEnvelope(bundle core.Bundle, plaintext any) (map[st
 	}
 	return content, nil
 }
+
+func ValidateContributionReceiptRequest(input any, owner core.PublicIdentity) (map[string]any, error) {
+	q, err := object(input, receiptFields...)
+	if err != nil {
+		return nil, receiptError()
+	}
+	b := map[string]any{"domain": "relayloom/site-contribution-receipt/1", "owner": owner}
+	for k, v := range q {
+		b[k] = v
+	}
+	if _, _, err = receiptBody(b); err != nil {
+		return nil, err
+	}
+	return resourceClone(q)
+}
