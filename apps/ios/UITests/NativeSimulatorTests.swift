@@ -298,28 +298,65 @@ final class NativeSimulatorTests: XCTestCase {
         pickerScreen.name = "ios-photo-picker-before-cell-query"
         pickerScreen.lifetime = .keepAlways
         add(pickerScreen)
-        // The observed iOS 26 picker shows the fixture but exposes no
-        // collectionViews ancestor to this query. Resolve visible native cells
-        // directly; do not tap a coordinate or choose an unrelated app image.
-        let ready = NSPredicate { _, _ in !self.photoCells(app).isEmpty }
-        guard XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: ready, object: nil)], timeout: 20) == .completed,
-              let photo = photoCells(app).first else {
+        // Run35786710953 exposes grid assets as PXGGridLayout-Info images,
+        // not cells. Only the freshly imported fixture has a recent, yearless
+        // timestamp; stock simulator images have historical years in their label.
+        let banner = app.images["PickerOnboardingHeaderViewIcon"]
+        if banner.exists && banner.isHittable {
+            let close = app.buttons.matching(NSPredicate(format: "label == 'Close' OR label == 'Fechar'")).firstMatch
+            if close.exists && close.isHittable { close.tap() }
+        }
+        let ready = NSPredicate { _, _ in self.photoCandidates(app).count == 1 }
+        guard XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: ready, object: nil)], timeout: 20) == .completed else {
             photoPickerEvidence(app)
             throw SmokeFailure.missing("seeded synthetic photo")
         }
+        let candidates = photoCandidates(app)
+        guard candidates.count == 1, let photo = candidates.first else {
+            throw SmokeFailure.missing("one unambiguous synthetic photo")
+        }
         photoPickerEvidence(app)
         print("IOS_SIMULATOR_PHASE photo-picker-ready")
-        photo.tap()
+        if photo.isHittable { photo.tap() }
+        else {
+            // The observed Info proxy has a real visible frame but no AX hit
+            // point. Tap its measured centre, never a fixed screen coordinate.
+            // Candidate filtering requires one recent grid asset, fully visible
+            // in this owned simulator; composer/native/peer checks still follow.
+            photo.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+        }
         let add = app.buttons.matching(NSPredicate(format: "label == 'Add' OR label BEGINSWITH 'Add (' OR label == 'Done' OR label == 'Choose' OR label == 'Adicionar' OR label BEGINSWITH 'Adicionar (' OR label == 'Concluído' OR label == 'Escolher'")).firstMatch
-        try require(add, "confirm system photo selection", timeout: 15); add.tap()
+        let selected = NSPredicate { _, _ in add.exists && add.isHittable && add.isEnabled }
+        guard XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: selected, object: nil)], timeout: 15) == .completed else {
+            throw SmokeFailure.missing("confirm system photo selection")
+        }
+        add.tap()
         try require(app.webViews.buttons["Remove"].firstMatch, "photo selected into composer", timeout: 20)
     }
-    @MainActor private func photoCells(_ app: XCUIApplication) -> [XCUIElement] {
-        app.descendants(matching: .cell).allElementsBoundByIndex.filter { cell in
-            let frame = cell.frame
-            return cell.exists && cell.isHittable && frame.width >= 44 && frame.height >= 44 &&
+    @MainActor private func photoCandidates(_ app: XCUIApplication) -> [XCUIElement] {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US")
+        formatter.timeZone = .current
+        // Account for a midnight boundary between owned import and UI startup.
+        let now = Date()
+        let days = [now, now.addingTimeInterval(-24 * 60 * 60)]
+        var patterns = Set<String>()
+        for day in days {
+            for format in ["MMMM dd", "MMMM d"] {
+                formatter.dateFormat = format
+                let prefix = NSRegularExpression.escapedPattern(for: "Photo, " + formatter.string(from: day) + ", ")
+                patterns.insert("^" + prefix + "[0-9]{1,2}:[0-9]{2}.*$")
+            }
+        }
+        let dated = NSCompoundPredicate(orPredicateWithSubpredicates: patterns.sorted().map { NSPredicate(format: "label MATCHES %@", $0) })
+        let images = app.images.matching(identifier: "PXGGridLayout-Info").matching(dated).allElementsBoundByIndex
+        let candidates = images.isEmpty ? app.cells.matching(dated).allElementsBoundByIndex : images
+        let screen = app.frame
+        return candidates.filter { element in
+            let frame = element.frame
+            return element.exists && element.isEnabled && screen.contains(frame) && frame.width >= 44 && frame.height >= 44 &&
                 abs(frame.width - frame.height) <= max(frame.width, frame.height) * 0.25
-        }.sorted { a, b in a.frame.minY == b.frame.minY ? a.frame.minX < b.frame.minX : a.frame.minY < b.frame.minY }
+        }
     }
     @MainActor private func photoPickerEvidence(_ app: XCUIApplication) {
         // Only the freshly created synthetic simulator. Omit text-field values,
