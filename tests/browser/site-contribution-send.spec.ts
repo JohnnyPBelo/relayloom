@@ -12,6 +12,275 @@ test.afterAll(async () => {
   await host.close();
   expect(host.requests.some((p) => p.startsWith("/api/"))).toBe(false);
 });
+
+for (const mode of [
+  "recover",
+  "cancel-retained-reply",
+  "cancel-before-admission",
+  "cancel-queued",
+] as const)
+  test(`browser source held only in a private proposal queue ${mode} with both relays paused`, async ({
+    browser,
+  }) => {
+    const contexts = [await browser.newContext(), await browser.newContext()],
+      pages = [await contexts[0].newPage(), await contexts[1].newPage()],
+      [owner, sender] = pages;
+    try {
+      const a = await start(owner, "Source owner"),
+        b = await start(sender, "Source holder");
+      await link(owner, sender);
+      const site = await owner.evaluate(
+        async ({ payload, visitor }) => {
+          const f = (window as any).proposalFixture;
+          payload.site.pages[0].blocks[0].children![0].form!.contributors = [
+            visitor.id,
+          ];
+          const state = await f.app.call("site-command", {
+            action: "state",
+            address: "relayloom:site:" + f.p.identity.id + "/profile",
+          });
+          return (
+            await f.app.call("site-command", {
+              action: "publish",
+              name: "profile",
+              sequence: state.nextSequence,
+              operationId: crypto.randomUUID(),
+              expectedBase: state.base,
+              payload,
+              recipients: "public",
+              ttlMs: 3600000,
+            })
+          ).operation;
+        },
+        { payload: formPayload(), visitor: b },
+      );
+      await expect
+        .poll(() =>
+          sender.evaluate(() => (window as any).proposalFixture.p.ids()),
+        )
+        .toContain(site.bundleId);
+      const original = await sender.evaluate(
+        async (id) =>
+          (window as any).rl.canonical(
+            await (window as any).proposalFixture.p.getBundle(id),
+          ),
+        site.bundleId,
+      );
+      for (const page of pages)
+        await page.evaluate(() =>
+          (window as any).proposalFixture.app.call("settings", {
+            relay: false,
+          }),
+        );
+      await owner.evaluate(async (id) => {
+        const f = (window as any).proposalFixture;
+        await f.p.pin(id, false);
+        await f.p.changeQuota(1024);
+        await f.p.changeQuota(128 * 1024 * 1024);
+      }, site.bundleId);
+      expect(
+        await owner.evaluate(() => (window as any).proposalFixture.p.ids()),
+      ).not.toContain(site.bundleId);
+      const sent = await sender.evaluate(
+        async ({ source, owner }) => {
+          const f = (window as any).proposalFixture,
+            q = {
+              action: "submit",
+              sequence: 1,
+              operationId: crypto.randomUUID(),
+              snapshotId: source,
+              pageId: "entry",
+              formId: "form",
+              values: {
+                name: "PRIVATE_QUEUE_SOURCE_BROWSER",
+                count: 0,
+                open: false,
+              },
+              publicationScope: [owner.id, f.p.identity.id].sort(),
+              ttlMs: 180000,
+            };
+          f.request = q;
+          return f.app.call("contribution-command", q);
+        },
+        { source: site.bundleId, owner: a },
+      );
+      expect(sent.error).toBeUndefined();
+      await expect
+        .poll(
+          async () =>
+            (
+              await owner.evaluate(() =>
+                (window as any).proposalFixture.app.call(
+                  "contribution-command",
+                  { action: "inbox" },
+                ),
+              )
+            ).items[0]?.status,
+        )
+        .toBe("missing-source");
+      await sender.evaluate(async (id) => {
+        const f = (window as any).proposalFixture;
+        await f.p.pin(id, false);
+        await f.p.changeQuota(1024);
+        await f.p.changeQuota(128 * 1024 * 1024);
+        const value = await f.app.call("contribution-command", {
+          action: "resume",
+          sequence: 1,
+          operationId: f.request.operationId,
+        });
+        if (value.error) throw Error(value.error);
+      }, sent.operation.transport.bundleId);
+      expect(
+        await sender.evaluate(() => (window as any).proposalFixture.p.ids()),
+      ).not.toContain(site.bundleId);
+      if (mode === "cancel-retained-reply")
+        await sender.evaluate(() => {
+          const f = (window as any).proposalFixture,
+            original = f.mesh.profile.getOwnedSource.bind(f.mesh.profile);
+          let hold = true;
+          f.mesh.profile.getOwnedSource = async (id: string) => {
+            const value = await original(id);
+            if (hold && value) {
+              hold = false;
+              f.sourceLookupWaiting = true;
+              await new Promise<void>((resolve) => {
+                f.releaseSourceLookup = resolve;
+              });
+            }
+            return value;
+          };
+        });
+      if (mode === "cancel-before-admission")
+        await sender.evaluate((sourceId) => {
+          const f = (window as any).proposalFixture,
+            original = f.mesh.router.options.validate;
+          let hold = true;
+          f.mesh.router.options.validate = async (value: any) => {
+            await original(value);
+            if (
+              hold &&
+              value?.type === "bundle" &&
+              value.bundle.manifest.id === sourceId
+            ) {
+              hold = false;
+              f.sourceLookupWaiting = true;
+              await new Promise<void>((resolve) => {
+                f.releaseSourceLookup = resolve;
+              });
+            }
+          };
+        }, site.bundleId);
+      if (mode === "cancel-queued")
+        await sender.evaluate(() =>
+          (window as any).proposalFixture.app.call("settings", {
+            lowPower: true,
+          }),
+        );
+      const request = await owner.evaluate(
+        (id) =>
+          (window as any).proposalFixture.app.call("contribution-command", {
+            action: "obtain-source",
+            id,
+          }),
+        sent.operation.certificateId,
+      );
+      expect(request.snapshotId).toBe(site.bundleId);
+      expect(request.requested).toBe(true);
+      if (mode !== "recover") {
+        if (mode === "cancel-queued")
+          await expect
+            .poll(() =>
+              sender.evaluate(() =>
+                (window as any).proposalFixture.mesh.router.peers.some(
+                  (p: any) => p.queued > 0,
+                ),
+              ),
+            )
+            .toBe(true);
+        else
+          await expect
+            .poll(() =>
+              sender.evaluate(
+                () => (window as any).proposalFixture.sourceLookupWaiting,
+              ),
+            )
+            .toBe(true);
+        await sender.evaluate(async () => {
+          const f = (window as any).proposalFixture;
+          await f.app.call("contribution-command", {
+            action: "cancel",
+            sequence: 1,
+            operationId: f.request.operationId,
+          });
+          f.releaseSourceLookup?.();
+          await f.app.call("settings", { lowPower: false });
+        });
+        const marker = await sender.evaluate(() =>
+          (window as any).proposalFixture.app.call("publish", {
+            content: { type: "post", text: "LINK_LIVE_AFTER_SOURCE_CANCEL" },
+            recipients: "public",
+          }),
+        );
+        await expect
+          .poll(() =>
+            owner.evaluate(() => (window as any).proposalFixture.p.ids()),
+          )
+          .toContain(marker.id);
+        expect(
+          await owner.evaluate(() => (window as any).proposalFixture.p.ids()),
+        ).not.toContain(site.bundleId);
+        expect(
+          (
+            await owner.evaluate(() =>
+              (window as any).proposalFixture.app.call("contribution-command", {
+                action: "inbox",
+              }),
+            )
+          ).items[0].status,
+        ).toBe("missing-source");
+      } else {
+        await expect
+          .poll(
+            async () =>
+              (
+                await owner.evaluate(() =>
+                  (window as any).proposalFixture.app.call(
+                    "contribution-command",
+                    { action: "inbox" },
+                  ),
+                )
+              ).items[0]?.status,
+          )
+          .toBe("verified-candidate");
+        expect(
+          await owner.evaluate(
+            async (id) =>
+              (window as any).rl.canonical(
+                await (window as any).proposalFixture.p.getBundle(id),
+              ),
+            site.bundleId,
+          ),
+        ).toBe(original);
+        expect(
+          await sender.evaluate(() => (window as any).proposalFixture.p.ids()),
+        ).not.toContain(site.bundleId);
+      }
+    } finally {
+      for (const page of pages)
+        if (!page.isClosed())
+          await page
+            .evaluate(async () => {
+              const f = (window as any).proposalFixture;
+              if (f) {
+                f.releaseSourceLookup?.();
+                await f.mesh.close();
+                f.app.close();
+              }
+            })
+            .catch(() => {});
+      for (const c of contexts) await c.close();
+    }
+  });
 async function start(page: Page, name: string, profileName?: string) {
   await page.goto(host.url);
   return page.evaluate(
@@ -48,6 +317,10 @@ async function start(page: Page, name: string, profileName?: string) {
           if (op === "low-power") return mesh.setLowPower(body.value);
           if (op === "block") return mesh.setBlocked(body.id, body.value);
           if (op === "request") return mesh.request(body.id);
+          if (op === "contribution-source-request")
+            return { requested: await mesh.requestSource(body.id) };
+          if (op === "cancel-contribution-source")
+            return mesh.cancelOwnedSource(body.id, body.operationId);
           if (op === "cancel-owned-bundle")
             return mesh.router.cancelLocal(
               (v: any) =>
@@ -81,6 +354,7 @@ async function start(page: Page, name: string, profileName?: string) {
         setValue: (key: string, value: any) => p.setValue(key, value),
         ids: () => p.ids(),
         getBundle: (id: string) => app.bundleForTransport(id),
+        getOwnedSource: (id: string) => app.sourceForTransport(id),
         putBundle: (bundle: any) => app.ingest(bundle),
       };
       mesh = await r.BrowserMesh.start(profile);

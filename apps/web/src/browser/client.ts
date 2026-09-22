@@ -96,6 +96,7 @@ export async function browserAPI() {
     setValue: (key, value) => request("profile", "set-value", { key, value }),
     ids: () => request("profile", "ids"),
     getBundle: (id) => request("profile", "get-bundle", { id }),
+    getOwnedSource: (id) => request("profile", "contribution-source", { id }),
     putBundle: (bundle) => request("profile", "put-bundle", { bundle }),
   };
   const publishState = () =>
@@ -127,6 +128,10 @@ export async function browserAPI() {
     else if (operation === "low-power") await mesh.setLowPower(body.value);
     else if (operation === "block") await mesh.setBlocked(body.id, body.value);
     else if (operation === "request") await mesh.request(body.id);
+    else if (operation === "contribution-source-request")
+      return { requested: await mesh.requestSource(body.id) };
+    else if (operation === "cancel-contribution-source")
+      mesh.cancelOwnedSource(body.id, body.operationId);
     else if (operation === "cancel-owned-bundle") {
       if (typeof body.id !== "string" || !/^[a-f0-9]{64}$/.test(body.id))
         throw Error("Endereço inválido");

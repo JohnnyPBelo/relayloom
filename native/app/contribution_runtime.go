@@ -16,6 +16,11 @@ type contributionRuntime struct {
 	nextRetry int64
 	allowed   map[string]map[string]any
 	published map[string]int64
+	sources   map[string]contributionSourcePacket
+}
+type contributionSourcePacket struct {
+	packetID, operationID string
+	until, sent           int64
 }
 
 func (n *Node) contributionsLocked() (*contributionRuntime, error) {
@@ -26,7 +31,7 @@ func (n *Node) contributionsLocked() (*contributionRuntime, error) {
 		return n.contributionRuntime, nil
 	}
 	owner := n.identity
-	n.contributionRuntime = &contributionRuntime{node: n, owner: owner, catalog: sites.NewContributionCatalog(n.siteDatabaseLocked(owner), *owner), incoming: sites.NewContributionInbox(n.siteDatabaseLocked(owner), *owner), allowed: map[string]map[string]any{}, published: map[string]int64{}}
+	n.contributionRuntime = &contributionRuntime{node: n, owner: owner, catalog: sites.NewContributionCatalog(n.siteDatabaseLocked(owner), *owner), incoming: sites.NewContributionInbox(n.siteDatabaseLocked(owner), *owner), allowed: map[string]map[string]any{}, published: map[string]int64{}, sources: map[string]contributionSourcePacket{}}
 	return n.contributionRuntime, nil
 }
 func (r *contributionRuntime) ensure() error {
@@ -83,6 +88,12 @@ func (r *contributionRuntime) cancelPacket(id string) {
 	})
 }
 func (r *contributionRuntime) stop(op map[string]any) {
+	for id, source := range r.sources {
+		if source.operationID == text(op["operationId"]) {
+			r.node.Router.CancelLocalIDs([]string{source.packetID})
+			delete(r.sources, id)
+		}
+	}
 	if t, ok := op["transport"].(map[string]any); ok {
 		id := text(t["bundleId"])
 		delete(r.allowed, id)
@@ -103,6 +114,76 @@ func (r *contributionRuntime) close() {
 	}
 	r.allowed = map[string]map[string]any{}
 	r.published = map[string]int64{}
+	for _, source := range r.sources {
+		r.node.Router.CancelLocalIDs([]string{source.packetID})
+	}
+	r.sources = map[string]contributionSourcePacket{}
+}
+func (r *contributionRuntime) respondSource(id string) (bool, error) {
+	if err := r.ensure(); err != nil {
+		return false, err
+	}
+	now := time.Now().UnixMilli()
+	known := false
+	for _, op := range r.allowed {
+		target := op["target"].(map[string]any)
+		if target["snapshotId"] == id {
+			known = true
+			break
+		}
+	}
+	if !known {
+		return false, nil
+	}
+	for key, source := range r.sources {
+		if source.until <= now {
+			delete(r.sources, key)
+		}
+	}
+	// Catalogue order gives a stable originating operation across retries.
+	state, err := r.catalog.State()
+	if err != nil {
+		return false, err
+	}
+	for _, raw := range state["operations"].([]any) {
+		op := raw.(map[string]any)
+		target := op["target"].(map[string]any)
+		expires, _ := number(op["expires"])
+		meta, ok := op["transport"].(map[string]any)
+		if op["phase"] != "queued" || target["snapshotId"] != id || !ok || meta["copied"] != true || expires <= now {
+			continue
+		}
+		if _, ok := r.allowed[text(meta["bundleId"])]; !ok {
+			continue
+		}
+		if err = r.permit(op); err != nil {
+			return false, r.ensure()
+		}
+		bundle, err := r.catalog.QueuedSource(proposalHandle(op), r.policy)
+		if err != nil {
+			return false, r.ensure()
+		}
+		if bundle == nil {
+			return false, nil
+		}
+		if old, ok := r.sources[id]; ok {
+			if old.operationID == text(op["operationId"]) && now-old.sent < 30000 {
+				return true, nil
+			}
+			r.node.Router.CancelLocalIDs([]string{old.packetID})
+		}
+		ttl := min(int64(120000), min(expires, bundle.Manifest.Expires)-time.Now().UnixMilli())
+		if ttl < 1 {
+			return false, nil
+		}
+		packetID, err := r.node.Router.BroadcastUntil(map[string]any{"type": "bundle", "bundle": *bundle}, transport.Bulk, time.Duration(ttl)*time.Millisecond, false, min(expires, bundle.Manifest.Expires))
+		if err != nil {
+			return false, err
+		}
+		r.sources[id] = contributionSourcePacket{packetID, text(op["operationId"]), now + ttl, now}
+		return true, nil
+	}
+	return false, nil
 }
 func (r *contributionRuntime) canServe(bundle core.Bundle) bool {
 	op, ok := r.allowed[bundle.Manifest.ID]
@@ -245,6 +326,46 @@ func (r *contributionRuntime) command(body map[string]any) (any, error) {
 	}
 	if action == "inbox" && commandShape(body, []string{"action"}, "") {
 		return r.inbox()
+	}
+	if action == "obtain-source" && commandShape(body, []string{"action", "id"}, "") && core.ValidAddress(text(body["id"])) {
+		found, err := r.incoming.Read(text(body["id"]), r.policy)
+		if err != nil {
+			return nil, err
+		}
+		if found == nil {
+			return nil, errors.New("candidata indisponível")
+		}
+		entry := found["entry"].(map[string]any)
+		if entry["phase"] == "expired" {
+			return nil, errors.New("candidata expirada")
+		}
+		if err = r.completeSource(entry, nil); err != nil {
+			return nil, err
+		}
+		found, err = r.incoming.Read(text(body["id"]), r.policy)
+		if err != nil {
+			return nil, err
+		}
+		if found == nil {
+			return nil, errors.New("candidata indisponível")
+		}
+		entry = found["entry"].(map[string]any)
+		if entry["phase"] == "expired" {
+			return nil, errors.New("candidata expirada")
+		}
+		id := text(entry["target"].(map[string]any)["snapshotId"])
+		if found["proposal"] != nil {
+			return map[string]any{"status": "available", "snapshotId": id, "requested": false}, nil
+		}
+		now := time.Now().UnixMilli()
+		requested := now-r.node.requests[id] >= 5000
+		if requested {
+			r.node.rememberRequestLocked(id, now)
+			if _, err = r.node.Router.Broadcast(map[string]any{"type": "request", "ids": []string{id}}, transport.Normal, 2*time.Minute, false); err != nil {
+				return nil, err
+			}
+		}
+		return map[string]any{"status": "waiting", "snapshotId": id, "requested": requested}, nil
 	}
 	if action == "submit" && commandShape(body, []string{"action", "sequence", "operationId", "snapshotId", "pageId", "formId", "values", "publicationScope", "ttlMs"}, "") {
 		input := map[string]any{}

@@ -31,6 +31,8 @@ interface Context {
   ): { key: string; update(value: any): any }[];
   publish(bundle: Bundle): void;
   cancel(id: string): Promise<void>;
+  cancelSource?(id: string, operationId: string): Promise<void>;
+  requestSource?(id: string): Promise<boolean>;
 }
 export class BrowserContributionRuntime {
   private catalog: BrowserContributionCatalog;
@@ -56,6 +58,10 @@ export class BrowserContributionRuntime {
   }
   close() {
     this.closed = true;
+    for (const op of this.allowed.values())
+      void this.context
+        .cancelSource?.(op.target.snapshotId, op.operationId)
+        .catch(() => {});
     this.allowed.clear();
     this.publishedAt.clear();
   }
@@ -85,6 +91,8 @@ export class BrowserContributionRuntime {
     if (op.transport) {
       this.allowed.delete(op.transport.bundleId);
       this.publishedAt.delete(op.transport.bundleId);
+      await this.context.cancelSource?.(op.target.snapshotId, op.operationId);
+      this.ensure();
       await this.context.cancel(op.transport.bundleId);
       this.ensure();
     }
@@ -118,6 +126,37 @@ export class BrowserContributionRuntime {
     } catch {
       return false;
     }
+  }
+  async sourceForRequest(id: string) {
+    this.ensure();
+    for (const op of [...this.allowed.values()]) {
+      if (
+        op.target.snapshotId !== id ||
+        op.phase !== "queued" ||
+        !op.transport?.copied ||
+        op.expires <= Date.now()
+      )
+        continue;
+      let bundle: Bundle;
+      try {
+        bundle = await this.catalog.queuedSource(op, this.policy);
+      } catch {
+        this.ensure();
+        return null;
+      }
+      this.ensure();
+      if (
+        this.allowed.get(op.transport.bundleId) !== op ||
+        op.expires <= Date.now()
+      )
+        continue;
+      return {
+        bundle,
+        operationId: op.operationId,
+        expires: Math.min(op.expires, bundle.manifest.expires),
+      };
+    }
+    return null;
   }
   async revokeInvalid() {
     for (const op of [...this.allowed.values()]) {
@@ -253,6 +292,26 @@ export class BrowserContributionRuntime {
         });
       if (command.action === "state") return this.catalog.state();
       if (command.action === "inbox") return this.inbox();
+      if (command.action === "obtain-source") {
+        let found = await this.incoming.read(command.id, this.policy);
+        this.ensure();
+        if (!found || found.entry.phase === "expired")
+          throw Error("Candidata indisponível ou expirada");
+        await this.completeSource(found.entry);
+        this.ensure();
+        found = await this.incoming.read(command.id, this.policy);
+        this.ensure();
+        if (!found || found.entry.phase === "expired")
+          throw Error("Candidata indisponível ou expirada");
+        const snapshotId = found.entry.target.snapshotId;
+        if (found.proposal)
+          return { status: "available", snapshotId, requested: false };
+        if (!this.context.requestSource)
+          throw Error("Recuperação de origem indisponível");
+        const requested = await this.context.requestSource(snapshotId);
+        this.ensure();
+        return { status: "waiting", snapshotId, requested };
+      }
       if (command.action === "submit") {
         const { action: _action, ...request } = command;
         const op = await this.catalog.prepare(

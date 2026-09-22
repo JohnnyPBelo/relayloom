@@ -570,18 +570,32 @@ func (n *Node) receiveLocked(delivery transport.Delivery) error {
 			}
 		}
 	case "request":
-		if !n.config.Relay {
-			return nil
-		}
 		ids, err := stringsList(m["ids"], 64, true)
 		if err != nil {
 			return err
+		}
+		supported := map[string]bool{}
+		if n.identity != nil {
+			r, e := n.contributionsLocked()
+			if e != nil {
+				return e
+			}
+			for _, id := range ids[:min(8, len(ids))] {
+				served, e := r.respondSource(id)
+				if e != nil {
+					return e
+				}
+				supported[id] = served
+			}
+		}
+		if !n.config.Relay {
+			return nil
 		}
 		if err := n.reconcileGroupSendsLocked(); err != nil {
 			return err
 		}
 		for _, id := range ids[:min(8, len(ids))] {
-			if n.Store.Has(id) && now-n.requests["serve:"+id] > 1000 {
+			if !supported[id] && n.Store.Has(id) && now-n.requests["serve:"+id] > 1000 {
 				n.rememberRequestLocked("serve:"+id, now)
 				b, err := n.Store.GetWithTouch(id, false)
 				if err != nil {

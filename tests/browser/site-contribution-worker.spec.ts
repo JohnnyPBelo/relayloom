@@ -264,10 +264,36 @@ test("production workers recover queued proposals offline and send through the U
       publicationScope: [a.id, b.id].sort(),
       ttlMs: 180000,
     };
+    expect(
+      await rpc(
+        sender,
+        "contribution-source",
+        { id: site.bundleId },
+        "profile",
+      ),
+    ).toBeNull();
     const sent = await rpc(sender, "contribution-command", request);
     expect(sent.error).toBeUndefined();
     expect(sent.operation.phase).toBe("queued");
     expect(sent.operation.transport.copied).toBe(true);
+    const sourceLease = await rpc(
+      sender,
+      "contribution-source",
+      { id: site.bundleId },
+      "profile",
+    );
+    expect(sourceLease.operationId).toBe(request.operationId);
+    expect(sourceLease.expires).toBe(sent.operation.expires);
+    expect(sourceLease.bundle.manifest.id).toBe(site.bundleId);
+    expect(sourceLease.bundle.manifest.author.id).toBe(a.id);
+    await expect(
+      rpc(
+        sender,
+        "contribution-source",
+        { id: site.bundleId, operationId: request.operationId },
+        "profile",
+      ),
+    ).rejects.toThrow();
     const original = await rpc(
       sender,
       "get-bundle",
@@ -343,6 +369,19 @@ test("production workers recover queued proposals offline and send through the U
     expect(await rpc(owner, "ids", undefined, "profile")).not.toContain(
       cancelled.transport.bundleId,
     );
+    await rpc(sender, "contribution-command", {
+      action: "cancel",
+      sequence: 1,
+      operationId: request.operationId,
+    });
+    expect(
+      await rpc(
+        sender,
+        "contribution-source",
+        { id: site.bundleId },
+        "profile",
+      ),
+    ).toBeNull();
     for (const page of pages) {
       expect(await page.evaluate(() => (window as any).formSecretLeak)).toBe(
         false,

@@ -322,6 +322,14 @@ export class BrowserApplication {
       publish: (bundle) => this.network.publish(bundle, "normal"),
       cancel: (id) =>
         this.network.command("cancel-owned-bundle", { id }).then(() => {}),
+      cancelSource: (id, operationId) =>
+        this.network
+          .command("cancel-contribution-source", { id, operationId })
+          .then(() => {}),
+      requestSource: (id) =>
+        this.network
+          .command("contribution-source-request", { id })
+          .then((value) => value?.requested === true),
     });
     clearInterval(this.#timer);
     this.#timer = setInterval(() => {
@@ -620,6 +628,14 @@ export class BrowserApplication {
     }
     this.guard(generation);
     return bundle;
+  }
+  async sourceForTransport(id: string) {
+    if (!isAddress(id)) throw Error("Endereço inválido");
+    const generation = this.#generation;
+    this.guard(generation);
+    const result = await this.#contributions?.sourceForRequest(id);
+    this.guard(generation);
+    return result ?? null;
   }
   async ingest(value: Bundle): Promise<string> {
     const generation = this.#generation,

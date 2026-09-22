@@ -15,7 +15,20 @@ export interface MeshProfile {
   ids(): Promise<string[]>;
   getBundle(id: string): Promise<Bundle>;
   putBundle(bundle: Bundle): Promise<string>;
+  getOwnedSource?(
+    id: string,
+  ): Promise<{ bundle: Bundle; operationId: string; expires: number } | null>;
 }
+type SourceJob = {
+  valid: boolean;
+  operationId?: string;
+  packetId?: string;
+  expires: number;
+  sent: number;
+  pending: boolean;
+  author?: string;
+  readers?: string[];
+};
 import { BrowserRouter, RelayRevokedError, type BrowserRoute } from "./router";
 import type { Priority } from "./packet";
 
@@ -39,6 +52,7 @@ export class BrowserMesh {
   #cursor = 0;
   #marks = new Map<string, number>();
   #routes = new Map<string, BrowserRoute>();
+  #sources = new Map<string, SourceJob>();
   #timer: ReturnType<typeof setInterval>;
   lastError = "";
   private constructor(
@@ -198,6 +212,14 @@ export class BrowserMesh {
     if (next.length > 1024) throw new Error("Limite de bloqueios");
     if (enabled) {
       this.#settings.blocked = next;
+      for (const [sourceId, job] of this.#sources)
+        if (
+          job.pending ||
+          job.author === id ||
+          (job.author === this.profile.identity?.id &&
+            job.readers?.includes(id))
+        )
+          this.dropSource(sourceId, job);
       this.router.cancel((payload) => {
         const p = payload as Wire;
         return (
@@ -258,6 +280,10 @@ export class BrowserMesh {
         this.#routes.delete(this.#routes.keys().next().value!);
       return;
     }
+    const supported = new Set<string>();
+    if (wire.type === "request" && this.profile.getOwnedSource)
+      for (const id of wire.ids.slice(0, 8))
+        if (await this.respondSource(id)) supported.add(id);
     if (!this.#settings.relay) return;
     if (wire.type === "inventory") {
       const known = new Set(await this.profile.ids());
@@ -269,6 +295,7 @@ export class BrowserMesh {
         await this.relayResponse({ type: "request", ids: missing }, "normal");
     } else {
       for (const id of wire.ids.slice(0, 8)) {
+        if (supported.has(id)) continue;
         if (!this.mark("serve:" + id, 1000)) continue;
         let bundle: Bundle;
         try {
@@ -300,6 +327,121 @@ export class BrowserMesh {
     if (!idValid(id)) throw new Error("Endereço inválido");
     if (this.mark("explicit:" + id, 1500))
       await this.router.broadcast({ type: "request", ids: [id] });
+  }
+  async requestSource(id: string): Promise<boolean> {
+    if (!idValid(id) || this.profile.locked || this.#stopped)
+      throw Error("Pedido de origem inválido");
+    if (!this.mark("source-request:" + id, 5000)) return false;
+    await this.router.broadcast({ type: "request", ids: [id] }, "normal");
+    return true;
+  }
+  cancelOwnedSource(id: string, operationId: string) {
+    if (
+      !idValid(id) ||
+      typeof operationId !== "string" ||
+      !/^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/.test(
+        operationId,
+      )
+    )
+      throw Error("Apoio de origem inválido");
+    const job = this.#sources.get(id);
+    if (job && (!job.operationId || job.operationId === operationId))
+      this.dropSource(id, job);
+  }
+  private dropSource(id: string, job: SourceJob) {
+    job.valid = false;
+    if (job.packetId) this.router.cancelLocalIds(new Set([job.packetId]));
+    if (this.#sources.get(id) === job) this.#sources.delete(id);
+  }
+  private async respondSource(id: string): Promise<boolean> {
+    const get = this.profile.getOwnedSource;
+    if (!get || this.#stopped || this.profile.locked) return false;
+    const now = Date.now();
+    const identityId = this.profile.identity?.id;
+    for (const [key, value] of this.#sources)
+      if (!value.pending && value.expires <= now) this.dropSource(key, value);
+    const prior = this.#sources.get(id);
+    if (prior?.valid && (prior.pending || now - prior.sent < 30000))
+      return true;
+    if (prior) this.dropSource(id, prior);
+    if (this.#sources.size >= 64) return false;
+    const job: SourceJob = {
+      valid: true,
+      expires: now + 120000,
+      sent: now,
+      pending: true,
+    };
+    this.#sources.set(id, job);
+    const valid = () =>
+      job.valid &&
+      !this.#stopped &&
+      !this.profile.locked &&
+      this.profile.identity?.id === identityId &&
+      Date.now() < job.expires;
+    try {
+      const lease = await get.call(this.profile, id);
+      if (!lease || !valid()) {
+        this.dropSource(id, job);
+        return false;
+      }
+      const bundle = await verifiedBundle(lease.bundle);
+      if (
+        bundle.manifest.kind !== "site" ||
+        bundle.manifest.id !== id ||
+        !Number.isSafeInteger(lease.expires) ||
+        lease.expires > bundle.manifest.expires ||
+        typeof lease.operationId !== "string" ||
+        !/^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/.test(
+          lease.operationId,
+        )
+      )
+        throw Error("Origem de apoio inválida");
+      job.operationId = lease.operationId;
+      job.author = bundle.manifest.author.id;
+      job.readers = bundle.manifest.keys.map((k) => k.reader);
+      job.expires = Math.min(job.expires, lease.expires);
+      const expected = canonical(bundle);
+      const permission = {
+        expires: job.expires,
+        valid,
+        check: async () => {
+          if (!valid()) return false;
+          try {
+            const current = await get.call(this.profile, id);
+            return (
+              valid() &&
+              !!current &&
+              current.operationId === job.operationId &&
+              current.expires >= job.expires &&
+              canonical(current.bundle) === expected
+            );
+          } catch {
+            return false;
+          }
+        },
+      };
+      if (!valid()) {
+        this.dropSource(id, job);
+        return false;
+      }
+      const packetId = await this.router.broadcast(
+        { type: "bundle", bundle },
+        "bulk",
+        Math.max(1, job.expires - Date.now()),
+        false,
+        permission,
+      );
+      job.packetId = packetId;
+      if (!valid()) this.dropSource(id, job);
+      return valid();
+    } catch (error) {
+      const revoked = !valid();
+      this.dropSource(id, job);
+      if (!revoked && !this.profile.locked && !this.#stopped) throw error;
+      return false;
+    } finally {
+      job.pending = false;
+    }
   }
   /** Publish an already author-signed object after durable admission; this is not the product outbox API. */
   async announce(
@@ -361,6 +503,7 @@ export class BrowserMesh {
   close(): Promise<void> {
     if (this.#closing) return this.#closing;
     this.#stopped = true;
+    for (const [id, job] of this.#sources) this.dropSource(id, job);
     clearInterval(this.#timer);
     this.router.close();
     this.#marks.clear();

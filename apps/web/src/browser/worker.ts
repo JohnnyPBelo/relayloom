@@ -1,6 +1,7 @@
 /// <reference lib="webworker" />
 import { BrowserProfile } from "../../../../packages/browser/src/profile";
 import { BrowserApplication } from "../../../../packages/browser/src/application";
+import { exactShape } from "../../../../packages/core/src/protocol";
 const worker = self as unknown as DedicatedWorkerGlobalScope;
 const profileName = "relayloom-web-v1";
 let app: BrowserApplication | undefined;
@@ -82,7 +83,11 @@ worker.onmessage = async (event: MessageEvent) => {
       else if (m.operation === "ids") value = await app.profile.ids();
       else if (m.operation === "get-bundle")
         value = await app.bundleForTransport(m.body.id);
-      else if (m.operation === "put-bundle")
+      else if (m.operation === "contribution-source") {
+        if (!exactShape(m.body, ["id"]))
+          throw Error("Pedido de origem inválido");
+        value = await app.sourceForTransport(m.body.id);
+      } else if (m.operation === "put-bundle")
         value = await app.ingest(m.body.bundle);
       else throw new Error("Operação de transporte inválida");
     } else throw new Error("Operação inválida");

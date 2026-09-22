@@ -569,6 +569,28 @@ export class LoomNode extends EventEmitter {
             value?.type === "bundle" && value.bundle?.manifest?.id === id,
         );
       },
+      publishSource: (bundle, ttlMs, deadline) =>
+        this.router.broadcast(
+          { type: "bundle", bundle },
+          "bulk",
+          ttlMs,
+          false,
+          deadline,
+        ),
+      cancelPackets: (ids) => {
+        this.router.cancelLocalIds(ids);
+      },
+      requestSource: (id) => {
+        if (Date.now() - (this.requests.get(id) ?? 0) < 5000) return false;
+        this.markRequest(id);
+        this.router.broadcast(
+          { type: "request", ids: [id] },
+          "normal",
+          120000,
+          false,
+        );
+        return true;
+      },
     });
     return this.contributionRuntime;
   }
@@ -2006,11 +2028,16 @@ export class LoomNode extends EventEmitter {
           );
         }
       } else {
+        const supported = new Set<string>();
+        if (this.identity)
+          for (const id of payload.ids.slice(0, 8))
+            if (this.contributions().respondSource(id)) supported.add(id);
         if (!this.config.relay) return;
         this.reconcileGroupSends();
         for (const id of payload.ids.slice(0, 8))
           if (
             this.store.has(id) &&
+            !supported.has(id) &&
             Date.now() - (this.requests.get("serve:" + id) ?? 0) > 1000
           ) {
             this.markRequest("serve:" + id);

@@ -29,12 +29,19 @@ interface Context {
   withdrawn(id: string, author: string): boolean;
   publish(bundle: Bundle): void;
   cancel(id: string): void;
+  publishSource(bundle: Bundle, ttlMs: number, deadline: number): string;
+  cancelPackets(ids: ReadonlySet<string>): void;
+  requestSource(id: string): boolean;
 }
 export class ContributionRuntime {
   private nextRetry = 0;
   private allowed = new Map<string, ContributionOperation>();
   private sending = false;
   private publishedAt = new Map<string, number>();
+  private sourcePackets = new Map<
+    string,
+    { packetId: string; operationId: string; until: number; sent: number }
+  >();
   constructor(private readonly context: Context) {}
   private policy = (snapshotId: string, ownerId: string) => {
     this.context.ensure();
@@ -61,6 +68,11 @@ export class ContributionRuntime {
     }
   }
   private stop(op: ContributionOperation) {
+    for (const [id, sent] of this.sourcePackets)
+      if (sent.operationId === op.operationId) {
+        this.context.cancelPackets(new Set([sent.packetId]));
+        this.sourcePackets.delete(id);
+      }
     if (op.transport) {
       this.allowed.delete(op.transport.bundleId);
       this.publishedAt.delete(op.transport.bundleId);
@@ -125,6 +137,67 @@ export class ContributionRuntime {
     for (const id of this.allowed.keys()) this.context.cancel(id);
     this.allowed.clear();
     this.publishedAt.clear();
+    this.context.cancelPackets(
+      new Set([...this.sourcePackets.values()].map((s) => s.packetId)),
+    );
+    this.sourcePackets.clear();
+  }
+  /** No general private-store lookup: only the original source of an active,
+   * durably copied outgoing proposal can support that proposal's delivery. */
+  sourceForRequest(id: string) {
+    this.context.ensure();
+    for (const op of this.allowed.values()) {
+      if (
+        op.target.snapshotId !== id ||
+        op.phase !== "queued" ||
+        !op.transport?.copied ||
+        op.expires <= Date.now()
+      )
+        continue;
+      let bundle: Bundle;
+      try {
+        this.permit(op);
+        bundle = this.context.catalog.queuedSource(op, this.policy);
+      } catch {
+        this.context.ensure();
+        return null;
+      }
+      return {
+        bundle,
+        operationId: op.operationId,
+        until: Math.min(op.expires, bundle.manifest.expires),
+      };
+    }
+    return null;
+  }
+  respondSource(id: string): boolean {
+    const now = Date.now();
+    for (const [key, p] of this.sourcePackets)
+      if (p.until <= now) this.sourcePackets.delete(key);
+    const source = this.sourceForRequest(id);
+    if (!source) return false;
+    const previous = this.sourcePackets.get(id);
+    if (
+      previous &&
+      previous.operationId === source.operationId &&
+      now - previous.sent < 30000
+    )
+      return true;
+    if (previous) this.context.cancelPackets(new Set([previous.packetId]));
+    const ttl = Math.min(120000, source.until - Date.now());
+    if (ttl < 1) return false;
+    const packetId = this.context.publishSource(
+      source.bundle,
+      ttl,
+      source.until,
+    );
+    this.sourcePackets.set(id, {
+      packetId,
+      operationId: source.operationId,
+      until: now + ttl,
+      sent: now,
+    });
+    return true;
   }
   tick() {
     if (this.sending || Date.now() < this.nextRetry) return;
@@ -157,6 +230,26 @@ export class ContributionRuntime {
       return readContributionForm(value, this.context);
     if (value.action === "state") return this.context.catalog.state();
     if (value.action === "inbox") return this.inbox();
+    if (value.action === "obtain-source") {
+      let found = this.context.incoming.read(value.id, this.policy);
+      if (!found || found.entry.phase === "expired")
+        throw Error("Candidata indisponível ou expirada");
+      this.completeSource(found.entry);
+      found = this.context.incoming.read(value.id, this.policy);
+      if (!found || found.entry.phase === "expired")
+        throw Error("Candidata indisponível ou expirada");
+      if (found.proposal)
+        return {
+          status: "available",
+          snapshotId: found.entry.target.snapshotId,
+          requested: false,
+        };
+      return {
+        status: "waiting",
+        snapshotId: found.entry.target.snapshotId,
+        requested: this.context.requestSource(found.entry.target.snapshotId),
+      };
+    }
     if (value.action === "submit") {
       const { action: _action, ...raw } = value,
         request = operations.request(

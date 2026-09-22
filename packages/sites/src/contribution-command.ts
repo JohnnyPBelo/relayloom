@@ -6,6 +6,13 @@ import type { ContributionCreationRequest } from "./contribution-operations";
 export function contributionCommandShape(value: any) {
   if (value?.action === "form") return parseContributionFormLookup(value);
   if (
+    value?.action === "obtain-source" &&
+    exactShape(value, ["action", "id"]) &&
+    typeof value.id === "string" &&
+    /^[a-f0-9]{64}$/.test(value.id)
+  )
+    return { action: "obtain-source" as const, id: value.id as string };
+  if (
     ["state", "inbox"].includes(value?.action) &&
     exactShape(value, ["action"])
   )
