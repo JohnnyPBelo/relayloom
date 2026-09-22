@@ -1,0 +1,311 @@
+package sites
+
+import (
+	"errors"
+	"github.com/JohnnyPBelo/relayloom/native/core"
+)
+
+const ContributionInboxEntries = 256
+const ContributionInboxPending = 64
+const ContributionInboxPerContributor = 32
+const ContributionInboxConflicts = 4
+const ContributionInboxRecordBytes = 1024 * 1024
+const ContributionInboxProofBytes = 6*1024*1024 + 16384
+const ContributionInboxTotalBytes = 32 * 1024 * 1024
+const ContributionInboxRetentionMS int64 = 30 * 86400000
+const contributionInboxDomain = "relayloom/contribution-inbox/1"
+
+func inboxError() error               { return errors.New("inbox de propostas inválida") }
+func inboxRetain(expires int64) int64 { return min(MaxSequence, expires+ContributionInboxRetentionMS) }
+func inboxDescriptor(value any) (map[string]any, error) {
+	p, err := object(value, "bundleId", "envelopeHash", "digest", "bytes")
+	if err != nil {
+		return nil, inboxError()
+	}
+	n, err := creationNumber(p["bytes"])
+	if err != nil || n > ContributionInboxProofBytes {
+		return nil, inboxError()
+	}
+	for _, k := range []string{"bundleId", "envelopeHash", "digest"} {
+		if !core.ValidAddress(docTextValue(p[k])) {
+			return nil, inboxError()
+		}
+	}
+	return p, nil
+}
+
+// Local signing-owned evidence, never peer authority or owner approval.
+func ValidateContributionInbox(value any, owner string) (map[string]any, error) {
+	r, err := object(value, "domain", "ownerId", "revision", "entries")
+	if err != nil || !core.ValidAddress(owner) || r["domain"] != contributionInboxDomain || r["ownerId"] != owner {
+		return nil, inboxError()
+	}
+	if _, err = contributionClock(r["revision"]); err != nil {
+		return nil, inboxError()
+	}
+	entries, ok := r["entries"].([]any)
+	if !ok || len(entries) > ContributionInboxEntries {
+		return nil, inboxError()
+	}
+	seen, operations := map[string]bool{}, map[string]bool{}
+	authors := map[string]int{}
+	pending := 0
+	var total int64
+	for _, raw := range entries {
+		e, err := object(raw, "id", "contributorId", "operationId", "target", "created", "expires", "observedAt", "retainUntil", "phase", "verifiedAt", "expiredAt", "proof", "conflicts", "conflictOverflow")
+		if err != nil {
+			return nil, inboxError()
+		}
+		id, author, operation := docTextValue(e["id"]), docTextValue(e["contributorId"]), docTextValue(e["operationId"])
+		key := author + ":" + operation
+		if !core.ValidAddress(id) || !core.ValidAddress(author) || !contributionOperationPattern.MatchString(operation) || seen[id] || operations[key] {
+			return nil, inboxError()
+		}
+		seen[id] = true
+		operations[key] = true
+		target, err := contributionTarget(e["target"])
+		if err != nil {
+			return nil, err
+		}
+		recipient, _, err := ParseAddress(docTextValue(target["site"]))
+		if err != nil || recipient != owner {
+			return nil, inboxError()
+		}
+		created, e1 := contributionClock(e["created"])
+		expires, e2 := contributionClock(e["expires"])
+		observed, e3 := contributionClock(e["observedAt"])
+		if e1 != nil || e2 != nil || e3 != nil || expires <= created || expires-created > ContributionLifetimeMS || observed >= expires || created-observed > ContributionClockSkewMS {
+			return nil, inboxError()
+		}
+		phase := docTextValue(e["phase"])
+		if !docContains([]string{"missing-source", "verified-candidate", "expired"}, phase) {
+			return nil, inboxError()
+		}
+		if e["verifiedAt"] != nil {
+			verified, err := contributionClock(e["verifiedAt"])
+			if err != nil || verified < observed || verified >= expires {
+				return nil, inboxError()
+			}
+		}
+		if phase == "missing-source" && e["verifiedAt"] != nil || phase == "verified-candidate" && e["verifiedAt"] == nil {
+			return nil, inboxError()
+		}
+		if phase == "expired" {
+			expired, err := contributionClock(e["expiredAt"])
+			if err != nil || expired < expires || e["proof"] != nil {
+				return nil, inboxError()
+			}
+		} else {
+			if e["expiredAt"] != nil {
+				return nil, inboxError()
+			}
+			p, err := inboxDescriptor(e["proof"])
+			if err != nil {
+				return nil, err
+			}
+			n, _ := creationNumber(p["bytes"])
+			total += n
+			pending++
+			authors[author]++
+		}
+		conflicts, ok := e["conflicts"].([]any)
+		overflow, boolean := e["conflictOverflow"].(bool)
+		if !ok || len(conflicts) > ContributionInboxConflicts || !boolean || overflow && len(conflicts) != ContributionInboxConflicts {
+			return nil, inboxError()
+		}
+		maximum := expires
+		for _, raw := range conflicts {
+			c, err := object(raw, "id", "expires")
+			if err != nil {
+				return nil, err
+			}
+			id := docTextValue(c["id"])
+			expiry, err := contributionClock(c["expires"])
+			if err != nil || !core.ValidAddress(id) || seen[id] {
+				return nil, inboxError()
+			}
+			seen[id] = true
+			maximum = max(maximum, expiry)
+		}
+		retain, err := contributionClock(e["retainUntil"])
+		if err != nil || retain < inboxRetain(maximum) || !overflow && retain != inboxRetain(maximum) {
+			return nil, inboxError()
+		}
+	}
+	if pending > ContributionInboxPending || total > ContributionInboxTotalBytes {
+		return nil, inboxError()
+	}
+	for _, count := range authors {
+		if count > ContributionInboxPerContributor {
+			return nil, inboxError()
+		}
+	}
+	return creationClone(r, ContributionInboxRecordBytes)
+}
+func InitialContributionInbox(owner string) (map[string]any, error) {
+	return ValidateContributionInbox(map[string]any{"domain": contributionInboxDomain, "ownerId": owner, "revision": int64(0), "entries": []any{}}, owner)
+}
+func advanceInbox(r map[string]any) (map[string]any, error) {
+	revision, err := contributionClock(r["revision"])
+	if err != nil || revision >= MaxSequence {
+		return nil, inboxError()
+	}
+	r["revision"] = revision + 1
+	return ValidateContributionInbox(r, docTextValue(r["ownerId"]))
+}
+func inboxEntry(r map[string]any, id string) map[string]any {
+	for _, raw := range r["entries"].([]any) {
+		e := raw.(map[string]any)
+		if e["id"] == id {
+			return e
+		}
+	}
+	return nil
+}
+func CheckInboxCertificate(entry map[string]any, certificate any, owner string) (map[string]any, error) {
+	p, err := VerifyContribution(certificate)
+	if err != nil {
+		return nil, err
+	}
+	b := p["body"].(map[string]any)
+	target := b["target"].(map[string]any)
+	recipient, _, _ := ParseAddress(docTextValue(target["site"]))
+	author := b["contributor"].(map[string]any)
+	if recipient != owner || entry["id"] != p["id"] || entry["contributorId"] != author["id"] || entry["operationId"] != b["operationId"] || !creationEqual(entry["created"], b["created"]) || !creationEqual(entry["expires"], b["expires"]) || !creationEqual(entry["target"], target) {
+		return nil, inboxError()
+	}
+	return p, nil
+}
+func ObserveContributionInbox(value any, owner string, certificate any, proof any, now int64) (map[string]any, map[string]any, string, error) {
+	r, err := ValidateContributionInbox(value, owner)
+	if err != nil {
+		return nil, nil, "", err
+	}
+	p, err := VerifyContribution(certificate)
+	if err != nil {
+		return nil, nil, "", err
+	}
+	descriptor, err := inboxDescriptor(proof)
+	if err != nil {
+		return nil, nil, "", err
+	}
+	b := p["body"].(map[string]any)
+	target := b["target"].(map[string]any)
+	recipient, _, _ := ParseAddress(docTextValue(target["site"]))
+	author := b["contributor"].(map[string]any)
+	created, _ := contributionClock(b["created"])
+	expires, _ := contributionClock(b["expires"])
+	if now < 0 || now > MaxSequence || expires <= now || created-now > ContributionClockSkewMS || recipient != owner {
+		return nil, nil, "", inboxError()
+	}
+	for _, raw := range r["entries"].([]any) {
+		e := raw.(map[string]any)
+		if e["contributorId"] != author["id"] || e["operationId"] != b["operationId"] {
+			continue
+		}
+		if e["id"] == p["id"] {
+			if _, err = CheckInboxCertificate(e, p, owner); err != nil {
+				return nil, nil, "", err
+			}
+			return r, e, "duplicate", nil
+		}
+		conflicts := e["conflicts"].([]any)
+		for _, raw := range conflicts {
+			if raw.(map[string]any)["id"] == p["id"] {
+				return r, e, "conflict", nil
+			}
+		}
+		retained, _ := contributionClock(e["retainUntil"])
+		if e["conflictOverflow"] == true && inboxRetain(expires) <= retained {
+			return r, e, "conflict", nil
+		}
+		if len(conflicts) < ContributionInboxConflicts {
+			e["conflicts"] = append(conflicts, map[string]any{"id": p["id"], "expires": expires})
+		} else {
+			e["conflictOverflow"] = true
+		}
+		e["retainUntil"] = max(retained, inboxRetain(expires))
+		id := docTextValue(e["id"])
+		r, err = advanceInbox(r)
+		if err != nil {
+			return nil, nil, "", err
+		}
+		return r, inboxEntry(r, id), "conflict", nil
+	}
+	e := map[string]any{"id": p["id"], "contributorId": author["id"], "operationId": b["operationId"], "target": target, "created": created, "expires": expires, "observedAt": now, "retainUntil": inboxRetain(expires), "phase": "missing-source", "verifiedAt": nil, "expiredAt": nil, "proof": descriptor, "conflicts": []any{}, "conflictOverflow": false}
+	r["entries"] = append(r["entries"].([]any), e)
+	r, err = advanceInbox(r)
+	if err != nil {
+		return nil, nil, "", err
+	}
+	return r, inboxEntry(r, docTextValue(p["id"])), "new", nil
+}
+func VerifyContributionInboxSource(value any, owner, id string, proof any, now int64) (map[string]any, map[string]any, error) {
+	r, err := ValidateContributionInbox(value, owner)
+	if err != nil {
+		return nil, nil, err
+	}
+	p, err := inboxDescriptor(proof)
+	if err != nil {
+		return nil, nil, err
+	}
+	e := inboxEntry(r, id)
+	if e == nil || e["proof"] == nil || e["phase"] == "expired" {
+		return nil, nil, inboxError()
+	}
+	observed, _ := contributionClock(e["observedAt"])
+	expires, _ := contributionClock(e["expires"])
+	if now < observed || now >= expires || now < 0 || now > MaxSequence {
+		return nil, nil, inboxError()
+	}
+	prior := e["proof"].(map[string]any)
+	if prior["bundleId"] != p["bundleId"] || prior["envelopeHash"] != p["envelopeHash"] {
+		return nil, nil, inboxError()
+	}
+	if e["phase"] == "verified-candidate" {
+		if !creationEqual(prior, p) {
+			return nil, nil, inboxError()
+		}
+		return r, e, nil
+	}
+	e["phase"] = "verified-candidate"
+	e["verifiedAt"] = now
+	e["proof"] = p
+	r, err = advanceInbox(r)
+	if err != nil {
+		return nil, nil, err
+	}
+	return r, inboxEntry(r, id), nil
+}
+func ExpireContributionInbox(value any, owner string, now int64) (map[string]any, error) {
+	r, err := ValidateContributionInbox(value, owner)
+	if err != nil {
+		return nil, err
+	}
+	if now < 0 || now > MaxSequence {
+		return nil, inboxError()
+	}
+	changed := false
+	entries := []any{}
+	for _, raw := range r["entries"].([]any) {
+		e := raw.(map[string]any)
+		expires, _ := contributionClock(e["expires"])
+		retained, _ := contributionClock(e["retainUntil"])
+		if e["phase"] != "expired" && expires <= now {
+			e["phase"] = "expired"
+			e["proof"] = nil
+			e["expiredAt"] = now
+			changed = true
+		}
+		if retained > now {
+			entries = append(entries, e)
+		} else {
+			changed = true
+		}
+	}
+	r["entries"] = entries
+	if changed {
+		return advanceInbox(r)
+	}
+	return r, nil
+}

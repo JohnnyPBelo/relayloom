@@ -22,7 +22,8 @@ import {
 const DOMAIN = "relayloom/site-private/1";
 const RESOURCE_DOMAIN = "relayloom/site-resource-private/1";
 const CONTRIBUTION_DOMAIN = "relayloom/site-contribution-private/1";
-type Namespace = "site" | "resource" | "contribution";
+const INBOX_DOMAIN = "relayloom/site-contribution-inbox-private/1";
+type Namespace = "site" | "resource" | "contribution" | "contribution-inbox";
 export const SITE_PRIVATE_LIMITS = Object.freeze({
   bytes: 6 * 1024 * 1024 + 16384,
   chunkBytes: 512 * 1024,
@@ -38,7 +39,9 @@ function checkedKey(key: string, namespace: Namespace) {
       ? /^site:[a-f0-9]{64}:(record|stage)$/
       : namespace === "resource"
         ? /^resource:[a-f0-9]{64}:(record|stage)$/
-        : /^contribution:[a-f0-9]{64}:(record|stage)$/
+        : namespace === "contribution"
+          ? /^contribution:[a-f0-9]{64}:(record|stage)$/
+          : /^contribution-inbox:[a-f0-9]{64}:(record|stage)$/
     ).test(key),
     "Chave privada de site inválida",
   );
@@ -83,6 +86,13 @@ export class SitePrivateRecords {
   ): T {
     return this.session(tx, identity, fn, "contribution");
   }
+  static runContributionInbox<T>(
+    tx: RegistryTransaction,
+    identity: Identity,
+    fn: (records: SitePrivateRecords) => T,
+  ): T {
+    return this.session(tx, identity, fn, "contribution-inbox");
+  }
   private static session<T>(
     tx: RegistryTransaction,
     identity: Identity,
@@ -92,7 +102,8 @@ export class SitePrivateRecords {
     insist(
       namespace === "site" ||
         namespace === "resource" ||
-        namespace === "contribution",
+        namespace === "contribution" ||
+        namespace === "contribution-inbox",
       "Espaço privado inválido",
     );
     if (
@@ -140,7 +151,9 @@ export class SitePrivateRecords {
       ? DOMAIN
       : this.namespace === "resource"
         ? RESOURCE_DOMAIN
-        : CONTRIBUTION_DOMAIN;
+        : this.namespace === "contribution"
+          ? CONTRIBUTION_DOMAIN
+          : INBOX_DOMAIN;
   }
   private aad(key: string) {
     return Buffer.from(
