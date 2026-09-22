@@ -732,3 +732,10 @@ CI35753597485/2948284 passou505Node+34UI Ubuntu mas terminoucancelled por15min a
 O watcher abortava à primeira TimeoutError de uma leitura do par. Repetir só observações transitórias, mantendo deadline global, processo vivo e limite de duas repetições. Nunca repetir mutações ou aceitar estado malformado. Os 27 testes host-only em 3ac8faf provam essa política, não o percurso Apple; é necessária nova execução remota. Distinguir a ausência de mensagem confirmada em d0c3b55 da anterior falha de selecção da fotografia. A causa do atraso da API permanece desconhecida.
 
 Na retoma, verificar o relatório terminal e os hashes antes de relançar qualquer gate. O gate da origem já terminou PASS e os 733 hashes correspondem a 16c5963; manter essa atribuição mesmo com commit iOS posterior.
+
+
+## Repetir uma operação não deve criar outra autorização em memória
+
+O gate WebKit mostrou três falhas ao obter uma origem apenas na fila privada. Dois controlos determinísticos retiveram leituras já terminadas, executaram resume do mesmo registo e reproduziram recusa: finish substituía o objecto usado como token em todas as repetições. Preservar o objecto interno quando o registo canónico é igual resolve o falso cancelamento. Revogar deve continuar a removê-lo, e reautorizar cria outro objecto; comparar apenas os valores depois do await ressuscitaria uma resposta anterior ao bloqueio. Quatro controlos provam ambos os caminhos e um pedido novo positivo; 17 WebKit dirigidos e a matriz de 89 por engine passaram.
+
+A falha anterior da fixture de descarte assumia ordem de entrada em transacções assíncronas. Fixar o interleaving com retenção explícita e testar as duas ordens, sem alterar timeouts. Os dois tipos de falha e as suas provas são separados no relatório. Gates falhados permanecem FAIL; herdar só testes de dependências inalteradas, enumerando as diferenças de fonte.

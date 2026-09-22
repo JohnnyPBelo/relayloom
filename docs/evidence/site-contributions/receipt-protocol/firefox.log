@@ -1,0 +1,8 @@
+
+Running 1 test using 1 worker
+
+(node:7913) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [firefox] › tests/browser/site-contribution-receipt.spec.ts:53:1 › actual browser and Node authenticate owner receipts with exact private readers, original references and corruption controls (1.6s)
+
+  1 passed (3.3s)

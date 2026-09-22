@@ -1,0 +1,115 @@
+{
+  "status": "PASS",
+  "base": "6e1f530864f0e0894a63b1a0a9c7df21a56c2bbf",
+  "scope": "Receipt certificate and envelope binding only. Not durable receipt outbox, runtime admission/delivery or user review UI.",
+  "sources": {
+    "packages/sites/src/contribution-receipt.ts": "6f4a3fe580a538a2926e0f03a51d822cf1834f0095a122b3f8813ce24c06fb1c",
+    "native/sites/contribution_receipt.go": "1efd754c1ba6f899024501b496269983fed905eebf304d3d9c70e7aea918dc8b",
+    "native/sites/contribution_receipt_test.go": "9e4ad3bc7280b9a4729aecb2335c01ba849e666c63fe4206d101d8b5d2c7c6a9",
+    "tests/site-contribution-receipt.test.ts": "36971ae362434fe56b2785245bd210fb55be7dcc5d423f5e32228a96c177f054",
+    "tests/browser/site-contribution-receipt.spec.ts": "c1548e8bdddab155f8e17e72f183cdd1fca386094d761e243a339f65522c1a5e"
+  },
+  "checks": [
+    {
+      "name": "typecheck",
+      "command": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit"
+      ],
+      "env": {},
+      "status": "PASS",
+      "startedUnix": 1790116325.2559454,
+      "exitCode": 0,
+      "durationSeconds": 8.626058578491211
+    },
+    {
+      "name": "vectors",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "tests/site-contribution-receipt.test.ts"
+      ],
+      "env": {},
+      "status": "PASS",
+      "startedUnix": 1790116333.8823547,
+      "exitCode": 0,
+      "durationSeconds": 1.5247344970703125
+    },
+    {
+      "name": "native-sites-race",
+      "command": [
+        "node",
+        "scripts/go.mjs",
+        "test",
+        "-race",
+        "-p=1",
+        "./sites"
+      ],
+      "env": {},
+      "status": "PASS",
+      "startedUnix": 1790116335.4074273,
+      "exitCode": 0,
+      "durationSeconds": 15.891992092132568
+    },
+    {
+      "name": "chromium",
+      "command": [
+        "node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "tests/browser/site-contribution-receipt.spec.ts",
+        "--output",
+        ".cache/contribution-receipt-protocol/chromium-artifacts"
+      ],
+      "env": {
+        "RELAYLOOM_MATRIX_ENGINE": "chromium"
+      },
+      "status": "PASS",
+      "startedUnix": 1790116351.2997444,
+      "exitCode": 0,
+      "durationSeconds": 1.6912827491760254
+    },
+    {
+      "name": "firefox",
+      "command": [
+        "node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "tests/browser/site-contribution-receipt.spec.ts",
+        "--output",
+        ".cache/contribution-receipt-protocol/firefox-artifacts"
+      ],
+      "env": {
+        "RELAYLOOM_MATRIX_ENGINE": "firefox"
+      },
+      "status": "PASS",
+      "startedUnix": 1790116352.991425,
+      "exitCode": 0,
+      "durationSeconds": 3.7526936531066895
+    },
+    {
+      "name": "webkit",
+      "command": [
+        "node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "tests/browser/site-contribution-receipt.spec.ts",
+        "--output",
+        ".cache/contribution-receipt-protocol/webkit-artifacts"
+      ],
+      "env": {
+        "RELAYLOOM_MATRIX_ENGINE": "webkit"
+      },
+      "status": "PASS",
+      "startedUnix": 1790116356.7445726,
+      "exitCode": 0,
+      "durationSeconds": 1.4477288722991943
+    }
+  ]
+}

@@ -1818,6 +1818,16 @@
             "docs/evidence/site-optional-resources/v3-ui/live"
           ],
           "notes": "20hashes,6UIrecursos,1entreprocessos. Desktop browser engines neste host; não dispositivos físicos/Safari real. Primeiro gate público121/141falhou; recuperação sem alteração de artefactos e nova matriz141/141passaram, sem atribuir causa resolvida."
+        },
+        {
+          "kind": "private-contribution-disposal-and-retry-review",
+          "result": "pass-in-scope-product-partial",
+          "sourceCommit": "6e1f530864f0e0894a63b1a0a9c7df21a56c2bbf",
+          "command": "node docs/evidence/site-contributions/dismissal/before-review/run-gate.mjs; reviewed commands and inherited provenance in gate.json",
+          "paths": [
+            "docs/evidence/site-contributions/dismissal"
+          ],
+          "notes": "46 Node, six Go/race packages (four cached), 87 process cases before browser-only correction; review 89 cases per browser. Local disposal is not signed rejection, approval or complete forms UI."
         }
       ]
     },
@@ -2073,6 +2083,16 @@
             "docs/evidence/site-optional-resources/v3-ui/live"
           ],
           "notes": "20hashes,6UIrecursos,1entreprocessos. Desktop browser engines neste host; não dispositivos físicos/Safari real. Primeiro gate público121/141falhou; recuperação sem alteração de artefactos e nova matriz141/141passaram, sem atribuir causa resolvida."
+        },
+        {
+          "kind": "private-contribution-disposal-and-retry-review",
+          "result": "pass-in-scope-product-partial",
+          "sourceCommit": "6e1f530864f0e0894a63b1a0a9c7df21a56c2bbf",
+          "command": "node docs/evidence/site-contributions/dismissal/before-review/run-gate.mjs; reviewed commands and inherited provenance in gate.json",
+          "paths": [
+            "docs/evidence/site-contributions/dismissal"
+          ],
+          "notes": "46 Node, six Go/race packages (four cached), 87 process cases before browser-only correction; review 89 cases per browser. Local disposal is not signed rejection, approval or complete forms UI."
         }
       ]
     },

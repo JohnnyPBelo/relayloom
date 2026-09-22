@@ -1,0 +1,11 @@
+# CI f3f32fc — mensagem confirmada, selecção da fotografia pendente
+
+Fonte f3f32fca43299a5bfab8a92b503f5ae3336c42e2, [execução35786710953](https://github.com/JohnnyPBelo/relayloom/actions/runs/35786710953). O relatório final `run.json` confirma FAILURE apenas no iOS; todos os outros jobs, incluindo autonomous-browser, terminaram com sucesso. Não é o resultado dos commits posteriores 6e1f530/bf12d51/1a53620.
+
+Artefacto iOS10722173657 de1841035bytes; **27 ficheiros dos dois manifestos verificados sem divergências**. Build, instalação, startup e importação da fotografia passaram no simulador iOS26.4.1/Xcode26.6. A UI criou identidade/post e enviou uma mensagem privada que o par Node confirmou com assinatura e leitores exactos. A resposta ainda não foi confirmada e não houve anexo enviado. Esta execução não registou o TimeoutError do watcher observado em d0c3b55; isso não prova a causa desse atraso anterior.
+
+A falha é `missing("seeded synthetic photo")`, linha308. A captura ui-03.png mostra a imagem sintética na primeira posição. Os controlos AX mostram imagens `PXGGridLayout-Info`, e não células, com a data recente e frame visível; esses proxies indicam hittable:false. Existem também seis fotografias de exemplo antigas do próprio simulador. A simulação foi criada e eliminada pelo runner; não foi acedida uma fototeca pessoal.
+
+**1a53620** altera só o teste: fecha o banner informativo quando presente, identifica um único asset recente pelo tipo/identificador/data e rectângulo visível, e usa o centro do rectângulo AX quando o proxy não fornece ponto de toque. Não usa coordenadas fixas nem selecciona ícones/stock histórico. Mantém20s para localizar e15s para confirmar, esperando o botão enabled; a selecção no compositor, persistência nativa, par Node, resposta e recuperação continuam obrigatórios.
+
+A verificação local `node scripts/ios-simulator.mjs --check` passou **apenas estruturalmente**. Não há swiftc local, nem nova compilação/execução Apple deste selector ainda. Não declarar o iOS corrigido, execução física ou signing aprovado. A confirmação exige uma nova execução real de CI depois desta execução terminal; não se cancelou o trabalho remoto com um push intermédio.

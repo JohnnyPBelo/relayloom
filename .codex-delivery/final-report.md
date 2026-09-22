@@ -109,3 +109,18 @@ Produto completo **não concluído**. RNS/meios em `7d3bceb`; web em `359d652`; 
 O gate final web passou 67 casos + 2 oráculos e nove percursos UI por Reticulum. O gate RNS e a regressão dos backends passaram; os relatórios distinguem fontes e versões. Reproducer de convite abandonado falhou antes e passou depois. Um episódio de demora BLE durante heal continua sem causa confirmada; os passes seguintes não o apagam.
 
 No IAB real, a cache offline mantinha código antigo após reload. Entrar pela raiz activou o script publicado e preservou o perfil. Não houve observação dos dois dispositivos físicos. Hardware BLE/radios, Bluetooth directo web, incorporação RNS em todos os pacotes, iOS funcional e os restantes requisitos continuam abertos. Nenhum agente novo, modelo/provider/bridge/serviço alterado. RESUME.md contém estado e instruções de continuação.
+
+
+## Descarte privado e autorização de retry — 22 de Setembro
+
+**6e1f530:** o dono pode descartar uma candidata através do comando privado, inclusive quando o visitante está bloqueado ou falta a origem. A revisão evita actuar sobre uma vista desactualizada. Prova e estado terminal mudam no mesmo commit; reenvios não reabrem a candidata e o facto histórico de verificação é preservado. A libertação é da quota lógica da inbox; não apaga cópias na cache/pares. Ainda não é recusa assinada nem fluxo completo na interface.
+
+Passaram 46 testes Node, seis pacotes Go/race (quatro com cache) e 87 casos entre processos. O primeiro gate browser encontrou três falhas WebKit; dois controlos reproduziram uma autorização invalidada por retry idêntico. A correcção preserva a referência em retries iguais, mantendo a invalidação após revogar. A revisão passou **89 casos em cada Chromium/Firefox/WebKit**, com os dois ficheiros alterados e os passes anteriores distinguidos. [Comandos, falhas e provas](../docs/evidence/site-contributions/dismissal). Recibos, aprovação/CAS/reconciliação/proveniência e UI de três contas continuam obrigatórios. HTML público inalterado.
+
+
+
+## Certificado de recibo e observação iOS
+
+bf12d51: protocolo privado de recibo do dono,52 vectores Node/portátil/Go e1 caso real por browser PASS, além de typecheck/Go-sites-race. Sem journal/transporte/UI; não é recibo entregue. Provas docs/evidence/site-contributions/receipt-protocol. Continuar persistência e integração antes das decisões/publicação/proveniência e UI de três contas.
+
+CI35786710953/f3f32fc confirmou mensagem privada em iOS e falhou no selector da fotografia visível;27 ficheiros do artefacto conferidos. 1a53620 ajusta apenas o selector XCTest ao AX observado. Verificação local estrutural PASS, Swift/Apple ainda por executar. Provas docs/evidence/ci-f3f32fc. Não reclassificar os passes do commit anterior como validação do selector novo.

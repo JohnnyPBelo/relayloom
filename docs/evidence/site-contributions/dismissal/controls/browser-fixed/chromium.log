@@ -1,0 +1,14 @@
+
+Running 7 tests using 1 worker
+
+(node:3821186) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/browser/site-contribution-dismiss.spec.ts:21:3 › browser local discard reopen preserves atomic private evidence and replay protection (726ms)
+  ✓  2 [chromium] › tests/browser/site-contribution-dismiss.spec.ts:21:3 › browser local discard rollback preserves atomic private evidence and replay protection (727ms)
+  ✓  3 [chromium] › tests/browser/site-contribution-dismiss.spec.ts:21:3 › browser local discard lost-reply preserves atomic private evidence and replay protection (690ms)
+  ✓  4 [chromium] › tests/browser/site-contribution-dismiss.spec.ts:21:3 › browser local discard lock preserves atomic private evidence and replay protection (699ms)
+  ✓  5 [chromium] › tests/browser/site-contribution-dismiss.spec.ts:21:3 › browser local discard corruption preserves atomic private evidence and replay protection (536ms)
+  ✓  6 [chromium] › tests/browser/site-contribution-dismiss.spec.ts:21:3 › browser local discard concurrent-source preserves atomic private evidence and replay protection (702ms)
+  ✓  7 [chromium] › tests/browser/site-contribution-dismiss.spec.ts:21:3 › browser local discard concurrent-dismiss preserves atomic private evidence and replay protection (656ms)
+
+  7 passed (5.4s)

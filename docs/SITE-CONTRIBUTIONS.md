@@ -40,7 +40,7 @@ Sem fonte, fica `missing-source`, sem valores apresentados como autorizados. Uma
 
 A mesma assinatura em envelopes diferentes não duplica nem substitui a proposta. Certificados diferentes do mesmo autor/UUID são conflitos limitados, preservando a primeira prova. A inbox tem até 256 entradas, 64 pendentes, 32 pendentes por contribuidor e 32 MiB de provas, sujeitos também ao armazenamento global. Expiração remove provas e conserva metadados durante 30 dias após o maior prazo observado. Não há memória infinita de UUIDs nem expulsão silenciosa de pendentes.
 
-O comando fechado `obtain-source` recupera a origem que só existe na fila privada do visitante, enquanto a proposta está activa e autorizada. Usa o snapshot original, sem reassinar ou alargar leitores, e funciona com relay para terceiros pausado. O pedido deriva da candidata e continua separado de aprovação. [Provas da recuperação](evidence/site-contributions/source-recovery). Recusa/purga controlada, recibos, decisão/CAS/reconciliação e proveniência continuam por integrar. [Provas, controlos e limites](evidence/site-contributions/inbox). A paleta mantém-se oculta.
+O comando fechado `obtain-source` recupera a origem que só existe na fila privada do visitante, enquanto a proposta está activa e autorizada. Usa o snapshot original, sem reassinar ou alargar leitores, e funciona com relay para terceiros pausado. O pedido deriva da candidata e continua separado de aprovação. [Provas da recuperação](evidence/site-contributions/source-recovery). O descarte local com revisão e remoção atómica de provas está implementado nos três motores, inclusive para candidatas bloqueadas ou sem origem. Conserva metadados de replay e o facto histórico de verificação. Não envia recusa ao visitante nem elimina cópias da cache/pares. [Provas do descarte e da correcção de retry](evidence/site-contributions/dismissal). Recibos, recusa assinada, decisão/CAS/reconciliação e proveniência continuam por integrar. [Provas, controlos e limites](evidence/site-contributions/inbox). A paleta mantém-se oculta.
 
 ## Autoria e aprovação
 
@@ -50,7 +50,7 @@ A integração seguinte tem de conservar a proposta original na proveniência do
 
 ## Ainda obrigatório
 
-- Gestão de recusas/purga, pressão de candidatas não verificáveis e recibos verificáveis.
+- Recusa assinada comunicada ao visitante, recibos verificáveis e restantes controlos de pressão/abuso (o descarte local não resolve spam/sybil em geral).
 - Aprovação/rejeição, conflitos/CAS, recibos, reconciliação e proveniência das linhas.
 - Composição de formulários e caixa de revisão na UI PT/EN/ES, Liquid Glass, teclado/toque, acessibilidade e testes com três contas reais.
 - Regressão completa dos motores e plataformas, publicação dos artefactos exactos e revisão independente. Nenhum teste de software substitui validação de hardware ou rádio.

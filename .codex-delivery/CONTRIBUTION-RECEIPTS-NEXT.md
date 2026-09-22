@@ -24,3 +24,10 @@ Este documento é desenho, não implementação. O gate da recuperação da orig
 Vectores canónicos Node/portátil/Go, leitores/autores/UUIDs trocados, corrupção, replay, prazo e recibo tardio. Falhas antes/depois de cada commit, perda de resposta, concorrência real e reabertura entre motores. Transporte misto com relay sem chave, partição/heal e emissor original offline. Produção worker/RPC e UI completa de três contas em PT/EN/ES, com acessibilidade, toque/teclado e revisão visual. Só activar formulários quando compor/enviar/rever/recusar/aceitar/reconciliar/publicar funcionarem.
 
 Continuam obrigatórios os outros requisitos de grupos web, recuperação/rotação/keystore, plataformas, rádios e revisão independente. Nada neste plano conclui o produto.
+
+
+## Ordem de migração após descarte local
+
+O incremento dismiss é gestão privada de armazenamento, não um recibo ou uma recusa enviada. Entradas já descartadas sem material para selagem não ganham retroactivamente um recibo: não inventar chave pública de destinatário nem assinatura de visitante. Ao integrar recibos, guardar a intenção e os metadados públicos necessários no mesmo commit que verifica a candidata, antes de permitir apagar a prova. O journal do recibo deve sobreviver ao descarte da inbox e à expiração dos valores, com prazo próprio finito e sem renovar a concessão original. Repetir um certificado descartado nunca reabre valores nem fornece autoridade nova.
+
+Descarte não elimina envelopes cifrados da cache comum nem cópias de outros pares. Liberta quota lógica de provas privadas, não garante apagamento físico de páginas SQLite/WAL. Metadados retidos continuam sujeitos ao limite global de 256 entradas e janela após maior prazo observado; isto não é uma solução universal contra spam/sybil.

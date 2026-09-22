@@ -177,7 +177,7 @@ O CI anterior0a85d7d acabou com falha só na importação de fotografia iOS, ant
 
 ## Catálogo Go/envelope encerrado como marco verificável
 
-6285 terminou0:500Node,18processos,builds e21percursos porbrowser. Fonte706hashes congelada/conferida, código em a1040a7/16dbd6a. Provas em docs/evidence/site-contributions/envelopes. A portabilidade do catálogo Go está concluída; não recomeçar esse trabalho.
+6285 terminou0:500Node,18processos,builds e21percursos por browser. Fonte706hashes congelada/conferida, código em a1040a7/16dbd6a. Provas em docs/evidence/site-contributions/envelopes. A portabilidade do catálogo Go está concluída; não recomeçar esse trabalho.
 
 Próximo: API de submissão com snapshot/contexto derivados pelo motor; intenção de transporte durável antes de copiar/gossip; outbox/inbox e recibos separados de aprovação; CAS/reconciliação/proveniência eUI. Plano concreto em CONTRIBUTION-SUBMISSION-INTEGRATION.md. Antes do push, confirmar o estado doCIbd419cb para não cancelar trabalho em curso. Publicar HTML só depois de gate exacto de distribuição/HTTPS; manter todo o contrato.
 
@@ -204,3 +204,18 @@ CI2948284 foi cancelado por15min acumulados após505Node+34UI UbuntuPASS; restan
 593459a/16c5963: cancelamento por IDs locais, prazo absoluto e obtenção explícita da origem na fila privada com relay pausado. 516 Node, 17 pacotes Go/race, 74 casos entre processos, builds e 78 casos por browser PASS; 733 hashes confirmados contra 16c5963. Provas docs/evidence/site-contributions/source-recovery. Não há recibos/decisões/UI completa; continuar CONTRIBUTION-RECEIPTS-NEXT.md. Contrato integral e execução sequencial preservados.
 
 CI35772935519/d0c3b55 falhou só em iOS, watcher com TimeoutError antes da fototeca e sem mensagem confirmada. 3ac8faf repete apenas observações readonly limitadas; 27 host tests PASS, sem repetição Apple. Provas docs/evidence/ci-d0c3b55. Não confundir estes resultados com a falha anterior do selector nem declarar iOS corrigido.
+
+
+## Descarte privado e autorização de retry — 22 de Setembro
+
+**6e1f530:** o dono pode descartar uma candidata através do comando privado, inclusive quando o visitante está bloqueado ou falta a origem. A revisão evita actuar sobre uma vista desactualizada. Prova e estado terminal mudam no mesmo commit; reenvios não reabrem a candidata e o facto histórico de verificação é preservado. A libertação é da quota lógica da inbox; não apaga cópias na cache/pares. Ainda não é recusa assinada nem fluxo completo na interface.
+
+Passaram 46 testes Node, seis pacotes Go/race (quatro com cache) e 87 casos entre processos. O primeiro gate browser encontrou três falhas WebKit; dois controlos reproduziram uma autorização invalidada por retry idêntico. A correcção preserva a referência em retries iguais, mantendo a invalidação após revogar. A revisão passou **89 casos em cada Chromium/Firefox/WebKit**, com os dois ficheiros alterados e os passes anteriores distinguidos. [Comandos, falhas e provas](../docs/evidence/site-contributions/dismissal). Recibos, aprovação/CAS/reconciliação/proveniência e UI de três contas continuam obrigatórios. HTML público inalterado.
+
+
+
+## Certificado de recibo e observação iOS
+
+bf12d51: protocolo privado de recibo do dono,52 vectores Node/portátil/Go e1 caso real por browser PASS, além de typecheck/Go-sites-race. Sem journal/transporte/UI; não é recibo entregue. Provas docs/evidence/site-contributions/receipt-protocol. Continuar persistência e integração antes das decisões/publicação/proveniência e UI de três contas.
+
+CI35786710953/f3f32fc confirmou mensagem privada em iOS e falhou no selector da fotografia visível;27 ficheiros do artefacto conferidos. 1a53620 ajusta apenas o selector XCTest ao AX observado. Verificação local estrutural PASS, Swift/Apple ainda por executar. Provas docs/evidence/ci-f3f32fc. Não reclassificar os passes do commit anterior como validação do selector novo.

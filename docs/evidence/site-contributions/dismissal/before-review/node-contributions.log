@@ -1,0 +1,294 @@
+TAP version 13
+# (node:3825574) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: intent commits without a visitor signature; later signing survives reopen with private consent and no public store
+ok 1 - intent commits without a visitor signature; later signing survives reopen with private consent and no public store
+  ---
+  duration_ms: 144.72187
+  type: 'test'
+  ...
+# Subtest: failed transactions and changed policy retain a prepared intent without handing out a signature
+ok 2 - failed transactions and changed policy retain a prepared intent without handing out a signature
+  ---
+  duration_ms: 90.292158
+  type: 'test'
+  ...
+# Subtest: expiry and cancellation keep retired sequence outcomes and never renew a signature
+ok 3 - expiry and cancellation keep retired sequence outcomes and never renew a signature
+  ---
+  duration_ms: 716.204293
+  type: 'test'
+  ...
+# Subtest: private contribution storage refuses missing-stage without resetting an intent
+ok 4 - private contribution storage refuses missing-stage without resetting an intent
+  ---
+  duration_ms: 50.853406
+  type: 'test'
+  ...
+# Subtest: private contribution storage refuses wrong-source without resetting an intent
+ok 5 - private contribution storage refuses wrong-source without resetting an intent
+  ---
+  duration_ms: 49.260499
+  type: 'test'
+  ...
+# Subtest: private contribution storage refuses read-key without resetting an intent
+ok 6 - private contribution storage refuses read-key without resetting an intent
+  ---
+  duration_ms: 37.618028
+  type: 'test'
+  ...
+# Subtest: real abrupt process exit before-intent-commit preserves the intent and fixed certificate identity
+ok 7 - real abrupt process exit before-intent-commit preserves the intent and fixed certificate identity
+  ---
+  duration_ms: 262.872375
+  type: 'test'
+  ...
+# Subtest: real abrupt process exit after-intent preserves the intent and fixed certificate identity
+ok 8 - real abrupt process exit after-intent preserves the intent and fixed certificate identity
+  ---
+  duration_ms: 265.044007
+  type: 'test'
+  ...
+# Subtest: real abrupt process exit after-signature preserves the intent and fixed certificate identity
+ok 9 - real abrupt process exit after-signature preserves the intent and fixed certificate identity
+  ---
+  duration_ms: 283.897349
+  type: 'test'
+  ...
+# Subtest: preparation quota failure rolls back stage and sequence before any signature exists
+ok 10 - preparation quota failure rolls back stage and sequence before any signature exists
+  ---
+  duration_ms: 103.035743
+  type: 'test'
+  ...
+# Subtest: a proposal expiring during the policy check cannot commit a new signature
+ok 11 - a proposal expiring during the policy check cannot commit a new signature
+  ---
+  duration_ms: 54.272747
+  type: 'test'
+  ...
+# Subtest: form query is a copied closed locator, never executable input or caller-supplied permission
+ok 12 - form query is a copied closed locator, never executable input or caller-supplied permission
+  ---
+  duration_ms: 1.052914
+  type: 'test'
+  ...
+# Subtest: real snapshot lookup authenticates author, reader access and visitor policy without returning table rows
+ok 13 - real snapshot lookup authenticates author, reader access and visitor policy without returning table rows
+  ---
+  duration_ms: 139.084458
+  type: 'test'
+  ...
+# Subtest: private proposal envelope binds actual author, exactly two logical readers and the original certificate deadline
+ok 14 - private proposal envelope binds actual author, exactly two logical readers and the original certificate deadline
+  ---
+  duration_ms: 89.693765
+  type: 'test'
+  ...
+# Subtest: Node, portable and real Go inbox transitions agree on replay, finite retention, conflicts and quotas
+ok 15 - Node, portable and real Go inbox transitions agree on replay, finite retention, conflicts and quotas
+  ---
+  duration_ms: 1155.572768
+  type: 'test'
+  ...
+# (node:3826062) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: private inbox preserves verified source and proposal across reopening, separately from sender staging
+ok 16 - private inbox preserves verified source and proposal across reopening, separately from sender staging
+  ---
+  duration_ms: 155.94823
+  type: 'test'
+  ...
+# Subtest: repackaging is idempotent and a conflicting visitor UUID cannot replace the original candidate
+ok 17 - repackaging is idempotent and a conflicting visitor UUID cannot replace the original candidate
+  ---
+  duration_ms: 107.577009
+  type: 'test'
+  ...
+# Subtest: an interrupted admission/source transaction rolls back without losing the earlier proof
+ok 18 - an interrupted admission/source transaction rolls back without losing the earlier proof
+  ---
+  duration_ms: 73.194077
+  type: 'test'
+  ...
+# Subtest: expiry removes private payloads but keeps replay metadata for the bounded retention window
+ok 19 - expiry removes private payloads but keeps replay metadata for the bounded retention window
+  ---
+  duration_ms: 101.458837
+  type: 'test'
+  ...
+# Subtest: unreadable/public proposals, wrong source and revoked policy never become verified candidates
+ok 20 - unreadable/public proposals, wrong source and revoked policy never become verified candidates
+  ---
+  duration_ms: 93.29607
+  type: 'test'
+  ...
+# Subtest: tampered retained evidence is an integrity failure, never repaired into a new proposal
+ok 21 - tampered retained evidence is an integrity failure, never repaired into a new proposal
+  ---
+  duration_ms: 76.762889
+  type: 'test'
+  ...
+# Subtest: journal quotas preserve pending entries and conflict floods have bounded descriptors and writes
+ok 22 - journal quotas preserve pending entries and conflict floods have bounded descriptors and writes
+  ---
+  duration_ms: 133.79988
+  type: 'test'
+  ...
+# Subtest: explicit dismissal is atomic, releases only selected proof quota and survives replay/reopen
+ok 23 - explicit dismissal is atomic, releases only selected proof quota and survives replay/reopen
+  ---
+  duration_ms: 162.680274
+  type: 'test'
+  ...
+# Subtest: dismissing unverified proposal frees admission quota without evicting other pending proposals
+ok 24 - dismissing unverified proposal frees admission quota without evicting other pending proposals
+  ---
+  duration_ms: 91.051832
+  type: 'test'
+  ...
+# Subtest: dismissal cannot hide corruption in private proof
+ok 25 - dismissal cannot hide corruption in private proof
+  ---
+  duration_ms: 52.328783
+  type: 'test'
+  ...
+# Subtest: Node, portable crypto and Go agree on visitor proposals, schemas and negative authorization vectors
+ok 26 - Node, portable crypto and Go agree on visitor proposals, schemas and negative authorization vectors
+  ---
+  duration_ms: 611.162147
+  type: 'test'
+  ...
+# Subtest: Node, portable and Go contribution journals agree on canonical requests, retained transitions and rejected corruption
+ok 27 - Node, portable and Go contribution journals agree on canonical requests, retained transitions and rejected corruption
+  ---
+  duration_ms: 1187.734625
+  type: 'test'
+  ...
+# (node:3826491) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: queued source and envelope survive restart while a second preparation uses its own slot
+ok 28 - queued source and envelope survive restart while a second preparation uses its own slot
+  ---
+  duration_ms: 315.893325
+  type: 'test'
+  ...
+# Subtest: queue transaction rollback retains the signed envelope and never frees a preparation early
+ok 29 - queue transaction rollback retains the signed envelope and never frees a preparation early
+  ---
+  duration_ms: 158.010688
+  type: 'test'
+  ...
+# Subtest: queued expiry retires private payload but retains packet identity for cancellation
+ok 30 - queued expiry retires private payload but retains packet identity for cancellation
+  ---
+  duration_ms: 157.672353
+  type: 'test'
+  ...
+# Subtest: 32 pending queues apply backpressure without losing old payloads or the current prepared envelope
+ok 31 - 32 pending queues apply backpressure without losing old payloads or the current prepared envelope
+  ---
+  duration_ms: 3272.827145
+  type: 'test'
+  ...
+# Subtest: missing queued payload is corruption, not an excuse to create new bytes or cancel a different stage
+ok 32 - missing queued payload is corruption, not an excuse to create new bytes or cancel a different stage
+  ---
+  duration_ms: 125.993733
+  type: 'test'
+  ...
+# Subtest: declarative form binds all typed columns, preserves zero/false and never executes values
+ok 33 - declarative form binds all typed columns, preserves zero/false and never executes values
+  ---
+  duration_ms: 5.594441
+  type: 'test'
+  ...
+# Subtest: form and value parsing reject active accessors, sparse lists, unknown fields and oversized inputs
+ok 34 - form and value parsing reject active accessors, sparse lists, unknown fields and oversized inputs
+  ---
+  duration_ms: 0.670428
+  type: 'test'
+  ...
+# Subtest: Node visitor signatures verify across adapters but cannot become owner revisions
+ok 35 - Node visitor signatures verify across adapters but cannot become owner revisions
+  ---
+  duration_ms: 69.301218
+  type: 'test'
+  ...
+# Subtest: portable visitor signatures verify across adapters but cannot become owner revisions
+ok 36 - portable visitor signatures verify across adapters but cannot become owner revisions
+  ---
+  duration_ms: 51.424116
+  type: 'test'
+  ...
+# Subtest: site/form/schema/base and the visitor's maximum publication audience are bound independently
+ok 37 - site/form/schema/base and the visitor's maximum publication audience are bound independently
+  ---
+  duration_ms: 12.259818
+  type: 'test'
+  ...
+# Subtest: expiry and clock checks apply to admission, while historical signatures stay verifiable
+ok 38 - expiry and clock checks apply to admission, while historical signatures stay verifiable
+  ---
+  duration_ms: 27.592989
+  type: 'test'
+  ...
+# Subtest: private submission remains encrypted even when the visitor consents to later public adoption
+ok 39 - private submission remains encrypted even when the visitor consents to later public adoption
+  ---
+  duration_ms: 10.471806
+  type: 'test'
+  ...
+# (node:3826787) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: private site staging survives SQLite restart and does not expose signatures to the reading secret
+ok 40 - private site staging survives SQLite restart and does not expose signatures to the reading secret
+  ---
+  duration_ms: 103.578391
+  type: 'test'
+  ...
+# Subtest: private resource staging survives SQLite restart and does not expose signatures to the reading secret
+ok 41 - private resource staging survives SQLite restart and does not expose signatures to the reading secret
+  ---
+  duration_ms: 85.122023
+  type: 'test'
+  ...
+# Subtest: private contribution staging survives SQLite restart and does not expose signatures to the reading secret
+ok 42 - private contribution staging survives SQLite restart and does not expose signatures to the reading secret
+  ---
+  duration_ms: 88.690213
+  type: 'test'
+  ...
+# Subtest: private contribution-inbox staging survives SQLite restart and does not expose signatures to the reading secret
+ok 43 - private contribution-inbox staging survives SQLite restart and does not expose signatures to the reading secret
+  ---
+  duration_ms: 80.435045
+  type: 'test'
+  ...
+# Subtest: private staging quota failure aborts all record changes even when its error is caught
+ok 44 - private staging quota failure aborts all record changes even when its error is caught
+  ---
+  duration_ms: 46.382272
+  type: 'test'
+  ...
+# Subtest: private record handles expire at the synchronous transaction boundary
+ok 45 - private record handles expire at the synchronous transaction boundary
+  ---
+  duration_ms: 16.339007
+  type: 'test'
+  ...
+# Subtest: missing and transposed ciphertext are rejected even inside an otherwise authentic outer database
+ok 46 - missing and transposed ciphertext are rejected even inside an otherwise authentic outer database
+  ---
+  duration_ms: 81.526451
+  type: 'test'
+  ...
+1..46
+# tests 46
+# suites 0
+# pass 46
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 12638.681412

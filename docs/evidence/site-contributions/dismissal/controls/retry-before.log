@@ -1,0 +1,76 @@
+
+Running 2 tests using 1 worker
+
+(node:4018001) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [webkit] › tests/browser/site-contribution-serve-race.spec.ts:147:3 › unchanged durable retry cannot revoke an in-flight proposal read (987ms)
+(node:4018285) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 [webkit] › tests/browser/site-contribution-serve-race.spec.ts:147:3 › unchanged durable retry cannot revoke an in-flight source read (1.0s)
+
+
+  1) [webkit] › tests/browser/site-contribution-serve-race.spec.ts:147:3 › unchanged durable retry cannot revoke an in-flight proposal read 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      253 |     );
+      254 |     expect(result.sameOperation).toBe(true);
+    > 255 |     expect(result.authorized).toBe(true);
+          |                               ^
+      256 |   });
+      257 |
+        at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-contribution-serve-race.spec.ts:255:31
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .cache/contribution-source-retry-before-artifacts/site-contribution-serve-ra-60817--an-in-flight-proposal-read-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: .cache/contribution-source-retry-before-artifacts/site-contribution-serve-ra-60817--an-in-flight-proposal-read-webkit/error-context.md
+
+    Error Context: .cache/contribution-source-retry-before-artifacts/site-contribution-serve-ra-60817--an-in-flight-proposal-read-webkit/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    .cache/contribution-source-retry-before-artifacts/site-contribution-serve-ra-60817--an-in-flight-proposal-read-webkit/trace.zip
+    Usage:
+
+        npx playwright show-trace .cache/contribution-source-retry-before-artifacts/site-contribution-serve-ra-60817--an-in-flight-proposal-read-webkit/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [webkit] › tests/browser/site-contribution-serve-race.spec.ts:147:3 › unchanged durable retry cannot revoke an in-flight source read 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      253 |     );
+      254 |     expect(result.sameOperation).toBe(true);
+    > 255 |     expect(result.authorized).toBe(true);
+          |                               ^
+      256 |   });
+      257 |
+        at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-contribution-serve-race.spec.ts:255:31
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .cache/contribution-source-retry-before-artifacts/site-contribution-serve-ra-be38e-ke-an-in-flight-source-read-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: .cache/contribution-source-retry-before-artifacts/site-contribution-serve-ra-be38e-ke-an-in-flight-source-read-webkit/error-context.md
+
+    Error Context: .cache/contribution-source-retry-before-artifacts/site-contribution-serve-ra-be38e-ke-an-in-flight-source-read-webkit/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    .cache/contribution-source-retry-before-artifacts/site-contribution-serve-ra-be38e-ke-an-in-flight-source-read-webkit/trace.zip
+    Usage:
+
+        npx playwright show-trace .cache/contribution-source-retry-before-artifacts/site-contribution-serve-ra-be38e-ke-an-in-flight-source-read-webkit/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    [webkit] › tests/browser/site-contribution-serve-race.spec.ts:147:3 › unchanged durable retry cannot revoke an in-flight proposal read 
+    [webkit] › tests/browser/site-contribution-serve-race.spec.ts:147:3 › unchanged durable retry cannot revoke an in-flight source read 

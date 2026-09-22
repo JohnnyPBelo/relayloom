@@ -1,0 +1,34 @@
+[
+  {
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "--noEmit"
+    ],
+    "exitCode": 0,
+    "durationSeconds": 8.264160633087158
+  },
+  {
+    "command": [
+      "node",
+      "node_modules/vite/bin/vite.js",
+      "build"
+    ],
+    "exitCode": 0,
+    "durationSeconds": 3.0504794120788574
+  },
+  {
+    "command": [
+      "node",
+      "scripts/e2e.mjs",
+      "--config",
+      "tests/browser/matrix.config.ts",
+      "tests/browser/site-contribution-dismiss.spec.ts",
+      "tests/browser/site-contribution-worker.spec.ts",
+      "--output",
+      ".cache/contribution-dismiss-browser-first/artifacts"
+    ],
+    "exitCode": 1,
+    "durationSeconds": 15.871299743652344
+  }
+]

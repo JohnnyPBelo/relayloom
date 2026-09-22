@@ -1,0 +1,22 @@
+Timestamp               Ty Process[PID:TID]
+2026-09-22 22:30:23.569 Df assetsd[5231:a1d4] [com.apple.photos.backend:Thumbnails] Rebuilding thumbs for batch of 6 assets
+2026-09-22 22:30:55.210 Df assetsd[5231:a1c7] [com.apple.xpc:connection] [0x10692d380] activating connection: mach=false listener=false peer=true name=com.apple.bg.system.task.peer[5022].0x10692d380
+2026-09-22 22:30:55.289 E  assetsd[5231:7834] [com.apple.BackgroundSystemTasks:BGSTFramework] System task launch acknowledgment failed for <BGNonRepeatingSystemTask: com.apple.assetsd.migration.16777228.2995046> (error: Error Domain=_DASBGSystemTaskHelperErrorDomain Code=5 "(null)" UserInfo={taskIdentifier=com.apple.assetsd.migration.16777228.2995046})
+2026-09-22 22:30:56.306 A  assetsd[5231:a1d4] (CoreFoundation) Loading Preferences From User Session CFPrefsD
+2026-09-22 22:30:58.642 Df assetsd[5231:a1d3] [com.apple.xpc:connection] [0x106e9e580] invalidated because the current process cancelled the connection by calling xpc_connection_cancel()
+2026-09-22 22:30:58.642 Df assetsd[5231:a1c7] [com.apple.accounts:core] "The connection to ACDAccountStore was invalidated."
+2026-09-22 22:30:58.644 Df assetsd[5231:a1d3] [com.apple.BackgroundSystemTasks:BGSTFramework] Cancelling and resubmitting com.apple.assetsd.migration.16777228.2995046 due to a failed launch acknowledgment
+2026-09-22 22:31:02.073 Df assetsd[5231:60a1] [com.apple.xpc:connection] [0x103927200] activating connection: mach=true listener=false peer=false name=com.apple.metal.simulator
+2026-09-22 22:31:02.076 Df assetsd[5231:60a1] [com.apple.xpc:connection] [0x106e9d180] activating connection: mach=true listener=false peer=false name=com.apple.metal.simulator
+2026-09-22 22:31:02.077 Df assetsd[5231:60a1] [com.apple.xpc:connection] [0x106e9e580] activating connection: mach=true listener=false peer=false name=com.apple.metal.simulator
+2026-09-22 22:31:45.453 Df assetsd[5231:589b] [com.apple.xpc:connection] [0x10692d500] invalidated because the client process (pid 16401) either cancelled the connection or exited
+2026-09-22 22:31:45.457 Df assetsd[5231:589b] [com.apple.photos.backend:GatekeeperXPC] Connection invalidated for client with PID: 16401
+2026-09-22 22:31:58.634 Df assetsd[5231:7834] [com.apple.BackgroundSystemTasks:BGSTFramework] Calling launch handler for com.apple.assetsd.migration.16777228.3015538
+2026-09-22 22:31:58.731 E  assetsd[5231:7834] [com.apple.photos.backend:Backend] Photo library at file:///Users/runner/Library/Developer/CoreSimulator/Devices/84985B74-F374-49B8-AD3F-6A3F385350B7/data/Library/Photos/Libraries/Syndication.photoslibrary/ is currently not ready
+2026-09-22 22:31:58.731 Df assetsd[5231:7834] [com.apple.photos.backend:Backend] Library not ready for background migration - rebuild in progress. Identifier: com.apple.assetsd.migration.16777228.3015538
+2026-09-22 22:31:58.732 Df assetsd[5231:7834] [com.apple.BackgroundSystemTasks:BGSTFramework] setTaskExpiredWithRetryAfter: Proactive expirations must have a cool off of at least 300 seconds, clamping
+2026-09-22 22:31:58.732 Df assetsd[5231:7834] [com.apple.BackgroundSystemTasks:BGSTFramework] Client requested expiration of task <BGNonRepeatingSystemTask: com.apple.assetsd.migration.16777228.3015538>
+2026-09-22 22:31:58.739 Df assetsd[5231:60a1] [com.apple.photos.backend:LibraryServices] CPLReadiness: Ready for CPL 'ready'
+2026-09-22 22:32:07.518 Df assetsd[5231:60a1] (CoreVideo) pool 0x1069c6d00 being deallocated [0 in use, 0 free] _targetBufferCountsBitfield 0x0
+2026-09-22 22:32:07.518 Df assetsd[5231:60a1] (CoreVideo) pool 0x0 being deallocated [0 in use, 0 free] _targetBufferCountsBitfield 0x0
+getpwuid_r did not find a match for uid 501

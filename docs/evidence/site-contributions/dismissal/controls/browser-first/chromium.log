@@ -1,0 +1,49 @@
+
+Running 8 tests using 1 worker
+
+(node:3814848) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/browser/site-contribution-dismiss.spec.ts:20:3 › browser local discard reopen preserves atomic private evidence and replay protection (776ms)
+  ✓  2 [chromium] › tests/browser/site-contribution-dismiss.spec.ts:20:3 › browser local discard rollback preserves atomic private evidence and replay protection (731ms)
+  ✓  3 [chromium] › tests/browser/site-contribution-dismiss.spec.ts:20:3 › browser local discard lost-reply preserves atomic private evidence and replay protection (698ms)
+  ✓  4 [chromium] › tests/browser/site-contribution-dismiss.spec.ts:20:3 › browser local discard lock preserves atomic private evidence and replay protection (735ms)
+  ✓  5 [chromium] › tests/browser/site-contribution-dismiss.spec.ts:20:3 › browser local discard corruption preserves atomic private evidence and replay protection (554ms)
+  ✘  6 [chromium] › tests/browser/site-contribution-dismiss.spec.ts:20:3 › browser local discard concurrent-source preserves atomic private evidence and replay protection (564ms)
+(node:3815547) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  7 [chromium] › tests/browser/site-contribution-worker.spec.ts:53:1 › production worker describes an authenticated form after UI setup and unlock without exposing keys or accepting caller authority (1.5s)
+  ✓  8 [chromium] › tests/browser/site-contribution-worker.spec.ts:146:1 › production workers recover queued proposals offline and send through the UI-established RTC link without reviving cancellation (8.5s)
+
+
+  1) [chromium] › tests/browser/site-contribution-dismiss.spec.ts:20:3 › browser local discard concurrent-source preserves atomic private evidence and replay protection 
+
+    Error: page.evaluate: Error: Candidato ausente ou expirado
+        at insist4 (http://127.0.0.1:36165/engine.js:6022:20)
+        at http://127.0.0.1:36165/engine.js:6238:9
+        at http://127.0.0.1:36165/engine.js:6182:31
+        at async http://127.0.0.1:36165/engine.js:8659:42
+        at insist4 (http://127.0.0.1:36165/engine.js:6022:20)
+        at http://127.0.0.1:36165/engine.js:6238:9
+        at http://127.0.0.1:36165/engine.js:6182:31
+        at async http://127.0.0.1:36165/engine.js:8659:42
+        at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-contribution-dismiss.spec.ts:24:31
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .cache/contribution-dismiss-browser-first/artifacts/site-contribution-dismiss--a89c5-dence-and-replay-protection-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: .cache/contribution-dismiss-browser-first/artifacts/site-contribution-dismiss--a89c5-dence-and-replay-protection-chromium/error-context.md
+
+    Error Context: .cache/contribution-dismiss-browser-first/artifacts/site-contribution-dismiss--a89c5-dence-and-replay-protection-chromium/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    .cache/contribution-dismiss-browser-first/artifacts/site-contribution-dismiss--a89c5-dence-and-replay-protection-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace .cache/contribution-dismiss-browser-first/artifacts/site-contribution-dismiss--a89c5-dence-and-replay-protection-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › tests/browser/site-contribution-dismiss.spec.ts:20:3 › browser local discard concurrent-source preserves atomic private evidence and replay protection 
+  7 passed (15.4s)

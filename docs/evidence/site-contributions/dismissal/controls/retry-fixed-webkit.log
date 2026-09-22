@@ -1,0 +1,24 @@
+
+Running 17 tests using 1 worker
+
+(node:4025028) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [webkit] › tests/browser/site-contribution-send.spec.ts:22:3 › browser source held only in a private proposal queue recover with both relays paused (3.6s)
+  ✓   2 [webkit] › tests/browser/site-contribution-send.spec.ts:22:3 › browser source held only in a private proposal queue cancel-retained-reply with both relays paused (3.5s)
+  ✓   3 [webkit] › tests/browser/site-contribution-send.spec.ts:22:3 › browser source held only in a private proposal queue cancel-before-admission with both relays paused (3.6s)
+  ✓   4 [webkit] › tests/browser/site-contribution-send.spec.ts:22:3 › browser source held only in a private proposal queue cancel-queued with both relays paused (3.6s)
+  ✓   5 [webkit] › tests/browser/site-contribution-send.spec.ts:396:5 › private form proposals web-to-native cross RTC and WebSocket with node and an intermediary without a reading key (3.7s)
+  ✓   6 [webkit] › tests/browser/site-contribution-send.spec.ts:396:5 › private form proposals native-to-web cross RTC and WebSocket with node and an intermediary without a reading key (3.6s)
+  ✓   7 [webkit] › tests/browser/site-contribution-send.spec.ts:396:5 › private form proposals web-to-native cross RTC and WebSocket with native and an intermediary without a reading key (3.3s)
+  ✓   8 [webkit] › tests/browser/site-contribution-send.spec.ts:396:5 › private form proposals native-to-web cross RTC and WebSocket with native and an intermediary without a reading key (3.3s)
+  ✓   9 [webkit] › tests/browser/site-contribution-send.spec.ts:556:1 › two autonomous browser accounts send a private form proposal through real RTC while the sender relay is paused (3.3s)
+  ✓  10 [webkit] › tests/browser/site-contribution-send.spec.ts:725:1 › browser reception journals the original source before review and survives actual cache eviction with the RTC sender closed (3.1s)
+  ✓  11 [webkit] › tests/browser/site-contribution-serve-race.spec.ts:13:3 › in-flight proposal authorization cannot survive cancel while its policy read is retained (864ms)
+  ✓  12 [webkit] › tests/browser/site-contribution-serve-race.spec.ts:13:3 › in-flight proposal authorization cannot survive expire while its policy read is retained (862ms)
+  ✓  13 [webkit] › tests/browser/site-contribution-serve-race.spec.ts:13:3 › in-flight proposal authorization cannot survive close while its policy read is retained (855ms)
+  ✓  14 [webkit] › tests/browser/site-contribution-serve-race.spec.ts:148:5 › durable retry without changes preserves an in-flight proposal read (912ms)
+  ✓  15 [webkit] › tests/browser/site-contribution-serve-race.spec.ts:148:5 › durable retry after revocation refuses an in-flight proposal read (905ms)
+  ✓  16 [webkit] › tests/browser/site-contribution-serve-race.spec.ts:148:5 › durable retry without changes preserves an in-flight source read (980ms)
+  ✓  17 [webkit] › tests/browser/site-contribution-serve-race.spec.ts:148:5 › durable retry after revocation refuses an in-flight source read (988ms)
+
+  17 passed (42.0s)

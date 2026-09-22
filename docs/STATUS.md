@@ -1,5 +1,16 @@
 # RelayLoom — estado verificável
 
+## Protocolo de recibo e novo resultado iOS — 22 de Setembro
+
+**bf12d51:** certificado de recepção assinado pelo dono e envelope privado vinculado à proposta.52 vectores Node/portátil/Go,Go/sites-race e1 teste real por browser passaram. **Ainda sem persistência/envio/recepção automáticos de recibos nem UI de revisão.** [Provas e fronteira exacta](evidence/site-contributions/receipt-protocol).
+
+CI35786710953/f3f32fc confirmou a mensagem privada no par Node e falhou na selecção da fotografia;27 ficheiros do artefacto verificados. **1a53620** ajusta o teste ao asset de imagem observado, com controlo estrutural local; nova compilação/execução Apple pendente. [Evidência](evidence/ci-f3f32fc). Todo o contrato permanece activo.
+
+## Descarte privado e autorização de retry — 22 de Setembro
+
+**6e1f530:** o dono pode descartar uma candidata através do comando privado, inclusive quando o visitante está bloqueado ou falta a origem. A revisão evita actuar sobre uma vista desactualizada. Prova e estado terminal mudam no mesmo commit; reenvios não reabrem a candidata e o facto histórico de verificação é preservado. A libertação é da quota lógica da inbox; não apaga cópias na cache/pares. Ainda não é recusa assinada nem fluxo completo na interface.
+
+Passaram 46 testes Node, seis pacotes Go/race (quatro com cache) e 87 casos entre processos. O primeiro gate browser encontrou três falhas WebKit; dois controlos reproduziram uma autorização invalidada por retry idêntico. A correcção preserva a referência em retries iguais, mantendo a invalidação após revogar. A revisão passou **89 casos em cada Chromium/Firefox/WebKit**, com os dois ficheiros alterados e os passes anteriores distinguidos. [Comandos, falhas e provas](evidence/site-contributions/dismissal). Recibos, aprovação/CAS/reconciliação/proveniência e UI de três contas continuam obrigatórios. HTML público inalterado.
 
 ## Recuperação da origem privada — 22 de Setembro
 
@@ -182,7 +193,7 @@ Duplicação e ordenação implementadas no estúdio, com IDs independentes, lig
 
 A interface inclui apresentação inicial, configuração guiada, PT-PT/en-GB/es-ES e preferências persistentes no perfil Node/Go ou no browser. Nomes, mensagens e sites conservam o conteúdo do autor. No Android, arranque/avisos nativos também seguem a língua escolhida. **Publicaçãoeff7e9b9 da fonte02188da concluída; verificação finalHTTPS concluída. iOS da fonte02188da compilou e executou startup; etapa funcional falhou na navegação. A correcção local ainda aguarda nova execuçãoApple.**
 
-Gate geral PASS:345Node,Go/race/SQLiteC,62interop,129browser,60UI Node/Go,Linux executado/empacotado,121casos da candidata pública+2oráculos e9UI-RNS. Android APKd2dd1ab1…:57asserções de mensagens/idiomas,38SAF,15prazo,13relay e inspecção privada PASS. O autor offline e a retransmissão por terceiro foram exercitados; não é hardware de rádio. [Provas e comandos exactos](evidence/onboarding-languages) · [Guia de arranque](SETUP-LANGUAGES.md).
+Gate geral PASS:345Node,Go/race/SQLiteC,62interop,129browser,60UI Node/Go,Linux executado/empacotado,121 casos da candidata pública+2oráculos e9UI-RNS. Android APKd2dd1ab1…:57asserções de mensagens/idiomas,38SAF,15prazo,13relay e inspecção privada PASS. O autor offline e a retransmissão por terceiro foram exercitados; não é hardware de rádio. [Provas e comandos exactos](evidence/onboarding-languages) · [Guia de arranque](SETUP-LANGUAGES.md).
 
 iOS: o CI35138345398 passouSwift/políticas/build/startup e importou a fotografia em4270ms, mas falhou na navegação para ligar o par. Selector do landmark e diagnóstico de geometria preparados;22testes do runner/static noLinux passaram, sem executar a correcção emApple. As falhas anteriores da fototeca ficam no histórico. Não há dispensa de cobertura ou declaração de produto concluído. A nova distribuição passou17hashesHTTP e os3testes existentes do estúdio no URL. A tentativa de idiomas estava parcialmente apontada a localhost; foi corrigida. Depois dos timeouts conservados, a execução final passou9UI e1percurso entre processos noHTTPS, com as fontes dos verificadores estáveis. [Falhas, âmbito corrigido e próximos controlos](evidence/onboarding-languages/live). Os marcos abaixo são históricos.
 
