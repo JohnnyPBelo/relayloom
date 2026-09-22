@@ -18,6 +18,29 @@ function uiTestArguments(common, result, name) {
   return [...common, '-resultBundlePath', result, '-parallel-testing-enabled', 'NO', '-maximum-concurrent-test-simulator-destinations', '1', '-maximum-parallel-testing-workers', '1', '-test-timeouts-enabled', 'YES', '-default-test-execution-time-allowance', '360', '-maximum-test-execution-time-allowance', '420', '-only-testing:RelayLoomUITests/' + name, 'test-without-building'];
 }
 
+/** A read-only observation timeout is not proof that the owned peer exited.
+ * Retry only state reads, at most twice, inside the unchanged global deadline.
+ * Mutation failures, malformed responses and a dead peer remain terminal. */
+export async function observePeerState(call, { alive, stopped, record, wait = delay }) {
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    if (stopped()) return null;
+    if (!alive()) throw new Error('Owned Node peer exited during observation');
+    try {
+      const state = await call('state');
+      if (stopped()) return null;
+      if (!state || !Array.isArray(state.objects) || !Array.isArray(state.outbox))
+        throw new Error('Owned Node peer returned invalid state');
+      return state;
+    } catch (error) {
+      if (stopped()) return null;
+      if (error?.name !== 'TimeoutError' || !alive()) throw error;
+      record({ operation: 'state', attempt, timeoutMs: 10000 });
+      if (attempt === 3) throw new Error('Owned Node peer state observation timed out three times');
+      await wait(1500);
+    }
+  }
+}
+
 /** Establish the app's native startup separately from photo-library readiness.
  * Both XCTest invocations use the original per-test/global budget controls.
  * A startup pass never sets the functional UI gate's success flag. */
@@ -438,7 +461,12 @@ async function main(argv) {
     let replyID;
     context.watch = (async () => {
       while (!context.watchStop && Date.now() < deadline) {
-        const state = await call('state');
+        const state = await observePeerState(call, {
+          alive: () => peer.exitCode === null && peer.signalCode === null,
+          stopped: () => context.watchStop || Date.now() >= deadline || !!context.abort,
+          record: value => { report.peerObservationTimeouts ??= []; if (report.peerObservationTimeouts.length < 32) report.peerObservationTimeouts.push(value); },
+        });
+        if (state === null) break;
         for (const object of state.objects) {
           if (object.kind !== 'message' || ![fixtures.message, fixtures.attachmentMessage].includes(object.content.text) || peerEvidence.messages.some(previous => previous.id === object.id)) continue;
           if (object.public || object.author.id === recipient.id || object.author.name !== fixtures.senderName || object.readers.length !== 2 || !object.readers.includes(recipient.id) || !object.readers.includes(object.author.id)) throw new Error('Real peer received an unexpected author or reader scope');

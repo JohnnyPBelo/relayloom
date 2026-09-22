@@ -7,7 +7,33 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync, readFileSync } from 'nod
 import { DatabaseSync } from 'node:sqlite';
 import { join, resolve } from 'node:path';
 import { tsImport } from 'tsx/esm/api';
-import { startupBeforePhoto, sanitize, selectSimulator, requestedSimulatorVersion, validateOwnedContainer, assertTestSummary, verifySyntheticContainer, removeMatchingRunRecord, requireInactiveCleanupOwner, stopOwnedProcessGroup, stopOwnedAfterFailure, annotatePhotoFailure, recordPeerDiagnostics, recordUIPhases, needsPhotoDiagnostics } from '../../../scripts/ios-simulator.mjs';
+import { observePeerState, startupBeforePhoto, sanitize, selectSimulator, requestedSimulatorVersion, validateOwnedContainer, assertTestSummary, verifySyntheticContainer, removeMatchingRunRecord, requireInactiveCleanupOwner, stopOwnedProcessGroup, stopOwnedAfterFailure, annotatePhotoFailure, recordPeerDiagnostics, recordUIPhases, needsPhotoDiagnostics } from '../../../scripts/ios-simulator.mjs';
+
+test('peer observation retries only bounded read timeouts and never treats them as a passed UI gate', async () => {
+  const seen = [], waits = [], records = [], state = { objects: [], outbox: [] };
+  const timeout = () => Object.assign(new Error('fixture timeout'), { name: 'TimeoutError' });
+  const control = { alive: () => true, stopped: () => false, record: x => records.push(x), wait: async ms => waits.push(ms) };
+  const actual = await observePeerState(async op => { seen.push(op); if (seen.length < 3) throw timeout(); return state; }, control);
+  assert.equal(actual, state); assert.deepEqual(seen, ['state', 'state', 'state']);
+  assert.deepEqual(waits, [1500, 1500]); assert.equal(records.length, 2);
+  assert.equal(Object.hasOwn(actual, 'status'), false);
+  let calls = 0;
+  await assert.rejects(observePeerState(async () => { calls++; throw timeout(); }, control), /three times/);
+  assert.equal(calls, 3);
+});
+
+test('peer observation fails closed on protocol errors, malformed state and peer exit, and honors stop without another request', async () => {
+  const control = { alive: () => true, stopped: () => false, record: () => {}, wait: async () => {} };
+  let calls = 0;
+  await assert.rejects(observePeerState(async () => { calls++; throw new Error('fixture protocol failure'); }, control), /protocol failure/);
+  assert.equal(calls, 1);
+  await assert.rejects(observePeerState(async () => ({ objects: [] }), control), /invalid state/);
+  await assert.rejects(observePeerState(async () => { throw Error('must not run'); }, { ...control, alive: () => false }), /exited/);
+  assert.equal(await observePeerState(async () => { throw Error('must not run'); }, { ...control, stopped: () => true }), null);
+  let stopped = false;
+  const value = await observePeerState(async () => { throw Object.assign(new Error('fixture timeout'), { name: 'TimeoutError' }); }, { ...control, stopped: () => stopped, wait: async () => { stopped = true; } });
+  assert.equal(value, null);
+});
 
 test('bounded UI phase diagnostics preserve failed status, reject arbitrary text and select only the incomplete photo stage', () => {
   const report = { status: 'FAILED', error: 'Owned command failed: execute-ui-test', photoAttachmentRequested: true };
