@@ -1,0 +1,222 @@
+TAP version 13
+# Subtest: Go A → Node B → Go C: isolated real sockets, encrypted messages/receipts, partition, restart and publisher-offline seeding
+ok 1 - Go A → Node B → Go C: isolated real sockets, encrypted messages/receipts, partition, restart and publisher-offline seeding
+  ---
+  duration_ms: 9491.047377
+  type: 'test'
+  ...
+# Subtest: Go A → Node B → Node C over TCP and serial PTYs preserves bytes, receipts and partition recovery
+ok 2 - Go A → Node B → Node C over TCP and serial PTYs preserves bytes, receipts and partition recovery
+  ---
+  duration_ms: 4619.91408
+  type: 'test'
+  ...
+# Subtest: node refuses public or forged proposals before storage and withholds unauthorized candidates
+ok 3 - node refuses public or forged proposals before storage and withholds unauthorized candidates
+  ---
+  duration_ms: 1138.045125
+  type: 'test'
+  ...
+# Subtest: native refuses public or forged proposals before storage and withholds unauthorized candidates
+ok 4 - native refuses public or forged proposals before storage and withholds unauthorized candidates
+  ---
+  duration_ms: 762.003356
+  type: 'test'
+  ...
+# (node:2082715) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: node prepares without signing; the other runtime resumes the same private intent and certificate
+ok 5 - node prepares without signing; the other runtime resumes the same private intent and certificate
+  ---
+  duration_ms: 4723.377007
+  type: 'test'
+  ...
+# Subtest: go prepares without signing; the other runtime resumes the same private intent and certificate
+ok 6 - go prepares without signing; the other runtime resumes the same private intent and certificate
+  ---
+  duration_ms: 4445.31244
+  type: 'test'
+  ...
+# Subtest: real Go process exit before-intent-commit leaves exactly the committed state for Node recovery
+ok 7 - real Go process exit before-intent-commit leaves exactly the committed state for Node recovery
+  ---
+  duration_ms: 1172.286623
+  type: 'test'
+  ...
+# Subtest: real Go process exit after-intent leaves exactly the committed state for Node recovery
+ok 8 - real Go process exit after-intent leaves exactly the committed state for Node recovery
+  ---
+  duration_ms: 1173.642896
+  type: 'test'
+  ...
+# Subtest: real Go process exit before-signature-commit leaves exactly the committed state for Node recovery
+ok 9 - real Go process exit before-signature-commit leaves exactly the committed state for Node recovery
+  ---
+  duration_ms: 1206.603712
+  type: 'test'
+  ...
+# Subtest: real Go process exit after-signature leaves exactly the committed state for Node recovery
+ok 10 - real Go process exit after-signature leaves exactly the committed state for Node recovery
+  ---
+  duration_ms: 1211.043646
+  type: 'test'
+  ...
+# Subtest: Go catalogue honors expiry without renewing, rejects another request and preserves a new monotonic sequence
+ok 11 - Go catalogue honors expiry without renewing, rejects another request and preserves a new monotonic sequence
+  ---
+  duration_ms: 4346.941089
+  type: 'test'
+  ...
+# Subtest: Go refuses authenticated-but-inconsistent stage without replacing the preparation
+ok 12 - Go refuses authenticated-but-inconsistent stage without replacing the preparation
+  ---
+  duration_ms: 1072.110778
+  type: 'test'
+  ...
+# Subtest: Go refuses authenticated-but-inconsistent record without replacing the preparation
+ok 13 - Go refuses authenticated-but-inconsistent record without replacing the preparation
+  ---
+  duration_ms: 1072.741962
+  type: 'test'
+  ...
+# Subtest: Go quota refusal leaves no proposal counter/stage and allows the original smaller request
+ok 14 - Go quota refusal leaves no proposal counter/stage and allows the original smaller request
+  ---
+  duration_ms: 1645.681884
+  type: 'test'
+  ...
+# Subtest: Go policy clock boundary -1ms rechecks the actual proposal handle
+ok 15 - Go policy clock boundary -1ms rechecks the actual proposal handle
+  ---
+  duration_ms: 1135.536362
+  type: 'test'
+  ...
+# Subtest: Go policy clock boundary 0ms rechecks the actual proposal handle
+ok 16 - Go policy clock boundary 0ms rechecks the actual proposal handle
+  ---
+  duration_ms: 1103.069872
+  type: 'test'
+  ...
+# Subtest: node seals a private envelope once and the other engine recovers its exact bytes and fixed deadline
+ok 17 - node seals a private envelope once and the other engine recovers its exact bytes and fixed deadline
+  ---
+  duration_ms: 2328.234593
+  type: 'test'
+  ...
+# Subtest: go seals a private envelope once and the other engine recovers its exact bytes and fixed deadline
+ok 18 - go seals a private envelope once and the other engine recovers its exact bytes and fixed deadline
+  ---
+  duration_ms: 3489.400014
+  type: 'test'
+  ...
+# Subtest: Go abrupt exit before-envelope-commit preserves only a committed encrypted envelope
+ok 19 - Go abrupt exit before-envelope-commit preserves only a committed encrypted envelope
+  ---
+  duration_ms: 1267.07174
+  type: 'test'
+  ...
+# Subtest: Go abrupt exit after-envelope preserves only a committed encrypted envelope
+ok 20 - Go abrupt exit after-envelope preserves only a committed encrypted envelope
+  ---
+  duration_ms: 1264.381636
+  type: 'test'
+  ...
+# Subtest: both catalogues reject a corrupted retained envelope without falling back to a fresh nonce
+ok 21 - both catalogues reject a corrupted retained envelope without falling back to a fresh nonce
+  ---
+  duration_ms: 1145.23237
+  type: 'test'
+  ...
+# Subtest: a Node sealer waits on the real Go writer transaction and recovers the envelope committed by that writer
+ok 22 - a Node sealer waits on the real Go writer transaction and recovers the envelope committed by that writer
+  ---
+  duration_ms: 1398.255318
+  type: 'test'
+  ...
+# Subtest: repeated Go cancellation of an old operation cannot remove the current preparation
+ok 23 - repeated Go cancellation of an old operation cannot remove the current preparation
+  ---
+  duration_ms: 1183.15569
+  type: 'test'
+  ...
+# Subtest: node queues before public copying, recovers bytes and frees only its own preparation slot
+ok 24 - node queues before public copying, recovers bytes and frees only its own preparation slot
+  ---
+  duration_ms: 3497.820181
+  type: 'test'
+  ...
+# Subtest: go queues before public copying, recovers bytes and frees only its own preparation slot
+ok 25 - go queues before public copying, recovers bytes and frees only its own preparation slot
+  ---
+  duration_ms: 4578.816689
+  type: 'test'
+  ...
+# Subtest: Go exit before-queue-commit retains either the signed stage or its durable queued replacement
+ok 26 - Go exit before-queue-commit retains either the signed stage or its durable queued replacement
+  ---
+  duration_ms: 206.327031
+  type: 'test'
+  ...
+# Subtest: Go exit after-queue retains either the signed stage or its durable queued replacement
+ok 27 - Go exit after-queue retains either the signed stage or its durable queued replacement
+  ---
+  duration_ms: 194.30948
+  type: 'test'
+  ...
+# Subtest: node form lookup derives permissions from real snapshots across process transfer, private access and restarted seeder takeover
+ok 28 - node form lookup derives permissions from real snapshots across process transfer, private access and restarted seeder takeover
+  ---
+  duration_ms: 4083.627458
+  type: 'test'
+  ...
+# Subtest: native form lookup derives permissions from real snapshots across process transfer, private access and restarted seeder takeover
+ok 29 - native form lookup derives permissions from real snapshots across process transfer, private access and restarted seeder takeover
+  ---
+  duration_ms: 3987.500844
+  type: 'test'
+  ...
+# Subtest: node private proposals cross TCP/serial and an opaque seeder takes over after sender exit
+ok 30 - node private proposals cross TCP/serial and an opaque seeder takes over after sender exit
+  ---
+  duration_ms: 5031.833695
+  type: 'test'
+  ...
+# Subtest: native private proposals cross TCP/serial and an opaque seeder takes over after sender exit
+ok 31 - native private proposals cross TCP/serial and an opaque seeder takes over after sender exit
+  ---
+  duration_ms: 4821.892187
+  type: 'test'
+  ...
+# Subtest: node sends a private site proposal over real TCP and the owner resolves its signed form
+ok 32 - node sends a private site proposal over real TCP and the owner resolves its signed form
+  ---
+  duration_ms: 849.067888
+  type: 'test'
+  ...
+# Subtest: native sends a private site proposal over real TCP and the owner resolves its signed form
+ok 33 - native sends a private site proposal over real TCP and the owner resolves its signed form
+  ---
+  duration_ms: 842.667849
+  type: 'test'
+  ...
+# Subtest: node restarts a private proposal queue and heals a partition without renewing its envelope
+ok 34 - node restarts a private proposal queue and heals a partition without renewing its envelope
+  ---
+  duration_ms: 1561.231884
+  type: 'test'
+  ...
+# Subtest: native restarts a private proposal queue and heals a partition without renewing its envelope
+ok 35 - native restarts a private proposal queue and heals a partition without renewing its envelope
+  ---
+  duration_ms: 1378.567276
+  type: 'test'
+  ...
+1..35
+# tests 35
+# suites 0
+# pass 35
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 84293.313294

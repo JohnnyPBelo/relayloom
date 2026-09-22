@@ -1,0 +1,110 @@
+TAP version 13
+# (node:1640605) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: intent commits without a visitor signature; later signing survives reopen with private consent and no public store
+ok 1 - intent commits without a visitor signature; later signing survives reopen with private consent and no public store
+  ---
+  duration_ms: 128.824172
+  type: 'test'
+  ...
+# Subtest: failed transactions and changed policy retain a prepared intent without handing out a signature
+ok 2 - failed transactions and changed policy retain a prepared intent without handing out a signature
+  ---
+  duration_ms: 72.008171
+  type: 'test'
+  ...
+# Subtest: expiry and cancellation keep retired sequence outcomes and never renew a signature
+ok 3 - expiry and cancellation keep retired sequence outcomes and never renew a signature
+  ---
+  duration_ms: 674.897015
+  type: 'test'
+  ...
+# Subtest: private contribution storage refuses missing-stage without resetting an intent
+ok 4 - private contribution storage refuses missing-stage without resetting an intent
+  ---
+  duration_ms: 35.383512
+  type: 'test'
+  ...
+# Subtest: private contribution storage refuses wrong-source without resetting an intent
+ok 5 - private contribution storage refuses wrong-source without resetting an intent
+  ---
+  duration_ms: 34.236622
+  type: 'test'
+  ...
+# Subtest: private contribution storage refuses read-key without resetting an intent
+ok 6 - private contribution storage refuses read-key without resetting an intent
+  ---
+  duration_ms: 27.761824
+  type: 'test'
+  ...
+# Subtest: real abrupt process exit before-intent-commit preserves the intent and fixed certificate identity
+ok 7 - real abrupt process exit before-intent-commit preserves the intent and fixed certificate identity
+  ---
+  duration_ms: 252.545367
+  type: 'test'
+  ...
+# Subtest: real abrupt process exit after-intent preserves the intent and fixed certificate identity
+ok 8 - real abrupt process exit after-intent preserves the intent and fixed certificate identity
+  ---
+  duration_ms: 245.734049
+  type: 'test'
+  ...
+# Subtest: real abrupt process exit after-signature preserves the intent and fixed certificate identity
+ok 9 - real abrupt process exit after-signature preserves the intent and fixed certificate identity
+  ---
+  duration_ms: 255.876543
+  type: 'test'
+  ...
+# Subtest: preparation quota failure rolls back stage and sequence before any signature exists
+ok 10 - preparation quota failure rolls back stage and sequence before any signature exists
+  ---
+  duration_ms: 82.037804
+  type: 'test'
+  ...
+# Subtest: a proposal expiring during the policy check cannot commit a new signature
+ok 11 - a proposal expiring during the policy check cannot commit a new signature
+  ---
+  duration_ms: 36.717142
+  type: 'test'
+  ...
+# (node:1640817) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: queued source and envelope survive restart while a second preparation uses its own slot
+ok 12 - queued source and envelope survive restart while a second preparation uses its own slot
+  ---
+  duration_ms: 249.380384
+  type: 'test'
+  ...
+# Subtest: queue transaction rollback retains the signed envelope and never frees a preparation early
+ok 13 - queue transaction rollback retains the signed envelope and never frees a preparation early
+  ---
+  duration_ms: 118.851446
+  type: 'test'
+  ...
+# Subtest: queued expiry retires private payload but retains packet identity for cancellation
+ok 14 - queued expiry retires private payload but retains packet identity for cancellation
+  ---
+  duration_ms: 109.765203
+  type: 'test'
+  ...
+# Subtest: 32 pending queues apply backpressure without losing old payloads or the current prepared envelope
+ok 15 - 32 pending queues apply backpressure without losing old payloads or the current prepared envelope
+  ---
+  duration_ms: 2363.061185
+  type: 'test'
+  ...
+# Subtest: missing queued payload is corruption, not an excuse to create new bytes or cancel a different stage
+ok 16 - missing queued payload is corruption, not an excuse to create new bytes or cancel a different stage
+  ---
+  duration_ms: 84.560603
+  type: 'test'
+  ...
+1..16
+# tests 16
+# suites 0
+# pass 16
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 5129.139994

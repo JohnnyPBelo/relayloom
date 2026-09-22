@@ -1,0 +1,22 @@
+TAP version 13
+# Subtest: node private proposals cross TCP/serial and an opaque seeder takes over after sender exit
+ok 1 - node private proposals cross TCP/serial and an opaque seeder takes over after sender exit
+  ---
+  duration_ms: 7276.835868
+  type: 'test'
+  ...
+# Subtest: native private proposals cross TCP/serial and an opaque seeder takes over after sender exit
+ok 2 - native private proposals cross TCP/serial and an opaque seeder takes over after sender exit
+  ---
+  duration_ms: 7035.531923
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 14485.936026

@@ -1,0 +1,10 @@
+
+Running 3 tests using 1 worker
+
+(node:2211127) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/browser/site-contribution-serve-race.spec.ts:13:3 › in-flight proposal authorization cannot survive cancel while its policy read is retained (633ms)
+  ✓  2 [chromium] › tests/browser/site-contribution-serve-race.spec.ts:13:3 › in-flight proposal authorization cannot survive expire while its policy read is retained (547ms)
+  ✓  3 [chromium] › tests/browser/site-contribution-serve-race.spec.ts:13:3 › in-flight proposal authorization cannot survive close while its policy read is retained (549ms)
+
+  3 passed (2.3s)

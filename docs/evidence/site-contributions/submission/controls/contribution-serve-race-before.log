@@ -1,0 +1,80 @@
+
+Running 3 tests using 1 worker
+
+(node:2208508) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [chromium] › tests/browser/site-contribution-serve-race.spec.ts:13:3 › in-flight proposal authorization cannot survive cancel while its policy read is retained (763ms)
+(node:2208791) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 [chromium] › tests/browser/site-contribution-serve-race.spec.ts:13:3 › in-flight proposal authorization cannot survive expire while its policy read is retained (647ms)
+(node:2208981) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  3 [chromium] › tests/browser/site-contribution-serve-race.spec.ts:13:3 › in-flight proposal authorization cannot survive close while its policy read is retained (608ms)
+
+
+  1) [chromium] › tests/browser/site-contribution-serve-race.spec.ts:13:3 › in-flight proposal authorization cannot survive cancel while its policy read is retained 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      141 |       expect(result.packetCancelled).toBe(true);
+      142 |     }
+    > 143 |     expect(result.authorizedAfter).toBe(false);
+          |                                    ^
+      144 |   });
+      145 |
+        at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-contribution-serve-race.spec.ts:143:36
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .cache/contribution-serve-race-before-artifacts/site-contribution-serve-ra-55e27-its-policy-read-is-retained-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: .cache/contribution-serve-race-before-artifacts/site-contribution-serve-ra-55e27-its-policy-read-is-retained-chromium/error-context.md
+
+    Error Context: .cache/contribution-serve-race-before-artifacts/site-contribution-serve-ra-55e27-its-policy-read-is-retained-chromium/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    .cache/contribution-serve-race-before-artifacts/site-contribution-serve-ra-55e27-its-policy-read-is-retained-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace .cache/contribution-serve-race-before-artifacts/site-contribution-serve-ra-55e27-its-policy-read-is-retained-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [chromium] › tests/browser/site-contribution-serve-race.spec.ts:13:3 › in-flight proposal authorization cannot survive expire while its policy read is retained 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      141 |       expect(result.packetCancelled).toBe(true);
+      142 |     }
+    > 143 |     expect(result.authorizedAfter).toBe(false);
+          |                                    ^
+      144 |   });
+      145 |
+        at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-contribution-serve-race.spec.ts:143:36
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .cache/contribution-serve-race-before-artifacts/site-contribution-serve-ra-8264f-its-policy-read-is-retained-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: .cache/contribution-serve-race-before-artifacts/site-contribution-serve-ra-8264f-its-policy-read-is-retained-chromium/error-context.md
+
+    Error Context: .cache/contribution-serve-race-before-artifacts/site-contribution-serve-ra-8264f-its-policy-read-is-retained-chromium/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    .cache/contribution-serve-race-before-artifacts/site-contribution-serve-ra-8264f-its-policy-read-is-retained-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace .cache/contribution-serve-race-before-artifacts/site-contribution-serve-ra-8264f-its-policy-read-is-retained-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    [chromium] › tests/browser/site-contribution-serve-race.spec.ts:13:3 › in-flight proposal authorization cannot survive cancel while its policy read is retained 
+    [chromium] › tests/browser/site-contribution-serve-race.spec.ts:13:3 › in-flight proposal authorization cannot survive expire while its policy read is retained 
+  1 passed (3.9s)

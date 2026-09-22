@@ -1,0 +1,40 @@
+TAP version 13
+# Subtest: node private proposals cross TCP/serial and an opaque seeder takes over after sender exit
+not ok 1 - node private proposals cross TCP/serial and an opaque seeder takes over after sender exit
+  ---
+  duration_ms: 1236.413668
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/native/site-contribution-relay.test.ts:1:667'
+  failureType: 'testCodeFailure'
+  error: 'adaptador série nativo ainda não implementado nesta aplicação; use TCP'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    IncomingMessage.<anonymous> (/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/helpers.ts:181:26)
+    IncomingMessage.emit (node:events:531:35)
+    endReadableNT (node:internal/streams/readable:1698:12)
+    process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+  ...
+# Subtest: native private proposals cross TCP/serial and an opaque seeder takes over after sender exit
+not ok 2 - native private proposals cross TCP/serial and an opaque seeder takes over after sender exit
+  ---
+  duration_ms: 832.357099
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/native/site-contribution-relay.test.ts:1:667'
+  failureType: 'testCodeFailure'
+  error: 'adaptador série nativo ainda não implementado nesta aplicação; use TCP'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    IncomingMessage.<anonymous> (/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/helpers.ts:181:26)
+    IncomingMessage.emit (node:events:531:35)
+    endReadableNT (node:internal/streams/readable:1698:12)
+    process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 0
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2254.340413

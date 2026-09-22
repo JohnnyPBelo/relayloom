@@ -1,0 +1,37 @@
+
+Running 1 test using 1 worker
+
+(node:2990219) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [chromium] › tests/browser/site-contribution-catalog.spec.ts:549:1 › repeating cancellation of an old proposal preserves a different active preparation (537ms)
+
+
+  1) [chromium] › tests/browser/site-contribution-catalog.spec.ts:549:1 › repeating cancellation of an old proposal preserves a different active preparation 
+
+    Error: page.evaluate: Error: Preparação de proposta em falta
+        at insist2 (http://127.0.0.1:46509/engine.js:5122:20)
+        at http://127.0.0.1:46509/engine.js:5188:11
+        at async http://127.0.0.1:46509/engine.js:7365:42
+        at insist2 (http://127.0.0.1:46509/engine.js:5122:20)
+        at http://127.0.0.1:46509/engine.js:5188:11
+        at async http://127.0.0.1:46509/engine.js:7365:42
+        at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-contribution-catalog.spec.ts:553:29
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .cache/contribution-cancel-before-browser-artifacts/site-contribution-catalog--5c498-ifferent-active-preparation-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: .cache/contribution-cancel-before-browser-artifacts/site-contribution-catalog--5c498-ifferent-active-preparation-chromium/error-context.md
+
+    Error Context: .cache/contribution-cancel-before-browser-artifacts/site-contribution-catalog--5c498-ifferent-active-preparation-chromium/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    .cache/contribution-cancel-before-browser-artifacts/site-contribution-catalog--5c498-ifferent-active-preparation-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace .cache/contribution-cancel-before-browser-artifacts/site-contribution-catalog--5c498-ifferent-active-preparation-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › tests/browser/site-contribution-catalog.spec.ts:549:1 › repeating cancellation of an old proposal preserves a different active preparation 

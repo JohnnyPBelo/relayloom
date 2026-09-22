@@ -1,0 +1,57 @@
+TAP version 13
+# (node:1626601) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: queued source and envelope survive restart while a second preparation uses its own slot
+ok 1 - queued source and envelope survive restart while a second preparation uses its own slot
+  ---
+  duration_ms: 246.14583
+  type: 'test'
+  ...
+# Subtest: queue transaction rollback retains the signed envelope and never frees a preparation early
+not ok 2 - queue transaction rollback retains the signed envelope and never frees a preparation early
+  ---
+  duration_ms: 100.147803
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/site-contribution-queue.test.ts:1:3670'
+  failureType: 'testCodeFailure'
+  error: 'Registo fechado, incerto ou já em transacção'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    ProtectedGroupStore.execute (/home/absint0o/projects/relayloom/.cache/site-optional-resources/packages/groups/src/storage.ts:462:13)
+    ProtectedGroupStore.transaction (/home/absint0o/projects/relayloom/.cache/site-optional-resources/packages/groups/src/storage.ts:606:17)
+    NodeContributionCatalog.run (/home/absint0o/projects/relayloom/.cache/site-optional-resources/packages/sites/src/contribution-catalog.ts:177:26)
+    NodeContributionCatalog.queue (/home/absint0o/projects/relayloom/.cache/site-optional-resources/packages/sites/src/contribution-catalog.ts:451:17)
+    TestContext.<anonymous> (/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/site-contribution-queue.test.ts:150:20)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  ...
+# Subtest: queued expiry retires private payload but retains packet identity for cancellation
+ok 3 - queued expiry retires private payload but retains packet identity for cancellation
+  ---
+  duration_ms: 113.936132
+  type: 'test'
+  ...
+# Subtest: 32 pending queues apply backpressure without losing old payloads or the current prepared envelope
+ok 4 - 32 pending queues apply backpressure without losing old payloads or the current prepared envelope
+  ---
+  duration_ms: 2395.631534
+  type: 'test'
+  ...
+# Subtest: missing queued payload is corruption, not an excuse to create new bytes or cancel a different stage
+ok 5 - missing queued payload is corruption, not an excuse to create new bytes or cancel a different stage
+  ---
+  duration_ms: 84.842972
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 4
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3150.137229
