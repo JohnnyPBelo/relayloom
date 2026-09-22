@@ -1,5 +1,13 @@
 # RelayLoom — estado verificável
 
+## Catálogos e envelopes recuperáveis — código local de 22 de Setembro
+
+**a1040a7/16dbd6a:** catálogo Go interoperável com Node, prazos revalidados após política e envelopes privados persistidos nos três motores. A criação e a expiração são as da intenção guardada. Reabrir/alternar motor recupera exactamente o mesmo envelope; corrupção é recusada sem gerar novo nonce. A leitura de uma página ou concessão de publicação não passa a conferir autoridade de edição.
+
+O gate final passou **500 Node, 18 testes de processos, build nativo/web e 21 percursos por browser** (Chromium/Firefox/WebKit), sem falhas/skips. Go core/sites-race passou na mesma fonte; 53 vectores de journal (18 aceites/35 recusados) concordam. O controlo concorrente provou que Node aguardou o writer Go e recuperou a mesma cifra. [Fontes, comandos, controlos e falhas corrigidas](evidence/site-contributions/envelopes).
+
+**Ainda faltam API de submissão, cópia para transporte/outbox/inbox, recibos, aprovação/reconciliação/proveniência e UI completa de formulários.** Selar é um estado interno, não entrega. A web pública permanece 7fdb76a/0fdbd1b9. O CI35670707944 em curso testa bd419cb, anterior a estas alterações; nenhum resultado de hardware/Apple/revisão independente é inferido.
+
 ## Preparação privada de contribuições — 22 de Setembro
 
 Código **b8a8a9e/6749483**: concessão de divulgação separada do envio privado; journal e catálogos Node/browser com intenção guardada antes de assinar, tempos fixos, reabertura idempotente, cancelamento/expiração e resultados limitados. O codec privado contribution é interoperável entre Node e Go, com a chave de assinatura separada da chave de leitura.

@@ -278,3 +278,10 @@ FR-038/039/040, continuação v4 local: vínculo declarativo formulário→tabel
 FR-038/039/040 e CON-002 continuam parciais. ac54af4 liga consulta de contexto assinado/cifrado a Node/Go/browser, com dois processos TCP e gates de contexto/worker. b8a8a9e separa submissão/divulgação;6749483 implementa journal e catálogo Node/browser e codec privado Go. 494 Node PASS após corrigir tradução e janela de resultados; build, catálogo nos três browsers, Go sites/race e interop de storage com positivos/negativos PASS. Provas em docs/evidence/site-contributions/authenticated-context e preparation.
 
 Ainda faltam catálogo Go, submissão/transporte/outbox/inbox, aprovação/reconciliação/proveniência, UI e restante contrato integral. O CI35661349213 da fonte anterior0a85d7d passou107browser e todos os jobs excepto iOSseed-synthetic-photo; não abrange os commits novos. A publicação permanece7fdb76a/0fdbd1b9. Nenhuma alegação de todos os dispositivos testados ou prontidão para catástrofes.
+
+
+## Catálogo Go e envelopes privados — 22 de Setembro
+
+FR-038/039/040, DATA e CON-002 continuam parciais no produto. a1040a7 acrescenta tempos fixos e16dbd6a completa catálogo Go/selagem persistente nos três motores. Gate local500Node,18processos,builds e21casos porbrowser PASS; Go core/sites-race,53vectores(18/35),crashes/quotas/corrupção e writerconcorrente têm provas. Ver docs/evidence/site-contributions/envelopes.
+
+Não conclui submissão/outbox/inbox/aprovação/proveniência/UI nem os restantes requisitos. O CI35670707944 testa bd419cb, anterior aos novos commits. Publicação HTTPS permanece7fdb76a/0fdbd1b9; hardware/Apple e revisão independente continuam com as limitações declaradas.

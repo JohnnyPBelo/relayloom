@@ -1,0 +1,352 @@
+{
+  "config": {
+    "argv": [
+      "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+      "/home/absint0o/projects/relayloom/.cache/site-optional-resources/node_modules/playwright/cli.js",
+      "test",
+      "--config",
+      "tests/browser/matrix.config.ts",
+      "tests/browser/core-fixed-envelope.spec.ts",
+      "tests/browser/site-contribution-catalog.spec.ts",
+      "tests/browser/site-worker.spec.ts",
+      "--output",
+      ".cache/contribution-envelope-chromium-artifacts"
+    ],
+    "configFile": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/matrix.config.ts",
+    "rootDir": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/contribution-envelope-chromium-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "*.spec.ts"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/browser-matrix/chromium/playwright.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "core-fixed-envelope.spec.ts",
+      "file": "core-fixed-envelope.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "actual browser preserves saved envelope times, verifies Node bytes and refuses expired live admission",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 265,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-22T00:43:47.773Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c1ca082fbeb27f002743-db0c3bed78dd163ad93b",
+          "file": "core-fixed-envelope.spec.ts",
+          "line": 15,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "site-contribution-catalog.spec.ts",
+      "file": "site-contribution-catalog.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "browser contribution intent and signature commit separately, survive reopening and abort signing on lock without publishing",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1029,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-22T00:43:48.234Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d1f6381d397657b1fc10-2826171252660c08fa76",
+          "file": "site-contribution-catalog.spec.ts",
+          "line": 13,
+          "column": 1
+        },
+        {
+          "title": "browser catalogue expiry preserves the old result and missing staging is an integrity error",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 383,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-22T00:43:49.311Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d1f6381d397657b1fc10-4e36634b6c327f2461af",
+          "file": "site-contribution-catalog.spec.ts",
+          "line": 214,
+          "column": 1
+        },
+        {
+          "title": "browser rechecks the fixed deadline after policy before signing, with a one-millisecond positive control",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 395,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-22T00:43:49.704Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d1f6381d397657b1fc10-e6f25e837e08258a520c",
+          "file": "site-contribution-catalog.spec.ts",
+          "line": 320,
+          "column": 1
+        },
+        {
+          "title": "browser retains one private encrypted envelope across reopen and cancels a late seal when the identity locks",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 913,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-22T00:43:50.110Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d1f6381d397657b1fc10-9d3b6177b0012331801c",
+          "file": "site-contribution-catalog.spec.ts",
+          "line": 389,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "site-worker.spec.ts",
+      "file": "site-worker.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "production worker publishes and recovers exact site requests, refuses forged snapshots and does not export signing helpers",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 1608,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 0\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[33m@@ -2,10 +2,12 @@\u001b[39m\n\u001b[2m    \"count\": 1,\u001b[22m\n\u001b[2m    \"denied\": Array [\u001b[22m\n\u001b[2m      true,\u001b[22m\n\u001b[2m      true,\u001b[22m\n\u001b[2m      true,\u001b[22m\n\u001b[31m+     true,\u001b[39m\n\u001b[31m+     true,\u001b[39m\n\u001b[2m    ],\u001b[22m\n\u001b[2m    \"id\": \"1817e6006e13a721d74e165d026ac111f82b2f2f64b8f5049acba515c420b2eb\",\u001b[22m\n\u001b[2m    \"secretLeak\": false,\u001b[22m\n\u001b[2m    \"title\": \"Publicação no worker real\",\u001b[22m\n\u001b[2m  }\u001b[22m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 0\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[33m@@ -2,10 +2,12 @@\u001b[39m\n\u001b[2m    \"count\": 1,\u001b[22m\n\u001b[2m    \"denied\": Array [\u001b[22m\n\u001b[2m      true,\u001b[22m\n\u001b[2m      true,\u001b[22m\n\u001b[2m      true,\u001b[22m\n\u001b[31m+     true,\u001b[39m\n\u001b[31m+     true,\u001b[39m\n\u001b[2m    ],\u001b[22m\n\u001b[2m    \"id\": \"1817e6006e13a721d74e165d026ac111f82b2f2f64b8f5049acba515c420b2eb\",\u001b[22m\n\u001b[2m    \"secretLeak\": false,\u001b[22m\n\u001b[2m    \"title\": \"Publicação no worker real\",\u001b[22m\n\u001b[2m  }\u001b[22m\n    at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-worker.spec.ts:149:23",
+                    "location": {
+                      "file": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-worker.spec.ts",
+                      "column": 23,
+                      "line": 149
+                    },
+                    "snippet": "  147 |       };\n  148 |     }, initial);\n> 149 |     expect(recovered).toEqual({\n      |                       ^\n  150 |       id: initial.result.operation.bundleId,\n  151 |       title: payload.site.title,\n  152 |       count: 1,"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-worker.spec.ts",
+                        "column": 23,
+                        "line": 149
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 0\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[33m@@ -2,10 +2,12 @@\u001b[39m\n\u001b[2m    \"count\": 1,\u001b[22m\n\u001b[2m    \"denied\": Array [\u001b[22m\n\u001b[2m      true,\u001b[22m\n\u001b[2m      true,\u001b[22m\n\u001b[2m      true,\u001b[22m\n\u001b[31m+     true,\u001b[39m\n\u001b[31m+     true,\u001b[39m\n\u001b[2m    ],\u001b[22m\n\u001b[2m    \"id\": \"1817e6006e13a721d74e165d026ac111f82b2f2f64b8f5049acba515c420b2eb\",\u001b[22m\n\u001b[2m    \"secretLeak\": false,\u001b[22m\n\u001b[2m    \"title\": \"Publicação no worker real\",\u001b[22m\n\u001b[2m  }\u001b[22m\n\n  147 |       };\n  148 |     }, initial);\n> 149 |     expect(recovered).toEqual({\n      |                       ^\n  150 |       id: initial.result.operation.bundleId,\n  151 |       title: payload.site.title,\n  152 |       count: 1,\n    at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-worker.spec.ts:149:23"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-22T00:43:51.051Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/contribution-envelope-chromium-artifacts/site-worker-production-wor-d206f--not-export-signing-helpers-chromium/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/contribution-envelope-chromium-artifacts/site-worker-production-wor-d206f--not-export-signing-helpers-chromium/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/contribution-envelope-chromium-artifacts/site-worker-production-wor-d206f--not-export-signing-helpers-chromium/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-worker.spec.ts",
+                    "column": 23,
+                    "line": 149
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "9e8c5f8421e05cbf3d1f-5a3f18033e11b30e6f20",
+          "file": "site-worker.spec.ts",
+          "line": 26,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-22T00:43:47.093Z",
+    "duration": 5745.136,
+    "expected": 5,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

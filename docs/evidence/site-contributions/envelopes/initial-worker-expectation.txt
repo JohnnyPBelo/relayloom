@@ -1,0 +1,60 @@
+
+Running 6 tests using 1 worker
+
+(node:2592491) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/browser/core-fixed-envelope.spec.ts:15:1 › actual browser preserves saved envelope times, verifies Node bytes and refuses expired live admission (265ms)
+  ✓  2 [chromium] › tests/browser/site-contribution-catalog.spec.ts:13:1 › browser contribution intent and signature commit separately, survive reopening and abort signing on lock without publishing (1.0s)
+  ✓  3 [chromium] › tests/browser/site-contribution-catalog.spec.ts:214:1 › browser catalogue expiry preserves the old result and missing staging is an integrity error (383ms)
+  ✓  4 [chromium] › tests/browser/site-contribution-catalog.spec.ts:320:1 › browser rechecks the fixed deadline after policy before signing, with a one-millisecond positive control (395ms)
+  ✓  5 [chromium] › tests/browser/site-contribution-catalog.spec.ts:389:1 › browser retains one private encrypted envelope across reopen and cancels a late seal when the identity locks (913ms)
+  ✘  6 [chromium] › tests/browser/site-worker.spec.ts:26:1 › production worker publishes and recovers exact site requests, refuses forged snapshots and does not export signing helpers (1.6s)
+
+
+  1) [chromium] › tests/browser/site-worker.spec.ts:26:1 › production worker publishes and recovers exact site requests, refuses forged snapshots and does not export signing helpers 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 0
+    + Received  + 2
+
+    @@ -2,10 +2,12 @@
+        "count": 1,
+        "denied": Array [
+          true,
+          true,
+          true,
+    +     true,
+    +     true,
+        ],
+        "id": "1817e6006e13a721d74e165d026ac111f82b2f2f64b8f5049acba515c420b2eb",
+        "secretLeak": false,
+        "title": "Publicação no worker real",
+      }
+
+      147 |       };
+      148 |     }, initial);
+    > 149 |     expect(recovered).toEqual({
+          |                       ^
+      150 |       id: initial.result.operation.bundleId,
+      151 |       title: payload.site.title,
+      152 |       count: 1,
+        at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-worker.spec.ts:149:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .cache/contribution-envelope-chromium-artifacts/site-worker-production-wor-d206f--not-export-signing-helpers-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: .cache/contribution-envelope-chromium-artifacts/site-worker-production-wor-d206f--not-export-signing-helpers-chromium/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    .cache/contribution-envelope-chromium-artifacts/site-worker-production-wor-d206f--not-export-signing-helpers-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace .cache/contribution-envelope-chromium-artifacts/site-worker-production-wor-d206f--not-export-signing-helpers-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › tests/browser/site-worker.spec.ts:26:1 › production worker publishes and recovers exact site requests, refuses forged snapshots and does not export signing helpers 
+  5 passed (5.7s)

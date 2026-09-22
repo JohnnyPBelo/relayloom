@@ -1,0 +1,29 @@
+{
+  "corruptEnvelopeRejected": true,
+  "regenerationAttempts": 0,
+  "repairedExact": true,
+  "locked": true,
+  "before": null,
+  "afterLock": null,
+  "seals": 2,
+  "sealedId": "1d5b22439f239cd467a39627f5eb2093d23198460f75a891365fc1ec2c6a3d28",
+  "repeatedId": "1d5b22439f239cd467a39627f5eb2093d23198460f75a891365fc1ec2c6a3d28",
+  "exact": true,
+  "created": 1790039709143,
+  "expectedCreated": 1790039709143,
+  "expires": 1790039769143,
+  "expectedExpires": 1790039769143,
+  "private": true,
+  "readers": [
+    "40197cf78f89623a28294deae3c0eee721f087733640d1902047462696851921",
+    "ee7908805aa677f5d38002cfa69494aef4415c79f2cb11b3a59b2bc3d9797709"
+  ],
+  "expectedReaders": [
+    "40197cf78f89623a28294deae3c0eee721f087733640d1902047462696851921",
+    "ee7908805aa677f5d38002cfa69494aef4415c79f2cb11b3a59b2bc3d9797709"
+  ],
+  "text": "PRIVATE_ENVELOPE_BROWSER",
+  "grant": "public",
+  "publicInventoryEmpty": true,
+  "afterCancel": null
+}

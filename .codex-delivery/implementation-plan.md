@@ -173,3 +173,10 @@ A fundação do documento v4 foi implementada depois desse push: esquema ligado 
 Gate76653 terminado0:494Node,build ecatálogoFirefox/WebKit;ChromiumdirigidoPASS. Registos ecomandos emdocs/evidence/site-contributions/preparation. Não repetir a suite por desconhecer umhandle; as fontes estão commitadas em6749483. Próximo trabalho concreto: portar contribution-operations/contribution-catalog paraGo e testar a mesmaSQLite nas duasdirecções com crashes/quotas/corrupção; depois ligar preparação/submissão àAPI com contexto autenticado, envelope/outbox/inbox, aprovação/proveniência eUI.
 
 O CI anterior0a85d7d acabou com falha só na importação de fotografia iOS, antes do percursofuncional. Novo push normal pode agora arrancar sem cancelar esseCI. Confirmar origin/run depois de enviar o novo marco. O HTML público mantém a distribuição verificada existente; não publicar WIP nem inferir que gates antigos cobrem novosbytes.
+
+
+## Catálogo Go/envelope encerrado como marco verificável
+
+6285 terminou0:500Node,18processos,builds e21percursos porbrowser. Fonte706hashes congelada/conferida, código em a1040a7/16dbd6a. Provas em docs/evidence/site-contributions/envelopes. A portabilidade do catálogo Go está concluída; não recomeçar esse trabalho.
+
+Próximo: API de submissão com snapshot/contexto derivados pelo motor; intenção de transporte durável antes de copiar/gossip; outbox/inbox e recibos separados de aprovação; CAS/reconciliação/proveniência eUI. Plano concreto em CONTRIBUTION-SUBMISSION-INTEGRATION.md. Antes do push, confirmar o estado doCIbd419cb para não cancelar trabalho em curso. Publicar HTML só depois de gate exacto de distribuição/HTTPS; manter todo o contrato.

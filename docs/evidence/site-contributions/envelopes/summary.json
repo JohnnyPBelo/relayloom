@@ -1,0 +1,59 @@
+{
+  "status": "PASS_SCOPED_CATALOGUE_AND_PRIVATE_ENVELOPE",
+  "base": "bd419cb308fb6e4d043842e11bb14d6975676701",
+  "scope": "Full Node regression, real native catalogue interoperability and affected browser core/storage/application/site regressions after Go parity and durable envelope sealing. Proposal submission/outbox/inbox/approval/UI remain pending. No native hardware or deployment claim.",
+  "node": {
+    "tests": 500,
+    "pass": 500,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0
+  },
+  "processes": {
+    "tests": 18,
+    "pass": 18,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0
+  },
+  "browsers": {
+    "chromium": {
+      "startTime": "2026-09-22T01:13:54.961Z",
+      "duration": 77012.171,
+      "expected": 21,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "firefox": {
+      "startTime": "2026-09-22T01:15:12.478Z",
+      "duration": 107805.92000000001,
+      "expected": 21,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "webkit": {
+      "startTime": "2026-09-22T01:17:00.961Z",
+      "duration": 97673.373,
+      "expected": 21,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  "journalVectors": {
+    "status": "PASS",
+    "vectors": 53,
+    "accepted": 18,
+    "rejected": 35,
+    "canonicalResultsAgree": true,
+    "scope": "Pure journal transitions Node/portable/Go, not catalogue persistence or transport."
+  },
+  "limitations": [
+    "Envelope sealing is internal and does not copy to public transport, mark delivered or approve a row.",
+    "Submission API, outbox/inbox, receipts, owner decisions/reconciliation/provenance and complete form UI remain pending.",
+    "The existing worker UI and application journeys are regression, not a proposal submission UI.",
+    "No current public deployment, full platform/device/radio gate or independent review is inferred."
+  ]
+}

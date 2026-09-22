@@ -681,3 +681,12 @@ O catálogo deve guardar a intenção antes de assinar, em transacções distint
 A revisão encontrou que ordenar sequências e limitar a lista não prova que nenhuma operação retida desapareceu. Exigir comprimento min(nextSequence-1,128) e a janela contígua final. O controlo antes/depois e a corrupção deliberada do registo privado nos browsers passaram após a correcção. A suite integral detectou uma tradução escondida na tabela de rótulos v4; corrigir EN/ES e repetir a suite inteira, não descartar por a paleta ainda estar oculta. Segunda execução494/494 PASS.
 
 O reporter de matriz usa um caminho fixo por engine e uma execução posterior sobrescreveu o JSON WebKit dos quatro casos. Preservar o log terminal e a observação própria, declarar a ausência e capturar o JSON da repetição final. Não fabricar um relatório original. Os drivers de gate devem copiar o relatório imediatamente depois de cada fase.
+
+
+## Catálogo Go, relógio final e envelope exacto
+
+Comparar resultados canónicos das transições, não apenas o número de casos. O primeiro driver convertia relógio negativo para0; isso mascarava o input recusado pelo produto. O primeiro controlo Go de expiração também usava um handle deTTL diferente. Corrigir fixtures e manter positivos antes de atribuir causa. A reprodução definitiva apanhou a captura de now antes do callback emNode/Go: validar o prazo de novo antes de assinar e no fim. O controlo a-1ms passa, a0ms falha; Browser comprova zero chamadas de assinatura no caso expirado.
+
+Tempos fixos não criam nonce determinístico. Persistir o envelope antes de devolver ID, reutilizar bytes após commit/resposta perdida e recusar corrupção sem fallback para nova cifra. Na concorrência entre motores, reter realmente o writerGo e provar que Node não completou antes do commit; depois comparar bytes/ID e contador.18testes de processos e63percursos de browser passaram no gate, além de500Node.
+
+Cache não é fonte nem prova. Ao ficar abaixo de15GiB, parar novos builds, verificar que os alvos estão sem uso e preservar AppImage/source/WIP. A limpeza da cache Go compilada exigiu reconstrução mas conservou módulos/ferramentas, e o gate de race voltou a passar. Nunca tocar em outros projectos/serviços para recuperar espaço.

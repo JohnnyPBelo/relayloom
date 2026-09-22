@@ -1,0 +1,158 @@
+TAP version 13
+# (node:2517305) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: node prepares without signing; the other runtime resumes the same private intent and certificate
+ok 1 - node prepares without signing; the other runtime resumes the same private intent and certificate
+  ---
+  duration_ms: 6713.718812
+  type: 'test'
+  ...
+# Subtest: go prepares without signing; the other runtime resumes the same private intent and certificate
+ok 2 - go prepares without signing; the other runtime resumes the same private intent and certificate
+  ---
+  duration_ms: 4514.45445
+  type: 'test'
+  ...
+# Subtest: real Go process exit before-intent-commit leaves exactly the committed state for Node recovery
+ok 3 - real Go process exit before-intent-commit leaves exactly the committed state for Node recovery
+  ---
+  duration_ms: 1205.400107
+  type: 'test'
+  ...
+# Subtest: real Go process exit after-intent leaves exactly the committed state for Node recovery
+ok 4 - real Go process exit after-intent leaves exactly the committed state for Node recovery
+  ---
+  duration_ms: 1198.224016
+  type: 'test'
+  ...
+# Subtest: real Go process exit before-signature-commit leaves exactly the committed state for Node recovery
+ok 5 - real Go process exit before-signature-commit leaves exactly the committed state for Node recovery
+  ---
+  duration_ms: 1232.508319
+  type: 'test'
+  ...
+# Subtest: real Go process exit after-signature leaves exactly the committed state for Node recovery
+ok 6 - real Go process exit after-signature leaves exactly the committed state for Node recovery
+  ---
+  duration_ms: 1251.573636
+  type: 'test'
+  ...
+# Subtest: Go catalogue honors expiry without renewing, rejects another request and preserves a new monotonic sequence
+ok 7 - Go catalogue honors expiry without renewing, rejects another request and preserves a new monotonic sequence
+  ---
+  duration_ms: 4381.677614
+  type: 'test'
+  ...
+# Subtest: Go refuses authenticated-but-inconsistent stage without replacing the preparation
+ok 8 - Go refuses authenticated-but-inconsistent stage without replacing the preparation
+  ---
+  duration_ms: 1091.060839
+  type: 'test'
+  ...
+# Subtest: Go refuses authenticated-but-inconsistent record without replacing the preparation
+ok 9 - Go refuses authenticated-but-inconsistent record without replacing the preparation
+  ---
+  duration_ms: 1099.454557
+  type: 'test'
+  ...
+# Subtest: Go quota refusal leaves no proposal counter/stage and allows the original smaller request
+ok 10 - Go quota refusal leaves no proposal counter/stage and allows the original smaller request
+  ---
+  duration_ms: 1676.911824
+  type: 'test'
+  ...
+# Subtest: Go policy clock boundary -1ms rechecks the actual proposal handle
+ok 11 - Go policy clock boundary -1ms rechecks the actual proposal handle
+  ---
+  duration_ms: 1154.541053
+  type: 'test'
+  ...
+# Subtest: Go policy clock boundary 0ms rechecks the actual proposal handle
+ok 12 - Go policy clock boundary 0ms rechecks the actual proposal handle
+  ---
+  duration_ms: 1124.431418
+  type: 'test'
+  ...
+# (node:2519356) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: intent commits without a visitor signature; later signing survives reopen with private consent and no public store
+ok 13 - intent commits without a visitor signature; later signing survives reopen with private consent and no public store
+  ---
+  duration_ms: 157.725792
+  type: 'test'
+  ...
+# Subtest: failed transactions and changed policy retain a prepared intent without handing out a signature
+ok 14 - failed transactions and changed policy retain a prepared intent without handing out a signature
+  ---
+  duration_ms: 93.420972
+  type: 'test'
+  ...
+# Subtest: expiry and cancellation keep retired sequence outcomes and never renew a signature
+ok 15 - expiry and cancellation keep retired sequence outcomes and never renew a signature
+  ---
+  duration_ms: 752.24566
+  type: 'test'
+  ...
+# Subtest: private contribution storage refuses missing-stage without resetting an intent
+ok 16 - private contribution storage refuses missing-stage without resetting an intent
+  ---
+  duration_ms: 53.138734
+  type: 'test'
+  ...
+# Subtest: private contribution storage refuses wrong-source without resetting an intent
+ok 17 - private contribution storage refuses wrong-source without resetting an intent
+  ---
+  duration_ms: 46.842879
+  type: 'test'
+  ...
+# Subtest: private contribution storage refuses read-key without resetting an intent
+ok 18 - private contribution storage refuses read-key without resetting an intent
+  ---
+  duration_ms: 38.354845
+  type: 'test'
+  ...
+# Subtest: real abrupt process exit before-intent-commit preserves the intent and fixed certificate identity
+ok 19 - real abrupt process exit before-intent-commit preserves the intent and fixed certificate identity
+  ---
+  duration_ms: 297.965307
+  type: 'test'
+  ...
+# Subtest: real abrupt process exit after-intent preserves the intent and fixed certificate identity
+ok 20 - real abrupt process exit after-intent preserves the intent and fixed certificate identity
+  ---
+  duration_ms: 259.082232
+  type: 'test'
+  ...
+# Subtest: real abrupt process exit after-signature preserves the intent and fixed certificate identity
+ok 21 - real abrupt process exit after-signature preserves the intent and fixed certificate identity
+  ---
+  duration_ms: 264.513796
+  type: 'test'
+  ...
+# Subtest: preparation quota failure rolls back stage and sequence before any signature exists
+ok 22 - preparation quota failure rolls back stage and sequence before any signature exists
+  ---
+  duration_ms: 100.730928
+  type: 'test'
+  ...
+# Subtest: a proposal expiring during the policy check cannot commit a new signature
+ok 23 - a proposal expiring during the policy check cannot commit a new signature
+  ---
+  duration_ms: 59.927463
+  type: 'test'
+  ...
+# Subtest: Node, portable and Go contribution journals agree on canonical requests, retained transitions and rejected corruption
+ok 24 - Node, portable and Go contribution journals agree on canonical requests, retained transitions and rejected corruption
+  ---
+  duration_ms: 1689.944769
+  type: 'test'
+  ...
+1..24
+# tests 24
+# suites 0
+# pass 24
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 30971.243594

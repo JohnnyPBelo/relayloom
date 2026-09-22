@@ -26,3 +26,6 @@ Só activar a paleta/UI após esses caminhos funcionarem. Testar três contas pe
 
 
 Actualização: a separação submissão/concessão foi implementada em TS/Go, preservando verifyForForm como composição compatível. O journal puro e catálogos Node/browser já guardam intenção e assinam em commits separados, com testes; namespace privado contribution também existe em Go. Ainda faltam máquina de estados/catálogo Go, API de preparação/envio, envelope/outbox/inbox, decisão e UI. Ver CONTRIBUTION-CATALOG-REVIEW.md. Estas notas iniciais não devem ser lidas como um relatório de implementação integral.
+
+
+Actualização posterior: o catálogo/máquina de estados Go já foi portado e testado, e os três catálogos guardam envelopes privados exactos. O gate final passou500Node,18processos e21percursos porbrowser. Ver CONTRIBUTION-ENVELOPE-REVIEW.md e docs/evidence/site-contributions/envelopes. As pendências actuais começam na integração da API de submissão/transporte/inbox/aprovação/UI, descrita em CONTRIBUTION-SUBMISSION-INTEGRATION.md; não repetir a portabilidade Go já concluída.

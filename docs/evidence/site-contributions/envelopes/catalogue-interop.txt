@@ -1,0 +1,120 @@
+TAP version 13
+# (node:2788649) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: node prepares without signing; the other runtime resumes the same private intent and certificate
+ok 1 - node prepares without signing; the other runtime resumes the same private intent and certificate
+  ---
+  duration_ms: 4900.285549
+  type: 'test'
+  ...
+# Subtest: go prepares without signing; the other runtime resumes the same private intent and certificate
+ok 2 - go prepares without signing; the other runtime resumes the same private intent and certificate
+  ---
+  duration_ms: 4517.419114
+  type: 'test'
+  ...
+# Subtest: real Go process exit before-intent-commit leaves exactly the committed state for Node recovery
+ok 3 - real Go process exit before-intent-commit leaves exactly the committed state for Node recovery
+  ---
+  duration_ms: 1208.989671
+  type: 'test'
+  ...
+# Subtest: real Go process exit after-intent leaves exactly the committed state for Node recovery
+ok 4 - real Go process exit after-intent leaves exactly the committed state for Node recovery
+  ---
+  duration_ms: 1205.276498
+  type: 'test'
+  ...
+# Subtest: real Go process exit before-signature-commit leaves exactly the committed state for Node recovery
+ok 5 - real Go process exit before-signature-commit leaves exactly the committed state for Node recovery
+  ---
+  duration_ms: 1243.27909
+  type: 'test'
+  ...
+# Subtest: real Go process exit after-signature leaves exactly the committed state for Node recovery
+ok 6 - real Go process exit after-signature leaves exactly the committed state for Node recovery
+  ---
+  duration_ms: 1242.209264
+  type: 'test'
+  ...
+# Subtest: Go catalogue honors expiry without renewing, rejects another request and preserves a new monotonic sequence
+ok 7 - Go catalogue honors expiry without renewing, rejects another request and preserves a new monotonic sequence
+  ---
+  duration_ms: 4393.132149
+  type: 'test'
+  ...
+# Subtest: Go refuses authenticated-but-inconsistent stage without replacing the preparation
+ok 8 - Go refuses authenticated-but-inconsistent stage without replacing the preparation
+  ---
+  duration_ms: 1095.611358
+  type: 'test'
+  ...
+# Subtest: Go refuses authenticated-but-inconsistent record without replacing the preparation
+ok 9 - Go refuses authenticated-but-inconsistent record without replacing the preparation
+  ---
+  duration_ms: 1102.713815
+  type: 'test'
+  ...
+# Subtest: Go quota refusal leaves no proposal counter/stage and allows the original smaller request
+ok 10 - Go quota refusal leaves no proposal counter/stage and allows the original smaller request
+  ---
+  duration_ms: 1662.569356
+  type: 'test'
+  ...
+# Subtest: Go policy clock boundary -1ms rechecks the actual proposal handle
+ok 11 - Go policy clock boundary -1ms rechecks the actual proposal handle
+  ---
+  duration_ms: 1176.117379
+  type: 'test'
+  ...
+# Subtest: Go policy clock boundary 0ms rechecks the actual proposal handle
+ok 12 - Go policy clock boundary 0ms rechecks the actual proposal handle
+  ---
+  duration_ms: 1137.981287
+  type: 'test'
+  ...
+# Subtest: node seals a private envelope once and the other engine recovers its exact bytes and fixed deadline
+ok 13 - node seals a private envelope once and the other engine recovers its exact bytes and fixed deadline
+  ---
+  duration_ms: 2386.575483
+  type: 'test'
+  ...
+# Subtest: go seals a private envelope once and the other engine recovers its exact bytes and fixed deadline
+ok 14 - go seals a private envelope once and the other engine recovers its exact bytes and fixed deadline
+  ---
+  duration_ms: 3527.485411
+  type: 'test'
+  ...
+# Subtest: Go abrupt exit before-envelope-commit preserves only a committed encrypted envelope
+ok 15 - Go abrupt exit before-envelope-commit preserves only a committed encrypted envelope
+  ---
+  duration_ms: 1321.538237
+  type: 'test'
+  ...
+# Subtest: Go abrupt exit after-envelope preserves only a committed encrypted envelope
+ok 16 - Go abrupt exit after-envelope preserves only a committed encrypted envelope
+  ---
+  duration_ms: 1321.004176
+  type: 'test'
+  ...
+# Subtest: both catalogues reject a corrupted retained envelope without falling back to a fresh nonce
+ok 17 - both catalogues reject a corrupted retained envelope without falling back to a fresh nonce
+  ---
+  duration_ms: 1193.96462
+  type: 'test'
+  ...
+# Subtest: a Node sealer waits on the real Go writer transaction and recovers the envelope committed by that writer
+ok 18 - a Node sealer waits on the real Go writer transaction and recovers the envelope committed by that writer
+  ---
+  duration_ms: 1495.061506
+  type: 'test'
+  ...
+1..18
+# tests 18
+# suites 0
+# pass 18
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 36336.078653

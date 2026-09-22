@@ -1,0 +1,38 @@
+TAP version 13
+# (node:2494480) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Go refuses a new signature if the proposal expires while policy is being rechecked
+ok 1 - Go refuses a new signature if the proposal expires while policy is being rechecked
+  ---
+  duration_ms: 3141.126406
+  type: 'test'
+  ...
+# (node:2494904) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: a proposal expiring during the policy check cannot commit a new signature
+not ok 2 - a proposal expiring during the policy check cannot commit a new signature
+  ---
+  duration_ms: 89.630213
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/site-contribution-catalog.test.ts:1:11431'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/site-contribution-catalog.test.ts:449:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 1
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3655.208077

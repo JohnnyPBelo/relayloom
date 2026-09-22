@@ -35,3 +35,6 @@ O gate completo também detectou em tests/i18n.test.ts a entrada `Formulário` e
 
 
 Os dois pontos de revisão acima foram corrigidos. O controlo sintético conserva contiguousAccepted=true e agora missingRetainedOperationAccepted=false. A segunda suite integral terminou494/494 PASS, seguida de build e catálogoFirefox/WebKit; Chromium dirigido também PASS. Não inferir revisão independente nem UI completa. Gate76653 terminado e recolhido0, provas em docs/evidence/site-contributions/preparation.
+
+
+Actualização posterior: o catálogo/máquina de estados Go já foi portado e testado, e os três catálogos guardam envelopes privados exactos. O gate final passou500Node,18processos e21percursos porbrowser. Ver CONTRIBUTION-ENVELOPE-REVIEW.md e docs/evidence/site-contributions/envelopes. As pendências actuais começam na integração da API de submissão/transporte/inbox/aprovação/UI, descrita em CONTRIBUTION-SUBMISSION-INTEGRATION.md; não repetir a portabilidade Go já concluída.

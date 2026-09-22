@@ -1,0 +1,102 @@
+TAP version 13
+# Subtest: fixed envelope time preserves the saved deadline while nonce identity still requires durable retention
+ok 1 - fixed envelope time preserves the saved deadline while nonce identity still requires durable retention
+  ---
+  duration_ms: 161.609624
+  type: 'test'
+  ...
+# Subtest: Node and portable fixed clocks reject invalid/overflowing dates and unrelated secrets before producing a bundle
+ok 2 - Node and portable fixed clocks reject invalid/overflowing dates and unrelated secrets before producing a bundle
+  ---
+  duration_ms: 7.486768
+  type: 'test'
+  ...
+# Subtest: Node and portable fixed envelopes verify in a real Go process; Go ciphertext decrypts in both adapters
+ok 3 - Node and portable fixed envelopes verify in a real Go process; Go ciphertext decrypts in both adapters
+  ---
+  duration_ms: 609.904383
+  type: 'test'
+  ...
+# Subtest: historical storage reads authenticate expired bytes without priming the live manifest cache
+ok 4 - historical storage reads authenticate expired bytes without priming the live manifest cache
+  ---
+  duration_ms: 54.793085
+  type: 'test'
+  ...
+# (node:2545464) ExperimentalWarning: The MockTimers API is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: identity proof binds signing address, name and decryption key
+ok 5 - identity proof binds signing address, name and decryption key
+  ---
+  duration_ms: 2.95483
+  type: 'test'
+  ...
+# Subtest: vault encrypts private keys; recovery and wrong-password controls
+ok 6 - vault encrypts private keys; recovery and wrong-password controls
+  ---
+  duration_ms: 263.775551
+  type: 'test'
+  ...
+# Subtest: reader decrypts and seeds but cannot become author; unauthorized reader fails
+ok 7 - reader decrypts and seeds but cannot become author; unauthorized reader fails
+  ---
+  duration_ms: 5.86667
+  type: 'test'
+  ...
+# Subtest: ciphertext, manifest, expiry, depth and address negative controls
+ok 8 - ciphertext, manifest, expiry, depth and address negative controls
+  ---
+  duration_ms: 16.626424
+  type: 'test'
+  ...
+# Subtest: encrypted persistent seed takeover, deduplication, pin/quota, disk corruption
+ok 9 - encrypted persistent seed takeover, deduplication, pin/quota, disk corruption
+  ---
+  duration_ms: 45.18442
+  type: 'test'
+  ...
+# Subtest: object-count cap bounds small-object floods, survives restart and preserves pinned content
+ok 10 - object-count cap bounds small-object floods, survives restart and preserves pinned content
+  ---
+  duration_ms: 255.721701
+  type: 'test'
+  ...
+# Subtest: metadata listing does not replace real viewing order in LRU eviction
+ok 11 - metadata listing does not replace real viewing order in LRU eviction
+  ---
+  duration_ms: 57.332918
+  type: 'test'
+  ...
+# Subtest: cached manifest metadata is isolated, invalidated by disk changes, and never bypasses get verification
+ok 12 - cached manifest metadata is isolated, invalidated by disk changes, and never bypasses get verification
+  ---
+  duration_ms: 27.722719
+  type: 'test'
+  ...
+# Subtest: rejected quota decrease preserves existing files and policy; feasible decrease evicts only unpinned content
+ok 13 - rejected quota decrease preserves existing files and policy; feasible decrease evicts only unpinned content
+  ---
+  duration_ms: 175.998993
+  type: 'test'
+  ...
+# Subtest: invalid persisted index fails safely without deleting verified objects
+ok 14 - invalid persisted index fails safely without deleting verified objects
+  ---
+  duration_ms: 24.286707
+  type: 'test'
+  ...
+# Subtest: strict wire fields and every recipient envelope are validated before accepting signatures
+ok 15 - strict wire fields and every recipient envelope are validated before accepting signatures
+  ---
+  duration_ms: 4.095088
+  type: 'test'
+  ...
+1..15
+# tests 15
+# suites 0
+# pass 15
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2185.287955

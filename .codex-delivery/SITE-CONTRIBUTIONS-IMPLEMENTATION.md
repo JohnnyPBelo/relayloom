@@ -112,3 +112,36 @@ A primeira suite Node completa terminou **493PASS/1FAIL de494**, com tradução 
 Handle76653 terminou/recolhido0: **494 testes Node PASS**, build PASS, dois casos Firefox e dois WebKit PASS. Os dois Chromium afectados já tinham passado; não houve falhas/skips no gate corrigido. Todos os693hashes de fonte antes/depois coincidem. A tradução e a lacuna do parser foram corrigidas antes desta repetição integral. Provas curadas em docs/evidence/site-contributions/preparation; o relatório conserva o FAIL anterior e os controlos, sem reescrever proveniência.
 
 Commits: b8a8a9e separa submissão/concessão;6749483 guarda o journal Node/browser, domínio privado Node/Go, controlos e tradução. ac54af4 tinha ligado a consulta form aos três motores. Nenhum deles implementa ainda submit/outbox/inbox/approval/UI nem o catálogo Go. Continuar essa integração; não repetir os gates terminados sem novas alterações que o justifiquem.
+
+## Portabilidade do catálogo Go iniciada — 22 de Setembro
+
+O turno anterior foi progresso: código, gates completos e pushbd419cb. A retoma confirmou fontes limpas e WIP histórico preservado; CI35670707944 ainda em curso. Nesta fase portar o formato/validação/transições sem mudar o protocolo Node/browser, depois ligar o catálogo Go ao mesmo namespace privado. Exigir vetores canónicos e retoma na mesma SQLite nos dois sentidos, incluindo commit separado de intenção/assinatura, processos interrompidos, quotas, corrupção e chave de leitura. Não afirmar paridade do catálogo só porque o codec privado já passou.
+
+## Catálogo Go e envelope privado implementados localmente
+
+Foram acrescentados contribution_operations.go e contribution_catalog.go com o mesmo formato Node/browser.53vectores de transições passaram (18aceites/35recusados), com resultados canónicos iguais. Dez testes iniciais de SQLite/processos passaram nas duas direcções; os testes foram depois ampliados para envelope e mais fronteiras. O primeiro driver normalizava clocknegativo para0 antes de o testar: corrigido, falha preservada em.cache/contribution-go-operations-first.log.
+
+A revisão reproduziu a expiração durante o callback de política emNode/Go: a verificação final usava um instante capturado antes do callback. Acrescentado controlo imediatamente antes de assinar e uso do relógio actual na verificação final; Browser também recusa antes de assinar. O controlo de -1ms continua válido e o de0ms é recusado. A primeira fixtureGo usava fingerprint deTTL diferente, mascarando a causa; foi corrigida antes da reprodução negativa definitiva. Logs `.cache/contribution-policy-clock-{initial-handle-observation,valid-before}.log`.
+
+Para reter o prazo original, createBundleAt foi acrescentado emNode/browser, com limites temporais/overflow e chaves próprias verificadas, mantendo a função existente com o seu relógio normal. Go já tinha CreateBundleAt.15testes de core e regressão passaram, incluindo interopGo, histórico e recusa de admissão normal de conteúdo expirado; Go core/sites-race passou. Não se mudou o relógioOS.
+
+Os três catálogos agora podem selar um envelope privado após o commit de assinatura e guardá-lo exactamente no stage. A fonte antiga sem envelope continua legível. `seal` não publica nem copia para o transporte; `authorizedBundle` revalida política/prazo. Tipo/autor/leitores exactos/tempos têm de coincidir com o certificado. Uma concessão pública continua a usar envelope privado para visitante+dono. Cancelar/expirar remove o stage sem renovar prazo.
+
+O conjunto Node/Go de envelope, catálogo e corrupção passou28testes. Inclui retoma do mesmo envelope nas duas direcções e processos Go terminados antes/depois de commit do envelope. Browser confirmou envelope exacto após reabertura e rollback de seal retido ao bloquear identidade. Os novos métodos internos permanecem fora do RPC. Primeiro teste worker tinha expectativa de3recusas em vez das5agora testadas; as5foram efectivamente recusadas, e o oráculo foi corrigido sem alterar produto. Chromium6PASS; Firefox/WebKit a verificar nos logs/handles actuais. Nenhum envio/outbox/inbox/aprovação/UI está implementado ainda por estes métodos.
+
+## Concorrência e gate alargado em curso
+
+O teste de concorrência real reteve uma transacção Go de seal, iniciou o escritor Node enquanto o lock estava ocupado, confirmou que ainda não existia resultado Node e só depois libertou o commit. Os dois escritores recuperaram exactamente o mesmo envelope e o contador continuou2. Não é prova de dois dispositivos; é prova de serialização entre processos sobre a mesma SQLite.
+
+Para garantir a reserva15GiB, foi removida a cópia ignored/linux-unpacked do principal após lsof, preservando o AppImage e hashes de fonte/WIP. Quando a reserva caiu outra vez, limpou-se exclusivamente a cache de compilação Go do projecto, sem remover módulos/ferramentas/artefactos/provas. Auditorias `.cache/disk-recovery-go-envelope.json` e `.cache/go-build-cache-recovery.json`. Go core/sites-race voltou a passar após reconstrução.
+
+Gate actual **6285**, `.cache/contribution-go-envelope-final/report.json`, fonte706ficheiros congelada: typecheck PASS; suite Node integral emcurso, depois native-build,18testes de catálogo entreprocessos, web-build e21casos afectados porbrowser (core/identidade/armazenamento/app/páginas/recursos/catálogo/worker). Não alterar fonte até terminar. A enumeração inicial do driver omitia apenas tsconfig.json (nenhum hash divergente), detectada antes de arrancar testes e corrigida; `.cache/contribution-go-envelope-preflight.json` conserva essa causa.
+
+Todas as fontes são WIP posteriores abd419cb e não pertencem ao CI35670707944 emcurso. Chromium/Firefox/WebKit já passaram6dirigidos porengine antes da última expansão do controlo de corrupção de envelope. Os novos helpers internos continuam fora doRPC, agora com5recusas verificadas. Nenhuma funcionalidade de enviar/aprovar proposta é inferida. Próxima integração concreta: CONTRIBUTION-SUBMISSION-INTEGRATION.md.
+
+
+## Gate Go/envelopes concluído
+
+Handle6285 terminou/recolhido0. **500 testes Node,18testes de processos,build nativo/web e21percursos porbrowser** passaram sem falhas/skips; Go core/sites-race passou na mesma fonte.706hashes antes/depois coincidem. Provas curadas em docs/evidence/site-contributions/envelopes. Commits a1040a7/16dbd6a guardam código, com origens e falhas preservadas. Nenhum teste local deste gate está em curso; não o repetir por falta de handle.
+
+A máquina de estados/catálogo Go já é interoperável e o envelope está retido em Node/Go/browser. **Continuar agora na API de submissão, cópia transaccional para transporte/outbox/inbox, recibos, aprovação/reconciliação/CAS, proveniência eUI.** Estado signed/selado continua a não provar envio. O objectivo integral e a revisão independente mantêm-se activos.

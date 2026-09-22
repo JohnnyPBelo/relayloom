@@ -12,18 +12,18 @@ O certificado do visitante fixa site, snapshot, revisão, formulário, esquema, 
 
 ## Preparação privada ainda interna
 
-Os catálogos Node/browser guardam primeiro a intenção e o snapshot de origem, sem assinatura do visitante. Só uma transacção posterior cria e conserva o certificado. Reabrir ou repetir a operação conserva os valores, o prazo e a identidade dessa proposta. Corrupção e falhas de quota recusam a operação; não geram silenciosamente outra proposta.
+Os catálogos Node/Go/browser guardam primeiro a intenção e o snapshot de origem, sem assinatura do visitante. Só uma transacção posterior cria e conserva o certificado. Reabrir ou repetir a operação conserva os valores, o prazo e a identidade dessa proposta. Corrupção e falhas de quota recusam a operação; não geram silenciosamente outra proposta.
 
-O journal tem um contador monotónico, uma preparação activa e até 128 resultados num registo de 1 MiB. O stage separado contém a fonte autenticada e, depois do commit de assinatura, o certificado. O armazenamento reservado deriva da posse da chave de assinatura; a chave de leitura não permite extrair ou criar assinaturas. O codec privado também existe em Go, com interoperabilidade SQLite; **a máquina de estados e o catálogo Go ainda faltam**.
+O journal tem um contador monotónico, uma preparação activa e até 128 resultados num registo de 1 MiB. O stage separado contém a fonte autenticada e, depois do commit de assinatura, o certificado. O armazenamento reservado deriva da posse da chave de assinatura; a chave de leitura não permite extrair ou criar assinaturas. Os três motores têm o catálogo; Node e Go retomam a mesma SQLite e recuperam o mesmo certificado/envelope, com testes de concorrência e interrupção.
 
 | Estado interno | Significado | O que não prova |
 | --- | --- | --- |
 | prepared | Intenção e origem foram guardadas | Assinatura, envio ou aprovação |
-| signed | Certificado foi guardado depois de assinar | Cópia para o transporte ou entrega |
+| signed | Certificado guardado; pode conter envelope privado persistido | Cópia para o transporte ou entrega |
 | cancelled | Preparação local cancelada, resultado retido | Recolha de cópias já extraídas |
 | expired | Prazo terminou, sem renovação silenciosa | Eliminação de cópias remotas |
 
-A janela finita conserva a identidade das sequências retiradas pelo contador; não promete memória infinita de qualquer UUID reutilizado com uma sequência nova. Nenhum endpoint de submissão expõe ainda estes catálogos.
+A janela finita conserva a identidade das sequências retiradas pelo contador; não promete memória infinita de qualquer UUID reutilizado com uma sequência nova. O envelope privado conserva exactamente a criação/expiração do certificado e é guardado antes de ser devolvido ao runtime. Recuperar não muda o nonce ou renova o prazo. Um envelope corrompido é recusado, sem gerar uma substituição silenciosa. Nenhum endpoint de submissão expõe ainda estes catálogos.
 
 ## Autoria e aprovação
 
@@ -33,10 +33,9 @@ A integração seguinte tem de conservar a proposta original na proveniência do
 
 ## Ainda obrigatório
 
-- Catálogo e máquina de estados Go, com retoma Node↔Go, quotas, corrupção e morte de processos.
 - Preparação/submissão na API com política resolvida novamente pelo motor, envelope privado persistente, outbox e inbox.
 - Aprovação/rejeição, conflitos/CAS, recibos, reconciliação e proveniência das linhas.
 - Composição de formulários e caixa de revisão na UI PT/EN/ES, Liquid Glass, teclado/toque, acessibilidade e testes com três contas reais.
 - Regressão completa dos motores e plataformas, publicação dos artefactos exactos e revisão independente. Nenhum teste de software substitui validação de hardware ou rádio.
 
-Provas da fundação: [documento v4](evidence/site-contributions/document-v4), [consulta autenticada](evidence/site-contributions/authenticated-context). O estado das validações mais recentes e da candidata está em [STATUS](STATUS.md). Estes marcos não concluem o produto nem demonstram prontidão para catástrofes.
+Provas da fundação: [documento v4](evidence/site-contributions/document-v4), [consulta autenticada](evidence/site-contributions/authenticated-context), [catálogos e envelopes](evidence/site-contributions/envelopes). O estado das validações mais recentes e da candidata está em [STATUS](STATUS.md). Estes marcos não concluem o produto nem demonstram prontidão para catástrofes.
