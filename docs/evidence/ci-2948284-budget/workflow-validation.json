@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "parser": "existing project yaml dependency",
+  "nodeMatrixUnchanged": true,
+  "nodeTestCommandUnchanged": true,
+  "linuxUICommandAndChromeUnchanged": true,
+  "sequential": "native-node -> node-ui -> native-go",
+  "permissionsAndConcurrencyUnchanged": true,
+  "downstreamJobsUnchanged": true,
+  "scope": "Local workflow structure validation, not a remote execution of the edited workflow",
+  "existingJobBudgetsUnchanged": true,
+  "newNodeUIJobBudgetMinutes": 15
+}

@@ -29,13 +29,6 @@ jobs:
       - name: Build the Go peer required by controller and runtime-selection tests
         run: npm run native:build
       - run: npm test
-      - name: Inspect runner-provided Chrome
-        if: runner.os == 'Linux'
-        run: google-chrome --version
-      - run: npm run test:e2e
-        if: runner.os == 'Linux'
-        env:
-          RELAYLOOM_BROWSER_CHANNEL: chrome
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -47,8 +40,43 @@ jobs:
             .cache/web-invitation
           retention-days: 7
 
-  native-go:
+  node-ui:
     needs: native-node
+    runs-on: ubuntu-latest
+    # Run35753597485 passed 505 Node and 34 UI tests, then exceeded the
+    # cumulative 15m job budget. Keep both gates, sequentially bounded.
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.26.8"
+          cache: false
+      - run: npm ci --ignore-scripts
+      - run: npm run build
+      - run: npm run native:build
+      - name: Inspect runner-provided Chrome
+        run: google-chrome --version
+      - run: npm run test:e2e
+        env:
+          RELAYLOOM_BROWSER_CHANNEL: chrome
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: node-ui-evidence
+          path: |
+            docs/evidence
+            test-results
+            .cache/fixture-http-failures/*.json
+            .cache/web-invitation
+          retention-days: 7
+
+  native-go:
+    needs: node-ui
     runs-on: ubuntu-latest
     # Keep the full race and C storage gates. Run35413693543 passed these,
     # then hit the cumulative 25m job limit during interoperability.
