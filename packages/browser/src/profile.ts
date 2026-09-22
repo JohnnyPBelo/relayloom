@@ -1,3 +1,7 @@
+import {
+  createSiteContributionProtocol,
+  type ContributionRequest,
+} from "../../sites/src/contribution-protocol";
 import { createSiteContentProtocol } from "../../sites/src/content";
 import { browserCertificateCrypto } from "./certificate-crypto";
 import { canonical, exactShape } from "../../core/src/protocol";
@@ -380,6 +384,15 @@ export class BrowserProfile {
     );
     this.guard(session);
     return bundle;
+  }
+  // Internal signing helper; no Worker RPC exposes it directly.
+  async signSiteContribution(request: ContributionRequest) {
+    const session = this.active();
+    const result = createSiteContributionProtocol(
+      browserCertificateCrypto,
+    ).create(session.identity, request);
+    this.guard(session);
+    return result;
   }
   async decryptStaging(value: Bundle): Promise<unknown> {
     const session = this.active(),

@@ -48,14 +48,20 @@ function run(control: string) {
   );
 }
 
-for (const target of ["site", "resource"] as const)
-  test(`an authenticated outer SQLite database cannot transpose unpublished signatures into the ${target} namespace`, () => {
+for (const [source, target] of [
+  ["site", "resource"],
+  ["resource", "site"],
+  ["site", "contribution"],
+  ["contribution", "site"],
+  ["resource", "contribution"],
+  ["contribution", "resource"],
+] as const)
+  test(`an authenticated outer SQLite database cannot transpose unpublished signatures from ${source} into the ${target} namespace`, () => {
     const directory = projectTemp("publication-namespace-"),
       owner = createIdentity("Namespace owner"),
       path = join(directory, "profile.sqlite");
     const store = new ProtectedGroupStore(path, owner, { create: true });
-    const source = target === "site" ? "resource" : "site",
-      slot = hash("same logical slot"),
+    const slot = hash("same logical slot"),
       from = source + ":" + slot + ":stage",
       to = target + ":" + slot + ":stage";
     const value = {
@@ -65,7 +71,9 @@ for (const target of ["site", "resource"] as const)
     const writer =
       source === "site"
         ? SitePrivateRecords.run.bind(SitePrivateRecords)
-        : SitePrivateRecords.runResource.bind(SitePrivateRecords);
+        : source === "resource"
+          ? SitePrivateRecords.runResource.bind(SitePrivateRecords)
+          : SitePrivateRecords.runContribution.bind(SitePrivateRecords);
     try {
       store.transaction((tx) => writer(tx, owner, (r) => r.write(from, value)));
       store.transaction((tx) => {
@@ -73,7 +81,9 @@ for (const target of ["site", "resource"] as const)
         descriptor.domain =
           target === "site"
             ? "relayloom/site-private/1"
-            : "relayloom/site-resource-private/1";
+            : target === "resource"
+              ? "relayloom/site-resource-private/1"
+              : "relayloom/site-contribution-private/1";
         for (const key of tx.keys(from + ":"))
           tx.put(to + key.slice(from.length), tx.get(key)!);
         tx.put(to, Buffer.from(canonical(descriptor)));
@@ -103,12 +113,14 @@ for (const target of ["site", "resource"] as const)
     }
   });
 
-for (const namespace of ["site", "resource"] as const)
+for (const namespace of ["site", "resource", "contribution"] as const)
   test(`Node and a real Go process exchange signing-protected ${namespace} records in the same SQLite database`, () => {
     const runPrivate =
       namespace === "site"
         ? SitePrivateRecords.run.bind(SitePrivateRecords)
-        : SitePrivateRecords.runResource.bind(SitePrivateRecords);
+        : namespace === "resource"
+          ? SitePrivateRecords.runResource.bind(SitePrivateRecords)
+          : SitePrivateRecords.runContribution.bind(SitePrivateRecords);
     const directory = projectTemp("site-private-interop-"),
       owner = createIdentity("Shared site storage owner"),
       path = join(directory, "profile.sqlite");
@@ -165,12 +177,14 @@ for (const namespace of ["site", "resource"] as const)
     }
   });
 
-for (const namespace of ["site", "resource"] as const)
+for (const namespace of ["site", "resource", "contribution"] as const)
   test(`Go rejects a Node encrypted ${namespace} value transplanted into another authenticated store`, () => {
     const runPrivate =
       namespace === "site"
         ? SitePrivateRecords.run.bind(SitePrivateRecords)
-        : SitePrivateRecords.runResource.bind(SitePrivateRecords);
+        : namespace === "resource"
+          ? SitePrivateRecords.runResource.bind(SitePrivateRecords)
+          : SitePrivateRecords.runContribution.bind(SitePrivateRecords);
     const directory = projectTemp("site-private-context-"),
       owner = createIdentity("Context-bound owner"),
       a = join(directory, "a.sqlite"),

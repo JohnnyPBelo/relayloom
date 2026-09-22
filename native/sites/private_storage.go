@@ -23,9 +23,11 @@ const PrivateChunks = 16
 const privateOverhead = 61
 const privateDomain = "relayloom/site-private/1"
 const resourcePrivateDomain = "relayloom/site-resource-private/1"
+const contributionPrivateDomain = "relayloom/site-contribution-private/1"
 
 var privateKeyPattern = regexp.MustCompile(`^site:[a-f0-9]{64}:(record|stage)$`)
 var resourcePrivateKeyPattern = regexp.MustCompile(`^resource:[a-f0-9]{64}:(record|stage)$`)
+var contributionPrivateKeyPattern = regexp.MustCompile(`^contribution:[a-f0-9]{64}:(record|stage)$`)
 
 type PrivateRecords struct {
 	tx             *groupstore.Tx
@@ -47,8 +49,11 @@ func RunPrivate(tx *groupstore.Tx, identity core.Identity, callback func(*Privat
 func RunResourcePrivate(tx *groupstore.Tx, identity core.Identity, callback func(*PrivateRecords) error) error {
 	return runPrivateNamespace(tx, identity, callback, "resource")
 }
+func RunContributionPrivate(tx *groupstore.Tx, identity core.Identity, callback func(*PrivateRecords) error) error {
+	return runPrivateNamespace(tx, identity, callback, "contribution")
+}
 func runPrivateNamespace(tx *groupstore.Tx, identity core.Identity, callback func(*PrivateRecords) error, namespace string) error {
-	if namespace != "site" && namespace != "resource" {
+	if namespace != "site" && namespace != "resource" && namespace != "contribution" {
 		return tx.Abort(privateIntegrity("espaço privado inválido"))
 	}
 	owner, err := tx.Owner()
@@ -84,6 +89,8 @@ func (r *PrivateRecords) check(key string) error {
 	pattern := privateKeyPattern
 	if r.namespace == "resource" {
 		pattern = resourcePrivateKeyPattern
+	} else if r.namespace == "contribution" {
+		pattern = contributionPrivateKeyPattern
 	}
 	if !pattern.MatchString(key) {
 		return privateIntegrity("chave de site inválida")
@@ -93,6 +100,9 @@ func (r *PrivateRecords) check(key string) error {
 func (r *PrivateRecords) domain() string {
 	if r.namespace == "resource" {
 		return resourcePrivateDomain
+	}
+	if r.namespace == "contribution" {
+		return contributionPrivateDomain
 	}
 	return privateDomain
 }

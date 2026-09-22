@@ -1,4 +1,10 @@
 export const studio = [
+  ["Formulário", "Form", "Formulario"],
+  [
+    "O fluxo de contribuições ainda não está disponível.",
+    "Contribution submissions are not available yet.",
+    "El envío de contribuciones aún no está disponible.",
+  ],
   ["Alterações por guardar", "Unsaved changes", "Cambios sin guardar"],
   [
     "Limite de 128 blocos atingido.",

@@ -1,3 +1,4 @@
+import { BrowserContributionCatalog } from "../../packages/browser/src/contribution-catalog";
 import { BrowserSiteCatalog } from "../../packages/browser/src/site-catalog";
 import { BrowserResourceCatalog } from "../../packages/browser/src/resource-catalog";
 // Test-only exports. Never included in the shipped client or a served control API.
@@ -29,6 +30,7 @@ Object.assign(window, {
     BrowserProfile,
     BrowserSiteCatalog,
     BrowserResourceCatalog,
+    BrowserContributionCatalog,
     PRIVATE_VALUE_LIMITS,
     BrowserMesh,
     resources,

@@ -21,7 +21,8 @@ import {
 
 const DOMAIN = "relayloom/site-private/1";
 const RESOURCE_DOMAIN = "relayloom/site-resource-private/1";
-type Namespace = "site" | "resource";
+const CONTRIBUTION_DOMAIN = "relayloom/site-contribution-private/1";
+type Namespace = "site" | "resource" | "contribution";
 export const SITE_PRIVATE_LIMITS = Object.freeze({
   bytes: 6 * 1024 * 1024 + 16384,
   chunkBytes: 512 * 1024,
@@ -35,7 +36,9 @@ function checkedKey(key: string, namespace: Namespace) {
   insist(
     (namespace === "site"
       ? /^site:[a-f0-9]{64}:(record|stage)$/
-      : /^resource:[a-f0-9]{64}:(record|stage)$/
+      : namespace === "resource"
+        ? /^resource:[a-f0-9]{64}:(record|stage)$/
+        : /^contribution:[a-f0-9]{64}:(record|stage)$/
     ).test(key),
     "Chave privada de site inválida",
   );
@@ -73,6 +76,13 @@ export class SitePrivateRecords {
   ): T {
     return this.session(tx, identity, fn, "resource");
   }
+  static runContribution<T>(
+    tx: RegistryTransaction,
+    identity: Identity,
+    fn: (records: SitePrivateRecords) => T,
+  ): T {
+    return this.session(tx, identity, fn, "contribution");
+  }
   private static session<T>(
     tx: RegistryTransaction,
     identity: Identity,
@@ -80,7 +90,9 @@ export class SitePrivateRecords {
     namespace: Namespace,
   ): T {
     insist(
-      namespace === "site" || namespace === "resource",
+      namespace === "site" ||
+        namespace === "resource" ||
+        namespace === "contribution",
       "Espaço privado inválido",
     );
     if (
@@ -124,7 +136,11 @@ export class SitePrivateRecords {
     }
   }
   private get domain() {
-    return this.namespace === "site" ? DOMAIN : RESOURCE_DOMAIN;
+    return this.namespace === "site"
+      ? DOMAIN
+      : this.namespace === "resource"
+        ? RESOURCE_DOMAIN
+        : CONTRIBUTION_DOMAIN;
   }
   private aad(key: string) {
     return Buffer.from(
