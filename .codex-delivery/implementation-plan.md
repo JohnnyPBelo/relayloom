@@ -180,3 +180,6 @@ O CI anterior0a85d7d acabou com falha só na importação de fotografia iOS, ant
 6285 terminou0:500Node,18processos,builds e21percursos porbrowser. Fonte706hashes congelada/conferida, código em a1040a7/16dbd6a. Provas em docs/evidence/site-contributions/envelopes. A portabilidade do catálogo Go está concluída; não recomeçar esse trabalho.
 
 Próximo: API de submissão com snapshot/contexto derivados pelo motor; intenção de transporte durável antes de copiar/gossip; outbox/inbox e recibos separados de aprovação; CAS/reconciliação/proveniência eUI. Plano concreto em CONTRIBUTION-SUBMISSION-INTEGRATION.md. Antes do push, confirmar o estado doCIbd419cb para não cancelar trabalho em curso. Publicar HTML só depois de gate exacto de distribuição/HTTPS; manter todo o contrato.
+
+
+CI35670707944/bd419cb terminou: todos os jobs excepto iOS PASS,112browser. iOS importou a fotografia e entregou mensagem privada verificada pelo Node, mas falhou AX no photospicker (linha318), sem concluir anexo/reply/recovery. Provas em docs/evidence/ci-bd419cb; causa não demonstrada. Os novos commits podem ser enviados sem cancelar esseCI terminal.

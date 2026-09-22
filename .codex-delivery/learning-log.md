@@ -690,3 +690,6 @@ Comparar resultados canónicos das transições, não apenas o número de casos.
 Tempos fixos não criam nonce determinístico. Persistir o envelope antes de devolver ID, reutilizar bytes após commit/resposta perdida e recusar corrupção sem fallback para nova cifra. Na concorrência entre motores, reter realmente o writerGo e provar que Node não completou antes do commit; depois comparar bytes/ID e contador.18testes de processos e63percursos de browser passaram no gate, além de500Node.
 
 Cache não é fonte nem prova. Ao ficar abaixo de15GiB, parar novos builds, verificar que os alvos estão sem uso e preservar AppImage/source/WIP. A limpeza da cache Go compilada exigiu reconstrução mas conservou módulos/ferramentas, e o gate de race voltou a passar. Nunca tocar em outros projectos/serviços para recuperar espaço.
+
+
+CI bd419cb não repetiu a falha de addmedia da execução0a85d7d: seed passou, o teste funcional correu e o Node confirmou a mensagem privada. A falha agora é consulta remota AX do photospicker. Distinguir fases reais pelos relatórios/logs, não pelo resultado global FAILURE. A numeração ui-01/02/03 não é cronologia. Capturas da app sem fotografia visível não demonstram que o picker nunca abriu; o log identifica o processo remoto mas não a causa.

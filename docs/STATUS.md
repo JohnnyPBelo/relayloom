@@ -6,7 +6,13 @@
 
 O gate final passou **500 Node, 18 testes de processos, build nativo/web e 21 percursos por browser** (Chromium/Firefox/WebKit), sem falhas/skips. Go core/sites-race passou na mesma fonte; 53 vectores de journal (18 aceites/35 recusados) concordam. O controlo concorrente provou que Node aguardou o writer Go e recuperou a mesma cifra. [Fontes, comandos, controlos e falhas corrigidas](evidence/site-contributions/envelopes).
 
-**Ainda faltam API de submissão, cópia para transporte/outbox/inbox, recibos, aprovação/reconciliação/proveniência e UI completa de formulários.** Selar é um estado interno, não entrega. A web pública permanece 7fdb76a/0fdbd1b9. O CI35670707944 em curso testa bd419cb, anterior a estas alterações; nenhum resultado de hardware/Apple/revisão independente é inferido.
+**Ainda faltam API de submissão, cópia para transporte/outbox/inbox, recibos, aprovação/reconciliação/proveniência e UI completa de formulários.** Selar é um estado interno, não entrega. A web pública permanece 7fdb76a/0fdbd1b9. O CI35670707944 testou bd419cb, anterior a estas alterações; o resultado final está descrito abaixo e não é inferência de hardware/revisão independente.
+
+## CI bd419cb concluído — iOS chegou à mensagem privada
+
+CI35670707944 terminou FAILURE apenas em iOS. Node nos três hosts, Go/race, interoperabilidade, UI nativa, RNS, três pacotes desktop e **112 testes de browser** passaram. Não cobre os commits locais a1040a7/16dbd6a.
+
+A importação da fotografia passou nesta execução. O iOS criou identidade, publicou e enviou uma mensagem privada verificada pelo par Node. A falha aconteceu depois, na consulta AX das células da fototeca em NativeSimulatorTests.swift:318 (processo photospicker 36303). Resposta/lida, anexo e recuperação não concluíram. As capturas foram inspeccionadas e os 26 ficheiros dos manifestos conferidos. [Provas e distinção face ao timeout anterior](evidence/ci-bd419cb). Não atribuir a causa nem afirmar iOS concluído.
 
 ## Preparação privada de contribuições — 22 de Setembro
 

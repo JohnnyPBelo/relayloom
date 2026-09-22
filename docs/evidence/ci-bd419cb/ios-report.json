@@ -1,0 +1,207 @@
+{
+  "kind": "IOS_REAL_SIMULATOR_GATE",
+  "runID": "a951ca2c-5a65-474d-94bb-949c45a32867",
+  "requestedRuntimeVersion": "26.4.1",
+  "status": "FAILED",
+  "simulatorExecuted": true,
+  "physicalDeviceExecuted": false,
+  "photoAttachmentRequested": true,
+  "signing": "disabled; no accounts, identities or profiles requested",
+  "webViewDebugging": false,
+  "extraAppControlPort": false,
+  "cleanup": {
+    "udid": "80869730-5236-4F27-A151-D3ADD5E1EDAF",
+    "deleted": true,
+    "onlyCreatedDeviceTouched": true
+  },
+  "commands": [
+    {
+      "label": "xcode-version",
+      "exitCode": 0,
+      "elapsedMs": 644,
+      "log": "01-xcode-version.log"
+    },
+    {
+      "label": "source-commit",
+      "exitCode": 0,
+      "elapsedMs": 48,
+      "log": "02-source-commit.log"
+    },
+    {
+      "label": "source-cleanliness",
+      "exitCode": 0,
+      "elapsedMs": 22,
+      "log": "03-source-cleanliness.log"
+    },
+    {
+      "label": "installed-runtimes",
+      "exitCode": 0,
+      "elapsedMs": 3211,
+      "log": "04-installed-runtimes.log"
+    },
+    {
+      "label": "installed-device-types",
+      "exitCode": 0,
+      "elapsedMs": 409,
+      "log": "05-installed-device-types.log"
+    },
+    {
+      "label": "create-owned",
+      "exitCode": 0,
+      "elapsedMs": 539,
+      "log": "06-create-owned.log"
+    },
+    {
+      "label": "boot-owned",
+      "exitCode": 0,
+      "elapsedMs": 4517,
+      "log": "07-boot-owned.log"
+    },
+    {
+      "label": "wait-owned-boot",
+      "exitCode": 0,
+      "elapsedMs": 373046,
+      "log": "08-wait-owned-boot.log"
+    },
+    {
+      "label": "build-for-testing",
+      "exitCode": 0,
+      "elapsedMs": 72508,
+      "log": "09-build-for-testing.log"
+    },
+    {
+      "label": "install-owned-app",
+      "exitCode": 0,
+      "elapsedMs": 25233,
+      "log": "10-install-owned-app.log"
+    },
+    {
+      "label": "execute-startup-test",
+      "exitCode": 0,
+      "elapsedMs": 149872,
+      "log": "11-execute-startup-test.log"
+    },
+    {
+      "label": "startup-xctest-summary",
+      "exitCode": 0,
+      "elapsedMs": 12532,
+      "log": "12-startup-xctest-summary.log"
+    },
+    {
+      "label": "seed-synthetic-photo",
+      "exitCode": 0,
+      "elapsedMs": 4266,
+      "log": "13-seed-synthetic-photo.log"
+    },
+    {
+      "label": "execute-ui-test",
+      "exitCode": 65,
+      "elapsedMs": 265662,
+      "log": "14-execute-ui-test.log"
+    },
+    {
+      "label": "photo-fixture-diagnostics",
+      "exitCode": 0,
+      "elapsedMs": 10229,
+      "log": "15-photo-fixture-diagnostics.log"
+    },
+    {
+      "label": "export-startup-attachments",
+      "exitCode": 0,
+      "elapsedMs": 534,
+      "log": "16-export-startup-attachments.log"
+    },
+    {
+      "label": "export-test-attachments",
+      "exitCode": 0,
+      "elapsedMs": 1253,
+      "log": "17-export-test-attachments.log"
+    },
+    {
+      "label": "cleanup-inventory",
+      "exitCode": 0,
+      "elapsedMs": 970
+    },
+    {
+      "label": "shutdown-owned",
+      "exitCode": 0,
+      "elapsedMs": 4436,
+      "log": "19-shutdown-owned.log"
+    },
+    {
+      "label": "delete-owned",
+      "exitCode": 0,
+      "elapsedMs": 417,
+      "log": "20-delete-owned.log"
+    }
+  ],
+  "xcode": "Xcode 26.6\nBuild version 17F113",
+  "sourceHashes": {
+    "runner": "8b143a540b11d789588f11f2004ba9384da80f5c5b92b0a550d874d0c47a641c",
+    "peerFixture": "d046dd045a27c07e36fb5da6734e0487ed1fdd32f1dd702048f5f70fd170b57c",
+    "uiTest": "cc875f683797d7fe9e654a300650d012b74ffd292631e7737e45c801a7351dcd",
+    "project": "2331e5b806b3e27955be38b8e78a18b9ea33f251b0e76d61881a92a801d414a4",
+    "scheme": "c105ce198c4a20b9deefe4d3bdb4ecda777108e4abd886440e0c41261e0f4e63"
+  },
+  "sourceCommit": "bd419cb308fb6e4d043842e11bb14d6975676701",
+  "workingTreeDirty": false,
+  "runtime": {
+    "identifier": "com.apple.CoreSimulator.SimRuntime.iOS-26-4",
+    "version": "26.4.1",
+    "buildVersion": "23E254a",
+    "deviceType": "com.apple.CoreSimulator.SimDeviceType.iPhone-SE-3rd-generation",
+    "downloaded": false
+  },
+  "udid": "80869730-5236-4F27-A151-D3ADD5E1EDAF",
+  "firstBootBudgetMs": 600000,
+  "simulatorBooted": true,
+  "app": {
+    "executableSHA256": "76deb99a969e9df8ce648e0f60c9907d6a459fda582f785d06128240160995cf",
+    "webIndexSHA256": "a5df70c7ce23a0ca91ecd6d56c3b19c120c4fbec01450051acadeff2cd451b82",
+    "uiTestSourceSHA256": "cc875f683797d7fe9e654a300650d012b74ffd292631e7737e45c801a7351dcd",
+    "bindingReportSHA256": "43f4fedeb6fe102ef6f1807828ab55698560d487c880c477d573997d06775f13"
+  },
+  "startupTestStarted": true,
+  "appStartup": {
+    "result": "Passed",
+    "passedTests": 1,
+    "failedTests": 0,
+    "skippedTests": 0
+  },
+  "peerObservation": {
+    "runtime": "real production Node engine in owned child process",
+    "relayForOthers": false,
+    "recipientID": "32815fc4e0baa09680067c7a5b5011753f344f48146605f903ff5108e237f329",
+    "senderID": "3daa3a41241fcf32f8cedfd3a873ffde3a8d8dc3250ad6b897775ce723f783bb",
+    "messages": [
+      {
+        "id": "efeea301dde4c4499978c7d97d0b4628697cd9d35fdbd0d43dcabd7ec44ef03f",
+        "type": "private-message",
+        "signatureAndReaderScopeVerifiedByNode": true
+      }
+    ],
+    "replyReadConfirmed": false
+  },
+  "testCommandStarted": true,
+  "uiPhases": [
+    "keyboard-dismissed",
+    "identity-created",
+    "post-published",
+    "private-message-saved",
+    "photo-picker-requested"
+  ],
+  "lastUIPhase": "photo-picker-requested",
+  "error": "Owned command failed: execute-ui-test (see sanitized evidence)",
+  "photoDiagnostics": {
+    "captured": true,
+    "exitCode": 0
+  },
+  "peerDiagnostics": {
+    "captured": true,
+    "bytes": 427
+  },
+  "startupScreenshotsExported": 1,
+  "screenshotsExported": 3,
+  "completedAt": "2026-09-22T01:20:57.134Z",
+  "diskFreeBytesAtEnd": 97100877824
+}
