@@ -62,6 +62,7 @@ export async function createPacket(
   payload: unknown,
   priority: Priority = "normal",
   ttl = 120_000,
+  deadline?: number,
 ): Promise<Packet> {
   if (
     !ident(source) ||
@@ -73,10 +74,15 @@ export async function createPacket(
     throw new Error("Prazo ou prioridade inválidos");
   const owned = JSON.parse(canonical(payload)),
     now = Date.now();
+  if (
+    deadline !== undefined &&
+    (!Number.isSafeInteger(deadline) || deadline <= now)
+  )
+    throw new Error("Prazo de autorização expirado");
   const body = {
     source,
     created: now,
-    expires: now + ttl,
+    expires: Math.min(now + ttl, deadline ?? Number.MAX_SAFE_INTEGER),
     maxHops: ROUTER_LIMITS.maxHops,
     priority,
     payload: owned,

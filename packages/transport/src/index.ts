@@ -154,12 +154,14 @@ class Link {
     for (const [id, transfer] of this.pending)
       if (transfer.relayOnly) this.cancelTransfer(id);
   }
-  cancelLocal(match: (payload: unknown) => boolean): string[] {
+  cancelLocal(
+    match: (payload: unknown, packetId: string) => boolean,
+  ): string[] {
     const removed: string[] = [];
     for (const [id, transfer] of this.pending)
       if (
         transfer.packet.source === this.router.id &&
-        match(transfer.packet.payload)
+        match(transfer.packet.payload, id)
       ) {
         this.cancelTransfer(id);
         removed.push(id);
@@ -632,16 +634,19 @@ export class Router extends EventEmitter {
   /** Retire our own retained packets and future fragments on every adapter.
    * The trusted local predicate must be pure. A frame already handed to the
    * operating system and copies held by peers cannot be recalled. */
-  cancelLocal(match: (payload: unknown) => boolean): number {
+  cancelLocal(match: (payload: unknown, packetId: string) => boolean): number {
     const removed = new Set<string>();
     for (const [id, value] of this.retained)
-      if (value.packet.source === this.id && match(value.packet.payload)) {
+      if (value.packet.source === this.id && match(value.packet.payload, id)) {
         this.removeRetained(id);
         removed.add(id);
       }
     for (const link of this.links)
       for (const id of link.cancelLocal(match)) removed.add(id);
     return removed.size;
+  }
+  cancelLocalIds(ids: ReadonlySet<string>): number {
+    return this.cancelLocal((_payload, id) => ids.has(id));
   }
   private removeRetained(id: string) {
     const value = this.retained.get(id);
@@ -842,6 +847,7 @@ export class Router extends EventEmitter {
     priority: Priority = "normal",
     ttlMs = 120_000,
     relayOnly = false,
+    deadline?: number,
   ): string {
     if (
       this.stopped ||
@@ -852,15 +858,20 @@ export class Router extends EventEmitter {
       typeof relayOnly !== "boolean"
     )
       throw new Error("Prazo ou prioridade inválidos");
-    const now = Date.now(),
-      body = {
-        source: this.id,
-        created: now,
-        expires: now + ttlMs,
-        maxHops: 12,
-        priority,
-        payload,
-      };
+    const now = Date.now();
+    if (
+      deadline !== undefined &&
+      (!Number.isSafeInteger(deadline) || deadline <= now)
+    )
+      throw new Error("Prazo de autorização expirado");
+    const body = {
+      source: this.id,
+      created: now,
+      expires: Math.min(now + ttlMs, deadline ?? Number.MAX_SAFE_INTEGER),
+      maxHops: 12,
+      priority,
+      payload,
+    };
     const packet: Packet = {
       ...body,
       id: hash(canonical(body)),

@@ -2,7 +2,79 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { setTimeout as delay } from "node:timers/promises";
 import { Router } from "../packages/transport/src/index.js";
+import { canonical, hash } from "../packages/core/src/index.js";
 import { until } from "./helpers.js";
+
+test("packet-ID cancellation preserves an independent equal payload and a foreign-origin packet", async (t) => {
+  const origin = new Router(),
+    middle = new Router(),
+    receiver = new Router({ relay: false });
+  t.after(async () => {
+    await origin.stop();
+    await middle.stop();
+    await receiver.stop();
+  });
+  const received: string[] = [],
+    atMiddle: string[] = [],
+    payload = { kind: "same-source-bytes" };
+  middle.lowPower = true;
+  middle.on("payload", (_p, route) => atMiddle.push(route.packetId));
+  receiver.on("payload", (_p, route) => received.push(route.packetId));
+  origin.connectTcp("127.0.0.1", await middle.listen());
+  await until(
+    async () => origin.peers,
+    (p) => p.some((x) => x.connected),
+  );
+  const foreign = origin.broadcast(payload, "bulk");
+  await until(
+    async () => atMiddle,
+    (p) => p.includes(foreign),
+  );
+  middle.connectTcp("127.0.0.1", await receiver.listen());
+  await until(
+    async () => middle.peers,
+    (p) => p.filter((x) => x.connected).length === 2,
+  );
+  const removed = middle.broadcast(payload, "bulk");
+  await delay(3);
+  const kept = middle.broadcast(payload, "bulk");
+  assert.notEqual(removed, kept);
+  assert.equal(middle.cancelLocalIds(new Set([removed, foreign])), 1);
+  assert.equal(middle.cancelLocalIds(new Set([removed, foreign])), 0);
+  middle.lowPower = false;
+  await until(
+    async () => received,
+    (p) => p.includes(foreign) && p.includes(kept),
+  );
+  await delay(200);
+  assert.equal(received.includes(removed), false);
+});
+
+test("absolute local authorization deadline is bound into the Node packet ID", async (t) => {
+  const router = new Router({ id: "deadline-router" }),
+    now = 1700000000000,
+    payload = { source: "fixture" };
+  t.after(() => router.stop());
+  t.mock.method(Date, "now", () => now);
+  const deadline = now + 1000;
+  assert.equal(
+    router.broadcast(payload, "bulk", 120000, false, deadline),
+    hash(
+      canonical({
+        source: router.id,
+        created: now,
+        expires: deadline,
+        maxHops: 12,
+        priority: "bulk",
+        payload,
+      }),
+    ),
+  );
+  assert.throws(
+    () => router.broadcast(payload, "bulk", 120000, false, now),
+    /expirado/,
+  );
+});
 
 for (const cancel of [true, false])
   test(`local cancellation ${cancel ? "removes" : "negative control delivers"} an actual queued TCP transfer and its reconnect copy`, async (t) => {

@@ -112,3 +112,77 @@ func TestLocalCancellationPreservesForeignOriginRelay(t *testing.T) {
 		t.Fatal("foreign copy lost")
 	}
 }
+
+func TestCancelLocalIDsPreservesEqualPayloadAndForeignPacket(t *testing.T) {
+	a, b, c := routerFor(t, Options{}), routerFor(t, Options{}), routerFor(t, Options{DisableRelay: true})
+	b.SetLowPower(true)
+	address, err := b.ListenTCP("127.0.0.1:0")
+	if err != nil {
+		t.Fatal(err)
+	}
+	disconnect, err := a.ConnectTCP(address.String())
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer disconnect()
+	waitFor(t, time.Second, func() bool { return len(a.Peers()) == 1 })
+	payload := map[string]any{"kind": "same-source-bytes"}
+	foreign, err := a.Broadcast(payload, Bulk, 10*time.Second, false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	nextFor(t, b)
+	address, err = c.ListenTCP("127.0.0.1:0")
+	if err != nil {
+		t.Fatal(err)
+	}
+	disconnectC, err := b.ConnectTCP(address.String())
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer disconnectC()
+	waitFor(t, time.Second, func() bool { return len(b.Peers()) == 2 })
+	removed, err := b.Broadcast(payload, Bulk, 10*time.Second, false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	time.Sleep(3 * time.Millisecond)
+	kept, err := b.Broadcast(payload, Bulk, 10*time.Second, false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if removed == kept || b.CancelLocalIDs([]string{removed, foreign}) != 1 || b.CancelLocalIDs([]string{removed, foreign}) != 0 {
+		t.Fatal("local packet identity cancellation failed")
+	}
+	b.SetLowPower(false)
+	ids := map[string]bool{}
+	for i := 0; i < 2; i++ {
+		ids[nextFor(t, c).Route.PacketID] = true
+	}
+	if !ids[foreign] || !ids[kept] || ids[removed] {
+		t.Fatal("wrong packets preserved")
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 200*time.Millisecond)
+	defer cancel()
+	if _, err = c.Next(ctx); err == nil {
+		t.Fatal("cancelled packet arrived")
+	}
+}
+
+func TestBroadcastUntilBindsAbsoluteDeadline(t *testing.T) {
+	r := routerFor(t, Options{})
+	deadline := time.Now().Add(time.Second).UnixMilli()
+	id, err := r.BroadcastUntil(map[string]any{"kind": "source"}, Bulk, 2*time.Minute, false, deadline)
+	if err != nil {
+		t.Fatal(err)
+	}
+	r.mu.Lock()
+	expires := r.retained[id].packet.expires
+	r.mu.Unlock()
+	if expires != deadline {
+		t.Fatal("deadline changed during packet construction")
+	}
+	if _, err = r.BroadcastUntil(map[string]any{"kind": "source"}, Bulk, 2*time.Minute, false, time.Now().UnixMilli()-1); err == nil {
+		t.Fatal("expired authorization accepted")
+	}
+}

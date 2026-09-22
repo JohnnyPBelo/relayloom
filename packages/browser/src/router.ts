@@ -23,7 +23,17 @@ interface PacketEndpoint {
   close(): void;
 }
 
-type Retained = { packet: Packet; bytes: number; relayOnly: boolean };
+export interface LocalPacketPermission {
+  expires: number;
+  valid(): boolean;
+  check(): Promise<boolean>;
+}
+type Retained = {
+  packet: Packet;
+  bytes: number;
+  relayOnly: boolean;
+  permission?: LocalPacketPermission;
+};
 type Link = {
   id: string;
   endpoint: PacketEndpoint;
@@ -148,12 +158,22 @@ export class BrowserRouter {
       }
     return count;
   }
+  cancelLocalIds(ids: ReadonlySet<string>): number {
+    let count = 0;
+    for (const [id, value] of this.#retained)
+      if (value.packet.source === this.id && ids.has(id)) {
+        this.remove(id);
+        count++;
+      }
+    return count;
+  }
   private permitted(e: Retained) {
     return (
       !this.#stopped &&
       (this.options.running?.() ?? true) &&
       this.#retained.get(e.packet.id) === e &&
       e.packet.expires > Date.now() &&
+      (e.permission?.valid() ?? true) &&
       (!e.relayOnly || this.#relaying)
     );
   }
@@ -292,15 +312,32 @@ export class BrowserRouter {
     priority: Priority = "normal",
     ttlMs = 120_000,
     relayOnly = false,
+    permission?: LocalPacketPermission,
   ): Promise<string> {
     if (this.#stopped || typeof relayOnly !== "boolean")
       throw new Error("Router indisponível");
-    const packet = await createPacket(this.id, payload, priority, ttlMs);
+    const packet = await createPacket(
+      this.id,
+      payload,
+      priority,
+      ttlMs,
+      permission?.expires,
+    );
     await this.options.validate(packet.payload);
+    if (this.#stopped) throw new Error("Router encerrado");
+    if (relayOnly && !this.#relaying) throw new RelayRevokedError();
+    if (
+      permission &&
+      (!permission.valid() ||
+        !(await permission.check()) ||
+        !permission.valid())
+    )
+      throw new Error("Permissão local de envio retirada");
     if (this.#stopped) throw new Error("Router encerrado");
     if (relayOnly && !this.#relaying) throw new RelayRevokedError();
     if (this.#seen.has(packet.id)) return packet.id;
     const value = this.retain(packet, relayOnly);
+    value.permission = permission;
     this.remember(packet);
     for (const link of this.#links.values()) link.queue.set(packet.id, value);
     this.tick();
@@ -403,6 +440,10 @@ export class BrowserRouter {
   private async transmit(link: Link, value: Retained): Promise<void> {
     try {
       if (!this.permitted(value)) return;
+      if (value.permission && !(await value.permission.check())) {
+        this.remove(value.packet.id);
+        return;
+      }
       if (
         this.options.maySend &&
         !(await this.options.maySend(structuredClone(value.packet.payload)))

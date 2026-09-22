@@ -219,18 +219,31 @@ func (r *Router) SetLowPower(enabled bool) {
 // The trusted predicate runs under the router mutex and must be pure. A frame
 // already handed to the operating system and remote copies cannot be recalled.
 func (r *Router) CancelLocal(match func(any) bool) int {
+	return r.cancelLocalWithID(func(value any, _ string) bool { return match(value) })
+}
+
+// CancelLocalIDs cannot retire a packet originated by another peer.
+func (r *Router) CancelLocalIDs(ids []string) int {
+	wanted := make(map[string]bool, len(ids))
+	for _, id := range ids {
+		wanted[id] = true
+	}
+	return r.cancelLocalWithID(func(_ any, id string) bool { return wanted[id] })
+}
+
+func (r *Router) cancelLocalWithID(match func(any, string) bool) int {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	removed := map[string]bool{}
 	for id, value := range r.retained {
-		if value.packet.source == r.id && match(value.packet.payload) {
+		if value.packet.source == r.id && match(value.packet.payload, id) {
 			r.removeRetainedLocked(id)
 			removed[id] = true
 		}
 	}
 	for link := range r.links {
 		for id, value := range link.pending {
-			if value.packet.source == r.id && match(value.packet.payload) {
+			if value.packet.source == r.id && match(value.packet.payload, id) {
 				link.cancelTransferLocked(id)
 				removed[id] = true
 			}
@@ -349,6 +362,18 @@ func (r *Router) retainLocked(p *packet, encoded []byte, relayOnly bool) (*retai
 // Broadcast snapshots payload before returning. relayOnly marks inventory/seed traffic
 // that must be discarded when relaying is paused; it is never added to the wire.
 func (r *Router) Broadcast(payload any, priority Priority, ttl time.Duration, relayOnly bool) (string, error) {
+	return r.broadcast(payload, priority, ttl, relayOnly, 0)
+}
+
+// BroadcastUntil binds a locally authorized transfer to an absolute deadline,
+// including time spent copying/canonicalizing its payload.
+func (r *Router) BroadcastUntil(payload any, priority Priority, ttl time.Duration, relayOnly bool, deadlineMS int64) (string, error) {
+	if deadlineMS <= 0 {
+		return "", errors.New("invalid authorization deadline")
+	}
+	return r.broadcast(payload, priority, ttl, relayOnly, deadlineMS)
+}
+func (r *Router) broadcast(payload any, priority Priority, ttl time.Duration, relayOnly bool, deadlineMS int64) (string, error) {
 	if !validPriority(priority) || ttl < time.Millisecond || ttl > MaxTTL || ttl%time.Millisecond != 0 {
 		return "", errors.New("invalid priority or TTL")
 	}
@@ -364,7 +389,14 @@ func (r *Router) Broadcast(payload any, priority Priority, ttl time.Duration, re
 		return "", err
 	}
 	now := time.Now().UnixMilli()
-	p := &packet{source: r.id, created: now, expires: now + ttl.Milliseconds(), maxHops: MaxHops, hops: []string{r.id}, priority: priority, payload: snapshot}
+	expires := now + ttl.Milliseconds()
+	if deadlineMS != 0 {
+		expires = min(expires, deadlineMS)
+	}
+	if expires <= now {
+		return "", errors.New("authorization deadline expired")
+	}
+	p := &packet{source: r.id, created: now, expires: expires, maxHops: MaxHops, hops: []string{r.id}, priority: priority, payload: snapshot}
 	body, err := core.Canonical(p.body())
 	if err != nil {
 		return "", err

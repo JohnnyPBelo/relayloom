@@ -9,6 +9,102 @@ test.afterAll(async () => {
   await harness.close();
   expect(harness.requests.some((p) => p.startsWith("/api/"))).toBe(false);
 });
+
+test("managed packet-ID cancellation preserves an equal local payload and a foreign packet; absolute deadlines remain on wire", async ({
+  page,
+}) => {
+  await page.goto(harness.url);
+  const result = await page.evaluate(async () => {
+    const r = (window as any).rl,
+      middleReceived: string[] = [],
+      received: string[] = [],
+      routers: any[] = [];
+    const create = (relay: boolean, into: string[]) => {
+      const v = new r.BrowserRouter({
+        relay,
+        validate: async () => {},
+        receive: async (_p: any, route: any) => {
+          into.push(route.packetId);
+        },
+      });
+      routers.push(v);
+      return v;
+    };
+    const origin = create(true, []),
+      middle = create(true, middleReceived),
+      sink = create(false, received);
+    const link = async (a: any, b: any) => {
+      const x = a.newPeer(),
+        y = b.newPeer(),
+        offer = await x.peer.offer(),
+        answer = await y.peer.answer(offer);
+      await x.peer.accept(answer);
+      await wait(() => !!x.peer.link && !!y.peer.link);
+      await x.peer.link.ready();
+      await y.peer.link.ready();
+    };
+    const wait = async (f: () => boolean) => {
+      const end = Date.now() + 5000;
+      while (!f() && Date.now() < end)
+        await new Promise((resolve) => setTimeout(resolve, 20));
+      if (!f()) throw Error("packet witness missing");
+    };
+    try {
+      middle.lowPower = true;
+      await link(origin, middle);
+      const payload = { same: "source bytes" },
+        foreign = await origin.broadcast(payload, "bulk");
+      await wait(() => middleReceived.includes(foreign));
+      await link(middle, sink);
+      const removed = await middle.broadcast(payload, "bulk");
+      await new Promise((resolve) => setTimeout(resolve, 3));
+      const kept = await middle.broadcast(payload, "bulk"),
+        count = middle.cancelLocalIds(new Set([removed, foreign]));
+      middle.lowPower = false;
+      await wait(() => received.includes(foreign) && received.includes(kept));
+      await new Promise((resolve) => setTimeout(resolve, 200));
+      const deadline = Date.now() + 1000,
+        packet = await r.createPacket(
+          "deadline-source",
+          { source: true },
+          "bulk",
+          120000,
+          deadline,
+        );
+      let expiredRefused = false;
+      try {
+        await r.createPacket(
+          "deadline-source",
+          {},
+          "bulk",
+          120000,
+          Date.now() - 1,
+        );
+      } catch {
+        expiredRefused = true;
+      }
+      return {
+        count,
+        separate: removed !== kept,
+        received,
+        removed,
+        foreign,
+        kept,
+        exactDeadline: packet.expires === deadline,
+        expiredRefused,
+      };
+    } finally {
+      for (const router of routers) router.close();
+    }
+  });
+  expect(result.count).toBe(1);
+  expect(result.separate).toBe(true);
+  expect(result.received).toContain(result.foreign);
+  expect(result.received).toContain(result.kept);
+  expect(result.received).not.toContain(result.removed);
+  expect(result.exactDeadline).toBe(true);
+  expect(result.expiredRefused).toBe(true);
+});
 const password = "frase passe longa de teste";
 async function start(page: Page, name: string) {
   await page.goto(harness.url);
