@@ -693,3 +693,24 @@ Cache não é fonte nem prova. Ao ficar abaixo de15GiB, parar novos builds, veri
 
 
 CI bd419cb não repetiu a falha de addmedia da execução0a85d7d: seed passou, o teste funcional correu e o Node confirmou a mensagem privada. A falha agora é consulta remota AX do photospicker. Distinguir fases reais pelos relatórios/logs, não pelo resultado global FAILURE. A numeração ui-01/02/03 não é cronologia. Capturas da app sem fotografia visível não demonstram que o picker nunca abriu; o log identifica o processo remoto mas não a causa.
+
+
+Cancelamento idempotente deve remover só o stage da operação que ainda o possui. Os controlos Browser/Go mostraram perda do stage2 ao repetir cancel(op1) já cancelada. Fix aplicado, por validar depois de recuperar a reserva de disco. A fila queued está parcialmente implementada em Node e protocoloTS, sem API e sem testes novos; não declarar envio funcional. O pedido de libertação de espaço é um requisito real do PROJECT-BRIEF, não um motivo para baixar a reserva ou tocar noutros projectos.
+
+
+## Recuperação da integração de envio e controlos de produção — 22 de Setembro
+
+Não executar um gate de vários browsers com a config sem projectos: a primeira invocação terminou antes de qualquer teste. A matriz usa RELAYLOOM_MATRIX_ENGINE e matrix.config.ts; preservar imediatamente o JSON de cada fase. Firefox/WebKit passaram os5controlos de rede/cópia, Chromium passou2percursos worker compilado, incluindo shelloffline/reload e cancelamento conservado.
+
+A primeira fixture heterogénea pediu serial directoGo, uma capacidade que a aplicação recusa explicitamente. Essa falha é da topologia de ensaio, não prova regressão de propostas. O controlo válido usa senderNode/Go→relayNode TCP/serial→ownerNode semTCP; ambos passaram, incluindo partição, autorização, envelope cifrado exacto e takeover com processo remetente/socket comprovadamente indisponíveis. Manter essa distinção na matriz de capacidades; não anunciarGo serial ou rádio físico.
+
+O CI f69eb24 falhou por missing seeded synthetic photo, distinto das falhas anteriores. A captura mostra a fixture; o diagnóstico AX expõe imagensPXGGridLayout-Info e o teste procura células. Corrigir o selector exige preservar identificação inequívoca da fixture e repetir emApple, não aumentar timeouts ou chamar a captura um anexo enviado.27ficheiros conferidos;115browserPASS pertence a f69eb24, não aoWIP.
+
+Auto-revisão adicional: antes de fechar o marco, provar cancelamento enquanto bundleForTransport já está à espera de política. O controlo existente atrasava broadcast antes da decisão; não cobre necessariamente uma decisão já emcurso. Se se reproduzir uma resposta antiga autorizada, invalidar apósawait sem chamar isso revogação de pacotes já transmitidos. Ainda é hipótese por testar, não um defeito confirmado.
+
+
+## Autorização retida depois de cancelamento/expiração — controlo reproduzido
+
+Depois de o gate amplo passar505Node,17pacotesGo/race,35processos e49casos porbrowser, um teste adicional reteve uma leitura de política real já concluída, sem reter a transacção IndexedDB. O cancelamento conseguiu confirmar cancelled/retirar pacote enquanto canServe continuava pendente. Ao libertar a resposta, canServe devolvia true. O mesmo acontecia ao atingir o prazo durante a espera; fechar o runtime continuava correctamente recusado. Resultado anterior:2FAIL/1PASS, preservado em contribution-serve-race-before.log/report.json.
+
+Corrigido BrowserContributionRuntime.canServe para revalidar a mesma entrada allowed e o prazo depois do await, além da geração/sessão. Não é recolha de bytes já enviados; impede uma autorização assíncrona retida de ressuscitar permissão local. Repetir os três controlos, reconstruir e executar guards/RTC/worker deprodução/catálogos nos três engines. O gate amplo anterior conserva a fonte original; só o browser/harness/teste desta correcção mudam. Não apresentar505Node/Go como execuções novas depois da correcção browser.

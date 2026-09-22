@@ -1,0 +1,14 @@
+{
+  "sourceCommit": "07b509e57a157cfbca0babdb20cd4fbbb40cf22f",
+  "queueCommit": "5a1921c73be13c3cec32c7076fa41a521f1b799c",
+  "verifiedSourceFiles": 720,
+  "mismatches": [],
+  "broaderGate": "gate.json",
+  "postReviewGate": "reviewed/gate.json",
+  "delta": [
+    "packages/browser/src/contribution-runtime.ts",
+    "tests/browser/harness.ts",
+    "tests/browser/site-contribution-serve-race.spec.ts"
+  ],
+  "statement": "Final files match post-review source hashes. Only the listed browser runtime/test files changed after the broad Node/Go/process/browser gate."
+}

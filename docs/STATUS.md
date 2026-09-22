@@ -1,5 +1,18 @@
 # RelayLoom — estado verificável
 
+
+## Fila e transporte privado de propostas — 22 de Setembro
+
+**5a1921c/07b509e:** fila recuperável, API de envio, cópia verificada e transporte privado implementados em Node/Go/browser. A inbox actual mostra candidatos, não decisões duráveis ou aprovação. Faltam replay por autor/operação, recibos, reconciliação/CAS/proveniência, recuperação automática da fonte e UI completa. Paleta oculta; HTML público inalterado. [Comportamento e limites](SITE-CONTRIBUTIONS.md).
+
+O gate amplo passou **505 testes Node, 17 pacotes Go/race, 35 testes entre processos e 49 percursos em cada browser**, além de typecheck e builds. Inclui produção worker/setup/ligação pela UI, reload offline, mesmo envelope, cancelamento conservado, TCP→serial PTY e takeover por relay sem chave após saída comprovada do remetente. A primeira fixture tentou serial directo Go indisponível; foi corrigida para usar o adaptador Node real, conservando emissores Node/Go. Não é rádio físico.
+
+Um controlo adicional reproduziu autorização retida depois de cancelar/expirar durante um await: **2 FAIL / 1 PASS**. A correcção browser passou 3 controlos e novo gate com typecheck/build/**16 casos afectados em cada engine**. Apenas três fontes browser/teste mudaram; os resultados Node/Go acima conservam a sua proveniência, sem serem apresentados como execuções posteriores. Os 720 hashes finais correspondem ao código commitado. [Comandos, fontes, negativos/positivos e capturas](evidence/site-contributions/submission).
+
+CI35676434531/f69eb24 terminou FAILURE apenas em iOS; todos os outros jobs passaram, incluindo 115 testes de browser. iOS passou arranque/importação de fotografia e entrega privada ao Node, mas falhou ao localizar a fotografia no selector (linha 308). A captura mostra a imagem sintética; AX expõe imagens, enquanto o teste procura células. Anexo/resposta/recuperação continuam sem passe. 27 ficheiros de manifestos conferidos. [Provas exactas e distinção dos CIs anteriores](evidence/ci-f69eb24).
+
+As secções seguintes são marcos anteriores e conservam as limitações da respectiva fonte; não descrevem todas o código actual.
+
 ## Catálogos e envelopes recuperáveis — código local de 22 de Setembro
 
 **a1040a7/16dbd6a:** catálogo Go interoperável com Node, prazos revalidados após política e envelopes privados persistidos nos três motores. A criação e a expiração são as da intenção guardada. Reabrir/alternar motor recupera exactamente o mesmo envelope; corrupção é recusada sem gerar novo nonce. A leitura de uma página ou concessão de publicação não passa a conferir autoridade de edição.

@@ -285,3 +285,8 @@ Ainda faltam catálogo Go, submissão/transporte/outbox/inbox, aprovação/recon
 FR-038/039/040, DATA e CON-002 continuam parciais no produto. a1040a7 acrescenta tempos fixos e16dbd6a completa catálogo Go/selagem persistente nos três motores. Gate local500Node,18processos,builds e21casos porbrowser PASS; Go core/sites-race,53vectores(18/35),crashes/quotas/corrupção e writerconcorrente têm provas. Ver docs/evidence/site-contributions/envelopes.
 
 Não conclui submissão/outbox/inbox/aprovação/proveniência/UI nem os restantes requisitos. O CI35670707944 testa bd419cb, anterior aos novos commits. Publicação HTTPS permanece7fdb76a/0fdbd1b9; hardware/Apple e revisão independente continuam com as limitações declaradas.
+
+
+## Submissão privada integrada — 22 de Setembro
+
+FR-038/039/040 e CON-002 permanecem parciais. 5a1921c/07b509e ligam fila privada recuperável e API/transporte Node/Go/browser; inbox ainda só candidatos. Gate505Node,17pacotesGo/race,35processos,49casos porenginePASS. Uma correcção final de cancelamento/expiração apósawait foi reproduzida e passou gate separado16casos porengine/typecheck/build; provas e deltas exactos em docs/evidence/site-contributions/submission. Público7fdb76a/0fdbd1b inalterado. Faltam inbox durável/replay, recuperação de fonte, recibos, aprovação/CAS/reconciliação/proveniência/UI, além dos restantes requisitos de plataformas/rádios/grupos web/rotação e revisão independente. Próxima implementação: CONTRIBUTION-INBOX-NEXT.md.

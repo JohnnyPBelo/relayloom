@@ -1,0 +1,43 @@
+[
+  {
+    "manifest": ".cache/ci-f69eb24/ios/7f5b5e1d-9d7f-4ff1-b590-185a8fc8de1f/artifact-hashes.json",
+    "verified": [
+      "01-xcode-version.log",
+      "02-source-commit.log",
+      "03-source-cleanliness.log",
+      "04-installed-runtimes.log",
+      "05-installed-device-types.log",
+      "06-create-owned.log",
+      "07-boot-owned.log",
+      "08-wait-owned-boot.log",
+      "09-build-for-testing.log",
+      "10-install-owned-app.log",
+      "11-execute-startup-test.log",
+      "12-startup-xctest-summary.log",
+      "13-seed-synthetic-photo.log",
+      "14-execute-ui-test.log",
+      "15-photo-fixture-diagnostics.log",
+      "16-export-startup-attachments.log",
+      "17-export-test-attachments.log",
+      "19-shutdown-owned.log",
+      "20-delete-owned.log",
+      "peer-stderr.txt",
+      "simulator-report.json",
+      "startup-01.png",
+      "ui-01.png",
+      "ui-02.png",
+      "ui-03.png",
+      "ui-04.png"
+    ],
+    "missing": [],
+    "mismatched": []
+  },
+  {
+    "manifest": ".cache/ci-f69eb24/ios/8f9901c5-b84a-4022-ad16-a83df60a0f2a/artifact-hashes.json",
+    "verified": [
+      "cleanup-report.json"
+    ],
+    "missing": [],
+    "mismatched": []
+  }
+]

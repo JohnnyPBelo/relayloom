@@ -183,3 +183,8 @@ Próximo: API de submissão com snapshot/contexto derivados pelo motor; intenç�
 
 
 CI35670707944/bd419cb terminou: todos os jobs excepto iOS PASS,112browser. iOS importou a fotografia e entregou mensagem privada verificada pelo Node, mas falhou AX no photospicker (linha318), sem concluir anexo/reply/recovery. Provas em docs/evidence/ci-bd419cb; causa não demonstrada. Os novos commits podem ser enviados sem cancelar esseCI terminal.
+
+
+## Submissão privada integrada — 22 de Setembro
+
+FR-038/039/040 e CON-002 permanecem parciais. 5a1921c/07b509e ligam fila privada recuperável e API/transporte Node/Go/browser; inbox ainda só candidatos. Gate505Node,17pacotesGo/race,35processos,49casos porenginePASS. Uma correcção final de cancelamento/expiração apósawait foi reproduzida e passou gate separado16casos porengine/typecheck/build; provas e deltas exactos em docs/evidence/site-contributions/submission. Público7fdb76a/0fdbd1b inalterado. Faltam inbox durável/replay, recuperação de fonte, recibos, aprovação/CAS/reconciliação/proveniência/UI, além dos restantes requisitos de plataformas/rádios/grupos web/rotação e revisão independente. Próxima implementação: CONTRIBUTION-INBOX-NEXT.md.

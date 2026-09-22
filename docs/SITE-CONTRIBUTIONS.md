@@ -10,7 +10,7 @@ A consulta `contribution-command` com `action: form`, snapshotId, pageId e formI
 
 O certificado do visitante fixa site, snapshot, revisão, formulário, esquema, UUID, valores, validade e a audiência máxima consentida para divulgação. Uma proposta pode ser enviada privadamente ao dono de um site público sem consentir publicação pública. A audiência do envelope e a concessão de publicação são coisas diferentes; adoptar a proposta continuará a exigir uma decisão assinada pelo dono e uma audiência compatível.
 
-## Preparação privada ainda interna
+## Preparação e envio privado
 
 Os catálogos Node/Go/browser guardam primeiro a intenção e o snapshot de origem, sem assinatura do visitante. Só uma transacção posterior cria e conserva o certificado. Reabrir ou repetir a operação conserva os valores, o prazo e a identidade dessa proposta. Corrupção e falhas de quota recusam a operação; não geram silenciosamente outra proposta.
 
@@ -20,10 +20,23 @@ O journal tem um contador monotónico, uma preparação activa e até 128 result
 | --- | --- | --- |
 | prepared | Intenção e origem foram guardadas | Assinatura, envio ou aprovação |
 | signed | Certificado guardado; pode conter envelope privado persistido | Cópia para o transporte ou entrega |
+| queued | Intenção de envio e envelope conservados numa fila privada | Recepção pelo dono, aprovação ou publicação |
 | cancelled | Preparação local cancelada, resultado retido | Recolha de cópias já extraídas |
 | expired | Prazo terminou, sem renovação silenciosa | Eliminação de cópias remotas |
 
-A janela finita conserva a identidade das sequências retiradas pelo contador; não promete memória infinita de qualquer UUID reutilizado com uma sequência nova. O envelope privado conserva exactamente a criação/expiração do certificado e é guardado antes de ser devolvido ao runtime. Recuperar não muda o nonce ou renova o prazo. Um envelope corrompido é recusado, sem gerar uma substituição silenciosa. Nenhum endpoint de submissão expõe ainda estes catálogos.
+A janela finita conserva a identidade das sequências retiradas pelo contador; não promete memória infinita de qualquer UUID reutilizado com uma sequência nova. O envelope privado conserva exactamente a criação/expiração do certificado e é guardado antes de ser devolvido ao runtime. Recuperar não muda o nonce ou renova o prazo. Um envelope corrompido é recusado, sem gerar uma substituição silenciosa.
+
+A API `contribution-command` acrescenta `state`, `submit`, `operation`, `resume`, `cancel` e `inbox` nos três motores. O cliente fornece apenas a referência do formulário, valores, concessão, prazo, UUID e sequência. O motor resolve novamente a fonte e a política; o cliente não fornece ACL, contexto ou chaves. O handoff guarda o payload numa área privada por certificado e liberta o slot de preparação na mesma transacção. A fila aceita até 32 operações e 32 MiB, sujeita também às quotas reais. Trabalho pendente não é expulso para abrir espaço na janela de resultados.
+
+O runtime copia para a store de transporte e relê o envelope antes de marcar `transport.copied`. Esse campo só prova a cópia local. Retransmissões usam os mesmos bytes pelos adaptadores existentes; verificam a política actual e são limitadas por envelope. Bloqueio, retirada, expiração e lock impedem novas emissões locais. Cancelamento não pode recolher cópias já recebidas por outros pares. A pausa de relay para terceiros mantém o envio próprio.
+
+Uma proposta é sempre privada para visitante e dono (um leitor se forem a mesma identidade), mesmo quando a concessão permite uma publicação pública. O relay sem chave pode conservar e encaminhar bytes verificados; não passa a ser autor ou leitor. Quando legível, a aplicação verifica também a assinatura interna e o vínculo ao envelope antes de guardar/apresentar. O estado periódico omite os valores da proposta.
+
+## Caixa de candidatos — integração parcial
+
+`inbox` enumera candidatos cujo certificado, contribuidores, esquema e fonte assinada puderam ser verificados. `verified-candidate` não é uma decisão durável, recibo ou aprovação. Se falta a fonte, devolve `missing-source`, sem valores apresentados como autorizados. O mesmo certificado em envelopes diferentes não duplica a lista.
+
+Ainda falta um journal durável que detecte também certificados conflitantes do mesmo autor/UUID, conserve decisões sob quotas e coordene recibos/reconciliação. A fila do remetente preserva a fonte original, mas a sua recuperação automática pelo dono ainda não está ligada. Não activar a paleta antes do percurso completo.
 
 ## Autoria e aprovação
 
@@ -33,7 +46,7 @@ A integração seguinte tem de conservar a proposta original na proveniência do
 
 ## Ainda obrigatório
 
-- Preparação/submissão na API com política resolvida novamente pelo motor, envelope privado persistente, outbox e inbox.
+- Inbox durável, replay por autor/operação, recuperação da fonte histórica e recibos verificáveis.
 - Aprovação/rejeição, conflitos/CAS, recibos, reconciliação e proveniência das linhas.
 - Composição de formulários e caixa de revisão na UI PT/EN/ES, Liquid Glass, teclado/toque, acessibilidade e testes com três contas reais.
 - Regressão completa dos motores e plataformas, publicação dos artefactos exactos e revisão independente. Nenhum teste de software substitui validação de hardware ou rádio.
