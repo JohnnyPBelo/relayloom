@@ -81,7 +81,7 @@ worker.onmessage = async (event: MessageEvent) => {
         value = await app.profile.setValue("mesh-settings", m.body.value);
       else if (m.operation === "ids") value = await app.profile.ids();
       else if (m.operation === "get-bundle")
-        value = await app.profile.getBundle(m.body.id);
+        value = await app.bundleForTransport(m.body.id);
       else if (m.operation === "put-bundle")
         value = await app.ingest(m.body.bundle);
       else throw new Error("Operação de transporte inválida");

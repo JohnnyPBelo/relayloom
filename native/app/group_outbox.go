@@ -15,6 +15,22 @@ import (
 )
 
 func (n *Node) maySeedLocked(manifest core.Manifest) (bool, error) {
+	if manifest.Kind == "site-contribution" {
+		if contains(n.config.Blocked, manifest.Author.ID) || (n.identity == nil && n.initialized()) {
+			return false, nil
+		}
+		bundle, err := n.Store.GetWithTouch(manifest.ID, false)
+		if err != nil {
+			return false, err
+		}
+		if _, err = inspectContributionBundle(bundle, n.identity); err != nil {
+			return false, err
+		}
+		if n.identity != nil && manifest.Author.ID == n.identity.Public.ID {
+			return n.contributionRuntime != nil && n.contributionRuntime.canServe(bundle), nil
+		}
+		return true, nil
+	}
 	if manifest.Kind == "site-resource" {
 		if contains(n.config.Blocked, manifest.Author.ID) || (manifest.PublicKey == nil && n.identity == nil && n.initialized()) {
 			return false, nil

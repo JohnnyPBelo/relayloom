@@ -127,7 +127,16 @@ export async function browserAPI() {
     else if (operation === "low-power") await mesh.setLowPower(body.value);
     else if (operation === "block") await mesh.setBlocked(body.id, body.value);
     else if (operation === "request") await mesh.request(body.id);
-    else if (operation === "peer-offer") {
+    else if (operation === "cancel-owned-bundle") {
+      if (typeof body.id !== "string" || !/^[a-f0-9]{64}$/.test(body.id))
+        throw Error("Endereço inválido");
+      mesh.router.cancelLocal(
+        (payload: any) =>
+          payload?.type === "bundle" &&
+          payload.bundle?.manifest?.id === body.id &&
+          payload.bundle?.manifest?.author?.id === context.identity!.id,
+      );
+    } else if (operation === "peer-offer") {
       const entry = mesh.router.newPeer();
       try {
         remember(entry.id, entry.peer);

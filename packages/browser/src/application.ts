@@ -1,5 +1,12 @@
-import { readContributionForm } from "./contribution-read";
-import { parseContributionFormLookup } from "../../sites/src/contribution-context";
+import { BrowserContributionRuntime } from "./contribution-runtime";
+import { contributionCommandShape } from "../../sites/src/contribution-command";
+import { createContributionOperations } from "../../sites/src/contribution-operations";
+import {
+  contributionManifestPolicy,
+  summarizeContribution,
+} from "../../content/src/site-contribution";
+import { createContributionEnvelopeProtocol } from "../../sites/src/contribution-envelope";
+import { browserCertificateCrypto } from "./certificate-crypto";
 import { BrowserResourceRuntime } from "./resource-runtime";
 import { parseSiteResourceRead } from "./resource-read";
 import { validateSiteEditingContext } from "../../sites/src/editing";
@@ -108,6 +115,7 @@ export class BrowserApplication {
   #closed = false;
   #sites?: BrowserSiteRuntime;
   #resources?: BrowserResourceRuntime;
+  #contributions?: BrowserContributionRuntime;
   constructor(
     readonly profile: BrowserProfile,
     private network: ApplicationNetwork,
@@ -203,6 +211,7 @@ export class BrowserApplication {
       this.mutation(update).update,
       release,
     );
+    await this.#contributions?.revokeInvalid();
   }
   async open() {
     const owner = this.owner();
@@ -265,6 +274,55 @@ export class BrowserApplication {
               });
       },
     });
+    this.#contributions?.close();
+    const generation = this.#generation;
+    this.#contributions = new BrowserContributionRuntime({
+      profile: this.profile,
+      policy: async (values, id, author) => {
+        this.guard(generation);
+        const settings = (await values.get("mesh-settings")) as any,
+          data = this.parse(await values.get("application"));
+        this.guard(generation);
+        if (settings?.blocked?.includes(author))
+          throw Error("Autor do site bloqueado");
+        const m = data.mutations[id];
+        if (
+          m?.author === author &&
+          m.deleted === true &&
+          m.expires > Date.now()
+        )
+          throw Error("O autor retirou este snapshot");
+      },
+      copyPolicy: (id, author) => [
+        {
+          key: "mesh-settings",
+          update: (previous) => {
+            this.guard(generation);
+            if (previous?.blocked?.includes(author))
+              throw Error("Autor do site bloqueado");
+            return previous;
+          },
+        },
+        {
+          key: "application",
+          update: (previous) => {
+            this.guard(generation);
+            const data = this.parse(previous),
+              m = data.mutations[id];
+            if (
+              m?.author === author &&
+              m.deleted === true &&
+              m.expires > Date.now()
+            )
+              throw Error("O autor retirou este snapshot");
+            return previous;
+          },
+        },
+      ],
+      publish: (bundle) => this.network.publish(bundle, "normal"),
+      cancel: (id) =>
+        this.network.command("cancel-owned-bundle", { id }).then(() => {}),
+    });
     clearInterval(this.#timer);
     this.#timer = setInterval(() => {
       void this.flush();
@@ -277,6 +335,8 @@ export class BrowserApplication {
     this.#sites = undefined;
     this.#resources?.close();
     this.#resources = undefined;
+    this.#contributions?.close();
+    this.#contributions = undefined;
     clearInterval(this.#timer);
     this.#cache.clear();
     this.#cacheBytes = 0;
@@ -300,6 +360,11 @@ export class BrowserApplication {
     if (content.type !== bundle.manifest.kind || grouped(content))
       throw new Error("Conteúdo ou autoridade de grupo indisponível");
     verifySiteContent(content, bundle.manifest.author);
+    if (content.type === "site-contribution")
+      createContributionEnvelopeProtocol(browserCertificateCrypto).match(
+        bundle,
+        content,
+      );
     return {
       id: bundle.manifest.id,
       kind: bundle.manifest.kind,
@@ -314,6 +379,8 @@ export class BrowserApplication {
   }
   private summary(o: DisplayObject): DisplayObject {
     const result = structuredClone(o);
+    if (result.kind === "site-contribution")
+      result.content = summarizeContribution(result.content);
     if (result.kind === "site-resource")
       result.content = summarizeSiteResource(result.content);
     if (result.content.attachments)
@@ -538,10 +605,31 @@ export class BrowserApplication {
       ),
     };
   }
+  async bundleForTransport(id: string) {
+    const generation = this.#generation,
+      bundle = await this.profile.getBundle(id);
+    this.guard(generation);
+    if (bundle.manifest.kind === "site-contribution") {
+      if (!contributionManifestPolicy(bundle.manifest))
+        throw Error("Envelope de proposta inválido");
+      if (
+        bundle.manifest.author.id === this.owner().id &&
+        (!this.#contributions || !(await this.#contributions.canServe(bundle)))
+      )
+        throw Error("Proposta não autorizada para envio");
+    }
+    this.guard(generation);
+    return bundle;
+  }
   async ingest(value: Bundle): Promise<string> {
     const generation = this.#generation,
       bundle = await verifiedBundle(value);
     const owner = this.owner();
+    if (
+      bundle.manifest.kind === "site-contribution" &&
+      !contributionManifestPolicy(bundle.manifest)
+    )
+      throw Error("Propostas exigem um envelope privado limitado");
     if (
       (
         (await this.profile.getValue("mesh-settings")) as any
@@ -553,7 +641,9 @@ export class BrowserApplication {
       object = await this.project(bundle);
     } catch (error) {
       if (
-        ["site", "site-resource"].includes(bundle.manifest.kind) &&
+        ["site", "site-resource", "site-contribution"].includes(
+          bundle.manifest.kind,
+        ) &&
         (bundle.manifest.publicKey !== null ||
           bundle.manifest.keys.some((k) => k.reader === owner.id))
       )
@@ -647,6 +737,8 @@ export class BrowserApplication {
     const owner = this.owner(),
       content = JSON.parse(canonical(raw)) as Content;
     await this.validateContent(content);
+    if (content.type === "site-contribution")
+      throw Error("Envia propostas através do comando de contribuições");
     if (content.type === "site-resource")
       throw new Error(
         "Guarda recursos opcionais através do gestor de recursos",
@@ -986,6 +1078,7 @@ export class BrowserApplication {
     } finally {
       await this.#sites?.tick();
       await this.#resources?.tick();
+      await this.#contributions?.tick();
       this.#flushing = false;
     }
   }
@@ -1011,8 +1104,19 @@ export class BrowserApplication {
       this.guard(generation);
       return result;
     }
-    if (path === "contribution-command")
-      body = parseContributionFormLookup(body);
+    if (path === "contribution-command") {
+      const command = contributionCommandShape(body);
+      if (command.action === "submit") {
+        const { action: _action, ...raw } = command;
+        body = {
+          action: "submit",
+          ...createContributionOperations(browserCertificateCrypto).request(
+            raw,
+            this.owner().id,
+          ).request,
+        };
+      } else body = command;
+    }
     const run = this.#queue.then(() => this.execute(path, body));
     this.#queue = run.then(
       () => {},
@@ -1039,26 +1143,8 @@ export class BrowserApplication {
       const generation = this.#generation;
       await this.objects();
       this.guard(generation);
-      return readContributionForm(body, {
-        profile: this.profile,
-        ensure: () => this.guard(generation),
-        // One private transaction gives blocking and withdrawal the same revision.
-        // Do not call profile methods from inside this exclusive callback.
-        policy: (id, author) =>
-          this.profile.transactValues(async (values) => {
-            const settings = (await values.get("mesh-settings")) as any;
-            const data = this.parse(await values.get("application"));
-            this.guard(generation);
-            const m = data.mutations[id];
-            return {
-              blocked: settings?.blocked ?? [],
-              withdrawn:
-                m?.author === author &&
-                m.deleted === true &&
-                m.expires > Date.now(),
-            };
-          }),
-      });
+      if (!this.#contributions) throw Error("Sessão de propostas bloqueada");
+      return this.#contributions.command(body);
     }
     if (path === "resource-command") {
       if (["inspect", "obtain"].includes(body?.action)) await this.objects();

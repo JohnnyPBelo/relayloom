@@ -30,19 +30,20 @@ import (
 )
 
 type Node struct {
-	webPeerMu       sync.Mutex
-	webPeer         *webpeer.Server
-	mu              sync.Mutex
-	Dir             string
-	Store           *core.ContentStore
-	Router          *transport.Router
-	TCPPort         int
-	identity        *core.Identity
-	wireIdentity    *atomic.Pointer[core.Identity]
-	resourceRuntime *resourceRuntime
-	siteRuntime     *siteRuntime
-	config          Config
-	private         PrivateState
+	webPeerMu           sync.Mutex
+	webPeer             *webpeer.Server
+	mu                  sync.Mutex
+	Dir                 string
+	Store               *core.ContentStore
+	Router              *transport.Router
+	TCPPort             int
+	identity            *core.Identity
+	wireIdentity        *atomic.Pointer[core.Identity]
+	resourceRuntime     *resourceRuntime
+	contributionRuntime *contributionRuntime
+	siteRuntime         *siteRuntime
+	config              Config
+	private             PrivateState
 	// Per-node persistence seam for exercising uncertain completion boundaries.
 	writePrivateState  func([]byte, string) (string, error)
 	updateGroupState   func(func(*groupstore.Tx) error) error
@@ -197,6 +198,10 @@ func (n *Node) Close() error {
 	}
 	n.closed = true
 	n.siteRuntime = nil
+	if n.contributionRuntime != nil {
+		n.contributionRuntime.close()
+	}
+	n.contributionRuntime = nil
 	n.resourceRuntime = nil
 	if n.wireIdentity != nil {
 		n.wireIdentity.Store(nil)
@@ -233,6 +238,10 @@ func (n *Node) initialized() bool {
 }
 func (n *Node) lockPrivateLocked() error {
 	n.siteRuntime = nil
+	if n.contributionRuntime != nil {
+		n.contributionRuntime.close()
+	}
+	n.contributionRuntime = nil
 	n.resourceRuntime = nil
 	if n.wireIdentity != nil {
 		n.wireIdentity.Store(nil)
@@ -323,6 +332,9 @@ func (n *Node) persistPrivateLocked(next PrivateState) error {
 	}
 	n.privateDigest = digest
 	n.private = next
+	if n.contributionRuntime != nil {
+		n.contributionRuntime.revokeInvalid()
+	}
 	return nil
 }
 func (n *Node) saveConfigLocked(next Config) error {
@@ -372,6 +384,9 @@ func validateWireWithIdentity(raw json.RawMessage, identity *core.Identity) erro
 		}
 		if err == nil {
 			err = inspectResourceBundle(b, identity)
+		}
+		if err == nil {
+			_, err = inspectContributionBundle(b, identity)
 		}
 		return err
 	case "inventory", "request":
@@ -449,6 +464,9 @@ func (n *Node) receiveLocked(delivery transport.Delivery) error {
 	case "bundle":
 		b, err := decodeBundle(m["bundle"])
 		if err != nil {
+			return err
+		}
+		if _, err = inspectContributionBundle(b, n.identity); err != nil {
 			return err
 		}
 		if contains(n.config.Blocked, b.Manifest.Author.ID) && b.Manifest.Kind != "group-control" && b.Manifest.Kind != "group-notice" {
@@ -597,6 +615,11 @@ func (n *Node) syncLocked() {
 			if s, e := n.sitesLocked(); e == nil {
 				s.tick()
 			}
+			if c, e := n.contributionsLocked(); e == nil {
+				if e = c.tick(); e != nil {
+					n.lastTransportError = "Envio de proposta adiado; estado por verificar"
+				}
+			}
 			if r, e := n.resourcesLocked(); e == nil {
 				if e = r.tick(); e != nil {
 					n.lastTransportError = "Criação de recurso adiada; estado por verificar"
@@ -666,6 +689,11 @@ func (n *Node) displayLocked(bundle core.Bundle) (*DisplayObject, error) {
 		}
 	} else if err = validateContent(content); err != nil {
 		return nil, err
+	}
+	if manifest.Kind == "site-contribution" {
+		if _, err = sites.MatchContributionEnvelope(bundle, m); err != nil {
+			return nil, err
+		}
 	}
 	if groupaccess.HasBinding(content) {
 		if _, err = groupaccess.ParseBinding(content); err != nil {
@@ -992,6 +1020,9 @@ type preparedPublication struct {
 }
 
 func (n *Node) prepareLocked(content Content, recipients any, ttlMS int64) (*preparedPublication, error) {
+	if text(content["type"]) == "site-contribution" {
+		return nil, errors.New("envia propostas através do comando de contribuições")
+	}
 	if text(content["type"]) == "site-resource" {
 		return nil, errors.New("guarda recursos opcionais através do gestor de recursos")
 	}
@@ -1239,6 +1270,10 @@ func (n *Node) Handle(operation string, body map[string]any) (any, error) {
 			n.wireIdentity.Store(&identity)
 		}
 		n.siteRuntime = nil
+		if n.contributionRuntime != nil {
+			n.contributionRuntime.close()
+		}
+		n.contributionRuntime = nil
 		n.resourceRuntime = nil
 		n.private = local
 		n.privateDatabase = database
@@ -1280,6 +1315,10 @@ func (n *Node) Handle(operation string, body map[string]any) (any, error) {
 			n.wireIdentity.Store(&identity)
 		}
 		n.siteRuntime = nil
+		if n.contributionRuntime != nil {
+			n.contributionRuntime.close()
+		}
+		n.contributionRuntime = nil
 		n.resourceRuntime = nil
 		n.private = local
 		n.privateDatabase = database
@@ -1314,7 +1353,14 @@ func (n *Node) Handle(operation string, body map[string]any) (any, error) {
 	case "group-command":
 		return n.groupCommandLocked(body)
 	case "contribution-command":
-		return n.contributionFormLocked(body)
+		if _, err := n.objectsLocked(); err != nil {
+			return nil, err
+		}
+		runtime, err := n.contributionsLocked()
+		if err != nil {
+			return nil, err
+		}
+		return runtime.command(body)
 	case "resource-command":
 		r, err := n.resourcesLocked()
 		if err != nil {
@@ -1589,6 +1635,9 @@ func (n *Node) actionLocked(body map[string]any) error {
 		return err
 	}
 	if action == "block" {
+		if n.contributionRuntime != nil {
+			n.contributionRuntime.revokeInvalid()
+		}
 		n.cancelSitePacketsLocked()
 		return n.reconcileGroupSendsLocked()
 	}

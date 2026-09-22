@@ -929,11 +929,28 @@ export class BrowserProfile {
   async putBundle(
     value: Bundle,
     pinned = false,
-    mutation?: { key: string; update: (previous: unknown) => unknown },
+    mutation?:
+      | { key: string; update: (previous: unknown) => unknown }
+      | { key: string; update: (previous: unknown) => unknown }[],
     reserve = false,
   ): Promise<string> {
     if (typeof pinned !== "boolean" || typeof reserve !== "boolean")
       throw new Error("Reserva inválida");
+    const mutations = (
+      mutation === undefined
+        ? []
+        : Array.isArray(mutation)
+          ? mutation
+          : [mutation]
+    ).map((m) => ({ key: m.key, update: m.update }));
+    if (
+      mutations.length > 64 ||
+      new Set(mutations.map((m) => m.key)).size !== mutations.length ||
+      mutations.some(
+        (m) => !allowedValueKey(m.key) || typeof m.update !== "function",
+      )
+    )
+      throw Error("Alterações privadas inválidas");
     const s = this.active(),
       b = await verifiedBundle(value);
     this.guard(s);
@@ -986,7 +1003,11 @@ export class BrowserProfile {
         created: b.manifest.created,
         revision: crypto.randomUUID(),
       };
-      const valueWrite = await this.mutate(s, state, mutation);
+      const valueWrite: ValueWrite[] = [];
+      for (const change of mutations) {
+        const write = await this.mutate(s, state, change);
+        if (write) valueWrite.push(write);
+      }
       await this.commit(
         s,
         row,

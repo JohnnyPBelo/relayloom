@@ -1,3 +1,4 @@
+import { parseContributionContentShape } from "./site-contribution";
 import { canonical } from "../../core/src/protocol";
 import { validateSite } from "./site";
 import { parseSiteResource } from "./site-resource";
@@ -11,6 +12,7 @@ export function validateContentShape(content: Content) {
       "group",
       "site",
       "site-resource",
+      "site-contribution",
       "comment",
       "reaction",
       "edit",
@@ -22,6 +24,8 @@ export function validateContentShape(content: Content) {
   )
     throw new Error("Tipo de conteúdo inválido");
   if (content.type === "site-resource") parseSiteResource(content);
+  if (content.type === "site-contribution")
+    parseContributionContentShape(content);
   for (const key of [
     "text",
     "title",

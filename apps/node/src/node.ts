@@ -1,5 +1,7 @@
-import { parseContributionFormLookup } from "../../../packages/sites/src/contribution-context";
-import { readContributionForm } from "./contribution-read";
+import { ContributionRuntime } from "./contribution-runtime";
+import { NodeContributionCatalog } from "../../../packages/sites/src/contribution-catalog";
+import { inspectContribution } from "./contribution-content";
+import { summarizeContribution } from "../../../packages/content/src/site-contribution";
 import { ResourceRuntime } from "./resource-runtime";
 import { NodeResourceCatalog } from "../../../packages/sites/src/resource-catalog";
 import { validateSiteEditingContext } from "../../../packages/sites/src/editing";
@@ -142,6 +144,8 @@ export class LoomNode extends EventEmitter {
   private privateState: PrivateState = { mutations: {} };
   private privateDatabase?: ProfileDatabase;
   private privateDigest?: string;
+  private contributionRuntime?: ContributionRuntime;
+  private contributionRuntimeOwner?: Identity;
   private resourceRuntime?: ResourceRuntime;
   private resourceRuntimeOwner?: Identity;
   private siteRuntime?: SiteRuntime;
@@ -434,6 +438,9 @@ export class LoomNode extends EventEmitter {
     return identity.public;
   }
   lock() {
+    this.contributionRuntime?.close();
+    this.contributionRuntime = undefined;
+    this.contributionRuntimeOwner = undefined;
     this.resourceRuntime = undefined;
     this.resourceRuntimeOwner = undefined;
     this.siteRuntime = undefined;
@@ -524,15 +531,22 @@ export class LoomNode extends EventEmitter {
     });
     return this.resourceRuntime;
   }
-  contributionCommand(command: unknown) {
-    const identity = this.requireIdentity(),
-      lookup = parseContributionFormLookup(command);
-    this.objects();
-    if (this.requireIdentity() !== identity)
-      throw Error("Sessão de formulário bloqueada");
-    return readContributionForm(lookup, {
+  private contributions() {
+    const identity = this.requireIdentity();
+    if (this.contributionRuntime && this.contributionRuntimeOwner === identity)
+      return this.contributionRuntime;
+    this.contributionRuntimeOwner = identity;
+    this.contributionRuntime = new ContributionRuntime({
       identity,
+      catalog: new NodeContributionCatalog(
+        this.siteDatabase(identity),
+        identity,
+      ),
       store: this.store,
+      ensure: () => {
+        if (this.requireIdentity() !== identity)
+          throw Error("Sessão de proposta bloqueada");
+      },
       blocked: () => this.config.blocked,
       withdrawn: (id, author) => {
         const m = this.privateState.mutations[id];
@@ -540,7 +554,23 @@ export class LoomNode extends EventEmitter {
           m?.author === author && m.deleted === true && m.expires > Date.now()
         );
       },
+      publish: (bundle) => {
+        this.router.broadcast({ type: "bundle", bundle }, "normal");
+        this.emit("content");
+      },
+      cancel: (id) => {
+        this.router.cancelLocal(
+          (value: any) =>
+            value?.type === "bundle" && value.bundle?.manifest?.id === id,
+        );
+      },
     });
+    return this.contributionRuntime;
+  }
+  contributionCommand(command: unknown) {
+    this.requireIdentity();
+    this.objects();
+    return this.contributions().command(command);
   }
   resourceCommand(command: unknown) {
     if (["inspect", "obtain"].includes((command as any)?.action))
@@ -961,6 +991,7 @@ export class LoomNode extends EventEmitter {
       throw error;
     }
     this.privateState = next;
+    this.contributionRuntime?.revokeInvalid();
   }
   private sendResult(entry: OutboxEntry) {
     const { objects, outboxAt } = this.objectsSnapshot();
@@ -1472,6 +1503,7 @@ export class LoomNode extends EventEmitter {
     } else throw new Error("Acção desconhecida");
     this.saveConfig();
     if (action === "block") {
+      this.contributionRuntime?.revokeInvalid();
       this.reconcileGroupSends();
       this.router.cancelLocal(
         (payload: any) =>
@@ -1492,6 +1524,8 @@ export class LoomNode extends EventEmitter {
   ): { bundle: Bundle; content: Content; mutationTarget?: Manifest } {
     const identity = this.requireIdentity();
     validateContent(content);
+    if (content.type === "site-contribution")
+      throw new Error("Envia propostas através do comando de contribuições");
     if (content.type === "site-resource")
       throw new Error(
         "Guarda recursos opcionais através do gestor de recursos",
@@ -1714,6 +1748,22 @@ export class LoomNode extends EventEmitter {
     return this.display(bundle)!;
   }
   private maySeed(manifest: Manifest) {
+    if (manifest.kind === "site-contribution") {
+      if (
+        this.config.blocked.includes(manifest.author.id) ||
+        (!this.identity && this.initialized)
+      )
+        return false;
+      try {
+        const bundle = this.store.get(manifest.id, false);
+        inspectContribution(bundle, this.identity);
+        return manifest.author.id === this.identity?.public.id
+          ? this.contributionRuntime?.canServe(bundle) === true
+          : true;
+      } catch {
+        return false;
+      }
+    }
     if (manifest.kind === "site-resource") {
       if (
         this.config.blocked.includes(manifest.author.id) ||
@@ -1812,6 +1862,7 @@ export class LoomNode extends EventEmitter {
       else {
         verifyBundle(payload.bundle);
         inspectResource(payload.bundle, this.identity);
+        inspectContribution(payload.bundle, this.identity);
         if (payload.bundle.manifest.kind === "site")
           inspectSite(payload.bundle, this.identity);
       }
@@ -1870,6 +1921,7 @@ export class LoomNode extends EventEmitter {
     if (this.stopped) return;
     try {
       if (payload.type === "bundle") {
+        inspectContribution(payload.bundle, this.identity);
         if (
           this.config.blocked.includes(payload.bundle.manifest.author.id) &&
           payload.bundle.manifest.kind !== "group-control" &&
@@ -1978,6 +2030,7 @@ export class LoomNode extends EventEmitter {
           const sites = this.sites();
           sites.tick();
           if (this.identity) this.resources().tick();
+          if (this.identity) this.contributions().tick();
         }
       }
       if (!this.router.peers.some((p) => p.connected) || !this.config.relay)
@@ -2008,6 +2061,8 @@ export class LoomNode extends EventEmitter {
       validateContent(content);
       if (content.type !== bundle.manifest.kind) return;
       if (content.type === "site") inspectSite(bundle, this.identity);
+      if (content.type === "site-contribution")
+        inspectContribution(bundle, this.identity);
       if (hasGroupBinding(content)) parseGroupBinding(content);
       return {
         id: bundle.manifest.id,
@@ -2027,6 +2082,8 @@ export class LoomNode extends EventEmitter {
   }
   private summarizeContent(content: Content): Content {
     if (content.type === "site-resource") return summarizeSiteResource(content);
+    if (content.type === "site-contribution")
+      return summarizeContribution(content);
     const out: Content = { type: content.type };
     const fields = ["text", "title", "priority"];
     if (hasGroupBinding(content))

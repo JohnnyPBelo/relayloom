@@ -1,3 +1,5 @@
+import { canonical } from "../../core/src/protocol";
+import { contributionManifestPolicy } from "../../content/src/site-contribution";
 import { exactShape } from "../../core/src/protocol";
 import type { Bundle } from "../../core/src/protocol";
 import { verifiedBundle } from "./crypto";
@@ -53,6 +55,18 @@ export class BrowserMesh {
       maySend: async (payload) => {
         if (profile.locked || this.#stopped) return false;
         const value = payload as Wire;
+        if (
+          value.type === "bundle" &&
+          value.bundle.manifest.kind === "site-contribution" &&
+          value.bundle.manifest.author.id === profile.identity?.id
+        ) {
+          try {
+            const permitted = await profile.getBundle(value.bundle.manifest.id);
+            if (canonical(permitted) !== canonical(value.bundle)) return false;
+          } catch {
+            return false;
+          }
+        }
         return (
           value.type !== "bundle" ||
           (!this.#settings.blocked.includes(value.bundle.manifest.author.id) &&
@@ -217,6 +231,11 @@ export class BrowserMesh {
         throw new Error("Controlos de grupo ainda não ligados ao motor web");
       if (this.#settings.blocked.includes(bundle.manifest.author.id))
         throw new Error("Origem bloqueada");
+      if (
+        bundle.manifest.kind === "site-contribution" &&
+        !contributionManifestPolicy(bundle.manifest)
+      )
+        throw Error("Envelope de proposta inválido");
       await inspectPublicSite(bundle);
       await inspectPublicResource(bundle);
     } else if (
