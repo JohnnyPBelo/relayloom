@@ -244,7 +244,7 @@ export function createSiteContributionProtocol(crypto: CertificateCrypto) {
   /** Check the proposal against authenticated source data. A runtime must still
    * enforce blocking, current-head CAS, durable replay controls and owner consent
    * before adopting anything. This method does not sign or mutate a page. */
-  function verifyForForm(
+  function verifyForSubmission(
     input: unknown,
     context: ContributionFormContext,
     now: number,
@@ -263,18 +263,50 @@ export function createSiteContributionProtocol(crypto: CertificateCrypto) {
     const { form, table } = authorizeContext(context, b.contributor.id, now);
     requireThat(b.schemaHash === schemaHash(form, table), "esquema diferente");
     matchContributionValues(form, table, b.values);
-    const siteScope = parseContributionScope(context.siteScope);
     requireThat(
       b.created - now <= SITE_CONTRIBUTION_LIMITS.clockSkewMs &&
         b.expires > now &&
         b.expires <= context.snapshotExpires,
       "proposta expirada ou futura",
     );
+    return proposal;
+  }
+  /** A publication grant is not owner approval, a current-head CAS or admission.
+   * Verify the original submission separately; never fake its snapshot audience
+   * to get private submissions accepted for a public site. */
+  function verifyPublicationScope(
+    input: unknown,
+    audience: unknown,
+  ): SiteContribution {
+    const proposal = verify(input),
+      scope = parseContributionScope(audience),
+      owner = parseSiteAddress(proposal.body.target.site).ownerId;
     requireThat(
-      resourceScopeCoversSite(siteScope, b.publicationScope),
+      scope === "public" || scope.includes(owner),
+      "dono em falta na audiência de publicação",
+    );
+    requireThat(
+      resourceScopeCoversSite(scope, proposal.body.publicationScope),
       "divulgação não consentida",
     );
     return proposal;
   }
-  return { create, verify, schemaHash, verifyForForm, authorizeContext };
+  /** Backwards-compatible composition for publishing into the original audience. */
+  function verifyForForm(
+    input: unknown,
+    context: ContributionFormContext,
+    now: number,
+  ): SiteContribution {
+    const proposal = verifyForSubmission(input, context, now);
+    return verifyPublicationScope(proposal, context.siteScope);
+  }
+  return {
+    create,
+    verify,
+    schemaHash,
+    verifyForForm,
+    authorizeContext,
+    verifyForSubmission,
+    verifyPublicationScope,
+  };
 }

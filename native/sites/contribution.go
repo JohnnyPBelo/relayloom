@@ -192,7 +192,7 @@ func AuthorizeContributionContext(context ContributionFormContext, contributor s
 	return nil
 }
 
-func VerifyContributionForForm(value any, context ContributionFormContext, now int64) (map[string]any, error) {
+func VerifyContributionForSubmission(value any, context ContributionFormContext, now int64) (map[string]any, error) {
 	cert, err := VerifyContribution(value)
 	if err != nil {
 		return nil, err
@@ -230,9 +230,34 @@ func VerifyContributionForForm(value any, context ContributionFormContext, now i
 	if created-now > ContributionClockSkewMS || expires <= now || expires > context.SnapshotExpires {
 		return nil, contributionError()
 	}
-	covers, err := ResourceScopeCoversSite(context.SiteScope, b["publicationScope"])
+	return cert, nil
+}
+
+// This checks only the signed publication grant, not owner approval or CAS.
+func VerifyContributionPublicationScope(value any, audience any) (map[string]any, error) {
+	cert, err := VerifyContribution(value)
+	if err != nil {
+		return nil, err
+	}
+	b := cert["body"].(map[string]any)
+	public, readers, err := resourceScope(audience)
+	if err != nil {
+		return nil, err
+	}
+	owner, _, _ := ParseAddress(b["target"].(map[string]any)["site"].(string))
+	if !public && !docContains(readers, owner) {
+		return nil, contributionError()
+	}
+	covers, err := ResourceScopeCoversSite(audience, b["publicationScope"])
 	if err != nil || !covers {
 		return nil, contributionError()
 	}
 	return cert, nil
+}
+func VerifyContributionForForm(value any, context ContributionFormContext, now int64) (map[string]any, error) {
+	cert, err := VerifyContributionForSubmission(value, context, now)
+	if err != nil {
+		return nil, err
+	}
+	return VerifyContributionPublicationScope(cert, context.SiteScope)
 }

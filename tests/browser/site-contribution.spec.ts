@@ -150,7 +150,24 @@ test("browser visitor certificates interoperate with Node and Go while encrypted
     } catch {
       privateNotPromoted = true;
     }
+    const privateSubmission =
+      protocol.verifyForSubmission(privateCertificate, context, now).id ===
+      privateCertificate.id;
+    const privatePublication =
+      protocol.verifyPublicationScope(
+        privateCertificate,
+        [owner.public.id, visitor.public.id].sort(),
+      ).id === privateCertificate.id;
+    let broaderPublicationRejected = false;
+    try {
+      protocol.verifyPublicationScope(privateCertificate, "public");
+    } catch {
+      broaderPublicationRejected = true;
+    }
     return {
+      privateSubmission,
+      privatePublication,
+      broaderPublicationRejected,
       context,
       request,
       now,
@@ -170,6 +187,9 @@ test("browser visitor certificates interoperate with Node and Go while encrypted
   expect(result.forged).toBe(true);
   expect(result.wrongKey).toBe(true);
   expect(result.privateNotPromoted).toBe(true);
+  expect(result.privateSubmission).toBe(true);
+  expect(result.privatePublication).toBe(true);
+  expect(result.broaderPublicationRejected).toBe(true);
   expect(result.privateEnvelope).toBe(true);
   expect(result.clockBoundaryAccepted).toBe(true);
   expect(result.clockBeyondRejected).toBe(true);

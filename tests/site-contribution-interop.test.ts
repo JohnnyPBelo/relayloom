@@ -81,10 +81,17 @@ test("Node, portable crypto and Go agree on visitor proposals, schemas and negat
   const certificate = protocol.create(visitor, request);
   type Vector = {
     name: string;
-    kind: "form" | "values" | "proposal" | "admission";
+    kind:
+      | "form"
+      | "values"
+      | "proposal"
+      | "admission"
+      | "submission"
+      | "publication";
     candidate: any;
     valid: boolean;
     context?: ContributionFormContext;
+    audience?: unknown;
   };
   const vectors: Vector[] = [];
   const add = (
@@ -101,7 +108,9 @@ test("Node, portable crypto and Go agree on visitor proposals, schemas and negat
       kind,
       candidate,
       valid,
-      ...(kind === "admission" ? { context: structuredClone(context) } : {}),
+      ...(["admission", "submission"].includes(kind)
+        ? { context: structuredClone(context) }
+        : {}),
     });
   };
   add("form accepts readers", "form", true, form);
@@ -235,6 +244,54 @@ test("Node, portable crypto and Go agree on visitor proposals, schemas and negat
     add(name, "admission", false, certificate);
     edit(vectors.at(-1)!.context!);
   }
+  const privateConsent = protocol.create(visitor, {
+    ...request,
+    publicationScope: [owner.public.id, visitor.public.id].sort(),
+  });
+  add(
+    "private grant can be submitted to a public site owner",
+    "submission",
+    true,
+    privateConsent,
+  );
+  add(
+    "submission still rejects expiration",
+    "submission",
+    false,
+    protocol.create(visitor, { ...request, created: now - 2000, expires: now }),
+  );
+  add(
+    "submission still requires original contributors",
+    "submission",
+    false,
+    privateConsent,
+  );
+  vectors.at(-1)!.context!.form.contributors = [owner.public.id];
+  add(
+    "submission cannot accept another snapshot",
+    "submission",
+    false,
+    privateConsent,
+  );
+  vectors.at(-1)!.context!.target.snapshotId = "e".repeat(64);
+  for (const [name, audience, valid] of [
+    [
+      "private publication permitted by grant",
+      [owner.public.id, visitor.public.id].sort(),
+      true,
+    ],
+    ["owner-only narrower publication permitted", [owner.public.id], true],
+    ["private grant cannot be published publicly", "public", false],
+    [
+      "private grant cannot add readers",
+      [owner.public.id, visitor.public.id, "e".repeat(64)].sort(),
+      false,
+    ],
+    ["publication cannot omit owner", [visitor.public.id], false],
+  ] as const) {
+    add(name, "publication", valid, privateConsent);
+    vectors.at(-1)!.audience = audience;
+  }
   for (const v of vectors) {
     const run = () =>
       v.kind === "form"
@@ -243,7 +300,11 @@ test("Node, portable crypto and Go agree on visitor proposals, schemas and negat
           ? matchContributionValues(form, table, v.candidate)
           : v.kind === "proposal"
             ? portable.verify(v.candidate)
-            : portable.verifyForForm(v.candidate, v.context!, now);
+            : v.kind === "submission"
+              ? portable.verifyForSubmission(v.candidate, v.context!, now)
+              : v.kind === "publication"
+                ? portable.verifyPublicationScope(v.candidate, v.audience)
+                : portable.verifyForForm(v.candidate, v.context!, now);
     if (v.valid) assert.doesNotThrow(run, v.name);
     else assert.throws(run, v.name);
   }

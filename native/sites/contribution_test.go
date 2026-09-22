@@ -60,11 +60,18 @@ func TestContributionInteroperability(t *testing.T) {
 			_, check = MatchContributionValues(root["form"], root["table"], candidate)
 		case "proposal":
 			_, check = VerifyContribution(candidate)
-		case "admission":
+		case "publication":
+			_, check = VerifyContributionPublicationScope(candidate, vector["audience"])
+		case "admission", "submission":
 			context := vector["context"].(map[string]any)
 			expires, _ := docNumber(context["snapshotExpires"])
 			now, _ := docNumber(root["now"])
-			_, check = VerifyContributionForForm(candidate, ContributionFormContext{context["target"], context["form"], context["table"], context["siteScope"], expires}, now)
+			resolved := ContributionFormContext{context["target"], context["form"], context["table"], context["siteScope"], expires}
+			if kind == "submission" {
+				_, check = VerifyContributionForSubmission(candidate, resolved, now)
+			} else {
+				_, check = VerifyContributionForForm(candidate, resolved, now)
+			}
 		default:
 			t.Fatal("unknown vector", kind)
 		}
