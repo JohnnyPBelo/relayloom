@@ -1,0 +1,37 @@
+
+Running 1 test using 1 worker
+
+(node:3300218) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [chromium] › tests/browser/routing.spec.ts:13:1 › managed packet-ID cancellation preserves an equal local payload and a foreign packet; absolute deadlines remain on wire (336ms)
+
+
+  1) [chromium] › tests/browser/routing.spec.ts:13:1 › managed packet-ID cancellation preserves an equal local payload and a foreign packet; absolute deadlines remain on wire 
+
+    Error: page.evaluate: TypeError: Cannot read properties of undefined (reading 'ready')
+        at link (eval at evaluate (:311:30), <anonymous>:27:25)
+        at async eval (eval at evaluate (:311:30), <anonymous>:36:7)
+        at async <anonymous>:337:30
+        at link (eval at evaluate (:311:30), <anonymous>:27:25)
+        at async eval (eval at evaluate (:311:30), <anonymous>:36:7)
+        at async <anonymous>:337:30
+        at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/routing.spec.ts:17:29
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .cache/contribution-source-router-browser-artifacts/routing-managed-packet-ID--366f6-te-deadlines-remain-on-wire-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: .cache/contribution-source-router-browser-artifacts/routing-managed-packet-ID--366f6-te-deadlines-remain-on-wire-chromium/error-context.md
+
+    Error Context: .cache/contribution-source-router-browser-artifacts/routing-managed-packet-ID--366f6-te-deadlines-remain-on-wire-chromium/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    .cache/contribution-source-router-browser-artifacts/routing-managed-packet-ID--366f6-te-deadlines-remain-on-wire-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace .cache/contribution-source-router-browser-artifacts/routing-managed-packet-ID--366f6-te-deadlines-remain-on-wire-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › tests/browser/routing.spec.ts:13:1 › managed packet-ID cancellation preserves an equal local payload and a foreign packet; absolute deadlines remain on wire 

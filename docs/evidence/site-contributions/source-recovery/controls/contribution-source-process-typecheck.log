@@ -1,0 +1,5 @@
+
+> relayloom@0.1.0 typecheck
+> tsc --noEmit
+
+tests/native/site-contribution-source.test.ts(191,36): error TS1107: Jump target cannot cross function boundary.

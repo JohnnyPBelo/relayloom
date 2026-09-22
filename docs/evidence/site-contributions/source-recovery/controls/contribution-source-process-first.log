@@ -1,0 +1,46 @@
+TAP version 13
+# Subtest: node proposal source held only in its private queue recovers across real TCP with both relays paused
+ok 1 - node proposal source held only in its private queue recovers across real TCP with both relays paused
+  ---
+  duration_ms: 1976.049606
+  type: 'test'
+  ...
+# Subtest: node proposal source held only in its private queue cancels across real TCP with both relays paused
+ok 2 - node proposal source held only in its private queue cancels across real TCP with both relays paused
+  ---
+  duration_ms: 3475.130089
+  type: 'test'
+  ...
+# Subtest: node proposal source held only in its private queue blocks across real TCP with both relays paused
+ok 3 - node proposal source held only in its private queue blocks across real TCP with both relays paused
+  ---
+  duration_ms: 6933.756213
+  type: 'test'
+  ...
+# Subtest: native proposal source held only in its private queue recovers across real TCP with both relays paused
+ok 4 - native proposal source held only in its private queue recovers across real TCP with both relays paused
+  ---
+  duration_ms: 1649.94059
+  type: 'test'
+  ...
+# Subtest: native proposal source held only in its private queue cancels across real TCP with both relays paused
+ok 5 - native proposal source held only in its private queue cancels across real TCP with both relays paused
+  ---
+  duration_ms: 3209.031178
+  type: 'test'
+  ...
+# Subtest: native proposal source held only in its private queue blocks across real TCP with both relays paused
+ok 6 - native proposal source held only in its private queue blocks across real TCP with both relays paused
+  ---
+  duration_ms: 6872.822486
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 24298.087846

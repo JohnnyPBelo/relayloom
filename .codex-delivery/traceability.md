@@ -299,3 +299,10 @@ Código **a3e09fd/55b0d4e**, workflow **eb2a5b4**. Gate amplo terminouPASS (514N
 FR-038/039/040 permanecem parciais: já há inbox durável naAPI, mas faltam obtenção da origem apenas na fila privada, gestão de recusas/purga, recibos assinados, aprovação/reconciliação/CAS/proveniência e UI completa. Candidatas sem fonte continuam limitadas e podem exercer contrapressão; não prometer resistência geral a spam/sybil nem activar a paleta antes da revisão. Todos os restantes requisitos de grupos web, recuperação/rotação/keystore, plataformas/rádios, acessibilidade e revisão independente mantêm-se.
 
 CI2948284 foi cancelado por15min acumulados após505Node+34UI UbuntuPASS; restantesplataformasNodePASS e jobs seguintesSKIPPED. A alteração de organização ainda necessitaCIremoto. Público7fdb76a/0fdbd1b inalterado; não declarar produto concluído.
+
+
+## Recuperação da origem — gate concluído, 22 de Setembro
+
+593459a/16c5963: cancelamento por IDs locais, prazo absoluto e obtenção explícita da origem na fila privada com relay pausado. 516 Node, 17 pacotes Go/race, 74 casos entre processos, builds e 78 casos por browser PASS; 733 hashes confirmados contra 16c5963. Provas docs/evidence/site-contributions/source-recovery. Não há recibos/decisões/UI completa; continuar CONTRIBUTION-RECEIPTS-NEXT.md. Contrato integral e execução sequencial preservados.
+
+CI35772935519/d0c3b55 falhou só em iOS, watcher com TimeoutError antes da fototeca e sem mensagem confirmada. 3ac8faf repete apenas observações readonly limitadas; 27 host tests PASS, sem repetição Apple. Provas docs/evidence/ci-d0c3b55. Não confundir estes resultados com a falha anterior do selector nem declarar iOS corrigido.

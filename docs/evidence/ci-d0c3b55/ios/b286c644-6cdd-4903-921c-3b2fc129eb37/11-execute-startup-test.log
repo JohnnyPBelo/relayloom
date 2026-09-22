@@ -1,0 +1,68 @@
+Command line invocation:
+    /Applications/Xcode_26.6.app/Contents/Developer/usr/bin/xcodebuild -project apps/ios/RelayLoom.xcodeproj -scheme RelayLoomSimulator -configuration Debug -sdk iphonesimulator -destination id=7BCB832A-CFBA-46A1-8687-C4E5CA180925 -destination-timeout 90 -derivedDataPath /Users/runner/work/relayloom/relayloom/.cache/ios/DerivedData -jobs 2 -disableAutomaticPackageResolution CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= ARCHS=arm64 -resultBundlePath /Users/runner/work/relayloom/relayloom/.cache/ios/simulator/raw/b286c644-6cdd-4903-921c-3b2fc129eb37/startup-results.xcresult -parallel-testing-enabled NO -maximum-concurrent-test-simulator-destinations 1 -maximum-parallel-testing-workers 1 -test-timeouts-enabled YES -default-test-execution-time-allowance 360 -maximum-test-execution-time-allowance 420 "-only-testing:RelayLoomUITests/NativeSimulatorTests/testStartupBeforeMedia" test-without-building
+
+Build settings from command line:
+    ARCHS = arm64
+    CODE_SIGN_IDENTITY = 
+    CODE_SIGNING_ALLOWED = NO
+    CODE_SIGNING_REQUIRED = NO
+    SDKROOT = iphonesimulator26.5
+
+Writing result bundle at path:
+	/Users/runner/work/relayloom/relayloom/.cache/ios/simulator/raw/b286c644-6cdd-4903-921c-3b2fc129eb37/startup-results.xcresult
+
+2026-09-22 20:33:24.308526+0000 RelayLoomUITests-Runner[23322:73036] [Default] Running tests...
+objc[23322]: Class UIAccessibilityLoaderWebShared is implemented in both /Library/Developer/CoreSimulator/Volumes/iOS_23E254a/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.4.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebCore.axbundle/WebCore (0x106530310) and /Library/Developer/CoreSimulator/Volumes/iOS_23E254a/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.4.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebKit.axbundle/WebKit (0x107304398). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+    t =      nans Interface orientation changed to Portrait
+Test Suite 'Selected tests' started at 2026-09-22 20:33:31.903.
+Test Suite 'RelayLoomUITests.xctest' started at 2026-09-22 20:33:31.903.
+Test Suite 'NativeSimulatorTests' started at 2026-09-22 20:33:31.904.
+Test Case '-[RelayLoomUITests.NativeSimulatorTests testStartupBeforeMedia]' started.
+    t =     0.00s Start Test at 2026-09-22 20:33:31.905
+    t =     1.29s Set Up
+    t =     1.30s Open org.relayloom.ios
+    t =     1.30s     Launch org.relayloom.ios
+    t =     8.26s         Setting up automation session
+    t =    10.32s         Wait for org.relayloom.ios to idle
+    t =    12.00s Waiting 45.0s for WebView (First Match) to exist
+    t =    13.11s     Checking `Expect predicate `existsNoRetry == 1` for object WebView (First Match)`
+    t =    13.12s         Checking existence of `WebView (First Match)`
+    t =    15.98s Waiting 30.0s for "Get started" Button to exist
+    t =    17.07s     Checking `Expect predicate `existsNoRetry == 1` for object "Get started" Button`
+    t =    17.07s         Checking existence of `"Get started" Button`
+    t =    17.32s Tap "Get started" Button
+    t =    17.32s     Wait for org.relayloom.ios to idle
+    t =    17.33s     Find the "Get started" Button
+    t =    18.34s     Check for interrupting elements affecting "Get started" Button
+    t =    18.57s     Synthesize event
+    t =    19.07s     Wait for org.relayloom.ios to idle
+    t =    19.95s Waiting 30.0s for "Create identity" Button to exist
+    t =    21.11s     Checking `Expect predicate `existsNoRetry == 1` for object "Create identity" Button`
+    t =    21.13s         Checking existence of `"Create identity" Button`
+    t =    26.46s Find the Target Application 'org.relayloom.ios'
+    t =    27.08s Added attachment named 'relayloom-00-startup-ready'
+IOS_SIMULATOR_PHASE app-startup-checked
+    t =    27.09s Terminate org.relayloom.ios:23684
+    t =    28.10s Tear Down
+Test Case '-[RelayLoomUITests.NativeSimulatorTests testStartupBeforeMedia]' passed (28.908 seconds).
+Test Suite 'NativeSimulatorTests' passed at 2026-09-22 20:34:00.814.
+	 Executed 1 test, with 0 failures (0 unexpected) in 28.908 (28.911) seconds
+Test Suite 'RelayLoomUITests.xctest' passed at 2026-09-22 20:34:00.816.
+	 Executed 1 test, with 0 failures (0 unexpected) in 28.908 (28.912) seconds
+Test Suite 'Selected tests' passed at 2026-09-22 20:34:00.817.
+	 Executed 1 test, with 0 failures (0 unexpected) in 28.908 (28.914) seconds
+
+Test session results, code coverage, and logs:
+	/Users/runner/work/relayloom/relayloom/.cache/ios/simulator/raw/b286c644-6cdd-4903-921c-3b2fc129eb37/startup-results.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started
+--- xcodebuild: WARNING: Using the first of multiple matching destinations:
+{ platform:iOS Simulator, arch:arm64, id:7BCB832A-CFBA-46A1-8687-C4E5CA180925, OS:26.4.1, name:RelayLoom-CI-b286c644-6cdd-4903-921c-3b2fc129eb37 }
+{ platform:iOS Simulator, arch:x86_64, id:7BCB832A-CFBA-46A1-8687-C4E5CA180925, OS:26.4.1, name:RelayLoom-CI-b286c644-6cdd-4903-921c-3b2fc129eb37 }
+2026-09-22 20:33:34.992 xcodebuild[22167:69547] [MT] IDELaunchParametersSnapshot: The operation couldn’t be completed. (DebuggerLLDB.DebuggerVersionStore.StoreError error 0.)
+2026-09-22 20:33:34.993 xcodebuild[22167:69547] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-09-22 20:34:01.880 xcodebuild[22167:69547] [MT] IDETestOperationsObserverDebug: 53.307 elapsed -- Testing started completed.
+2026-09-22 20:34:01.880 xcodebuild[22167:69547] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-09-22 20:34:01.880 xcodebuild[22167:69547] [MT] IDETestOperationsObserverDebug: 53.307 sec, +53.307 sec -- end

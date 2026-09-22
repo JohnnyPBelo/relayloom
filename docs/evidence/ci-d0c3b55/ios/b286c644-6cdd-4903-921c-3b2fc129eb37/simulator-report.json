@@ -1,0 +1,190 @@
+{
+  "kind": "IOS_REAL_SIMULATOR_GATE",
+  "runID": "b286c644-6cdd-4903-921c-3b2fc129eb37",
+  "requestedRuntimeVersion": "26.4.1",
+  "status": "FAILED",
+  "simulatorExecuted": true,
+  "physicalDeviceExecuted": false,
+  "photoAttachmentRequested": true,
+  "signing": "disabled; no accounts, identities or profiles requested",
+  "webViewDebugging": false,
+  "extraAppControlPort": false,
+  "cleanup": {
+    "udid": "7BCB832A-CFBA-46A1-8687-C4E5CA180925",
+    "deleted": true,
+    "onlyCreatedDeviceTouched": true
+  },
+  "commands": [
+    {
+      "label": "xcode-version",
+      "exitCode": 0,
+      "elapsedMs": 795,
+      "log": "01-xcode-version.log"
+    },
+    {
+      "label": "source-commit",
+      "exitCode": 0,
+      "elapsedMs": 76,
+      "log": "02-source-commit.log"
+    },
+    {
+      "label": "source-cleanliness",
+      "exitCode": 0,
+      "elapsedMs": 38,
+      "log": "03-source-cleanliness.log"
+    },
+    {
+      "label": "installed-runtimes",
+      "exitCode": 0,
+      "elapsedMs": 3618,
+      "log": "04-installed-runtimes.log"
+    },
+    {
+      "label": "installed-device-types",
+      "exitCode": 0,
+      "elapsedMs": 280,
+      "log": "05-installed-device-types.log"
+    },
+    {
+      "label": "create-owned",
+      "exitCode": 0,
+      "elapsedMs": 437,
+      "log": "06-create-owned.log"
+    },
+    {
+      "label": "boot-owned",
+      "exitCode": 0,
+      "elapsedMs": 3918,
+      "log": "07-boot-owned.log"
+    },
+    {
+      "label": "wait-owned-boot",
+      "exitCode": 0,
+      "elapsedMs": 270423,
+      "log": "08-wait-owned-boot.log"
+    },
+    {
+      "label": "build-for-testing",
+      "exitCode": 0,
+      "elapsedMs": 109396,
+      "log": "09-build-for-testing.log"
+    },
+    {
+      "label": "install-owned-app",
+      "exitCode": 0,
+      "elapsedMs": 19476,
+      "log": "10-install-owned-app.log"
+    },
+    {
+      "label": "execute-startup-test",
+      "exitCode": 0,
+      "elapsedMs": 81984,
+      "log": "11-execute-startup-test.log"
+    },
+    {
+      "label": "startup-xctest-summary",
+      "exitCode": 0,
+      "elapsedMs": 9247,
+      "log": "12-startup-xctest-summary.log"
+    },
+    {
+      "label": "seed-synthetic-photo",
+      "exitCode": 0,
+      "elapsedMs": 2194,
+      "log": "13-seed-synthetic-photo.log"
+    },
+    {
+      "label": "execute-ui-test",
+      "exitCode": null,
+      "elapsedMs": 168790,
+      "error": "The operation was aborted due to timeout",
+      "log": "14-execute-ui-test.log"
+    },
+    {
+      "label": "export-startup-attachments",
+      "exitCode": 0,
+      "elapsedMs": 5036,
+      "log": "15-export-startup-attachments.log"
+    },
+    {
+      "label": "export-test-attachments",
+      "exitCode": 64,
+      "elapsedMs": 400,
+      "log": "16-export-test-attachments.log"
+    },
+    {
+      "label": "cleanup-inventory",
+      "exitCode": 0,
+      "elapsedMs": 4276
+    },
+    {
+      "label": "shutdown-owned",
+      "exitCode": 0,
+      "elapsedMs": 5058,
+      "log": "18-shutdown-owned.log"
+    },
+    {
+      "label": "delete-owned",
+      "exitCode": 0,
+      "elapsedMs": 436,
+      "log": "19-delete-owned.log"
+    }
+  ],
+  "xcode": "Xcode 26.6\nBuild version 17F113",
+  "sourceHashes": {
+    "runner": "8b143a540b11d789588f11f2004ba9384da80f5c5b92b0a550d874d0c47a641c",
+    "peerFixture": "d046dd045a27c07e36fb5da6734e0487ed1fdd32f1dd702048f5f70fd170b57c",
+    "uiTest": "cc875f683797d7fe9e654a300650d012b74ffd292631e7737e45c801a7351dcd",
+    "project": "2331e5b806b3e27955be38b8e78a18b9ea33f251b0e76d61881a92a801d414a4",
+    "scheme": "c105ce198c4a20b9deefe4d3bdb4ecda777108e4abd886440e0c41261e0f4e63"
+  },
+  "sourceCommit": "d0c3b55ff6d312222a1bc72e0fa48a8019822976",
+  "workingTreeDirty": false,
+  "runtime": {
+    "identifier": "com.apple.CoreSimulator.SimRuntime.iOS-26-4",
+    "version": "26.4.1",
+    "buildVersion": "23E254a",
+    "deviceType": "com.apple.CoreSimulator.SimDeviceType.iPhone-SE-3rd-generation",
+    "downloaded": false
+  },
+  "udid": "7BCB832A-CFBA-46A1-8687-C4E5CA180925",
+  "firstBootBudgetMs": 600000,
+  "simulatorBooted": true,
+  "app": {
+    "executableSHA256": "aca65921e257d3d57f7f51eb6c8ae75925e8b7d725ca4de66b232621115266b4",
+    "webIndexSHA256": "f06fb175543c6b6e52ac823d7faeeff0cc4e53b4c5f8567bd47085bc3e79c669",
+    "uiTestSourceSHA256": "cc875f683797d7fe9e654a300650d012b74ffd292631e7737e45c801a7351dcd",
+    "bindingReportSHA256": "eb6ebaec11f68d43a359a4eeccceace0d11e6546ecf7c53bf371e41e368b1051"
+  },
+  "startupTestStarted": true,
+  "appStartup": {
+    "result": "Passed",
+    "passedTests": 1,
+    "failedTests": 0,
+    "skippedTests": 0
+  },
+  "peerObservation": {
+    "runtime": "real production Node engine in owned child process",
+    "relayForOthers": false,
+    "recipientID": "094cc31f197c79a549eabbe63682eb9d05d0ad64aecc821953487efce3f0d5f0",
+    "senderID": null,
+    "messages": [],
+    "replyReadConfirmed": false
+  },
+  "testCommandStarted": true,
+  "uiPhases": [
+    "keyboard-dismissed",
+    "identity-created",
+    "post-published"
+  ],
+  "lastUIPhase": "keyboard-dismissed",
+  "error": "The operation was aborted due to timeout",
+  "peerDiagnostics": {
+    "captured": true,
+    "bytes": 427
+  },
+  "startupScreenshotsExported": 1,
+  "screenshotExportError": "Owned command failed: export-test-attachments (see sanitized evidence)",
+  "completedAt": "2026-09-22T20:37:21.120Z",
+  "diskFreeBytesAtEnd": 97286017024
+}

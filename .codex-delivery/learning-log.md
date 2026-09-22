@@ -725,3 +725,10 @@ Um finally deve usar a API real e garantir as restantes limpezas se a primeira f
 O oracle de conservação de source deve comparar canonical/estrutura, não a ordem de JSON.stringify. A falha browser foi só de ordem; nenhuma alteração de produto foi necessária para esse caso. Erros de integridade do registo/prova browser têm tipo próprio para não serem engolidos como recusas normais de política.
 
 CI35753597485/2948284 passou505Node+34UI Ubuntu mas terminoucancelled por15min acumulados, confirmado nas anotaçõesGitHub. Separar os mesmos comandos em jobs sequenciais, sem reduzir cobertura/deadlines dos testes; não atribuir a HTTP408 ou concorrência sem prova. Workfloweditado ainda exigeCIremoto.
+
+
+## Recusa de observação não é resultado do percurso iOS
+
+O watcher abortava à primeira TimeoutError de uma leitura do par. Repetir só observações transitórias, mantendo deadline global, processo vivo e limite de duas repetições. Nunca repetir mutações ou aceitar estado malformado. Os 27 testes host-only em 3ac8faf provam essa política, não o percurso Apple; é necessária nova execução remota. Distinguir a ausência de mensagem confirmada em d0c3b55 da anterior falha de selecção da fotografia. A causa do atraso da API permanece desconhecida.
+
+Na retoma, verificar o relatório terminal e os hashes antes de relançar qualquer gate. O gate da origem já terminou PASS e os 733 hashes correspondem a 16c5963; manter essa atribuição mesmo com commit iOS posterior.

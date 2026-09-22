@@ -1,6 +1,15 @@
 # RelayLoom — estado verificável
 
 
+## Recuperação da origem privada — 22 de Setembro
+
+**593459a/16c5963:** obtain-source deriva a origem da candidata guardada; a fila activa/copied do visitante pode responder com os mesmos bytes/autoria, com relay de terceiros pausado. Cancelamento por pacote preserva tráfego independente e prazos absolutos limitam a autorização. As respostas retidas no browser são revalidadas antes de transmitir.
+
+Passaram **516 Node, 17 pacotes Go/race, 74 testes entre processos, builds e 78 percursos por browser**. Os 733 hashes de fonte coincidem com o commit. [Comandos, controlos e falhas das fixtures](evidence/site-contributions/source-recovery). Ainda faltam recibos, recusa/purga, aprovação/CAS/reconciliação/proveniência e UI completa; paleta e HTML público inalterados. Todo o restante contrato mantém-se.
+
+CI35772935519/d0c3b55 terminou FAILURE só no iOS; todos os outros jobs passaram, incluindo o job UI separado. No iOS, startup e fotografia importada passaram; o watcher expirou ao observar o par Node durante UI, antes de confirmar mensagem. Não é a falha de selector anterior. 22 ficheiros de artefacto conferidos. **3ac8faf** acrescenta repetição limitada apenas dessa leitura, com 27 testes host-only PASS; Apple ainda precisa de repetir. [Evidência exacta](evidence/ci-d0c3b55).
+
+
 ## Inbox privada com origem persistente — 22 de Setembro
 
 **a3e09fd/55b0d4e:** journal e catálogos Node/Go/browser ligados à recepção automática. Reempacotamento não duplica; conflitos por autor/UUID preservam a primeira prova. A fonte autenticada continua disponível à inbox depois de perder a cache normal e desligar o emissor. Uma origem ausente não concede permissão para mostrar dados como proposta verificada.
