@@ -142,3 +142,133 @@ for (const mode of ["cancel", "expire", "close"] as const)
     }
     expect(result.authorizedAfter).toBe(false);
   });
+
+for (const lookup of ["proposal", "source"] as const)
+  for (const revoke of [false, true])
+    test(`durable retry ${revoke ? "after revocation refuses" : "without changes preserves"} an in-flight ${lookup} read`, async ({
+      page,
+    }) => {
+      await page.goto(host.url);
+      const result = await page.evaluate(
+        async ({ payload, lookup, revoke }) => {
+          const r = (window as any).rl,
+            owner = await r.BrowserProfile.connect(
+              "retry-owner-" + crypto.randomUUID(),
+            ),
+            visitor = await r.BrowserProfile.connect(
+              "retry-visitor-" + crypto.randomUUID(),
+            );
+          let runtime: any,
+            blocked = false,
+            release = () => {};
+          try {
+            const a = await owner.setup(
+                "Owner",
+                "unchanged retry fixture passphrase",
+              ),
+              b = await visitor.setup(
+                "Visitor",
+                "unchanged retry fixture passphrase",
+              );
+            payload.site.pages[0].blocks[0].children![0].form!.contributors = [
+              b.id,
+            ];
+            const source = await owner.signSiteBundle(
+              "profile",
+              1,
+              [],
+              payload,
+              "public",
+              3600000,
+            );
+            await visitor.putBundle(source);
+            runtime = new r.BrowserContributionRuntime({
+              profile: visitor,
+              policy: async () => {
+                if (blocked) throw Error("fixture policy block");
+              },
+              copyPolicy: () => [],
+              publish: () => {},
+              cancel: async () => {},
+            });
+            const request = {
+                action: "submit",
+                sequence: 1,
+                operationId: crypto.randomUUID(),
+                snapshotId: source.manifest.id,
+                pageId: "entry",
+                formId: "form",
+                values: { name: "UNCHANGED_RETRY", count: 0, open: false },
+                publicationScope: [a.id, b.id].sort(),
+                ttlMs: 60000,
+              },
+              sent = await runtime.command(request);
+            if (sent.error) throw Error(sent.error);
+            const bundle = await visitor.getBundle(
+                sent.operation.transport.bundleId,
+              ),
+              transact = visitor.transactValues.bind(visitor);
+            let entered = () => {},
+              holdNext = true;
+            const reached = new Promise<void>((resolve) => {
+                entered = resolve;
+              }),
+              held = new Promise<void>((resolve) => {
+                release = resolve;
+              });
+            visitor.transactValues = async (...args: any[]) => {
+              const value = await transact(...args);
+              if (holdNext) {
+                holdNext = false;
+                entered();
+                await held;
+              }
+              return value;
+            };
+            const pending =
+              lookup === "proposal"
+                ? runtime.canServe(bundle)
+                : runtime.sourceForRequest(source.manifest.id);
+            await reached;
+            if (revoke) {
+              blocked = true;
+              await runtime.revokeInvalid();
+              blocked = false;
+            }
+            const resumed = await runtime.command({
+              action: "resume",
+              sequence: 1,
+              operationId: request.operationId,
+            });
+            if (resumed.error) throw Error(resumed.error);
+            release();
+            const read = await pending;
+            const fresh =
+              lookup === "proposal"
+                ? await runtime.canServe(bundle)
+                : await runtime.sourceForRequest(source.manifest.id);
+            return {
+              freshAuthorized:
+                lookup === "proposal"
+                  ? fresh === true
+                  : fresh?.bundle.manifest.id === source.manifest.id,
+              sameOperation:
+                r.canonical(resumed.operation) === r.canonical(sent.operation),
+              authorized:
+                lookup === "proposal"
+                  ? read === true
+                  : read?.bundle.manifest.id === source.manifest.id,
+            };
+          } finally {
+            release();
+            runtime?.close();
+            visitor.close();
+            owner.close();
+          }
+        },
+        { payload: formPayload(), lookup, revoke },
+      );
+      expect(result.sameOperation).toBe(true);
+      expect(result.authorized).toBe(!revoke);
+      expect(result.freshAuthorized).toBe(true);
+    });

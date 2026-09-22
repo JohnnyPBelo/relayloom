@@ -307,3 +307,154 @@ test("native inbox refuses block/corruption and collects expired proof without e
     rmSync(f.directory, { recursive: true, force: true });
   }
 });
+
+for (const first of ["node", "go"] as const)
+  for (const verified of [false, true])
+    test(`${first} discards ${verified ? "verified" : "missing-source"} proposal durably across encrypted Node/Go reopen`, () => {
+      const f = fixture();
+      try {
+        node(f, (c) => {
+          c.admit(f.envelope, allow);
+          if (verified) c.attachSource(f.cert.id, f.source, allow);
+        });
+        const prior = node(f, (c) => c.state()),
+          revision = prior.revision;
+        assert.match(go(f, "read", { blocked: true }).error, /policy block/);
+        assert.match(
+          go(f, "dismiss", { revision: revision + 1 }).error,
+          /inválida/,
+        );
+        const removed =
+          first === "node"
+            ? node(f, (c) => c.dismiss(f.cert.id, revision))
+            : go(f, "dismiss", { revision, blocked: true }).value;
+        assert.equal(removed.entry.phase, "dismissed");
+        assert.equal(removed.entry.proof, null);
+        assert.equal(removed.entry.verifiedAt, verified ? f.now : null);
+        const reread = node(f, (c) => c.state());
+        assert.deepEqual(go(f, "state").value, reread);
+        assert.deepEqual(go(f, "dismiss", { revision }).value, removed);
+        assert.deepEqual(
+          node(f, (c) => c.dismiss(f.cert.id, revision)),
+          removed,
+        );
+        const replay = go(f, "admit").value;
+        assert.equal(replay.outcome, "duplicate");
+        assert.deepEqual(replay.record, reread);
+        assert(go(f, "source").error);
+        assert.equal(go(f, "read").value.proposal, undefined);
+        assert.deepEqual(
+          node(f, (_c, db) =>
+            db.transaction((tx) => tx.keys("contribution-inbox:")),
+          ).filter((k) => k.includes(f.cert.id)),
+          [],
+        );
+        assert.equal(
+          go(f, "state", { now: f.cert.body.expires }).value.entries[0].phase,
+          "dismissed",
+        );
+      } finally {
+        rmSync(f.directory, { recursive: true, force: true });
+      }
+    });
+for (const crash of ["before-commit", "after-command"] as const)
+  test(`Go discard process exit ${crash} cannot separate proof disposal from replay tombstone`, () => {
+    const f = fixture();
+    try {
+      node(f, (c) => {
+        c.admit(f.envelope, allow);
+        c.attachSource(f.cert.id, f.source, allow);
+      });
+      const revision = node(f, (c) => c.state().revision);
+      go(f, "dismiss", { revision, crash });
+      const current = node(f, (c) => c.read(f.cert.id, allow))!;
+      assert.equal(
+        current.entry.phase,
+        crash === "before-commit" ? "verified-candidate" : "dismissed",
+      );
+      assert.deepEqual(
+        current.proposal,
+        crash === "before-commit" ? f.cert : undefined,
+      );
+      const result = node(f, (c) => c.dismiss(f.cert.id, revision));
+      assert.equal(result.revision, revision + 1);
+      assert.deepEqual(go(f, "dismiss", { revision }).value, result);
+      assert.equal(go(f, "admit").value.outcome, "duplicate");
+    } finally {
+      rmSync(f.directory, { recursive: true, force: true });
+    }
+  });
+
+test("Go dismissal detects corrupt evidence instead of laundering it through cleanup", () => {
+  const f = fixture();
+  try {
+    node(f, (c, db) => {
+      c.admit(f.envelope, allow);
+      db.transaction((tx) =>
+        SitePrivateRecords.runContributionInbox(tx, f.owner, (records) => {
+          const key = "contribution-inbox:" + f.cert.id + ":stage",
+            proof = records.read(key) as any;
+          proof.envelope.manifest.signature = "A".repeat(88);
+          records.write(key, proof);
+        }),
+      );
+    });
+    assert.equal(go(f, "dismiss", { revision: 1 }).integrity, true);
+  } finally {
+    rmSync(f.directory, { recursive: true, force: true });
+  }
+});
+
+for (const crash of ["before-commit", "after-command"] as const)
+  test(`Node discard process exit ${crash} is recovered by Go without splitting proof and tombstone`, () => {
+    const f = fixture();
+    try {
+      node(f, (c) => {
+        c.admit(f.envelope, allow);
+        c.attachSource(f.cert.id, f.source, allow);
+      });
+      const revision = node(f, (c) => c.state().revision),
+        control = join(f.directory, "node-crash-control.json");
+      writeFileSync(
+        control,
+        JSON.stringify({
+          database: f.path,
+          storeId: f.storeId,
+          identity: f.owner,
+          now: f.now,
+          id: f.cert.id,
+          revision,
+          crash,
+          output: control + ".result",
+        }),
+        { mode: 0o600 },
+      );
+      const stopped = spawnSync(
+        process.execPath,
+        ["--import", "tsx", "tests/fixtures/contribution-inbox-worker.ts"],
+        {
+          encoding: "utf8",
+          timeout: 15000,
+          env: { ...process.env, RELAYLOOM_NODE_INBOX_CONTROL: control },
+        },
+      );
+      assert.equal(stopped.status, 83, stopped.stdout + stopped.stderr);
+      const saved = go(f, "read").value;
+      assert.equal(
+        saved.entry.phase,
+        crash === "before-commit" ? "verified-candidate" : "dismissed",
+      );
+      assert.deepEqual(
+        saved.proposal,
+        crash === "before-commit" ? f.cert : undefined,
+      );
+      const result = go(f, "dismiss", { revision }).value;
+      assert.equal(result.revision, revision + 1);
+      assert.deepEqual(
+        node(f, (c) => c.dismiss(f.cert.id, revision)),
+        result,
+      );
+    } finally {
+      rmSync(f.directory, { recursive: true, force: true });
+    }
+  });

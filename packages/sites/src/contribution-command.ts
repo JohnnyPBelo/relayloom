@@ -6,6 +6,19 @@ import type { ContributionCreationRequest } from "./contribution-operations";
 export function contributionCommandShape(value: any) {
   if (value?.action === "form") return parseContributionFormLookup(value);
   if (
+    value?.action === "dismiss" &&
+    exactShape(value, ["action", "id", "revision"]) &&
+    typeof value.id === "string" &&
+    /^[a-f0-9]{64}$/.test(value.id) &&
+    Number.isSafeInteger(value.revision) &&
+    value.revision >= 0
+  )
+    return {
+      action: "dismiss" as const,
+      id: value.id as string,
+      revision: value.revision as number,
+    };
+  if (
     value?.action === "obtain-source" &&
     exactShape(value, ["action", "id"]) &&
     typeof value.id === "string" &&

@@ -315,6 +315,35 @@ export class BrowserContributionInbox {
       throw Error("Proposta expirou durante a persistência");
     return result;
   }
+  async dismiss(id: string, revision: number) {
+    return this.run(async (values, record) => {
+      let result = registry.dismiss(
+        record,
+        this.owner.id,
+        id,
+        revision,
+        this.now(),
+      );
+      if (result.record.revision !== record.revision) {
+        await this.readProof(
+          values,
+          record.entries.find((e) => e.id === id)!,
+        );
+        this.ensure();
+        result = registry.dismiss(
+          record,
+          this.owner.id,
+          id,
+          revision,
+          this.now(),
+        );
+        await values.remove(this.proofKey(id));
+        this.ensure();
+        values.set(this.key + ":record", result.record);
+      }
+      return { entry: result.entry, revision: result.record.revision };
+    });
+  }
   async read(id: string, allow: Policy) {
     const result = await this.run(async (values, record) => {
       const entry = record.entries.find((e) => e.id === id);

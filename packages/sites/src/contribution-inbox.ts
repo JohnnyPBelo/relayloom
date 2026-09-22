@@ -32,7 +32,8 @@ export interface ContributionInboxEntry {
   expires: number;
   observedAt: number;
   retainUntil: number;
-  phase: "missing-source" | "verified-candidate" | "expired";
+  phase: "missing-source" | "verified-candidate" | "expired" | "dismissed";
+  dismissedAt?: number;
   verifiedAt: number | null;
   expiredAt: number | null;
   proof: ContributionInboxProof | null;
@@ -112,6 +113,7 @@ export function createContributionInboxProtocol(crypto: CertificateCrypto) {
     for (const e of r.entries) {
       insist(
         exactShape(e, [
+          ...(Object.hasOwn(e, "dismissedAt") ? ["dismissedAt"] : []),
           "id",
           "contributorId",
           "operationId",
@@ -172,7 +174,12 @@ export function createContributionInboxProtocol(crypto: CertificateCrypto) {
         "prazo observado",
       );
       insist(
-        ["missing-source", "verified-candidate", "expired"].includes(e.phase),
+        [
+          "missing-source",
+          "verified-candidate",
+          "expired",
+          "dismissed",
+        ].includes(e.phase),
         "fase",
       );
       insist(
@@ -186,7 +193,20 @@ export function createContributionInboxProtocol(crypto: CertificateCrypto) {
         insist(e.verifiedAt === null, "fonte ainda não verificada");
       if (e.phase === "verified-candidate")
         insist(e.verifiedAt !== null, "verificação em falta");
-      if (e.phase === "expired") {
+      insist(
+        e.phase === "dismissed"
+          ? clock(e.dismissedAt) &&
+              e.dismissedAt >= e.observedAt &&
+              e.dismissedAt >= (e.verifiedAt ?? 0) &&
+              e.dismissedAt < e.expires &&
+              e.proof === null &&
+              e.expiredAt === null
+          : !Object.hasOwn(e, "dismissedAt"),
+        "descarte local",
+      );
+      if (e.phase === "dismissed") {
+        // A terminal tombstone consumes metadata, never pending/proof quota.
+      } else if (e.phase === "expired") {
         insist(
           e.proof === null && clock(e.expiredAt) && e.expiredAt >= e.expires,
           "expiração sem limpeza",
@@ -386,7 +406,7 @@ export function createContributionInboxProtocol(crypto: CertificateCrypto) {
     insist(clock(now), "relógio");
     let changed = false;
     for (const e of r.entries) {
-      if (e.phase !== "expired" && e.expires <= now) {
+      if (e.proof !== null && e.expires <= now) {
         e.phase = "expired";
         e.proof = null;
         e.expiredAt = now;
@@ -397,5 +417,65 @@ export function createContributionInboxProtocol(crypto: CertificateCrypto) {
     r.entries = r.entries.filter((e) => e.retainUntil > now);
     return changed || before !== r.entries.length ? advance(r) : r;
   }
-  return { initial, validate, observe, verified, expire, checkCertificate };
+  function dismiss(
+    input: unknown,
+    ownerId: string,
+    certificateId: string,
+    revision: number,
+    now: number,
+  ) {
+    const r = validate(input, ownerId),
+      entry = r.entries.find((e) => e.id === certificateId);
+    insist(
+      clock(revision) && revision <= r.revision && clock(now),
+      "revisão ou relógio",
+    );
+    insist(entry, "candidata ausente");
+    if (entry.phase === "dismissed") return { record: r, entry };
+    insist(revision === r.revision, "a inbox mudou; volta a consultar");
+    insist(
+      entry.proof &&
+        now >= entry.observedAt &&
+        now >= (entry.verifiedAt ?? 0) &&
+        now < entry.expires,
+      "candidata expirada ou relógio anterior",
+    );
+    entry.phase = "dismissed";
+    entry.dismissedAt = now;
+    entry.proof = null;
+    const record = advance(r);
+    return {
+      record,
+      entry: record.entries.find((e) => e.id === certificateId)!,
+    };
+  }
+  return {
+    initial,
+    validate,
+    observe,
+    verified,
+    expire,
+    checkCertificate,
+    dismiss,
+  };
+}
+
+/** Metadata for owner-local quota management, including blocked/unreadable rows.
+ * No proof, values, read keys or publication authority crosses this boundary. */
+export function contributionInboxManagement(record: ContributionInboxRecord) {
+  return {
+    revision: record.revision,
+    entries: record.entries.map((e) => ({
+      id: e.id,
+      contributorId: e.contributorId,
+      operationId: e.operationId,
+      target: structuredClone(e.target),
+      phase: e.phase,
+      created: e.created,
+      expires: e.expires,
+      retainUntil: e.retainUntil,
+      verifiedAt: e.verifiedAt,
+      dismissedAt: e.dismissedAt ?? null,
+    })),
+  };
 }

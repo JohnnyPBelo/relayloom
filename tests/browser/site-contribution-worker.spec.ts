@@ -369,6 +369,40 @@ test("production workers recover queued proposals offline and send through the U
     expect(await rpc(owner, "ids", undefined, "profile")).not.toContain(
       cancelled.transport.bundleId,
     );
+    await rpc(owner, "action", { action: "block", target: b.id, value: true });
+    const blocked = await rpc(owner, "contribution-command", {
+      action: "inbox",
+    });
+    expect(blocked.items).toEqual([]);
+    expect(blocked.management.entries[0].id).toBe(sent.operation.certificateId);
+    expect(JSON.stringify(blocked)).not.toContain(request.values.name);
+    const discard = {
+      action: "dismiss",
+      id: sent.operation.certificateId,
+      revision: blocked.management.revision,
+    };
+    await expect(
+      rpc(owner, "contribution-command", { ...discard, proof: original }),
+    ).rejects.toThrow();
+    const dismissed = await rpc(owner, "contribution-command", discard);
+    expect(dismissed.entry.phase).toBe("dismissed");
+    expect(dismissed.entry.verifiedAt).not.toBeNull();
+    expect(dismissed.entry.proof).toBeNull();
+    await owner.reload();
+    await unlock(owner);
+    expect(await rpc(owner, "contribution-command", discard)).toEqual(
+      dismissed,
+    );
+    await rpc(owner, "action", { action: "block", target: b.id, value: false });
+    expect(
+      (await rpc(owner, "contribution-command", { action: "inbox" })).items,
+    ).toEqual([]);
+    await expect(
+      rpc(owner, "contribution-command", {
+        action: "obtain-source",
+        id: sent.operation.certificateId,
+      }),
+    ).rejects.toThrow();
     await rpc(sender, "contribution-command", {
       action: "cancel",
       sequence: 1,

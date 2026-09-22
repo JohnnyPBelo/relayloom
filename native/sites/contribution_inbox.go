@@ -52,7 +52,13 @@ func ValidateContributionInbox(value any, owner string) (map[string]any, error) 
 	pending := 0
 	var total int64
 	for _, raw := range entries {
-		e, err := object(raw, "id", "contributorId", "operationId", "target", "created", "expires", "observedAt", "retainUntil", "phase", "verifiedAt", "expiredAt", "proof", "conflicts", "conflictOverflow")
+		fields := []string{"id", "contributorId", "operationId", "target", "created", "expires", "observedAt", "retainUntil", "phase", "verifiedAt", "expiredAt", "proof", "conflicts", "conflictOverflow"}
+		if row, ok := raw.(map[string]any); ok {
+			if _, present := row["dismissedAt"]; present {
+				fields = append(fields, "dismissedAt")
+			}
+		}
+		e, err := object(raw, fields...)
 		if err != nil {
 			return nil, inboxError()
 		}
@@ -78,7 +84,7 @@ func ValidateContributionInbox(value any, owner string) (map[string]any, error) 
 			return nil, inboxError()
 		}
 		phase := docTextValue(e["phase"])
-		if !docContains([]string{"missing-source", "verified-candidate", "expired"}, phase) {
+		if !docContains([]string{"missing-source", "verified-candidate", "expired", "dismissed"}, phase) {
 			return nil, inboxError()
 		}
 		if e["verifiedAt"] != nil {
@@ -90,7 +96,21 @@ func ValidateContributionInbox(value any, owner string) (map[string]any, error) 
 		if phase == "missing-source" && e["verifiedAt"] != nil || phase == "verified-candidate" && e["verifiedAt"] == nil {
 			return nil, inboxError()
 		}
-		if phase == "expired" {
+		if phase == "dismissed" {
+			dismissed, err := contributionClock(e["dismissedAt"])
+			verified := int64(0)
+			if e["verifiedAt"] != nil {
+				verified, _ = contributionClock(e["verifiedAt"])
+			}
+			if err != nil || dismissed < observed || dismissed < verified || dismissed >= expires || e["proof"] != nil || e["expiredAt"] != nil {
+				return nil, inboxError()
+			}
+		} else if _, present := e["dismissedAt"]; present {
+			return nil, inboxError()
+		}
+		if phase == "dismissed" {
+			// Only bounded metadata remains; pending/proof quota is released.
+		} else if phase == "expired" {
 			expired, err := contributionClock(e["expiredAt"])
 			if err != nil || expired < expires || e["proof"] != nil {
 				return nil, inboxError()
@@ -291,7 +311,7 @@ func ExpireContributionInbox(value any, owner string, now int64) (map[string]any
 		e := raw.(map[string]any)
 		expires, _ := contributionClock(e["expires"])
 		retained, _ := contributionClock(e["retainUntil"])
-		if e["phase"] != "expired" && expires <= now {
+		if e["proof"] != nil && expires <= now {
 			e["phase"] = "expired"
 			e["proof"] = nil
 			e["expiredAt"] = now
@@ -308,4 +328,59 @@ func ExpireContributionInbox(value any, owner string, now int64) (map[string]any
 		return advanceInbox(r)
 	}
 	return r, nil
+}
+
+// DismissContributionInbox is local disposal, not a signed decision or receipt.
+func DismissContributionInbox(value any, owner, id string, revision, now int64) (map[string]any, map[string]any, error) {
+	r, err := ValidateContributionInbox(value, owner)
+	if err != nil {
+		return nil, nil, err
+	}
+	current, _ := contributionClock(r["revision"])
+	if revision < 0 || revision > current || now < 0 || now > MaxSequence {
+		return nil, nil, inboxError()
+	}
+	e := inboxEntry(r, id)
+	if e == nil {
+		return nil, nil, inboxError()
+	}
+	if e["phase"] == "dismissed" {
+		return r, e, nil
+	}
+	if revision != current {
+		return nil, nil, errors.New("a inbox mudou; volta a consultar")
+	}
+	observed, _ := contributionClock(e["observedAt"])
+	expires, _ := contributionClock(e["expires"])
+	verified := int64(0)
+	if e["verifiedAt"] != nil {
+		verified, _ = contributionClock(e["verifiedAt"])
+	}
+	if e["proof"] == nil || now < observed || now < verified || now >= expires {
+		return nil, nil, inboxError()
+	}
+	e["phase"], e["dismissedAt"], e["proof"] = "dismissed", now, nil
+	r, err = advanceInbox(r)
+	if err != nil {
+		return nil, nil, err
+	}
+	return r, inboxEntry(r, id), nil
+}
+
+// Minimal owner-private metadata; no proposal values, proof or read capability.
+func ContributionInboxManagement(value any, owner string) (map[string]any, error) {
+	r, err := ValidateContributionInbox(value, owner)
+	if err != nil {
+		return nil, err
+	}
+	entries := []any{}
+	for _, raw := range r["entries"].([]any) {
+		e := raw.(map[string]any)
+		row := map[string]any{}
+		for _, k := range []string{"id", "contributorId", "operationId", "target", "phase", "created", "expires", "retainUntil", "verifiedAt", "dismissedAt"} {
+			row[k] = e[k]
+		}
+		entries = append(entries, row)
+	}
+	return map[string]any{"revision": r["revision"], "entries": entries}, nil
 }

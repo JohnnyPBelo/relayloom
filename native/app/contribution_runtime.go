@@ -327,6 +327,13 @@ func (r *contributionRuntime) command(body map[string]any) (any, error) {
 	if action == "inbox" && commandShape(body, []string{"action"}, "") {
 		return r.inbox()
 	}
+	if action == "dismiss" && commandShape(body, []string{"action", "id", "revision"}, "") && core.ValidAddress(text(body["id"])) {
+		revision, err := number(body["revision"])
+		if err != nil {
+			return nil, err
+		}
+		return r.incoming.Dismiss(text(body["id"]), revision)
+	}
 	if action == "obtain-source" && commandShape(body, []string{"action", "id"}, "") && core.ValidAddress(text(body["id"])) {
 		found, err := r.incoming.Read(text(body["id"]), r.policy)
 		if err != nil {
@@ -336,7 +343,7 @@ func (r *contributionRuntime) command(body map[string]any) (any, error) {
 			return nil, errors.New("candidata indisponível")
 		}
 		entry := found["entry"].(map[string]any)
-		if entry["phase"] == "expired" {
+		if entry["proof"] == nil {
 			return nil, errors.New("candidata expirada")
 		}
 		if err = r.completeSource(entry, nil); err != nil {
@@ -350,7 +357,7 @@ func (r *contributionRuntime) command(body map[string]any) (any, error) {
 			return nil, errors.New("candidata indisponível")
 		}
 		entry = found["entry"].(map[string]any)
-		if entry["phase"] == "expired" {
+		if entry["proof"] == nil {
 			return nil, errors.New("candidata expirada")
 		}
 		id := text(entry["target"].(map[string]any)["snapshotId"])
@@ -513,7 +520,7 @@ func (r *contributionRuntime) inbox() (any, error) {
 	}
 	for _, raw := range state["entries"].([]any) {
 		entry := raw.(map[string]any)
-		if entry["phase"] == "expired" {
+		if entry["proof"] == nil {
 			continue
 		}
 		if err = r.completeSource(entry, nil); err != nil {
@@ -530,7 +537,7 @@ func (r *contributionRuntime) inbox() (any, error) {
 			continue
 		}
 		e := current["entry"].(map[string]any)
-		if e["phase"] == "expired" {
+		if e["proof"] == nil {
 			continue
 		}
 		proof := e["proof"].(map[string]any)
@@ -552,5 +559,13 @@ func (r *contributionRuntime) inbox() (any, error) {
 		base["schemaHash"] = b["schemaHash"]
 		items = append(items, base)
 	}
-	return map[string]any{"items": items, "scope": "candidates", "durable": true}, nil
+	state, err = r.incoming.State()
+	if err != nil {
+		return nil, err
+	}
+	management, err := sites.ContributionInboxManagement(state, r.owner.Public.ID)
+	if err != nil {
+		return nil, err
+	}
+	return map[string]any{"items": items, "scope": "candidates", "durable": true, "management": management}, nil
 }

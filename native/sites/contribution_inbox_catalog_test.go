@@ -38,6 +38,7 @@ func TestContributionInboxCatalogWorker(t *testing.T) {
 		Envelope json.RawMessage `json:"envelope"`
 		Source   json.RawMessage `json:"source"`
 		ID       string          `json:"id"`
+		Revision int64           `json:"revision"`
 		Blocked  bool            `json:"blocked"`
 		Crash    string          `json:"crash"`
 		Output   string          `json:"output"`
@@ -68,6 +69,8 @@ func TestContributionInboxCatalogWorker(t *testing.T) {
 	switch input.Action {
 	case "state":
 		result, err = c.State()
+	case "dismiss":
+		result, err = c.Dismiss(input.ID, input.Revision)
 	case "read":
 		result, err = c.Read(input.ID, allow)
 	case "admit":

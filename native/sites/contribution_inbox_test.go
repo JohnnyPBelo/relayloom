@@ -44,7 +44,7 @@ func TestContributionInboxWorker(t *testing.T) {
 			} else {
 				result, check = CheckInboxCertificate(entry, v["certificate"], owner)
 			}
-		case "observe", "verified", "expire":
+		case "observe", "verified", "expire", "dismiss":
 			now, err := contributionClock(v["now"])
 			if err != nil {
 				check = err
@@ -59,6 +59,15 @@ func TestContributionInboxWorker(t *testing.T) {
 			case "verified":
 				var record, entry map[string]any
 				record, entry, check = VerifyContributionInboxSource(v["record"], owner, docTextValue(v["id"]), v["proof"], now)
+				result = map[string]any{"record": record, "entry": entry}
+			case "dismiss":
+				revision, err := contributionClock(v["revision"])
+				if err != nil {
+					check = err
+					break
+				}
+				var record, entry map[string]any
+				record, entry, check = DismissContributionInbox(v["record"], owner, docTextValue(v["id"]), revision, now)
 				result = map[string]any{"record": record, "entry": entry}
 			case "expire":
 				result, check = ExpireContributionInbox(v["record"], owner, now)

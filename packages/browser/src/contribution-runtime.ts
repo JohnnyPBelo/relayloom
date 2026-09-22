@@ -2,7 +2,10 @@ import {
   BrowserContributionInbox,
   ContributionInboxIntegrityError,
 } from "./contribution-inbox";
-import type { ContributionInboxEntry } from "../../sites/src/contribution-inbox";
+import {
+  contributionInboxManagement,
+  type ContributionInboxEntry,
+} from "../../sites/src/contribution-inbox";
 import type { Bundle } from "../../core/src/protocol";
 import { canonical } from "../../core/src/protocol";
 import { BrowserProfile, type ProfileValueTransaction } from "./profile";
@@ -211,7 +214,13 @@ export class BrowserContributionRuntime {
       this.ensure();
       operation = await this.catalog.markCopied(operation, actual);
       this.ensure();
-      this.allowed.set(actual.manifest.id, operation);
+      // An unchanged durable retry is still the same authorization. Replacing
+      // its object would invalidate concurrent reads solely because a timer ran.
+      // stop/revoke removes the object: a later grant must get a new identity,
+      // so a reply retained across real revocation can never revive itself.
+      const prior = this.allowed.get(actual.manifest.id);
+      if (!prior || canonical(prior) !== canonical(operation))
+        this.allowed.set(actual.manifest.id, structuredClone(operation));
       if (!(await this.canServe(actual)))
         throw Error("Envio suspenso pela política actual");
       if (
@@ -292,16 +301,18 @@ export class BrowserContributionRuntime {
         });
       if (command.action === "state") return this.catalog.state();
       if (command.action === "inbox") return this.inbox();
+      if (command.action === "dismiss")
+        return this.incoming.dismiss(command.id, command.revision);
       if (command.action === "obtain-source") {
         let found = await this.incoming.read(command.id, this.policy);
         this.ensure();
-        if (!found || found.entry.phase === "expired")
+        if (!found || !found.entry.proof)
           throw Error("Candidata indisponível ou expirada");
         await this.completeSource(found.entry);
         this.ensure();
         found = await this.incoming.read(command.id, this.policy);
         this.ensure();
-        if (!found || found.entry.phase === "expired")
+        if (!found || !found.entry.proof)
           throw Error("Candidata indisponível ou expirada");
         const snapshotId = found.entry.target.snapshotId;
         if (found.proposal)
@@ -439,12 +450,12 @@ export class BrowserContributionRuntime {
     }
     for (const entry of (await this.incoming.state()).entries) {
       this.ensure();
-      if (entry.phase === "expired") continue;
+      if (!entry.proof) continue;
       try {
         await this.completeSource(entry);
         const current = await this.incoming.read(entry.id, this.policy);
         this.ensure();
-        if (!current || current.entry.phase === "expired") continue;
+        if (!current || !current.entry.proof) continue;
         const e = current.entry,
           base = {
             id: e.id,
@@ -475,6 +486,8 @@ export class BrowserContributionRuntime {
         this.expectedFailure(error);
       }
     }
-    return { items, scope: "candidates", durable: true };
+    const management = contributionInboxManagement(await this.incoming.state());
+    this.ensure();
+    return { items, scope: "candidates", durable: true, management };
   }
 }

@@ -70,6 +70,7 @@ test("Node, portable and real Go inbox transitions agree on replay, finite reten
     ),
     expired = node.expire(verified.record, owner.public.id, cert.body.expires);
   type Vector = {
+    revision: number;
     name: string;
     kind: string;
     valid: boolean;
@@ -90,6 +91,7 @@ test("Node, portable and real Go inbox transitions agree on replay, finite reten
     change?: (v: Vector) => void,
   ) => {
     const value = structuredClone({
+      revision: received.record.revision,
       name,
       kind,
       valid,
@@ -402,6 +404,115 @@ test("Node, portable and real Go inbox transitions agree on replay, finite reten
       });
     },
   );
+  const dismissed = node.dismiss(
+    verified.record,
+    owner.public.id,
+    cert.id,
+    verified.record.revision,
+    t + 2,
+  );
+  add("dismiss missing source", "dismiss", true);
+  add("dismiss verified retains fact", "dismiss", true, {
+    record: verified.record,
+    revision: verified.record.revision,
+    now: t + 2,
+  });
+  add("stale revision cannot discard changed candidate", "dismiss", false, {
+    record: verified.record,
+    now: t + 2,
+  });
+  add("future revision refused", "dismiss", false, { revision: 2 });
+  add("negative revision refused", "dismiss", false, { revision: -1 });
+  add("fractional revision refused", "dismiss", false, { revision: 1.5 });
+  add("missing candidate refused", "dismiss", false, { id: "9".repeat(64) });
+  add("cannot dismiss at expiry", "dismiss", false, { now: cert.body.expires });
+  add("cannot dismiss before observation", "dismiss", false, { now: t - 1 });
+  add("cannot dismiss before verification", "dismiss", false, {
+    record: verified.record,
+    revision: verified.record.revision,
+  });
+  add("expired proof not dismissible", "dismiss", false, {
+    record: expired,
+    revision: expired.revision,
+    now: cert.body.expires,
+  });
+  add("dismissed valid", "validate", true, { record: dismissed.record });
+  add("dismissed not reclassified by expiry", "expire", true, {
+    record: dismissed.record,
+    now: cert.body.expires,
+  });
+  add("dismissed retained window ends", "expire", true, {
+    record: dismissed.record,
+    now: dismissed.entry.retainUntil,
+  });
+  add("dismiss repeated with original revision", "dismiss", true, {
+    record: dismissed.record,
+    revision: verified.record.revision,
+    now: t + 5,
+  });
+  add("dismiss repeated after expiry remains fact", "dismiss", true, {
+    record: dismissed.record,
+    revision: verified.record.revision,
+    now: cert.body.expires,
+  });
+  add("dismiss future revision still refused on repeat", "dismiss", false, {
+    record: dismissed.record,
+    revision: dismissed.record.revision + 1,
+  });
+  add("discard suppresses rewrapped replay", "observe", true, {
+    record: dismissed.record,
+    proof: { ...proof, bundleId: "1".repeat(64) },
+  });
+  add("discard retains conflict protection", "observe", true, {
+    record: dismissed.record,
+    certificate: other,
+  });
+  add("discard cannot reattach source", "verified", false, {
+    record: dismissed.record,
+    proof: sourceProof,
+  });
+  for (const [name, change] of [
+    [
+      "discard timestamp missing",
+      (e: any) => {
+        delete e.dismissedAt;
+      },
+    ],
+    [
+      "discard proof remains",
+      (e: any) => {
+        e.proof = sourceProof;
+      },
+    ],
+    [
+      "discard before verification",
+      (e: any) => {
+        e.dismissedAt = t;
+      },
+    ],
+    [
+      "discard at expiry",
+      (e: any) => {
+        e.dismissedAt = cert.body.expires;
+      },
+    ],
+    [
+      "discard cannot also expire",
+      (e: any) => {
+        e.expiredAt = cert.body.expires;
+      },
+    ],
+  ] as const)
+    add(name, "validate", false, { record: dismissed.record }, (v) =>
+      change(v.record.entries[0]),
+    );
+  add("active timestamp refused", "validate", false, {}, (v) => {
+    v.record.entries[0].dismissedAt = t;
+  });
+  add("terminal future time refused", "dismiss", false, {
+    record: dismissed.record,
+    now: Number.MAX_SAFE_INTEGER + 1,
+  });
   const run = (p: typeof node, v: Vector): any => {
     switch (v.kind) {
       case "initial":
@@ -412,6 +523,8 @@ test("Node, portable and real Go inbox transitions agree on replay, finite reten
         return p.observe(v.record, v.owner, v.certificate, v.proof, v.now);
       case "verified":
         return p.verified(v.record, v.owner, v.id, v.proof, v.now);
+      case "dismiss":
+        return p.dismiss(v.record, v.owner, v.id, v.revision, v.now);
       case "expire":
         return p.expire(v.record, v.owner, v.now);
       case "checkCertificate":

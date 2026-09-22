@@ -380,3 +380,30 @@ func (c *ContributionInbox) Read(id string, allow ContributionPolicy) (map[strin
 	}
 	return result, nil
 }
+
+func (c *ContributionInbox) Dismiss(id string, revision int64) (map[string]any, error) {
+	var result map[string]any
+	err := c.run(func(values *PrivateRecords, record map[string]any) error {
+		next, entry, err := DismissContributionInbox(record, c.identity.Public.ID, id, revision, c.now())
+		if err != nil {
+			return err
+		}
+		if !creationEqual(next["revision"], record["revision"]) {
+			if _, _, err = c.readProof(values, inboxEntry(record, id)); err != nil {
+				return err
+			}
+			if err = values.Remove(inboxProofKey(id)); err != nil {
+				return err
+			}
+			if err = values.Write(c.key+":record", next); err != nil {
+				return err
+			}
+		}
+		result = map[string]any{"entry": entry, "revision": next["revision"]}
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}

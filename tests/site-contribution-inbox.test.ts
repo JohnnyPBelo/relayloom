@@ -415,3 +415,123 @@ test("journal quotas preserve pending entries and conflict floods have bounded d
     rmSync(f.directory, { recursive: true, force: true });
   }
 });
+
+test("explicit dismissal is atomic, releases only selected proof quota and survives replay/reopen", () => {
+  const f = fixture();
+  try {
+    let now = f.now;
+    let c = new NodeContributionInbox(f.database, f.owner, () => now);
+    const first = f.certificate(),
+      second = f.certificate();
+    c.admit(f.envelope(first), allow);
+    const stale = c.state().revision;
+    c.attachSource(first.id, f.source, allow);
+    c.admit(f.envelope(second), allow);
+    const before = c.state();
+    assert.throws(() => c.dismiss(first.id, stale), /mudou/);
+    assert.deepEqual(c.state(), before);
+    const result = c.dismiss(first.id, before.revision);
+    assert.equal(result.entry.phase, "dismissed");
+    assert.equal(result.entry.proof, null);
+    assert.equal(result.entry.verifiedAt, f.now);
+    assert.equal(result.entry.dismissedAt, f.now);
+    assert.equal(result.revision, before.revision + 1);
+    const keys = f.database.transaction((tx) => tx.keys("contribution-inbox:"));
+    assert(!keys.some((k) => k.includes(first.id)));
+    assert(keys.some((k) => k.includes(second.id)));
+    assert.equal(c.admit(f.envelope(first), allow).outcome, "duplicate");
+    assert.equal(
+      c.admit(
+        f.envelope(f.certificate(first.body.operationId, "conflicting")),
+        allow,
+      ).outcome,
+      "conflict",
+    );
+    assert.throws(() => c.attachSource(first.id, f.source, allow));
+    c = new NodeContributionInbox(f.database, f.owner, () => now);
+    const reread = c.read(first.id, allow)!;
+    assert.equal(reread.entry.phase, "dismissed");
+    assert.equal(reread.proposal, undefined);
+    assert.equal(c.read(second.id, allow)?.entry.phase, "missing-source");
+    const current = c.state();
+    assert.equal(
+      c.dismiss(first.id, before.revision).revision,
+      current.revision,
+    );
+    now = first.body.expires;
+    assert.equal(c.state().entries[0].phase, "dismissed");
+    assert.equal(c.state().entries[0].verifiedAt, f.now);
+    now = current.entries[0].retainUntil;
+    assert.equal(c.state().entries.length, 0);
+  } finally {
+    f.database.close();
+    rmSync(f.directory, { recursive: true, force: true });
+  }
+});
+
+test("dismissing unverified proposal frees admission quota without evicting other pending proposals", () => {
+  const f = fixture();
+  try {
+    let r = registry.initial(f.owner.public.id);
+    const proof = {
+      bundleId: "1".repeat(64),
+      envelopeHash: "2".repeat(64),
+      digest: "3".repeat(64),
+      bytes: 100,
+    };
+    for (let i = 0; i < CONTRIBUTION_INBOX_LIMITS.pendingPerContributor; i++)
+      r = registry.observe(
+        r,
+        f.owner.public.id,
+        f.certificate(),
+        proof,
+        f.now,
+      ).record;
+    const next = f.certificate();
+    assert.throws(
+      () => registry.observe(r, f.owner.public.id, next, proof, f.now),
+      /quota/,
+    );
+    const other = r.entries.slice(1);
+    r = registry.dismiss(
+      r,
+      f.owner.public.id,
+      r.entries[0].id,
+      r.revision,
+      f.now,
+    ).record;
+    r = registry.observe(r, f.owner.public.id, next, proof, f.now).record;
+    assert.deepEqual(r.entries.slice(1, -1), other);
+    assert.equal(
+      r.entries.filter((e) => e.proof !== null).length,
+      CONTRIBUTION_INBOX_LIMITS.pendingPerContributor,
+    );
+    assert.equal(r.entries[0].verifiedAt, null);
+  } finally {
+    f.database.close();
+    rmSync(f.directory, { recursive: true, force: true });
+  }
+});
+
+test("dismissal cannot hide corruption in private proof", () => {
+  const f = fixture();
+  try {
+    const c = new NodeContributionInbox(f.database, f.owner),
+      cert = f.certificate();
+    c.admit(f.envelope(cert), allow);
+    const revision = c.state().revision;
+    f.database.transaction((tx) =>
+      SitePrivateRecords.runContributionInbox(tx, f.owner, (v) => {
+        const key = "contribution-inbox:" + cert.id + ":stage",
+          proof = v.read(key) as any;
+        proof.envelope.manifest.signature = "A".repeat(88);
+        v.write(key, proof);
+      }),
+    );
+    assert.throws(() => c.dismiss(cert.id, revision), RegistryIntegrityError);
+    assert.throws(() => c.state(), /Registo fechado/);
+  } finally {
+    f.database.close();
+    rmSync(f.directory, { recursive: true, force: true });
+  }
+});

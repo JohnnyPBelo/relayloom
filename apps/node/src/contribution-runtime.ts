@@ -11,7 +11,10 @@ import {
 import { nodeCertificateCrypto } from "../../../packages/core/src/certificate-crypto";
 import { NodeContributionCatalog } from "../../../packages/sites/src/contribution-catalog";
 import { NodeContributionInbox } from "../../../packages/sites/src/contribution-inbox-catalog";
-import type { ContributionInboxEntry } from "../../../packages/sites/src/contribution-inbox";
+import {
+  contributionInboxManagement,
+  type ContributionInboxEntry,
+} from "../../../packages/sites/src/contribution-inbox";
 import {
   createContributionOperations,
   type ContributionOperation,
@@ -230,13 +233,15 @@ export class ContributionRuntime {
       return readContributionForm(value, this.context);
     if (value.action === "state") return this.context.catalog.state();
     if (value.action === "inbox") return this.inbox();
+    if (value.action === "dismiss")
+      return this.context.incoming.dismiss(value.id, value.revision);
     if (value.action === "obtain-source") {
       let found = this.context.incoming.read(value.id, this.policy);
-      if (!found || found.entry.phase === "expired")
+      if (!found || !found.entry.proof)
         throw Error("Candidata indisponível ou expirada");
       this.completeSource(found.entry);
       found = this.context.incoming.read(value.id, this.policy);
-      if (!found || found.entry.phase === "expired")
+      if (!found || !found.entry.proof)
         throw Error("Candidata indisponível ou expirada");
       if (found.proposal)
         return {
@@ -348,11 +353,11 @@ export class ContributionRuntime {
       }
     }
     for (const entry of this.context.incoming.state().entries) {
-      if (entry.phase === "expired") continue;
+      if (!entry.proof) continue;
       try {
         this.completeSource(entry);
         const current = this.context.incoming.read(entry.id, this.policy);
-        if (!current || current.entry.phase === "expired") continue;
+        if (!current || !current.entry.proof) continue;
         const e = current.entry;
         const base = {
           id: e.id,
@@ -384,6 +389,9 @@ export class ContributionRuntime {
         this.context.ensure();
       }
     }
-    return { items, scope: "candidates", durable: true };
+    const management = contributionInboxManagement(
+      this.context.incoming.state(),
+    );
+    return { items, scope: "candidates", durable: true, management };
   }
 }

@@ -243,6 +243,27 @@ export class NodeContributionInbox {
       return result.entry;
     });
   }
+  dismiss(id: string, revision: number) {
+    return this.run((values, record) => {
+      const result = registry.dismiss(
+        record,
+        this.identity.public.id,
+        id,
+        revision,
+        this.now(),
+      );
+      if (result.record.revision !== record.revision) {
+        // Fail closed on corrupt evidence; a cleanup must not conceal tampering.
+        this.readProof(
+          values,
+          record.entries.find((e) => e.id === id)!,
+        );
+        values.remove(this.proofKey(id));
+        values.write(this.key + ":record", result.record);
+      }
+      return { entry: result.entry, revision: result.record.revision };
+    });
+  }
   read(id: string, allow: Policy) {
     return this.run((values, record) => {
       const entry = record.entries.find((e) => e.id === id);
