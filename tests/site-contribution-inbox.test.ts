@@ -657,3 +657,127 @@ for (const terminal of [false, true])
       rmSync(f.directory, { recursive: true, force: true });
     }
   });
+
+for (const verified of [false, true])
+  test(`owner refusal (${verified ? "verified source" : "missing source"}) persists exact private result through reopen and enforces CAS`, () => {
+    const f = fixture();
+    let db = f.database,
+      now = f.now;
+    const reason = "PRIVATE_OWNER_REASON_36190";
+    try {
+      const storeId = db.storeId(),
+        cert = f.certificate();
+      let c = new NodeContributionInbox(db, f.owner, () => now);
+      c.admit(f.envelope(cert), allow);
+      if (verified) c.attachSource(cert.id, f.source, allow);
+      const before = c.state(),
+        revision = before.revision;
+      assert.throws(() => c.reject(cert.id, revision - 1, reason, allow));
+      const blocked = () => {
+        throw Error("blocked");
+      };
+      assert.throws(
+        () => c.reject(cert.id, revision, reason, blocked),
+        /blocked/,
+      );
+      assert.deepEqual(c.state(), before);
+      const other = f.certificate();
+      c.admit(f.envelope(other), allow);
+      const current = c.state();
+      assert.throws(() => c.reject(cert.id, revision, reason, allow));
+      const decided = c.reject(cert.id, current.revision, reason, allow);
+      assert.equal(decided.entry.phase, "rejected");
+      assert.equal(decided.entry.proof, null);
+      assert.equal(decided.entry.verifiedAt, verified ? f.now : null);
+      assert.deepEqual(decided.entry.receipt, before.entries[0].receipt);
+      assert.equal(decided.entry.rejection?.recipient.id, f.visitor.public.id);
+      assert.equal(decided.entry.rejection?.phase, "prepared");
+      assert.equal(
+        c.state().entries[1].proof?.bundleId,
+        current.entries[1].proof?.bundleId,
+      );
+      assert(!canonical(decided).includes("PRIVATE_INBOX_VALUE_78415"));
+      assert(!readFileSync(f.path).includes(Buffer.from(reason)));
+      assert.deepEqual(
+        c.reject(cert.id, current.revision, reason, allow),
+        decided,
+      );
+      assert.throws(() =>
+        c.reject(cert.id, decided.revision, "changed reason", allow),
+      );
+      assert.equal(c.admit(f.envelope(cert), allow).outcome, "duplicate");
+      assert.throws(() => c.attachSource(cert.id, f.source, allow));
+      assert.throws(() => c.dismiss(cert.id, c.state().revision));
+      db.close();
+      db = new ProtectedGroupStore(f.path, f.owner, {
+        expectedStoreId: storeId,
+      });
+      c = new NodeContributionInbox(db, f.owner, () => now);
+      assert.throws(() => c.signRejection(cert.id, blocked), /blocked/);
+      const signed = c.signRejection(cert.id, allow);
+      assert.equal(signed.rejection?.phase, "signed");
+      assert.equal(c.rejectionBundle(cert.id, allow), null);
+      assert.deepEqual(c.signRejection(cert.id, allow), signed);
+      c.sealRejection(cert.id, allow);
+      const bundle = c.rejectionBundle(cert.id, allow)!;
+      assert.equal(bundle.manifest.publicKey, null);
+      assert.deepEqual(
+        bundle.manifest.keys.map((k) => k.reader).sort(),
+        [f.owner.public.id, f.visitor.public.id].sort(),
+      );
+      const body = (decryptStoredBundle(bundle, f.visitor) as any).rejection
+        .body;
+      assert.equal(body.reason, reason);
+      assert.equal(body.certificateId, cert.id);
+      assert.throws(() =>
+        decryptStoredBundle(bundle, createIdentity("Uninvited reader")),
+      );
+      db.close();
+      db = new ProtectedGroupStore(f.path, f.owner, {
+        expectedStoreId: storeId,
+      });
+      c = new NodeContributionInbox(db, f.owner, () => now);
+      assert.deepEqual(c.rejectionBundle(cert.id, allow), bundle);
+      assert.throws(
+        () => c.copyRejection(cert.id, f.envelope(cert), allow),
+        RegistryIntegrityError,
+      );
+      // An integrity failure deliberately closes this store instance. Reopen the
+      // authenticated profile to prove rollback and continue with the real copy.
+      assert.throws(() => c.state(), /Registo fechado/);
+      db.close();
+      db = new ProtectedGroupStore(f.path, f.owner, {
+        expectedStoreId: storeId,
+      });
+      c = new NodeContributionInbox(db, f.owner, () => now);
+      assert.deepEqual(c.rejectionBundle(cert.id, allow), bundle);
+      assert.equal(
+        c.copyRejection(cert.id, bundle, allow).rejection?.transport?.copied,
+        true,
+      );
+      const copied = c.state();
+      c.copyRejection(cert.id, bundle, allow);
+      assert.deepEqual(c.state(), copied);
+      now = cert.body.expires;
+      assert.equal(c.state().entries[0].phase, "rejected");
+      assert.deepEqual(c.rejectionBundle(cert.id, allow), bundle);
+      now = signed.rejection!.request.expires;
+      const expired = c.state().entries[0];
+      assert.equal(expired.phase, "rejected");
+      assert.equal(expired.rejection?.phase, "expired");
+      assert.equal(expired.rejection?.stage, null);
+      assert.deepEqual(
+        db.transaction((tx) => tx.keys("contribution-rejection:")),
+        [],
+      );
+      assert.throws(() => c.rejectionBundle(cert.id, allow));
+      assert.equal(
+        c.reject(cert.id, current.revision, reason, allow).entry.rejection
+          ?.request.expires,
+        now,
+      );
+    } finally {
+      db.close();
+      rmSync(f.directory, { recursive: true, force: true });
+    }
+  });

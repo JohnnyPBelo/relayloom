@@ -1,4 +1,9 @@
 import {
+  createRejectionOperations,
+  REJECTION_STORAGE_LIMITS,
+  type RejectionOperation,
+} from "./contribution-rejection-operations";
+import {
   createReceiptOperations,
   RECEIPT_STORAGE_LIMITS,
   type ReceiptOperation,
@@ -41,9 +46,15 @@ export interface ContributionInboxEntry {
   expires: number;
   observedAt: number;
   retainUntil: number;
-  phase: "missing-source" | "verified-candidate" | "expired" | "dismissed";
+  phase:
+    | "missing-source"
+    | "verified-candidate"
+    | "expired"
+    | "dismissed"
+    | "rejected";
   dismissedAt?: number;
   receipt?: ReceiptOperation;
+  rejection?: RejectionOperation;
   verifiedAt: number | null;
   expiredAt: number | null;
   proof: ContributionInboxProof | null;
@@ -96,7 +107,8 @@ function descriptor(value: unknown): asserts value is ContributionInboxProof {
  * with this record using the signing-owned private transaction. */
 export function createContributionInboxProtocol(crypto: CertificateCrypto) {
   const certificates = createSiteContributionProtocol(crypto),
-    receipts = createReceiptOperations(crypto);
+    receipts = createReceiptOperations(crypto),
+    rejections = createRejectionOperations(crypto);
   function validate(input: unknown, ownerId: string): ContributionInboxRecord {
     insist(
       id(ownerId) &&
@@ -119,7 +131,8 @@ export function createContributionInboxProtocol(crypto: CertificateCrypto) {
       allCertificates = new Set<string>(),
       operations = new Set<string>(),
       authors = new Map<string, number>();
-    let receiptBytes = 0;
+    let receiptBytes = 0,
+      rejectionBytes = 0;
     let bytes = 0,
       pending = 0;
     for (const e of r.entries) {
@@ -127,6 +140,7 @@ export function createContributionInboxProtocol(crypto: CertificateCrypto) {
         exactShape(e, [
           ...(Object.hasOwn(e, "dismissedAt") ? ["dismissedAt"] : []),
           ...(Object.hasOwn(e, "receipt") ? ["receipt"] : []),
+          ...(Object.hasOwn(e, "rejection") ? ["rejection"] : []),
           "id",
           "contributorId",
           "operationId",
@@ -192,6 +206,7 @@ export function createContributionInboxProtocol(crypto: CertificateCrypto) {
           "verified-candidate",
           "expired",
           "dismissed",
+          "rejected",
         ].includes(e.phase),
         "fase",
       );
@@ -217,7 +232,17 @@ export function createContributionInboxProtocol(crypto: CertificateCrypto) {
           : !Object.hasOwn(e, "dismissedAt"),
         "descarte local",
       );
-      if (e.phase === "dismissed") {
+      if (e.phase === "rejected") {
+        insist(
+          Object.hasOwn(e, "rejection") &&
+            e.proof === null &&
+            e.expiredAt === null,
+          "decisão sem limpeza",
+        );
+        const rejection = rejections.validate(e.rejection, ownerId, e);
+        rejectionBytes += rejection.stage?.bytes ?? 0;
+      } else insist(!Object.hasOwn(e, "rejection"), "decisão fora da fase");
+      if (e.phase === "dismissed" || e.phase === "rejected") {
         // A terminal tombstone consumes metadata, never pending/proof quota.
       } else if (e.phase === "expired") {
         insist(
@@ -268,6 +293,7 @@ export function createContributionInboxProtocol(crypto: CertificateCrypto) {
     }
     insist(
       receiptBytes <= RECEIPT_STORAGE_LIMITS.totalStageBytes &&
+        rejectionBytes <= REJECTION_STORAGE_LIMITS.totalStageBytes &&
         pending <= CONTRIBUTION_INBOX_LIMITS.pending &&
         bytes <= CONTRIBUTION_INBOX_LIMITS.totalProofBytes &&
         [...authors.values()].every(
@@ -434,9 +460,14 @@ export function createContributionInboxProtocol(crypto: CertificateCrypto) {
         e.receipt &&
         e.receipt.phase !== "expired" &&
         e.receipt.request.expires <= now;
+      const dueRejection =
+        e.rejection &&
+        e.rejection.phase !== "expired" &&
+        e.rejection.request.expires <= now;
       const cost =
         Number(e.proof !== null && e.expires <= now) +
-        Number(!!dueReceipt && e.receipt!.stage !== null);
+        Number(!!dueReceipt && e.receipt!.stage !== null) +
+        Number(!!dueRejection && e.rejection!.stage !== null);
       if (cost > remaining) continue;
       remaining -= cost;
       if (
@@ -445,6 +476,10 @@ export function createContributionInboxProtocol(crypto: CertificateCrypto) {
         e.receipt.request.expires <= now
       ) {
         e.receipt = receipts.expire(e.receipt, ownerId, e, now);
+        changed = true;
+      }
+      if (dueRejection) {
+        e.rejection = rejections.expire(e.rejection, ownerId, e, now);
         changed = true;
       }
       if (e.proof !== null && e.expires <= now) {
@@ -457,7 +492,10 @@ export function createContributionInboxProtocol(crypto: CertificateCrypto) {
     const before = r.entries.length;
     r.entries = r.entries.filter(
       (e) =>
-        e.retainUntil > now || e.proof !== null || e.receipt?.stage != null,
+        e.retainUntil > now ||
+        e.proof !== null ||
+        e.receipt?.stage != null ||
+        e.rejection?.stage != null,
     );
     return changed || before !== r.entries.length ? advance(r) : r;
   }
@@ -554,7 +592,85 @@ export function createContributionInboxProtocol(crypto: CertificateCrypto) {
     const record = advance(r);
     return { record, entry: record.entries.find((e) => e.id === id)! };
   }
+  function reject(
+    input: unknown,
+    owner: PublicIdentity,
+    certificateId: string,
+    revision: number,
+    reason: string,
+    certificate: unknown,
+    now: number,
+  ) {
+    const r = validate(input, owner.id),
+      e = r.entries.find((e) => e.id === certificateId);
+    insist(
+      clock(revision) && revision <= r.revision && clock(now),
+      "revisão ou relógio",
+    );
+    insist(e, "candidata ausente");
+    if (e.rejection) {
+      insist(
+        e.rejection.request.reason === reason,
+        "a recusa já tem outro motivo",
+      );
+      return { record: r, entry: e };
+    }
+    insist(revision === r.revision, "a inbox mudou; volta a consultar");
+    insist(
+      e.proof &&
+        (e.phase === "missing-source" || e.phase === "verified-candidate"),
+      "candidata não activa",
+    );
+    const proposal = checkCertificate(e, certificate, owner.id);
+    e.rejection = rejections.prepare(owner, e, proposal, reason, now);
+    e.phase = "rejected";
+    e.proof = null;
+    const record = advance(r);
+    return {
+      record,
+      entry: record.entries.find((e) => e.id === certificateId)!,
+    };
+  }
+  function updateRejection(
+    input: unknown,
+    ownerId: string,
+    id: string,
+    rejection: unknown,
+  ) {
+    const r = validate(input, ownerId),
+      e = r.entries.find((e) => e.id === id);
+    insist(e?.rejection, "intenção de recusa em falta");
+    const next = rejections.validate(rejection, ownerId, e);
+    insist(
+      next.fingerprint === e.rejection.fingerprint,
+      "intenção de recusa substituída",
+    );
+    if (canonical(next) === canonical(e.rejection))
+      return { record: r, entry: e };
+    const old = e.rejection;
+    insist(
+      ["prepared:signed", "signed:queued", "queued:queued"].includes(
+        old.phase + ":" + next.phase,
+      ) &&
+        (old.certificateId === null ||
+          next.certificateId === old.certificateId),
+      "transição de recusa inválida",
+    );
+    if (old.phase === "queued") {
+      const expected = structuredClone(old);
+      expected.transport!.copied = true;
+      insist(
+        !old.transport!.copied && canonical(next) === canonical(expected),
+        "cópia reescrita",
+      );
+    }
+    e.rejection = next;
+    const record = advance(r);
+    return { record, entry: record.entries.find((e) => e.id === id)! };
+  }
   return {
+    reject,
+    updateRejection,
     prepareReceipt,
     updateReceipt,
     initial,

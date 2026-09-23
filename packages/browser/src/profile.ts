@@ -1,4 +1,8 @@
 import {
+  createContributionRejectionProtocol,
+  type ContributionRejectionRequest,
+} from "../../sites/src/contribution-rejection";
+import {
   createContributionReceiptProtocol,
   type ContributionReceiptRequest,
 } from "../../sites/src/contribution-receipt";
@@ -427,6 +431,46 @@ export class BrowserProfile {
       [recipient],
       body.expires - body.created,
       body.created,
+    );
+    this.guard(session);
+    protocol.matchEnvelope(result, content);
+    return result;
+  }
+  // Internal signing helper; no Worker RPC exposes it directly.
+  async signContributionRejection(
+    request: ContributionRejectionRequest,
+    owner: PublicIdentity,
+  ) {
+    const session = this.active();
+    if (owner.id !== session.identity.public.id)
+      throw Error("Dono do recusa inválido");
+    const result = createContributionRejectionProtocol(
+      browserCertificateCrypto,
+    ).create({ ...session.identity, public: owner }, request);
+    this.guard(session);
+    return result;
+  }
+  async sealContributionRejection(input: unknown, recipient: PublicIdentity) {
+    const session = this.active(),
+      protocol = createContributionRejectionProtocol(browserCertificateCrypto),
+      content = protocol.content({
+        type: "site-contribution-rejection",
+        rejection: input,
+      }),
+      body = content.rejection.body;
+    if (
+      body.owner.id !== session.identity.public.id ||
+      body.owner.boxKey !== session.identity.public.boxKey ||
+      recipient.id !== body.contributorId
+    )
+      throw Error("Dono ou destinatário do recusa inválido");
+    const result = await createBundleAt(
+      { ...session.identity, public: body.owner },
+      "site-contribution-rejection",
+      content,
+      [recipient],
+      body.expires - body.decidedAt,
+      body.decidedAt,
     );
     this.guard(session);
     protocol.matchEnvelope(result, content);

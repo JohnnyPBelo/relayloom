@@ -29,6 +29,9 @@ try {
   );
   let result: unknown;
   switch (input.action ?? "dismiss") {
+    case "reject":
+      result = inbox.reject(input.id, input.revision, input.reason, () => {});
+      break;
     case "dismiss":
       result = inbox.dismiss(input.id, input.revision);
       break;
@@ -43,6 +46,15 @@ try {
       break;
     case "copy-receipt":
       result = inbox.copyReceipt(input.id, input.envelope, () => {});
+      break;
+    case "sign-rejection":
+      result = inbox.signRejection(input.id, () => {});
+      break;
+    case "seal-rejection":
+      result = inbox.sealRejection(input.id, () => {});
+      break;
+    case "copy-rejection":
+      result = inbox.copyRejection(input.id, input.envelope, () => {});
       break;
     default:
       throw Error("unknown parent-owned action");

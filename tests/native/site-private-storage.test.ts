@@ -69,6 +69,16 @@ for (const [source, target] of [
   ["contribution", "contribution-receipt"],
   ["contribution-receipt", "contribution-inbox"],
   ["contribution-inbox", "contribution-receipt"],
+  ["contribution-rejection", "site"],
+  ["site", "contribution-rejection"],
+  ["contribution-rejection", "resource"],
+  ["resource", "contribution-rejection"],
+  ["contribution-rejection", "contribution"],
+  ["contribution", "contribution-rejection"],
+  ["contribution-rejection", "contribution-inbox"],
+  ["contribution-inbox", "contribution-rejection"],
+  ["contribution-rejection", "contribution-receipt"],
+  ["contribution-receipt", "contribution-rejection"],
 ] as const)
   test(`an authenticated outer SQLite database cannot transpose unpublished signatures from ${source} into the ${target} namespace`, () => {
     const directory = projectTemp("publication-namespace-"),
@@ -91,9 +101,13 @@ for (const [source, target] of [
             ? SitePrivateRecords.runContribution.bind(SitePrivateRecords)
             : source === "contribution-inbox"
               ? SitePrivateRecords.runContributionInbox.bind(SitePrivateRecords)
-              : SitePrivateRecords.runContributionReceipt.bind(
-                  SitePrivateRecords,
-                );
+              : source === "contribution-rejection"
+                ? SitePrivateRecords.runContributionRejection.bind(
+                    SitePrivateRecords,
+                  )
+                : SitePrivateRecords.runContributionReceipt.bind(
+                    SitePrivateRecords,
+                  );
     try {
       store.transaction((tx) => writer(tx, owner, (r) => r.write(from, value)));
       store.transaction((tx) => {
@@ -107,7 +121,9 @@ for (const [source, target] of [
                 ? "relayloom/site-contribution-private/1"
                 : target === "contribution-inbox"
                   ? "relayloom/site-contribution-inbox-private/1"
-                  : "relayloom/site-contribution-receipt-private/1";
+                  : target === "contribution-rejection"
+                    ? "relayloom/site-contribution-rejection-private/1"
+                    : "relayloom/site-contribution-receipt-private/1";
         for (const key of tx.keys(from + ":"))
           tx.put(to + key.slice(from.length), tx.get(key)!);
         tx.put(to, Buffer.from(canonical(descriptor)));
@@ -143,6 +159,7 @@ for (const namespace of [
   "contribution",
   "contribution-inbox",
   "contribution-receipt",
+  "contribution-rejection",
 ] as const)
   test(`Node and a real Go process exchange signing-protected ${namespace} records in the same SQLite database`, () => {
     const runPrivate =
@@ -154,9 +171,13 @@ for (const namespace of [
             ? SitePrivateRecords.runContribution.bind(SitePrivateRecords)
             : namespace === "contribution-inbox"
               ? SitePrivateRecords.runContributionInbox.bind(SitePrivateRecords)
-              : SitePrivateRecords.runContributionReceipt.bind(
-                  SitePrivateRecords,
-                );
+              : namespace === "contribution-rejection"
+                ? SitePrivateRecords.runContributionRejection.bind(
+                    SitePrivateRecords,
+                  )
+                : SitePrivateRecords.runContributionReceipt.bind(
+                    SitePrivateRecords,
+                  );
     const directory = projectTemp("site-private-interop-"),
       owner = createIdentity("Shared site storage owner"),
       path = join(directory, "profile.sqlite");
@@ -166,7 +187,11 @@ for (const namespace of [
           namespace +
           ":" +
           hash("node-site-value") +
-          (namespace === "contribution-receipt" ? ":stage" : ":record"),
+          (["contribution-receipt", "contribution-rejection"].includes(
+            namespace,
+          )
+            ? ":stage"
+            : ":record"),
         writeKey = namespace + ":" + hash("go-site-value") + ":stage";
       const value = {
           title: "Exact private record 😀 \ud800",
@@ -223,6 +248,7 @@ for (const namespace of [
   "contribution",
   "contribution-inbox",
   "contribution-receipt",
+  "contribution-rejection",
 ] as const)
   test(`Go rejects a Node encrypted ${namespace} value transplanted into another authenticated store`, () => {
     const runPrivate =
@@ -234,9 +260,13 @@ for (const namespace of [
             ? SitePrivateRecords.runContribution.bind(SitePrivateRecords)
             : namespace === "contribution-inbox"
               ? SitePrivateRecords.runContributionInbox.bind(SitePrivateRecords)
-              : SitePrivateRecords.runContributionReceipt.bind(
-                  SitePrivateRecords,
-                );
+              : namespace === "contribution-rejection"
+                ? SitePrivateRecords.runContributionRejection.bind(
+                    SitePrivateRecords,
+                  )
+                : SitePrivateRecords.runContributionReceipt.bind(
+                    SitePrivateRecords,
+                  );
     const directory = projectTemp("site-private-context-"),
       owner = createIdentity("Context-bound owner"),
       a = join(directory, "a.sqlite"),

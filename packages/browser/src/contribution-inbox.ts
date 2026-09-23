@@ -1,3 +1,5 @@
+import { createContributionRejectionProtocol } from "../../sites/src/contribution-rejection";
+import { createRejectionOperations } from "../../sites/src/contribution-rejection-operations";
 import { createContributionReceiptProtocol } from "../../sites/src/contribution-receipt";
 import { createReceiptOperations } from "../../sites/src/contribution-receipt-operations";
 import {
@@ -21,6 +23,10 @@ import {
   SITE_CONTRIBUTION_LIMITS,
   type SiteContribution,
 } from "../../sites/src/contribution-protocol";
+interface RejectionStage {
+  rejection: unknown;
+  envelope: Bundle | null;
+}
 interface ReceiptStage {
   receipt: unknown;
   envelope: Bundle | null;
@@ -39,7 +45,9 @@ const registry = createContributionInboxProtocol(crypto),
   resolver = createContributionContextResolver(crypto),
   certificates = createSiteContributionProtocol(crypto),
   receiptProtocol = createContributionReceiptProtocol(crypto),
-  receiptOperations = createReceiptOperations(crypto);
+  receiptOperations = createReceiptOperations(crypto),
+  rejectionProtocol = createContributionRejectionProtocol(crypto),
+  rejectionOperations = createRejectionOperations(crypto);
 function insist(ok: unknown, reason: string): asserts ok {
   if (!ok) throw Error(reason);
 }
@@ -346,6 +354,186 @@ export class BrowserContributionInbox {
       return result.entry;
     });
   }
+  private rejectionKey(id: string) {
+    return "contribution-rejection:" + id + ":stage";
+  }
+  private describeRejection(value: RejectionStage) {
+    const text = canonical(value);
+    return {
+      hash: crypto.hash(text),
+      bytes: new TextEncoder().encode(text).length,
+    };
+  }
+  private async readRejection(
+    values: ProfileValueTransaction,
+    entry: ContributionInboxEntry,
+  ): Promise<RejectionStage> {
+    try {
+      const op = entry.rejection;
+      insist(op?.stage, "Preparação de recusa em falta");
+      const raw = await values.get(this.rejectionKey(entry.id));
+      this.ensure();
+      insist(
+        exactShape(raw, ["rejection", "envelope"]),
+        "Preparação de recusa inválida",
+      );
+      const stage = raw as RejectionStage;
+      insist(
+        canonical(this.describeRejection(stage)) === canonical(op.stage),
+        "Recusa diferente do índice",
+      );
+      const rejection = rejectionOperations.checkCertificate(
+        op,
+        this.owner.id,
+        entry,
+        stage.rejection,
+      );
+      if (op.phase === "signed")
+        insist(stage.envelope === null, "Envelope antes do commit");
+      else {
+        insist(
+          op.phase === "queued" && stage.envelope && op.transport,
+          "Envelope de recusa em falta",
+        );
+        const bundle = await verifiedStoredBundle(stage.envelope);
+        this.ensure();
+        const plain = await this.profile.decryptStaging(bundle);
+        this.ensure();
+        const actual = rejectionProtocol.matchEnvelope(bundle, plain).rejection;
+        insist(
+          canonical(actual) === canonical(rejection) &&
+            bundle.manifest.id === op.transport.bundleId &&
+            crypto.hash(canonical(bundle)) === op.transport.bundleHash,
+          "Envelope de recusa substituído",
+        );
+      }
+      return { rejection, envelope: stage.envelope };
+    } catch (error) {
+      this.ensure();
+      if (error instanceof ContributionInboxIntegrityError) throw error;
+      throw new ContributionInboxIntegrityError(
+        "Preparação privada de recusa inválida",
+      );
+    }
+  }
+  private async rejectionEntry(
+    values: ProfileValueTransaction,
+    record: ContributionInboxRecord,
+    id: string,
+    allow: Policy,
+  ) {
+    const entry = record.entries.find((e) => e.id === id);
+    insist(
+      entry?.rejection && entry.rejection.phase !== "expired",
+      "Intenção de recusa indisponível",
+    );
+    await allow(values, entry.target.snapshotId, entry.contributorId);
+    this.ensure();
+    await allow(values, entry.target.snapshotId, this.owner.id);
+    this.ensure();
+    insist(entry.rejection.request.expires > this.now(), "Recusa expirado");
+    return entry;
+  }
+  async signRejection(id: string, allow: Policy) {
+    return this.run(async (values, record) => {
+      const entry = await this.rejectionEntry(values, record, id, allow);
+      this.ensure();
+      const op = entry.rejection!;
+      if (op.phase !== "prepared") {
+        await this.readRejection(values, entry);
+        this.ensure();
+        return entry;
+      }
+      const prior = await values.get(this.rejectionKey(id));
+      this.ensure();
+      insist(prior === null, "Assinatura sem intenção de recusa");
+      const rejection = await this.profile.signContributionRejection(
+        op.request,
+        op.owner,
+      );
+      this.ensure();
+      const stage: RejectionStage = { rejection, envelope: null },
+        next = rejectionOperations.signed(
+          op,
+          this.owner.id,
+          entry,
+          rejection,
+          this.describeRejection(stage),
+          this.now(),
+        ),
+        result = registry.updateRejection(record, this.owner.id, id, next);
+      values.set(this.rejectionKey(id), stage);
+      values.set(this.key + ":record", result.record);
+      return result.entry;
+    });
+  }
+  async sealRejection(id: string, allow: Policy) {
+    return this.run(async (values, record) => {
+      const entry = await this.rejectionEntry(values, record, id, allow);
+      this.ensure();
+      const op = entry.rejection!;
+      insist(op.phase !== "prepared", "Assinatura de recusa em falta");
+      const stage = await this.readRejection(values, entry);
+      this.ensure();
+      if (op.phase === "queued") return entry;
+      const bundle = await this.profile.sealContributionRejection(
+        stage.rejection,
+        op.recipient,
+      );
+      this.ensure();
+      const sealed = { ...stage, envelope: bundle },
+        next = rejectionOperations.queued(
+          op,
+          this.owner.id,
+          entry,
+          { id: bundle.manifest.id, hash: crypto.hash(canonical(bundle)) },
+          this.describeRejection(sealed),
+          this.now(),
+        ),
+        result = registry.updateRejection(record, this.owner.id, id, next);
+      values.set(this.rejectionKey(id), sealed);
+      values.set(this.key + ":record", result.record);
+      return result.entry;
+    });
+  }
+  async rejectionBundle(id: string, allow: Policy) {
+    const bundle = await this.run(async (values, record) => {
+      const entry = await this.rejectionEntry(values, record, id, allow);
+      this.ensure();
+      if (entry.rejection!.phase !== "queued") return null;
+      return (await this.readRejection(values, entry)).envelope;
+    });
+    this.ensure();
+    if (bundle && bundle.manifest.expires <= this.now())
+      throw Error("Recusa expirado durante a consulta");
+    return bundle;
+  }
+  async copyRejection(id: string, actual: Bundle, allow: Policy) {
+    const bundle = await verifiedStoredBundle(
+      JSON.parse(canonical(actual)) as Bundle,
+    );
+    this.ensure();
+    return this.run(async (values, record) => {
+      const entry = await this.rejectionEntry(values, record, id, allow);
+      this.ensure();
+      const saved = await this.readRejection(values, entry);
+      this.ensure();
+      if (canonical(saved.envelope) !== canonical(bundle))
+        throw new ContributionInboxIntegrityError("Cópia do recusa diferente");
+      const next = rejectionOperations.copied(
+          entry.rejection,
+          this.owner.id,
+          entry,
+          bundle.manifest.id,
+          crypto.hash(canonical(bundle)),
+          this.now(),
+        ),
+        result = registry.updateRejection(record, this.owner.id, id, next);
+      if (result.record.revision !== record.revision)
+        values.set(this.key + ":record", result.record);
+      return result.entry;
+    });
+  }
   private async run<T>(
     fn: (
       values: ProfileValueTransaction,
@@ -353,7 +541,7 @@ export class BrowserContributionInbox {
     ) => Promise<T>,
   ): Promise<T> {
     this.ensure();
-    // A full inbox can retain 256 receipt stages plus 64 proposal proofs.
+    // A full inbox can retain 256 receipts, 256 refusals and 64 proposal proofs.
     // Keep each cleanup below the profile's unchanged 192-key transaction cap.
     for (let pass = 0; pass < 6; pass++) {
       const result = await this.profile.transactValues(async (values) => {
@@ -369,10 +557,15 @@ export class BrowserContributionInbox {
         }
         this.ensure();
         const keys = values.keys("contribution-inbox:"),
-          receiptKeys = values.keys("contribution-receipt:");
+          receiptKeys = values.keys("contribution-receipt:"),
+          rejectionKeys = values.keys("contribution-rejection:");
         let record: ContributionInboxRecord;
         if (saved === null) {
-          if (keys.length !== 0 || receiptKeys.length !== 0)
+          if (
+            keys.length !== 0 ||
+            receiptKeys.length !== 0 ||
+            rejectionKeys.length !== 0
+          )
             throw new ContributionInboxIntegrityError(
               "Inbox ausente com provas existentes",
             );
@@ -411,6 +604,18 @@ export class BrowserContributionInbox {
           throw new ContributionInboxIntegrityError(
             "Conjunto de recibos incompleto",
           );
+        const expectedRejections = new Set(
+          record.entries
+            .filter((e) => e.rejection?.stage)
+            .map((e) => this.rejectionKey(e.id)),
+        );
+        if (
+          rejectionKeys.length !== expectedRejections.size ||
+          !rejectionKeys.every((k) => expectedRejections.has(k))
+        )
+          throw new ContributionInboxIntegrityError(
+            "Conjunto de recusas incompleto",
+          );
         const at = this.now(),
           next = registry.expire(record, this.owner.id, at, 128);
         if (next.revision !== record.revision) {
@@ -422,6 +627,15 @@ export class BrowserContributionInbox {
               await this.readReceipt(values, entry);
               this.ensure();
               await values.remove(this.receiptKey(entry.id));
+              this.ensure();
+            }
+            if (
+              entry.rejection?.stage &&
+              !next.entries.find((e) => e.id === entry.id)?.rejection?.stage
+            ) {
+              await this.readRejection(values, entry);
+              this.ensure();
+              await values.remove(this.rejectionKey(entry.id));
               this.ensure();
             }
             if (
@@ -540,6 +754,49 @@ export class BrowserContributionInbox {
     if (result.expires <= this.now())
       throw Error("Proposta expirou durante a persistência");
     return result;
+  }
+  async reject(id: string, revision: number, reason: string, allow: Policy) {
+    return this.run(async (values, record) => {
+      const entry = record.entries.find((e) => e.id === id);
+      insist(entry, "Candidata ausente");
+      const policy = async () => {
+        await allow(values, entry.target.snapshotId, entry.contributorId);
+        this.ensure();
+        await allow(values, entry.target.snapshotId, this.owner.id);
+        this.ensure();
+      };
+      await policy();
+      const proposal = entry.rejection
+        ? null
+        : (await this.readProof(values, entry)).proposal;
+      this.ensure();
+      await policy();
+      let result = registry.reject(
+        record,
+        this.owner,
+        id,
+        revision,
+        reason,
+        proposal,
+        this.now(),
+      );
+      if (result.record.revision !== record.revision) {
+        await values.remove(this.proofKey(id));
+        this.ensure();
+        await policy();
+        result = registry.reject(
+          record,
+          this.owner,
+          id,
+          revision,
+          reason,
+          proposal,
+          this.now(),
+        );
+        values.set(this.key + ":record", result.record);
+      }
+      return { entry: result.entry, revision: result.record.revision };
+    });
   }
   async dismiss(id: string, revision: number) {
     return this.run(async (values, record) => {

@@ -1,3 +1,5 @@
+import { createContributionRejectionProtocol } from "./contribution-rejection";
+import { createRejectionOperations } from "./contribution-rejection-operations";
 import { createContributionReceiptProtocol } from "./contribution-receipt";
 import { createReceiptOperations } from "./contribution-receipt-operations";
 import {
@@ -31,6 +33,10 @@ import {
 interface Database {
   transaction<T>(fn: (tx: RegistryTransaction) => T): T;
 }
+interface RejectionStage {
+  rejection: unknown;
+  envelope: Bundle | null;
+}
 interface ReceiptStage {
   receipt: unknown;
   envelope: Bundle | null;
@@ -45,7 +51,11 @@ const registry = createContributionInboxProtocol(nodeCertificateCrypto),
   resolver = createContributionContextResolver(nodeCertificateCrypto),
   certificates = createSiteContributionProtocol(nodeCertificateCrypto),
   receiptProtocol = createContributionReceiptProtocol(nodeCertificateCrypto),
-  receiptOperations = createReceiptOperations(nodeCertificateCrypto);
+  receiptOperations = createReceiptOperations(nodeCertificateCrypto),
+  rejectionProtocol = createContributionRejectionProtocol(
+    nodeCertificateCrypto,
+  ),
+  rejectionOperations = createRejectionOperations(nodeCertificateCrypto);
 function integrity(ok: unknown, reason: string): asserts ok {
   if (!ok) throw new RegistryIntegrityError(reason);
 }
@@ -319,11 +329,194 @@ export class NodeContributionInbox {
       return result.entry;
     });
   }
+  private rejectionKey(id: string) {
+    return "contribution-rejection:" + id + ":stage";
+  }
+  private describeRejection(stage: RejectionStage) {
+    const bytes = canonical(stage);
+    return { hash: hash(bytes), bytes: Buffer.byteLength(bytes) };
+  }
+  private readRejection(
+    values: SitePrivateRecords,
+    entry: ContributionInboxEntry,
+  ): RejectionStage {
+    try {
+      const op = entry.rejection;
+      integrity(op?.stage, "Preparação de recusa em falta");
+      const raw = values.read(this.rejectionKey(entry.id));
+      integrity(
+        exactShape(raw, ["rejection", "envelope"]),
+        "Preparação de recusa inválida",
+      );
+      const stage = raw as RejectionStage;
+      integrity(
+        canonical(this.describeRejection(stage)) === canonical(op.stage),
+        "Recusa diferente do índice",
+      );
+      const rejection = rejectionOperations.checkCertificate(
+        op,
+        this.identity.public.id,
+        entry,
+        stage.rejection,
+      );
+      if (op.phase === "signed")
+        integrity(stage.envelope === null, "Envelope antes do commit");
+      else {
+        integrity(
+          op.phase === "queued" && stage.envelope && op.transport,
+          "Envelope de recusa em falta",
+        );
+        verifyStoredBundle(stage.envelope);
+        const actual = rejectionProtocol.matchEnvelope(
+          stage.envelope,
+          decryptStoredBundle(stage.envelope, this.identity),
+        ).rejection;
+        integrity(
+          canonical(actual) === canonical(rejection) &&
+            stage.envelope.manifest.id === op.transport.bundleId &&
+            hash(canonical(stage.envelope)) === op.transport.bundleHash,
+          "Envelope de recusa substituído",
+        );
+      }
+      return { rejection, envelope: stage.envelope };
+    } catch (error) {
+      if (error instanceof RegistryIntegrityError) throw error;
+      throw new RegistryIntegrityError("Preparação privada de recusa inválida");
+    }
+  }
+  private rejectionEntry(
+    record: ContributionInboxRecord,
+    id: string,
+    allow: Policy,
+  ) {
+    const entry = record.entries.find((e) => e.id === id);
+    if (!entry?.rejection || entry.rejection.phase === "expired")
+      throw Error("Intenção de recusa indisponível");
+    allow(entry.target.snapshotId, entry.contributorId);
+    allow(entry.target.snapshotId, this.identity.public.id);
+    if (entry.rejection.request.expires <= this.now())
+      throw Error("Recusa expirado");
+    return entry;
+  }
+  signRejection(id: string, allow: Policy) {
+    return this.run((values, record, _receipts, rejections) => {
+      const entry = this.rejectionEntry(record, id, allow),
+        op = entry.rejection!;
+      if (op.phase !== "prepared") {
+        this.readRejection(rejections, entry);
+        return entry;
+      }
+      integrity(
+        rejections.read(this.rejectionKey(id)) === null,
+        "Assinatura sem intenção de recusa",
+      );
+      const rejection = rejectionProtocol.create(
+          { ...this.identity, public: op.owner },
+          op.request,
+        ),
+        stage: RejectionStage = { rejection, envelope: null },
+        next = rejectionOperations.signed(
+          op,
+          this.identity.public.id,
+          entry,
+          rejection,
+          this.describeRejection(stage),
+          this.now(),
+        ),
+        result = registry.updateRejection(
+          record,
+          this.identity.public.id,
+          id,
+          next,
+        );
+      rejections.write(this.rejectionKey(id), stage);
+      values.write(this.key + ":record", result.record);
+      return result.entry;
+    });
+  }
+  sealRejection(id: string, allow: Policy) {
+    return this.run((values, record, _receipts, rejections) => {
+      const entry = this.rejectionEntry(record, id, allow),
+        op = entry.rejection!;
+      if (op.phase === "prepared") throw Error("Assinatura de recusa em falta");
+      const stage = this.readRejection(rejections, entry);
+      if (op.phase === "queued") return entry;
+      if (op.owner.boxKey !== this.identity.public.boxKey)
+        throw Error("Chave histórica de leitura do dono indisponível");
+      const bundle = createBundleAt(
+        { ...this.identity, public: op.owner },
+        "site-contribution-rejection",
+        { type: "site-contribution-rejection", rejection: stage.rejection },
+        [op.recipient],
+        op.request.expires - op.request.decidedAt,
+        op.request.decidedAt,
+      );
+      rejectionProtocol.matchEnvelope(
+        bundle,
+        decryptStoredBundle(bundle, this.identity),
+      );
+      const sealed = { ...stage, envelope: bundle },
+        next = rejectionOperations.queued(
+          op,
+          this.identity.public.id,
+          entry,
+          { id: bundle.manifest.id, hash: hash(canonical(bundle)) },
+          this.describeRejection(sealed),
+          this.now(),
+        ),
+        result = registry.updateRejection(
+          record,
+          this.identity.public.id,
+          id,
+          next,
+        );
+      rejections.write(this.rejectionKey(id), sealed);
+      values.write(this.key + ":record", result.record);
+      return result.entry;
+    });
+  }
+  rejectionBundle(id: string, allow: Policy) {
+    return this.run((_values, record, _receipts, rejections) => {
+      const entry = this.rejectionEntry(record, id, allow);
+      if (entry.rejection!.phase !== "queued") return null;
+      return this.readRejection(rejections, entry).envelope;
+    });
+  }
+  copyRejection(id: string, actual: Bundle, allow: Policy) {
+    const bundle = JSON.parse(canonical(actual)) as Bundle;
+    verifyStoredBundle(bundle);
+    return this.run((values, record, _receipts, rejections) => {
+      const entry = this.rejectionEntry(record, id, allow),
+        saved = this.readRejection(rejections, entry);
+      integrity(
+        canonical(saved.envelope) === canonical(bundle),
+        "Cópia do recusa diferente",
+      );
+      const next = rejectionOperations.copied(
+          entry.rejection,
+          this.identity.public.id,
+          entry,
+          bundle.manifest.id,
+          hash(canonical(bundle)),
+          this.now(),
+        ),
+        result = registry.updateRejection(
+          record,
+          this.identity.public.id,
+          id,
+          next,
+        );
+      if (result.record.revision !== record.revision)
+        values.write(this.key + ":record", result.record);
+      return result.entry;
+    });
+  }
   private run<T>(
     fn: (
       values: SitePrivateRecords,
       record: ContributionInboxRecord,
       receipts: SitePrivateRecords,
+      rejections: SitePrivateRecords,
     ) => T,
   ): T {
     return this.database.transaction((tx) =>
@@ -331,78 +524,107 @@ export class NodeContributionInbox {
         SitePrivateRecords.runContributionReceipt(
           tx,
           this.identity,
-          (receipts) => {
-            const saved = values.read(this.key + ":record"),
-              keys = tx.keys("contribution-inbox:"),
-              receiptKeys = tx.keys("contribution-receipt:");
-            let record: ContributionInboxRecord;
-            if (saved === null) {
-              integrity(
-                keys.length === 0 && receiptKeys.length === 0,
-                "Inbox ausente com provas existentes",
-              );
-              record = registry.initial(this.identity.public.id);
-            } else {
-              try {
-                record = registry.validate(saved, this.identity.public.id);
-              } catch {
-                throw new RegistryIntegrityError(
-                  "Índice privado de inbox inválido",
-                );
-              }
-              const expected = new Set([
-                this.key + ":record",
-                ...record.entries
-                  .filter((e) => e.proof !== null)
-                  .map((e) => this.proofKey(e.id)),
-              ]);
-              for (const key of expected)
-                integrity(tx.get(key), "Índice de prova ausente");
-              for (const key of keys)
-                integrity(
-                  expected.has(key.replace(/:[0-9]{2}$/, "")),
-                  "Prova privada órfã",
-                );
-            }
-            const expectedReceipts = new Set(
-              record.entries
-                .filter((e) => e.receipt?.stage)
-                .map((e) => this.receiptKey(e.id)),
-            );
-            for (const key of expectedReceipts)
-              integrity(tx.get(key), "Preparação de recibo ausente");
-            for (const key of receiptKeys)
-              integrity(
-                expectedReceipts.has(key.replace(/:[0-9]{2}$/, "")),
-                "Preparação de recibo órfã",
-              );
-            const next = registry.expire(
-              record,
-              this.identity.public.id,
-              this.now(),
-            );
-            if (next.revision !== record.revision) {
-              for (const entry of record.entries) {
-                if (
-                  entry.receipt?.stage &&
-                  !next.entries.find((e) => e.id === entry.id)?.receipt?.stage
-                ) {
-                  this.readReceipt(receipts, entry);
-                  receipts.remove(this.receiptKey(entry.id));
+          (receipts) =>
+            SitePrivateRecords.runContributionRejection(
+              tx,
+              this.identity,
+              (rejections) => {
+                const saved = values.read(this.key + ":record"),
+                  keys = tx.keys("contribution-inbox:"),
+                  receiptKeys = tx.keys("contribution-receipt:"),
+                  rejectionKeys = tx.keys("contribution-rejection:");
+                let record: ContributionInboxRecord;
+                if (saved === null) {
+                  integrity(
+                    keys.length === 0 &&
+                      receiptKeys.length === 0 &&
+                      rejectionKeys.length === 0,
+                    "Inbox ausente com provas existentes",
+                  );
+                  record = registry.initial(this.identity.public.id);
+                } else {
+                  try {
+                    record = registry.validate(saved, this.identity.public.id);
+                  } catch {
+                    throw new RegistryIntegrityError(
+                      "Índice privado de inbox inválido",
+                    );
+                  }
+                  const expected = new Set([
+                    this.key + ":record",
+                    ...record.entries
+                      .filter((e) => e.proof !== null)
+                      .map((e) => this.proofKey(e.id)),
+                  ]);
+                  for (const key of expected)
+                    integrity(tx.get(key), "Índice de prova ausente");
+                  for (const key of keys)
+                    integrity(
+                      expected.has(key.replace(/:[0-9]{2}$/, "")),
+                      "Prova privada órfã",
+                    );
                 }
-                if (
-                  entry.proof &&
-                  !next.entries.find((e) => e.id === entry.id)?.proof
-                ) {
-                  this.readProof(values, entry);
-                  values.remove(this.proofKey(entry.id));
+                const expectedReceipts = new Set(
+                  record.entries
+                    .filter((e) => e.receipt?.stage)
+                    .map((e) => this.receiptKey(e.id)),
+                );
+                for (const key of expectedReceipts)
+                  integrity(tx.get(key), "Preparação de recibo ausente");
+                for (const key of receiptKeys)
+                  integrity(
+                    expectedReceipts.has(key.replace(/:[0-9]{2}$/, "")),
+                    "Preparação de recibo órfã",
+                  );
+                const expectedRejections = new Set(
+                  record.entries
+                    .filter((e) => e.rejection?.stage)
+                    .map((e) => this.rejectionKey(e.id)),
+                );
+                for (const key of expectedRejections)
+                  integrity(tx.get(key), "Preparação de recusa ausente");
+                for (const key of rejectionKeys)
+                  integrity(
+                    expectedRejections.has(key.replace(/:[0-9]{2}$/, "")),
+                    "Preparação de recusa órfã",
+                  );
+                const next = registry.expire(
+                  record,
+                  this.identity.public.id,
+                  this.now(),
+                );
+                if (next.revision !== record.revision) {
+                  for (const entry of record.entries) {
+                    if (
+                      entry.receipt?.stage &&
+                      !next.entries.find((e) => e.id === entry.id)?.receipt
+                        ?.stage
+                    ) {
+                      this.readReceipt(receipts, entry);
+                      receipts.remove(this.receiptKey(entry.id));
+                    }
+                    if (
+                      entry.rejection?.stage &&
+                      !next.entries.find((e) => e.id === entry.id)?.rejection
+                        ?.stage
+                    ) {
+                      this.readRejection(rejections, entry);
+                      rejections.remove(this.rejectionKey(entry.id));
+                    }
+                    if (
+                      entry.proof &&
+                      !next.entries.find((e) => e.id === entry.id)?.proof
+                    ) {
+                      this.readProof(values, entry);
+                      values.remove(this.proofKey(entry.id));
+                    }
+                  }
+                  values.write(this.key + ":record", next);
+                  record = next;
                 }
-              }
-              values.write(this.key + ":record", next);
-              record = next;
-            }
-            return fn(values, record, receipts);
-          },
+                return fn(values, record, receipts, rejections);
+              },
+            ),
         ),
       ),
     );
@@ -470,6 +692,31 @@ export class NodeContributionInbox {
         values.write(this.key + ":record", result.record);
       }
       return result.entry;
+    });
+  }
+  reject(id: string, revision: number, reason: string, allow: Policy) {
+    return this.run((values, record) => {
+      const entry = record.entries.find((e) => e.id === id);
+      if (!entry) throw Error("Candidata ausente");
+      allow(entry.target.snapshotId, entry.contributorId);
+      allow(entry.target.snapshotId, this.identity.public.id);
+      const proposal = entry.rejection
+        ? null
+        : this.readProof(values, entry).proposal;
+      const result = registry.reject(
+        record,
+        this.identity.public,
+        id,
+        revision,
+        reason,
+        proposal,
+        this.now(),
+      );
+      if (result.record.revision !== record.revision) {
+        values.remove(this.proofKey(id));
+        values.write(this.key + ":record", result.record);
+      }
+      return { entry: result.entry, revision: result.record.revision };
     });
   }
   dismiss(id: string, revision: number) {

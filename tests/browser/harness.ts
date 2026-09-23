@@ -1,3 +1,4 @@
+import { createRejectionOperations } from "../../packages/sites/src/contribution-rejection-operations";
 import { createContributionInboxProtocol } from "../../packages/sites/src/contribution-inbox";
 import { createSiteContributionProtocol } from "../../packages/sites/src/contribution-protocol";
 import { createContributionReceiptProtocol } from "../../packages/sites/src/contribution-receipt";
@@ -32,6 +33,7 @@ import { BrowserRouter } from "../../packages/browser/src/router";
 import * as packet from "../../packages/browser/src/packet";
 Object.assign(window, {
   rl: {
+    rejectionOperations: createRejectionOperations(browserCertificateCrypto),
     receiptOperations: createReceiptOperations(browserCertificateCrypto),
     inboxProtocol: createContributionInboxProtocol(browserCertificateCrypto),
     proposalProtocol: createSiteContributionProtocol(browserCertificateCrypto),

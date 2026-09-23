@@ -50,10 +50,13 @@ func ValidateContributionInbox(value any, owner string) (map[string]any, error) 
 	seen, operations := map[string]bool{}, map[string]bool{}
 	authors := map[string]int{}
 	pending := 0
-	var total, receiptBytes int64
+	var total, receiptBytes, rejectionBytes int64
 	for _, raw := range entries {
 		fields := []string{"id", "contributorId", "operationId", "target", "created", "expires", "observedAt", "retainUntil", "phase", "verifiedAt", "expiredAt", "proof", "conflicts", "conflictOverflow"}
 		if row, ok := raw.(map[string]any); ok {
+			if _, present := row["rejection"]; present {
+				fields = append(fields, "rejection")
+			}
 			if _, present := row["receipt"]; present {
 				fields = append(fields, "receipt")
 			}
@@ -87,7 +90,7 @@ func ValidateContributionInbox(value any, owner string) (map[string]any, error) 
 			return nil, inboxError()
 		}
 		phase := docTextValue(e["phase"])
-		if !docContains([]string{"missing-source", "verified-candidate", "expired", "dismissed"}, phase) {
+		if !docContains([]string{"missing-source", "verified-candidate", "expired", "dismissed", "rejected"}, phase) {
 			return nil, inboxError()
 		}
 		if e["verifiedAt"] != nil {
@@ -111,7 +114,19 @@ func ValidateContributionInbox(value any, owner string) (map[string]any, error) 
 		} else if _, present := e["dismissedAt"]; present {
 			return nil, inboxError()
 		}
-		if phase == "dismissed" {
+		if phase == "rejected" {
+			op, err := ValidateRejectionOperation(e["rejection"], owner, e)
+			if err != nil || e["proof"] != nil || e["expiredAt"] != nil {
+				return nil, inboxError()
+			}
+			if stage, ok := op["stage"].(map[string]any); ok {
+				n, _ := creationNumber(stage["bytes"])
+				rejectionBytes += n
+			}
+		} else if _, present := e["rejection"]; present {
+			return nil, inboxError()
+		}
+		if phase == "dismissed" || phase == "rejected" {
 			// Only bounded metadata remains; pending/proof quota is released.
 		} else if phase == "expired" {
 			expired, err := contributionClock(e["expiredAt"])
@@ -165,7 +180,7 @@ func ValidateContributionInbox(value any, owner string) (map[string]any, error) 
 			return nil, inboxError()
 		}
 	}
-	if pending > ContributionInboxPending || total > ContributionInboxTotalBytes || receiptBytes > ReceiptTotalStageBytes {
+	if pending > ContributionInboxPending || total > ContributionInboxTotalBytes || receiptBytes > ReceiptTotalStageBytes || rejectionBytes > RejectionTotalStageBytes {
 		return nil, inboxError()
 	}
 	for _, count := range authors {
@@ -335,6 +350,17 @@ func ExpireContributionInbox(value any, owner string, now int64) (map[string]any
 				changed = true
 			}
 		}
+		if op, ok := e["rejection"].(map[string]any); ok && op["phase"] != "expired" {
+			deadline, _ := contributionClock(op["request"].(map[string]any)["expires"])
+			if deadline <= now {
+				next, err := ExpireRejectionOperation(op, owner, e, now)
+				if err != nil {
+					return nil, err
+				}
+				e["rejection"] = next
+				changed = true
+			}
+		}
 		if e["proof"] != nil && expires <= now {
 			e["phase"] = "expired"
 			e["proof"] = nil
@@ -485,6 +511,95 @@ func UpdateInboxReceipt(value any, owner, id string, receipt any) (map[string]an
 		}
 	}
 	e["receipt"] = next
+	r, err = advanceInbox(r)
+	if err != nil {
+		return nil, nil, err
+	}
+	return r, inboxEntry(r, id), nil
+}
+
+// RejectContributionInbox prepares an explicit owner decision from retained
+// authenticated evidence. It never asserts source verification or delivery.
+func RejectContributionInbox(value any, owner core.PublicIdentity, id string, revision int64, reason string, certificate any, now int64) (map[string]any, map[string]any, error) {
+	r, err := ValidateContributionInbox(value, owner.ID)
+	if err != nil {
+		return nil, nil, err
+	}
+	current, _ := contributionClock(r["revision"])
+	if revision < 0 || revision > current || now < 0 || now > MaxSequence {
+		return nil, nil, inboxError()
+	}
+	e := inboxEntry(r, id)
+	if e == nil {
+		return nil, nil, inboxError()
+	}
+	if old, ok := e["rejection"].(map[string]any); ok {
+		if old["request"].(map[string]any)["reason"] != reason {
+			return nil, nil, errors.New("a recusa já tem outro motivo")
+		}
+		return r, e, nil
+	}
+	if revision != current {
+		return nil, nil, errors.New("a inbox mudou; volta a consultar")
+	}
+	if e["proof"] == nil || (e["phase"] != "missing-source" && e["phase"] != "verified-candidate") {
+		return nil, nil, inboxError()
+	}
+	proposal, err := CheckInboxCertificate(e, certificate, owner.ID)
+	if err != nil {
+		return nil, nil, err
+	}
+	op, err := PrepareRejectionOperation(owner, e, proposal, reason, now)
+	if err != nil {
+		return nil, nil, err
+	}
+	e["rejection"], e["phase"], e["proof"] = op, "rejected", nil
+	r, err = advanceInbox(r)
+	if err != nil {
+		return nil, nil, err
+	}
+	return r, inboxEntry(r, id), nil
+}
+
+func UpdateInboxRejection(value any, owner, id string, rejection any) (map[string]any, map[string]any, error) {
+	r, err := ValidateContributionInbox(value, owner)
+	if err != nil {
+		return nil, nil, err
+	}
+	e := inboxEntry(r, id)
+	if e == nil {
+		return nil, nil, inboxError()
+	}
+	old, ok := e["rejection"].(map[string]any)
+	if !ok {
+		return nil, nil, inboxError()
+	}
+	next, err := ValidateRejectionOperation(rejection, owner, e)
+	if err != nil {
+		return nil, nil, err
+	}
+	if next["fingerprint"] != old["fingerprint"] {
+		return nil, nil, inboxError()
+	}
+	if creationEqual(next, old) {
+		return r, e, nil
+	}
+	transition := docTextValue(old["phase"]) + ":" + docTextValue(next["phase"])
+	if !docContains([]string{"prepared:signed", "signed:queued", "queued:queued"}, transition) || (old["certificateId"] != nil && next["certificateId"] != old["certificateId"]) {
+		return nil, nil, inboxError()
+	}
+	if old["phase"] == "queued" {
+		expected, _ := resourceClone(old)
+		t := expected["transport"].(map[string]any)
+		if t["copied"] == true {
+			return nil, nil, inboxError()
+		}
+		t["copied"] = true
+		if !creationEqual(next, expected) {
+			return nil, nil, inboxError()
+		}
+	}
+	e["rejection"] = next
 	r, err = advanceInbox(r)
 	if err != nil {
 		return nil, nil, err

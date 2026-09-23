@@ -64,6 +64,7 @@ func TestContributionInboxCatalogWorker(t *testing.T) {
 		Envelope json.RawMessage `json:"envelope"`
 		Source   json.RawMessage `json:"source"`
 		ID       string          `json:"id"`
+		Reason   string          `json:"reason"`
 		Revision int64           `json:"revision"`
 		Blocked  bool            `json:"blocked"`
 		Crash    string          `json:"crash"`
@@ -111,6 +112,20 @@ func TestContributionInboxCatalogWorker(t *testing.T) {
 		if err == nil {
 			result, err = c.CopyReceipt(input.ID, b, allow)
 		}
+	case "sign-rejection":
+		result, err = c.SignRejection(input.ID, allow)
+	case "seal-rejection":
+		result, err = c.SealRejection(input.ID, allow)
+	case "rejection-bundle":
+		result, err = c.RejectionBundle(input.ID, allow)
+	case "copy-rejection":
+		var b core.Bundle
+		b, err = core.DecodeBundle(input.Envelope)
+		if err == nil {
+			result, err = c.CopyRejection(input.ID, b, allow)
+		}
+	case "reject":
+		result, err = c.Reject(input.ID, input.Revision, input.Reason, allow)
 	case "dismiss":
 		result, err = c.Dismiss(input.ID, input.Revision)
 	case "read":

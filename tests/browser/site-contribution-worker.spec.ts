@@ -109,6 +109,8 @@ test("production worker describes an authenticated form after UI setup and unloc
       for (const operation of [
         "signContributionReceipt",
         "sealContributionReceipt",
+        "signContributionRejection",
+        "sealContributionRejection",
       ]) {
         try {
           await w.formRPC(operation, {}, "profile");
@@ -127,7 +129,7 @@ test("production worker describes an authenticated form after UI setup and unloc
       };
     }, formPayload());
     expect(saved.rejected).toBe(true);
-    expect(saved.privateReceiptHelpers).toEqual([true, true]);
+    expect(saved.privateReceiptHelpers).toEqual([true, true, true, true]);
     expect(saved.leak).toBe(false);
     expect(saved.description.owner.id).toBe(saved.owner);
     expect(JSON.stringify(saved.description)).not.toContain(formRowSentinel);
