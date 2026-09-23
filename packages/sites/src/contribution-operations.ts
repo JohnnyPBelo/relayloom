@@ -1,3 +1,7 @@
+import {
+  createContributionReceiptProtocol,
+  type ContributionReceipt,
+} from "./contribution-receipt";
 import { canonical, exactShape } from "../../core/src/protocol";
 import type { CertificateCrypto } from "../../core/src/certificate-types";
 import {
@@ -38,7 +42,9 @@ export interface ContributionOperation {
   sequence: number;
   operationId: string;
   fingerprint: string;
-  phase: "prepared" | "signed" | "queued" | "cancelled" | "expired";
+  phase:
+    "prepared" | "signed" | "queued" | "cancelled" | "expired" | "received";
+  receipt?: ContributionReceipt;
   target: ContributionTarget;
   schemaHash: string;
   created: number;
@@ -73,10 +79,44 @@ const active = (op: ContributionOperation) =>
 function insist(ok: unknown, reason: string): asserts ok {
   if (!ok) throw Error("Registo de proposta inválido: " + reason);
 }
+/** Authentic wire fact with no matching authorised local operation. This is a
+ * local admission refusal, not a malformed transport frame or stored corruption. */
+export class UnmatchedContributionReceipt extends Error {}
 /** Pure local journal transitions. Signing-owned storage and original snapshot
  * validation are mandatory in the catalogue; this record is never wire authority. */
 export function createContributionOperations(crypto: CertificateCrypto) {
-  const protocol = createSiteContributionProtocol(crypto);
+  const protocol = createSiteContributionProtocol(crypto),
+    receipts = createContributionReceiptProtocol(crypto);
+  function receiptMatches(
+    op: ContributionOperation,
+    ownerId: string,
+    receipt: ContributionReceipt,
+  ) {
+    const r = receipt.body;
+    return (
+      op.transport?.copied === true &&
+      op.certificateId !== null &&
+      r.certificateId === op.certificateId &&
+      r.contributorId === ownerId &&
+      r.operationId === op.operationId &&
+      canonical(r.target) === canonical(op.target) &&
+      r.proposalCreated === op.created &&
+      r.proposalExpires === op.expires &&
+      r.owner.id === parseSiteAddress(op.target.site).ownerId
+    );
+  }
+  function bindReceipt(
+    op: ContributionOperation,
+    ownerId: string,
+    input: unknown,
+  ) {
+    const receipt = receipts.verify(input);
+    insist(
+      receiptMatches(op, ownerId, receipt),
+      "recibo de operação não enviada ou diferente",
+    );
+    return receipt;
+  }
   function request(input: unknown, ownerId: string) {
     insist(
       hashID(ownerId) &&
@@ -190,6 +230,7 @@ export function createContributionOperations(crypto: CertificateCrypto) {
     const seen = new Set<string>();
     for (const op of ops) {
       const fields = [
+        ...(Object.hasOwn(op, "receipt") ? ["receipt"] : []),
         "sequence",
         "operationId",
         "fingerprint",
@@ -215,9 +256,14 @@ export function createContributionOperations(crypto: CertificateCrypto) {
         "sequência ou identidade",
       );
       insist(
-        ["prepared", "signed", "queued", "cancelled", "expired"].includes(
-          op.phase,
-        ) &&
+        [
+          "prepared",
+          "signed",
+          "queued",
+          "cancelled",
+          "expired",
+          "received",
+        ].includes(op.phase) &&
           clock(op.created) &&
           clock(op.expires) &&
           op.expires > op.created &&
@@ -276,6 +322,14 @@ export function createContributionOperations(crypto: CertificateCrypto) {
           "descritor de transporte",
         );
       }
+      if (Object.hasOwn(op, "receipt")) {
+        bindReceipt(op, ownerId, op.receipt);
+        insist(
+          ["received", "cancelled", "expired"].includes(op.phase),
+          "recibo ainda em fila",
+        );
+      }
+      insist(op.phase !== "received" || op.receipt, "recepção sem recibo");
       if (op.phase === "queued") {
         insist(op.transport, "intenção de transporte em falta");
         queued++;
@@ -544,7 +598,43 @@ export function createContributionOperations(crypto: CertificateCrypto) {
       "cancelled";
     return validate(found.record, ownerId);
   }
+  function receive(
+    input: unknown,
+    ownerId: string,
+    certificate: unknown,
+    now: number,
+  ) {
+    const record = validate(input, ownerId),
+      receipt = receipts.verify(certificate),
+      op = record.operations.find(
+        (op) => op.operationId === receipt.body.operationId,
+      );
+    insist(
+      clock(now) &&
+        receipt.body.expires > now &&
+        receipt.body.created - now <= SITE_CONTRIBUTION_LIMITS.clockSkewMs,
+      "recibo expirado ou futuro",
+    );
+    if (!op || !receiptMatches(op, ownerId, receipt))
+      throw new UnmatchedContributionReceipt(
+        "Recibo sem operação enviada correspondente",
+      );
+    if (op.receipt) return { record, operation: op, changed: false };
+    insist(
+      ["queued", "cancelled", "expired"].includes(op.phase),
+      "operação não autorizada para transporte",
+    );
+    op.receipt = receipt;
+    if (op.phase === "queued") op.phase = "received";
+    const next = validate(record, ownerId);
+    return {
+      record: next,
+      operation: next.operations.find((e) => e.sequence === op.sequence)!,
+      changed: true,
+    };
+  }
   return {
+    receive,
     initial,
     validate,
     request,

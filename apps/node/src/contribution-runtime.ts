@@ -1,4 +1,5 @@
 import { readContributionForm } from "./contribution-read";
+import { inspectContributionReceipt } from "./contribution-receipt-content";
 import { inspectContribution } from "./contribution-content";
 import {
   canonical,
@@ -37,6 +38,9 @@ interface Context {
   requestSource(id: string): boolean;
 }
 export class ContributionRuntime {
+  private receiptAllowed = new Map<string, ContributionInboxEntry>();
+  private receiptCursor = 0;
+  private receiptSendCursor = 0;
   private nextRetry = 0;
   private allowed = new Map<string, ContributionOperation>();
   private sending = false;
@@ -58,6 +62,8 @@ export class ContributionRuntime {
     if (op.expires <= Date.now()) throw Error("Proposta expirada");
   }
   canServe(bundle: Bundle) {
+    if (bundle.manifest.kind === "site-contribution-receipt")
+      return this.canServeReceipt(bundle);
     try {
       const op = this.allowed.get(bundle.manifest.id);
       if (!op || op.phase !== "queued" || !op.transport?.copied) return false;
@@ -69,6 +75,107 @@ export class ContributionRuntime {
     } catch {
       return false;
     }
+  }
+  private permitReceipt(entry: ContributionInboxEntry) {
+    this.policy(entry.target.snapshotId, entry.contributorId);
+    this.policy(entry.target.snapshotId, this.context.identity.public.id);
+    if (
+      !entry.receipt ||
+      entry.receipt.phase !== "queued" ||
+      entry.receipt.request.expires <= Date.now()
+    )
+      throw Error("Recibo indisponível ou expirado");
+  }
+  private canServeReceipt(bundle: Bundle) {
+    try {
+      const entry = this.receiptAllowed.get(bundle.manifest.id);
+      if (!entry?.receipt?.transport?.copied) return false;
+      this.permitReceipt(entry);
+      return (
+        entry.receipt.transport.bundleHash === hash(canonical(bundle)) &&
+        inspectContributionReceipt(bundle, this.context.identity) !== null
+      );
+    } catch {
+      return false;
+    }
+  }
+  private stopReceipt(entry: ContributionInboxEntry) {
+    const id = entry.receipt?.transport?.bundleId;
+    if (!id) return;
+    this.receiptAllowed.delete(id);
+    this.publishedAt.delete(id);
+    this.context.cancel(id);
+  }
+  private flushReceipts() {
+    const state = this.context.incoming.state(),
+      prior = new Set(this.receiptAllowed.keys());
+    const active = state.entries.filter(
+      (e) => e.receipt && e.receipt.phase !== "expired",
+    );
+    for (const entry of active)
+      if (entry.receipt?.transport)
+        prior.delete(entry.receipt.transport.bundleId);
+    const start = this.receiptSendCursor % Math.max(1, active.length),
+      count = Math.min(8, active.length);
+    this.receiptSendCursor = (start + count) % Math.max(1, active.length);
+    for (let i = 0; i < count; i++) {
+      let entry = active[(start + i) % active.length];
+      if (!entry.receipt) continue;
+      try {
+        if (entry.receipt.phase === "prepared")
+          entry = this.context.incoming.signReceipt(entry.id, this.policy);
+        if (entry.receipt!.phase === "signed")
+          entry = this.context.incoming.sealReceipt(entry.id, this.policy);
+        this.permitReceipt(entry);
+        const bundle = this.context.incoming.receiptBundle(
+          entry.id,
+          this.policy,
+        );
+        if (!bundle) throw Error("Envelope de recibo indisponível");
+        this.context.store.put(bundle, true);
+        const actual = this.context.store.get(bundle.manifest.id, false);
+        verifyBundle(actual);
+        entry = this.context.incoming.copyReceipt(
+          entry.id,
+          actual,
+          this.policy,
+        );
+        const previous = this.receiptAllowed.get(actual.manifest.id);
+        if (
+          !previous ||
+          canonical(previous.receipt) !== canonical(entry.receipt)
+        )
+          this.receiptAllowed.set(actual.manifest.id, structuredClone(entry));
+        if (!this.canServeReceipt(actual))
+          throw Error("Recibo suspenso pela política actual");
+        if (
+          Date.now() - (this.publishedAt.get(actual.manifest.id) ?? 0) >=
+          30000
+        ) {
+          this.context.publish(actual);
+          this.publishedAt.set(actual.manifest.id, Date.now());
+        }
+      } catch {
+        this.stopReceipt(entry);
+        this.context.ensure();
+      }
+    }
+    for (const id of prior) {
+      this.receiptAllowed.delete(id);
+      this.publishedAt.delete(id);
+      this.context.cancel(id);
+    }
+  }
+  receiveReceipt(bundle: Bundle) {
+    this.context.ensure();
+    const content = inspectContributionReceipt(bundle, this.context.identity);
+    if (
+      !content ||
+      content.receipt.body.contributorId !== this.context.identity.public.id
+    )
+      return;
+    const operation = this.context.catalog.receiveReceipt(bundle, this.policy);
+    this.stop(operation);
   }
   private stop(op: ContributionOperation) {
     for (const [id, sent] of this.sourcePackets)
@@ -128,6 +235,13 @@ export class ContributionRuntime {
     }
   }
   revokeInvalid() {
+    for (const entry of [...this.receiptAllowed.values()]) {
+      try {
+        this.permitReceipt(entry);
+      } catch {
+        this.stopReceipt(entry);
+      }
+    }
     for (const op of [...this.allowed.values()]) {
       try {
         this.permit(op);
@@ -137,6 +251,8 @@ export class ContributionRuntime {
     }
   }
   close() {
+    for (const entry of [...this.receiptAllowed.values()])
+      this.stopReceipt(entry);
     for (const id of this.allowed.keys()) this.context.cancel(id);
     this.allowed.clear();
     this.publishedAt.clear();
@@ -202,11 +318,43 @@ export class ContributionRuntime {
     });
     return true;
   }
+  private recoverReceipts(operations: readonly ContributionOperation[]) {
+    const owners = new Set(
+      operations
+        .filter((op) => op.transport?.copied && !op.receipt)
+        .map((op) => parseSiteAddress(op.target.site).ownerId),
+    );
+    if (!owners.size) return;
+    const candidates = this.context.store
+      .list()
+      .filter(
+        (m) =>
+          m.kind === "site-contribution-receipt" &&
+          owners.has(m.author.id) &&
+          m.keys.some((k) => k.reader === this.context.identity.public.id),
+      );
+    const start = this.receiptCursor % Math.max(1, candidates.length),
+      count = Math.min(32, candidates.length);
+    this.receiptCursor = (start + count) % Math.max(1, candidates.length);
+    for (let i = 0; i < count; i++) {
+      try {
+        this.receiveReceipt(
+          this.context.store.get(
+            candidates[(start + i) % candidates.length].id,
+            false,
+          ),
+        );
+      } catch {
+        this.context.ensure();
+      }
+    }
+  }
   tick() {
     if (this.sending || Date.now() < this.nextRetry) return;
     this.nextRetry = Date.now() + 5000;
     this.sending = true;
     try {
+      this.recoverReceipts(this.context.catalog.state().operations);
       const state = this.context.catalog.state();
       const prior = new Set(this.allowed.keys());
       for (const op of state.operations) {
@@ -220,6 +368,7 @@ export class ContributionRuntime {
         this.publishedAt.delete(id);
         this.context.cancel(id);
       }
+      this.flushReceipts();
     } catch {
       this.close();
     } finally {

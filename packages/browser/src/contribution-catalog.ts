@@ -1,3 +1,4 @@
+import { createContributionReceiptProtocol } from "../../sites/src/contribution-receipt";
 import { createContributionEnvelopeProtocol } from "../../sites/src/contribution-envelope";
 import {
   canonical,
@@ -14,6 +15,7 @@ import {
 import { createContributionContextResolver } from "../../sites/src/contribution-context";
 import {
   createSiteContributionProtocol,
+  SITE_CONTRIBUTION_LIMITS,
   type SiteContribution,
 } from "../../sites/src/contribution-protocol";
 import { browserCertificateCrypto } from "./certificate-crypto";
@@ -33,7 +35,10 @@ type Policy = (
 const registry = createContributionOperations(browserCertificateCrypto),
   resolver = createContributionContextResolver(browserCertificateCrypto),
   protocol = createSiteContributionProtocol(browserCertificateCrypto),
-  envelopes = createContributionEnvelopeProtocol(browserCertificateCrypto);
+  envelopes = createContributionEnvelopeProtocol(browserCertificateCrypto),
+  receiptEnvelopes = createContributionReceiptProtocol(
+    browserCertificateCrypto,
+  );
 const pending = (op: ContributionOperation) =>
   op.phase === "prepared" || op.phase === "signed";
 function insist(ok: unknown, reason: string): asserts ok {
@@ -248,6 +253,41 @@ export class BrowserContributionCatalog {
       "Envelope de outra preparação",
     );
     return bundle;
+  }
+  async receiveReceipt(input: Bundle, allow: Policy) {
+    const bundle = await verifiedStoredBundle(
+      JSON.parse(canonical(input)) as Bundle,
+    );
+    this.ensure();
+    const plaintext = await this.profile.decryptStaging(bundle);
+    this.ensure();
+    const receipt = receiptEnvelopes.matchEnvelope(bundle, plaintext).receipt;
+    return this.run(async (values, record) => {
+      const b = receipt.body;
+      await allow(values, b.target.snapshotId, b.owner.id);
+      this.ensure();
+      const now = this.now();
+      if (
+        bundle.manifest.expires <= now ||
+        bundle.manifest.created - now > SITE_CONTRIBUTION_LIMITS.clockSkewMs
+      )
+        throw Error("Recibo fora do prazo de admissão");
+      let result = registry.receive(record, this.owner.id, receipt, now);
+      if (!result.changed) return result.operation;
+      const previous = record.operations.find(
+        (op) => op.sequence === result.operation.sequence,
+      )!;
+      if (previous.phase === "queued") {
+        await this.queuedStage(values, record, previous);
+        this.ensure();
+        // The proof may take time to decrypt; never admit beyond the receipt's deadline.
+        result = registry.receive(record, this.owner.id, receipt, this.now());
+        await values.remove(this.queueKey(previous));
+        this.ensure();
+      }
+      values.set(this.key + ":record", result.record);
+      return result.operation;
+    });
   }
   state() {
     return this.run(async (_values, record) => structuredClone(record));

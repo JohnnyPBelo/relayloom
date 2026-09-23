@@ -417,11 +417,49 @@ test("production workers recover queued proposals offline and send through the U
         id: sent.operation.certificateId,
       }),
     ).rejects.toThrow();
-    await rpc(sender, "contribution-command", {
-      action: "cancel",
-      sequence: 1,
-      operationId: request.operationId,
-    });
+    // Reconnect after the owner reload; the durable receipt survives the local
+    // disposal and only its verified arrival closes the visitor's queue.
+    await connect();
+    await expect
+      .poll(
+        async () =>
+          (
+            await rpc(sender, "contribution-command", {
+              action: "operation",
+              sequence: 1,
+              operationId: request.operationId,
+            })
+          ).operation?.phase,
+      )
+      .toBe("received");
+    const confirmed = (
+      await rpc(sender, "contribution-command", {
+        action: "operation",
+        sequence: 1,
+        operationId: request.operationId,
+      })
+    ).operation;
+    expect(confirmed.receipt.body.certificateId).toBe(
+      sent.operation.certificateId,
+    );
+    expect(confirmed.receipt.body.owner.id).toBe(a.id);
+    expect(confirmed.receipt.body.contributorId).toBe(b.id);
+    await expect(
+      rpc(sender, "contribution-command", {
+        action: "cancel",
+        sequence: 1,
+        operationId: request.operationId,
+      }),
+    ).rejects.toThrow();
+    expect(
+      (
+        await rpc(sender, "contribution-command", {
+          action: "resume",
+          sequence: 1,
+          operationId: request.operationId,
+        })
+      ).operation,
+    ).toEqual(confirmed);
     expect(
       await rpc(
         sender,

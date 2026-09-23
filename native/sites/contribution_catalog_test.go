@@ -91,6 +91,9 @@ func TestContributionCatalogWorker(t *testing.T) {
 	if mode == "before-envelope-commit" {
 		code = 85
 	}
+	if mode == "before-receipt-commit" {
+		code = 91
+	}
 	if mode == "before-queue-commit" {
 		code = 87
 	}
@@ -165,6 +168,16 @@ func TestContributionCatalogWorker(t *testing.T) {
 			value, err = catalog.Queue(h, policy)
 		case "source":
 			value, err = catalog.QueuedSource(h, policy)
+		case "receive-receipt":
+			bytes, e := core.Canonical(command["bundle"])
+			if e != nil {
+				t.Fatal(e)
+			}
+			bundle, e := core.DecodeBundle(bytes)
+			if e != nil {
+				t.Fatal(e)
+			}
+			value, err = catalog.ReceiveReceipt(bundle, policy)
 		case "copied":
 			bytes, e := core.Canonical(command["bundle"])
 			if e != nil {
@@ -206,6 +219,9 @@ func TestContributionCatalogWorker(t *testing.T) {
 		}
 		if mode == "after-envelope" && command["action"] == "seal" {
 			os.Exit(86)
+		}
+		if mode == "after-receipt" && command["action"] == "receive-receipt" {
+			os.Exit(92)
 		}
 		if mode == "after-queue" && command["action"] == "queue" {
 			os.Exit(88)

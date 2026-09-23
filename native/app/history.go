@@ -28,6 +28,15 @@ type HistoryPage struct {
 // arbitrary extension fields and nested metadata cannot smuggle large payloads
 // into an otherwise bounded attachment-free snapshot. Full /view is unchanged.
 func summaryContent(content Content) Content {
+	if text(content["type"]) == "site-contribution-receipt" {
+		value, err := sites.ParseContributionReceiptContent(map[string]any(content))
+		if err != nil {
+			return Content{"type": "site-contribution-receipt"}
+		}
+		receipt := value["receipt"].(map[string]any)
+		b := receipt["body"].(map[string]any)
+		return Content{"type": "site-contribution-receipt", "receiptId": receipt["id"], "proposalId": b["certificateId"], "operationId": b["operationId"], "proposalTarget": b["target"], "verifiedAt": b["verifiedAt"], "created": b["created"], "expires": b["expires"]}
+	}
 	if text(content["type"]) == "site-contribution" {
 		value, err := sites.ParseContributionContent(map[string]any(content))
 		if err != nil {

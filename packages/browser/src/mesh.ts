@@ -1,3 +1,4 @@
+import { contributionReceiptManifestPolicy } from "../../content/src/receipt-content";
 import { canonical } from "../../core/src/protocol";
 import { contributionManifestPolicy } from "../../content/src/site-contribution";
 import { exactShape } from "../../core/src/protocol";
@@ -71,7 +72,9 @@ export class BrowserMesh {
         const value = payload as Wire;
         if (
           value.type === "bundle" &&
-          value.bundle.manifest.kind === "site-contribution" &&
+          ["site-contribution", "site-contribution-receipt"].includes(
+            value.bundle.manifest.kind,
+          ) &&
           value.bundle.manifest.author.id === profile.identity?.id
         ) {
           try {
@@ -258,6 +261,11 @@ export class BrowserMesh {
         !contributionManifestPolicy(bundle.manifest)
       )
         throw Error("Envelope de proposta inválido");
+      if (
+        bundle.manifest.kind === "site-contribution-receipt" &&
+        !contributionReceiptManifestPolicy(bundle.manifest)
+      )
+        throw Error("Envelope de recibo inválido");
       await inspectPublicSite(bundle);
       await inspectPublicResource(bundle);
     } else if (

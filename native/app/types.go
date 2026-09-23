@@ -260,6 +260,10 @@ var base64Pattern = regexp.MustCompile(`^[A-Za-z0-9+/]*={0,2}$`)
 
 func validateContent(c Content) error {
 	kind := text(c["type"])
+	if kind == "site-contribution-receipt" {
+		_, err := sites.ParseContributionReceiptContent(map[string]any(c))
+		return err
+	}
 	if kind == "site-contribution" {
 		_, err := sites.ParseContributionContent(map[string]any(c))
 		return err

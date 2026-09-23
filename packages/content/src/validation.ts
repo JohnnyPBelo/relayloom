@@ -1,3 +1,4 @@
+import { parseContributionReceiptShape } from "./receipt-content";
 import { parseContributionContentShape } from "./site-contribution";
 import { canonical } from "../../core/src/protocol";
 import { validateSite } from "./site";
@@ -13,6 +14,7 @@ export function validateContentShape(content: Content) {
       "site",
       "site-resource",
       "site-contribution",
+      "site-contribution-receipt",
       "comment",
       "reaction",
       "edit",
@@ -23,6 +25,8 @@ export function validateContentShape(content: Content) {
     ].includes(content.type)
   )
     throw new Error("Tipo de conteúdo inválido");
+  if (content.type === "site-contribution-receipt")
+    parseContributionReceiptShape(content);
   if (content.type === "site-resource") parseSiteResource(content);
   if (content.type === "site-contribution")
     parseContributionContentShape(content);

@@ -15,7 +15,7 @@ import (
 )
 
 func (n *Node) maySeedLocked(manifest core.Manifest) (bool, error) {
-	if manifest.Kind == "site-contribution" {
+	if manifest.Kind == "site-contribution" || manifest.Kind == "site-contribution-receipt" {
 		if contains(n.config.Blocked, manifest.Author.ID) || (n.identity == nil && n.initialized()) {
 			return false, nil
 		}
@@ -24,6 +24,9 @@ func (n *Node) maySeedLocked(manifest core.Manifest) (bool, error) {
 			return false, err
 		}
 		if _, err = inspectContributionBundle(bundle, n.identity); err != nil {
+			return false, err
+		}
+		if _, err = inspectContributionReceipt(bundle, n.identity); err != nil {
 			return false, err
 		}
 		if n.identity != nil && manifest.Author.ID == n.identity.Public.ID {

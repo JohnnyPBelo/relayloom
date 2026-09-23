@@ -691,3 +691,66 @@ func (c *ContributionCatalog) Cancel(handle ContributionHandle) (map[string]any,
 	})
 	return result, err
 }
+
+// ReceiveReceipt authenticates the owner fact and closes only the exact copied
+// contribution operation in the same transaction that removes private payload.
+func (c *ContributionCatalog) ReceiveReceipt(input core.Bundle, allow ContributionPolicy) (map[string]any, error) {
+	bundle, err := inboxBundle(input)
+	if err != nil {
+		return nil, err
+	}
+	value, err := core.DecryptBundleAt(bundle, &c.identity, bundle.Manifest.Created)
+	if err != nil {
+		return nil, err
+	}
+	content, err := MatchContributionReceiptEnvelope(bundle, value)
+	if err != nil {
+		return nil, err
+	}
+	receipt := content["receipt"].(map[string]any)
+	body := receipt["body"].(map[string]any)
+	target := body["target"].(map[string]any)
+	owner := body["owner"].(map[string]any)
+	var result map[string]any
+	err = c.run(func(values *PrivateRecords, record map[string]any, _ *contributionStage) error {
+		if err := allow(docTextValue(target["snapshotId"]), docTextValue(owner["id"])); err != nil {
+			return err
+		}
+		now := c.now()
+		if bundle.Manifest.Expires <= now || bundle.Manifest.Created-now > ContributionClockSkewMS {
+			return errors.New("recibo fora do prazo de admissão")
+		}
+		next, op, changed, err := ReceiveContributionReceipt(record, c.identity.Public.ID, receipt, now)
+		if err != nil {
+			return err
+		}
+		result = op
+		if !changed {
+			return nil
+		}
+		var previous map[string]any
+		for _, raw := range record["operations"].([]any) {
+			entry := raw.(map[string]any)
+			if entry["operationId"] == op["operationId"] {
+				previous = entry
+				break
+			}
+		}
+		if previous == nil {
+			return privateIntegrity("operação de recibo ausente")
+		}
+		if previous["phase"] == "queued" {
+			if _, err = c.queuedStage(values, record, previous); err != nil {
+				return err
+			}
+			if err = values.Remove(c.queueKey(previous)); err != nil {
+				return err
+			}
+		}
+		return values.Write(c.key+":record", next)
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}

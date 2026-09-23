@@ -1,3 +1,4 @@
+import { createContributionReceiptProtocol } from "./contribution-receipt";
 import { createContributionEnvelopeProtocol } from "./contribution-envelope";
 import { createBundleAt } from "../../core/src/index";
 import {
@@ -24,6 +25,7 @@ import {
 import { createContributionContextResolver } from "./contribution-context";
 import {
   createSiteContributionProtocol,
+  SITE_CONTRIBUTION_LIMITS,
   type SiteContribution,
 } from "./contribution-protocol";
 interface Database {
@@ -38,7 +40,8 @@ interface Stage {
 const registry = createContributionOperations(nodeCertificateCrypto),
   resolver = createContributionContextResolver(nodeCertificateCrypto),
   protocol = createSiteContributionProtocol(nodeCertificateCrypto),
-  envelopes = createContributionEnvelopeProtocol(nodeCertificateCrypto);
+  envelopes = createContributionEnvelopeProtocol(nodeCertificateCrypto),
+  receiptEnvelopes = createContributionReceiptProtocol(nodeCertificateCrypto);
 const pending = (op: ContributionOperation) =>
   op.phase === "prepared" || op.phase === "signed";
 function insist(ok: unknown, reason: string): asserts ok {
@@ -228,6 +231,43 @@ export class NodeContributionCatalog {
       "Envelope de outra preparação",
     );
     return JSON.parse(canonical(bundle)) as Bundle;
+  }
+  receiveReceipt(
+    input: Bundle,
+    allow: (snapshotId: string, ownerId: string) => void,
+  ) {
+    const bundle = JSON.parse(canonical(input)) as Bundle;
+    verifyStoredBundle(bundle);
+    const receipt = receiptEnvelopes.matchEnvelope(
+      bundle,
+      decryptStoredBundle(bundle, this.identity),
+    ).receipt;
+    return this.run((values, record) => {
+      const b = receipt.body;
+      allow(b.target.snapshotId, b.owner.id);
+      const now = this.now();
+      if (
+        bundle.manifest.expires <= now ||
+        bundle.manifest.created - now > SITE_CONTRIBUTION_LIMITS.clockSkewMs
+      )
+        throw Error("Recibo fora do prazo de admissão");
+      const result = registry.receive(
+        record,
+        this.identity.public.id,
+        receipt,
+        now,
+      );
+      if (!result.changed) return result.operation;
+      const previous = record.operations.find(
+        (op) => op.sequence === result.operation.sequence,
+      )!;
+      if (previous.phase === "queued") {
+        this.queuedStage(values, record, previous);
+        values.remove(this.queueKey(previous));
+      }
+      values.write(this.key + ":record", result.record);
+      return result.operation;
+    });
   }
   state() {
     return this.run((_v, record) => structuredClone(record));

@@ -1,3 +1,5 @@
+import { inspectContributionReceipt } from "./contribution-receipt-content";
+import { summarizeContributionReceipt } from "../../../packages/content/src/receipt-content";
 import { ContributionRuntime } from "./contribution-runtime";
 import { NodeContributionCatalog } from "../../../packages/sites/src/contribution-catalog";
 import { NodeContributionInbox } from "../../../packages/sites/src/contribution-inbox-catalog";
@@ -1551,7 +1553,9 @@ export class LoomNode extends EventEmitter {
   ): { bundle: Bundle; content: Content; mutationTarget?: Manifest } {
     const identity = this.requireIdentity();
     validateContent(content);
-    if (content.type === "site-contribution")
+    if (
+      ["site-contribution", "site-contribution-receipt"].includes(content.type)
+    )
       throw new Error("Envia propostas através do comando de contribuições");
     if (content.type === "site-resource")
       throw new Error(
@@ -1775,7 +1779,9 @@ export class LoomNode extends EventEmitter {
     return this.display(bundle)!;
   }
   private maySeed(manifest: Manifest) {
-    if (manifest.kind === "site-contribution") {
+    if (
+      ["site-contribution", "site-contribution-receipt"].includes(manifest.kind)
+    ) {
       if (
         this.config.blocked.includes(manifest.author.id) ||
         (!this.identity && this.initialized)
@@ -1784,6 +1790,7 @@ export class LoomNode extends EventEmitter {
       try {
         const bundle = this.store.get(manifest.id, false);
         inspectContribution(bundle, this.identity);
+        inspectContributionReceipt(bundle, this.identity);
         return manifest.author.id === this.identity?.public.id
           ? this.contributionRuntime?.canServe(bundle) === true
           : true;
@@ -1890,6 +1897,7 @@ export class LoomNode extends EventEmitter {
         verifyBundle(payload.bundle);
         inspectResource(payload.bundle, this.identity);
         inspectContribution(payload.bundle, this.identity);
+        inspectContributionReceipt(payload.bundle, this.identity);
         if (payload.bundle.manifest.kind === "site")
           inspectSite(payload.bundle, this.identity);
       }
@@ -1949,6 +1957,7 @@ export class LoomNode extends EventEmitter {
     try {
       if (payload.type === "bundle") {
         inspectContribution(payload.bundle, this.identity);
+        inspectContributionReceipt(payload.bundle, this.identity);
         if (
           this.config.blocked.includes(payload.bundle.manifest.author.id) &&
           payload.bundle.manifest.kind !== "group-control" &&
@@ -2002,6 +2011,11 @@ export class LoomNode extends EventEmitter {
           payload.bundle.manifest.kind === "site-contribution"
         )
           this.contributions().receive(payload.bundle);
+        if (
+          this.identity &&
+          payload.bundle.manifest.kind === "site-contribution-receipt"
+        )
+          this.contributions().receiveReceipt(payload.bundle);
         if (this.identity && payload.bundle.manifest.kind === "site")
           this.contributions().receiveSource(payload.bundle);
         if (this.store.put(payload.bundle)) {
@@ -2102,6 +2116,8 @@ export class LoomNode extends EventEmitter {
       if (content.type === "site") inspectSite(bundle, this.identity);
       if (content.type === "site-contribution")
         inspectContribution(bundle, this.identity);
+      if (content.type === "site-contribution-receipt")
+        inspectContributionReceipt(bundle, this.identity);
       if (hasGroupBinding(content)) parseGroupBinding(content);
       return {
         id: bundle.manifest.id,
@@ -2123,6 +2139,8 @@ export class LoomNode extends EventEmitter {
     if (content.type === "site-resource") return summarizeSiteResource(content);
     if (content.type === "site-contribution")
       return summarizeContribution(content);
+    if (content.type === "site-contribution-receipt")
+      return summarizeContributionReceipt(content);
     const out: Content = { type: content.type };
     const fields = ["text", "title", "priority"];
     if (hasGroupBinding(content))

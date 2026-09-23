@@ -528,6 +528,73 @@ for (const backend of ["node", "native"] as const)
         expect(opaque.readers).not.toContain(r.id);
         expect(opaque.author).toBe(visitor.id);
         expect(opaque.inbox.items).toEqual([]);
+        await expect
+          .poll(
+            async () =>
+              (
+                await visitorCall("contribution-command", {
+                  action: "operation",
+                  sequence: 1,
+                  operationId: request.operationId,
+                })
+              ).operation?.phase,
+          )
+          .toBe("received");
+        const confirmed = (
+          await visitorCall("contribution-command", {
+            action: "operation",
+            sequence: 1,
+            operationId: request.operationId,
+          })
+        ).operation;
+        expect(confirmed.receipt.body.owner.id).toBe(owner.id);
+        expect(confirmed.receipt.body.contributorId).toBe(visitor.id);
+        expect(confirmed.receipt.body.certificateId).toBe(
+          sent.operation.certificateId,
+        );
+        expect(JSON.stringify(confirmed.receipt)).not.toContain(
+          request.values.name,
+        );
+        const receiptObject = (await ownerCall("state")).objects.find(
+          (o: any) =>
+            o.kind === "site-contribution-receipt" &&
+            o.content.receiptId === confirmed.receipt.id,
+        );
+        expect(receiptObject).toBeTruthy();
+        await expect
+          .poll(() =>
+            relay.evaluate(() => (window as any).proposalFixture.p.ids()),
+          )
+          .toContain(receiptObject.id);
+        const receiptRelay = await relay.evaluate(async (id) => {
+          const f = (window as any).proposalFixture,
+            bundle = await f.p.getBundle(id);
+          let refused = false;
+          try {
+            await f.app.call("view", { id });
+          } catch {
+            refused = true;
+          }
+          return {
+            refused,
+            readers: bundle.manifest.keys.map((k: any) => k.reader).sort(),
+            author: bundle.manifest.author.id,
+          };
+        }, receiptObject.id);
+        expect(receiptRelay).toEqual({
+          refused: true,
+          readers: [owner.id, visitor.id].sort(),
+          author: owner.id,
+        });
+        expect(
+          (
+            await visitorCall("contribution-command", {
+              action: "resume",
+              sequence: 1,
+              operationId: request.operationId,
+            })
+          ).operation,
+        ).toEqual(confirmed);
         if (direction === "web-to-native") {
           const view = await native.call("view", {
             id: sent.operation.transport.bundleId,
@@ -640,23 +707,65 @@ test("two autonomous browser accounts send a private form proposal through real 
     expect(observed.state).not.toContain("PRIVATE_RTC_PROPOSAL_78210");
     expect(observed.proposal.contributor.id).toBe(b.id);
     expect(observed.proposal.status).toBe("verified-candidate");
-    const cancelled = await sender.evaluate(async () => {
+    await expect
+      .poll(
+        async () =>
+          (
+            await sender.evaluate(() => {
+              const f = (window as any).proposalFixture,
+                q = f.request;
+              return f.app.call("contribution-command", {
+                action: "operation",
+                sequence: q.sequence,
+                operationId: q.operationId,
+              });
+            })
+          ).operation?.phase,
+      )
+      .toBe("received");
+    const confirmed = await sender.evaluate(async () => {
       const f = (window as any).proposalFixture,
         q = f.request;
-      const value = await f.app.call("contribution-command", {
-        action: "cancel",
+      const before = await f.app.call("contribution-command", {
+        action: "operation",
         sequence: q.sequence,
         operationId: q.operationId,
       });
-      let refused = false;
+      let cancelRefused = false,
+        servingRefused = false;
       try {
-        await f.app.bundleForTransport(value.operation.transport.bundleId);
+        await f.app.call("contribution-command", {
+          action: "cancel",
+          sequence: q.sequence,
+          operationId: q.operationId,
+        });
       } catch {
-        refused = true;
+        cancelRefused = true;
       }
-      return { phase: value.operation.phase, refused };
+      try {
+        await f.app.bundleForTransport(before.operation.transport.bundleId);
+      } catch {
+        servingRefused = true;
+      }
+      const resumed = await f.app.call("contribution-command", {
+        action: "resume",
+        sequence: q.sequence,
+        operationId: q.operationId,
+      });
+      return {
+        cancelRefused,
+        servingRefused,
+        operation: before.operation,
+        resumed: resumed.operation,
+      };
     });
-    expect(cancelled).toEqual({ phase: "cancelled", refused: true });
+    expect(confirmed.cancelRefused).toBe(true);
+    expect(confirmed.servingRefused).toBe(true);
+    expect(confirmed.operation.receipt.body.owner.id).toBe(a.id);
+    expect(confirmed.operation.receipt.body.certificateId).toBe(
+      sent.operation.certificateId,
+    );
+    expect(confirmed.resumed).toEqual(confirmed.operation);
     const late = await sender.evaluate(async () => {
       const f = (window as any).proposalFixture;
       f.holdPublications = true;
@@ -798,15 +907,36 @@ test("browser reception journals the original source before review and survives 
       async ({ source, proposal }) => {
         const f = (window as any).proposalFixture;
         await f.mesh.close();
-        // No inbox read yet. These are the actual production cache operations.
-        await f.p.pin(source, false);
-        await f.p.pin(proposal, false);
-        await f.p.changeQuota(1024);
-        const ids = await f.p.ids();
-        if (ids.includes(source) || ids.includes(proposal))
-          throw Error("cache pressure failed to remove both ordinary copies");
+        // Close the application/its retries before applying cache pressure.
+        // A newly queued owner receipt may now be pinned alongside these copies.
+        // Preserve all other pins and vary only the ordinary cache under test.
         const name = f.p.name;
         f.app.close();
+        const raw = await (window as any).rl.BrowserProfile.connect(name);
+        try {
+          await raw.unlock("real RTC proposal fixture passphrase");
+          await raw.pin(source, false);
+          await raw.pin(proposal, false);
+          const records = await raw.records();
+          const pinnedBytes = Object.values(records).reduce(
+            (n: number, value: any) =>
+              n + (value.pinned || value.reserved ? value.size : 0),
+            0,
+          );
+          await raw.changeQuota(Math.max(1024, pinnedBytes));
+          const ids = await raw.ids();
+          if (ids.includes(source) || ids.includes(proposal))
+            throw Error("cache pressure failed to remove both ordinary copies");
+          for (const [id, value] of Object.entries(records) as [
+            string,
+            any,
+          ][]) {
+            if ((value.pinned || value.reserved) && !ids.includes(id))
+              throw Error("unrelated pinned copy was evicted");
+          }
+        } finally {
+          raw.close();
+        }
         return name;
       },
       { source: site.bundleId, proposal: sent.operation.transport.bundleId },
@@ -832,9 +962,31 @@ test("browser reception journals the original source before review and survives 
       const unblocked = await f.app.call("contribution-command", {
         action: "inbox",
       });
-      return { inbox, ids, blocked, unblocked, peers: f.mesh.router.peers };
+      const cached = [];
+      for (const id of ids) {
+        const bundle = await f.p.getBundle(id);
+        cached.push({
+          id,
+          kind: bundle.manifest.kind,
+          author: bundle.manifest.author.id,
+        });
+      }
+      return {
+        inbox,
+        ids,
+        cached,
+        blocked,
+        unblocked,
+        peers: f.mesh.router.peers,
+      };
     }, b);
-    expect(recovered.ids).toEqual([]);
+    expect(recovered.ids).not.toContain(site.bundleId);
+    expect(recovered.ids).not.toContain(sent.operation.transport.bundleId);
+    for (const item of recovered.cached)
+      expect(item).toMatchObject({
+        kind: "site-contribution-receipt",
+        author: a.id,
+      });
     expect(recovered.peers).toEqual([]);
     expect(recovered.inbox.durable).toBe(true);
     expect(recovered.inbox.items).toHaveLength(1);
@@ -864,5 +1016,99 @@ test("browser reception journals the original source before review and survives 
           })
           .catch(() => {});
     for (const context of contexts) await context.close();
+  }
+});
+
+test("an authenticated receipt for retired or absent local history is ignored without closing the real RTC channel", async ({
+  browser,
+}) => {
+  const contexts = [await browser.newContext(), await browser.newContext()],
+    pages = [await contexts[0].newPage(), await contexts[1].newPage()],
+    [owner, visitor] = pages;
+  try {
+    const a = await start(owner, "Old receipt owner"),
+      b = await start(visitor, "Visitor without old history");
+    await link(owner, visitor);
+    const receiptID = await owner.evaluate(
+      async ({ recipient, owner }) => {
+        const r = (window as any).rl,
+          f = (window as any).proposalFixture,
+          now = Date.now(),
+          receipt = await f.p.signContributionReceipt(
+            {
+              contributorId: recipient.id,
+              certificateId: "c".repeat(64),
+              operationId: crypto.randomUUID(),
+              target: {
+                site: "relayloom:site:" + owner.id + "/profile",
+                snapshotId: "a".repeat(64),
+                revisionId: "b".repeat(64),
+                pageId: "entry",
+                formId: "form",
+              },
+              proposalCreated: now,
+              proposalExpires: now + 60000,
+              verifiedAt: now,
+              created: now,
+              expires: now + 180000,
+            },
+            owner,
+          ),
+          bundle = await f.p.sealContributionReceipt(receipt, recipient);
+        // Lower-level framing models a peer replaying an old authentic receipt; the
+        // ordinary publisher correctly disallows arbitrary control-message creation.
+        const packet = await r.createPacket(
+          f.mesh.router.id,
+          { type: "bundle", bundle },
+          "normal",
+          120000,
+        );
+        await f.link.peer.link.send(packet);
+        return bundle.manifest.id;
+      },
+      { recipient: b, owner: a },
+    );
+    expect(
+      (
+        await visitor.evaluate(() =>
+          (window as any).proposalFixture.app.call("contribution-command", {
+            action: "state",
+          }),
+        )
+      ).operations,
+    ).toEqual([]);
+    expect(
+      await visitor.evaluate(() => (window as any).proposalFixture.p.ids()),
+    ).not.toContain(receiptID);
+    const marker = await owner.evaluate(() =>
+      (window as any).proposalFixture.app.call("publish", {
+        content: { type: "post", text: "LIVE_AFTER_UNMATCHED_RECEIPT" },
+        recipients: "public",
+      }),
+    );
+    await expect
+      .poll(() =>
+        visitor.evaluate(() => (window as any).proposalFixture.p.ids()),
+      )
+      .toContain(marker.id);
+    expect(
+      await owner.evaluate(
+        () =>
+          (window as any).proposalFixture.link.peer.connection.connectionState,
+      ),
+    ).toBe("connected");
+  } finally {
+    for (const page of pages)
+      if (!page.isClosed())
+        await page
+          .evaluate(async () => {
+            const f = (window as any).proposalFixture;
+            if (f) {
+              await f.mesh.close();
+              f.app.close();
+            }
+          })
+          .catch(() => {});
+    for (const c of contexts) await c.close();
   }
 });

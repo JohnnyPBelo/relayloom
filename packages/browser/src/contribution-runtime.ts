@@ -1,3 +1,4 @@
+import { createContributionReceiptProtocol } from "../../sites/src/contribution-receipt";
 import {
   BrowserContributionInbox,
   ContributionInboxIntegrityError,
@@ -13,6 +14,7 @@ import { BrowserContributionCatalog } from "./contribution-catalog";
 import { browserCertificateCrypto } from "./certificate-crypto";
 import {
   createContributionOperations,
+  UnmatchedContributionReceipt,
   type ContributionOperation,
 } from "../../sites/src/contribution-operations";
 import { contributionCommandShape } from "../../sites/src/contribution-command";
@@ -20,7 +22,10 @@ import { readContributionForm } from "./contribution-read";
 import { createContributionEnvelopeProtocol } from "../../sites/src/contribution-envelope";
 import { parseSiteAddress } from "../../sites/src/protocol";
 const registry = createContributionOperations(browserCertificateCrypto),
-  envelopes = createContributionEnvelopeProtocol(browserCertificateCrypto);
+  envelopes = createContributionEnvelopeProtocol(browserCertificateCrypto),
+  receiptEnvelopes = createContributionReceiptProtocol(
+    browserCertificateCrypto,
+  );
 interface Context {
   profile: BrowserProfile;
   policy(
@@ -43,9 +48,12 @@ export class BrowserContributionRuntime {
   private generation: number;
   private closed = false;
   private tail = Promise.resolve();
+  private receiptCursor = 0;
+  private receiptSendCursor = 0;
   private nextRetry = 0;
   private ticking = false;
   private allowed = new Map<string, ContributionOperation>();
+  private receiptAllowed = new Map<string, ContributionInboxEntry>();
   private publishedAt = new Map<string, number>();
   constructor(private context: Context) {
     this.catalog = new BrowserContributionCatalog(context.profile);
@@ -65,6 +73,12 @@ export class BrowserContributionRuntime {
       void this.context
         .cancelSource?.(op.target.snapshotId, op.operationId)
         .catch(() => {});
+    for (const entry of this.receiptAllowed.values())
+      if (entry.receipt?.transport)
+        void this.context
+          .cancel(entry.receipt.transport.bundleId)
+          .catch(() => {});
+    this.receiptAllowed.clear();
     this.allowed.clear();
     this.publishedAt.clear();
   }
@@ -101,6 +115,8 @@ export class BrowserContributionRuntime {
     }
   }
   async canServe(bundle: Bundle) {
+    if (bundle.manifest.kind === "site-contribution-receipt")
+      return this.canServeReceipt(bundle);
     try {
       this.ensure();
       const op = this.allowed.get(bundle.manifest.id);
@@ -128,6 +144,184 @@ export class BrowserContributionRuntime {
       );
     } catch {
       return false;
+    }
+  }
+  private async permitReceipt(entry: ContributionInboxEntry) {
+    this.ensure();
+    await this.context.profile.transactValues(async (values) => {
+      await this.policy(values, entry.target.snapshotId, entry.contributorId);
+      await this.policy(
+        values,
+        entry.target.snapshotId,
+        this.context.profile.identity!.id,
+      );
+    });
+    this.ensure();
+    if (
+      !entry.receipt ||
+      entry.receipt.phase !== "queued" ||
+      entry.receipt.request.expires <= Date.now()
+    )
+      throw Error("Recibo indisponível ou expirado");
+  }
+  private async stopReceipt(entry: ContributionInboxEntry) {
+    const id = entry.receipt?.transport?.bundleId;
+    if (!id) return;
+    this.receiptAllowed.delete(id);
+    this.publishedAt.delete(id);
+    await this.context.cancel(id);
+    this.ensure();
+  }
+  private async canServeReceipt(bundle: Bundle) {
+    try {
+      this.ensure();
+      const entry = this.receiptAllowed.get(bundle.manifest.id);
+      if (
+        !entry?.receipt?.transport?.copied ||
+        entry.receipt.transport.bundleHash !==
+          browserCertificateCrypto.hash(canonical(bundle))
+      )
+        return false;
+      await this.permitReceipt(entry);
+      this.ensure();
+      return (
+        this.receiptAllowed.get(bundle.manifest.id) === entry &&
+        entry.receipt.request.expires > Date.now()
+      );
+    } catch {
+      return false;
+    }
+  }
+  private async flushReceipts() {
+    const state = await this.incoming.state();
+    this.ensure();
+    const prior = new Set(this.receiptAllowed.keys());
+    const active = state.entries.filter(
+      (e) => e.receipt && e.receipt.phase !== "expired",
+    );
+    for (const entry of active)
+      if (entry.receipt?.transport)
+        prior.delete(entry.receipt.transport.bundleId);
+    const start = this.receiptSendCursor % Math.max(1, active.length),
+      count = Math.min(8, active.length);
+    this.receiptSendCursor = (start + count) % Math.max(1, active.length);
+    for (let i = 0; i < count; i++) {
+      let entry = active[(start + i) % active.length];
+      if (!entry.receipt) continue;
+      try {
+        if (entry.receipt.phase === "prepared")
+          entry = await this.incoming.signReceipt(entry.id, this.policy);
+        this.ensure();
+        if (entry.receipt!.phase === "signed")
+          entry = await this.incoming.sealReceipt(entry.id, this.policy);
+        this.ensure();
+        await this.permitReceipt(entry);
+        this.ensure();
+        const bundle = await this.incoming.receiptBundle(entry.id, this.policy);
+        this.ensure();
+        if (!bundle) throw Error("Envelope de recibo indisponível");
+        await this.context.profile.putBundle(
+          bundle,
+          true,
+          this.context.copyPolicy(entry.target.snapshotId, entry.contributorId),
+        );
+        this.ensure();
+        const actual = await this.context.profile.getBundle(bundle.manifest.id);
+        this.ensure();
+        entry = await this.incoming.copyReceipt(entry.id, actual, this.policy);
+        this.ensure();
+        const previous = this.receiptAllowed.get(actual.manifest.id);
+        if (
+          !previous ||
+          canonical(previous.receipt) !== canonical(entry.receipt)
+        )
+          this.receiptAllowed.set(actual.manifest.id, structuredClone(entry));
+        if (!(await this.canServeReceipt(actual)))
+          throw Error("Recibo suspenso pela política actual");
+        this.ensure();
+        if (
+          Date.now() - (this.publishedAt.get(actual.manifest.id) ?? 0) >=
+          30000
+        ) {
+          this.context.publish(actual);
+          this.publishedAt.set(actual.manifest.id, Date.now());
+        }
+      } catch (error) {
+        await this.stopReceipt(entry);
+        this.expectedFailure(error);
+      }
+    }
+    for (const id of prior) {
+      this.receiptAllowed.delete(id);
+      this.publishedAt.delete(id);
+      await this.context.cancel(id);
+      this.ensure();
+    }
+  }
+  private async applyReceipt(bundle: Bundle) {
+    const plain = await this.context.profile.decryptStaging(bundle);
+    this.ensure();
+    const content = receiptEnvelopes.matchEnvelope(bundle, plain);
+    if (
+      content.receipt.body.contributorId !== this.context.profile.identity?.id
+    )
+      return true;
+    try {
+      const operation = await this.catalog.receiveReceipt(bundle, this.policy);
+      this.ensure();
+      await this.stop(operation);
+      return true;
+    } catch (error) {
+      this.ensure();
+      // History can legitimately have retired while an authentic receipt was
+      // in transit. Consume this control without admitting it or closing RTC.
+      // Signature/envelope corruption and storage failures still propagate.
+      if (error instanceof UnmatchedContributionReceipt) return false;
+      throw error;
+    }
+  }
+  receiveReceipt(input: Bundle) {
+    const bundle = JSON.parse(canonical(input)) as Bundle;
+    return this.serial(() => this.applyReceipt(bundle));
+  }
+  private async recoverReceipts(operations: readonly ContributionOperation[]) {
+    const owners = new Set(
+      operations
+        .filter((op) => op.transport?.copied && !op.receipt)
+        .map((op) => parseSiteAddress(op.target.site).ownerId),
+    );
+    if (!owners.size) return;
+    const records = await this.context.profile.records();
+    this.ensure();
+    // The closed receipt body is at most 8 KiB; this generous serialized-bundle
+    // bound avoids scanning large photos/video. Rotate at most 32 small values.
+    const candidates = Object.keys(records)
+      .filter((id) => records[id].size <= 64 * 1024)
+      .sort(
+        (a, b) =>
+          (records[b].created ?? 0) - (records[a].created ?? 0) ||
+          a.localeCompare(b),
+      );
+    const start = this.receiptCursor % Math.max(1, candidates.length),
+      count = Math.min(32, candidates.length);
+    this.receiptCursor = (start + count) % Math.max(1, candidates.length);
+    for (let i = 0; i < count; i++) {
+      try {
+        const bundle = await this.context.profile.getBundle(
+          candidates[(start + i) % candidates.length],
+        );
+        this.ensure();
+        if (
+          bundle.manifest.kind === "site-contribution-receipt" &&
+          owners.has(bundle.manifest.author.id) &&
+          bundle.manifest.keys.some(
+            (k) => k.reader === this.context.profile.identity?.id,
+          )
+        )
+          await this.applyReceipt(bundle);
+      } catch (error) {
+        this.expectedFailure(error);
+      }
     }
   }
   async sourceForRequest(id: string) {
@@ -162,6 +356,13 @@ export class BrowserContributionRuntime {
     return null;
   }
   async revokeInvalid() {
+    for (const entry of [...this.receiptAllowed.values()]) {
+      try {
+        await this.permitReceipt(entry);
+      } catch {
+        await this.stopReceipt(entry).catch(() => {});
+      }
+    }
     for (const op of [...this.allowed.values()]) {
       try {
         this.ensure();
@@ -248,6 +449,10 @@ export class BrowserContributionRuntime {
     this.ticking = true;
     try {
       await this.serial(async () => {
+        const before = await this.catalog.state();
+        this.ensure();
+        await this.recoverReceipts(before.operations);
+        this.ensure();
         const state = await this.catalog.state();
         this.ensure();
         const prior = new Set(this.allowed.keys());
@@ -263,9 +468,12 @@ export class BrowserContributionRuntime {
           await this.context.cancel(id);
           this.ensure();
         }
+        await this.flushReceipts();
+        this.ensure();
       });
     } catch {
-      const ids = [...this.allowed.keys()];
+      const ids = [...this.allowed.keys(), ...this.receiptAllowed.keys()];
+      this.receiptAllowed.clear();
       this.allowed.clear();
       this.publishedAt.clear();
       for (const id of ids) await this.context.cancel(id).catch(() => {});
