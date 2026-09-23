@@ -140,30 +140,84 @@ for (const constrained of [false, true])
     }
   });
 
-test("Go receipt runtime applies the same rotating copy budget, including real quota failures", () => {
+test("Go receipt runtime applies the same rotating copy budget, including real quota failures", (t) => {
   const dir = projectTemp("go-receipt-budget-"),
     path = join(dir, "form.json");
   try {
     writeFileSync(path, JSON.stringify(formPayload()), { mode: 0o600 });
-    const run = spawnSync(
-      process.execPath,
-      [
-        "scripts/go.mjs",
-        "test",
-        "-race",
-        "-p=1",
-        "./app",
-        "-run",
-        "^TestReceiptRuntimeBudgetWorker$",
-        "-count=1",
-      ],
-      {
-        encoding: "utf8",
-        timeout: 60000,
-        env: { ...process.env, RELAYLOOM_RECEIPT_BUDGET_FORM: path },
-      },
+    // Compilation and execution have separate bounds. The cold race build is
+    // not evidence that the worker ran, and cannot consume its 60-second budget.
+    const executable = join(
+        dir,
+        process.platform === "win32" ? "app.test.exe" : "app.test",
+      ),
+      compileStarted = performance.now(),
+      built = spawnSync(
+        process.execPath,
+        [
+          "scripts/go.mjs",
+          "test",
+          "-c",
+          "-race",
+          "-p=1",
+          "-o",
+          executable,
+          "./app",
+        ],
+        {
+          encoding: "utf8",
+          timeout: 120000,
+        },
+      );
+    t.diagnostic(
+      JSON.stringify({
+        phase: "compile-only",
+        durationMs: Math.round(performance.now() - compileStarted),
+        exitCode: built.status,
+        signal: built.signal,
+        error: built.error?.message ?? null,
+      }),
     );
-    assert.equal(run.status, 0, run.stdout + run.stderr);
+    assert.equal(
+      built.status,
+      0,
+      "Go worker compilation failed: " +
+        (built.error?.message ?? "") +
+        built.stdout +
+        built.stderr,
+    );
+    const executeStarted = performance.now(),
+      run = spawnSync(
+        executable,
+        [
+          "-test.run=^TestReceiptRuntimeBudgetWorker$",
+          "-test.count=1",
+          "-test.v",
+          "-test.timeout=55s",
+        ],
+        {
+          encoding: "utf8",
+          timeout: 60000,
+          env: { ...process.env, RELAYLOOM_RECEIPT_BUDGET_FORM: path },
+        },
+      );
+    t.diagnostic(
+      JSON.stringify({
+        phase: "execute",
+        durationMs: Math.round(performance.now() - executeStarted),
+        exitCode: run.status,
+        signal: run.signal,
+        error: run.error?.message ?? null,
+      }),
+    );
+    assert.equal(
+      run.status,
+      0,
+      "Go worker execution failed: " +
+        (run.error?.message ?? "") +
+        run.stdout +
+        run.stderr,
+    );
     const result = JSON.parse(readFileSync(path + ".result.json", "utf8"));
     assert.deepEqual(result, {
       normal: true,
