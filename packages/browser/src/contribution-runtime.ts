@@ -1,3 +1,4 @@
+import { createContributionRejectionProtocol } from "../../sites/src/contribution-rejection";
 import { createContributionReceiptProtocol } from "../../sites/src/contribution-receipt";
 import {
   BrowserContributionInbox,
@@ -15,6 +16,7 @@ import { browserCertificateCrypto } from "./certificate-crypto";
 import {
   createContributionOperations,
   UnmatchedContributionReceipt,
+  UnmatchedContributionRejection,
   type ContributionOperation,
 } from "../../sites/src/contribution-operations";
 import { contributionCommandShape } from "../../sites/src/contribution-command";
@@ -23,6 +25,9 @@ import { createContributionEnvelopeProtocol } from "../../sites/src/contribution
 import { parseSiteAddress } from "../../sites/src/protocol";
 const registry = createContributionOperations(browserCertificateCrypto),
   envelopes = createContributionEnvelopeProtocol(browserCertificateCrypto),
+  rejectionEnvelopes = createContributionRejectionProtocol(
+    browserCertificateCrypto,
+  ),
   receiptEnvelopes = createContributionReceiptProtocol(
     browserCertificateCrypto,
   );
@@ -53,6 +58,10 @@ export class BrowserContributionRuntime {
   private nextRetry = 0;
   private ticking = false;
   private allowed = new Map<string, ContributionOperation>();
+  private rejectionAllowed = new Map<string, ContributionInboxEntry>();
+  private outcomeAllowed(kind: "receipt" | "rejection") {
+    return kind === "receipt" ? this.receiptAllowed : this.rejectionAllowed;
+  }
   private receiptAllowed = new Map<string, ContributionInboxEntry>();
   private publishedAt = new Map<string, number>();
   constructor(private context: Context) {
@@ -78,6 +87,12 @@ export class BrowserContributionRuntime {
         void this.context
           .cancel(entry.receipt.transport.bundleId)
           .catch(() => {});
+    for (const entry of this.rejectionAllowed.values())
+      if (entry.rejection?.transport)
+        void this.context
+          .cancel(entry.rejection.transport.bundleId)
+          .catch(() => {});
+    this.rejectionAllowed.clear();
     this.receiptAllowed.clear();
     this.allowed.clear();
     this.publishedAt.clear();
@@ -115,6 +130,8 @@ export class BrowserContributionRuntime {
     }
   }
   async canServe(bundle: Bundle) {
+    if (bundle.manifest.kind === "site-contribution-rejection")
+      return this.canServeReceipt(bundle, "rejection");
     if (bundle.manifest.kind === "site-contribution-receipt")
       return this.canServeReceipt(bundle);
     try {
@@ -146,7 +163,10 @@ export class BrowserContributionRuntime {
       return false;
     }
   }
-  private async permitReceipt(entry: ContributionInboxEntry) {
+  private async permitReceipt(
+    entry: ContributionInboxEntry,
+    kind: "receipt" | "rejection" = "receipt",
+  ) {
     this.ensure();
     await this.context.profile.transactValues(async (values) => {
       await this.policy(values, entry.target.snapshotId, entry.contributorId);
@@ -158,35 +178,41 @@ export class BrowserContributionRuntime {
     });
     this.ensure();
     if (
-      !entry.receipt ||
-      entry.receipt.phase !== "queued" ||
-      entry.receipt.request.expires <= Date.now()
+      !entry[kind] ||
+      entry[kind].phase !== "queued" ||
+      entry[kind].request.expires <= Date.now()
     )
       throw Error("Recibo indisponível ou expirado");
   }
-  private async stopReceipt(entry: ContributionInboxEntry) {
-    const id = entry.receipt?.transport?.bundleId;
+  private async stopReceipt(
+    entry: ContributionInboxEntry,
+    kind: "receipt" | "rejection" = "receipt",
+  ) {
+    const id = entry[kind]?.transport?.bundleId;
     if (!id) return;
-    this.receiptAllowed.delete(id);
+    this.outcomeAllowed(kind).delete(id);
     this.publishedAt.delete(id);
     await this.context.cancel(id);
     this.ensure();
   }
-  private async canServeReceipt(bundle: Bundle) {
+  private async canServeReceipt(
+    bundle: Bundle,
+    kind: "receipt" | "rejection" = "receipt",
+  ) {
     try {
       this.ensure();
-      const entry = this.receiptAllowed.get(bundle.manifest.id);
+      const entry = this.outcomeAllowed(kind).get(bundle.manifest.id);
       if (
-        !entry?.receipt?.transport?.copied ||
-        entry.receipt.transport.bundleHash !==
+        !entry?.[kind]?.transport?.copied ||
+        entry[kind].transport.bundleHash !==
           browserCertificateCrypto.hash(canonical(bundle))
       )
         return false;
-      await this.permitReceipt(entry);
+      await this.permitReceipt(entry, kind);
       this.ensure();
       return (
-        this.receiptAllowed.get(bundle.manifest.id) === entry &&
-        entry.receipt.request.expires > Date.now()
+        this.outcomeAllowed(kind).get(bundle.manifest.id) === entry &&
+        entry[kind].request.expires > Date.now()
       );
     } catch {
       return false;
@@ -195,29 +221,49 @@ export class BrowserContributionRuntime {
   private async flushReceipts() {
     const state = await this.incoming.state();
     this.ensure();
-    const prior = new Set(this.receiptAllowed.keys());
-    const active = state.entries.filter(
-      (e) => e.receipt && e.receipt.phase !== "expired",
-    );
-    for (const entry of active)
-      if (entry.receipt?.transport)
-        prior.delete(entry.receipt.transport.bundleId);
+    const prior = new Set([
+      ...this.receiptAllowed.keys(),
+      ...this.rejectionAllowed.keys(),
+    ]);
+    const active: {
+      entry: ContributionInboxEntry;
+      kind: "receipt" | "rejection";
+    }[] = [];
+    for (const entry of state.entries)
+      for (const kind of ["receipt", "rejection"] as const) {
+        const op = entry[kind];
+        if (!op || op.phase === "expired") continue;
+        active.push({ entry, kind });
+        if (op.transport) prior.delete(op.transport.bundleId);
+      }
     const start = this.receiptSendCursor % Math.max(1, active.length),
       count = Math.min(8, active.length);
     this.receiptSendCursor = (start + count) % Math.max(1, active.length);
     for (let i = 0; i < count; i++) {
-      let entry = active[(start + i) % active.length];
-      if (!entry.receipt) continue;
+      let { entry, kind } = active[(start + i) % active.length];
+      if (!entry[kind]) continue;
       try {
-        if (entry.receipt.phase === "prepared")
-          entry = await this.incoming.signReceipt(entry.id, this.policy);
+        if (entry[kind].phase === "prepared")
+          entry = await (
+            kind === "receipt"
+              ? this.incoming.signReceipt.bind(this.incoming)
+              : this.incoming.signRejection.bind(this.incoming)
+          )(entry.id, this.policy);
         this.ensure();
-        if (entry.receipt!.phase === "signed")
-          entry = await this.incoming.sealReceipt(entry.id, this.policy);
+        if (entry[kind]!.phase === "signed")
+          entry = await (
+            kind === "receipt"
+              ? this.incoming.sealReceipt.bind(this.incoming)
+              : this.incoming.sealRejection.bind(this.incoming)
+          )(entry.id, this.policy);
         this.ensure();
-        await this.permitReceipt(entry);
+        await this.permitReceipt(entry, kind);
         this.ensure();
-        const bundle = await this.incoming.receiptBundle(entry.id, this.policy);
+        const bundle = await (
+          kind === "receipt"
+            ? this.incoming.receiptBundle.bind(this.incoming)
+            : this.incoming.rejectionBundle.bind(this.incoming)
+        )(entry.id, this.policy);
         this.ensure();
         if (!bundle) throw Error("Envelope de recibo indisponível");
         await this.context.profile.putBundle(
@@ -228,15 +274,19 @@ export class BrowserContributionRuntime {
         this.ensure();
         const actual = await this.context.profile.getBundle(bundle.manifest.id);
         this.ensure();
-        entry = await this.incoming.copyReceipt(entry.id, actual, this.policy);
+        entry = await (
+          kind === "receipt"
+            ? this.incoming.copyReceipt.bind(this.incoming)
+            : this.incoming.copyRejection.bind(this.incoming)
+        )(entry.id, actual, this.policy);
         this.ensure();
-        const previous = this.receiptAllowed.get(actual.manifest.id);
-        if (
-          !previous ||
-          canonical(previous.receipt) !== canonical(entry.receipt)
-        )
-          this.receiptAllowed.set(actual.manifest.id, structuredClone(entry));
-        if (!(await this.canServeReceipt(actual)))
+        const previous = this.outcomeAllowed(kind).get(actual.manifest.id);
+        if (!previous || canonical(previous[kind]) !== canonical(entry[kind]))
+          this.outcomeAllowed(kind).set(
+            actual.manifest.id,
+            structuredClone(entry),
+          );
+        if (!(await this.canServeReceipt(actual, kind)))
           throw Error("Recibo suspenso pela política actual");
         this.ensure();
         if (
@@ -247,12 +297,13 @@ export class BrowserContributionRuntime {
           this.publishedAt.set(actual.manifest.id, Date.now());
         }
       } catch (error) {
-        await this.stopReceipt(entry);
+        await this.stopReceipt(entry, kind);
         this.expectedFailure(error);
       }
     }
     for (const id of prior) {
       this.receiptAllowed.delete(id);
+      this.rejectionAllowed.delete(id);
       this.publishedAt.delete(id);
       await this.context.cancel(id);
       this.ensure();
@@ -284,13 +335,47 @@ export class BrowserContributionRuntime {
     const bundle = JSON.parse(canonical(input)) as Bundle;
     return this.serial(() => this.applyReceipt(bundle));
   }
+  private async applyRejection(bundle: Bundle) {
+    const plain = await this.context.profile.decryptStaging(bundle);
+    this.ensure();
+    const content = rejectionEnvelopes.matchEnvelope(bundle, plain);
+    if (
+      content.rejection.body.contributorId !== this.context.profile.identity?.id
+    )
+      return true;
+    try {
+      const operation = await this.catalog.receiveRejection(
+        bundle,
+        this.policy,
+      );
+      this.ensure();
+      await this.stop(operation);
+      return true;
+    } catch (error) {
+      this.ensure();
+      // History can legitimately have retired while an authentic rejection was
+      // in transit. Consume this control without admitting it or closing RTC.
+      // Signature/envelope corruption and storage failures still propagate.
+      if (error instanceof UnmatchedContributionRejection) return false;
+      throw error;
+    }
+  }
+  receiveRejection(input: Bundle) {
+    const bundle = JSON.parse(canonical(input)) as Bundle;
+    return this.serial(() => this.applyRejection(bundle));
+  }
   private async recoverReceipts(operations: readonly ContributionOperation[]) {
-    const owners = new Set(
+    const receiptOwners = new Set(
       operations
         .filter((op) => op.transport?.copied && !op.receipt)
         .map((op) => parseSiteAddress(op.target.site).ownerId),
     );
-    if (!owners.size) return;
+    const rejectionOwners = new Set(
+      operations
+        .filter((op) => op.transport?.copied && !op.rejection)
+        .map((op) => parseSiteAddress(op.target.site).ownerId),
+    );
+    if (!receiptOwners.size && !rejectionOwners.size) return;
     const records = await this.context.profile.records();
     this.ensure();
     // The closed receipt body is at most 8 KiB; this generous serialized-bundle
@@ -312,13 +397,17 @@ export class BrowserContributionRuntime {
         );
         this.ensure();
         if (
-          bundle.manifest.kind === "site-contribution-receipt" &&
-          owners.has(bundle.manifest.author.id) &&
+          ((bundle.manifest.kind === "site-contribution-receipt" &&
+            receiptOwners.has(bundle.manifest.author.id)) ||
+            (bundle.manifest.kind === "site-contribution-rejection" &&
+              rejectionOwners.has(bundle.manifest.author.id))) &&
           bundle.manifest.keys.some(
             (k) => k.reader === this.context.profile.identity?.id,
           )
         )
-          await this.applyReceipt(bundle);
+          if (bundle.manifest.kind === "site-contribution-rejection")
+            await this.applyRejection(bundle);
+          else await this.applyReceipt(bundle);
       } catch (error) {
         this.expectedFailure(error);
       }
@@ -356,13 +445,14 @@ export class BrowserContributionRuntime {
     return null;
   }
   async revokeInvalid() {
-    for (const entry of [...this.receiptAllowed.values()]) {
-      try {
-        await this.permitReceipt(entry);
-      } catch {
-        await this.stopReceipt(entry).catch(() => {});
+    for (const kind of ["receipt", "rejection"] as const)
+      for (const entry of [...this.outcomeAllowed(kind).values()]) {
+        try {
+          await this.permitReceipt(entry, kind);
+        } catch {
+          await this.stopReceipt(entry, kind).catch(() => {});
+        }
       }
-    }
     for (const op of [...this.allowed.values()]) {
       try {
         this.ensure();
@@ -472,7 +562,12 @@ export class BrowserContributionRuntime {
         this.ensure();
       });
     } catch {
-      const ids = [...this.allowed.keys(), ...this.receiptAllowed.keys()];
+      const ids = [
+        ...this.allowed.keys(),
+        ...this.receiptAllowed.keys(),
+        ...this.rejectionAllowed.keys(),
+      ];
+      this.rejectionAllowed.clear();
       this.receiptAllowed.clear();
       this.allowed.clear();
       this.publishedAt.clear();
@@ -509,6 +604,13 @@ export class BrowserContributionRuntime {
         });
       if (command.action === "state") return this.catalog.state();
       if (command.action === "inbox") return this.inbox();
+      if (command.action === "reject")
+        return this.incoming.reject(
+          command.id,
+          command.revision,
+          command.reason,
+          this.policy,
+        );
       if (command.action === "dismiss")
         return this.incoming.dismiss(command.id, command.revision);
       if (command.action === "obtain-source") {

@@ -1,3 +1,5 @@
+import { inspectContributionRejection } from "./contribution-rejection-content";
+import { summarizeContributionRejection } from "../../../packages/content/src/rejection-content";
 import { inspectContributionReceipt } from "./contribution-receipt-content";
 import { summarizeContributionReceipt } from "../../../packages/content/src/receipt-content";
 import { ContributionRuntime } from "./contribution-runtime";
@@ -1554,7 +1556,11 @@ export class LoomNode extends EventEmitter {
     const identity = this.requireIdentity();
     validateContent(content);
     if (
-      ["site-contribution", "site-contribution-receipt"].includes(content.type)
+      [
+        "site-contribution",
+        "site-contribution-receipt",
+        "site-contribution-rejection",
+      ].includes(content.type)
     )
       throw new Error("Envia propostas através do comando de contribuições");
     if (content.type === "site-resource")
@@ -1780,7 +1786,11 @@ export class LoomNode extends EventEmitter {
   }
   private maySeed(manifest: Manifest) {
     if (
-      ["site-contribution", "site-contribution-receipt"].includes(manifest.kind)
+      [
+        "site-contribution",
+        "site-contribution-receipt",
+        "site-contribution-rejection",
+      ].includes(manifest.kind)
     ) {
       if (
         this.config.blocked.includes(manifest.author.id) ||
@@ -1791,6 +1801,7 @@ export class LoomNode extends EventEmitter {
         const bundle = this.store.get(manifest.id, false);
         inspectContribution(bundle, this.identity);
         inspectContributionReceipt(bundle, this.identity);
+        inspectContributionRejection(bundle, this.identity);
         return manifest.author.id === this.identity?.public.id
           ? this.contributionRuntime?.canServe(bundle) === true
           : true;
@@ -1898,6 +1909,7 @@ export class LoomNode extends EventEmitter {
         inspectResource(payload.bundle, this.identity);
         inspectContribution(payload.bundle, this.identity);
         inspectContributionReceipt(payload.bundle, this.identity);
+        inspectContributionRejection(payload.bundle, this.identity);
         if (payload.bundle.manifest.kind === "site")
           inspectSite(payload.bundle, this.identity);
       }
@@ -1958,6 +1970,7 @@ export class LoomNode extends EventEmitter {
       if (payload.type === "bundle") {
         inspectContribution(payload.bundle, this.identity);
         inspectContributionReceipt(payload.bundle, this.identity);
+        inspectContributionRejection(payload.bundle, this.identity);
         if (
           this.config.blocked.includes(payload.bundle.manifest.author.id) &&
           payload.bundle.manifest.kind !== "group-control" &&
@@ -2016,6 +2029,11 @@ export class LoomNode extends EventEmitter {
           payload.bundle.manifest.kind === "site-contribution-receipt"
         )
           this.contributions().receiveReceipt(payload.bundle);
+        if (
+          this.identity &&
+          payload.bundle.manifest.kind === "site-contribution-rejection"
+        )
+          this.contributions().receiveRejection(payload.bundle);
         if (this.identity && payload.bundle.manifest.kind === "site")
           this.contributions().receiveSource(payload.bundle);
         if (this.store.put(payload.bundle)) {
@@ -2118,6 +2136,7 @@ export class LoomNode extends EventEmitter {
         inspectContribution(bundle, this.identity);
       if (content.type === "site-contribution-receipt")
         inspectContributionReceipt(bundle, this.identity);
+      inspectContributionRejection(bundle, this.identity);
       if (hasGroupBinding(content)) parseGroupBinding(content);
       return {
         id: bundle.manifest.id,
@@ -2139,6 +2158,8 @@ export class LoomNode extends EventEmitter {
     if (content.type === "site-resource") return summarizeSiteResource(content);
     if (content.type === "site-contribution")
       return summarizeContribution(content);
+    if (content.type === "site-contribution-rejection")
+      return summarizeContributionRejection(content);
     if (content.type === "site-contribution-receipt")
       return summarizeContributionReceipt(content);
     const out: Content = { type: content.type };

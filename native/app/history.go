@@ -37,6 +37,15 @@ func summaryContent(content Content) Content {
 		b := receipt["body"].(map[string]any)
 		return Content{"type": "site-contribution-receipt", "receiptId": receipt["id"], "proposalId": b["certificateId"], "operationId": b["operationId"], "proposalTarget": b["target"], "verifiedAt": b["verifiedAt"], "created": b["created"], "expires": b["expires"]}
 	}
+	if text(content["type"]) == "site-contribution-rejection" {
+		value, err := sites.ParseContributionRejectionContent(map[string]any(content))
+		if err != nil {
+			return Content{"type": "site-contribution-rejection"}
+		}
+		rejection := value["rejection"].(map[string]any)
+		b := rejection["body"].(map[string]any)
+		return Content{"type": "site-contribution-rejection", "rejectionId": rejection["id"], "proposalId": b["certificateId"], "operationId": b["operationId"], "proposalTarget": b["target"], "decidedAt": b["decidedAt"], "expires": b["expires"]}
+	}
 	if text(content["type"]) == "site-contribution" {
 		value, err := sites.ParseContributionContent(map[string]any(content))
 		if err != nil {

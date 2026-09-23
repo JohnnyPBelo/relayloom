@@ -18,6 +18,7 @@ type contributionRuntime struct {
 	receiptSendCursor int
 	allowed           map[string]map[string]any
 	receiptAllowed    map[string]map[string]any
+	rejectionAllowed  map[string]map[string]any
 	published         map[string]int64
 	sources           map[string]contributionSourcePacket
 }
@@ -34,8 +35,14 @@ func (n *Node) contributionsLocked() (*contributionRuntime, error) {
 		return n.contributionRuntime, nil
 	}
 	owner := n.identity
-	n.contributionRuntime = &contributionRuntime{node: n, owner: owner, catalog: sites.NewContributionCatalog(n.siteDatabaseLocked(owner), *owner), incoming: sites.NewContributionInbox(n.siteDatabaseLocked(owner), *owner), allowed: map[string]map[string]any{}, receiptAllowed: map[string]map[string]any{}, published: map[string]int64{}, sources: map[string]contributionSourcePacket{}}
+	n.contributionRuntime = &contributionRuntime{node: n, owner: owner, catalog: sites.NewContributionCatalog(n.siteDatabaseLocked(owner), *owner), incoming: sites.NewContributionInbox(n.siteDatabaseLocked(owner), *owner), allowed: map[string]map[string]any{}, receiptAllowed: map[string]map[string]any{}, rejectionAllowed: map[string]map[string]any{}, published: map[string]int64{}, sources: map[string]contributionSourcePacket{}}
 	return n.contributionRuntime, nil
+}
+func (r *contributionRuntime) outcomeAllowed(kind string) map[string]map[string]any {
+	if kind == "receipt" {
+		return r.receiptAllowed
+	}
+	return r.rejectionAllowed
 }
 func (r *contributionRuntime) ensure() error {
 	if r.node.identity != r.owner || r.node.privateDatabase == nil {
@@ -105,9 +112,14 @@ func (r *contributionRuntime) stop(op map[string]any) {
 	}
 }
 func (r *contributionRuntime) revokeInvalid() {
+	for _, entry := range r.rejectionAllowed {
+		if r.permitOutcome(entry, "rejection") != nil {
+			r.stopOutcome(entry, "rejection")
+		}
+	}
 	for _, entry := range r.receiptAllowed {
-		if r.permitReceipt(entry) != nil {
-			r.stopReceipt(entry)
+		if r.permitOutcome(entry, "receipt") != nil {
+			r.stopOutcome(entry, "receipt")
 		}
 	}
 	for _, op := range r.allowed {
@@ -117,8 +129,12 @@ func (r *contributionRuntime) revokeInvalid() {
 	}
 }
 func (r *contributionRuntime) close() {
+	for _, entry := range r.rejectionAllowed {
+		r.stopOutcome(entry, "rejection")
+	}
+	r.rejectionAllowed = map[string]map[string]any{}
 	for _, entry := range r.receiptAllowed {
-		r.stopReceipt(entry)
+		r.stopOutcome(entry, "receipt")
 	}
 	r.receiptAllowed = map[string]map[string]any{}
 	for id := range r.allowed {
@@ -198,8 +214,11 @@ func (r *contributionRuntime) respondSource(id string) (bool, error) {
 	return false, nil
 }
 func (r *contributionRuntime) canServe(bundle core.Bundle) bool {
+	if bundle.Manifest.Kind == "site-contribution-rejection" {
+		return r.canServeOutcome(bundle, "rejection")
+	}
 	if bundle.Manifest.Kind == "site-contribution-receipt" {
-		return r.canServeReceipt(bundle)
+		return r.canServeOutcome(bundle, "receipt")
 	}
 	op, ok := r.allowed[bundle.Manifest.ID]
 	if !ok || op["phase"] != "queued" || r.permit(op) != nil {
@@ -350,6 +369,17 @@ func (r *contributionRuntime) command(body map[string]any) (any, error) {
 	}
 	if action == "inbox" && commandShape(body, []string{"action"}, "") {
 		return r.inbox()
+	}
+	if action == "reject" && commandShape(body, []string{"action", "id", "revision", "reason"}, "") && core.ValidAddress(text(body["id"])) {
+		revision, err := number(body["revision"])
+		if err != nil || revision < 0 {
+			return nil, errors.New("revisão inválida")
+		}
+		reason, err := sites.ParseContributionRejectionReason(body["reason"])
+		if err != nil {
+			return nil, err
+		}
+		return r.incoming.Reject(text(body["id"]), revision, reason, r.policy)
 	}
 	if action == "dismiss" && commandShape(body, []string{"action", "id", "revision"}, "") && core.ValidAddress(text(body["id"])) {
 		revision, err := number(body["revision"])
@@ -594,7 +624,7 @@ func (r *contributionRuntime) inbox() (any, error) {
 	return map[string]any{"items": items, "scope": "candidates", "durable": true, "management": management}, nil
 }
 
-func (r *contributionRuntime) permitReceipt(entry map[string]any) error {
+func (r *contributionRuntime) permitOutcome(entry map[string]any, kind string) error {
 	target := entry["target"].(map[string]any)
 	if err := r.policy(text(target["snapshotId"]), text(entry["contributorId"])); err != nil {
 		return err
@@ -602,7 +632,7 @@ func (r *contributionRuntime) permitReceipt(entry map[string]any) error {
 	if err := r.policy(text(target["snapshotId"]), r.owner.Public.ID); err != nil {
 		return err
 	}
-	op, ok := entry["receipt"].(map[string]any)
+	op, ok := entry[kind].(map[string]any)
 	if !ok || op["phase"] != "queued" {
 		return errors.New("recibo indisponível")
 	}
@@ -612,8 +642,8 @@ func (r *contributionRuntime) permitReceipt(entry map[string]any) error {
 	}
 	return nil
 }
-func (r *contributionRuntime) stopReceipt(entry map[string]any) {
-	op, ok := entry["receipt"].(map[string]any)
+func (r *contributionRuntime) stopOutcome(entry map[string]any, kind string) {
+	op, ok := entry[kind].(map[string]any)
 	if !ok {
 		return
 	}
@@ -622,16 +652,16 @@ func (r *contributionRuntime) stopReceipt(entry map[string]any) {
 		return
 	}
 	id := text(meta["bundleId"])
-	delete(r.receiptAllowed, id)
+	delete(r.outcomeAllowed(kind), id)
 	delete(r.published, id)
 	r.cancelPacket(id)
 }
-func (r *contributionRuntime) canServeReceipt(bundle core.Bundle) bool {
-	entry, ok := r.receiptAllowed[bundle.Manifest.ID]
-	if !ok || r.permitReceipt(entry) != nil {
+func (r *contributionRuntime) canServeOutcome(bundle core.Bundle, kind string) bool {
+	entry, ok := r.outcomeAllowed(kind)[bundle.Manifest.ID]
+	if !ok || r.permitOutcome(entry, kind) != nil {
 		return false
 	}
-	meta := entry["receipt"].(map[string]any)["transport"].(map[string]any)
+	meta := entry[kind].(map[string]any)["transport"].(map[string]any)
 	if meta["copied"] != true {
 		return false
 	}
@@ -639,29 +669,37 @@ func (r *contributionRuntime) canServeReceipt(bundle core.Bundle) bool {
 	if err != nil || core.Hash(bytes) != meta["bundleHash"] {
 		return false
 	}
-	value, err := inspectContributionReceipt(bundle, r.owner)
+	inspect := inspectContributionReceipt
+	if kind == "rejection" {
+		inspect = inspectContributionRejection
+	}
+	value, err := inspect(bundle, r.owner)
 	return err == nil && value != nil
 }
-func (r *contributionRuntime) finishReceipt(entry map[string]any) error {
-	op := entry["receipt"].(map[string]any)
+func (r *contributionRuntime) finishOutcome(entry map[string]any, kind string) error {
+	op := entry[kind].(map[string]any)
+	sign, seal, bundleFor, copied := r.incoming.SignReceipt, r.incoming.SealReceipt, r.incoming.ReceiptBundle, r.incoming.CopyReceipt
+	if kind == "rejection" {
+		sign, seal, bundleFor, copied = r.incoming.SignRejection, r.incoming.SealRejection, r.incoming.RejectionBundle, r.incoming.CopyRejection
+	}
 	var err error
 	id := text(entry["id"])
 	if op["phase"] == "prepared" {
-		entry, err = r.incoming.SignReceipt(id, r.policy)
+		entry, err = sign(id, r.policy)
 		if err != nil {
 			return err
 		}
 	}
-	if entry["receipt"].(map[string]any)["phase"] == "signed" {
-		entry, err = r.incoming.SealReceipt(id, r.policy)
+	if entry[kind].(map[string]any)["phase"] == "signed" {
+		entry, err = seal(id, r.policy)
 		if err != nil {
 			return err
 		}
 	}
-	if err = r.permitReceipt(entry); err != nil {
+	if err = r.permitOutcome(entry, kind); err != nil {
 		return err
 	}
-	bundle, err := r.incoming.ReceiptBundle(id, r.policy)
+	bundle, err := bundleFor(id, r.policy)
 	if err != nil {
 		return err
 	}
@@ -678,19 +716,19 @@ func (r *contributionRuntime) finishReceipt(entry map[string]any) error {
 	if err = core.VerifyBundle(actual); err != nil {
 		return err
 	}
-	entry, err = r.incoming.CopyReceipt(id, actual, r.policy)
+	entry, err = copied(id, actual, r.policy)
 	if err != nil {
 		return err
 	}
-	r.receiptAllowed[actual.Manifest.ID] = entry
-	if !r.canServeReceipt(actual) {
-		r.stopReceipt(entry)
+	r.outcomeAllowed(kind)[actual.Manifest.ID] = entry
+	if !r.canServeOutcome(actual, kind) {
+		r.stopOutcome(entry, kind)
 		return errors.New("recibo suspenso pela política actual")
 	}
 	now := time.Now().UnixMilli()
 	if now-r.published[actual.Manifest.ID] >= 30000 {
 		if _, err = r.node.Router.Broadcast(map[string]any{"type": "bundle", "bundle": actual}, transport.Normal, 2*time.Minute, false); err != nil {
-			r.stopReceipt(entry)
+			r.stopOutcome(entry, kind)
 			return err
 		}
 		r.published[actual.Manifest.ID] = now
@@ -706,26 +744,35 @@ func (r *contributionRuntime) flushReceipts() error {
 	for id := range r.receiptAllowed {
 		prior[id] = true
 	}
-	active := []map[string]any{}
+	for id := range r.rejectionAllowed {
+		prior[id] = true
+	}
+	type control struct {
+		entry map[string]any
+		kind  string
+	}
+	active := []control{}
 	for _, raw := range state["entries"].([]any) {
 		entry := raw.(map[string]any)
-		op, ok := entry["receipt"].(map[string]any)
-		if !ok || op["phase"] == "expired" {
-			continue
+		for _, kind := range []string{"receipt", "rejection"} {
+			op, ok := entry[kind].(map[string]any)
+			if !ok || op["phase"] == "expired" {
+				continue
+			}
+			if meta, ok := op["transport"].(map[string]any); ok {
+				delete(prior, text(meta["bundleId"]))
+			}
+			active = append(active, control{entry, kind})
 		}
-		if meta, ok := op["transport"].(map[string]any); ok {
-			delete(prior, text(meta["bundleId"]))
-		}
-		active = append(active, entry)
 	}
 	if len(active) > 0 {
 		start := r.receiptSendCursor % len(active)
 		count := min(8, len(active))
 		r.receiptSendCursor = (start + count) % len(active)
 		for i := 0; i < count; i++ {
-			entry := active[(start+i)%len(active)]
-			if err = r.finishReceipt(entry); err != nil {
-				r.stopReceipt(entry)
+			current := active[(start+i)%len(active)]
+			if err = r.finishOutcome(current.entry, current.kind); err != nil {
+				r.stopOutcome(current.entry, current.kind)
 				if e := r.ensure(); e != nil {
 					return e
 				}
@@ -734,6 +781,7 @@ func (r *contributionRuntime) flushReceipts() error {
 	}
 	for id := range prior {
 		delete(r.receiptAllowed, id)
+		delete(r.rejectionAllowed, id)
 		delete(r.published, id)
 		r.cancelPacket(id)
 	}
@@ -762,26 +810,54 @@ func (r *contributionRuntime) receiveReceipt(bundle core.Bundle) error {
 	return nil
 }
 
+func (r *contributionRuntime) receiveRejection(bundle core.Bundle) error {
+	if err := r.ensure(); err != nil {
+		return err
+	}
+	content, err := inspectContributionRejection(bundle, r.owner)
+	if err != nil {
+		return err
+	}
+	if content == nil {
+		return nil
+	}
+	body := content["rejection"].(map[string]any)["body"].(map[string]any)
+	if body["contributorId"] != r.owner.Public.ID {
+		return nil
+	}
+	op, err := r.catalog.ReceiveRejection(bundle, r.policy)
+	if err != nil {
+		return err
+	}
+	r.stop(op)
+	return nil
+}
+
 func (r *contributionRuntime) recoverReceipts(state map[string]any) error {
-	owners := map[string]bool{}
+	owners := map[string]map[string]bool{"site-contribution-receipt": {}, "site-contribution-rejection": {}}
 	for _, raw := range state["operations"].([]any) {
 		op := raw.(map[string]any)
 		meta, ok := op["transport"].(map[string]any)
-		if !ok || meta["copied"] != true || op["receipt"] != nil {
+		if !ok || meta["copied"] != true {
 			continue
 		}
 		owner, _, err := sites.ParseAddress(text(op["target"].(map[string]any)["site"]))
 		if err != nil {
 			return err
 		}
-		owners[owner] = true
+		if op["receipt"] == nil {
+			owners["site-contribution-receipt"][owner] = true
+		}
+		if op["rejection"] == nil {
+			owners["site-contribution-rejection"][owner] = true
+		}
 	}
-	if len(owners) == 0 {
+	if len(owners["site-contribution-receipt"])+len(owners["site-contribution-rejection"]) == 0 {
 		return nil
 	}
 	candidates := []string{}
 	for _, m := range r.node.Store.List() {
-		if m.Kind != "site-contribution-receipt" || !owners[m.Author.ID] {
+		if !owners[m.Kind][m.Author.ID] {
 			continue
 		}
 		for _, k := range m.Keys {
@@ -800,7 +876,11 @@ func (r *contributionRuntime) recoverReceipts(state map[string]any) error {
 	for i := 0; i < count; i++ {
 		bundle, err := r.node.Store.GetWithTouch(candidates[(start+i)%len(candidates)], false)
 		if err == nil {
-			err = r.receiveReceipt(bundle)
+			if bundle.Manifest.Kind == "site-contribution-rejection" {
+				err = r.receiveRejection(bundle)
+			} else {
+				err = r.receiveReceipt(bundle)
+			}
 		}
 		if err != nil {
 			if e := r.ensure(); e != nil {

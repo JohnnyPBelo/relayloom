@@ -18,7 +18,11 @@ try {
     transaction<T>(fn: (tx: any) => T): T {
       return store.transaction((tx) => {
         const result = fn(tx);
-        if (f.mode === "before-receipt-commit") process.exit(93);
+        if (
+          f.mode === "before-receipt-commit" ||
+          f.mode === "before-rejection-commit"
+        )
+          process.exit(93);
         return result;
       });
     },
@@ -28,8 +32,12 @@ try {
       f.identity,
       () => f.now,
     ),
-    result = catalog.receiveReceipt(f.bundle, () => {});
-  if (f.mode === "after-receipt") process.exit(94);
+    result =
+      f.kind === "rejection"
+        ? catalog.receiveRejection(f.bundle, () => {})
+        : catalog.receiveReceipt(f.bundle, () => {});
+  if (f.mode === "after-receipt" || f.mode === "after-rejection")
+    process.exit(94);
   writeFileSync(f.output, JSON.stringify(result), { mode: 0o600 });
 } finally {
   store.close();

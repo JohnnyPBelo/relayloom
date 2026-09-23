@@ -1,3 +1,4 @@
+import { createContributionRejectionProtocol } from "./contribution-rejection";
 import { createContributionReceiptProtocol } from "./contribution-receipt";
 import { createContributionEnvelopeProtocol } from "./contribution-envelope";
 import { createBundleAt } from "../../core/src/index";
@@ -41,7 +42,10 @@ const registry = createContributionOperations(nodeCertificateCrypto),
   resolver = createContributionContextResolver(nodeCertificateCrypto),
   protocol = createSiteContributionProtocol(nodeCertificateCrypto),
   envelopes = createContributionEnvelopeProtocol(nodeCertificateCrypto),
-  receiptEnvelopes = createContributionReceiptProtocol(nodeCertificateCrypto);
+  receiptEnvelopes = createContributionReceiptProtocol(nodeCertificateCrypto),
+  rejectionEnvelopes = createContributionRejectionProtocol(
+    nodeCertificateCrypto,
+  );
 const pending = (op: ContributionOperation) =>
   op.phase === "prepared" || op.phase === "signed";
 function insist(ok: unknown, reason: string): asserts ok {
@@ -255,6 +259,43 @@ export class NodeContributionCatalog {
         record,
         this.identity.public.id,
         receipt,
+        now,
+      );
+      if (!result.changed) return result.operation;
+      const previous = record.operations.find(
+        (op) => op.sequence === result.operation.sequence,
+      )!;
+      if (previous.phase === "queued") {
+        this.queuedStage(values, record, previous);
+        values.remove(this.queueKey(previous));
+      }
+      values.write(this.key + ":record", result.record);
+      return result.operation;
+    });
+  }
+  receiveRejection(
+    input: Bundle,
+    allow: (snapshotId: string, ownerId: string) => void,
+  ) {
+    const bundle = JSON.parse(canonical(input)) as Bundle;
+    verifyStoredBundle(bundle);
+    const rejection = rejectionEnvelopes.matchEnvelope(
+      bundle,
+      decryptStoredBundle(bundle, this.identity),
+    ).rejection;
+    return this.run((values, record) => {
+      const b = rejection.body;
+      allow(b.target.snapshotId, b.owner.id);
+      const now = this.now();
+      if (
+        bundle.manifest.expires <= now ||
+        bundle.manifest.created - now > SITE_CONTRIBUTION_LIMITS.clockSkewMs
+      )
+        throw Error("Recusa fora do prazo de admissão");
+      const result = registry.receiveRejection(
+        record,
+        this.identity.public.id,
+        rejection,
         now,
       );
       if (!result.changed) return result.operation;

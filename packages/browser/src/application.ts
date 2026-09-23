@@ -1,3 +1,8 @@
+import { createContributionRejectionProtocol } from "../../sites/src/contribution-rejection";
+import {
+  summarizeContributionRejection,
+  contributionRejectionManifestPolicy,
+} from "../../content/src/rejection-content";
 import { createContributionReceiptProtocol } from "../../sites/src/contribution-receipt";
 import {
   contributionReceiptManifestPolicy,
@@ -383,6 +388,10 @@ export class BrowserApplication {
         bundle,
         content,
       );
+    if (content.type === "site-contribution-rejection")
+      createContributionRejectionProtocol(
+        browserCertificateCrypto,
+      ).matchEnvelope(bundle, content);
     return {
       id: bundle.manifest.id,
       kind: bundle.manifest.kind,
@@ -397,6 +406,8 @@ export class BrowserApplication {
   }
   private summary(o: DisplayObject): DisplayObject {
     const result = structuredClone(o);
+    if (result.kind === "site-contribution-rejection")
+      result.content = summarizeContributionRejection(result.content);
     if (result.kind === "site-contribution-receipt")
       result.content = summarizeContributionReceipt(result.content);
     if (result.kind === "site-contribution")
@@ -630,14 +641,18 @@ export class BrowserApplication {
       bundle = await this.profile.getBundle(id);
     this.guard(generation);
     if (
-      ["site-contribution", "site-contribution-receipt"].includes(
-        bundle.manifest.kind,
-      )
+      [
+        "site-contribution",
+        "site-contribution-receipt",
+        "site-contribution-rejection",
+      ].includes(bundle.manifest.kind)
     ) {
       if (
         !(bundle.manifest.kind === "site-contribution"
           ? contributionManifestPolicy(bundle.manifest)
-          : contributionReceiptManifestPolicy(bundle.manifest))
+          : bundle.manifest.kind === "site-contribution-receipt"
+            ? contributionReceiptManifestPolicy(bundle.manifest)
+            : contributionRejectionManifestPolicy(bundle.manifest))
       )
         throw Error("Envelope de proposta inválido");
       if (
@@ -667,6 +682,11 @@ export class BrowserApplication {
     )
       throw Error("Recibos exigem um envelope privado limitado");
     if (
+      bundle.manifest.kind === "site-contribution-rejection" &&
+      !contributionRejectionManifestPolicy(bundle.manifest)
+    )
+      throw Error("Recibos exigem um envelope privado limitado");
+    if (
       bundle.manifest.kind === "site-contribution" &&
       !contributionManifestPolicy(bundle.manifest)
     )
@@ -687,6 +707,7 @@ export class BrowserApplication {
           "site-resource",
           "site-contribution",
           "site-contribution-receipt",
+          "site-contribution-rejection",
         ].includes(bundle.manifest.kind) &&
         (bundle.manifest.publicKey !== null ||
           bundle.manifest.keys.some((k) => k.reader === owner.id))
@@ -742,6 +763,14 @@ export class BrowserApplication {
       const admitted = await this.#contributions.receiveReceipt(bundle);
       this.guard(generation);
       if (!admitted) return bundle.manifest.id;
+    } else if (
+      bundle.manifest.kind === "site-contribution-rejection" &&
+      object
+    ) {
+      if (!this.#contributions) throw Error("Sessão de propostas bloqueada");
+      const admitted = await this.#contributions.receiveRejection(bundle);
+      this.guard(generation);
+      if (!admitted) return bundle.manifest.id;
     } else if (bundle.manifest.kind === "site") {
       if (!this.#contributions) throw Error("Sessão de propostas bloqueada");
       await this.#contributions.receiveSource(bundle);
@@ -795,7 +824,11 @@ export class BrowserApplication {
       content = JSON.parse(canonical(raw)) as Content;
     await this.validateContent(content);
     if (
-      ["site-contribution", "site-contribution-receipt"].includes(content.type)
+      [
+        "site-contribution",
+        "site-contribution-receipt",
+        "site-contribution-rejection",
+      ].includes(content.type)
     )
       throw Error("Envia propostas através do comando de contribuições");
     if (content.type === "site-resource")

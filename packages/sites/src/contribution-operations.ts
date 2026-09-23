@@ -1,4 +1,8 @@
 import {
+  createContributionRejectionProtocol,
+  type ContributionRejection,
+} from "./contribution-rejection";
+import {
   createContributionReceiptProtocol,
   type ContributionReceipt,
 } from "./contribution-receipt";
@@ -43,8 +47,15 @@ export interface ContributionOperation {
   operationId: string;
   fingerprint: string;
   phase:
-    "prepared" | "signed" | "queued" | "cancelled" | "expired" | "received";
+    | "prepared"
+    | "signed"
+    | "queued"
+    | "cancelled"
+    | "expired"
+    | "received"
+    | "rejected";
   receipt?: ContributionReceipt;
+  rejection?: ContributionRejection;
   target: ContributionTarget;
   schemaHash: string;
   created: number;
@@ -82,15 +93,17 @@ function insist(ok: unknown, reason: string): asserts ok {
 /** Authentic wire fact with no matching authorised local operation. This is a
  * local admission refusal, not a malformed transport frame or stored corruption. */
 export class UnmatchedContributionReceipt extends Error {}
+export class UnmatchedContributionRejection extends Error {}
 /** Pure local journal transitions. Signing-owned storage and original snapshot
  * validation are mandatory in the catalogue; this record is never wire authority. */
 export function createContributionOperations(crypto: CertificateCrypto) {
   const protocol = createSiteContributionProtocol(crypto),
-    receipts = createContributionReceiptProtocol(crypto);
-  function receiptMatches(
+    receipts = createContributionReceiptProtocol(crypto),
+    rejections = createContributionRejectionProtocol(crypto);
+  function outcomeMatches(
     op: ContributionOperation,
     ownerId: string,
-    receipt: ContributionReceipt,
+    receipt: ContributionReceipt | ContributionRejection,
   ) {
     const r = receipt.body;
     return (
@@ -112,10 +125,22 @@ export function createContributionOperations(crypto: CertificateCrypto) {
   ) {
     const receipt = receipts.verify(input);
     insist(
-      receiptMatches(op, ownerId, receipt),
+      outcomeMatches(op, ownerId, receipt),
       "recibo de operação não enviada ou diferente",
     );
     return receipt;
+  }
+  function bindRejection(
+    op: ContributionOperation,
+    ownerId: string,
+    input: unknown,
+  ) {
+    const rejection = rejections.verify(input);
+    insist(
+      outcomeMatches(op, ownerId, rejection),
+      "recusa de operação não enviada ou diferente",
+    );
+    return rejection;
   }
   function request(input: unknown, ownerId: string) {
     insist(
@@ -231,6 +256,7 @@ export function createContributionOperations(crypto: CertificateCrypto) {
     for (const op of ops) {
       const fields = [
         ...(Object.hasOwn(op, "receipt") ? ["receipt"] : []),
+        ...(Object.hasOwn(op, "rejection") ? ["rejection"] : []),
         "sequence",
         "operationId",
         "fingerprint",
@@ -263,6 +289,7 @@ export function createContributionOperations(crypto: CertificateCrypto) {
           "cancelled",
           "expired",
           "received",
+          "rejected",
         ].includes(op.phase) &&
           clock(op.created) &&
           clock(op.expires) &&
@@ -325,10 +352,18 @@ export function createContributionOperations(crypto: CertificateCrypto) {
       if (Object.hasOwn(op, "receipt")) {
         bindReceipt(op, ownerId, op.receipt);
         insist(
-          ["received", "cancelled", "expired"].includes(op.phase),
+          ["received", "rejected", "cancelled", "expired"].includes(op.phase),
           "recibo ainda em fila",
         );
       }
+      if (Object.hasOwn(op, "rejection")) {
+        bindRejection(op, ownerId, op.rejection);
+        insist(
+          ["rejected", "cancelled", "expired"].includes(op.phase),
+          "recusa ainda em fila",
+        );
+      }
+      insist(op.phase !== "rejected" || op.rejection, "recusa sem prova");
       insist(op.phase !== "received" || op.receipt, "recepção sem recibo");
       if (op.phase === "queued") {
         insist(op.transport, "intenção de transporte em falta");
@@ -615,13 +650,13 @@ export function createContributionOperations(crypto: CertificateCrypto) {
         receipt.body.created - now <= SITE_CONTRIBUTION_LIMITS.clockSkewMs,
       "recibo expirado ou futuro",
     );
-    if (!op || !receiptMatches(op, ownerId, receipt))
+    if (!op || !outcomeMatches(op, ownerId, receipt))
       throw new UnmatchedContributionReceipt(
         "Recibo sem operação enviada correspondente",
       );
     if (op.receipt) return { record, operation: op, changed: false };
     insist(
-      ["queued", "cancelled", "expired"].includes(op.phase),
+      ["queued", "rejected", "cancelled", "expired"].includes(op.phase),
       "operação não autorizada para transporte",
     );
     op.receipt = receipt;
@@ -633,7 +668,43 @@ export function createContributionOperations(crypto: CertificateCrypto) {
       changed: true,
     };
   }
+  function receiveRejection(
+    input: unknown,
+    ownerId: string,
+    certificate: unknown,
+    now: number,
+  ) {
+    const record = validate(input, ownerId),
+      rejection = rejections.verify(certificate),
+      op = record.operations.find(
+        (op) => op.operationId === rejection.body.operationId,
+      );
+    insist(
+      clock(now) &&
+        rejection.body.expires > now &&
+        rejection.body.decidedAt - now <= SITE_CONTRIBUTION_LIMITS.clockSkewMs,
+      "recusa expirada ou futura",
+    );
+    if (!op || !outcomeMatches(op, ownerId, rejection))
+      throw new UnmatchedContributionRejection(
+        "Recusa sem operação enviada correspondente",
+      );
+    if (op.rejection) return { record, operation: op, changed: false };
+    insist(
+      ["queued", "received", "cancelled", "expired"].includes(op.phase),
+      "operação não autorizada para transporte",
+    );
+    op.rejection = rejection;
+    if (op.phase === "queued" || op.phase === "received") op.phase = "rejected";
+    const next = validate(record, ownerId);
+    return {
+      record: next,
+      operation: next.operations.find((e) => e.sequence === op.sequence)!,
+      changed: true,
+    };
+  }
   return {
+    receiveRejection,
     receive,
     initial,
     validate,

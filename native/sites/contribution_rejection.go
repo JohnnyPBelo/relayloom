@@ -13,6 +13,13 @@ const ContributionRejectionLifetimeMS int64 = 30 * 86400000
 
 var rejectionFields = []string{"contributorId", "certificateId", "operationId", "target", "proposalCreated", "proposalExpires", "decidedAt", "reason", "expires"}
 
+func ParseContributionRejectionReason(value any) (string, error) {
+	reason, ok := value.(string)
+	if !ok || docLength(reason) > ContributionRejectionReasonUnits {
+		return "", rejectionError()
+	}
+	return reason, nil
+}
 func rejectionError() error { return errors.New("recusa de proposta inválida") }
 func rejectionBody(value any) (map[string]any, core.PublicIdentity, error) {
 	var none core.PublicIdentity
@@ -52,8 +59,7 @@ func rejectionBody(value any) (map[string]any, core.PublicIdentity, error) {
 	if pe <= pc || pe-pc > ContributionLifetimeMS || pc-decided > ContributionClockSkewMS || expires <= decided || expires-decided > ContributionRejectionLifetimeMS {
 		return nil, none, rejectionError()
 	}
-	reason, ok := b["reason"].(string)
-	if !ok || docLength(reason) > ContributionRejectionReasonUnits {
+	if _, err := ParseContributionRejectionReason(b["reason"]); err != nil {
 		return nil, none, rejectionError()
 	}
 	if _, err = bounded(b, ContributionRejectionBytes); err != nil {

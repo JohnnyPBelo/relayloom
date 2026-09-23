@@ -84,7 +84,7 @@ func ValidateContributionRecord(value any, owner string) (map[string]any, error)
 	for i, raw := range ops {
 		fields := []string{"sequence", "operationId", "fingerprint", "phase", "target", "schemaHash", "created", "expires", "certificateId"}
 		if m, ok := raw.(map[string]any); ok {
-			for _, key := range []string{"transport", "receipt"} {
+			for _, key := range []string{"transport", "receipt", "rejection"} {
 				if _, present := m[key]; present {
 					fields = append(fields, key)
 				}
@@ -103,7 +103,7 @@ func ValidateContributionRecord(value any, owner string) (map[string]any, error)
 		created, e1 := contributionClock(op["created"])
 		expires, e2 := contributionClock(op["expires"])
 		phase := docTextValue(op["phase"])
-		if e1 != nil || e2 != nil || expires <= created || expires-created > ContributionLifetimeMS || !docContains([]string{"prepared", "signed", "queued", "cancelled", "expired", "received"}, phase) {
+		if e1 != nil || e2 != nil || expires <= created || expires-created > ContributionLifetimeMS || !docContains([]string{"prepared", "signed", "queued", "cancelled", "expired", "received", "rejected"}, phase) {
 			return nil, contributionJournalError()
 		}
 		if _, err = contributionTarget(op["target"]); err != nil {
@@ -135,9 +135,20 @@ func ValidateContributionRecord(value any, owner string) (map[string]any, error)
 			if _, err = bindContributionReceipt(op, owner, receipt); err != nil {
 				return nil, err
 			}
-			if !docContains([]string{"received", "cancelled", "expired"}, phase) {
+			if !docContains([]string{"received", "rejected", "cancelled", "expired"}, phase) {
 				return nil, creationError()
 			}
+		}
+		if rejection, present := op["rejection"]; present {
+			if _, err = bindContributionRejection(op, owner, rejection); err != nil {
+				return nil, err
+			}
+			if !docContains([]string{"rejected", "cancelled", "expired"}, phase) {
+				return nil, creationError()
+			}
+		}
+		if phase == "rejected" && op["rejection"] == nil {
+			return nil, creationError()
 		}
 		if phase == "received" && op["receipt"] == nil {
 			return nil, creationError()
@@ -452,12 +463,78 @@ func ReceiveContributionReceipt(value any, owner string, input any, now int64) (
 	if op["receipt"] != nil {
 		return record, op, false, nil
 	}
-	if !docContains([]string{"queued", "cancelled", "expired"}, docTextValue(op["phase"])) {
+	if !docContains([]string{"queued", "rejected", "cancelled", "expired"}, docTextValue(op["phase"])) {
 		return nil, nil, false, creationError()
 	}
 	op["receipt"] = receipt
 	if op["phase"] == "queued" {
 		op["phase"] = "received"
+	}
+	next, err := ValidateContributionRecord(record, owner)
+	if err != nil {
+		return nil, nil, false, err
+	}
+	for _, raw := range next["operations"].([]any) {
+		candidate := raw.(map[string]any)
+		if candidate["operationId"] == op["operationId"] {
+			return next, candidate, true, nil
+		}
+	}
+	return nil, nil, false, creationError()
+}
+
+func bindContributionRejection(op map[string]any, owner string, input any) (map[string]any, error) {
+	rejection, err := VerifyContributionRejection(input)
+	if err != nil {
+		return nil, err
+	}
+	r := rejection["body"].(map[string]any)
+	transport, ok := op["transport"].(map[string]any)
+	target := op["target"].(map[string]any)
+	siteOwner, _, _ := ParseAddress(docTextValue(target["site"]))
+	if !ok || transport["copied"] != true || op["certificateId"] == nil || r["certificateId"] != op["certificateId"] || r["contributorId"] != owner || r["operationId"] != op["operationId"] || !creationEqual(r["target"], target) || !creationEqual(r["proposalCreated"], op["created"]) || !creationEqual(r["proposalExpires"], op["expires"]) || r["owner"].(map[string]any)["id"] != siteOwner {
+		return nil, creationError()
+	}
+	return rejection, nil
+}
+func ReceiveContributionRejection(value any, owner string, input any, now int64) (map[string]any, map[string]any, bool, error) {
+	record, err := ValidateContributionRecord(value, owner)
+	if err != nil {
+		return nil, nil, false, err
+	}
+	rejection, err := VerifyContributionRejection(input)
+	if err != nil {
+		return nil, nil, false, err
+	}
+	body := rejection["body"].(map[string]any)
+	created, _ := contributionClock(body["decidedAt"])
+	expires, _ := contributionClock(body["expires"])
+	if now < 0 || now > MaxSequence || expires <= now || created-now > ContributionClockSkewMS {
+		return nil, nil, false, creationError()
+	}
+	var op map[string]any
+	for _, raw := range record["operations"].([]any) {
+		candidate := raw.(map[string]any)
+		if candidate["operationId"] == body["operationId"] {
+			op = candidate
+			break
+		}
+	}
+	if op == nil {
+		return nil, nil, false, creationError()
+	}
+	if _, err = bindContributionRejection(op, owner, rejection); err != nil {
+		return nil, nil, false, err
+	}
+	if op["rejection"] != nil {
+		return record, op, false, nil
+	}
+	if !docContains([]string{"queued", "received", "cancelled", "expired"}, docTextValue(op["phase"])) {
+		return nil, nil, false, creationError()
+	}
+	op["rejection"] = rejection
+	if op["phase"] == "queued" || op["phase"] == "received" {
+		op["phase"] = "rejected"
 	}
 	next, err := ValidateContributionRecord(record, owner)
 	if err != nil {

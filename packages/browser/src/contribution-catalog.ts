@@ -1,3 +1,4 @@
+import { createContributionRejectionProtocol } from "../../sites/src/contribution-rejection";
 import { createContributionReceiptProtocol } from "../../sites/src/contribution-receipt";
 import { createContributionEnvelopeProtocol } from "../../sites/src/contribution-envelope";
 import {
@@ -36,6 +37,9 @@ const registry = createContributionOperations(browserCertificateCrypto),
   resolver = createContributionContextResolver(browserCertificateCrypto),
   protocol = createSiteContributionProtocol(browserCertificateCrypto),
   envelopes = createContributionEnvelopeProtocol(browserCertificateCrypto),
+  rejectionEnvelopes = createContributionRejectionProtocol(
+    browserCertificateCrypto,
+  ),
   receiptEnvelopes = createContributionReceiptProtocol(
     browserCertificateCrypto,
   );
@@ -285,6 +289,62 @@ export class BrowserContributionCatalog {
         await values.remove(this.queueKey(previous));
         this.ensure();
       }
+      values.set(this.key + ":record", result.record);
+      return result.operation;
+    });
+  }
+  async receiveRejection(input: Bundle, allow: Policy) {
+    const bundle = await verifiedStoredBundle(
+      JSON.parse(canonical(input)) as Bundle,
+    );
+    this.ensure();
+    const plaintext = await this.profile.decryptStaging(bundle);
+    this.ensure();
+    const rejection = rejectionEnvelopes.matchEnvelope(
+      bundle,
+      plaintext,
+    ).rejection;
+    return this.run(async (values, record) => {
+      const b = rejection.body;
+      await allow(values, b.target.snapshotId, b.owner.id);
+      this.ensure();
+      const now = this.now();
+      if (
+        bundle.manifest.expires <= now ||
+        bundle.manifest.created - now > SITE_CONTRIBUTION_LIMITS.clockSkewMs
+      )
+        throw Error("Recusa fora do prazo de admissão");
+      let result = registry.receiveRejection(
+        record,
+        this.owner.id,
+        rejection,
+        now,
+      );
+      if (!result.changed) return result.operation;
+      const previous = record.operations.find(
+        (op) => op.sequence === result.operation.sequence,
+      )!;
+      if (previous.phase === "queued") {
+        await this.queuedStage(values, record, previous);
+        this.ensure();
+        // The proof may take time to decrypt; never admit beyond the rejection's deadline.
+        result = registry.receiveRejection(
+          record,
+          this.owner.id,
+          rejection,
+          this.now(),
+        );
+        await values.remove(this.queueKey(previous));
+        this.ensure();
+      }
+      await allow(values, b.target.snapshotId, b.owner.id);
+      this.ensure();
+      result = registry.receiveRejection(
+        record,
+        this.owner.id,
+        rejection,
+        this.now(),
+      );
       values.set(this.key + ":record", result.record);
       return result.operation;
     });

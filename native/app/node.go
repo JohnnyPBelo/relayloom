@@ -472,6 +472,9 @@ func (n *Node) receiveLocked(delivery transport.Delivery) error {
 		if _, err = inspectContributionReceipt(b, n.identity); err != nil {
 			return err
 		}
+		if _, err = inspectContributionRejection(b, n.identity); err != nil {
+			return err
+		}
 		if contains(n.config.Blocked, b.Manifest.Author.ID) && b.Manifest.Kind != "group-control" && b.Manifest.Kind != "group-notice" {
 			return nil
 		}
@@ -524,13 +527,15 @@ func (n *Node) receiveLocked(delivery transport.Delivery) error {
 				}
 			}
 		}
-		if n.identity != nil && (b.Manifest.Kind == "site-contribution" || b.Manifest.Kind == "site" || b.Manifest.Kind == "site-contribution-receipt") {
+		if n.identity != nil && (b.Manifest.Kind == "site-contribution" || b.Manifest.Kind == "site" || b.Manifest.Kind == "site-contribution-receipt" || b.Manifest.Kind == "site-contribution-rejection") {
 			r, e := n.contributionsLocked()
 			if e != nil {
 				return e
 			}
 			if b.Manifest.Kind == "site-contribution" {
 				e = r.receive(b)
+			} else if b.Manifest.Kind == "site-contribution-rejection" {
+				e = r.receiveRejection(b)
 			} else if b.Manifest.Kind == "site-contribution-receipt" {
 				e = r.receiveReceipt(b)
 			} else {
@@ -730,6 +735,11 @@ func (n *Node) displayLocked(bundle core.Bundle) (*DisplayObject, error) {
 	}
 	if manifest.Kind == "site-contribution-receipt" {
 		if _, err = sites.MatchContributionReceiptEnvelope(bundle, m); err != nil {
+			return nil, err
+		}
+	}
+	if manifest.Kind == "site-contribution-rejection" {
+		if _, err = sites.MatchContributionRejectionEnvelope(bundle, m); err != nil {
 			return nil, err
 		}
 	}
@@ -1058,7 +1068,7 @@ type preparedPublication struct {
 }
 
 func (n *Node) prepareLocked(content Content, recipients any, ttlMS int64) (*preparedPublication, error) {
-	if text(content["type"]) == "site-contribution" || text(content["type"]) == "site-contribution-receipt" {
+	if text(content["type"]) == "site-contribution" || text(content["type"]) == "site-contribution-receipt" || text(content["type"]) == "site-contribution-rejection" {
 		return nil, errors.New("envia propostas através do comando de contribuições")
 	}
 	if text(content["type"]) == "site-resource" {

@@ -46,6 +46,16 @@ func TestContributionOperationsWorker(t *testing.T) {
 			var changed bool
 			record, op, changed, check = ReceiveContributionReceipt(v["record"], owner, v["receipt"], receiptNow)
 			result = map[string]any{"record": record, "operation": op, "changed": changed}
+		case "receiveRejection":
+			rejectionNow, err := contributionClock(v["now"])
+			if err != nil {
+				check = err
+				break
+			}
+			var record, op map[string]any
+			var changed bool
+			record, op, changed, check = ReceiveContributionRejection(v["record"], owner, v["rejection"], rejectionNow)
+			result = map[string]any{"record": record, "operation": op, "changed": changed}
 		case "initial":
 			result, check = InitialContributionRecord(owner)
 		case "request":

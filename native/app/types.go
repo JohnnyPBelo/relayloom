@@ -264,6 +264,10 @@ func validateContent(c Content) error {
 		_, err := sites.ParseContributionReceiptContent(map[string]any(c))
 		return err
 	}
+	if kind == "site-contribution-rejection" {
+		_, err := sites.ParseContributionRejectionContent(map[string]any(c))
+		return err
+	}
 	if kind == "site-contribution" {
 		_, err := sites.ParseContributionContent(map[string]any(c))
 		return err
