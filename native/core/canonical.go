@@ -32,6 +32,9 @@ func Canonical(value any) ([]byte, error) {
 	if err := appendCanonical(&out, reflect.ValueOf(value), 0); err != nil {
 		return nil, err
 	}
+	if out.Len() > maxCanonicalBytes {
+		return nil, errors.New("JSON demasiado grande")
+	}
 	return out.Bytes(), nil
 }
 
@@ -201,6 +204,25 @@ func appendString(out *bytes.Buffer, s string) error {
 	out.WriteByte('"')
 	const digits = "0123456789abcdef"
 	for at := 0; at < len(s); {
+		// Base64 attachments and most JSON text contain long unescaped ASCII
+		// runs. Preserve the existing Unicode/WTF-8 path for every other byte.
+		begin := at
+		for at < len(s) {
+			c := s[at]
+			if c < 32 || c >= utf8.RuneSelf || c == '"' || c == '\\' {
+				break
+			}
+			at++
+		}
+		if at > begin {
+			if at-begin > maxCanonicalBytes-out.Len() {
+				return errors.New("JSON demasiado grande")
+			}
+			out.WriteString(s[begin:at])
+			if at == len(s) {
+				break
+			}
+		}
 		r, n, err := stringRune(s, at)
 		if err != nil {
 			return err
