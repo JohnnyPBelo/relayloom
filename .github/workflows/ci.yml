@@ -198,7 +198,14 @@ jobs:
   autonomous-browser:
     needs: reticulum-reference
     runs-on: ubuntu-latest
+    # Run35794083324 passed 151/152 before the cumulative 15m deadline.
+    # Preserve all tests and per-case limits; run two disjoint shards sequentially.
     timeout-minutes: 15
+    strategy:
+      max-parallel: 1
+      fail-fast: false
+      matrix:
+        shard: [1, 2]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -209,15 +216,23 @@ jobs:
           go-version: "1.26.8"
           cache: false
       - run: npm ci --ignore-scripts
+      - name: Prove both browser shards cover the full discovered suite exactly once
+        run: node scripts/verify-browser-shards.mjs
+        env:
+          RELAYLOOM_BROWSER_CHANNEL: chrome
       - name: Autonomous browser application, offline storage and actual WebRTC/WS peers
-        run: npm run test:browser
+        run: |
+          npm run build
+          npm run native:build
+          node scripts/e2e.mjs --config tests/browser/browser.config.ts --shard=${{ matrix.shard }}/2
         env:
           RELAYLOOM_BROWSER_CHANNEL: chrome
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: autonomous-browser-evidence
+          name: autonomous-browser-evidence-${{ matrix.shard }}
           path: |
+            .cache/browser-shards/*.json
             .cache/browser-foundation/crypto-scope.json
             .cache/browser-foundation/rtc-scope.json
             .cache/browser-foundation/playwright.json
