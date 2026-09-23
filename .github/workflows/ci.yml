@@ -13,6 +13,9 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
+        # Run35888318827 exhausted the cumulative Windows job budget after
+        # case522. Keep every test and the15m limit; run disjoint root suites.
+        suite: [foundation, sites]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -28,11 +31,11 @@ jobs:
       - run: npm run build
       - name: Build the Go peer required by controller and runtime-selection tests
         run: npm run native:build
-      - run: npm test
+      - run: node scripts/test-node-partition.mjs ${{ matrix.suite }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: evidence-${{ matrix.os }}
+          name: evidence-${{ matrix.os }}-${{ matrix.suite }}
           path: |
             docs/evidence
             test-results

@@ -1,0 +1,25 @@
+{
+  "head": "44e759cfd308d160b156190164e7342214e7a77a",
+  "run": 35888318827,
+  "url": "https://github.com/JohnnyPBelo/relayloom/actions/runs/35888318827",
+  "conclusion": "cancelled",
+  "ubuntu": {
+    "tests": 540,
+    "pass": 540,
+    "fail": 0,
+    "seconds": 664.542075963
+  },
+  "macos": {
+    "tests": 540,
+    "pass": 540,
+    "fail": 0,
+    "seconds": 629.739223334
+  },
+  "windows": {
+    "lastCompletedTopLevelCase": 522,
+    "completeSuite": false,
+    "reason": "Job exceeded15m accumulated execution time"
+  },
+  "dependentJobs": "skipped",
+  "scope": "Official prior-source CI output; not a pass for later uncommitted provenance work. No HTTP408."
+}
