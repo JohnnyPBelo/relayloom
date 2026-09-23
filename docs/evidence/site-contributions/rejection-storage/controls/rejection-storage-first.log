@@ -1,0 +1,508 @@
+TAP version 13
+# (node:3653443) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: node owner decision releases the proposal in the same commit and other engine resumes its exact encrypted refusal
+ok 1 - node owner decision releases the proposal in the same commit and other engine resumes its exact encrypted refusal
+  ---
+  duration_ms: 9694.029225
+  type: 'test'
+  ...
+# Subtest: go owner decision releases the proposal in the same commit and other engine resumes its exact encrypted refusal
+ok 2 - go owner decision releases the proposal in the same commit and other engine resumes its exact encrypted refusal
+  ---
+  duration_ms: 10726.200552
+  type: 'test'
+  ...
+# Subtest: node refusal reject crash before-commit preserves the exact atomic boundary in the other engine
+ok 3 - node refusal reject crash before-commit preserves the exact atomic boundary in the other engine
+  ---
+  duration_ms: 3385.976465
+  type: 'test'
+  ...
+# Subtest: node refusal reject crash after-command preserves the exact atomic boundary in the other engine
+ok 4 - node refusal reject crash after-command preserves the exact atomic boundary in the other engine
+  ---
+  duration_ms: 3368.230572
+  type: 'test'
+  ...
+# Subtest: node refusal sign-rejection crash before-commit preserves the exact atomic boundary in the other engine
+ok 5 - node refusal sign-rejection crash before-commit preserves the exact atomic boundary in the other engine
+  ---
+  duration_ms: 3404.581678
+  type: 'test'
+  ...
+# Subtest: node refusal sign-rejection crash after-command preserves the exact atomic boundary in the other engine
+ok 6 - node refusal sign-rejection crash after-command preserves the exact atomic boundary in the other engine
+  ---
+  duration_ms: 3399.486425
+  type: 'test'
+  ...
+# Subtest: node refusal seal-rejection crash before-commit preserves the exact atomic boundary in the other engine
+ok 7 - node refusal seal-rejection crash before-commit preserves the exact atomic boundary in the other engine
+  ---
+  duration_ms: 3457.626113
+  type: 'test'
+  ...
+# Subtest: node refusal seal-rejection crash after-command preserves the exact atomic boundary in the other engine
+ok 8 - node refusal seal-rejection crash after-command preserves the exact atomic boundary in the other engine
+  ---
+  duration_ms: 3421.318018
+  type: 'test'
+  ...
+# Subtest: node refusal copy-rejection crash before-commit preserves the exact atomic boundary in the other engine
+ok 9 - node refusal copy-rejection crash before-commit preserves the exact atomic boundary in the other engine
+  ---
+  duration_ms: 3447.139732
+  type: 'test'
+  ...
+# Subtest: node refusal copy-rejection crash after-command preserves the exact atomic boundary in the other engine
+ok 10 - node refusal copy-rejection crash after-command preserves the exact atomic boundary in the other engine
+  ---
+  duration_ms: 3455.85954
+  type: 'test'
+  ...
+# Subtest: go refusal reject crash before-commit preserves the exact atomic boundary in the other engine
+ok 11 - go refusal reject crash before-commit preserves the exact atomic boundary in the other engine
+  ---
+  duration_ms: 2227.447205
+  type: 'test'
+  ...
+# Subtest: go refusal reject crash after-command preserves the exact atomic boundary in the other engine
+ok 12 - go refusal reject crash after-command preserves the exact atomic boundary in the other engine
+  ---
+  duration_ms: 2191.706213
+  type: 'test'
+  ...
+# Subtest: go refusal sign-rejection crash before-commit preserves the exact atomic boundary in the other engine
+ok 13 - go refusal sign-rejection crash before-commit preserves the exact atomic boundary in the other engine
+  ---
+  duration_ms: 2241.078733
+  type: 'test'
+  ...
+# Subtest: go refusal sign-rejection crash after-command preserves the exact atomic boundary in the other engine
+ok 14 - go refusal sign-rejection crash after-command preserves the exact atomic boundary in the other engine
+  ---
+  duration_ms: 2222.497515
+  type: 'test'
+  ...
+# Subtest: go refusal seal-rejection crash before-commit preserves the exact atomic boundary in the other engine
+ok 15 - go refusal seal-rejection crash before-commit preserves the exact atomic boundary in the other engine
+  ---
+  duration_ms: 2280.658422
+  type: 'test'
+  ...
+# Subtest: go refusal seal-rejection crash after-command preserves the exact atomic boundary in the other engine
+ok 16 - go refusal seal-rejection crash after-command preserves the exact atomic boundary in the other engine
+  ---
+  duration_ms: 2247.990913
+  type: 'test'
+  ...
+# Subtest: go refusal copy-rejection crash before-commit preserves the exact atomic boundary in the other engine
+ok 17 - go refusal copy-rejection crash before-commit preserves the exact atomic boundary in the other engine
+  ---
+  duration_ms: 2297.52771
+  type: 'test'
+  ...
+# Subtest: go refusal copy-rejection crash after-command preserves the exact atomic boundary in the other engine
+ok 18 - go refusal copy-rejection crash after-command preserves the exact atomic boundary in the other engine
+  ---
+  duration_ms: 2286.381883
+  type: 'test'
+  ...
+# Subtest: refusal stage corruption is refused by both engines and cannot be hidden by expiry
+ok 19 - refusal stage corruption is refused by both engines and cannot be hidden by expiry
+  ---
+  duration_ms: 2166.570496
+  type: 'test'
+  ...
+# (node:3660798) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from site into the resource namespace
+ok 20 - an authenticated outer SQLite database cannot transpose unpublished signatures from site into the resource namespace
+  ---
+  duration_ms: 803.273261
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from resource into the site namespace
+ok 21 - an authenticated outer SQLite database cannot transpose unpublished signatures from resource into the site namespace
+  ---
+  duration_ms: 57.960241
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from site into the contribution namespace
+ok 22 - an authenticated outer SQLite database cannot transpose unpublished signatures from site into the contribution namespace
+  ---
+  duration_ms: 54.078734
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution into the site namespace
+ok 23 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution into the site namespace
+  ---
+  duration_ms: 58.208798
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from resource into the contribution namespace
+ok 24 - an authenticated outer SQLite database cannot transpose unpublished signatures from resource into the contribution namespace
+  ---
+  duration_ms: 55.816552
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution into the resource namespace
+ok 25 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution into the resource namespace
+  ---
+  duration_ms: 59.429837
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from site into the contribution-inbox namespace
+ok 26 - an authenticated outer SQLite database cannot transpose unpublished signatures from site into the contribution-inbox namespace
+  ---
+  duration_ms: 54.16175
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-inbox into the site namespace
+ok 27 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-inbox into the site namespace
+  ---
+  duration_ms: 52.301772
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from resource into the contribution-inbox namespace
+ok 28 - an authenticated outer SQLite database cannot transpose unpublished signatures from resource into the contribution-inbox namespace
+  ---
+  duration_ms: 51.666792
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-inbox into the resource namespace
+ok 29 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-inbox into the resource namespace
+  ---
+  duration_ms: 58.905032
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution into the contribution-inbox namespace
+ok 30 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution into the contribution-inbox namespace
+  ---
+  duration_ms: 56.816768
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-inbox into the contribution namespace
+ok 31 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-inbox into the contribution namespace
+  ---
+  duration_ms: 53.057609
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-receipt into the site namespace
+ok 32 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-receipt into the site namespace
+  ---
+  duration_ms: 53.14325
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from site into the contribution-receipt namespace
+ok 33 - an authenticated outer SQLite database cannot transpose unpublished signatures from site into the contribution-receipt namespace
+  ---
+  duration_ms: 55.373491
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-receipt into the resource namespace
+ok 34 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-receipt into the resource namespace
+  ---
+  duration_ms: 54.519009
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from resource into the contribution-receipt namespace
+ok 35 - an authenticated outer SQLite database cannot transpose unpublished signatures from resource into the contribution-receipt namespace
+  ---
+  duration_ms: 52.125431
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-receipt into the contribution namespace
+ok 36 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-receipt into the contribution namespace
+  ---
+  duration_ms: 54.248252
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution into the contribution-receipt namespace
+ok 37 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution into the contribution-receipt namespace
+  ---
+  duration_ms: 51.622308
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-receipt into the contribution-inbox namespace
+ok 38 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-receipt into the contribution-inbox namespace
+  ---
+  duration_ms: 59.569188
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-inbox into the contribution-receipt namespace
+ok 39 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-inbox into the contribution-receipt namespace
+  ---
+  duration_ms: 65.266781
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-rejection into the site namespace
+ok 40 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-rejection into the site namespace
+  ---
+  duration_ms: 55.558819
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from site into the contribution-rejection namespace
+ok 41 - an authenticated outer SQLite database cannot transpose unpublished signatures from site into the contribution-rejection namespace
+  ---
+  duration_ms: 51.46354
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-rejection into the resource namespace
+ok 42 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-rejection into the resource namespace
+  ---
+  duration_ms: 57.855315
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from resource into the contribution-rejection namespace
+ok 43 - an authenticated outer SQLite database cannot transpose unpublished signatures from resource into the contribution-rejection namespace
+  ---
+  duration_ms: 54.989912
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-rejection into the contribution namespace
+ok 44 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-rejection into the contribution namespace
+  ---
+  duration_ms: 54.114551
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution into the contribution-rejection namespace
+ok 45 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution into the contribution-rejection namespace
+  ---
+  duration_ms: 53.912282
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-rejection into the contribution-inbox namespace
+ok 46 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-rejection into the contribution-inbox namespace
+  ---
+  duration_ms: 52.411527
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-inbox into the contribution-rejection namespace
+ok 47 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-inbox into the contribution-rejection namespace
+  ---
+  duration_ms: 51.975611
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-rejection into the contribution-receipt namespace
+ok 48 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-rejection into the contribution-receipt namespace
+  ---
+  duration_ms: 51.448883
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-receipt into the contribution-rejection namespace
+ok 49 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-receipt into the contribution-rejection namespace
+  ---
+  duration_ms: 50.47687
+  type: 'test'
+  ...
+# Subtest: Node and a real Go process exchange signing-protected site records in the same SQLite database
+ok 50 - Node and a real Go process exchange signing-protected site records in the same SQLite database
+  ---
+  duration_ms: 2298.504312
+  type: 'test'
+  ...
+# Subtest: Node and a real Go process exchange signing-protected resource records in the same SQLite database
+ok 51 - Node and a real Go process exchange signing-protected resource records in the same SQLite database
+  ---
+  duration_ms: 2305.807495
+  type: 'test'
+  ...
+# Subtest: Node and a real Go process exchange signing-protected contribution records in the same SQLite database
+ok 52 - Node and a real Go process exchange signing-protected contribution records in the same SQLite database
+  ---
+  duration_ms: 2267.489351
+  type: 'test'
+  ...
+# Subtest: Node and a real Go process exchange signing-protected contribution-inbox records in the same SQLite database
+ok 53 - Node and a real Go process exchange signing-protected contribution-inbox records in the same SQLite database
+  ---
+  duration_ms: 2296.320818
+  type: 'test'
+  ...
+# Subtest: Node and a real Go process exchange signing-protected contribution-receipt records in the same SQLite database
+ok 54 - Node and a real Go process exchange signing-protected contribution-receipt records in the same SQLite database
+  ---
+  duration_ms: 2282.676636
+  type: 'test'
+  ...
+# Subtest: Node and a real Go process exchange signing-protected contribution-rejection records in the same SQLite database
+ok 55 - Node and a real Go process exchange signing-protected contribution-rejection records in the same SQLite database
+  ---
+  duration_ms: 2275.806626
+  type: 'test'
+  ...
+# Subtest: Go rejects a Node encrypted site value transplanted into another authenticated store
+ok 56 - Go rejects a Node encrypted site value transplanted into another authenticated store
+  ---
+  duration_ms: 68.252809
+  type: 'test'
+  ...
+# Subtest: Go rejects a Node encrypted resource value transplanted into another authenticated store
+ok 57 - Go rejects a Node encrypted resource value transplanted into another authenticated store
+  ---
+  duration_ms: 62.947622
+  type: 'test'
+  ...
+# Subtest: Go rejects a Node encrypted contribution value transplanted into another authenticated store
+ok 58 - Go rejects a Node encrypted contribution value transplanted into another authenticated store
+  ---
+  duration_ms: 58.931342
+  type: 'test'
+  ...
+# Subtest: Go rejects a Node encrypted contribution-inbox value transplanted into another authenticated store
+ok 59 - Go rejects a Node encrypted contribution-inbox value transplanted into another authenticated store
+  ---
+  duration_ms: 62.355201
+  type: 'test'
+  ...
+# Subtest: Go rejects a Node encrypted contribution-receipt value transplanted into another authenticated store
+ok 60 - Go rejects a Node encrypted contribution-receipt value transplanted into another authenticated store
+  ---
+  duration_ms: 59.160462
+  type: 'test'
+  ...
+# Subtest: Go rejects a Node encrypted contribution-rejection value transplanted into another authenticated store
+ok 61 - Go rejects a Node encrypted contribution-rejection value transplanted into another authenticated store
+  ---
+  duration_ms: 59.218841
+  type: 'test'
+  ...
+# (node:3662018) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: private inbox preserves verified source and proposal across reopening, separately from sender staging
+ok 62 - private inbox preserves verified source and proposal across reopening, separately from sender staging
+  ---
+  duration_ms: 132.220184
+  type: 'test'
+  ...
+# Subtest: repackaging is idempotent and a conflicting visitor UUID cannot replace the original candidate
+ok 63 - repackaging is idempotent and a conflicting visitor UUID cannot replace the original candidate
+  ---
+  duration_ms: 97.010238
+  type: 'test'
+  ...
+# Subtest: an interrupted admission/source transaction rolls back without losing the earlier proof
+ok 64 - an interrupted admission/source transaction rolls back without losing the earlier proof
+  ---
+  duration_ms: 64.726287
+  type: 'test'
+  ...
+# Subtest: expiry removes private payloads but keeps replay metadata for the bounded retention window
+ok 65 - expiry removes private payloads but keeps replay metadata for the bounded retention window
+  ---
+  duration_ms: 81.288611
+  type: 'test'
+  ...
+# Subtest: unreadable/public proposals, wrong source and revoked policy never become verified candidates
+ok 66 - unreadable/public proposals, wrong source and revoked policy never become verified candidates
+  ---
+  duration_ms: 77.690905
+  type: 'test'
+  ...
+# Subtest: tampered retained evidence is an integrity failure, never repaired into a new proposal
+ok 67 - tampered retained evidence is an integrity failure, never repaired into a new proposal
+  ---
+  duration_ms: 55.00474
+  type: 'test'
+  ...
+# Subtest: journal quotas preserve pending entries and conflict floods have bounded descriptors and writes
+ok 68 - journal quotas preserve pending entries and conflict floods have bounded descriptors and writes
+  ---
+  duration_ms: 131.754119
+  type: 'test'
+  ...
+# Subtest: explicit dismissal is atomic, releases only selected proof quota and survives replay/reopen
+ok 69 - explicit dismissal is atomic, releases only selected proof quota and survives replay/reopen
+  ---
+  duration_ms: 144.020018
+  type: 'test'
+  ...
+# Subtest: dismissing unverified proposal frees admission quota without evicting other pending proposals
+ok 70 - dismissing unverified proposal frees admission quota without evicting other pending proposals
+  ---
+  duration_ms: 81.223358
+  type: 'test'
+  ...
+# Subtest: dismissal cannot hide corruption in private proof
+ok 71 - dismissal cannot hide corruption in private proof
+  ---
+  duration_ms: 38.934299
+  type: 'test'
+  ...
+# Subtest: owner receipt intent survives dismiss and resumes one exact private envelope after reopen
+ok 72 - owner receipt intent survives dismiss and resumes one exact private envelope after reopen
+  ---
+  duration_ms: 139.055479
+  type: 'test'
+  ...
+# Subtest: owner receipt intent survives expire and resumes one exact private envelope after reopen
+ok 73 - owner receipt intent survives expire and resumes one exact private envelope after reopen
+  ---
+  duration_ms: 138.486753
+  type: 'test'
+  ...
+# Subtest: legacy verified inbox migrates only from retained authenticated source
+ok 74 - legacy verified inbox migrates only from retained authenticated source
+  ---
+  duration_ms: 62.891517
+  type: 'test'
+  ...
+# Subtest: legacy discarded inbox migrates only from retained authenticated source
+ok 75 - legacy discarded inbox migrates only from retained authenticated source
+  ---
+  duration_ms: 64.129628
+  type: 'test'
+  ...
+# Subtest: owner refusal (missing source) persists exact private result through reopen and enforces CAS
+not ok 76 - owner refusal (missing source) persists exact private result through reopen and enforces CAS
+  ---
+  duration_ms: 130.472897
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/site-contribution-inbox.test.ts:1:17909'
+  failureType: 'testCodeFailure'
+  error: 'Registo fechado, incerto ou já em transacção'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    ProtectedGroupStore.execute (/home/absint0o/projects/relayloom/.cache/site-optional-resources/packages/groups/src/storage.ts:462:13)
+    ProtectedGroupStore.transaction (/home/absint0o/projects/relayloom/.cache/site-optional-resources/packages/groups/src/storage.ts:606:17)
+    NodeContributionInbox.run (/home/absint0o/projects/relayloom/.cache/site-optional-resources/packages/sites/src/contribution-inbox-catalog.ts:522:26)
+    NodeContributionInbox.copyRejection (/home/absint0o/projects/relayloom/.cache/site-optional-resources/packages/sites/src/contribution-inbox-catalog.ts:488:17)
+    TestContext.<anonymous> (/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/site-contribution-inbox.test.ts:743:11)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  ...
+# Subtest: owner refusal (verified source) persists exact private result through reopen and enforces CAS
+not ok 77 - owner refusal (verified source) persists exact private result through reopen and enforces CAS
+  ---
+  duration_ms: 156.20873
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/site-contribution-inbox.test.ts:1:17909'
+  failureType: 'testCodeFailure'
+  error: 'Registo fechado, incerto ou já em transacção'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    ProtectedGroupStore.execute (/home/absint0o/projects/relayloom/.cache/site-optional-resources/packages/groups/src/storage.ts:462:13)
+    ProtectedGroupStore.transaction (/home/absint0o/projects/relayloom/.cache/site-optional-resources/packages/groups/src/storage.ts:606:17)
+    NodeContributionInbox.run (/home/absint0o/projects/relayloom/.cache/site-optional-resources/packages/sites/src/contribution-inbox-catalog.ts:522:26)
+    NodeContributionInbox.copyRejection (/home/absint0o/projects/relayloom/.cache/site-optional-resources/packages/sites/src/contribution-inbox-catalog.ts:488:17)
+    TestContext.<anonymous> (/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/site-contribution-inbox.test.ts:743:11)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  ...
+1..77
+# tests 77
+# suites 0
+# pass 75
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 89251.945921

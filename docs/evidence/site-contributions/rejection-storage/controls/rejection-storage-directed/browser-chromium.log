@@ -1,0 +1,16 @@
+
+Running 9 tests using 1 worker
+
+(node:3680690) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/browser/site-contribution-rejection-storage.spec.ts:21:3 › browser private owner refusal reopen preserves decision authority and atomic proposal disposal (1.0s)
+  ✓  2 [chromium] › tests/browser/site-contribution-rejection-storage.spec.ts:21:3 › browser private owner refusal missing-source preserves decision authority and atomic proposal disposal (864ms)
+  ✓  3 [chromium] › tests/browser/site-contribution-rejection-storage.spec.ts:21:3 › browser private owner refusal before-commit preserves decision authority and atomic proposal disposal (937ms)
+  ✓  4 [chromium] › tests/browser/site-contribution-rejection-storage.spec.ts:21:3 › browser private owner refusal lost-reply preserves decision authority and atomic proposal disposal (914ms)
+  ✓  5 [chromium] › tests/browser/site-contribution-rejection-storage.spec.ts:21:3 › browser private owner refusal lock preserves decision authority and atomic proposal disposal (1.0s)
+  ✓  6 [chromium] › tests/browser/site-contribution-rejection-storage.spec.ts:21:3 › browser private owner refusal expiry-held preserves decision authority and atomic proposal disposal (1.0s)
+  ✓  7 [chromium] › tests/browser/site-contribution-rejection-storage.spec.ts:21:3 › browser private owner refusal blocked preserves decision authority and atomic proposal disposal (935ms)
+  ✓  8 [chromium] › tests/browser/site-contribution-rejection-storage.spec.ts:21:3 › browser private owner refusal corrupt preserves decision authority and atomic proposal disposal (935ms)
+  ✓  9 [chromium] › tests/browser/site-contribution-rejection-storage.spec.ts:288:1 › expiry of 129 actual signed refusals stays below the private transaction key cap and survives interruption between cleanup batches (7.5s)
+
+  9 passed (15.9s)

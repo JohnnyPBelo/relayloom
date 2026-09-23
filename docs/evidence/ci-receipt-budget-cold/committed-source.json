@@ -1,0 +1,25 @@
+{
+  "commit": "e95b06853e2f57dc03e917da5ffb8e425f2d045e",
+  "file": "tests/site-receipt-runtime-budget.test.ts",
+  "sha256": "cabb28c29bc017c5de9eca566f4e8ff3905e3c0ddc56dc20f8299fa31d25c4d9",
+  "productionSourceChanged": false,
+  "changedDriverTests": 3,
+  "phases": [
+    {
+      "phase": "compile-only",
+      "durationMs": 62267,
+      "exitCode": 0,
+      "signal": null,
+      "error": null
+    },
+    {
+      "phase": "execute",
+      "durationMs": 27335,
+      "exitCode": 0,
+      "signal": null,
+      "error": null
+    }
+  ],
+  "priorProductionGate": "627ad6c0b98e10b0d4c4c68e3dffb7072118a81d",
+  "remoteCI": "pending next push"
+}

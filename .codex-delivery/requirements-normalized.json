@@ -1848,6 +1848,17 @@
             "docs/evidence/site-contributions/receipt-delivery"
           ],
           "notes": "531 Node, 17 Go/race packages, 135 real process cases, 110 per browser. Receipt delivery and atomic queue closure, not approval/publication or completed forms UI."
+        },
+        {
+          "kind": "private-owner-refusal-persistence",
+          "result": "pass-in-scope-product-partial",
+          "sourceCommit": "627ad6c0b98e10b0d4c4c68e3dffb7072118a81d",
+          "command": "node docs/evidence/site-contributions/rejection-storage/before-resource-recovery/run-gate.mjs",
+          "paths": [
+            "docs/evidence/site-contributions/rejection-protocol",
+            "docs/evidence/site-contributions/rejection-storage"
+          ],
+          "notes": "535 Node, 17 Go/race packages, 167 unique process cases and 120 per browser. Five peer startups were blocked below the required disk reserve; all were replayed with a positive control after recovery, unchanged source and explicit inherited provenance. CAS refusal and atomic proof cleanup, immutable private signing/sealing/copying and bounded expiry; refusal delivery/admission, approval/publication/provenance and full three-account UI remain pending. Public HTML unchanged; no hardware or full parity claim."
         }
       ]
     },
@@ -2133,6 +2144,17 @@
             "docs/evidence/site-contributions/receipt-delivery"
           ],
           "notes": "531 Node, 17 Go/race packages, 135 real process cases, 110 per browser. Receipt delivery and atomic queue closure, not approval/publication or completed forms UI."
+        },
+        {
+          "kind": "private-owner-refusal-persistence",
+          "result": "pass-in-scope-product-partial",
+          "sourceCommit": "627ad6c0b98e10b0d4c4c68e3dffb7072118a81d",
+          "command": "node docs/evidence/site-contributions/rejection-storage/before-resource-recovery/run-gate.mjs",
+          "paths": [
+            "docs/evidence/site-contributions/rejection-protocol",
+            "docs/evidence/site-contributions/rejection-storage"
+          ],
+          "notes": "535 Node, 17 Go/race packages, 167 unique process cases and 120 per browser. Five peer startups were blocked below the required disk reserve; all were replayed with a positive control after recovery, unchanged source and explicit inherited provenance. CAS refusal and atomic proof cleanup, immutable private signing/sealing/copying and bounded expiry; refusal delivery/admission, approval/publication/provenance and full three-account UI remain pending. Public HTML unchanged; no hardware or full parity claim."
         }
       ]
     },

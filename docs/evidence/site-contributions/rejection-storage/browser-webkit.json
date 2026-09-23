@@ -1,0 +1,4392 @@
+{
+  "config": {
+    "argv": [
+      "/home/absint0o/.local/share/node-v22.22.3/bin/node",
+      "/home/absint0o/projects/relayloom/.cache/site-optional-resources/node_modules/playwright/cli.js",
+      "test",
+      "--config",
+      "tests/browser/matrix.config.ts",
+      "tests/browser/site-contribution-rejection-storage.spec.ts",
+      "tests/browser/site-contribution-rejection.spec.ts",
+      "tests/browser/site-contribution-receipt-runtime.spec.ts",
+      "tests/browser/site-contribution-receipt.spec.ts",
+      "tests/browser/site-contribution-dismiss.spec.ts",
+      "tests/browser/routing.spec.ts",
+      "tests/browser/native-transport.spec.ts",
+      "tests/browser/site-contribution-inbox.spec.ts",
+      "tests/browser/site-contribution-serve-race.spec.ts",
+      "tests/browser/core-fixed-envelope.spec.ts",
+      "tests/browser/site-contribution.spec.ts",
+      "tests/browser/site-contribution-context.spec.ts",
+      "tests/browser/site-contribution-catalog.spec.ts",
+      "tests/browser/site-contribution-copy.spec.ts",
+      "tests/browser/site-contribution-send.spec.ts",
+      "tests/browser/site-contribution-worker.spec.ts",
+      "tests/browser/site-worker.spec.ts",
+      "tests/browser/site-resource-catalog.spec.ts",
+      "tests/browser/foundation.spec.ts",
+      "tests/browser/private-values.spec.ts",
+      "tests/browser/application.spec.ts",
+      "tests/browser/relay-policy-race.spec.ts",
+      "tests/browser/site-network.spec.ts",
+      "tests/browser/site-resource-network.spec.ts",
+      "tests/browser/contact-relay.spec.ts",
+      "--output",
+      "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/rejection-storage-reviewed/webkit-artifacts"
+    ],
+    "configFile": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/matrix.config.ts",
+    "rootDir": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/rejection-storage-reviewed/webkit-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "*.spec.ts"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/browser-matrix/webkit/playwright.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "application.spec.ts",
+      "file": "application.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "autonomous Liquid Glass UI owns identity and offline outbox, connects through real RTC, receives signed confirmations and survives reload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10970,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T12:57:13.830Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ac4d568caf1644a25ff7-7c014016f7f87c81772e",
+          "file": "application.spec.ts",
+          "line": 75,
+          "column": 1
+        },
+        {
+          "title": "autonomous social actions and safe signed site builder persist and remain viewable after author closes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 16887,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T12:57:25.025Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ac4d568caf1644a25ff7-c8c47561ea925875d547",
+          "file": "application.spec.ts",
+          "line": 204,
+          "column": 1
+        },
+        {
+          "title": "production worker keeps private keys out of replies and recovers an applied send after the UI response is lost",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 24625,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T12:57:41.921Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ac4d568caf1644a25ff7-ef3b77bae11629a761c0",
+          "file": "application.spec.ts",
+          "line": 359,
+          "column": 1
+        },
+        {
+          "title": "a second tab cannot take ownership of a live application profile and an unknown or corrupt profile is never silently reset",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5611,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T12:58:06.556Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ac4d568caf1644a25ff7-04b5c586f2c6d78ef23a",
+          "file": "application.spec.ts",
+          "line": 466,
+          "column": 1
+        },
+        {
+          "title": "cached application code and encrypted profile reopen when the static host is unavailable, without installing the PWA",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5238,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T12:58:12.176Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ac4d568caf1644a25ff7-003b5518b17500004a82",
+          "file": "application.spec.ts",
+          "line": 523,
+          "column": 1
+        },
+        {
+          "title": "corrupted cached worker is rejected offline and recovered only from verified available code",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2161,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T12:58:17.424Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ac4d568caf1644a25ff7-774d090222f0a7dea2d6",
+          "file": "application.spec.ts",
+          "line": 589,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "contact-relay.spec.ts",
+      "file": "contact-relay.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "imported contact immediately appears once, survives reload and becomes the first real DM without a duplicate",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7555,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T12:58:19.623Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "540ee371920d78441028-1918824020db209a0b4d",
+          "file": "contact-relay.spec.ts",
+          "line": 121,
+          "column": 1
+        },
+        {
+          "title": "relay consent through the UI gates a real A to B to C path and does not grant B private reading",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 44599,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T12:58:27.195Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "540ee371920d78441028-7c5cbddaba68a74daca6",
+          "file": "contact-relay.spec.ts",
+          "line": 208,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "core-fixed-envelope.spec.ts",
+      "file": "core-fixed-envelope.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "actual browser preserves saved envelope times, verifies Node bytes and refuses expired live admission",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 339,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T12:59:11.842Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c1ca082fbeb27f002743-1d6e641690b50ea75a9d",
+          "file": "core-fixed-envelope.spec.ts",
+          "line": 15,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "foundation.spec.ts",
+      "file": "foundation.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Browser owns compatible identities/vaults/bundles: real Node and Go positive and negative controls",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 150000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2281,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T12:59:12.293Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6b60d0cacd30be8ae473-3f1a0bfebceb48dffc43",
+          "file": "foundation.spec.ts",
+          "line": 24,
+          "column": 1
+        },
+        {
+          "title": "encrypted IndexedDB persists, coordinates two pages, rejects corruption and preserves pins on failed admission",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1233,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T12:59:14.615Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6b60d0cacd30be8ae473-3ce4ea9477924688d115",
+          "file": "foundation.spec.ts",
+          "line": 205,
+          "column": 1
+        },
+        {
+          "title": "lock during unlock cannot resurrect keys; missing authenticated state is not replaced with empty success",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 787,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T12:59:15.857Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6b60d0cacd30be8ae473-d0828274b96fdf6ac53b",
+          "file": "foundation.spec.ts",
+          "line": 397,
+          "column": 1
+        },
+        {
+          "title": "real WebRTC transfers encrypted chunks and an offline author's reader seeds identical bytes to a new reader",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2925,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T12:59:16.654Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6b60d0cacd30be8ae473-906f781bcfecbe463933",
+          "file": "foundation.spec.ts",
+          "line": 449,
+          "column": 1
+        },
+        {
+          "title": "WebRTC rejects a correctly framed corrupt bundle before storage and rejects admission failure without ACK",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5172,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T12:59:19.586Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6b60d0cacd30be8ae473-ec5c0d29d61de7ff50e3",
+          "file": "foundation.spec.ts",
+          "line": 623,
+          "column": 1
+        },
+        {
+          "title": "identity recovery is compatible and cannot overwrite an existing profile; quota eviction retains pinned objects",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 577,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T12:59:24.764Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6b60d0cacd30be8ae473-98641e29514aecb1fbcc",
+          "file": "foundation.spec.ts",
+          "line": 723,
+          "column": 1
+        },
+        {
+          "title": "browser application bundle/ledger commit is atomic, pending reservations survive eviction pressure and IDB abort preserves prior state",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 476,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T12:59:25.348Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "6b60d0cacd30be8ae473-3e843c6afbebfa3b0590",
+          "file": "foundation.spec.ts",
+          "line": 783,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "native-transport.spec.ts",
+      "file": "native-transport.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "browser WebRTC to browser WebSocket to real node daemon, reverse transfer and invitation revocation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5207,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T12:59:25.853Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2267cd070a069f213a89-291320b9b128db5100b1",
+          "file": "native-transport.spec.ts",
+          "line": 51,
+          "column": 3
+        },
+        {
+          "title": "browser WebRTC to browser WebSocket to real native daemon, reverse transfer and invitation revocation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4937,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T12:59:31.096Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2267cd070a069f213a89-5baf3cfdb2cdf15c02b3",
+          "file": "native-transport.spec.ts",
+          "line": 51,
+          "column": 3
+        },
+        {
+          "title": "private four-medium route WebRTC-WebSocket-TCP-serial, partition/heal and restarted browser seeder with author offline",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 11250,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T12:59:36.040Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2267cd070a069f213a89-4c97e985603c7bef9d8a",
+          "file": "native-transport.spec.ts",
+          "line": 191,
+          "column": 1
+        },
+        {
+          "title": "late native ACK cannot leave an orphan retry assembly or close an otherwise healthy WebSocket",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4536,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T12:59:47.297Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2267cd070a069f213a89-2aba868edda9afe83e43",
+          "file": "native-transport.spec.ts",
+          "line": 419,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "private-values.spec.ts",
+      "file": "private-values.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "private values larger than the metadata index survive restart without becoming peer inventory",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 864,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T12:59:51.860Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c347521448cb97c9d453-5306f1cbd5bb937424c2",
+          "file": "private-values.spec.ts",
+          "line": 4,
+          "column": 1
+        },
+        {
+          "title": "legacy embedded values migrate lazily and encrypted value rows remain outside peer access",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 982,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T12:59:52.731Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c347521448cb97c9d453-484ce566a28628c8b582",
+          "file": "private-values.spec.ts",
+          "line": 51,
+          "column": 1
+        },
+        {
+          "title": "bundle and private-value mutations commit together, and corruption cannot silently reset a value",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 609,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T12:59:53.720Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c347521448cb97c9d453-f665ab12bfb775cda71c",
+          "file": "private-values.spec.ts",
+          "line": 206,
+          "column": 1
+        },
+        {
+          "title": "private-value byte and total budgets reject excess without losing committed values",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2130,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T12:59:54.337Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c347521448cb97c9d453-b066283c9b1d3f12fca8",
+          "file": "private-values.spec.ts",
+          "line": 385,
+          "column": 1
+        },
+        {
+          "title": "multiple private values share one commit and a concurrent writer cannot remove a reader's snapshot",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 484,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T12:59:56.473Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c347521448cb97c9d453-3b0409036fc48a405a50",
+          "file": "private-values.spec.ts",
+          "line": 443,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "relay-policy-race.spec.ts",
+      "file": "relay-policy-race.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "relay policy race during request distinguishes a cancelled local response from an invalid peer frame",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2189,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T12:59:56.970Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a7ad9eb8dfa68f2b971c-36c88789b65fd55751e8",
+          "file": "relay-policy-race.spec.ts",
+          "line": 65,
+          "column": 3
+        },
+        {
+          "title": "relay policy race during serve distinguishes a cancelled local response from an invalid peer frame",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2305,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T12:59:59.198Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a7ad9eb8dfa68f2b971c-011cd85fe42d76e5195c",
+          "file": "relay-policy-race.spec.ts",
+          "line": 65,
+          "column": 3
+        },
+        {
+          "title": "relay policy race during unrelated-error distinguishes a cancelled local response from an invalid peer frame",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1971,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:01.510Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a7ad9eb8dfa68f2b971c-cdc15bb9fdf8e81824ea",
+          "file": "relay-policy-race.spec.ts",
+          "line": 65,
+          "column": 3
+        }
+      ]
+    },
+    {
+      "title": "routing.spec.ts",
+      "file": "routing.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "managed packet-ID cancellation preserves an equal local payload and a foreign packet; absolute deadlines remain on wire",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 899,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:03.508Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "43935043b4e8ab2472fa-08ad8e9d4e47e4044fde",
+          "file": "routing.spec.ts",
+          "line": 13,
+          "column": 1
+        },
+        {
+          "title": "automatic A-B-C mesh: consent controls, own sends while paused, partition/heal and restarted reader takeover with author offline",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7265,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:04.445Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "43935043b4e8ab2472fa-2f49f79a4bc440021ec3",
+          "file": "routing.spec.ts",
+          "line": 179,
+          "column": 1
+        },
+        {
+          "title": "one network owner per profile and concurrent consent/preferences do not resurrect revoked relay",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 812,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:11.720Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "43935043b4e8ab2472fa-99aba0bb41f04509ae02",
+          "file": "routing.spec.ts",
+          "line": 307,
+          "column": 1
+        },
+        {
+          "title": "fragment scheduling preempts bulk with SOS, gives bulk a fair turn, and cancels relayed bytes without closing own traffic",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2838,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:12.539Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "43935043b4e8ab2472fa-94a3e9b34ab4d339b630",
+          "file": "routing.spec.ts",
+          "line": 365,
+          "column": 1
+        },
+        {
+          "title": "packet bounds reject expiry, hop loops and tampering; retained flood is bounded",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 305,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:15.384Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "43935043b4e8ab2472fa-e5abe0c615c0493bc969",
+          "file": "routing.spec.ts",
+          "line": 571,
+          "column": 1
+        },
+        {
+          "title": "low-power defers bulk on a live link, keeps SOS moving and never revives an expired queued packet",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2866,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:15.696Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "43935043b4e8ab2472fa-5ea4ecd709541d234404",
+          "file": "routing.spec.ts",
+          "line": 635,
+          "column": 1
+        },
+        {
+          "title": "browser routing packets cross real native TCP routers; native packet bytes verify in the browser and corruption never forwards",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1100,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:18.568Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "43935043b4e8ab2472fa-8f31ca6b9d54ebfc86fb",
+          "file": "routing.spec.ts",
+          "line": 693,
+          "column": 1
+        },
+        {
+          "title": "opaque packet corruption is rejected by the browser mesh before storage or forwarding, with valid controls on both sides",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2620,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:19.675Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "43935043b4e8ab2472fa-97f4a83f0faefd641e53",
+          "file": "routing.spec.ts",
+          "line": 841,
+          "column": 1
+        },
+        {
+          "title": "managed relay revocation cancels an in-flight forwarded packet and keeps an authored SOS on that same open link",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3281,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:22.302Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "43935043b4e8ab2472fa-e61080b5a283c77dc134",
+          "file": "routing.spec.ts",
+          "line": 926,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "site-contribution-catalog.spec.ts",
+      "file": "site-contribution-catalog.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "browser contribution intent and signature commit separately, survive reopening and abort signing on lock without publishing",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1055,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:25.608Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d1f6381d397657b1fc10-76d2d2af497984405593",
+          "file": "site-contribution-catalog.spec.ts",
+          "line": 13,
+          "column": 1
+        },
+        {
+          "title": "browser catalogue expiry preserves the old result and missing staging is an integrity error",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 532,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:26.702Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d1f6381d397657b1fc10-468d67b74546786df73c",
+          "file": "site-contribution-catalog.spec.ts",
+          "line": 214,
+          "column": 1
+        },
+        {
+          "title": "browser rechecks the fixed deadline after policy before signing, with a one-millisecond positive control",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 562,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:27.242Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d1f6381d397657b1fc10-b1bdde9886351a805ce9",
+          "file": "site-contribution-catalog.spec.ts",
+          "line": 320,
+          "column": 1
+        },
+        {
+          "title": "browser retains one private encrypted envelope across reopen and cancels a late seal when the identity locks",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1144,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:27.812Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d1f6381d397657b1fc10-37ba4b44f2e11080df58",
+          "file": "site-contribution-catalog.spec.ts",
+          "line": 389,
+          "column": 1
+        },
+        {
+          "title": "repeating cancellation of an old proposal preserves a different active preparation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 536,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:28.963Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d1f6381d397657b1fc10-b853b817049b185f3f15",
+          "file": "site-contribution-catalog.spec.ts",
+          "line": 549,
+          "column": 1
+        },
+        {
+          "title": "browser queued handoff keeps source and envelope private, supports a second intent and preserves packet identity after expiry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 751,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:29.506Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d1f6381d397657b1fc10-05e7a6e7587984d8ce26",
+          "file": "site-contribution-catalog.spec.ts",
+          "line": 606,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "site-contribution-context.spec.ts",
+      "file": "site-contribution-context.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "form inspection uses authenticated browser state and invalidates delayed replies after block, withdrawal, expiry or lock",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3028,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:30.280Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d208b2ff6e904a4f74d7-8c4f2668f3769048c878",
+          "file": "site-contribution-context.spec.ts",
+          "line": 13,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "site-contribution-copy.spec.ts",
+      "file": "site-contribution-copy.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "proposal copy rechecks block and never reports an unavailable envelope as copied",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 992,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:33.361Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "68e96273084b67f6baa4-aaebe3e96a4562687df1",
+          "file": "site-contribution-copy.spec.ts",
+          "line": 12,
+          "column": 3
+        },
+        {
+          "title": "proposal copy rechecks withdraw and never reports an unavailable envelope as copied",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 999,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:34.391Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "68e96273084b67f6baa4-e5db9ff4282600fcc5b6",
+          "file": "site-contribution-copy.spec.ts",
+          "line": 12,
+          "column": 3
+        },
+        {
+          "title": "proposal copy rechecks lock and never reports an unavailable envelope as copied",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1104,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:35.398Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "68e96273084b67f6baa4-c430ef0f28b9c062cc29",
+          "file": "site-contribution-copy.spec.ts",
+          "line": 12,
+          "column": 3
+        },
+        {
+          "title": "proposal copy rechecks lost-copy and never reports an unavailable envelope as copied",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 981,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:36.509Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "68e96273084b67f6baa4-6f27001bcb87feb12464",
+          "file": "site-contribution-copy.spec.ts",
+          "line": 12,
+          "column": 3
+        }
+      ]
+    },
+    {
+      "title": "site-contribution-dismiss.spec.ts",
+      "file": "site-contribution-dismiss.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "browser local discard reopen preserves atomic private evidence and replay protection",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 891,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:37.513Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "82dacc7b58c3cafd6fad-b971137f8dd68d4ad3e0",
+          "file": "site-contribution-dismiss.spec.ts",
+          "line": 21,
+          "column": 3
+        },
+        {
+          "title": "browser local discard rollback preserves atomic private evidence and replay protection",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 939,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:38.442Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "82dacc7b58c3cafd6fad-6397ef31d9dc21088bc7",
+          "file": "site-contribution-dismiss.spec.ts",
+          "line": 21,
+          "column": 3
+        },
+        {
+          "title": "browser local discard lost-reply preserves atomic private evidence and replay protection",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 902,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:39.391Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "82dacc7b58c3cafd6fad-5b24a67ed0fe21a61cf2",
+          "file": "site-contribution-dismiss.spec.ts",
+          "line": 21,
+          "column": 3
+        },
+        {
+          "title": "browser local discard lock preserves atomic private evidence and replay protection",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 937,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:40.300Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "82dacc7b58c3cafd6fad-9499e75714a7c04dee54",
+          "file": "site-contribution-dismiss.spec.ts",
+          "line": 21,
+          "column": 3
+        },
+        {
+          "title": "browser local discard corruption preserves atomic private evidence and replay protection",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 760,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:41.245Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "82dacc7b58c3cafd6fad-254b2e4e6337e46e934d",
+          "file": "site-contribution-dismiss.spec.ts",
+          "line": 21,
+          "column": 3
+        },
+        {
+          "title": "browser local discard concurrent-source preserves atomic private evidence and replay protection",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 923,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:42.011Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "82dacc7b58c3cafd6fad-0e4697683a4e18cab749",
+          "file": "site-contribution-dismiss.spec.ts",
+          "line": 21,
+          "column": 3
+        },
+        {
+          "title": "browser local discard concurrent-dismiss preserves atomic private evidence and replay protection",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 845,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:42.940Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "82dacc7b58c3cafd6fad-8852a125c6335ac75f01",
+          "file": "site-contribution-dismiss.spec.ts",
+          "line": 21,
+          "column": 3
+        }
+      ]
+    },
+    {
+      "title": "site-contribution-inbox.spec.ts",
+      "file": "site-contribution-inbox.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "available form permissions are checked before uninvited browser proposals reserve private inbox capacity",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1876,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:43.815Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b5a8dccfcd7fb602a33d-a08e7d03c1b6ade91ae2",
+          "file": "site-contribution-inbox.spec.ts",
+          "line": 12,
+          "column": 1
+        },
+        {
+          "title": "browser durable proposal inbox reopen-conflict preserves original authority and never fabricates approval",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 933,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:45.726Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b5a8dccfcd7fb602a33d-7085777ac3c1bfca0a90",
+          "file": "site-contribution-inbox.spec.ts",
+          "line": 141,
+          "column": 3
+        },
+        {
+          "title": "browser durable proposal inbox lock-source preserves original authority and never fabricates approval",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 868,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:46.665Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b5a8dccfcd7fb602a33d-6c61b7ce282a2bafa7bd",
+          "file": "site-contribution-inbox.spec.ts",
+          "line": 141,
+          "column": 3
+        },
+        {
+          "title": "browser durable proposal inbox corruption-expiry preserves original authority and never fabricates approval",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 790,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:47.539Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b5a8dccfcd7fb602a33d-367cb34239ce697605db",
+          "file": "site-contribution-inbox.spec.ts",
+          "line": 141,
+          "column": 3
+        },
+        {
+          "title": "browser receipt journal dismiss keeps exact historical intent and never signs before its commit",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 943,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:48.336Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b5a8dccfcd7fb602a33d-2f02884e4f31efdf2ece",
+          "file": "site-contribution-inbox.spec.ts",
+          "line": 367,
+          "column": 3
+        },
+        {
+          "title": "browser receipt journal expire keeps exact historical intent and never signs before its commit",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 937,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:49.285Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b5a8dccfcd7fb602a33d-a84ffca769934a4b2e1f",
+          "file": "site-contribution-inbox.spec.ts",
+          "line": 367,
+          "column": 3
+        },
+        {
+          "title": "browser receipt journal lost-reply keeps exact historical intent and never signs before its commit",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 964,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:50.230Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b5a8dccfcd7fb602a33d-de1e9e6f92c04eba42cf",
+          "file": "site-contribution-inbox.spec.ts",
+          "line": 367,
+          "column": 3
+        },
+        {
+          "title": "browser receipt journal lock-sign keeps exact historical intent and never signs before its commit",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 869,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:51.200Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b5a8dccfcd7fb602a33d-b3ede44e7a97e7d2abc7",
+          "file": "site-contribution-inbox.spec.ts",
+          "line": 367,
+          "column": 3
+        },
+        {
+          "title": "browser receipt journal lock-seal keeps exact historical intent and never signs before its commit",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 883,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:52.076Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b5a8dccfcd7fb602a33d-98e9206a7b1db11239a3",
+          "file": "site-contribution-inbox.spec.ts",
+          "line": 367,
+          "column": 3
+        },
+        {
+          "title": "browser receipt journal corrupt-receipt keeps exact historical intent and never signs before its commit",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 756,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:52.966Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b5a8dccfcd7fb602a33d-6074bf9fb4d70a75691f",
+          "file": "site-contribution-inbox.spec.ts",
+          "line": 367,
+          "column": 3
+        },
+        {
+          "title": "expiry of 129 actual signed receipts stays below the private transaction key cap and survives interruption between cleanup batches",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 12199,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:00:53.729Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b5a8dccfcd7fb602a33d-3d93d0b95dc1f9692c93",
+          "file": "site-contribution-inbox.spec.ts",
+          "line": 596,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "site-contribution-receipt-runtime.spec.ts",
+      "file": "site-contribution-receipt-runtime.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "browser receipt admission cached preserves authority and original private queue facts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 825,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:01:05.951Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0492a45b2ee7412e12d-ca8e626ea0ab8e5dbd13",
+          "file": "site-contribution-receipt-runtime.spec.ts",
+          "line": 21,
+          "column": 3
+        },
+        {
+          "title": "browser receipt admission cancelled preserves authority and original private queue facts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 826,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:01:06.814Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0492a45b2ee7412e12d-8a64995304afa534cfdd",
+          "file": "site-contribution-receipt-runtime.spec.ts",
+          "line": 21,
+          "column": 3
+        },
+        {
+          "title": "browser receipt admission expired preserves authority and original private queue facts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 803,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:01:07.648Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0492a45b2ee7412e12d-1d163b1ba85167ece5db",
+          "file": "site-contribution-receipt-runtime.spec.ts",
+          "line": 21,
+          "column": 3
+        },
+        {
+          "title": "browser receipt admission blocked preserves authority and original private queue facts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 878,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:01:08.458Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0492a45b2ee7412e12d-9b6ffed5fc222f642a11",
+          "file": "site-contribution-receipt-runtime.spec.ts",
+          "line": 21,
+          "column": 3
+        },
+        {
+          "title": "browser receipt admission lock-receive preserves authority and original private queue facts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1021,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:01:09.342Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0492a45b2ee7412e12d-8df033997ddad2f6fe5a",
+          "file": "site-contribution-receipt-runtime.spec.ts",
+          "line": 21,
+          "column": 3
+        },
+        {
+          "title": "browser receipt admission wrong-reference preserves authority and original private queue facts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 777,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:01:10.369Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0492a45b2ee7412e12d-8ec50ce3b18af9579e95",
+          "file": "site-contribution-receipt-runtime.spec.ts",
+          "line": 21,
+          "column": 3
+        },
+        {
+          "title": "browser receipt admission not-copied preserves authority and original private queue facts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 694,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:01:11.153Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0492a45b2ee7412e12d-abdf5f61b413cf6fd7db",
+          "file": "site-contribution-receipt-runtime.spec.ts",
+          "line": 21,
+          "column": 3
+        },
+        {
+          "title": "browser receipt admission same-error-text preserves authority and original private queue facts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 735,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:01:11.853Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0492a45b2ee7412e12d-e8db6c8fcc63d2286e78",
+          "file": "site-contribution-receipt-runtime.spec.ts",
+          "line": 21,
+          "column": 3
+        },
+        {
+          "title": "owner receipt retries rotate a bounded batch without re-signing or dropping a pending ninth proposal",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3309,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:01:12.594Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0492a45b2ee7412e12d-7a347b62062a2be3c632",
+          "file": "site-contribution-receipt-runtime.spec.ts",
+          "line": 281,
+          "column": 1
+        },
+        {
+          "title": "owner receipt authority unchanged-retry handles a retained policy reply without reviving revocation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 846,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:01:15.909Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0492a45b2ee7412e12d-c364475a1541f89d22ea",
+          "file": "site-contribution-receipt-runtime.spec.ts",
+          "line": 364,
+          "column": 3
+        },
+        {
+          "title": "owner receipt authority block-and-reallow handles a retained policy reply without reviving revocation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 853,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:01:16.761Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0492a45b2ee7412e12d-a5481af5bcbf5f8f3566",
+          "file": "site-contribution-receipt-runtime.spec.ts",
+          "line": 364,
+          "column": 3
+        },
+        {
+          "title": "owner receipt authority close handles a retained policy reply without reviving revocation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 793,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:01:17.620Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e0492a45b2ee7412e12d-fa810cbc603d3852c325",
+          "file": "site-contribution-receipt-runtime.spec.ts",
+          "line": 364,
+          "column": 3
+        }
+      ]
+    },
+    {
+      "title": "site-contribution-receipt.spec.ts",
+      "file": "site-contribution-receipt.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "actual browser and Node authenticate owner receipts with exact private readers, original references and corruption controls",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 335,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:01:18.448Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "41b97b230cd5ac910ef5-3a048ef0df2e7d1f3804",
+          "file": "site-contribution-receipt.spec.ts",
+          "line": 53,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "site-contribution-rejection-storage.spec.ts",
+      "file": "site-contribution-rejection-storage.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "browser private owner refusal reopen preserves decision authority and atomic proposal disposal",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1064,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:01:18.824Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "833ede45a09ae1d14b05-f37aee5795bf8661b91f",
+          "file": "site-contribution-rejection-storage.spec.ts",
+          "line": 21,
+          "column": 3
+        },
+        {
+          "title": "browser private owner refusal missing-source preserves decision authority and atomic proposal disposal",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1032,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:01:19.927Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "833ede45a09ae1d14b05-639ca2160813aa99f743",
+          "file": "site-contribution-rejection-storage.spec.ts",
+          "line": 21,
+          "column": 3
+        },
+        {
+          "title": "browser private owner refusal before-commit preserves decision authority and atomic proposal disposal",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1138,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:01:20.965Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "833ede45a09ae1d14b05-37da69b01b1802a58b04",
+          "file": "site-contribution-rejection-storage.spec.ts",
+          "line": 21,
+          "column": 3
+        },
+        {
+          "title": "browser private owner refusal lost-reply preserves decision authority and atomic proposal disposal",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1087,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:01:22.111Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "833ede45a09ae1d14b05-40feb04be5c20a82b70b",
+          "file": "site-contribution-rejection-storage.spec.ts",
+          "line": 21,
+          "column": 3
+        },
+        {
+          "title": "browser private owner refusal lock preserves decision authority and atomic proposal disposal",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1160,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:01:23.204Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "833ede45a09ae1d14b05-36bcd9aefdfd8a119bd1",
+          "file": "site-contribution-rejection-storage.spec.ts",
+          "line": 21,
+          "column": 3
+        },
+        {
+          "title": "browser private owner refusal expiry-held preserves decision authority and atomic proposal disposal",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1209,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:01:24.370Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "833ede45a09ae1d14b05-a01269d785622272b568",
+          "file": "site-contribution-rejection-storage.spec.ts",
+          "line": 21,
+          "column": 3
+        },
+        {
+          "title": "browser private owner refusal blocked preserves decision authority and atomic proposal disposal",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1084,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:01:25.586Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "833ede45a09ae1d14b05-86b63c2b362ed4b063e2",
+          "file": "site-contribution-rejection-storage.spec.ts",
+          "line": 21,
+          "column": 3
+        },
+        {
+          "title": "browser private owner refusal corrupt preserves decision authority and atomic proposal disposal",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1089,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:01:26.677Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "833ede45a09ae1d14b05-ddda6fd2b5a7ef830f12",
+          "file": "site-contribution-rejection-storage.spec.ts",
+          "line": 21,
+          "column": 3
+        },
+        {
+          "title": "expiry of 129 actual signed refusals stays below the private transaction key cap and survives interruption between cleanup batches",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8138,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:01:27.772Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "833ede45a09ae1d14b05-8c82db74ea90fce21565",
+          "file": "site-contribution-rejection-storage.spec.ts",
+          "line": 288,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "site-contribution-rejection.spec.ts",
+      "file": "site-contribution-rejection.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "actual browser and Node authenticate explicit owner refusals with exact private readers, original references and corruption controls",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 344,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:01:35.931Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0ae1480d45e6286ea43b-a113d78cc1e948ff0af4",
+          "file": "site-contribution-rejection.spec.ts",
+          "line": 53,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "site-contribution-send.spec.ts",
+      "file": "site-contribution-send.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "browser source held only in a private proposal queue recover with both relays paused",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3084,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:01:36.326Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5cb5f942cf066d1e2cee-735573eab92265ed27f2",
+          "file": "site-contribution-send.spec.ts",
+          "line": 22,
+          "column": 3
+        },
+        {
+          "title": "browser source held only in a private proposal queue cancel-retained-reply with both relays paused",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3160,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:01:39.448Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5cb5f942cf066d1e2cee-95f60d21fe22dba1fecb",
+          "file": "site-contribution-send.spec.ts",
+          "line": 22,
+          "column": 3
+        },
+        {
+          "title": "browser source held only in a private proposal queue cancel-before-admission with both relays paused",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3181,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:01:42.614Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5cb5f942cf066d1e2cee-abdeea6fe6236a567bc0",
+          "file": "site-contribution-send.spec.ts",
+          "line": 22,
+          "column": 3
+        },
+        {
+          "title": "browser source held only in a private proposal queue cancel-queued with both relays paused",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3198,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:01:45.802Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5cb5f942cf066d1e2cee-9561cf03a40da1dba2c0",
+          "file": "site-contribution-send.spec.ts",
+          "line": 22,
+          "column": 3
+        },
+        {
+          "title": "private form proposals web-to-native cross RTC and WebSocket with node and an intermediary without a reading key",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9480,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:01:49.005Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5cb5f942cf066d1e2cee-02d8ac039345326c6a92",
+          "file": "site-contribution-send.spec.ts",
+          "line": 396,
+          "column": 5
+        },
+        {
+          "title": "private form proposals native-to-web cross RTC and WebSocket with node and an intermediary without a reading key",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3408,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:01:58.492Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5cb5f942cf066d1e2cee-b04670f21bc9c1b51a8f",
+          "file": "site-contribution-send.spec.ts",
+          "line": 396,
+          "column": 5
+        },
+        {
+          "title": "private form proposals web-to-native cross RTC and WebSocket with native and an intermediary without a reading key",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10039,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:02:01.906Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5cb5f942cf066d1e2cee-fb1c513302ee55d9d683",
+          "file": "site-contribution-send.spec.ts",
+          "line": 396,
+          "column": 5
+        },
+        {
+          "title": "private form proposals native-to-web cross RTC and WebSocket with native and an intermediary without a reading key",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3097,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:02:11.953Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5cb5f942cf066d1e2cee-ec5a8a19c6ba129491d0",
+          "file": "site-contribution-send.spec.ts",
+          "line": 396,
+          "column": 5
+        },
+        {
+          "title": "two autonomous browser accounts send a private form proposal through real RTC while the sender relay is paused",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3168,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:02:15.057Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5cb5f942cf066d1e2cee-23cbbb2b7fcab4e0d18f",
+          "file": "site-contribution-send.spec.ts",
+          "line": 623,
+          "column": 1
+        },
+        {
+          "title": "browser reception journals the original source before review and survives actual cache eviction with the RTC sender closed",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3014,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:02:18.231Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5cb5f942cf066d1e2cee-3fbc58c26fbfb358bd15",
+          "file": "site-contribution-send.spec.ts",
+          "line": 834,
+          "column": 1
+        },
+        {
+          "title": "an authenticated receipt for retired or absent local history is ignored without closing the real RTC channel",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2225,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:02:21.252Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5cb5f942cf066d1e2cee-408f757cfe0a80f1e8c2",
+          "file": "site-contribution-send.spec.ts",
+          "line": 1022,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "site-contribution-serve-race.spec.ts",
+      "file": "site-contribution-serve-race.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "in-flight proposal authorization cannot survive cancel while its policy read is retained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 750,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:02:23.498Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "67deb6bdb4860d49cdec-b15486b391bfa557dbde",
+          "file": "site-contribution-serve-race.spec.ts",
+          "line": 13,
+          "column": 3
+        },
+        {
+          "title": "in-flight proposal authorization cannot survive expire while its policy read is retained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 779,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:02:24.285Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "67deb6bdb4860d49cdec-deb94c66ed92f9473fa0",
+          "file": "site-contribution-serve-race.spec.ts",
+          "line": 13,
+          "column": 3
+        },
+        {
+          "title": "in-flight proposal authorization cannot survive close while its policy read is retained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 746,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:02:25.072Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "67deb6bdb4860d49cdec-47197d605820c5ff4349",
+          "file": "site-contribution-serve-race.spec.ts",
+          "line": 13,
+          "column": 3
+        },
+        {
+          "title": "durable retry without changes preserves an in-flight proposal read",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 794,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:02:25.825Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "67deb6bdb4860d49cdec-652dd347b008bc95ba73",
+          "file": "site-contribution-serve-race.spec.ts",
+          "line": 148,
+          "column": 5
+        },
+        {
+          "title": "durable retry after revocation refuses an in-flight proposal read",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 790,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:02:26.628Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "67deb6bdb4860d49cdec-cdf77f2fbbdb349443ad",
+          "file": "site-contribution-serve-race.spec.ts",
+          "line": 148,
+          "column": 5
+        },
+        {
+          "title": "durable retry without changes preserves an in-flight source read",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 851,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:02:27.425Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "67deb6bdb4860d49cdec-7bce9045381aa115ac11",
+          "file": "site-contribution-serve-race.spec.ts",
+          "line": 148,
+          "column": 5
+        },
+        {
+          "title": "durable retry after revocation refuses an in-flight source read",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 827,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:02:28.283Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "67deb6bdb4860d49cdec-5ea646ffc4671833f12c",
+          "file": "site-contribution-serve-race.spec.ts",
+          "line": 148,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "site-contribution-worker.spec.ts",
+      "file": "site-contribution-worker.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "production worker describes an authenticated form after UI setup and unlock without exposing keys or accepting caller authority",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2252,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:02:29.134Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f331767cf798377fe66c-34b3b0ed32ceadc8ba1c",
+          "file": "site-contribution-worker.spec.ts",
+          "line": 53,
+          "column": 1
+        },
+        {
+          "title": "production workers recover queued proposals offline and send through the UI-established RTC link without reviving cancellation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 12198,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:02:31.392Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f331767cf798377fe66c-525cabf97dcb62e14f49",
+          "file": "site-contribution-worker.spec.ts",
+          "line": 162,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "site-contribution.spec.ts",
+      "file": "site-contribution.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "browser visitor certificates interoperate with Node and Go while encrypted proposals and publication consent remain separate",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1066,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:02:43.604Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "contract-scope",
+                      "contentType": "application/json",
+                      "body": "ewogICJzdGF0dXMiOiAiUEFTUyIsCiAgImJyb3dzZXIiOiAid2Via2l0IiwKICAibm9kZUFuZEdvU2lnbmF0dXJlc1ZlcmlmaWVkIjogdHJ1ZSwKICAiZW5jcnlwdGVkUHJvcG9zYWwiOiB0cnVlLAogICJvd25lckFwcHJvdmFsSW1wbGVtZW50ZWQiOiBmYWxzZSwKICAic2NvcGUiOiAiQWN0dWFsIGJyb3dzZXIgY3J5cHRvIGFuZCBwdWJsaWMgY2VydGlmaWNhdGUgR28gZml4dHVyZTsgbm90IGFwcGxpY2F0aW9uIHJ1bnRpbWUsIGNvbnRyaWJ1dG9yIGluYm94LCBwZXJzaXN0ZW5jZS9yZXBsYXkgb3IgdXNlciBpbnRlcmZhY2UuIgp9"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "74a528995bbcde0caf16-84e9c52c0be36c06e18a",
+          "file": "site-contribution.spec.ts",
+          "line": 50,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "site-network.spec.ts",
+      "file": "site-network.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "version 1 sites cross RTC, WebSocket and TCP through node, heal a partition and survive with only a restarted reader",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7768,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:02:44.719Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "82f802967c870255d669-bceb0dc236bc7eee3428",
+          "file": "site-network.spec.ts",
+          "line": 172,
+          "column": 5
+        },
+        {
+          "title": "version 1 sites cross RTC, WebSocket and TCP through native, heal a partition and survive with only a restarted reader",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7548,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:02:52.530Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "82f802967c870255d669-9ee5c21d3ea4b4c75c8d",
+          "file": "site-network.spec.ts",
+          "line": 172,
+          "column": 5
+        },
+        {
+          "title": "version 2 sites cross RTC, WebSocket and TCP through node, heal a partition and survive with only a restarted reader",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7681,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:03:00.085Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "82f802967c870255d669-3800081b5871b4444f5c",
+          "file": "site-network.spec.ts",
+          "line": 172,
+          "column": 5
+        },
+        {
+          "title": "version 2 sites cross RTC, WebSocket and TCP through native, heal a partition and survive with only a restarted reader",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7895,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:03:07.773Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "82f802967c870255d669-b7ca8a6242327421ce2f",
+          "file": "site-network.spec.ts",
+          "line": 172,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "site-resource-catalog.spec.ts",
+      "file": "site-resource-catalog.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "browser resource creation keeps its signature private until durable preparation, reopens and recovers one exact result",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 607,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:03:15.687Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3f669cb3cd93783937c5-b2bda1e3b53dd77e922f",
+          "file": "site-resource-catalog.spec.ts",
+          "line": 11,
+          "column": 1
+        },
+        {
+          "title": "locking during resource signing aborts the private transaction and invalidates its old catalogue",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 524,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:03:16.332Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3f669cb3cd93783937c5-32c97a21700f5cfdaf3c",
+          "file": "site-resource-catalog.spec.ts",
+          "line": 116,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "site-resource-network.spec.ts",
+      "file": "site-resource-network.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "browser resource admission rejects readable malformed bodies, preserves opaque seeding and keeps summaries distinct from full data",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1455,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:03:16.881Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1a92f9e7ed4b8c5a9bf2-fcd3d84a51f8bd37d1ef",
+          "file": "site-resource-network.spec.ts",
+          "line": 97,
+          "column": 1
+        },
+        {
+          "title": "optional data crosses RTC and WS through node only on request and a restarted browser seeds it after author shutdown",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 19113,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:03:18.374Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1a92f9e7ed4b8c5a9bf2-fb027d555a77a2feef47",
+          "file": "site-resource-network.spec.ts",
+          "line": 221,
+          "column": 3
+        },
+        {
+          "title": "optional data crosses RTC and WS through native only on request and a restarted browser seeds it after author shutdown",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 18963,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:03:37.493Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1a92f9e7ed4b8c5a9bf2-934c0c1474a2265d3dc0",
+          "file": "site-resource-network.spec.ts",
+          "line": 221,
+          "column": 3
+        }
+      ]
+    },
+    {
+      "title": "site-worker.spec.ts",
+      "file": "site-worker.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "production worker publishes and recovers exact site requests, refuses forged snapshots and does not export signing helpers",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2362,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-23T13:03:56.479Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "9e8c5f8421e05cbf3d1f-494afd78a9a13664056c",
+          "file": "site-worker.spec.ts",
+          "line": 26,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-23T12:57:13.132Z",
+    "duration": 405838.11799999996,
+    "expected": 120,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

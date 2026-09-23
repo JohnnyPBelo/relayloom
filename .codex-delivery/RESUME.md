@@ -1,29 +1,40 @@
-# RelayLoom — retoma após entrega verificada dos recibos
+# RelayLoom — retoma após recusa persistente e correcção do teste frio
 
-Objectivo integral activo; produto não concluído. Preservar PROJECT-BRIEF.md: messenger/social P2P cifrado, sites expressivos inspirados no ZeroNet, cinco SO e web autónoma com paridade, Reticulum/meios agnósticos, setup PT-PT/EN/ES e Liquid Glass. Recuperação sequencial: não criar nem retomar subagentes; manter Astra/Copilot Ultra e configurações/serviços. Checkpoint adicional de manutenção cancelado.
+Objectivo integral activo; produto não concluído. Manter PROJECT-BRIEF.md: messenger/social P2P cifrado, sites expressivos inspirados no ZeroNet, Liquid Glass, cinco SO e web com paridade, Reticulum/meios agnósticos, setup PT-PT/EN/ES e todos os gates. Recuperação sequencial, sem novos/retomados agentes; Astra/Copilot Ultra e configurações/serviços mantidos.
 
-## Estado de trabalho
+Worktree activa: `/home/absint0o/projects/relayloom/.cache/site-optional-resources`, branch `codex/site-optional-resources`. Principal em `codex/setup-languages` / `1e83db22`, com WIP histórico preservado. Código verificado localmente em `627ad6c0b98e10b0d4c4c68e3dffb7072118a81d` (persistência) e `e95b06853e2f57dc03e917da5ffb8e425f2d045e` (driver CI). Protocolo anterior: `da2d174`. Documentação/provas acompanham num commit posterior. Último envio confirmado antes desta nota: `9a56c5f`; consultar Git/origin e `.cache/latest-push.json` após o push de consolidação. Staging selectivo; preservar capturas/JSON históricos e node_modules; não usar git add -A/reset/force-push ou merge sem aprovação.
 
-Worktree activa `/home/absint0o/projects/relayloom/.cache/site-optional-resources`, branch `codex/site-optional-resources`. Principal em `codex/setup-languages` / `1e83db22`, com WIP histórico separado. HEAD de implementação **426b471b72b0f8ca6ec3f42ce9a1fdf03a73e05b**; último push confirmado **14457fd95345d15267f210fa9eec923b7fd1fad0**. Provas/documentação desta fase estão a ser consolidadas. Preservar alterações históricas/capturas e symlink node_modules; staging selectivo, nunca git add -A/reset/force-push. Não fazer merge sem aprovação.
+## Estado verificado
 
-Reserva observada na retoma: cerca de17 GiB; mínimo15 GiB, uma execução pesada de cada vez e caches do projecto. Não há teste local conhecido activo; handles69695 e96519 terminaram e foram recolhidos. Não relançar a suite por causa de notas históricas de processos.
+627ad6c guarda a decisão explícita do dono e remove a prova da proposta no mesmo commit. CAS da inbox, motivo/destinatário/prazo fixos, assinatura/selagem/cópia recuperáveis em Node/Go/browser. Recibos anteriores e outras preparações preservados; recusar sem origem não afirma verificação da origem. Namespace privado separado, sem expor helpers na RPC. Ainda não há entrega/admissão de recusas nem UI completa.
 
-## Incremento verificado
+Gate revisto **45240 terminou e foi recolhido PASS**:535 Node,17 Go/race (app/sites novos, outros cached),167 casos únicos entre processos,120 por Chromium/Firefox/WebKit, builds e768 hashes conferidos no commit. O gate original98625 teve5 arranques bloqueados por reserva abaixo15GiB; a revisão repetiu os6 casos do ficheiro afectado (5 falhas+1 controlo), conservou os passes de fontes idênticas e concluiu a matriz. O original permanece FAIL. Provas em `docs/evidence/site-contributions/rejection-storage`; reprodução integral pelo driver `before-resource-recovery/run-gate.mjs`. Protocolo da2d174:64 vectores e regressão de recibos, Go/sites-race e2 casos por engine, provas em rejection-protocol.
 
-426b471 entrega o recibo privado do dono em Node/Go/browser e fecha atomicamente a fila do visitante. Requer assinatura/destino/prazos e intenção anteriormente copiada; cancelled/expired conservam o estado, sem renovar autorização. Recupera recibos recebidos bloqueado (32 candidatos/ciclo); fila do dono roda8intenções/ciclo. Recibo autêntico sem história local não fechaRTC, enquanto corrupção continua a falhar.
+**Nenhum teste ou arquivo local conhecido continua activo.** Handles45240,98625,83456,93355,67580,21672,80819 e24563 foram recolhidos. Não repetir suites por falta de handle.
 
-Gate final `docs/evidence/site-contributions/receipt-delivery/gate.json` **PASS**:531Node,17pacotesGo/race,135casos entre processos e110porChromium/Firefox/WebKit; typecheck/buildsPASS,757hashes conferidos contra426b471. Node/Go/build/processos conservam proveniência explícita do primeirogate; os3browsers foram repetidos após correcção de duasfixtures WebKit. O primeirogate permaneceFAIL.82artefactos com manifesto. Reprodução limpa: `node docs/evidence/site-contributions/receipt-delivery/before-fixture-review/run-gate.mjs`. Não repetir agora sem mudança/defeito que o justifique.
+## CI e diagnóstico concluído
 
-CI35802455142/14457fd terminalFAIL apenas iOS: restantesjobsPASS; browser90+69=159PASS epartição completa validada. iOSbuild/install/startupPASS; addmedia excedeu60.364s antes do percurso principal.37artefactos curados em docs/evidence/ci-14457fd. Não éHTTP408 e não prova anexo/resposta. Nenhum CIactivo observado nesta retoma.
+CI35855333712/9a56c5f terminou FAIL no mesmo auxiliar Go aos60s nos três hosts; os jobs dependentes foram skipped. Provas `docs/evidence/ci-9a56c5f`.
 
-## Próximos passos
+21672 reproduziu localmente com caches próprias vazias: comando combinado parou aos60.009s ainda na preparação/vet, sem lançamento de app.test ou resultado. Compilação separada62.177s e execução27.353s PASS. e95b068 separa compilação/vet (limite120s) da execução (limite exterior60s, Go55s para diagnóstico). Mantém race, vet e cobertura, sem mudar limites dos jobs. Typecheck e3 testes do driver integrado PASS:62.267s preparação+27.335s execução. Provas `docs/evidence/ci-receipt-budget-cold`. Ainda precisa do próximo CI Windows/macOS/Linux; não reclassificar a falha anterior. Não éHTTP408.
 
-1. Consolidar docs/provas selectivamente, verificar manifestos staged e pushnormal autorizado. Verificar novoCIantes de outro push para não cancelar operação emcurso.
-2. Recusa assinada distinta de descarte local: derivar intenção da inboxautêntica, retercard antes de purga, persistência/entrega/admissão com bloqueio/sessão/prazos. Rascunho `.cache/contribution-decision-draft/contribution-rejection.ts` ainda não integrado/testado; rever antes de usar.
-3. Decisão CAS/base/esquema/audiência, publicação recuperável eproveniência separando proposta original de edições do dono. Só `published` depois de reler cópia real. Ver CONTRIBUTION-DECISION-UI-NEXT.md; paleta permanece oculta até fluxo completo de trêscontas PT/EN/ES, acessibilidade erevisão visual.
-4. Apple: rascunhos em `.cache/ios-photo-warmup-draft` são hipótese nãointegrada/nãocompilada. AbrirPhotos apenas no UUIDdo simulador criado; selector observado nopicker não é evidência daappPhotos. Faltam testeshost eexecuçãoApple. Não aumentar prazos/repetir mutação incerta/alterarserviços.
-5. Manter gruposwebdinâmicos, backup/rotação/keystore, hardware/rádios, paridade/revisãoindependente obrigatórios. Revisãoprópria não satisfaz gateindependente.
+## Recursos e restauro
 
-HTMLpúblico inalterado: runtime7fdb76a5de5869efa6ebdd721bc7e8f5efac68af, distribuição0fdbd1b9563540a5bc28c74d669668e948aa7667, https://johnnypbelo.github.io/relayloom/. Não publicarHTMLsem gateexacto/HTTPS. Não declarar disaster-ready, todosOS testados ou produto concluído.
+Confirmar pelo menos15GiB antes de cada fase pesada; uma de cada vez, caches do projecto. A última medição ficou acima18GiB, mas o volume oscilou. Foram removidas apenas caches regeneráveis (Go build,8 binários de teste eChromium headed1243); headless-shell/Firefox/WebKit permanecem e completaram a matriz. O CLI actual, APKs, perfis, AVD, fontes e WIP estão preservados.
 
-Histórico desta fase, incluindo notas já ultrapassadas de processos emcurso: [RESUME-before-receipt-delivery-complete.md](history/RESUME-before-receipt-delivery-complete.md).
+Oito AppImages antigos estão arquivados com todos os hashes verificados: `.cache/archives/desktop-history-20260923.tar.xz` na principal. Restauro exacto: `python3 -m tarfile -e /home/absint0o/projects/relayloom/.cache/archives/desktop-history-20260923.tar.xz /home/absint0o/projects/relayloom`.
+
+**Antes do próximo emulador Android**, restaurar a imagem inactiva do SDK: `python3 /home/absint0o/projects/relayloom/.cache/android/archives/restore-system-image.py`. O arquivo `.img.xz` preserva SHA256 eb4bd8cc…a1 e tamanho lógico; userdata não foi modificada. O restauro exige espaço adicional para conservar15GiB e verifica os bytes. Não redownloadar imagens nem alterar permissões/serviços.
+
+Só a worktree antiga e comprovadamente limpa site-ci-clean foi retirada, com SHA6dd879d ancestral preservado. Cache/dist ignorados estão em `.cache/retired-worktree-support/site-ci-clean`; auditoria `.cache/disk-recovery-rejections-20260923.json`. site-data-next permaneceu intacta por ter ramo não ancestral. Não remover WIP de outras worktrees.
+
+## Continuação
+
+1. Consolidar docs/provas por manifestos, confirmar nenhum CI activo e fazer push normal. Registar o novo run em `.cache/latest-push.json`; observar o resultado do driver frio antes de outro push.
+2. Integrar admissão/entrega da recusa nos catálogos, runtime/API, validação e transportes. Os dois rascunhos em `.cache/rejection-admission-draft` têm hashes de base: ainda não instalados/compilados/testados. Rever cada ficheiro antes de integrar; não copiar cegamente. Ver REJECTION-DELIVERY-NEXT.md e CONTRIBUTION-REJECTION.md.
+3. Depois incorporação com CAS da revisão actual, reconciliação de esquema/audiência, proveniência distinguindo proposta original e alterações do dono, publicação recuperável e UI completa de três contas PT/EN/ES. Paleta oculta até ao fluxo completo; ver CONTRIBUTION-DECISION-UI-NEXT.md.
+4. Manter grupos web, backup/rotação/keystore, plataformas/rádios físicos, acessibilidade e revisão independente obrigatórios. Revisão própria não satisfaz o gate independente. Rascunhos Photos em `.cache/ios-photo-warmup-draft` continuam não integrados/não compilados; Apple/signing e percurso fotográfico continuam sem passe integral.
+
+HTML público inalterado: runtime7fdb76a5de5869efa6ebdd721bc7e8f5efac68af, distribuição0fdbd1b9563540a5bc28c74d669668e948aa7667, https://johnnypbelo.github.io/relayloom/. Publicar só após gate exacto/HTTPS. Não declarar disaster-ready, todos os SO testados ou produto concluído.
+
+Histórico: [RESUME-before-refusal-storage-complete.md](history/RESUME-before-refusal-storage-complete.md).

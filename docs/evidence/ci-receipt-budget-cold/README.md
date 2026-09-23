@@ -1,0 +1,11 @@
+# Compilação fria e execução Go — diagnóstico e correcção do driver
+
+Fonte do driver corrigido `e95b06853e2f57dc03e917da5ffb8e425f2d045e`. Nenhuma fonte de produção mudou; a regressão da persistência conserva o seu commit627ad6c. O CI9a56c5f anterior terminouFAIL nos três hosts; esta prova local não reclassifica esse resultado nem comprova ainda a próxima execuçãoWindows/macOS.
+
+Medição sequencial emLinux, Go1.26.8, caches próprias vazias no início das duas compilações: o comando combinado atingiu60.009s sem lançar app.test nem produzir resultado. O último comando registado ainda era vet. Compilação/vet separados terminaram em62.177s; execução real em27.353s e o worker produziu os três controlos positivos. Não era necessário alargar o prazo de execução. O grupo de processos criado pela fixture de diagnóstico foi parado apenas no seu limite; não se alteraram serviços ou processos externos.
+
+O teste agora compila explicitamente o binário comrace e verifica o resultado antes de o executar. O limite exterior da execução permanece60s; o teste Go tem55s para devolver diagnóstico antes de um corte exterior. A compilação tem limite próprio120s, já usado por outros drivers do projecto; não é contabilizada como teste executado. Os checks vet por defeito permanecem activos em go test -c (dependências addTestVet confirmadas no Go1.26.8). Os prazos dos jobsCI e a cobertura permanecem iguais.
+
+Validação do código exacto: `node node_modules/typescript/bin/tsc --noEmit` e `node --import tsx --test --test-concurrency=1 tests/site-receipt-runtime-budget.test.ts`, ambosPASS. Três casos, zero falhas/skips; o driver integrado registou62.267s de preparação e27.335s de execução. Os resultados incluem orçamento rotativo8→9, falha real de quota e conservação dos envelopes.
+
+A medição original fica em measure-receipt-cold.mts; para a reproduzir num checkout desta fonte, copiá-la para .cache/measure-receipt-cold.mts e executar `node --import tsx .cache/measure-receipt-cold.mts`, com o toolchain do projecto e margem15GiB. O script recusa substituir um relatório anterior, limita as fases e preserva o resultado. A sua primeira fase é um controlo deliberado do limite combinado antigo. Não repetir após um erro diferente sem o analisar.

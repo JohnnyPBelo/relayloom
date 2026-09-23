@@ -1,0 +1,55 @@
+{
+  "run": 35855333712,
+  "source": "9a56c5f0b54c74b83c38e45840d8629791312c3c",
+  "status": "completed",
+  "conclusion": "failure",
+  "jobs": [
+    {
+      "name": "native-node (windows-latest)",
+      "id": 107162340216,
+      "conclusion": "failure",
+      "counts": {
+        "tests": 531,
+        "pass": 523,
+        "fail": 1,
+        "skipped": 7,
+        "cancelled": 0
+      }
+    },
+    {
+      "name": "native-node (macos-latest)",
+      "id": 107162340479,
+      "conclusion": "failure",
+      "counts": {
+        "tests": 531,
+        "pass": 530,
+        "fail": 1,
+        "skipped": 0,
+        "cancelled": 0
+      }
+    },
+    {
+      "name": "native-node (ubuntu-latest)",
+      "id": 107162340647,
+      "conclusion": "failure",
+      "counts": {
+        "tests": 531,
+        "pass": 530,
+        "fail": 1,
+        "skipped": 0,
+        "cancelled": 0
+      }
+    }
+  ],
+  "downstreamSkipped": [
+    "node-ui",
+    "native-go",
+    "native-interop",
+    "native-ui",
+    "reticulum-reference",
+    "ios-simulator-build",
+    "desktop-package",
+    "autonomous-browser"
+  ],
+  "failure": "Go receipt runtime combined compile/run process reached 60000ms; status null. Exact remote phase unknown; no HTTP408."
+}

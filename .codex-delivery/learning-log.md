@@ -757,3 +757,11 @@ O recibo pode chegar opacamente enquanto a identidade está bloqueada; o relaunc
 Recepção de um recibo autêntico para histórico ausente não é frame inválido. O browser fechava RTC nesse caso. Usar erro específico apenas depois de validar registo e assinatura permite consumir o controlo sem o admitir/guardar. Nunca apanhar por texto nem generalizar a toda a falha de recepção: corrupção privada, assinatura adulterada e erro comum com texto igual têm de continuar a propagar-se. O teste RTC falhou antes e passou depois com tráfego válido no mesmo canal.
 
 Cache de compilação eliminada para recuperar reserva de disco implica recompilação, não repetição de evidência antiga como nova. Relatórios distinguem compilation-only e testes. O SDK foi sparsificado com igualdade de hash/tamanho; não apagar perfis/AVD para obter espaço. Uma omissão do engine no driver foi corrigida só na fase que não executara testes.
+
+## Recusa persistente — falhas de fixture e reserva de volume
+
+O controlo Node de cópia errada provocou correctamente um erro de integridade, que encerra a instância do store. A fixture falhou ao tentar continuar nessa instância. O controlo passou a exigir o fecho, reabrir a base autenticada e provar que o envelope original permaneceu igual; não se relaxou a integridade. A tentativa inicial browser parou no typecheck (variável duplicada e valor opcional), antes de executar browsers.
+
+O gate amplo passou535Node/17Go-race/buildnativo, mas cinco dos167casos entre processos não arrancaram por falta da reserva15GiB. Preservar essa falha ambiental, confirmar fontes e repetir os casos afectados com controlo positivo permite conservar a proveniência dos passes restantes. Não remover a reserva nem reclassificar arranques bloqueados como transportes testados. Arquivos verificados conservaram instaladores antigos e a imagemSDKinactiva; documentar restauro antes de retomarAndroid. Perfis/AVD e WIP permaneceram intactos.
+
+CI9a56c5f revelou que um único limite60s abrangia compilação Go comrace e execução do auxiliar. Os trêshosts atingiram esse limite; a fase exacta ainda precisa de medição. Uma compilação anterior passada não é prova de execução, e não se deve aumentar cegamente o prazo para esconder o problema. Rascunhos de medição/driver ficam separados de fontes verificadas até serem executados.

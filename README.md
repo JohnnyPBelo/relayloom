@@ -10,6 +10,8 @@ A captura vem de um teste real: a autora tinha apenas outro navegador como par; 
 
 O setup guiado e os idiomas português europeu, inglês e espanhol já estão no URL público. Os gates locais e Android passaram. A verificação final conferiu17ficheirosHTTP e passou10percursosUI, incluindo dois processos independentes. Os timeouts anteriores e a correcção da escolha dehost do verificador ficaram documentados. A validação iOS permanece pendente. [Evidência e falhas](docs/evidence/onboarding-languages/live). [Guia e âmbito](docs/SETUP-LANGUAGES.md) · [Testes executados](docs/evidence/onboarding-languages).
 
+O próximo incremento acrescenta decisões privadas sobre propostas enviadas às páginas. O protocolo e a persistência de recusa estão verificados localmente; a entrega/interface continuam por integrar. O [CI anterior](docs/evidence/ci-9a56c5f) falhou no limite de um auxiliar Go nos três hosts; a causa foi reproduzida e o [driver corrigido passou localmente](docs/evidence/ci-receipt-budget-cold), aguardando novo CI. O HTML público mantém a versão anterior.
+
 ## Usar a web sem instalar a aplicação
 
 **[Abrir RelayLoom no browser](https://johnnypbelo.github.io/relayloom/)** · [Guia para testar em dois dispositivos](docs/WEB-TWO-DEVICES.md).

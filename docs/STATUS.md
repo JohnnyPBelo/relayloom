@@ -1,5 +1,26 @@
 # RelayLoom — estado verificável
 
+## Correcção local do auxiliar que bloqueou o CI
+
+**e95b068:** a medição com cache fria reproduziu o corte aos60s antes da execução do teste. Preparação/vet separados demoraram62,2s; o teste real passou em27,4s. O driver agora separa essas fases, mantendo o limite exterior60s da execução e sem alterar os prazos dos jobs ou a cobertura. Typecheck e os3 casos do driver integrado passaram. [Comandos, tempos e controlo negativo](evidence/ci-receipt-budget-cold). A próxima execução CI ainda precisa de comprovar o resultado nos três hosts.
+
+
+## Persistência de recusa verificada — 23 de Setembro
+
+**627ad6c:** Node, Go e browser guardam a decisão explícita do dono e retiram a prova da proposta no mesmo commit. A revisão da inbox impede decisões sobre uma vista desactualizada. Repetir conserva motivo, destinatário autenticado e prazo; assinatura, envelope e cópia sobrevivem a reinícios. Recibos anteriores e outras preparações mantêm-se intactos.
+
+Passaram **535 testes Node, 17 pacotes Go/race, cobertura de 167 casos entre processos e 120 casos por cada Chromium/Firefox/WebKit**, além dos builds. O primeiro gate teve cinco arranques bloqueados pela reserva de disco; a revisão repetiu os seis casos do ficheiro afectado e manteve a proveniência dos restantes passes, com fontes iguais. O relatório original continua FAIL. [Provas e comandos](evidence/site-contributions/rejection-storage).
+
+**Ainda sem envio/admissão automática da recusa nem interface completa de revisão.** Seguem transporte/API, incorporação com CAS, reconciliação, proveniência e três contas na UI. O HTML público permanece anterior; todo o contrato de plataformas, rádios, paridade, recuperação e revisão independente continua activo.
+
+
+## Integração actual de recusas e CI
+
+Protocolo de recusa privada commitado localmente em `da2d174`:64vectores Node/portátil/Go, Go/sites-race e dois testes por Chromium/Firefox/WebKit passaram. [Provas do protocolo](evidence/site-contributions/rejection-protocol). Persistência posterior em Node/Go/browser ainda WIP; testes dirigidos de37casos e9porbrowser passaram, regressão ampla parou após535Node/17Go-racePASS e162/167processos: cinco arranques foram bloqueados pela reserva de disco abaixo15GiB. A matrizbrowser ampla ainda nãoexecutou. A entrega/admissão e a UI completa continuam pendentes. HTML público inalterado.
+
+O CImais recente `35855333712` de `9a56c5f` terminouFAIL no mesmo auxiliar Go aos60s emWindows/macOS/Linux. Os jobs dependentes foram skipped; não há passe inferido. [Logs e contagens exactas](evidence/ci-9a56c5f). A hipótese de compilação fria dentro do prazo combinado ainda precisa de medição; não éHTTP408.
+
+
 ## Entrega de recibos verificada — 23 de Setembro
 
 **426b471:** Node, Go e browser entregam o recibo privado assinado pelo dono e fecham atomicamente a fila do visitante. A confirmação exige vínculo à operação anteriormente copiada; recibos tardios conservam cancelled/expired sem renovar autorização. Cache recebida antes de unlock é recuperada; um recibo autêntico sem história local não fecha RTC nem inventa confirmação. O processamento do dono roda lotes limitados e conserva os mesmos envelopes após quota/retry.

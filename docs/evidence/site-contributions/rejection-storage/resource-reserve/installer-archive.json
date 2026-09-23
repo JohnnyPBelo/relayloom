@@ -1,0 +1,62 @@
+{
+  "status": "ARCHIVED_VERIFIED",
+  "startedUnix": 1790166294.0475874,
+  "archive": "/home/absint0o/projects/relayloom/.cache/archives/desktop-history-20260923.tar.xz",
+  "files": [
+    {
+      "path": ".cache/bm/dist/desktop-installers/RelayLoom-0.1.0-linux-x86_64.AppImage",
+      "bytes": 127761676,
+      "mode": 493,
+      "sha256": "c63567ef5864cc964dab8eeb5efe722e31c4b0cebad628b070539f95b89bca15"
+    },
+    {
+      "path": ".cache/gc/dist/desktop-installers/RelayLoom-0.1.0-linux-x86_64.AppImage",
+      "bytes": 127737080,
+      "mode": 493,
+      "sha256": "320a3cfe7a6a6d6ba1dc62f0221f03ff79a7fce18fdce99ace668562c3fbeee8"
+    },
+    {
+      "path": ".cache/wr/dist/desktop-installers/RelayLoom-0.1.0-linux-x86_64.AppImage",
+      "bytes": 127351880,
+      "mode": 493,
+      "sha256": "038afc94e5fdafd39c349ab775a030fd98bd4c3c21fb3bf215eac1e1eede4cef"
+    },
+    {
+      "path": ".cache/br/dist/desktop-installers/RelayLoom-0.1.0-linux-x86_64.AppImage",
+      "bytes": 127351857,
+      "mode": 493,
+      "sha256": "192cb626d6a52ea56534944a00573c5060edc22f0fdfa2e6241813940e6f6771"
+    },
+    {
+      "path": ".cache/rn/dist/desktop-installers/RelayLoom-0.1.0-linux-x86_64.AppImage",
+      "bytes": 127159202,
+      "mode": 493,
+      "sha256": "8e12597d2de568f8089119fcb9ee7c377c04c6044c3f3777099b1f95e83194a1"
+    },
+    {
+      "path": ".cache/w/dist/desktop-installers/RelayLoom-0.1.0-linux-x86_64.AppImage",
+      "bytes": 127155132,
+      "mode": 493,
+      "sha256": "37f115b071d6c92c0786991e94c0eab459c1d042bd61ab17e1e557f37424652f"
+    },
+    {
+      "path": ".cache/p/dist/desktop-installers/RelayLoom-0.1.0-linux-x86_64.AppImage",
+      "bytes": 127122222,
+      "mode": 493,
+      "sha256": "211a93e5949831eb61c0c800474c28c41341930da889c931f5843537fa46e460"
+    },
+    {
+      "path": ".cache/u/dist/desktop-installers/RelayLoom-0.1.0-linux-x86_64.AppImage",
+      "bytes": 127122218,
+      "mode": 493,
+      "sha256": "dcd516a884ca5ce3296f3d48ba13dc6e9d098054af536cc617574c15aeb7a415"
+    }
+  ],
+  "purpose": "Preserve exact historical installers while releasing redundant unpacked copies. Sources, WIP, test evidence, current main installer and Android profiles are untouched.",
+  "archiveBytes": 161852852,
+  "archiveSha256": "dd824ef06bef56a81da761ae1700eb3e7643d3b6551a6ba0183e4fb322b91d21",
+  "originalBytes": 1018761267,
+  "recoveredBytes": 856908415,
+  "restore": "python3 -m tarfile -e /home/absint0o/projects/relayloom/.cache/archives/desktop-history-20260923.tar.xz /home/absint0o/projects/relayloom",
+  "finishedUnix": 1790166484.9133537
+}

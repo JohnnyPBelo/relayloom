@@ -62,3 +62,11 @@ A integração seguinte tem de conservar a proposta original na proveniência do
 - Regressão completa dos motores e plataformas, publicação dos artefactos exactos e revisão independente. Nenhum teste de software substitui validação de hardware ou rádio.
 
 Provas da fundação: [documento v4](evidence/site-contributions/document-v4), [consulta autenticada](evidence/site-contributions/authenticated-context), [catálogos e envelopes](evidence/site-contributions/envelopes). O estado das validações mais recentes e da candidata está em [STATUS](STATUS.md). Estes marcos não concluem o produto nem demonstram prontidão para catástrofes.
+
+## Persistência de recusa verificada — 23 de Setembro
+
+**627ad6c:** Node, Go e browser guardam a decisão explícita do dono e retiram a prova da proposta no mesmo commit. A revisão da inbox impede decisões sobre uma vista desactualizada. Repetir conserva motivo, destinatário autenticado e prazo; assinatura, envelope e cópia sobrevivem a reinícios. Recibos anteriores e outras preparações mantêm-se intactos.
+
+Passaram **535 testes Node, 17 pacotes Go/race, cobertura de 167 casos entre processos e 120 casos por cada Chromium/Firefox/WebKit**, além dos builds. O primeiro gate teve cinco arranques bloqueados pela reserva de disco; a revisão repetiu os seis casos do ficheiro afectado e manteve a proveniência dos restantes passes, com fontes iguais. O relatório original continua FAIL. [Provas e comandos](evidence/site-contributions/rejection-storage).
+
+**Ainda sem envio/admissão automática da recusa nem interface completa de revisão.** Seguem transporte/API, incorporação com CAS, reconciliação, proveniência e três contas na UI. O HTML público permanece anterior; todo o contrato de plataformas, rádios, paridade, recuperação e revisão independente continua activo.
