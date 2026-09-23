@@ -1,0 +1,84 @@
+TAP version 13
+# (node:143396) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: private inbox preserves verified source and proposal across reopening, separately from sender staging
+ok 1 - private inbox preserves verified source and proposal across reopening, separately from sender staging
+  ---
+  duration_ms: 161.847055
+  type: 'test'
+  ...
+# Subtest: repackaging is idempotent and a conflicting visitor UUID cannot replace the original candidate
+ok 2 - repackaging is idempotent and a conflicting visitor UUID cannot replace the original candidate
+  ---
+  duration_ms: 124.442041
+  type: 'test'
+  ...
+# Subtest: an interrupted admission/source transaction rolls back without losing the earlier proof
+ok 3 - an interrupted admission/source transaction rolls back without losing the earlier proof
+  ---
+  duration_ms: 85.650098
+  type: 'test'
+  ...
+# Subtest: expiry removes private payloads but keeps replay metadata for the bounded retention window
+ok 4 - expiry removes private payloads but keeps replay metadata for the bounded retention window
+  ---
+  duration_ms: 123.409506
+  type: 'test'
+  ...
+# Subtest: unreadable/public proposals, wrong source and revoked policy never become verified candidates
+ok 5 - unreadable/public proposals, wrong source and revoked policy never become verified candidates
+  ---
+  duration_ms: 101.277199
+  type: 'test'
+  ...
+# Subtest: tampered retained evidence is an integrity failure, never repaired into a new proposal
+ok 6 - tampered retained evidence is an integrity failure, never repaired into a new proposal
+  ---
+  duration_ms: 83.682028
+  type: 'test'
+  ...
+# Subtest: journal quotas preserve pending entries and conflict floods have bounded descriptors and writes
+ok 7 - journal quotas preserve pending entries and conflict floods have bounded descriptors and writes
+  ---
+  duration_ms: 138.521752
+  type: 'test'
+  ...
+# Subtest: explicit dismissal is atomic, releases only selected proof quota and survives replay/reopen
+ok 8 - explicit dismissal is atomic, releases only selected proof quota and survives replay/reopen
+  ---
+  duration_ms: 218.450446
+  type: 'test'
+  ...
+# Subtest: dismissing unverified proposal frees admission quota without evicting other pending proposals
+ok 9 - dismissing unverified proposal frees admission quota without evicting other pending proposals
+  ---
+  duration_ms: 89.446304
+  type: 'test'
+  ...
+# Subtest: dismissal cannot hide corruption in private proof
+ok 10 - dismissal cannot hide corruption in private proof
+  ---
+  duration_ms: 61.002637
+  type: 'test'
+  ...
+# Subtest: owner receipt intent survives dismiss and resumes one exact private envelope after reopen
+ok 11 - owner receipt intent survives dismiss and resumes one exact private envelope after reopen
+  ---
+  duration_ms: 225.909007
+  type: 'test'
+  ...
+# Subtest: owner receipt intent survives expire and resumes one exact private envelope after reopen
+ok 12 - owner receipt intent survives expire and resumes one exact private envelope after reopen
+  ---
+  duration_ms: 293.229035
+  type: 'test'
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 12
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1979.320379

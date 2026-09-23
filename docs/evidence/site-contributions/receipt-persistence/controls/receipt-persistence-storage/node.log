@@ -1,0 +1,140 @@
+TAP version 13
+# (node:209518) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: private inbox preserves verified source and proposal across reopening, separately from sender staging
+ok 1 - private inbox preserves verified source and proposal across reopening, separately from sender staging
+  ---
+  duration_ms: 139.034829
+  type: 'test'
+  ...
+# Subtest: repackaging is idempotent and a conflicting visitor UUID cannot replace the original candidate
+ok 2 - repackaging is idempotent and a conflicting visitor UUID cannot replace the original candidate
+  ---
+  duration_ms: 95.016019
+  type: 'test'
+  ...
+# Subtest: an interrupted admission/source transaction rolls back without losing the earlier proof
+ok 3 - an interrupted admission/source transaction rolls back without losing the earlier proof
+  ---
+  duration_ms: 67.313083
+  type: 'test'
+  ...
+# Subtest: expiry removes private payloads but keeps replay metadata for the bounded retention window
+ok 4 - expiry removes private payloads but keeps replay metadata for the bounded retention window
+  ---
+  duration_ms: 84.784461
+  type: 'test'
+  ...
+# Subtest: unreadable/public proposals, wrong source and revoked policy never become verified candidates
+ok 5 - unreadable/public proposals, wrong source and revoked policy never become verified candidates
+  ---
+  duration_ms: 76.565526
+  type: 'test'
+  ...
+# Subtest: tampered retained evidence is an integrity failure, never repaired into a new proposal
+ok 6 - tampered retained evidence is an integrity failure, never repaired into a new proposal
+  ---
+  duration_ms: 62.746383
+  type: 'test'
+  ...
+# Subtest: journal quotas preserve pending entries and conflict floods have bounded descriptors and writes
+ok 7 - journal quotas preserve pending entries and conflict floods have bounded descriptors and writes
+  ---
+  duration_ms: 133.518639
+  type: 'test'
+  ...
+# Subtest: explicit dismissal is atomic, releases only selected proof quota and survives replay/reopen
+ok 8 - explicit dismissal is atomic, releases only selected proof quota and survives replay/reopen
+  ---
+  duration_ms: 144.711409
+  type: 'test'
+  ...
+# Subtest: dismissing unverified proposal frees admission quota without evicting other pending proposals
+ok 9 - dismissing unverified proposal frees admission quota without evicting other pending proposals
+  ---
+  duration_ms: 78.849917
+  type: 'test'
+  ...
+# Subtest: dismissal cannot hide corruption in private proof
+ok 10 - dismissal cannot hide corruption in private proof
+  ---
+  duration_ms: 35.99543
+  type: 'test'
+  ...
+# Subtest: owner receipt intent survives dismiss and resumes one exact private envelope after reopen
+ok 11 - owner receipt intent survives dismiss and resumes one exact private envelope after reopen
+  ---
+  duration_ms: 140.980176
+  type: 'test'
+  ...
+# Subtest: owner receipt intent survives expire and resumes one exact private envelope after reopen
+ok 12 - owner receipt intent survives expire and resumes one exact private envelope after reopen
+  ---
+  duration_ms: 129.813645
+  type: 'test'
+  ...
+# (node:209689) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: private site staging survives SQLite restart and does not expose signatures to the reading secret
+ok 13 - private site staging survives SQLite restart and does not expose signatures to the reading secret
+  ---
+  duration_ms: 88.79576
+  type: 'test'
+  ...
+# Subtest: private resource staging survives SQLite restart and does not expose signatures to the reading secret
+ok 14 - private resource staging survives SQLite restart and does not expose signatures to the reading secret
+  ---
+  duration_ms: 66.410171
+  type: 'test'
+  ...
+# Subtest: private contribution staging survives SQLite restart and does not expose signatures to the reading secret
+ok 15 - private contribution staging survives SQLite restart and does not expose signatures to the reading secret
+  ---
+  duration_ms: 64.393721
+  type: 'test'
+  ...
+# Subtest: private contribution-inbox staging survives SQLite restart and does not expose signatures to the reading secret
+ok 16 - private contribution-inbox staging survives SQLite restart and does not expose signatures to the reading secret
+  ---
+  duration_ms: 68.844002
+  type: 'test'
+  ...
+# Subtest: private contribution-receipt staging survives SQLite restart and does not expose signatures to the reading secret
+ok 17 - private contribution-receipt staging survives SQLite restart and does not expose signatures to the reading secret
+  ---
+  duration_ms: 65.990824
+  type: 'test'
+  ...
+# Subtest: private staging quota failure aborts all record changes even when its error is caught
+ok 18 - private staging quota failure aborts all record changes even when its error is caught
+  ---
+  duration_ms: 27.784339
+  type: 'test'
+  ...
+# Subtest: private record handles expire at the synchronous transaction boundary
+ok 19 - private record handles expire at the synchronous transaction boundary
+  ---
+  duration_ms: 10.563671
+  type: 'test'
+  ...
+# Subtest: missing and transposed ciphertext are rejected even inside an otherwise authentic outer database
+ok 20 - missing and transposed ciphertext are rejected even inside an otherwise authentic outer database
+  ---
+  duration_ms: 43.79991
+  type: 'test'
+  ...
+# Subtest: receipt journals agree across Node/portable/Go on immutable intent, phases, expiry and source binding
+ok 21 - receipt journals agree across Node/portable/Go on immutable intent, phases, expiry and source binding
+  ---
+  duration_ms: 1124.374708
+  type: 'test'
+  ...
+1..21
+# tests 21
+# suites 0
+# pass 21
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3315.302931

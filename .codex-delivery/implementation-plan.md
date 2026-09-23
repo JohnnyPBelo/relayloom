@@ -219,3 +219,12 @@ Passaram 46 testes Node, seis pacotes Go/race (quatro com cache) e 87 casos entr
 bf12d51: protocolo privado de recibo do dono,52 vectores Node/portátil/Go e1 caso real por browser PASS, além de typecheck/Go-sites-race. Sem journal/transporte/UI; não é recibo entregue. Provas docs/evidence/site-contributions/receipt-protocol. Continuar persistência e integração antes das decisões/publicação/proveniência e UI de três contas.
 
 CI35786710953/f3f32fc confirmou mensagem privada em iOS e falhou no selector da fotografia visível;27 ficheiros do artefacto conferidos. 1a53620 ajusta apenas o selector XCTest ao AX observado. Verificação local estrutural PASS, Swift/Apple ainda por executar. Provas docs/evidence/ci-f3f32fc. Não reclassificar os passes do commit anterior como validação do selector novo.
+
+
+## Recibos com persistência recuperável — 23 de Setembro
+
+**f131652:** verificar a origem guarda também a intenção do recibo. Os motores Node/Go/browser persistem assinatura, envelope exacto e indicador de cópia em etapas recuperáveis; os mesmos bytes e prazos sobrevivem a reinícios, descarte e expiração da proposta. Um registo antigo sem prova não recebe confirmação inventada. As preparações têm namespace privado próprio, quotas e limpeza finita, sem transferir autoridade de assinatura a leitores.
+
+Passaram **526 Node, 17 pacotes Go/race, 117 casos entre processos e 97 casos por cada Chromium/Firefox/WebKit**, além de typecheck/builds. Os logs distinguem cache Go de execução nova. O controlo de 129 recibos e perda de resposta prova a limpeza em lotes sem aumentar o limite da transacção browser. [Comandos, hashes e âmbito](../docs/evidence/site-contributions/receipt-persistence).
+
+**Ainda sem entrega automática de recibos ou fecho da fila do visitante por confirmação.** Seguem runtime, recusa assinada, aprovação/CAS/reconciliação/proveniência e UI completa com três contas. O HTML público permanece na versão anterior; todo o contrato de plataformas, rádios, recuperação, grupos web e revisão independente mantém-se.

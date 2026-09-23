@@ -1,0 +1,102 @@
+TAP version 13
+# (node:233151) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: private inbox preserves verified source and proposal across reopening, separately from sender staging
+ok 1 - private inbox preserves verified source and proposal across reopening, separately from sender staging
+  ---
+  duration_ms: 135.765471
+  type: 'test'
+  ...
+# Subtest: repackaging is idempotent and a conflicting visitor UUID cannot replace the original candidate
+ok 2 - repackaging is idempotent and a conflicting visitor UUID cannot replace the original candidate
+  ---
+  duration_ms: 101.500524
+  type: 'test'
+  ...
+# Subtest: an interrupted admission/source transaction rolls back without losing the earlier proof
+ok 3 - an interrupted admission/source transaction rolls back without losing the earlier proof
+  ---
+  duration_ms: 67.118768
+  type: 'test'
+  ...
+# Subtest: expiry removes private payloads but keeps replay metadata for the bounded retention window
+ok 4 - expiry removes private payloads but keeps replay metadata for the bounded retention window
+  ---
+  duration_ms: 78.489321
+  type: 'test'
+  ...
+# Subtest: unreadable/public proposals, wrong source and revoked policy never become verified candidates
+ok 5 - unreadable/public proposals, wrong source and revoked policy never become verified candidates
+  ---
+  duration_ms: 82.675839
+  type: 'test'
+  ...
+# Subtest: tampered retained evidence is an integrity failure, never repaired into a new proposal
+ok 6 - tampered retained evidence is an integrity failure, never repaired into a new proposal
+  ---
+  duration_ms: 55.300426
+  type: 'test'
+  ...
+# Subtest: journal quotas preserve pending entries and conflict floods have bounded descriptors and writes
+ok 7 - journal quotas preserve pending entries and conflict floods have bounded descriptors and writes
+  ---
+  duration_ms: 136.465995
+  type: 'test'
+  ...
+# Subtest: explicit dismissal is atomic, releases only selected proof quota and survives replay/reopen
+ok 8 - explicit dismissal is atomic, releases only selected proof quota and survives replay/reopen
+  ---
+  duration_ms: 133.370292
+  type: 'test'
+  ...
+# Subtest: dismissing unverified proposal frees admission quota without evicting other pending proposals
+ok 9 - dismissing unverified proposal frees admission quota without evicting other pending proposals
+  ---
+  duration_ms: 84.2555
+  type: 'test'
+  ...
+# Subtest: dismissal cannot hide corruption in private proof
+ok 10 - dismissal cannot hide corruption in private proof
+  ---
+  duration_ms: 36.740286
+  type: 'test'
+  ...
+# Subtest: owner receipt intent survives dismiss and resumes one exact private envelope after reopen
+ok 11 - owner receipt intent survives dismiss and resumes one exact private envelope after reopen
+  ---
+  duration_ms: 155.78736
+  type: 'test'
+  ...
+# Subtest: owner receipt intent survives expire and resumes one exact private envelope after reopen
+ok 12 - owner receipt intent survives expire and resumes one exact private envelope after reopen
+  ---
+  duration_ms: 130.837724
+  type: 'test'
+  ...
+# Subtest: legacy verified inbox migrates only from retained authenticated source
+ok 13 - legacy verified inbox migrates only from retained authenticated source
+  ---
+  duration_ms: 61.552785
+  type: 'test'
+  ...
+# Subtest: legacy discarded inbox migrates only from retained authenticated source
+ok 14 - legacy discarded inbox migrates only from retained authenticated source
+  ---
+  duration_ms: 64.966584
+  type: 'test'
+  ...
+# Subtest: receipt journals agree across Node/portable/Go on immutable intent, phases, expiry and source binding
+ok 15 - receipt journals agree across Node/portable/Go on immutable intent, phases, expiry and source binding
+  ---
+  duration_ms: 1458.298039
+  type: 'test'
+  ...
+1..15
+# tests 15
+# suites 0
+# pass 15
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3295.847434

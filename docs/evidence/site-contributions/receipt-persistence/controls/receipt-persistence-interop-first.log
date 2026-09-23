@@ -1,0 +1,168 @@
+TAP version 13
+# (node:177307) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: node inbox persists an original proposal that the other process verifies and reopens with the same encrypted source
+ok 1 - node inbox persists an original proposal that the other process verifies and reopens with the same encrypted source
+  ---
+  duration_ms: 5564.486426
+  type: 'test'
+  ...
+# Subtest: go inbox persists an original proposal that the other process verifies and reopens with the same encrypted source
+ok 2 - go inbox persists an original proposal that the other process verifies and reopens with the same encrypted source
+  ---
+  duration_ms: 5500.621142
+  type: 'test'
+  ...
+# Subtest: Go inbox process exit before-commit during admit preserves the exact committed boundary
+ok 3 - Go inbox process exit before-commit during admit preserves the exact committed boundary
+  ---
+  duration_ms: 2255.636601
+  type: 'test'
+  ...
+# Subtest: Go inbox process exit after-command during admit preserves the exact committed boundary
+ok 4 - Go inbox process exit after-command during admit preserves the exact committed boundary
+  ---
+  duration_ms: 2255.441427
+  type: 'test'
+  ...
+# Subtest: Go inbox process exit before-commit during source preserves the exact committed boundary
+ok 5 - Go inbox process exit before-commit during source preserves the exact committed boundary
+  ---
+  duration_ms: 2313.482452
+  type: 'test'
+  ...
+# Subtest: Go inbox process exit after-command during source preserves the exact committed boundary
+ok 6 - Go inbox process exit after-command during source preserves the exact committed boundary
+  ---
+  duration_ms: 2354.425077
+  type: 'test'
+  ...
+# Subtest: native inbox refuses block/corruption and collects expired proof without erasing replay metadata
+ok 7 - native inbox refuses block/corruption and collects expired proof without erasing replay metadata
+  ---
+  duration_ms: 5418.200579
+  type: 'test'
+  ...
+# Subtest: node discards missing-source proposal durably across encrypted Node/Go reopen
+ok 8 - node discards missing-source proposal durably across encrypted Node/Go reopen
+  ---
+  duration_ms: 8369.892557
+  type: 'test'
+  ...
+# Subtest: node discards verified proposal durably across encrypted Node/Go reopen
+ok 9 - node discards verified proposal durably across encrypted Node/Go reopen
+  ---
+  duration_ms: 8443.48426
+  type: 'test'
+  ...
+# Subtest: go discards missing-source proposal durably across encrypted Node/Go reopen
+ok 10 - go discards missing-source proposal durably across encrypted Node/Go reopen
+  ---
+  duration_ms: 9428.15369
+  type: 'test'
+  ...
+# Subtest: go discards verified proposal durably across encrypted Node/Go reopen
+ok 11 - go discards verified proposal durably across encrypted Node/Go reopen
+  ---
+  duration_ms: 9524.978024
+  type: 'test'
+  ...
+# Subtest: Go discard process exit before-commit cannot separate proof disposal from replay tombstone
+ok 12 - Go discard process exit before-commit cannot separate proof disposal from replay tombstone
+  ---
+  duration_ms: 2257.591096
+  type: 'test'
+  ...
+# Subtest: Go discard process exit after-command cannot separate proof disposal from replay tombstone
+ok 13 - Go discard process exit after-command cannot separate proof disposal from replay tombstone
+  ---
+  duration_ms: 2244.90731
+  type: 'test'
+  ...
+# Subtest: Go dismissal detects corrupt evidence instead of laundering it through cleanup
+ok 14 - Go dismissal detects corrupt evidence instead of laundering it through cleanup
+  ---
+  duration_ms: 1083.37067
+  type: 'test'
+  ...
+# Subtest: Node discard process exit before-commit is recovered by Go without splitting proof and tombstone
+ok 15 - Node discard process exit before-commit is recovered by Go without splitting proof and tombstone
+  ---
+  duration_ms: 2429.249031
+  type: 'test'
+  ...
+# Subtest: Node discard process exit after-command is recovered by Go without splitting proof and tombstone
+ok 16 - Node discard process exit after-command is recovered by Go without splitting proof and tombstone
+  ---
+  duration_ms: 2339.212011
+  type: 'test'
+  ...
+# Subtest: node receipt intent, signature, exact envelope and copy survive cross-runtime reopen after proposal disposal
+ok 17 - node receipt intent, signature, exact envelope and copy survive cross-runtime reopen after proposal disposal
+  ---
+  duration_ms: 9656.349843
+  type: 'test'
+  ...
+# Subtest: go receipt intent, signature, exact envelope and copy survive cross-runtime reopen after proposal disposal
+ok 18 - go receipt intent, signature, exact envelope and copy survive cross-runtime reopen after proposal disposal
+  ---
+  duration_ms: 10745.804913
+  type: 'test'
+  ...
+# Subtest: Go receipt source exit before-commit preserves exactly the committed signing boundary
+ok 19 - Go receipt source exit before-commit preserves exactly the committed signing boundary
+  ---
+  duration_ms: 1243.90684
+  type: 'test'
+  ...
+# Subtest: Go receipt source exit after-command preserves exactly the committed signing boundary
+ok 20 - Go receipt source exit after-command preserves exactly the committed signing boundary
+  ---
+  duration_ms: 1258.486078
+  type: 'test'
+  ...
+# Subtest: Go receipt sign-receipt exit before-commit preserves exactly the committed signing boundary
+ok 21 - Go receipt sign-receipt exit before-commit preserves exactly the committed signing boundary
+  ---
+  duration_ms: 1207.586301
+  type: 'test'
+  ...
+# Subtest: Go receipt sign-receipt exit after-command preserves exactly the committed signing boundary
+ok 22 - Go receipt sign-receipt exit after-command preserves exactly the committed signing boundary
+  ---
+  duration_ms: 1182.087025
+  type: 'test'
+  ...
+# Subtest: Go receipt seal-receipt exit before-commit preserves exactly the committed signing boundary
+ok 23 - Go receipt seal-receipt exit before-commit preserves exactly the committed signing boundary
+  ---
+  duration_ms: 2302.875219
+  type: 'test'
+  ...
+# Subtest: Go receipt seal-receipt exit after-command preserves exactly the committed signing boundary
+ok 24 - Go receipt seal-receipt exit after-command preserves exactly the committed signing boundary
+  ---
+  duration_ms: 2277.642162
+  type: 'test'
+  ...
+# Subtest: Go receipt copy-receipt exit before-commit preserves exactly the committed signing boundary
+ok 25 - Go receipt copy-receipt exit before-commit preserves exactly the committed signing boundary
+  ---
+  duration_ms: 1252.501039
+  type: 'test'
+  ...
+# Subtest: Go receipt copy-receipt exit after-command preserves exactly the committed signing boundary
+ok 26 - Go receipt copy-receipt exit after-command preserves exactly the committed signing boundary
+  ---
+  duration_ms: 1247.514894
+  type: 'test'
+  ...
+1..26
+# tests 26
+# suites 0
+# pass 26
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 106951.789084

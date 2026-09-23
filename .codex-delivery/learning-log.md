@@ -739,3 +739,12 @@ Na retoma, verificar o relatório terminal e os hashes antes de relançar qualqu
 O gate WebKit mostrou três falhas ao obter uma origem apenas na fila privada. Dois controlos determinísticos retiveram leituras já terminadas, executaram resume do mesmo registo e reproduziram recusa: finish substituía o objecto usado como token em todas as repetições. Preservar o objecto interno quando o registo canónico é igual resolve o falso cancelamento. Revogar deve continuar a removê-lo, e reautorizar cria outro objecto; comparar apenas os valores depois do await ressuscitaria uma resposta anterior ao bloqueio. Quatro controlos provam ambos os caminhos e um pedido novo positivo; 17 WebKit dirigidos e a matriz de 89 por engine passaram.
 
 A falha anterior da fixture de descarte assumia ordem de entrada em transacções assíncronas. Fixar o interleaving com retenção explícita e testar as duas ordens, sem alterar timeouts. Os dois tipos de falha e as suas provas são separados no relatório. Gates falhados permanecem FAIL; herdar só testes de dependências inalteradas, enumerando as diferenças de fonte.
+
+
+## Limpeza de recibos e fronteiras de persistência
+
+Um perfil pode reter mais recibos expirados do que o limite de 192 chaves por transacção IndexedDB. Manter esse limite e limpar no máximo 128 provas por commit permite retomar sem criar índices órfãos. O teste guardou 129 assinaturas reais, perdeu a resposta depois de 128 remoções e recuperou a última. Não aumentar o limite global nem expor uma assinatura como entregue só por estar preparada.
+
+A cache de verificação de cards públicos exige exactShape antes de calcular/consultar a chave canónica. Um símbolo extra ou getter não pode reutilizar o resultado de um card válido anterior. Os controlos verificam a recusa e a ausência de execução do getter; a cache nunca contém política/sessão/prazo. Conservar assinaturas e referências originais ao migrar registos com prova; descartes antigos sem prova não ganham recibos inventados.
+
+O gate final e os logs distinguem tests helpers Go que exigem drivers, pacotes cached, processos reais e browsers. A execução curta TestContribution não é prova de toda a interoperabilidade; os drivers executam os casos/crashes efectivos. Nenhuma falha de produto ocorreu no gate desta persistência; a integração de entrega continua separada.

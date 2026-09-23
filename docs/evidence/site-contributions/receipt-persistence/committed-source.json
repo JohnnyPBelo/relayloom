@@ -1,0 +1,13 @@
+{
+  "commit": "f131652040190110c594445c43559e92dfa30bb8",
+  "sourceFiles": 745,
+  "allHashesMatch": true,
+  "counts": {
+    "full-node": 526,
+    "native-integration": 117,
+    "chromium": 97,
+    "firefox": 97,
+    "webkit": 97
+  },
+  "scope": "Atomic owner receipt intent coupled to source verification; signing-owned private staging, immutable signing/envelope/copy phases in Node/Go/IndexedDB, finite cleanup and migration. Full Node and native race, shared database crash/concurrent/private-domain controls and affected browser/worker/network regression. Receipt delivery/visitor queue closure, approval and complete forms UI remain unimplemented; no hardware or public deployment claim."
+}

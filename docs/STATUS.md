@@ -1,5 +1,20 @@
 # RelayLoom — estado verificável
 
+## CI 1a53620 — dois limites distintos
+
+CI 35794083324 terminou: todos os jobs excepto iOS e browser autónomo passaram. No iOS, o selector novo compilou e o arranque da app passou; a importação da fotografia excedeu 60,720 s, antes do percurso funcional principal. Não comprova selecção/anexo/resposta. No browser, 151 dos 152 casos terminaram com passe antes do limite acumulado de 15 min do job; não há relatório terminal da suite. [Provas verificadas e anotação oficial](evidence/ci-1a53620).
+
+**6e83b3a** conserva toda a descoberta de testes em dois shards sequenciais e mantém os limites por job/teste. A união exacta foi validada (159 casos locais = 90 + 69), com negativos para omissão/duplicação. A execução desse workflow ainda necessita CI remoto. Modelos, bridges, serviços, permissões e configuração de segurança não foram alterados.
+
+
+## Recibos com persistência recuperável — 23 de Setembro
+
+**f131652:** verificar a origem guarda também a intenção do recibo. Os motores Node/Go/browser persistem assinatura, envelope exacto e indicador de cópia em etapas recuperáveis; os mesmos bytes e prazos sobrevivem a reinícios, descarte e expiração da proposta. Um registo antigo sem prova não recebe confirmação inventada. As preparações têm namespace privado próprio, quotas e limpeza finita, sem transferir autoridade de assinatura a leitores.
+
+Passaram **526 Node, 17 pacotes Go/race, 117 casos entre processos e 97 casos por cada Chromium/Firefox/WebKit**, além de typecheck/builds. Os logs distinguem cache Go de execução nova. O controlo de 129 recibos e perda de resposta prova a limpeza em lotes sem aumentar o limite da transacção browser. [Comandos, hashes e âmbito](evidence/site-contributions/receipt-persistence).
+
+**Ainda sem entrega automática de recibos ou fecho da fila do visitante por confirmação.** Seguem runtime, recusa assinada, aprovação/CAS/reconciliação/proveniência e UI completa com três contas. O HTML público permanece na versão anterior; todo o contrato de plataformas, rádios, recuperação, grupos web e revisão independente mantém-se.
+
 ## Protocolo de recibo e novo resultado iOS — 22 de Setembro
 
 **bf12d51:** certificado de recepção assinado pelo dono e envelope privado vinculado à proposta.52 vectores Node/portátil/Go,Go/sites-race e1 teste real por browser passaram. **Ainda sem persistência/envio/recepção automáticos de recibos nem UI de revisão.** [Provas e fronteira exacta](evidence/site-contributions/receipt-protocol).

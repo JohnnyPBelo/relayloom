@@ -1,0 +1,24 @@
+
+Running 17 tests using 1 worker
+
+(node:197605) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › tests/browser/site-contribution-dismiss.spec.ts:21:3 › browser local discard reopen preserves atomic private evidence and replay protection (837ms)
+  ✓   2 [chromium] › tests/browser/site-contribution-dismiss.spec.ts:21:3 › browser local discard rollback preserves atomic private evidence and replay protection (753ms)
+  ✓   3 [chromium] › tests/browser/site-contribution-dismiss.spec.ts:21:3 › browser local discard lost-reply preserves atomic private evidence and replay protection (699ms)
+  ✓   4 [chromium] › tests/browser/site-contribution-dismiss.spec.ts:21:3 › browser local discard lock preserves atomic private evidence and replay protection (733ms)
+  ✓   5 [chromium] › tests/browser/site-contribution-dismiss.spec.ts:21:3 › browser local discard corruption preserves atomic private evidence and replay protection (551ms)
+  ✓   6 [chromium] › tests/browser/site-contribution-dismiss.spec.ts:21:3 › browser local discard concurrent-source preserves atomic private evidence and replay protection (714ms)
+  ✓   7 [chromium] › tests/browser/site-contribution-dismiss.spec.ts:21:3 › browser local discard concurrent-dismiss preserves atomic private evidence and replay protection (646ms)
+  ✓   8 [chromium] › tests/browser/site-contribution-inbox.spec.ts:12:1 › available form permissions are checked before uninvited browser proposals reserve private inbox capacity (1.6s)
+  ✓   9 [chromium] › tests/browser/site-contribution-inbox.spec.ts:141:3 › browser durable proposal inbox reopen-conflict preserves original authority and never fabricates approval (743ms)
+  ✓  10 [chromium] › tests/browser/site-contribution-inbox.spec.ts:141:3 › browser durable proposal inbox lock-source preserves original authority and never fabricates approval (696ms)
+  ✓  11 [chromium] › tests/browser/site-contribution-inbox.spec.ts:141:3 › browser durable proposal inbox corruption-expiry preserves original authority and never fabricates approval (631ms)
+  ✓  12 [chromium] › tests/browser/site-contribution-inbox.spec.ts:367:3 › browser receipt journal dismiss keeps exact historical intent and never signs before its commit (755ms)
+  ✓  13 [chromium] › tests/browser/site-contribution-inbox.spec.ts:367:3 › browser receipt journal expire keeps exact historical intent and never signs before its commit (761ms)
+  ✓  14 [chromium] › tests/browser/site-contribution-inbox.spec.ts:367:3 › browser receipt journal lost-reply keeps exact historical intent and never signs before its commit (758ms)
+  ✓  15 [chromium] › tests/browser/site-contribution-inbox.spec.ts:367:3 › browser receipt journal lock-sign keeps exact historical intent and never signs before its commit (690ms)
+  ✓  16 [chromium] › tests/browser/site-contribution-inbox.spec.ts:367:3 › browser receipt journal lock-seal keeps exact historical intent and never signs before its commit (714ms)
+  ✓  17 [chromium] › tests/browser/site-contribution-inbox.spec.ts:367:3 › browser receipt journal corrupt-receipt keeps exact historical intent and never signs before its commit (589ms)
+
+  17 passed (13.9s)

@@ -1,0 +1,404 @@
+TAP version 13
+# (node:210261) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: node inbox persists an original proposal that the other process verifies and reopens with the same encrypted source
+ok 1 - node inbox persists an original proposal that the other process verifies and reopens with the same encrypted source
+  ---
+  duration_ms: 5562.232195
+  type: 'test'
+  ...
+# Subtest: go inbox persists an original proposal that the other process verifies and reopens with the same encrypted source
+ok 2 - go inbox persists an original proposal that the other process verifies and reopens with the same encrypted source
+  ---
+  duration_ms: 5489.92494
+  type: 'test'
+  ...
+# Subtest: Go inbox process exit before-commit during admit preserves the exact committed boundary
+ok 3 - Go inbox process exit before-commit during admit preserves the exact committed boundary
+  ---
+  duration_ms: 2236.704056
+  type: 'test'
+  ...
+# Subtest: Go inbox process exit after-command during admit preserves the exact committed boundary
+ok 4 - Go inbox process exit after-command during admit preserves the exact committed boundary
+  ---
+  duration_ms: 2254.301502
+  type: 'test'
+  ...
+# Subtest: Go inbox process exit before-commit during source preserves the exact committed boundary
+ok 5 - Go inbox process exit before-commit during source preserves the exact committed boundary
+  ---
+  duration_ms: 2316.452589
+  type: 'test'
+  ...
+# Subtest: Go inbox process exit after-command during source preserves the exact committed boundary
+ok 6 - Go inbox process exit after-command during source preserves the exact committed boundary
+  ---
+  duration_ms: 2344.464044
+  type: 'test'
+  ...
+# Subtest: native inbox refuses block/corruption and collects expired proof without erasing replay metadata
+ok 7 - native inbox refuses block/corruption and collects expired proof without erasing replay metadata
+  ---
+  duration_ms: 5403.427538
+  type: 'test'
+  ...
+# Subtest: node discards missing-source proposal durably across encrypted Node/Go reopen
+ok 8 - node discards missing-source proposal durably across encrypted Node/Go reopen
+  ---
+  duration_ms: 8384.683977
+  type: 'test'
+  ...
+# Subtest: node discards verified proposal durably across encrypted Node/Go reopen
+ok 9 - node discards verified proposal durably across encrypted Node/Go reopen
+  ---
+  duration_ms: 8474.827304
+  type: 'test'
+  ...
+# Subtest: go discards missing-source proposal durably across encrypted Node/Go reopen
+ok 10 - go discards missing-source proposal durably across encrypted Node/Go reopen
+  ---
+  duration_ms: 9420.823656
+  type: 'test'
+  ...
+# Subtest: go discards verified proposal durably across encrypted Node/Go reopen
+ok 11 - go discards verified proposal durably across encrypted Node/Go reopen
+  ---
+  duration_ms: 9493.131701
+  type: 'test'
+  ...
+# Subtest: Go discard process exit before-commit cannot separate proof disposal from replay tombstone
+ok 12 - Go discard process exit before-commit cannot separate proof disposal from replay tombstone
+  ---
+  duration_ms: 2248.820608
+  type: 'test'
+  ...
+# Subtest: Go discard process exit after-command cannot separate proof disposal from replay tombstone
+ok 13 - Go discard process exit after-command cannot separate proof disposal from replay tombstone
+  ---
+  duration_ms: 2239.645521
+  type: 'test'
+  ...
+# Subtest: Go dismissal detects corrupt evidence instead of laundering it through cleanup
+ok 14 - Go dismissal detects corrupt evidence instead of laundering it through cleanup
+  ---
+  duration_ms: 1082.982722
+  type: 'test'
+  ...
+# Subtest: Node discard process exit before-commit is recovered by Go without splitting proof and tombstone
+ok 15 - Node discard process exit before-commit is recovered by Go without splitting proof and tombstone
+  ---
+  duration_ms: 2415.292206
+  type: 'test'
+  ...
+# Subtest: Node discard process exit after-command is recovered by Go without splitting proof and tombstone
+ok 16 - Node discard process exit after-command is recovered by Go without splitting proof and tombstone
+  ---
+  duration_ms: 2334.333926
+  type: 'test'
+  ...
+# Subtest: node receipt intent, signature, exact envelope and copy survive cross-runtime reopen after proposal disposal
+ok 17 - node receipt intent, signature, exact envelope and copy survive cross-runtime reopen after proposal disposal
+  ---
+  duration_ms: 9666.616595
+  type: 'test'
+  ...
+# Subtest: go receipt intent, signature, exact envelope and copy survive cross-runtime reopen after proposal disposal
+ok 18 - go receipt intent, signature, exact envelope and copy survive cross-runtime reopen after proposal disposal
+  ---
+  duration_ms: 10753.75724
+  type: 'test'
+  ...
+# Subtest: Go receipt source exit before-commit preserves exactly the committed signing boundary
+ok 19 - Go receipt source exit before-commit preserves exactly the committed signing boundary
+  ---
+  duration_ms: 1232.151927
+  type: 'test'
+  ...
+# Subtest: Go receipt source exit after-command preserves exactly the committed signing boundary
+ok 20 - Go receipt source exit after-command preserves exactly the committed signing boundary
+  ---
+  duration_ms: 1256.058378
+  type: 'test'
+  ...
+# Subtest: Go receipt sign-receipt exit before-commit preserves exactly the committed signing boundary
+ok 21 - Go receipt sign-receipt exit before-commit preserves exactly the committed signing boundary
+  ---
+  duration_ms: 1205.133674
+  type: 'test'
+  ...
+# Subtest: Go receipt sign-receipt exit after-command preserves exactly the committed signing boundary
+ok 22 - Go receipt sign-receipt exit after-command preserves exactly the committed signing boundary
+  ---
+  duration_ms: 1168.414667
+  type: 'test'
+  ...
+# Subtest: Go receipt seal-receipt exit before-commit preserves exactly the committed signing boundary
+ok 23 - Go receipt seal-receipt exit before-commit preserves exactly the committed signing boundary
+  ---
+  duration_ms: 2284.899476
+  type: 'test'
+  ...
+# Subtest: Go receipt seal-receipt exit after-command preserves exactly the committed signing boundary
+ok 24 - Go receipt seal-receipt exit after-command preserves exactly the committed signing boundary
+  ---
+  duration_ms: 2279.165297
+  type: 'test'
+  ...
+# Subtest: Go receipt copy-receipt exit before-commit preserves exactly the committed signing boundary
+ok 25 - Go receipt copy-receipt exit before-commit preserves exactly the committed signing boundary
+  ---
+  duration_ms: 1251.10343
+  type: 'test'
+  ...
+# Subtest: Go receipt copy-receipt exit after-command preserves exactly the committed signing boundary
+ok 26 - Go receipt copy-receipt exit after-command preserves exactly the committed signing boundary
+  ---
+  duration_ms: 1238.617947
+  type: 'test'
+  ...
+# Subtest: Node receipt source exit before-commit is recoverable in the Go catalogue
+ok 27 - Node receipt source exit before-commit is recoverable in the Go catalogue
+  ---
+  duration_ms: 2376.102107
+  type: 'test'
+  ...
+# Subtest: Node receipt source exit after-command is recoverable in the Go catalogue
+ok 28 - Node receipt source exit after-command is recoverable in the Go catalogue
+  ---
+  duration_ms: 2382.373702
+  type: 'test'
+  ...
+# Subtest: Node receipt sign-receipt exit before-commit is recoverable in the Go catalogue
+ok 29 - Node receipt sign-receipt exit before-commit is recoverable in the Go catalogue
+  ---
+  duration_ms: 2338.01137
+  type: 'test'
+  ...
+# Subtest: Node receipt sign-receipt exit after-command is recoverable in the Go catalogue
+ok 30 - Node receipt sign-receipt exit after-command is recoverable in the Go catalogue
+  ---
+  duration_ms: 2331.616192
+  type: 'test'
+  ...
+# Subtest: Node receipt seal-receipt exit before-commit is recoverable in the Go catalogue
+ok 31 - Node receipt seal-receipt exit before-commit is recoverable in the Go catalogue
+  ---
+  duration_ms: 3441.552517
+  type: 'test'
+  ...
+# Subtest: Node receipt seal-receipt exit after-command is recoverable in the Go catalogue
+ok 32 - Node receipt seal-receipt exit after-command is recoverable in the Go catalogue
+  ---
+  duration_ms: 3434.526276
+  type: 'test'
+  ...
+# Subtest: Node receipt copy-receipt exit before-commit is recoverable in the Go catalogue
+ok 33 - Node receipt copy-receipt exit before-commit is recoverable in the Go catalogue
+  ---
+  duration_ms: 2406.847067
+  type: 'test'
+  ...
+# Subtest: Node receipt copy-receipt exit after-command is recoverable in the Go catalogue
+ok 34 - Node receipt copy-receipt exit after-command is recoverable in the Go catalogue
+  ---
+  duration_ms: 2389.996361
+  type: 'test'
+  ...
+# Subtest: tampered owner receipt preparation is rejected across both storage engines
+ok 35 - tampered owner receipt preparation is rejected across both storage engines
+  ---
+  duration_ms: 1110.89453
+  type: 'test'
+  ...
+# (node:225118) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from site into the resource namespace
+ok 36 - an authenticated outer SQLite database cannot transpose unpublished signatures from site into the resource namespace
+  ---
+  duration_ms: 2342.243151
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from resource into the site namespace
+ok 37 - an authenticated outer SQLite database cannot transpose unpublished signatures from resource into the site namespace
+  ---
+  duration_ms: 60.500914
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from site into the contribution namespace
+ok 38 - an authenticated outer SQLite database cannot transpose unpublished signatures from site into the contribution namespace
+  ---
+  duration_ms: 56.544979
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution into the site namespace
+ok 39 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution into the site namespace
+  ---
+  duration_ms: 57.006895
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from resource into the contribution namespace
+ok 40 - an authenticated outer SQLite database cannot transpose unpublished signatures from resource into the contribution namespace
+  ---
+  duration_ms: 56.490517
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution into the resource namespace
+ok 41 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution into the resource namespace
+  ---
+  duration_ms: 54.149509
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from site into the contribution-inbox namespace
+ok 42 - an authenticated outer SQLite database cannot transpose unpublished signatures from site into the contribution-inbox namespace
+  ---
+  duration_ms: 54.596497
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-inbox into the site namespace
+ok 43 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-inbox into the site namespace
+  ---
+  duration_ms: 53.810043
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from resource into the contribution-inbox namespace
+ok 44 - an authenticated outer SQLite database cannot transpose unpublished signatures from resource into the contribution-inbox namespace
+  ---
+  duration_ms: 56.646249
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-inbox into the resource namespace
+ok 45 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-inbox into the resource namespace
+  ---
+  duration_ms: 53.784265
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution into the contribution-inbox namespace
+ok 46 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution into the contribution-inbox namespace
+  ---
+  duration_ms: 52.479378
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-inbox into the contribution namespace
+ok 47 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-inbox into the contribution namespace
+  ---
+  duration_ms: 57.256643
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-receipt into the site namespace
+ok 48 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-receipt into the site namespace
+  ---
+  duration_ms: 54.833652
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from site into the contribution-receipt namespace
+ok 49 - an authenticated outer SQLite database cannot transpose unpublished signatures from site into the contribution-receipt namespace
+  ---
+  duration_ms: 51.576285
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-receipt into the resource namespace
+ok 50 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-receipt into the resource namespace
+  ---
+  duration_ms: 55.060536
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from resource into the contribution-receipt namespace
+ok 51 - an authenticated outer SQLite database cannot transpose unpublished signatures from resource into the contribution-receipt namespace
+  ---
+  duration_ms: 52.979346
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-receipt into the contribution namespace
+ok 52 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-receipt into the contribution namespace
+  ---
+  duration_ms: 53.08325
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution into the contribution-receipt namespace
+ok 53 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution into the contribution-receipt namespace
+  ---
+  duration_ms: 52.477695
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-receipt into the contribution-inbox namespace
+ok 54 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-receipt into the contribution-inbox namespace
+  ---
+  duration_ms: 51.827977
+  type: 'test'
+  ...
+# Subtest: an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-inbox into the contribution-receipt namespace
+ok 55 - an authenticated outer SQLite database cannot transpose unpublished signatures from contribution-inbox into the contribution-receipt namespace
+  ---
+  duration_ms: 53.805915
+  type: 'test'
+  ...
+# Subtest: Node and a real Go process exchange signing-protected site records in the same SQLite database
+ok 56 - Node and a real Go process exchange signing-protected site records in the same SQLite database
+  ---
+  duration_ms: 2280.376908
+  type: 'test'
+  ...
+# Subtest: Node and a real Go process exchange signing-protected resource records in the same SQLite database
+ok 57 - Node and a real Go process exchange signing-protected resource records in the same SQLite database
+  ---
+  duration_ms: 2267.621399
+  type: 'test'
+  ...
+# Subtest: Node and a real Go process exchange signing-protected contribution records in the same SQLite database
+ok 58 - Node and a real Go process exchange signing-protected contribution records in the same SQLite database
+  ---
+  duration_ms: 2261.480899
+  type: 'test'
+  ...
+# Subtest: Node and a real Go process exchange signing-protected contribution-inbox records in the same SQLite database
+ok 59 - Node and a real Go process exchange signing-protected contribution-inbox records in the same SQLite database
+  ---
+  duration_ms: 2268.334886
+  type: 'test'
+  ...
+# Subtest: Node and a real Go process exchange signing-protected contribution-receipt records in the same SQLite database
+ok 60 - Node and a real Go process exchange signing-protected contribution-receipt records in the same SQLite database
+  ---
+  duration_ms: 2287.181122
+  type: 'test'
+  ...
+# Subtest: Go rejects a Node encrypted site value transplanted into another authenticated store
+ok 61 - Go rejects a Node encrypted site value transplanted into another authenticated store
+  ---
+  duration_ms: 70.39482
+  type: 'test'
+  ...
+# Subtest: Go rejects a Node encrypted resource value transplanted into another authenticated store
+ok 62 - Go rejects a Node encrypted resource value transplanted into another authenticated store
+  ---
+  duration_ms: 61.364192
+  type: 'test'
+  ...
+# Subtest: Go rejects a Node encrypted contribution value transplanted into another authenticated store
+ok 63 - Go rejects a Node encrypted contribution value transplanted into another authenticated store
+  ---
+  duration_ms: 61.66184
+  type: 'test'
+  ...
+# Subtest: Go rejects a Node encrypted contribution-inbox value transplanted into another authenticated store
+ok 64 - Go rejects a Node encrypted contribution-inbox value transplanted into another authenticated store
+  ---
+  duration_ms: 60.369127
+  type: 'test'
+  ...
+# Subtest: Go rejects a Node encrypted contribution-receipt value transplanted into another authenticated store
+ok 65 - Go rejects a Node encrypted contribution-receipt value transplanted into another authenticated store
+  ---
+  duration_ms: 63.527637
+  type: 'test'
+  ...
+1..65
+# tests 65
+# suites 0
+# pass 65
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 144086.175657

@@ -1,0 +1,47 @@
+[
+  {
+    "name": "typecheck",
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "--noEmit"
+    ],
+    "env": {},
+    "exitCode": 0,
+    "seconds": 8.507925033569336
+  },
+  {
+    "name": "vectors",
+    "command": [
+      "node",
+      "--import",
+      "tsx",
+      "--test",
+      "--test-concurrency=1",
+      "tests/site-receipt-operations.test.ts",
+      "tests/site-contribution-inbox-interop.test.ts",
+      "tests/site-contribution-receipt.test.ts"
+    ],
+    "env": {},
+    "exitCode": 0,
+    "seconds": 2.9889326095581055
+  },
+  {
+    "name": "browser",
+    "command": [
+      "node",
+      "scripts/e2e.mjs",
+      "--config",
+      "tests/browser/matrix.config.ts",
+      "tests/browser/site-contribution-inbox.spec.ts",
+      "tests/browser/site-contribution-dismiss.spec.ts",
+      "--output",
+      ".cache/receipt-persistence-directed/artifacts"
+    ],
+    "env": {
+      "RELAYLOOM_MATRIX_ENGINE": "chromium"
+    },
+    "exitCode": 0,
+    "seconds": 14.37287187576294
+  }
+]

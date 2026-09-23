@@ -1828,6 +1828,16 @@
             "docs/evidence/site-contributions/dismissal"
           ],
           "notes": "46 Node, six Go/race packages (four cached), 87 process cases before browser-only correction; review 89 cases per browser. Local disposal is not signed rejection, approval or complete forms UI."
+        },
+        {
+          "kind": "durable-owner-receipt-preparation",
+          "result": "pass-in-scope-product-partial",
+          "sourceCommit": "f131652040190110c594445c43559e92dfa30bb8",
+          "command": "node docs/evidence/site-contributions/receipt-persistence/run-gate.mjs",
+          "paths": [
+            "docs/evidence/site-contributions/receipt-persistence"
+          ],
+          "notes": "526 Node, 17 Go/race packages with cache explicitly marked, 117 process cases, 97 per browser. Durable intent/sign/envelope/copy only; automatic receipt delivery and complete contribution review UI remain required."
         }
       ]
     },
@@ -2093,6 +2103,16 @@
             "docs/evidence/site-contributions/dismissal"
           ],
           "notes": "46 Node, six Go/race packages (four cached), 87 process cases before browser-only correction; review 89 cases per browser. Local disposal is not signed rejection, approval or complete forms UI."
+        },
+        {
+          "kind": "durable-owner-receipt-preparation",
+          "result": "pass-in-scope-product-partial",
+          "sourceCommit": "f131652040190110c594445c43559e92dfa30bb8",
+          "command": "node docs/evidence/site-contributions/receipt-persistence/run-gate.mjs",
+          "paths": [
+            "docs/evidence/site-contributions/receipt-persistence"
+          ],
+          "notes": "526 Node, 17 Go/race packages with cache explicitly marked, 117 process cases, 97 per browser. Durable intent/sign/envelope/copy only; automatic receipt delivery and complete contribution review UI remain required."
         }
       ]
     },
