@@ -1,0 +1,84 @@
+TAP version 13
+# (node:332131) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: node admits historical owner rejection from queued, removes only the original payload and preserves a new preparation
+ok 1 - node admits historical owner rejection from queued, removes only the original payload and preserves a new preparation
+  ---
+  duration_ms: 4141.759615
+  type: 'test'
+  ...
+# Subtest: node admits historical owner rejection from cancelled, removes only the original payload and preserves a new preparation
+ok 2 - node admits historical owner rejection from cancelled, removes only the original payload and preserves a new preparation
+  ---
+  duration_ms: 1307.754685
+  type: 'test'
+  ...
+# Subtest: node admits historical owner rejection from expired, removes only the original payload and preserves a new preparation
+ok 3 - node admits historical owner rejection from expired, removes only the original payload and preserves a new preparation
+  ---
+  duration_ms: 1289.669807
+  type: 'test'
+  ...
+# Subtest: go admits historical owner rejection from queued, removes only the original payload and preserves a new preparation
+ok 4 - go admits historical owner rejection from queued, removes only the original payload and preserves a new preparation
+  ---
+  duration_ms: 2377.95673
+  type: 'test'
+  ...
+# Subtest: go admits historical owner rejection from cancelled, removes only the original payload and preserves a new preparation
+ok 5 - go admits historical owner rejection from cancelled, removes only the original payload and preserves a new preparation
+  ---
+  duration_ms: 2353.439831
+  type: 'test'
+  ...
+# Subtest: go admits historical owner rejection from expired, removes only the original payload and preserves a new preparation
+ok 6 - go admits historical owner rejection from expired, removes only the original payload and preserves a new preparation
+  ---
+  duration_ms: 2352.490051
+  type: 'test'
+  ...
+# Subtest: Go before-rejection-commit leaves rejection and payload on the same side of the transaction boundary
+ok 7 - Go before-rejection-commit leaves rejection and payload on the same side of the transaction boundary
+  ---
+  duration_ms: 247.727248
+  type: 'test'
+  ...
+# Subtest: Go after-rejection leaves rejection and payload on the same side of the transaction boundary
+ok 8 - Go after-rejection leaves rejection and payload on the same side of the transaction boundary
+  ---
+  duration_ms: 241.274118
+  type: 'test'
+  ...
+# Subtest: uncopied or cross-reference rejections cannot release an authorised private proposal
+ok 9 - uncopied or cross-reference rejections cannot release an authorised private proposal
+  ---
+  duration_ms: 2248.096664
+  type: 'test'
+  ...
+# Subtest: Node before-rejection-commit preserves the rejection/payload boundary when reopened by Go
+ok 10 - Node before-rejection-commit preserves the rejection/payload boundary when reopened by Go
+  ---
+  duration_ms: 2459.880898
+  type: 'test'
+  ...
+# Subtest: Node after-rejection preserves the rejection/payload boundary when reopened by Go
+ok 11 - Node after-rejection preserves the rejection/payload boundary when reopened by Go
+  ---
+  duration_ms: 2436.645221
+  type: 'test'
+  ...
+# Subtest: concurrent Go and Node rejection receivers consume one private payload and agree on the retained first fact
+ok 12 - concurrent Go and Node rejection receivers consume one private payload and agree on the retained first fact
+  ---
+  duration_ms: 1558.269289
+  type: 'test'
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 12
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 23202.265608

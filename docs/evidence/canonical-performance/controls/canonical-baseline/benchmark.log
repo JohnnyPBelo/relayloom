@@ -1,0 +1,9 @@
+goos: linux
+goarch: amd64
+pkg: github.com/JohnnyPBelo/relayloom/native/core
+cpu: AMD RYZEN AI MAX+ 395 w/ Radeon 8060S          
+BenchmarkCanonicalLargeASCII-32    	       3	 142920305 ns/op	  10.83 MB/s	 8388442 B/op	      32 allocs/op
+BenchmarkCanonicalLargeASCII-32    	       3	 144200716 ns/op	  10.74 MB/s	 8388437 B/op	      32 allocs/op
+BenchmarkCanonicalLargeASCII-32    	       3	 148360174 ns/op	  10.43 MB/s	 8388432 B/op	      32 allocs/op
+PASS
+ok  	github.com/JohnnyPBelo/relayloom/native/core	2.773s

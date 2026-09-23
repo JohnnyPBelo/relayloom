@@ -765,3 +765,13 @@ O controlo Node de cópia errada provocou correctamente um erro de integridade, 
 O gate amplo passou535Node/17Go-race/buildnativo, mas cinco dos167casos entre processos não arrancaram por falta da reserva15GiB. Preservar essa falha ambiental, confirmar fontes e repetir os casos afectados com controlo positivo permite conservar a proveniência dos passes restantes. Não remover a reserva nem reclassificar arranques bloqueados como transportes testados. Arquivos verificados conservaram instaladores antigos e a imagemSDKinactiva; documentar restauro antes de retomarAndroid. Perfis/AVD e WIP permaneceram intactos.
 
 CI9a56c5f revelou que um único limite60s abrangia compilação Go comrace e execução do auxiliar. Os trêshosts atingiram esse limite; a fase exacta ainda precisa de medição. Uma compilação anterior passada não é prova de execução, e não se deve aumentar cegamente o prazo para esconder o problema. Rascunhos de medição/driver ficam separados de fontes verificadas até serem executados.
+
+## Revogação durante a entrega da recusa
+
+Ao acrescentar outra classe de controlo ao runtime, a emissão/fecho foram integrados mas o browser revokeInvalid ainda percorria só os recibos. O teste reteve uma resposta de política, bloqueou e voltou a permitir; a autorização antiga continuoutrue. A correcção percorre os dois mapas. O negativo falhou antes e passou depois, junto de retryinalterado e consulta nova positiva. Rever todos os caminhos de emissão, revogação, fecho e recuperação ao acrescentar classes; um passeTCP não cobre a autorizaçãoasync do browser. Provas dirigidas em rejection-revocation-before/rejection-guards-first.
+
+## Serialização de strings grandes e orçamento global
+
+A stack do CI mostrou trabalho em appendString sobre base64 grande enquanto Handle esperava Node.mu. Copiar trechos ASCII sem escapes em bloco reduziu o custo medido sem alterar o percurso Unicode/WTF-8. A comparação com a referência anterior e com bytes produzidos por Node cobre compatibilidade; a regressão inteira cobre assinaturas/cifra e fluxos reais. Não inferir uma melhoria uniforme do microbenchmark nem um passe remoto a partir do host local.
+
+O controlo no limite exacto expôs pontuação final fora do orçamento; o teste falhou antes e passou após verificar o tamanho completo. Separar compatibilidade de bytes válidos da recusa mais estrita de entradas acima do limite. Preservar a falha inicial e os tempos, sem aumentar deadlines para ocultar o custo.

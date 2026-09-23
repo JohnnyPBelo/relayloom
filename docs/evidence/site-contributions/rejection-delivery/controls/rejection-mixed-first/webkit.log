@@ -1,0 +1,13 @@
+
+Running 6 tests using 1 worker
+
+(node:264072) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [webkit] › tests/browser/site-contribution-rejection-send.spec.ts:126:1 › owner refusal crosses real RTC, preserves reception and remains terminal after both browser profiles reopen (10.6s)
+  ✓  2 [webkit] › tests/browser/site-contribution-rejection-send.spec.ts:357:1 › an authenticated rejection for retired or absent local history is ignored without closing the real RTC channel (2.2s)
+  ✓  3 [webkit] › tests/browser/site-contribution-rejection-send.spec.ts:453:5 › private owner refusal web-to-native cross RTC and WebSocket with node and an intermediary without a reading key (16.8s)
+  ✓  4 [webkit] › tests/browser/site-contribution-rejection-send.spec.ts:453:5 › private owner refusal native-to-web cross RTC and WebSocket with node and an intermediary without a reading key (9.7s)
+  ✓  5 [webkit] › tests/browser/site-contribution-rejection-send.spec.ts:453:5 › private owner refusal web-to-native cross RTC and WebSocket with native and an intermediary without a reading key (16.4s)
+  ✓  6 [webkit] › tests/browser/site-contribution-rejection-send.spec.ts:453:5 › private owner refusal native-to-web cross RTC and WebSocket with native and an intermediary without a reading key (9.4s)
+
+  6 passed (1.1m)

@@ -1,0 +1,83 @@
+[
+  {
+    "name": "native-node (ubuntu-latest)",
+    "id": 107204850755,
+    "result": "success",
+    "counts": {
+      "tests": 535,
+      "pass": 535,
+      "fail": 0,
+      "skipped": 0
+    },
+    "workerPhases": [
+      {
+        "phase": "compile-only",
+        "durationMs": 67773,
+        "exitCode": 0,
+        "signal": null,
+        "error": null
+      },
+      {
+        "phase": "execute",
+        "durationMs": 28206,
+        "exitCode": 0,
+        "signal": null,
+        "error": null
+      }
+    ]
+  },
+  {
+    "name": "native-node (macos-latest)",
+    "id": 107204850999,
+    "result": "success",
+    "counts": {
+      "tests": 535,
+      "pass": 535,
+      "fail": 0,
+      "skipped": 0
+    },
+    "workerPhases": [
+      {
+        "phase": "compile-only",
+        "durationMs": 50173,
+        "exitCode": 0,
+        "signal": null,
+        "error": null
+      },
+      {
+        "phase": "execute",
+        "durationMs": 28411,
+        "exitCode": 0,
+        "signal": null,
+        "error": null
+      }
+    ]
+  },
+  {
+    "name": "native-node (windows-latest)",
+    "id": 107204851103,
+    "result": "success",
+    "counts": {
+      "tests": 535,
+      "pass": 528,
+      "fail": 0,
+      "skipped": 7
+    },
+    "workerPhases": [
+      {
+        "phase": "compile-only",
+        "durationMs": 68117,
+        "exitCode": 0,
+        "signal": null,
+        "error": null
+      },
+      {
+        "phase": "execute",
+        "durationMs": 21591,
+        "exitCode": 0,
+        "signal": null,
+        "error": null
+      }
+    ]
+  }
+]

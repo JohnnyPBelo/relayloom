@@ -1,0 +1,4 @@
+tests/native/site-contribution-rejection-admission.test.ts(312,33): error TS2339: Property 'created' does not exist on type '{ contributorId: string; certificateId: string; operationId: string; target: ContributionTarget; proposalCreated: number; proposalExpires: number; decidedAt: number; reason: string; expires: number; }'.
+tests/native/site-contribution-rejection-admission.test.ts(313,16): error TS2339: Property 'created' does not exist on type '{ contributorId: string; certificateId: string; operationId: string; target: ContributionTarget; proposalCreated: number; proposalExpires: number; decidedAt: number; reason: string; expires: number; }'.
+tests/native/site-contribution-rejection-admission.test.ts(370,11): error TS1117: An object literal cannot have multiple properties with the same name.
+tests/native/site-contribution-rejection-admission.test.ts(484,11): error TS1117: An object literal cannot have multiple properties with the same name.

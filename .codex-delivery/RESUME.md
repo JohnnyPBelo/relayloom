@@ -1,40 +1,45 @@
-# RelayLoom — retoma após recusa persistente e correcção do teste frio
+# RelayLoom — retoma após entrega de recusas e optimização verificadas
 
-Objectivo integral activo; produto não concluído. Manter PROJECT-BRIEF.md: messenger/social P2P cifrado, sites expressivos inspirados no ZeroNet, Liquid Glass, cinco SO e web com paridade, Reticulum/meios agnósticos, setup PT-PT/EN/ES e todos os gates. Recuperação sequencial, sem novos/retomados agentes; Astra/Copilot Ultra e configurações/serviços mantidos.
+**Objectivo integral activo; produto não concluído.** Preservar PROJECT-BRIEF.md: messenger/social cifrado, sites expressivos inspirados no ZeroNet, Liquid Glass, Windows/Android/macOS/iOS/Linux e web autónoma com paridade, Reticulum/meios agnósticos, setup PT-PT/EN/ES e todos os gates. Recuperação sequencial: sem agentes novos/retomados; manter Astra/Copilot Ultra, providers, bridges, permissões e serviços. Só este projecto.
 
-Worktree activa: `/home/absint0o/projects/relayloom/.cache/site-optional-resources`, branch `codex/site-optional-resources`. Principal em `codex/setup-languages` / `1e83db22`, com WIP histórico preservado. Código verificado localmente em `627ad6c0b98e10b0d4c4c68e3dffb7072118a81d` (persistência) e `e95b06853e2f57dc03e917da5ffb8e425f2d045e` (driver CI). Protocolo anterior: `da2d174`. Documentação/provas acompanham num commit posterior. Último envio confirmado antes desta nota: `9a56c5f`; consultar Git/origin e `.cache/latest-push.json` após o push de consolidação. Staging selectivo; preservar capturas/JSON históricos e node_modules; não usar git add -A/reset/force-push ou merge sem aprovação.
+## Repositório e estado
 
-## Estado verificado
+Worktree activa `/home/absint0o/projects/relayloom/.cache/site-optional-resources`, branch `codex/site-optional-resources`. Principal em `codex/setup-languages` / `1e83db22`, com WIP histórico preservado. Código local verificado: `ac772242145135894da0d97b1712bc7e9db64c92` (entrega de recusa) e `4f309e6137eb66459c8e1b4336c4f54af3502064` (serialização). Documentação/provas acompanham num commit posterior. Último push confirmado antes desta nota: d6d4ddb; consultar `.cache/latest-push.json`, Git/origin e CI após consolidação.
 
-627ad6c guarda a decisão explícita do dono e remove a prova da proposta no mesmo commit. CAS da inbox, motivo/destinatário/prazo fixos, assinatura/selagem/cópia recuperáveis em Node/Go/browser. Recibos anteriores e outras preparações preservados; recusar sem origem não afirma verificação da origem. Namespace privado separado, sem expor helpers na RPC. Ainda não há entrega/admissão de recusas nem UI completa.
+Staging selectivo; preservar capturas/JSON históricos e node_modules. Não usar git add -A/reset/force-push ou merge sem aprovação.
 
-Gate revisto **45240 terminou e foi recolhido PASS**:535 Node,17 Go/race (app/sites novos, outros cached),167 casos únicos entre processos,120 por Chromium/Firefox/WebKit, builds e768 hashes conferidos no commit. O gate original98625 teve5 arranques bloqueados por reserva abaixo15GiB; a revisão repetiu os6 casos do ficheiro afectado (5 falhas+1 controlo), conservou os passes de fontes idênticas e concluiu a matriz. O original permanece FAIL. Provas em `docs/evidence/site-contributions/rejection-storage`; reprodução integral pelo driver `before-resource-recovery/run-gate.mjs`. Protocolo da2d174:64 vectores e regressão de recibos, Go/sites-race e2 casos por engine, provas em rejection-protocol.
+## Incrementos verificados
 
-**Nenhum teste ou arquivo local conhecido continua activo.** Handles45240,98625,83456,93355,67580,21672,80819 e24563 foram recolhidos. Não repetir suites por falta de handle.
+ac77224 entrega recusas assinadas entre Node/Go/browser. Admissão exige a operação anteriormente copiada e referências exactas; guardar a recusa e retirar o payload privado partilham o commit. Recibos anteriores permanecem. cancelled/expired conservam a decisão local; recepção tardia não reabre a fila. Recibos e recusas partilham orçamento rotativo de8; recuperação varre até32 candidatos. Corrigida falha de revogação no browser, reproduzida antes: autorizações de recusas retidas sobreviviam a bloquear/voltar a permitir, porque revokeInvalid só percorria recibos.
 
-## CI e diagnóstico concluído
+**22962 terminou e foi recolhido PASS:**539 Node,17 Go/race,185 processos,140 por Chromium/Firefox/WebKit, builds e780 hashes conferidos.55 artefactos em `docs/evidence/site-contributions/rejection-delivery`; driver reproduzível `run-gate.mjs`. Não repetir por falta de handle.
 
-CI35855333712/9a56c5f terminou FAIL no mesmo auxiliar Go aos60s nos três hosts; os jobs dependentes foram skipped. Provas `docs/evidence/ci-9a56c5f`.
+4f309e6 copia sequências ASCII sem escapes em bloco, conservando o encoder Unicode/WTF-8/escapes e contando a pontuação final no orçamento global. O controlo de limite falhou antes e passou depois.512 combinações com referência anterior e260 vectores com bytes esperados de Node passaram. Benchmark local race de~1,55MB:143–148ms antes,5–6ms depois; não generalizar a todo o produto. O pacote Go/app passou em384.325s neste host, contra468.735s na execução anterior.
 
-21672 reproduziu localmente com caches próprias vazias: comando combinado parou aos60.009s ainda na preparação/vet, sem lançamento de app.test ou resultado. Compilação separada62.177s e execução27.353s PASS. e95b068 separa compilação/vet (limite120s) da execução (limite exterior60s, Go55s para diagnóstico). Mantém race, vet e cobertura, sem mudar limites dos jobs. Typecheck e3 testes do driver integrado PASS:62.267s preparação+27.335s execução. Provas `docs/evidence/ci-receipt-budget-cold`. Ainda precisa do próximo CI Windows/macOS/Linux; não reclassificar a falha anterior. Não éHTTP408.
+**64504 terminou e foi recolhido PASS:**540 Node,17 Go/race,185 processos,140 por Chromium/Firefox/WebKit, builds e782 hashes conferidos.27 artefactos em `docs/evidence/canonical-performance`; `run-gate.mjs` reproduz o gate. Curadores52151/47659 terminaram e foram recolhidos. **Nenhum teste local conhecido permanece activo.** Os rascunhos canónicos antigos já foram integrados; não os copiar de novo.
 
-## Recursos e restauro
+## CI
 
-Confirmar pelo menos15GiB antes de cada fase pesada; uma de cada vez, caches do projecto. A última medição ficou acima18GiB, mas o volume oscilou. Foram removidas apenas caches regeneráveis (Go build,8 binários de teste eChromium headed1243); headless-shell/Firefox/WebKit permanecem e completaram a matriz. O CLI actual, APKs, perfis, AVD, fontes e WIP estão preservados.
+Run35868125390/d6d4ddb terminou FAIL. native-node Ubuntu/macOS535/535, Windows528PASS+7skips, e node-uiPASS. A separação da compilação/execução corrigiu o bloqueio anterior do auxiliar nos três hosts. native-go atingiu o limite acumulado de10min de Go/app, durante recuperação de site grande. A stack tinha uma rotina runnable a serializar base64~1,46MB sob Node.mu; não demonstrou deadlock. Jobs seguintes, incluindo Apple/browsers/Reticulum/pacotes, foram skipped.
 
-Oito AppImages antigos estão arquivados com todos os hashes verificados: `.cache/archives/desktop-history-20260923.tar.xz` na principal. Restauro exacto: `python3 -m tarfile -e /home/absint0o/projects/relayloom/.cache/archives/desktop-history-20260923.tar.xz /home/absint0o/projects/relayloom`.
+Provas oficiais em `docs/evidence/ci-d6d4ddb` (8 artefactos). A optimização local não reclassifica esseFAIL; precisa de novo CI. Não aumentar prazos ou remover checks. Não éHTTP408.
 
-**Antes do próximo emulador Android**, restaurar a imagem inactiva do SDK: `python3 /home/absint0o/projects/relayloom/.cache/android/archives/restore-system-image.py`. O arquivo `.img.xz` preserva SHA256 eb4bd8cc…a1 e tamanho lógico; userdata não foi modificada. O restauro exige espaço adicional para conservar15GiB e verifica os bytes. Não redownloadar imagens nem alterar permissões/serviços.
+## Recursos
 
-Só a worktree antiga e comprovadamente limpa site-ci-clean foi retirada, com SHA6dd879d ancestral preservado. Cache/dist ignorados estão em `.cache/retired-worktree-support/site-ci-clean`; auditoria `.cache/disk-recovery-rejections-20260923.json`. site-data-next permaneceu intacta por ter ramo não ancestral. Não remover WIP de outras worktrees.
+Confirmar pelo menos15GiB antes de cada fase pesada; uma de cada vez, caches do projecto. A reserva oscilou e foi recuperada com arquivos verificados. Fontes/WIP, perfis, AVD e APKs foram preservados. Chromium headed1243 e caches Go/testes regeneráveis foram removidos; headless-shell/Firefox/WebKit completaram as matrizes.
 
-## Continuação
+Antes do próximo emulador Android, restaurar a imagem inactiva do SDK: `python3 /home/absint0o/projects/relayloom/.cache/android/archives/restore-system-image.py`. O script verifica SHA256/tamanho e exige espaço adicional para manter15GiB; userdata não foi alterada. A imagem compactada conserva SHA256 eb4bd8cc…a1. Não redownloadar imagens nem alterar serviços/permissões.
 
-1. Consolidar docs/provas por manifestos, confirmar nenhum CI activo e fazer push normal. Registar o novo run em `.cache/latest-push.json`; observar o resultado do driver frio antes de outro push.
-2. Integrar admissão/entrega da recusa nos catálogos, runtime/API, validação e transportes. Os dois rascunhos em `.cache/rejection-admission-draft` têm hashes de base: ainda não instalados/compilados/testados. Rever cada ficheiro antes de integrar; não copiar cegamente. Ver REJECTION-DELIVERY-NEXT.md e CONTRIBUTION-REJECTION.md.
-3. Depois incorporação com CAS da revisão actual, reconciliação de esquema/audiência, proveniência distinguindo proposta original e alterações do dono, publicação recuperável e UI completa de três contas PT/EN/ES. Paleta oculta até ao fluxo completo; ver CONTRIBUTION-DECISION-UI-NEXT.md.
-4. Manter grupos web, backup/rotação/keystore, plataformas/rádios físicos, acessibilidade e revisão independente obrigatórios. Revisão própria não satisfaz o gate independente. Rascunhos Photos em `.cache/ios-photo-warmup-draft` continuam não integrados/não compilados; Apple/signing e percurso fotográfico continuam sem passe integral.
+Oito AppImages históricos estão arquivados com hashes verificados. Restauro: `python3 -m tarfile -e /home/absint0o/projects/relayloom/.cache/archives/desktop-history-20260923.tar.xz /home/absint0o/projects/relayloom`. Apenas a worktree antiga, limpa e ancestral site-ci-clean foi retirada; suporte ignorado em `.cache/retired-worktree-support/site-ci-clean`. site-data-next e worktrees com WIP permaneceram intactas. Auditoria `.cache/disk-recovery-rejections-20260923.json`.
 
-HTML público inalterado: runtime7fdb76a5de5869efa6ebdd721bc7e8f5efac68af, distribuição0fdbd1b9563540a5bc28c74d669668e948aa7667, https://johnnypbelo.github.io/relayloom/. Publicar só após gate exacto/HTTPS. Não declarar disaster-ready, todos os SO testados ou produto concluído.
+## Próximo trabalho funcional
 
-Histórico: [RESUME-before-refusal-storage-complete.md](history/RESUME-before-refusal-storage-complete.md).
+1. Consolidar docs/provas com verificação de manifestos, confirmar ausência de CI activo e fazer push normal. Registar o novo run em `.cache/latest-push.json`; não cancelar jobs com pushes intermédios.
+2. Implementar incorporação/aprovação, com CAS da revisão actual, reconciliação explícita de esquema/audiência, proveniência preservando a proposta do visitante e distinguindo alterações do dono, e publicação recuperável. Só published depois de reler a cópia real.
+3. O documento actual já usa v4 para formulários; proveniência exige versão seguinte, sem alterar silenciosamente tabelasv1. IDs de linha têm limite40, portanto não usar certificateIdhex64 directamente nem tratar truncagem como autoridade. Conservar limites de128KiB/documento e64KiB/tabela. Ver `CONTRIBUTION-DECISION-UI-NEXT.md` para limites de divulgação, origem indisponível, carry-forward e ausência de referências circulares.
+4. Completar UI de compor/enviar/rever/recusar/aprovar/reconciliar/publicar, com três contas, PT/EN/ES, teclado/toque, temas, acessibilidade e revisão visual. A paleta continua oculta até esse fluxo funcionar. Não substituir o objectivo por infra-estrutura ou mockups.
+5. Manter grupos web dinâmicos, backup/rotação/keystore, restantes funções sociais/mensagens, plataformas/rádios físicos, paridade e revisão independente obrigatórios. Revisão própria não satisfaz revisão independente. Rascunhos Photos em `.cache/ios-photo-warmup-draft` continuam não integrados/compilados/testados; percurso fotográfico iOS e assinatura permanecem pendentes.
+
+HTML público inalterado: runtime7fdb76a5de5869efa6ebdd721bc7e8f5efac68af, distribuição0fdbd1b9563540a5bc28c74d669668e948aa7667, https://johnnypbelo.github.io/relayloom/. Publicar só com gate da distribuição exacta/HTTPS. Não afirmar disaster-ready, todas as plataformas testadas ou produto concluído.
+
+Histórico: [RESUME-before-canonical-complete.md](history/RESUME-before-canonical-complete.md).

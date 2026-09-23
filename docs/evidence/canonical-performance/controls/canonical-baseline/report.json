@@ -1,0 +1,59 @@
+{
+  "started": 1790176604.4085133,
+  "sourceChanged": false,
+  "checks": [
+    {
+      "name": "compatibility",
+      "command": [
+        "node",
+        "scripts/go.mjs",
+        "test",
+        "-race",
+        "-p=1",
+        "./core",
+        "-run",
+        "^TestCanonicalStringRunCompatibility$",
+        "-count=1"
+      ],
+      "expectedExit": 0,
+      "exitCode": 0
+    },
+    {
+      "name": "boundary-control",
+      "command": [
+        "node",
+        "scripts/go.mjs",
+        "test",
+        "-race",
+        "-p=1",
+        "./core",
+        "-run",
+        "^TestCanonicalFinalByteBudget$",
+        "-count=1"
+      ],
+      "expectedExit": 1,
+      "exitCode": 1
+    },
+    {
+      "name": "benchmark",
+      "command": [
+        "node",
+        "scripts/go.mjs",
+        "test",
+        "-race",
+        "-p=1",
+        "./core",
+        "-run",
+        "^$",
+        "-bench",
+        "^BenchmarkCanonicalLargeASCII$",
+        "-benchtime=3x",
+        "-count=3"
+      ],
+      "expectedExit": 0,
+      "exitCode": 0
+    }
+  ],
+  "status": "OBSERVED",
+  "finished": 1790176614.6093364
+}

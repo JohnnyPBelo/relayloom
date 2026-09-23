@@ -1,0 +1,91 @@
+{
+  "status": "PASS",
+  "started": 1790172984.8829422,
+  "checks": [
+    {
+      "name": "typecheck",
+      "command": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit"
+      ],
+      "env": {},
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "name": "native-atomic",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "--test-concurrency=1",
+        "tests/native/site-contribution-rejection-admission.test.ts"
+      ],
+      "env": {},
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "name": "build-web",
+      "command": [
+        "node",
+        "node_modules/vite/bin/vite.js",
+        "build"
+      ],
+      "env": {},
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "name": "chromium",
+      "command": [
+        "node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "tests/browser/site-contribution-rejection-worker.spec.ts",
+        "tests/browser/site-contribution-worker.spec.ts"
+      ],
+      "env": {
+        "RELAYLOOM_MATRIX_ENGINE": "chromium"
+      },
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "name": "firefox",
+      "command": [
+        "node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "tests/browser/site-contribution-rejection-worker.spec.ts",
+        "tests/browser/site-contribution-worker.spec.ts"
+      ],
+      "env": {
+        "RELAYLOOM_MATRIX_ENGINE": "firefox"
+      },
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "name": "webkit",
+      "command": [
+        "node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "tests/browser/site-contribution-rejection-worker.spec.ts",
+        "tests/browser/site-contribution-worker.spec.ts"
+      ],
+      "env": {
+        "RELAYLOOM_MATRIX_ENGINE": "webkit"
+      },
+      "status": "PASS",
+      "exitCode": 0
+    }
+  ],
+  "finished": 1790173105.383205
+}

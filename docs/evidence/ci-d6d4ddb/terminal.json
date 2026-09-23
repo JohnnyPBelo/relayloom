@@ -1,0 +1,517 @@
+{
+  "conclusion": "failure",
+  "jobs": [
+    {
+      "completedAt": "2026-09-23T13:47:59Z",
+      "conclusion": "success",
+      "databaseId": 107204850755,
+      "name": "native-node (ubuntu-latest)",
+      "startedAt": "2026-09-23T13:35:28Z",
+      "status": "completed",
+      "steps": [
+        {
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/checkout@v4",
+          "number": 2,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/setup-node@v4",
+          "number": 3,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/setup-go@v5",
+          "number": 4,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run npm ci --ignore-scripts",
+          "number": 5,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run npm run build",
+          "number": 6,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Build the Go peer required by controller and runtime-selection tests",
+          "number": 7,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run npm test",
+          "number": 8,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/upload-artifact@v4",
+          "number": 9,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/setup-go@v5",
+          "number": 16,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/setup-node@v4",
+          "number": 17,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v4",
+          "number": 18,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 19,
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/JohnnyPBelo/relayloom/actions/runs/35868125390/job/107204850755"
+    },
+    {
+      "completedAt": "2026-09-23T13:58:25Z",
+      "conclusion": "success",
+      "databaseId": 107204850999,
+      "name": "native-node (macos-latest)",
+      "startedAt": "2026-09-23T13:47:17Z",
+      "status": "completed",
+      "steps": [
+        {
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/checkout@v4",
+          "number": 2,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/setup-node@v4",
+          "number": 3,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/setup-go@v5",
+          "number": 4,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run npm ci --ignore-scripts",
+          "number": 5,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run npm run build",
+          "number": 6,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Build the Go peer required by controller and runtime-selection tests",
+          "number": 7,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run npm test",
+          "number": 8,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/upload-artifact@v4",
+          "number": 9,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/setup-go@v5",
+          "number": 16,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/setup-node@v4",
+          "number": 17,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v4",
+          "number": 18,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 19,
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/JohnnyPBelo/relayloom/actions/runs/35868125390/job/107204850999"
+    },
+    {
+      "completedAt": "2026-09-23T13:47:08Z",
+      "conclusion": "success",
+      "databaseId": 107204851103,
+      "name": "native-node (windows-latest)",
+      "startedAt": "2026-09-23T13:35:28Z",
+      "status": "completed",
+      "steps": [
+        {
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/checkout@v4",
+          "number": 2,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/setup-node@v4",
+          "number": 3,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/setup-go@v5",
+          "number": 4,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run npm ci --ignore-scripts",
+          "number": 5,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run npm run build",
+          "number": 6,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Build the Go peer required by controller and runtime-selection tests",
+          "number": 7,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run npm test",
+          "number": 8,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/upload-artifact@v4",
+          "number": 9,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/setup-go@v5",
+          "number": 16,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/setup-node@v4",
+          "number": 17,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v4",
+          "number": 18,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 19,
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/JohnnyPBelo/relayloom/actions/runs/35868125390/job/107204851103"
+    },
+    {
+      "completedAt": "2026-09-23T14:04:14Z",
+      "conclusion": "success",
+      "databaseId": 107214080841,
+      "name": "node-ui",
+      "startedAt": "2026-09-23T13:58:28Z",
+      "status": "completed",
+      "steps": [
+        {
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/checkout@v4",
+          "number": 2,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/setup-node@v4",
+          "number": 3,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/setup-go@v5",
+          "number": 4,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run npm ci --ignore-scripts",
+          "number": 5,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run npm run build",
+          "number": 6,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run npm run native:build",
+          "number": 7,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Inspect runner-provided Chrome",
+          "number": 8,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run npm run test:e2e",
+          "number": 9,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/upload-artifact@v4",
+          "number": 10,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/setup-go@v5",
+          "number": 18,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/setup-node@v4",
+          "number": 19,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v4",
+          "number": 20,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 21,
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/JohnnyPBelo/relayloom/actions/runs/35868125390/job/107214080841"
+    },
+    {
+      "completedAt": "2026-09-23T14:21:23Z",
+      "conclusion": "failure",
+      "databaseId": 107216413611,
+      "name": "native-go",
+      "startedAt": "2026-09-23T14:04:24Z",
+      "status": "completed",
+      "steps": [
+        {
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/checkout@v4",
+          "number": 2,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/setup-node@v4",
+          "number": 3,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/setup-go@v5",
+          "number": 4,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run npm ci --ignore-scripts",
+          "number": 5,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run npm run build",
+          "number": 6,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run npm run native:build",
+          "number": 7,
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "name": "Run npm run test:native",
+          "number": 8,
+          "status": "completed"
+        },
+        {
+          "conclusion": "skipped",
+          "name": "C SQLite storage contract on the host (not Android execution)",
+          "number": 9,
+          "status": "completed"
+        },
+        {
+          "conclusion": "skipped",
+          "name": "Post Run actions/setup-go@v5",
+          "number": 16,
+          "status": "completed"
+        },
+        {
+          "conclusion": "skipped",
+          "name": "Post Run actions/setup-node@v4",
+          "number": 17,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v4",
+          "number": 18,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 19,
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/JohnnyPBelo/relayloom/actions/runs/35868125390/job/107216413611"
+    },
+    {
+      "completedAt": "2026-09-23T14:21:23Z",
+      "conclusion": "skipped",
+      "databaseId": 107223584799,
+      "name": "native-interop",
+      "startedAt": "2026-09-23T14:21:23Z",
+      "status": "completed",
+      "steps": [],
+      "url": "https://github.com/JohnnyPBelo/relayloom/actions/runs/35868125390/job/107223584799"
+    },
+    {
+      "completedAt": "2026-09-23T14:21:23Z",
+      "conclusion": "skipped",
+      "databaseId": 107223586736,
+      "name": "native-ui",
+      "startedAt": "2026-09-23T14:21:24Z",
+      "status": "completed",
+      "steps": [],
+      "url": "https://github.com/JohnnyPBelo/relayloom/actions/runs/35868125390/job/107223586736"
+    },
+    {
+      "completedAt": "2026-09-23T14:21:23Z",
+      "conclusion": "skipped",
+      "databaseId": 107223588254,
+      "name": "reticulum-reference",
+      "startedAt": "2026-09-23T14:21:24Z",
+      "status": "completed",
+      "steps": [],
+      "url": "https://github.com/JohnnyPBelo/relayloom/actions/runs/35868125390/job/107223588254"
+    },
+    {
+      "completedAt": "2026-09-23T14:21:23Z",
+      "conclusion": "skipped",
+      "databaseId": 107223588770,
+      "name": "desktop-package",
+      "startedAt": "2026-09-23T14:21:24Z",
+      "status": "completed",
+      "steps": [],
+      "url": "https://github.com/JohnnyPBelo/relayloom/actions/runs/35868125390/job/107223588770"
+    },
+    {
+      "completedAt": "2026-09-23T14:21:23Z",
+      "conclusion": "skipped",
+      "databaseId": 107223588846,
+      "name": "ios-simulator-build",
+      "startedAt": "2026-09-23T14:21:24Z",
+      "status": "completed",
+      "steps": [],
+      "url": "https://github.com/JohnnyPBelo/relayloom/actions/runs/35868125390/job/107223588846"
+    },
+    {
+      "completedAt": "2026-09-23T14:21:24Z",
+      "conclusion": "skipped",
+      "databaseId": 107223590584,
+      "name": "autonomous-browser",
+      "startedAt": "2026-09-23T14:21:24Z",
+      "status": "completed",
+      "steps": [],
+      "url": "https://github.com/JohnnyPBelo/relayloom/actions/runs/35868125390/job/107223590584"
+    }
+  ],
+  "status": "completed"
+}

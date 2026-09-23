@@ -1,0 +1,22 @@
+TAP version 13
+# Subtest: receipt admission requires exact copied intent, retains cancellation/expiry and never revives a retired operation
+ok 1 - receipt admission requires exact copied intent, retains cancellation/expiry and never revives a retired operation
+  ---
+  duration_ms: 2408.999507
+  type: 'test'
+  ...
+# Subtest: rejection admission requires exact copied intent, retains cancellation/expiry and never revives a retired operation
+ok 2 - rejection admission requires exact copied intent, retains cancellation/expiry and never revives a retired operation
+  ---
+  duration_ms: 1595.981488
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4482.587195

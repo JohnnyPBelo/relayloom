@@ -1,0 +1,32 @@
+
+Running 25 tests using 1 worker
+
+(node:307487) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [firefox] › tests/browser/site-contribution-receipt-runtime.spec.ts:21:3 › browser receipt admission cached preserves authority and original private queue facts (2.3s)
+  ✓   2 [firefox] › tests/browser/site-contribution-receipt-runtime.spec.ts:21:3 › browser receipt admission cancelled preserves authority and original private queue facts (1.4s)
+  ✓   3 [firefox] › tests/browser/site-contribution-receipt-runtime.spec.ts:21:3 › browser receipt admission expired preserves authority and original private queue facts (1.4s)
+  ✓   4 [firefox] › tests/browser/site-contribution-receipt-runtime.spec.ts:21:3 › browser receipt admission blocked preserves authority and original private queue facts (1.5s)
+  ✓   5 [firefox] › tests/browser/site-contribution-receipt-runtime.spec.ts:21:3 › browser receipt admission lock-receive preserves authority and original private queue facts (1.7s)
+  ✓   6 [firefox] › tests/browser/site-contribution-receipt-runtime.spec.ts:21:3 › browser receipt admission wrong-reference preserves authority and original private queue facts (1.3s)
+  ✓   7 [firefox] › tests/browser/site-contribution-receipt-runtime.spec.ts:21:3 › browser receipt admission not-copied preserves authority and original private queue facts (1.1s)
+  ✓   8 [firefox] › tests/browser/site-contribution-receipt-runtime.spec.ts:21:3 › browser receipt admission same-error-text preserves authority and original private queue facts (1.3s)
+  ✓   9 [firefox] › tests/browser/site-contribution-receipt-runtime.spec.ts:281:1 › owner receipt retries rotate a bounded batch without re-signing or dropping a pending ninth proposal (6.4s)
+  ✓  10 [firefox] › tests/browser/site-contribution-receipt-runtime.spec.ts:364:3 › owner receipt authority unchanged-retry handles a retained policy reply without reviving revocation (2.1s)
+  ✓  11 [firefox] › tests/browser/site-contribution-receipt-runtime.spec.ts:364:3 › owner receipt authority block-and-reallow handles a retained policy reply without reviving revocation (1.5s)
+  ✓  12 [firefox] › tests/browser/site-contribution-receipt-runtime.spec.ts:364:3 › owner receipt authority close handles a retained policy reply without reviving revocation (1.4s)
+  ✓  13 [firefox] › tests/browser/site-contribution-rejection-runtime.spec.ts:21:3 › browser rejection admission cached preserves authority and original private queue facts (1.4s)
+  ✓  14 [firefox] › tests/browser/site-contribution-rejection-runtime.spec.ts:21:3 › browser rejection admission cancelled preserves authority and original private queue facts (1.4s)
+  ✓  15 [firefox] › tests/browser/site-contribution-rejection-runtime.spec.ts:21:3 › browser rejection admission expired preserves authority and original private queue facts (1.4s)
+  ✓  16 [firefox] › tests/browser/site-contribution-rejection-runtime.spec.ts:21:3 › browser rejection admission blocked preserves authority and original private queue facts (1.5s)
+  ✓  17 [firefox] › tests/browser/site-contribution-rejection-runtime.spec.ts:21:3 › browser rejection admission lock-receive preserves authority and original private queue facts (1.9s)
+  ✓  18 [firefox] › tests/browser/site-contribution-rejection-runtime.spec.ts:21:3 › browser rejection admission wrong-reference preserves authority and original private queue facts (1.3s)
+  ✓  19 [firefox] › tests/browser/site-contribution-rejection-runtime.spec.ts:21:3 › browser rejection admission not-copied preserves authority and original private queue facts (1.2s)
+  ✓  20 [firefox] › tests/browser/site-contribution-rejection-runtime.spec.ts:21:3 › browser rejection admission same-error-text preserves authority and original private queue facts (2.3s)
+  ✓  21 [firefox] › tests/browser/site-contribution-rejection-runtime.spec.ts:286:3 › owner outcomes share one rotating budget with copy quota false rotate a bounded batch without re-signing or dropping a pending ninth proposal (5.0s)
+  ✓  22 [firefox] › tests/browser/site-contribution-rejection-runtime.spec.ts:286:3 › owner outcomes share one rotating budget with copy quota true rotate a bounded batch without re-signing or dropping a pending ninth proposal (4.8s)
+  ✓  23 [firefox] › tests/browser/site-contribution-rejection-runtime.spec.ts:411:3 › owner rejection authority unchanged-retry handles a retained policy reply without reviving revocation (1.7s)
+  ✓  24 [firefox] › tests/browser/site-contribution-rejection-runtime.spec.ts:411:3 › owner rejection authority block-and-reallow handles a retained policy reply without reviving revocation (1.7s)
+  ✓  25 [firefox] › tests/browser/site-contribution-rejection-runtime.spec.ts:411:3 › owner rejection authority close handles a retained policy reply without reviving revocation (1.6s)
+
+  25 passed (52.2s)

@@ -1,0 +1,10 @@
+
+Running 3 tests using 1 worker
+
+(node:335145) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [firefox] › tests/browser/site-contribution-rejection-worker.spec.ts:53:1 › production worker recovers a private owner refusal after UI peering and offline reload while preserving a cancelled proposal (15.6s)
+  ✓  2 [firefox] › tests/browser/site-contribution-worker.spec.ts:53:1 › production worker describes an authenticated form after UI setup and unlock without exposing keys or accepting caller authority (2.0s)
+  ✓  3 [firefox] › tests/browser/site-contribution-worker.spec.ts:162:1 › production workers recover queued proposals offline and send through the UI-established RTC link without reviving cancellation (13.0s)
+
+  3 passed (32.0s)

@@ -70,3 +70,13 @@ Provas da fundação: [documento v4](evidence/site-contributions/document-v4), [
 Passaram **535 testes Node, 17 pacotes Go/race, cobertura de 167 casos entre processos e 120 casos por cada Chromium/Firefox/WebKit**, além dos builds. O primeiro gate teve cinco arranques bloqueados pela reserva de disco; a revisão repetiu os seis casos do ficheiro afectado e manteve a proveniência dos restantes passes, com fontes iguais. O relatório original continua FAIL. [Provas e comandos](evidence/site-contributions/rejection-storage).
 
 **Ainda sem envio/admissão automática da recusa nem interface completa de revisão.** Seguem transporte/API, incorporação com CAS, reconciliação, proveniência e três contas na UI. O HTML público permanece anterior; todo o contrato de plataformas, rádios, paridade, recuperação e revisão independente continua activo.
+
+## Entrega de recusa e serialização nativa verificadas — 23 de Setembro
+
+**ac77224** liga a recusa assinada à entrega e admissão em Node/Go/browser. A recepção conserva a decisão local de cancelamento/expiração, não apaga recibos anteriores e não reabre filas. Orçamento combinado, seeding opaco, percursos RTC→WS/TCP, recuperação e autorizações revogadas foram verificados. [Provas da entrega](evidence/site-contributions/rejection-delivery).
+
+**4f309e6** copia sequências ASCII sem escapes em bloco, conservando Unicode/WTF-8/escapes e os bytes válidos; o orçamento global conta também a pontuação final. O controlo de limite falhou antes e passou depois. O microbenchmark local com race mediu cerca de143–148ms antes e5–6ms depois; não é uma promessa de aceleração uniforme. [Oráculos, medições e regressão](evidence/canonical-performance).
+
+A regressão final passou **540 Node, 17 pacotes Go/race, 185 casos entre processos e 140 por cada Chromium/Firefox/WebKit**, com typecheck/builds e782hashes exactos. Os resultados da versão anterior permanecem ligados à sua própria fonte. O CI remoto anterior d6d4ddb continuaFAIL; o novo resultado remoto ainda precisa de execução.
+
+**O produto permanece incompleto.** Aprovação/incorporação, reconciliação, proveniência e a interface completa de propostas com três contas continuam por concluir, tal como os restantes requisitos do PROJECT-BRIEF. HTML público inalterado, sem nova alegação de hardware, Safari/iOS, paridade integral ou revisão independente.

@@ -1,0 +1,42 @@
+
+Running 1 test using 1 worker
+
+(node:298797) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [chromium] › tests/browser/site-contribution-rejection-runtime.spec.ts:411:3 › owner rejection authority block-and-reallow handles a retained policy reply without reviving revocation (948ms)
+
+
+  1) [chromium] › tests/browser/site-contribution-rejection-runtime.spec.ts:411:3 › owner rejection authority block-and-reallow handles a retained policy reply without reviving revocation 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: false
+    Received: true
+
+      535 |     );
+      536 |     expect(result.positive).toBe(true);
+    > 537 |     expect(result.retained).toBe(mode === "unchanged-retry");
+          |                             ^
+      538 |     expect(result.fresh).toBe(mode !== "close");
+      539 |     expect(result.cancelled).toBe(mode !== "unchanged-retry");
+      540 |     expect(result.sameBytes).toBe(true);
+        at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-contribution-rejection-runtime.spec.ts:537:29
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/site-contribution-rejectio-2ae07-without-reviving-revocation-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/site-contribution-rejectio-2ae07-without-reviving-revocation-chromium/error-context.md
+
+    Error Context: test-results/site-contribution-rejectio-2ae07-without-reviving-revocation-chromium/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/site-contribution-rejectio-2ae07-without-reviving-revocation-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/site-contribution-rejectio-2ae07-without-reviving-revocation-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › tests/browser/site-contribution-rejection-runtime.spec.ts:411:3 › owner rejection authority block-and-reallow handles a retained policy reply without reviving revocation 

@@ -1,0 +1,77 @@
+{
+  "status": "PASS",
+  "started": 1790171921.4386978,
+  "checks": [
+    {
+      "name": "typecheck",
+      "command": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit"
+      ],
+      "env": {},
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "name": "native-network",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "--test-concurrency=1",
+        "tests/native/site-contribution-rejection-network.test.ts"
+      ],
+      "env": {},
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "name": "chromium",
+      "command": [
+        "node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "tests/browser/site-contribution-rejection-send.spec.ts"
+      ],
+      "env": {
+        "RELAYLOOM_MATRIX_ENGINE": "chromium"
+      },
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "name": "firefox",
+      "command": [
+        "node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "tests/browser/site-contribution-rejection-send.spec.ts"
+      ],
+      "env": {
+        "RELAYLOOM_MATRIX_ENGINE": "firefox"
+      },
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "name": "webkit",
+      "command": [
+        "node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/matrix.config.ts",
+        "tests/browser/site-contribution-rejection-send.spec.ts"
+      ],
+      "env": {
+        "RELAYLOOM_MATRIX_ENGINE": "webkit"
+      },
+      "status": "PASS",
+      "exitCode": 0
+    }
+  ],
+  "finished": 1790172174.5708487
+}

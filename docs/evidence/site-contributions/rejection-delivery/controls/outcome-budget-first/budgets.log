@@ -1,0 +1,54 @@
+TAP version 13
+# (node:288173) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Node combined owner-outcome batch rotates fairly and retains every pending original envelope
+ok 1 - Node combined owner-outcome batch rotates fairly and retains every pending original envelope
+  ---
+  duration_ms: 1567.47562
+  type: 'test'
+  ...
+# Subtest: Node combined owner-outcome batch charges failed copies and retains every pending original envelope
+ok 2 - Node combined owner-outcome batch charges failed copies and retains every pending original envelope
+  ---
+  duration_ms: 1423.334399
+  type: 'test'
+  ...
+# Subtest: Go receipt and refusal runtime share one rotating copy budget, including real quota failures
+ok 3 - Go receipt and refusal runtime share one rotating copy budget, including real quota failures
+  ---
+  duration_ms: 27530.167122
+  type: 'test'
+  ...
+# {"phase":"compile-only","durationMs":5270,"exitCode":0,"signal":null,"error":null}
+# {"phase":"execute","durationMs":22250,"exitCode":0,"signal":null,"error":null}
+# (node:289958) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: Node receipt batch rotates fairly and retains every pending original envelope
+ok 4 - Node receipt batch rotates fairly and retains every pending original envelope
+  ---
+  duration_ms: 1717.251756
+  type: 'test'
+  ...
+# Subtest: Node receipt batch charges failed copies and retains every pending original envelope
+ok 5 - Node receipt batch charges failed copies and retains every pending original envelope
+  ---
+  duration_ms: 1587.141353
+  type: 'test'
+  ...
+# Subtest: Go receipt runtime applies the same rotating copy budget, including real quota failures
+ok 6 - Go receipt runtime applies the same rotating copy budget, including real quota failures
+  ---
+  duration_ms: 28402.575282
+  type: 'test'
+  ...
+# {"phase":"compile-only","durationMs":987,"exitCode":0,"signal":null,"error":null}
+# {"phase":"execute","durationMs":27407,"exitCode":0,"signal":null,"error":null}
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 62599.983183

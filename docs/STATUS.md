@@ -1,5 +1,22 @@
 # RelayLoom — estado verificável
 
+## Entrega de recusa e serialização nativa verificadas — 23 de Setembro
+
+**ac77224** liga a recusa assinada à entrega e admissão em Node/Go/browser. A recepção conserva a decisão local de cancelamento/expiração, não apaga recibos anteriores e não reabre filas. Orçamento combinado, seeding opaco, percursos RTC→WS/TCP, recuperação e autorizações revogadas foram verificados. [Provas da entrega](evidence/site-contributions/rejection-delivery).
+
+**4f309e6** copia sequências ASCII sem escapes em bloco, conservando Unicode/WTF-8/escapes e os bytes válidos; o orçamento global conta também a pontuação final. O controlo de limite falhou antes e passou depois. O microbenchmark local com race mediu cerca de143–148ms antes e5–6ms depois; não é uma promessa de aceleração uniforme. [Oráculos, medições e regressão](evidence/canonical-performance).
+
+A regressão final passou **540 Node, 17 pacotes Go/race, 185 casos entre processos e 140 por cada Chromium/Firefox/WebKit**, com typecheck/builds e782hashes exactos. Os resultados da versão anterior permanecem ligados à sua própria fonte. O CI remoto anterior d6d4ddb continuaFAIL; o novo resultado remoto ainda precisa de execução.
+
+**O produto permanece incompleto.** Aprovação/incorporação, reconciliação, proveniência e a interface completa de propostas com três contas continuam por concluir, tal como os restantes requisitos do PROJECT-BRIEF. HTML público inalterado, sem nova alegação de hardware, Safari/iOS, paridade integral ou revisão independente.
+
+
+## Entrega de recusas — integração local em revisão
+
+O novo WIP liga a recusa assinada ao transporte e à admissão nos três motores. Passaram46vectores Node/portátil/Go, casos reais Node↔Go com reinícios/autor offline/seeder, e6percursos por Chromium/Firefox/WebKit, incluindo RTC→WS e intermediário sem leitura. Ainda faltam negativos/quotas/races/worker e regressão ampla antes de publicar este incremento; UI completa e HTML público mantêm a fronteira anterior. Ver .codex-delivery/REJECTION-DELIVERY-IMPLEMENTATION.md.
+
+O CI35868125390 de d6d4ddb passou native-node nos três hosts com o driver corrigido; a execução dos restantes jobs continua separada. Não atribuir esses passes ao WIP posterior.
+
 ## Correcção local do auxiliar que bloqueou o CI
 
 **e95b068:** a medição com cache fria reproduziu o corte aos60s antes da execução do teste. Preparação/vet separados demoraram62,2s; o teste real passou em27,4s. O driver agora separa essas fases, mantendo o limite exterior60s da execução e sem alterar os prazos dos jobs ou a cobertura. Typecheck e os3 casos do driver integrado passaram. [Comandos, tempos e controlo negativo](evidence/ci-receipt-budget-cold). A próxima execução CI ainda precisa de comprovar o resultado nos três hosts.

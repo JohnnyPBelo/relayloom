@@ -1,0 +1,78 @@
+{
+  "status": "PASS",
+  "started": 1790176741.1178365,
+  "checks": [
+    {
+      "name": "typecheck",
+      "command": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit"
+      ],
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "name": "core",
+      "command": [
+        "node",
+        "scripts/go.mjs",
+        "test",
+        "-race",
+        "-p=1",
+        "./core",
+        "-count=1"
+      ],
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "name": "node-oracle",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "tests/canonical-runs.test.ts"
+      ],
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "name": "benchmark",
+      "command": [
+        "node",
+        "scripts/go.mjs",
+        "test",
+        "-race",
+        "-p=1",
+        "./core",
+        "-run",
+        "^$",
+        "-bench",
+        "^BenchmarkCanonicalLargeASCII$",
+        "-benchtime=3x",
+        "-count=3"
+      ],
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "name": "site-recovery",
+      "command": [
+        "node",
+        "scripts/go.mjs",
+        "test",
+        "-race",
+        "-p=1",
+        "./app",
+        "-run",
+        "^TestSiteRuntimeRecoversAuthorizedCopyAfterQuotaAndRestart$",
+        "-count=1"
+      ],
+      "status": "PASS",
+      "exitCode": 0
+    }
+  ],
+  "finished": 1790176800.6526103
+}

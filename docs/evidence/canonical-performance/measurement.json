@@ -1,0 +1,17 @@
+{
+  "scope": "Local Linux amd64 race microbenchmark only; not an application-wide or remote-host speed claim",
+  "beforeNsPerOperation": [
+    142920305,
+    144200716,
+    148360174
+  ],
+  "afterNsPerOperation": [
+    6203327,
+    5202865,
+    4968709
+  ],
+  "medianRatio": 27.715636673255986,
+  "inputCharacters": 1548000,
+  "iterationsPerRun": 3,
+  "runs": 3
+}

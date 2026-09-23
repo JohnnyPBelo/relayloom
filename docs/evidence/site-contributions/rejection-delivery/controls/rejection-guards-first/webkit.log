@@ -1,0 +1,32 @@
+
+Running 25 tests using 1 worker
+
+(node:312536) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [webkit] › tests/browser/site-contribution-receipt-runtime.spec.ts:21:3 › browser receipt admission cached preserves authority and original private queue facts (874ms)
+  ✓   2 [webkit] › tests/browser/site-contribution-receipt-runtime.spec.ts:21:3 › browser receipt admission cancelled preserves authority and original private queue facts (835ms)
+  ✓   3 [webkit] › tests/browser/site-contribution-receipt-runtime.spec.ts:21:3 › browser receipt admission expired preserves authority and original private queue facts (818ms)
+  ✓   4 [webkit] › tests/browser/site-contribution-receipt-runtime.spec.ts:21:3 › browser receipt admission blocked preserves authority and original private queue facts (861ms)
+  ✓   5 [webkit] › tests/browser/site-contribution-receipt-runtime.spec.ts:21:3 › browser receipt admission lock-receive preserves authority and original private queue facts (962ms)
+  ✓   6 [webkit] › tests/browser/site-contribution-receipt-runtime.spec.ts:21:3 › browser receipt admission wrong-reference preserves authority and original private queue facts (749ms)
+  ✓   7 [webkit] › tests/browser/site-contribution-receipt-runtime.spec.ts:21:3 › browser receipt admission not-copied preserves authority and original private queue facts (695ms)
+  ✓   8 [webkit] › tests/browser/site-contribution-receipt-runtime.spec.ts:21:3 › browser receipt admission same-error-text preserves authority and original private queue facts (756ms)
+  ✓   9 [webkit] › tests/browser/site-contribution-receipt-runtime.spec.ts:281:1 › owner receipt retries rotate a bounded batch without re-signing or dropping a pending ninth proposal (3.3s)
+  ✓  10 [webkit] › tests/browser/site-contribution-receipt-runtime.spec.ts:364:3 › owner receipt authority unchanged-retry handles a retained policy reply without reviving revocation (898ms)
+  ✓  11 [webkit] › tests/browser/site-contribution-receipt-runtime.spec.ts:364:3 › owner receipt authority block-and-reallow handles a retained policy reply without reviving revocation (865ms)
+  ✓  12 [webkit] › tests/browser/site-contribution-receipt-runtime.spec.ts:364:3 › owner receipt authority close handles a retained policy reply without reviving revocation (840ms)
+  ✓  13 [webkit] › tests/browser/site-contribution-rejection-runtime.spec.ts:21:3 › browser rejection admission cached preserves authority and original private queue facts (843ms)
+  ✓  14 [webkit] › tests/browser/site-contribution-rejection-runtime.spec.ts:21:3 › browser rejection admission cancelled preserves authority and original private queue facts (804ms)
+  ✓  15 [webkit] › tests/browser/site-contribution-rejection-runtime.spec.ts:21:3 › browser rejection admission expired preserves authority and original private queue facts (790ms)
+  ✓  16 [webkit] › tests/browser/site-contribution-rejection-runtime.spec.ts:21:3 › browser rejection admission blocked preserves authority and original private queue facts (844ms)
+  ✓  17 [webkit] › tests/browser/site-contribution-rejection-runtime.spec.ts:21:3 › browser rejection admission lock-receive preserves authority and original private queue facts (973ms)
+  ✓  18 [webkit] › tests/browser/site-contribution-rejection-runtime.spec.ts:21:3 › browser rejection admission wrong-reference preserves authority and original private queue facts (762ms)
+  ✓  19 [webkit] › tests/browser/site-contribution-rejection-runtime.spec.ts:21:3 › browser rejection admission not-copied preserves authority and original private queue facts (692ms)
+  ✓  20 [webkit] › tests/browser/site-contribution-rejection-runtime.spec.ts:21:3 › browser rejection admission same-error-text preserves authority and original private queue facts (743ms)
+  ✓  21 [webkit] › tests/browser/site-contribution-rejection-runtime.spec.ts:286:3 › owner outcomes share one rotating budget with copy quota false rotate a bounded batch without re-signing or dropping a pending ninth proposal (2.8s)
+  ✓  22 [webkit] › tests/browser/site-contribution-rejection-runtime.spec.ts:286:3 › owner outcomes share one rotating budget with copy quota true rotate a bounded batch without re-signing or dropping a pending ninth proposal (2.5s)
+  ✓  23 [webkit] › tests/browser/site-contribution-rejection-runtime.spec.ts:411:3 › owner rejection authority unchanged-retry handles a retained policy reply without reviving revocation (973ms)
+  ✓  24 [webkit] › tests/browser/site-contribution-rejection-runtime.spec.ts:411:3 › owner rejection authority block-and-reallow handles a retained policy reply without reviving revocation (1.0s)
+  ✓  25 [webkit] › tests/browser/site-contribution-rejection-runtime.spec.ts:411:3 › owner rejection authority close handles a retained policy reply without reviving revocation (939ms)
+
+  25 passed (28.0s)

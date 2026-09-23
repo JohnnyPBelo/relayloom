@@ -1,0 +1,22 @@
+{
+  "run": 35868125390,
+  "source": "d6d4ddb9cde7e29e04aadd32a6ce68f049e77fcc",
+  "status": "FAIL",
+  "passed": [
+    "native-node ubuntu",
+    "native-node macos",
+    "native-node windows",
+    "node-ui"
+  ],
+  "failed": "native-go: cumulative default Go test package timeout 10m while TestSiteRuntimeRecoversAuthorizedCopyAfterQuotaAndRestart had run 1m34s",
+  "observedStack": "A Handle waits for Node.mu; the background sync goroutine is runnable in canonical.appendString over a ~1.46MB base64 string, through site payload/hash/AuthorizedBundle. This is evidence of work under the lock, not proof of a deadlock.",
+  "skipped": [
+    "native-interop",
+    "native-ui",
+    "reticulum-reference",
+    "desktop-package",
+    "ios-simulator-build",
+    "autonomous-browser"
+  ],
+  "next": "Measure canonical serialization and the targeted test; preserve race/vet, byte compatibility and existing budgets. Do not widen deadlines blindly."
+}

@@ -47,3 +47,13 @@ O consentimento de publicação aplica-se à proposta completa. Se a prova inclu
 
 
 Existe um rascunho de certificado de recusa em .cache/contribution-decision-draft/contribution-rejection.ts, sem valores da proposta e privado para dono+contribuidor. Ainda não integrado/compilado/testado; não é decisão funcional. O próximo incremento deve derivar a intenção da inbox autêntica, guardar destinatário público antes de libertar prova, preservar bloqueio/sessão/prazos e concluir emissão/admissão antes da UI. Recusa tardia não concede publicação, e descarte local permanece disponível sem obrigar a notificar uma pessoa bloqueada.
+
+## Verificação do formato actual antes da incorporação
+
+A leitura das fontes confirmou que a versão4 já é usada pelos formulários (`packages/content/src/site.ts` e `native/sites/document.go`). A proveniência precisa de uma versão seguinte, sem reaproveitar silenciosamente a4 nem alterar tabelasv1. O documento continua limitado a128KiB e a tabela a64KiB; provas originais e incorporadas contam para esses orçamentos. Não aumentar limites apenas para fazer caber a implementação.
+
+IDs de linhas são limitados a40 caracteres e começam por letra (`site-data.ts`), pelo que um certificateIdhex64 não cabe. Usar um identificador estável da intenção do dono (por exemplo c- seguido do UUID sem hífen), verificar colisão sem substituir outra linha e manter o certificateId completo na prova. Não truncar uma referência criptográfica e tratá-la como autoridade.
+
+A prova de incorporação deve manter a proposta assinada original, assinatura do dono, decisão/instante, base anterior, valores incorporados e audiência aprovada. A colocação pertence ao snapshot posterior do dono. Ler a prova autentica as assinaturas e o vínculo; só afirmar que a origem histórica foi verificada quando o snapshotoriginal estiver disponível e tiver sido realmente validado. Não divulgar aACLoriginal do formulário na prova pública.
+
+Uma decisão durável anterior ao prazo e uma publicação/copiação efectiva são factos distintos. Antes de implementar, manter explícita a política de expiração na retoma: não preparar uma nova aprovação após o prazo nem renovar o timestamp de uma intenção antiga; só declarar published depois de reler a cópia real. A UI deve explicar o que fica autorizado e o que já aconteceu, incluindo o conteúdo completo da proposta que a proveniência torna legível. Estas notas são desenho, não execução de aprovação/UI.

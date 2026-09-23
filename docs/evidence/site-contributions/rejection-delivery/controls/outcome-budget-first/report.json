@@ -1,0 +1,31 @@
+{
+  "status": "PASS",
+  "started": 1790172420.1032245,
+  "checks": [
+    {
+      "name": "typecheck",
+      "command": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit"
+      ],
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "name": "budgets",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "--test-concurrency=1",
+        "tests/site-owner-outcome-budget.test.ts",
+        "tests/site-receipt-runtime-budget.test.ts"
+      ],
+      "status": "PASS",
+      "exitCode": 0
+    }
+  ],
+  "finished": 1790172491.6018143
+}

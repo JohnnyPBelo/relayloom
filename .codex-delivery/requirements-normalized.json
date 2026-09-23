@@ -1859,6 +1859,20 @@
             "docs/evidence/site-contributions/rejection-storage"
           ],
           "notes": "535 Node, 17 Go/race packages, 167 unique process cases and 120 per browser. Five peer startups were blocked below the required disk reserve; all were replayed with a positive control after recovery, unchanged source and explicit inherited provenance. CAS refusal and atomic proof cleanup, immutable private signing/sealing/copying and bounded expiry; refusal delivery/admission, approval/publication/provenance and full three-account UI remain pending. Public HTML unchanged; no hardware or full parity claim."
+        },
+        {
+          "kind": "owner-refusal-delivery-and-native-serialization",
+          "result": "pass-in-scope-product-partial",
+          "sourceCommits": [
+            "ac772242145135894da0d97b1712bc7e9db64c92",
+            "4f309e6137eb66459c8e1b4336c4f54af3502064"
+          ],
+          "command": "node docs/evidence/canonical-performance/run-gate.mjs",
+          "paths": [
+            "docs/evidence/site-contributions/rejection-delivery",
+            "docs/evidence/canonical-performance"
+          ],
+          "notes": "540 Node,17 Go/race packages,185 real process cases,140 per browser; full source hashes bound to commits. Owner refusal delivery, combined budgets, atomic reception, opaque seeding and revoked-held-authorization correction. Native ASCII fast path preserves valid bytes and tightens final byte cap; local performance measurements only. Approval/publication/provenance and complete three-account UI remain pending, public HTML unchanged; no hardware or full parity claim."
         }
       ]
     },
@@ -2155,6 +2169,20 @@
             "docs/evidence/site-contributions/rejection-storage"
           ],
           "notes": "535 Node, 17 Go/race packages, 167 unique process cases and 120 per browser. Five peer startups were blocked below the required disk reserve; all were replayed with a positive control after recovery, unchanged source and explicit inherited provenance. CAS refusal and atomic proof cleanup, immutable private signing/sealing/copying and bounded expiry; refusal delivery/admission, approval/publication/provenance and full three-account UI remain pending. Public HTML unchanged; no hardware or full parity claim."
+        },
+        {
+          "kind": "owner-refusal-delivery-and-native-serialization",
+          "result": "pass-in-scope-product-partial",
+          "sourceCommits": [
+            "ac772242145135894da0d97b1712bc7e9db64c92",
+            "4f309e6137eb66459c8e1b4336c4f54af3502064"
+          ],
+          "command": "node docs/evidence/canonical-performance/run-gate.mjs",
+          "paths": [
+            "docs/evidence/site-contributions/rejection-delivery",
+            "docs/evidence/canonical-performance"
+          ],
+          "notes": "540 Node,17 Go/race packages,185 real process cases,140 per browser; full source hashes bound to commits. Owner refusal delivery, combined budgets, atomic reception, opaque seeding and revoked-held-authorization correction. Native ASCII fast path preserves valid bytes and tightens final byte cap; local performance measurements only. Approval/publication/provenance and complete three-account UI remain pending, public HTML unchanged; no hardware or full parity claim."
         }
       ]
     },
