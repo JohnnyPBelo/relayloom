@@ -1,0 +1,66 @@
+TAP version 13
+# (node:588524) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: node admits historical owner receipt from queued, removes only the original payload and preserves a new preparation
+ok 1 - node admits historical owner receipt from queued, removes only the original payload and preserves a new preparation
+  ---
+  duration_ms: 3793.484852
+  type: 'test'
+  ...
+# Subtest: node admits historical owner receipt from cancelled, removes only the original payload and preserves a new preparation
+ok 2 - node admits historical owner receipt from cancelled, removes only the original payload and preserves a new preparation
+  ---
+  duration_ms: 1238.483634
+  type: 'test'
+  ...
+# Subtest: node admits historical owner receipt from expired, removes only the original payload and preserves a new preparation
+ok 3 - node admits historical owner receipt from expired, removes only the original payload and preserves a new preparation
+  ---
+  duration_ms: 1224.847909
+  type: 'test'
+  ...
+# Subtest: go admits historical owner receipt from queued, removes only the original payload and preserves a new preparation
+ok 4 - go admits historical owner receipt from queued, removes only the original payload and preserves a new preparation
+  ---
+  duration_ms: 2322.842041
+  type: 'test'
+  ...
+# Subtest: go admits historical owner receipt from cancelled, removes only the original payload and preserves a new preparation
+ok 5 - go admits historical owner receipt from cancelled, removes only the original payload and preserves a new preparation
+  ---
+  duration_ms: 2299.766661
+  type: 'test'
+  ...
+# Subtest: go admits historical owner receipt from expired, removes only the original payload and preserves a new preparation
+ok 6 - go admits historical owner receipt from expired, removes only the original payload and preserves a new preparation
+  ---
+  duration_ms: 2301.891797
+  type: 'test'
+  ...
+# Subtest: Go before-receipt-commit leaves receipt and payload on the same side of the transaction boundary
+ok 7 - Go before-receipt-commit leaves receipt and payload on the same side of the transaction boundary
+  ---
+  duration_ms: 206.199697
+  type: 'test'
+  ...
+# Subtest: Go after-receipt leaves receipt and payload on the same side of the transaction boundary
+ok 8 - Go after-receipt leaves receipt and payload on the same side of the transaction boundary
+  ---
+  duration_ms: 202.268784
+  type: 'test'
+  ...
+# Subtest: uncopied or cross-reference receipts cannot release an authorised private proposal
+ok 9 - uncopied or cross-reference receipts cannot release an authorised private proposal
+  ---
+  duration_ms: 2198.149529
+  type: 'test'
+  ...
+1..9
+# tests 9
+# suites 0
+# pass 9
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 16020.058153

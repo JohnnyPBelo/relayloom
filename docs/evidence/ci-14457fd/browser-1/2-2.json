@@ -1,0 +1,1662 @@
+{
+  "config": {
+    "argv": [
+      "/opt/hostedtoolcache/node/22.23.2/x64/bin/node",
+      "/home/runner/work/relayloom/relayloom/node_modules/playwright/cli.js",
+      "test",
+      "--config",
+      "tests/browser/browser.config.ts",
+      "--list",
+      "--reporter=json",
+      "--shard=2/2"
+    ],
+    "configFile": "/home/runner/work/relayloom/relayloom/tests/browser/browser.config.ts",
+    "rootDir": "/home/runner/work/relayloom/relayloom/tests/browser",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/home/runner/work/relayloom/relayloom/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "",
+        "name": "",
+        "testDir": "/home/runner/work/relayloom/relayloom/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "*.spec.ts"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": {
+      "current": 2,
+      "total": 2
+    },
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "site-contribution-receipt.spec.ts",
+      "file": "site-contribution-receipt.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "actual browser and Node authenticate owner receipts with exact private readers, original references and corruption controls",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "41b97b230cd5ac910ef5-0f44bf2924cd368f81e2",
+          "file": "site-contribution-receipt.spec.ts",
+          "line": 53,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "site-contribution-send.spec.ts",
+      "file": "site-contribution-send.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "browser source held only in a private proposal queue recover with both relays paused",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "5cb5f942cf066d1e2cee-4f053c5304c7862cf7e1",
+          "file": "site-contribution-send.spec.ts",
+          "line": 22,
+          "column": 3
+        },
+        {
+          "title": "browser source held only in a private proposal queue cancel-retained-reply with both relays paused",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "5cb5f942cf066d1e2cee-2e21eba6e50e725c4078",
+          "file": "site-contribution-send.spec.ts",
+          "line": 22,
+          "column": 3
+        },
+        {
+          "title": "browser source held only in a private proposal queue cancel-before-admission with both relays paused",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "5cb5f942cf066d1e2cee-a610bcaaf57e76ca95cf",
+          "file": "site-contribution-send.spec.ts",
+          "line": 22,
+          "column": 3
+        },
+        {
+          "title": "browser source held only in a private proposal queue cancel-queued with both relays paused",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "5cb5f942cf066d1e2cee-8df5b95b8752d58a9a4a",
+          "file": "site-contribution-send.spec.ts",
+          "line": 22,
+          "column": 3
+        },
+        {
+          "title": "private form proposals web-to-native cross RTC and WebSocket with node and an intermediary without a reading key",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "5cb5f942cf066d1e2cee-1f1e73a3ba816bc27017",
+          "file": "site-contribution-send.spec.ts",
+          "line": 396,
+          "column": 5
+        },
+        {
+          "title": "private form proposals native-to-web cross RTC and WebSocket with node and an intermediary without a reading key",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "5cb5f942cf066d1e2cee-e6f66af11766e159818b",
+          "file": "site-contribution-send.spec.ts",
+          "line": 396,
+          "column": 5
+        },
+        {
+          "title": "private form proposals web-to-native cross RTC and WebSocket with native and an intermediary without a reading key",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "5cb5f942cf066d1e2cee-7f923e0d36b81113b63b",
+          "file": "site-contribution-send.spec.ts",
+          "line": 396,
+          "column": 5
+        },
+        {
+          "title": "private form proposals native-to-web cross RTC and WebSocket with native and an intermediary without a reading key",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "5cb5f942cf066d1e2cee-2011e20c4f01304c0062",
+          "file": "site-contribution-send.spec.ts",
+          "line": 396,
+          "column": 5
+        },
+        {
+          "title": "two autonomous browser accounts send a private form proposal through real RTC while the sender relay is paused",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "5cb5f942cf066d1e2cee-1e6e8be5d2f9f8c4d701",
+          "file": "site-contribution-send.spec.ts",
+          "line": 556,
+          "column": 1
+        },
+        {
+          "title": "browser reception journals the original source before review and survives actual cache eviction with the RTC sender closed",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "5cb5f942cf066d1e2cee-349007e6b3ad6e015ec1",
+          "file": "site-contribution-send.spec.ts",
+          "line": 725,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "site-contribution-serve-race.spec.ts",
+      "file": "site-contribution-serve-race.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "in-flight proposal authorization cannot survive cancel while its policy read is retained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "67deb6bdb4860d49cdec-75c2e771f6243fcf12c3",
+          "file": "site-contribution-serve-race.spec.ts",
+          "line": 13,
+          "column": 3
+        },
+        {
+          "title": "in-flight proposal authorization cannot survive expire while its policy read is retained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "67deb6bdb4860d49cdec-a91f327d91984dc61765",
+          "file": "site-contribution-serve-race.spec.ts",
+          "line": 13,
+          "column": 3
+        },
+        {
+          "title": "in-flight proposal authorization cannot survive close while its policy read is retained",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "67deb6bdb4860d49cdec-d7d22de243ad6151d063",
+          "file": "site-contribution-serve-race.spec.ts",
+          "line": 13,
+          "column": 3
+        },
+        {
+          "title": "durable retry without changes preserves an in-flight proposal read",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "67deb6bdb4860d49cdec-ad8ad03c707b632fd292",
+          "file": "site-contribution-serve-race.spec.ts",
+          "line": 148,
+          "column": 5
+        },
+        {
+          "title": "durable retry after revocation refuses an in-flight proposal read",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "67deb6bdb4860d49cdec-93c3a95a634b21331b92",
+          "file": "site-contribution-serve-race.spec.ts",
+          "line": 148,
+          "column": 5
+        },
+        {
+          "title": "durable retry without changes preserves an in-flight source read",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "67deb6bdb4860d49cdec-e857186ac34f979516a0",
+          "file": "site-contribution-serve-race.spec.ts",
+          "line": 148,
+          "column": 5
+        },
+        {
+          "title": "durable retry after revocation refuses an in-flight source read",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "67deb6bdb4860d49cdec-f386fc5d0d6bed6207c6",
+          "file": "site-contribution-serve-race.spec.ts",
+          "line": 148,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "site-contribution-worker.spec.ts",
+      "file": "site-contribution-worker.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "production worker describes an authenticated form after UI setup and unlock without exposing keys or accepting caller authority",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "f331767cf798377fe66c-bc3a2a21e321853e7368",
+          "file": "site-contribution-worker.spec.ts",
+          "line": 53,
+          "column": 1
+        },
+        {
+          "title": "production workers recover queued proposals offline and send through the UI-established RTC link without reviving cancellation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "f331767cf798377fe66c-b8c324139b30283d7975",
+          "file": "site-contribution-worker.spec.ts",
+          "line": 160,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "site-contribution.spec.ts",
+      "file": "site-contribution.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "browser visitor certificates interoperate with Node and Go while encrypted proposals and publication consent remain separate",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "74a528995bbcde0caf16-9d1b2db6c38d86dd9751",
+          "file": "site-contribution.spec.ts",
+          "line": 50,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "site-data-component.spec.ts",
+      "file": "site-data-component.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "standalone table component filters literal data, sorts, paginates and rejects active content without mutating the source",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "b54b67f4eb5e33203d7f-e342e8e82a54521dd4e9",
+          "file": "site-data-component.spec.ts",
+          "line": 25,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "site-data-editor.spec.ts",
+      "file": "site-data-editor.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "table file import validates before replacement, preserves typed nulls, undoes changes and exports literal CSV safely",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "12f6811fd837050a978d-aa389c8a4f517c598afe",
+          "file": "site-data-editor.spec.ts",
+          "line": 12,
+          "column": 1
+        },
+        {
+          "title": "table controls and import failures use en-GB while authored data retains its language",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "12f6811fd837050a978d-106ab215d6e0d5c41c42",
+          "file": "site-data-editor.spec.ts",
+          "line": 337,
+          "column": 3
+        },
+        {
+          "title": "table controls and import failures use es-ES while authored data retains its language",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "12f6811fd837050a978d-2de3c8c162f360b2199c",
+          "file": "site-data-editor.spec.ts",
+          "line": 337,
+          "column": 3
+        },
+        {
+          "title": "real table editor types decimal cells, preserves drafts, publishes signed data and permits read-only queries after the author closes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "12f6811fd837050a978d-ce4a51b4533b057a2c7e",
+          "file": "site-data-editor.spec.ts",
+          "line": 396,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "site-form-document.spec.ts",
+      "file": "site-form-document.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "v4 forms require the site catalogue before signing; schema binding survives a real encrypted browser snapshot",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "9a5b9bf14891b2288ba3-5cf52e0347b5d98d9b69",
+          "file": "site-form-document.spec.ts",
+          "line": 12,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "site-language.spec.ts",
+      "file": "site-language.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "three multilingual identities edit signed pages, preserve original text and seed to a new reader after author closes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "7729655cffac382eac67-56176f4e1462b5c2e587",
+          "file": "site-language.spec.ts",
+          "line": 115,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "site-network.spec.ts",
+      "file": "site-network.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "version 1 sites cross RTC, WebSocket and TCP through node, heal a partition and survive with only a restarted reader",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "82f802967c870255d669-b32a2ae847e33c2f4d05",
+          "file": "site-network.spec.ts",
+          "line": 172,
+          "column": 5
+        },
+        {
+          "title": "version 1 sites cross RTC, WebSocket and TCP through native, heal a partition and survive with only a restarted reader",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "82f802967c870255d669-a0372f4af10a02389a56",
+          "file": "site-network.spec.ts",
+          "line": 172,
+          "column": 5
+        },
+        {
+          "title": "version 2 sites cross RTC, WebSocket and TCP through node, heal a partition and survive with only a restarted reader",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "82f802967c870255d669-532a9210da25fdfc20f0",
+          "file": "site-network.spec.ts",
+          "line": 172,
+          "column": 5
+        },
+        {
+          "title": "version 2 sites cross RTC, WebSocket and TCP through native, heal a partition and survive with only a restarted reader",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "82f802967c870255d669-5886393714e4c3458dcd",
+          "file": "site-network.spec.ts",
+          "line": 172,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "site-pages.spec.ts",
+      "file": "site-pages.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "web users copy pages, reorder with keyboard, reopen encrypted drafts and read the signed result after the author closes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "a12ddb0889ff969967b8-03372a89de57d6fdc3b7",
+          "file": "site-pages.spec.ts",
+          "line": 65,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "site-publication.spec.ts",
+      "file": "site-publication.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "real UI publishes public and private revisions, reads fixed history and restores original privacy without granting readers authorship",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "8e2f8540a925b61178c6-98e93d7f0501297057bb",
+          "file": "site-publication.spec.ts",
+          "line": 137,
+          "column": 1
+        },
+        {
+          "title": "two user-restored identities preserve a visible fork until the UI explicitly reviews and confirms all versions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "8e2f8540a925b61178c6-0fb77da01892313be30b",
+          "file": "site-publication.spec.ts",
+          "line": 347,
+          "column": 1
+        },
+        {
+          "title": "studio reports local validation, preserves the saved draft and keeps keyboard focus after saving",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "8e2f8540a925b61178c6-5d6932321382eff567c0",
+          "file": "site-publication.spec.ts",
+          "line": 452,
+          "column": 1
+        },
+        {
+          "title": "lost worker publication response keeps the editor frozen and resumes the same version through the UI",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "8e2f8540a925b61178c6-d9116acfdcd60c9c8773",
+          "file": "site-publication.spec.ts",
+          "line": 504,
+          "column": 1
+        },
+        {
+          "title": "application waits for an owned closing lease and never takes a live profile from another tab",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "8e2f8540a925b61178c6-70a326d247d8fb7b9379",
+          "file": "site-publication.spec.ts",
+          "line": 600,
+          "column": 1
+        },
+        {
+          "title": "publication and history controls work in en-GB and keep authored text across a language change",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "8e2f8540a925b61178c6-e4f83a24fb44144a9218",
+          "file": "site-publication.spec.ts",
+          "line": 739,
+          "column": 3
+        },
+        {
+          "title": "publication and history controls work in es-ES and keep authored text across a language change",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "8e2f8540a925b61178c6-a669d041c2589bfcce64",
+          "file": "site-publication.spec.ts",
+          "line": 739,
+          "column": 3
+        }
+      ]
+    },
+    {
+      "title": "site-resource-api.spec.ts",
+      "file": "site-resource-api.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "browser application creates resources once, keeps copy failures recoverable and checks blocking in the actual copy transaction",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "d0eb29a2f51c34e09662-cc7dd44fe5a3dc47fbc5",
+          "file": "site-resource-api.spec.ts",
+          "line": 12,
+          "column": 1
+        },
+        {
+          "title": "browser application leaves a failed read-back pending and recovers its exact signature after reopening",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "d0eb29a2f51c34e09662-6b3d99cb8b013f0db2c7",
+          "file": "site-resource-api.spec.ts",
+          "line": 204,
+          "column": 1
+        },
+        {
+          "title": "expired browser resource intent keeps its result and requires a new explicit creation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "d0eb29a2f51c34e09662-a6674de67b371fcca95c",
+          "file": "site-resource-api.spec.ts",
+          "line": 281,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "site-resource-budget.spec.ts",
+      "file": "site-resource-budget.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "the maximum valid page inspects every resource without exhausting the browser command budget",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "03f7c3cb934533101713-29e0217ef25e3dfd00ed",
+          "file": "site-resource-budget.spec.ts",
+          "line": 160,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "site-resource-catalog.spec.ts",
+      "file": "site-resource-catalog.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "browser resource creation keeps its signature private until durable preparation, reopens and recovers one exact result",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "3f669cb3cd93783937c5-a10712388afa41bbcb10",
+          "file": "site-resource-catalog.spec.ts",
+          "line": 11,
+          "column": 1
+        },
+        {
+          "title": "locking during resource signing aborts the private transaction and invalidates its old catalogue",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "3f669cb3cd93783937c5-e6d58162fbedc748d3fc",
+          "file": "site-resource-catalog.spec.ts",
+          "line": 116,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "site-resource-languages.spec.ts",
+      "file": "site-resource-languages.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "resource library works in en-GB on a compact dark reduced-motion interface without translating authored filenames",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "7b56af2b76693053fa83-7f601a69f39b747060c5",
+          "file": "site-resource-languages.spec.ts",
+          "line": 68,
+          "column": 3
+        },
+        {
+          "title": "resource library works in es-ES on a compact dark reduced-motion interface without translating authored filenames",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "7b56af2b76693053fa83-17b21deafee1ef2ca4a9",
+          "file": "site-resource-languages.spec.ts",
+          "line": 68,
+          "column": 3
+        }
+      ]
+    },
+    {
+      "title": "site-resource-network.spec.ts",
+      "file": "site-resource-network.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "browser resource admission rejects readable malformed bodies, preserves opaque seeding and keeps summaries distinct from full data",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "1a92f9e7ed4b8c5a9bf2-6bda78cf30d9b01aecab",
+          "file": "site-resource-network.spec.ts",
+          "line": 97,
+          "column": 1
+        },
+        {
+          "title": "optional data crosses RTC and WS through node only on request and a restarted browser seeds it after author shutdown",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "1a92f9e7ed4b8c5a9bf2-4920cf66ba99bacffd00",
+          "file": "site-resource-network.spec.ts",
+          "line": 221,
+          "column": 3
+        },
+        {
+          "title": "optional data crosses RTC and WS through native only on request and a restarted browser seeds it after author shutdown",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "1a92f9e7ed4b8c5a9bf2-fb1f359ce88133d8d48b",
+          "file": "site-resource-network.spec.ts",
+          "line": 221,
+          "column": 3
+        }
+      ]
+    },
+    {
+      "title": "site-resource-parallel.spec.ts",
+      "file": "site-resource-parallel.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "read-only resource checks can progress together while every reply still checks blocking and session ownership",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "b081a5f8c7416a868c27-c46728d0c9ef9bfd70d4",
+          "file": "site-resource-parallel.spec.ts",
+          "line": 11,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "site-resource-recovery-ui.spec.ts",
+      "file": "site-resource-recovery-ui.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "resource UI recovers a lost reply with one operation identity and no silent duplicate",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "d348dd016d6d3678e965-d93f4b3f4629637ebccd",
+          "file": "site-resource-recovery-ui.spec.ts",
+          "line": 15,
+          "column": 3
+        },
+        {
+          "title": "resource UI recovers a lost request with one operation identity and no silent duplicate",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "d348dd016d6d3678e965-61c8a7b6e5b4afa95444",
+          "file": "site-resource-recovery-ui.spec.ts",
+          "line": 15,
+          "column": 3
+        }
+      ]
+    },
+    {
+      "title": "site-resource-reference.spec.ts",
+      "file": "site-resource-reference.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "browser signed-page resource API separates inspection from obtaining bytes and preserves third-party authorship",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "fcdce2f1fb3fe04c9017-5ad0be4cadf32ac6ec91",
+          "file": "site-resource-reference.spec.ts",
+          "line": 12,
+          "column": 1
+        },
+        {
+          "title": "browser resource inspection rejects corrupted IndexedDB bytes and never returns an expired file",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "fcdce2f1fb3fe04c9017-9c8f26ec495270f45403",
+          "file": "site-resource-reference.spec.ts",
+          "line": 341,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "site-resource-review.spec.ts",
+      "file": "site-resource-review.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "resource polling keeps the obtain action busy until its own real Worker reply arrives",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "0217876d37ec50da8349-6666638a2e1c239ef61f",
+          "file": "site-resource-review.spec.ts",
+          "line": 160,
+          "column": 1
+        },
+        {
+          "title": "signed resource reader follows all site palettes independently of the application theme",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "0217876d37ec50da8349-d2871acdcbdb44fa0dbc",
+          "file": "site-resource-review.spec.ts",
+          "line": 275,
+          "column": 1
+        },
+        {
+          "title": "switching resource previews never associates a new filename or MIME with the previous file URL",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "0217876d37ec50da8349-ed8499d47acef7a63baf",
+          "file": "site-resource-review.spec.ts",
+          "line": 490,
+          "column": 1
+        },
+        {
+          "title": "late site inventory preserves an already verified reader and focus; failed refresh clears the old view",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "0217876d37ec50da8349-79b62127f9d3ee47fdd9",
+          "file": "site-resource-review.spec.ts",
+          "line": 609,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "site-resources-ui.spec.ts",
+      "file": "site-resources-ui.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "resource library builds a private table through the UI and prevents accidental public publication",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "4c504eb62d161b7de8c8-f2f8f97cac2746dd6d0e",
+          "file": "site-resources-ui.spec.ts",
+          "line": 12,
+          "column": 1
+        },
+        {
+          "title": "three accounts create, publish and retrieve optional files entirely through the UI; a restarted reader seeds after the author closes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "4c504eb62d161b7de8c8-7c431ac39960a08c4686",
+          "file": "site-resources-ui.spec.ts",
+          "line": 272,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "site-revisions.spec.ts",
+      "file": "site-revisions.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "real browser, Node and Go agree on signed site snapshots while reading keys cannot edit them",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "5d8b705e2abeb1319713-7f0794d761642cb8d03e",
+          "file": "site-revisions.spec.ts",
+          "line": 70,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "site-studio.spec.ts",
+      "file": "site-studio.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "multipage studio saves encrypted draft, rejects executable imports and a consenting reader seeds it to a new browser after author closes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "6fe8fa3abda2991b9faa-2865c0c1cc89d9e74c23",
+          "file": "site-studio.spec.ts",
+          "line": 77,
+          "column": 1
+        },
+        {
+          "title": "studio keyboard navigation, nested drag, duplicate, reparent and page references stay editable on a narrow screen",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "6fe8fa3abda2991b9faa-097450b0a37cf06d2d4b",
+          "file": "site-studio.spec.ts",
+          "line": 351,
+          "column": 1
+        },
+        {
+          "title": "dense three-level compositions keep all controls inside their blocks and preserve contrast across palettes and app themes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "6fe8fa3abda2991b9faa-15107724e412ae54e796",
+          "file": "site-studio.spec.ts",
+          "line": 425,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "site-worker.spec.ts",
+      "file": "site-worker.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "production worker publishes and recovers exact site requests, refuses forged snapshots and does not export signing helpers",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "9e8c5f8421e05cbf3d1f-e6f69026ceb3f76df931",
+          "file": "site-worker.spec.ts",
+          "line": 26,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "x25519.spec.ts",
+      "file": "x25519.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "portable curves match RFC 7748, reject invalid reading keys and work when native curve operations fail",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "69c863b4c613b1eb13e6-02e2d36337e6eed2daf5",
+          "file": "x25519.spec.ts",
+          "line": 5,
+          "column": 1
+        },
+        {
+          "title": "identity lifecycle remains valid across 512 generated and reimported signing/reading key pairs",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "69c863b4c613b1eb13e6-7f0a5790f3810ca17337",
+          "file": "x25519.spec.ts",
+          "line": 137,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-23T01:45:47.627Z",
+    "duration": 478.2349999999999,
+    "expected": 0,
+    "skipped": 69,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

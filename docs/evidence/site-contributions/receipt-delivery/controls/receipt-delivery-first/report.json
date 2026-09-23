@@ -1,0 +1,36 @@
+[
+  {
+    "name": "journal",
+    "command": [
+      "node",
+      "--import",
+      "tsx",
+      "--test",
+      "tests/site-contribution-receive-journal.test.ts"
+    ],
+    "exitCode": 0,
+    "seconds": 0.48002195358276367
+  },
+  {
+    "name": "native-build",
+    "command": [
+      "node",
+      "scripts/native-build.mjs"
+    ],
+    "exitCode": 0,
+    "seconds": 1.6261940002441406
+  },
+  {
+    "name": "network",
+    "command": [
+      "node",
+      "--import",
+      "tsx",
+      "--test",
+      "--test-concurrency=1",
+      "tests/native/site-contribution-receipt-network.test.ts"
+    ],
+    "exitCode": 0,
+    "seconds": 6.215296030044556
+  }
+]

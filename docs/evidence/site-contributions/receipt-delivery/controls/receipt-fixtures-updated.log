@@ -1,0 +1,53 @@
+
+Running 2 tests using 1 worker
+
+(node:3393749) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [webkit] › tests/browser/site-contribution-send.spec.ts:623:1 › two autonomous browser accounts send a private form proposal through real RTC while the sender relay is paused (3.3s)
+  ✘  2 [webkit] › tests/browser/site-contribution-send.spec.ts:834:1 › browser reception journals the original source before review and survives actual cache eviction with the RTC sender closed (3.1s)
+
+
+  1) [webkit] › tests/browser/site-contribution-send.spec.ts:834:1 › browser reception journals the original source before review and survives actual cache eviction with the RTC sender closed 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 3
+
+    - Array []
+    + Array [
+    +   "2146ca6e885a9655d3a0bfd15bb6eb2a05764af12ef151bd773079811cbdb02f",
+    + ]
+
+      965 |       return { inbox, ids, blocked, unblocked, peers: f.mesh.router.peers };
+      966 |     }, b);
+    > 967 |     expect(recovered.ids).toEqual([]);
+          |                           ^
+      968 |     expect(recovered.peers).toEqual([]);
+      969 |     expect(recovered.inbox.durable).toBe(true);
+      970 |     expect(recovered.inbox.items).toHaveLength(1);
+        at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-contribution-send.spec.ts:967:27
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .cache/receipt-fixtures-updated-artifacts/site-contribution-send-bro-81e8b--with-the-RTC-sender-closed-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .cache/receipt-fixtures-updated-artifacts/site-contribution-send-bro-81e8b--with-the-RTC-sender-closed-webkit/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: .cache/receipt-fixtures-updated-artifacts/site-contribution-send-bro-81e8b--with-the-RTC-sender-closed-webkit/error-context.md
+
+    Error Context: .cache/receipt-fixtures-updated-artifacts/site-contribution-send-bro-81e8b--with-the-RTC-sender-closed-webkit/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    .cache/receipt-fixtures-updated-artifacts/site-contribution-send-bro-81e8b--with-the-RTC-sender-closed-webkit/trace.zip
+    Usage:
+
+        npx playwright show-trace .cache/receipt-fixtures-updated-artifacts/site-contribution-send-bro-81e8b--with-the-RTC-sender-closed-webkit/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [webkit] › tests/browser/site-contribution-send.spec.ts:834:1 › browser reception journals the original source before review and survives actual cache eviction with the RTC sender closed 
+  1 passed (7.3s)

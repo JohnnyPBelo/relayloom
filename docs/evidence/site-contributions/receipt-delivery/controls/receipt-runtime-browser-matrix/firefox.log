@@ -1,0 +1,27 @@
+
+Running 20 tests using 1 worker
+
+(node:780543) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [firefox] › tests/browser/site-contribution-receipt-runtime.spec.ts:20:3 › browser receipt admission cached preserves authority and original private queue facts (2.4s)
+  ✓   2 [firefox] › tests/browser/site-contribution-receipt-runtime.spec.ts:20:3 › browser receipt admission cancelled preserves authority and original private queue facts (1.4s)
+  ✓   3 [firefox] › tests/browser/site-contribution-receipt-runtime.spec.ts:20:3 › browser receipt admission expired preserves authority and original private queue facts (1.3s)
+  ✓   4 [firefox] › tests/browser/site-contribution-receipt-runtime.spec.ts:20:3 › browser receipt admission blocked preserves authority and original private queue facts (1.4s)
+  ✓   5 [firefox] › tests/browser/site-contribution-receipt-runtime.spec.ts:20:3 › browser receipt admission lock-receive preserves authority and original private queue facts (1.6s)
+  ✓   6 [firefox] › tests/browser/site-contribution-receipt-runtime.spec.ts:20:3 › browser receipt admission wrong-reference preserves authority and original private queue facts (1.3s)
+  ✓   7 [firefox] › tests/browser/site-contribution-receipt-runtime.spec.ts:20:3 › browser receipt admission not-copied preserves authority and original private queue facts (1.1s)
+  ✓   8 [firefox] › tests/browser/site-contribution-receipt-runtime.spec.ts:264:1 › owner receipt retries rotate a bounded batch without re-signing or dropping a pending ninth proposal (6.3s)
+  ✓   9 [firefox] › tests/browser/site-contribution-send.spec.ts:22:3 › browser source held only in a private proposal queue recover with both relays paused (4.7s)
+  ✓  10 [firefox] › tests/browser/site-contribution-send.spec.ts:22:3 › browser source held only in a private proposal queue cancel-retained-reply with both relays paused (3.6s)
+  ✓  11 [firefox] › tests/browser/site-contribution-send.spec.ts:22:3 › browser source held only in a private proposal queue cancel-before-admission with both relays paused (3.6s)
+  ✓  12 [firefox] › tests/browser/site-contribution-send.spec.ts:22:3 › browser source held only in a private proposal queue cancel-queued with both relays paused (3.5s)
+  ✓  13 [firefox] › tests/browser/site-contribution-send.spec.ts:396:5 › private form proposals web-to-native cross RTC and WebSocket with node and an intermediary without a reading key (9.7s)
+  ✓  14 [firefox] › tests/browser/site-contribution-send.spec.ts:396:5 › private form proposals native-to-web cross RTC and WebSocket with node and an intermediary without a reading key (4.4s)
+  ✓  15 [firefox] › tests/browser/site-contribution-send.spec.ts:396:5 › private form proposals web-to-native cross RTC and WebSocket with native and an intermediary without a reading key (10.0s)
+  ✓  16 [firefox] › tests/browser/site-contribution-send.spec.ts:396:5 › private form proposals native-to-web cross RTC and WebSocket with native and an intermediary without a reading key (3.4s)
+  ✓  17 [firefox] › tests/browser/site-contribution-send.spec.ts:623:1 › two autonomous browser accounts send a private form proposal through real RTC while the sender relay is paused (3.8s)
+  ✓  18 [firefox] › tests/browser/site-contribution-send.spec.ts:792:1 › browser reception journals the original source before review and survives actual cache eviction with the RTC sender closed (3.5s)
+  ✓  19 [firefox] › tests/browser/site-contribution-worker.spec.ts:53:1 › production worker describes an authenticated form after UI setup and unlock without exposing keys or accepting caller authority (2.1s)
+  ✓  20 [firefox] › tests/browser/site-contribution-worker.spec.ts:160:1 › production workers recover queued proposals offline and send through the UI-established RTC link without reviving cancellation (13.8s)
+
+  20 passed (1.4m)

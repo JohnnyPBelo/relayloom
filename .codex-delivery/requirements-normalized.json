@@ -1838,6 +1838,16 @@
             "docs/evidence/site-contributions/receipt-persistence"
           ],
           "notes": "526 Node, 17 Go/race packages with cache explicitly marked, 117 process cases, 97 per browser. Durable intent/sign/envelope/copy only; automatic receipt delivery and complete contribution review UI remain required."
+        },
+        {
+          "kind": "private-owner-receipt-delivery",
+          "result": "pass-in-scope-product-partial",
+          "sourceCommit": "426b471b72b0f8ca6ec3f42ce9a1fdf03a73e05b",
+          "command": "node docs/evidence/site-contributions/receipt-delivery/run-gate.mjs",
+          "paths": [
+            "docs/evidence/site-contributions/receipt-delivery"
+          ],
+          "notes": "531 Node, 17 Go/race packages, 135 real process cases, 110 per browser. Receipt delivery and atomic queue closure, not approval/publication or completed forms UI."
         }
       ]
     },
@@ -2113,6 +2123,16 @@
             "docs/evidence/site-contributions/receipt-persistence"
           ],
           "notes": "526 Node, 17 Go/race packages with cache explicitly marked, 117 process cases, 97 per browser. Durable intent/sign/envelope/copy only; automatic receipt delivery and complete contribution review UI remain required."
+        },
+        {
+          "kind": "private-owner-receipt-delivery",
+          "result": "pass-in-scope-product-partial",
+          "sourceCommit": "426b471b72b0f8ca6ec3f42ce9a1fdf03a73e05b",
+          "command": "node docs/evidence/site-contributions/receipt-delivery/run-gate.mjs",
+          "paths": [
+            "docs/evidence/site-contributions/receipt-delivery"
+          ],
+          "notes": "531 Node, 17 Go/race packages, 135 real process cases, 110 per browser. Receipt delivery and atomic queue closure, not approval/publication or completed forms UI."
         }
       ]
     },

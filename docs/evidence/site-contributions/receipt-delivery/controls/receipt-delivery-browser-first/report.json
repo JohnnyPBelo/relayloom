@@ -1,0 +1,42 @@
+[
+  {
+    "name": "typecheck",
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "--noEmit"
+    ],
+    "env": {},
+    "exitCode": 0,
+    "seconds": 8.375440120697021
+  },
+  {
+    "name": "build",
+    "command": [
+      "node",
+      "node_modules/vite/bin/vite.js",
+      "build"
+    ],
+    "env": {},
+    "exitCode": 0,
+    "seconds": 3.0108771324157715
+  },
+  {
+    "name": "browser",
+    "command": [
+      "node",
+      "scripts/e2e.mjs",
+      "--config",
+      "tests/browser/matrix.config.ts",
+      "tests/browser/site-contribution-send.spec.ts",
+      "tests/browser/site-contribution-worker.spec.ts",
+      "--output",
+      ".cache/receipt-delivery-browser-first/artifacts"
+    ],
+    "env": {
+      "RELAYLOOM_MATRIX_ENGINE": "chromium"
+    },
+    "exitCode": 0,
+    "seconds": 27.34544062614441
+  }
+]

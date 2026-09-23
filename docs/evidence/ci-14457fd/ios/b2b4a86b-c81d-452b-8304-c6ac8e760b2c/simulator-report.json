@@ -1,0 +1,172 @@
+{
+  "kind": "IOS_REAL_SIMULATOR_GATE",
+  "runID": "b2b4a86b-c81d-452b-8304-c6ac8e760b2c",
+  "requestedRuntimeVersion": "26.4.1",
+  "status": "FAILED",
+  "simulatorExecuted": false,
+  "physicalDeviceExecuted": false,
+  "photoAttachmentRequested": true,
+  "signing": "disabled; no accounts, identities or profiles requested",
+  "webViewDebugging": false,
+  "extraAppControlPort": false,
+  "cleanup": {
+    "udid": "E3EF55D3-28F0-4D3B-921A-99F08F23CDD2",
+    "deleted": true,
+    "onlyCreatedDeviceTouched": true
+  },
+  "commands": [
+    {
+      "label": "xcode-version",
+      "exitCode": 0,
+      "elapsedMs": 209,
+      "log": "01-xcode-version.log"
+    },
+    {
+      "label": "source-commit",
+      "exitCode": 0,
+      "elapsedMs": 16,
+      "log": "02-source-commit.log"
+    },
+    {
+      "label": "source-cleanliness",
+      "exitCode": 0,
+      "elapsedMs": 12,
+      "log": "03-source-cleanliness.log"
+    },
+    {
+      "label": "installed-runtimes",
+      "exitCode": 0,
+      "elapsedMs": 931,
+      "log": "04-installed-runtimes.log"
+    },
+    {
+      "label": "installed-device-types",
+      "exitCode": 0,
+      "elapsedMs": 129,
+      "log": "05-installed-device-types.log"
+    },
+    {
+      "label": "create-owned",
+      "exitCode": 0,
+      "elapsedMs": 256,
+      "log": "06-create-owned.log"
+    },
+    {
+      "label": "boot-owned",
+      "exitCode": 0,
+      "elapsedMs": 2005,
+      "log": "07-boot-owned.log"
+    },
+    {
+      "label": "wait-owned-boot",
+      "exitCode": 0,
+      "elapsedMs": 62946,
+      "log": "08-wait-owned-boot.log"
+    },
+    {
+      "label": "build-for-testing",
+      "exitCode": 0,
+      "elapsedMs": 30713,
+      "log": "09-build-for-testing.log"
+    },
+    {
+      "label": "install-owned-app",
+      "exitCode": 0,
+      "elapsedMs": 12550,
+      "log": "10-install-owned-app.log"
+    },
+    {
+      "label": "execute-startup-test",
+      "exitCode": 0,
+      "elapsedMs": 84166,
+      "log": "11-execute-startup-test.log"
+    },
+    {
+      "label": "startup-xctest-summary",
+      "exitCode": 0,
+      "elapsedMs": 3265,
+      "log": "12-startup-xctest-summary.log"
+    },
+    {
+      "label": "seed-synthetic-photo",
+      "exitCode": null,
+      "elapsedMs": 60364,
+      "error": "Owned command timed out: seed-synthetic-photo",
+      "log": "13-seed-synthetic-photo.log"
+    },
+    {
+      "label": "photo-fixture-diagnostics",
+      "exitCode": 0,
+      "elapsedMs": 6309,
+      "log": "14-photo-fixture-diagnostics.log"
+    },
+    {
+      "label": "export-startup-attachments",
+      "exitCode": 0,
+      "elapsedMs": 101,
+      "log": "15-export-startup-attachments.log"
+    },
+    {
+      "label": "cleanup-inventory",
+      "exitCode": 0,
+      "elapsedMs": 295
+    },
+    {
+      "label": "shutdown-owned",
+      "exitCode": 0,
+      "elapsedMs": 3308,
+      "log": "17-shutdown-owned.log"
+    },
+    {
+      "label": "delete-owned",
+      "exitCode": 0,
+      "elapsedMs": 150,
+      "log": "18-delete-owned.log"
+    }
+  ],
+  "xcode": "Xcode 26.6\nBuild version 17F113",
+  "sourceHashes": {
+    "runner": "bd08707df88b7c747d4632d2f170865258be415be8f0be14e202899deb3d7aff",
+    "peerFixture": "d046dd045a27c07e36fb5da6734e0487ed1fdd32f1dd702048f5f70fd170b57c",
+    "uiTest": "49a6579f8d82b7326df4febb1b5089bc8e8bfc7bc91edadd703233d0fc8478d1",
+    "project": "2331e5b806b3e27955be38b8e78a18b9ea33f251b0e76d61881a92a801d414a4",
+    "scheme": "c105ce198c4a20b9deefe4d3bdb4ecda777108e4abd886440e0c41261e0f4e63"
+  },
+  "sourceCommit": "14457fd95345d15267f210fa9eec923b7fd1fad0",
+  "workingTreeDirty": false,
+  "runtime": {
+    "identifier": "com.apple.CoreSimulator.SimRuntime.iOS-26-4",
+    "version": "26.4.1",
+    "buildVersion": "23E254a",
+    "deviceType": "com.apple.CoreSimulator.SimDeviceType.iPhone-SE-3rd-generation",
+    "downloaded": false
+  },
+  "udid": "E3EF55D3-28F0-4D3B-921A-99F08F23CDD2",
+  "firstBootBudgetMs": 600000,
+  "simulatorBooted": true,
+  "app": {
+    "executableSHA256": "45eee2cc165f755b6d233032c4a2e54e7f25c5742b948385411380d0881f1f14",
+    "webIndexSHA256": "f06fb175543c6b6e52ac823d7faeeff0cc4e53b4c5f8567bd47085bc3e79c669",
+    "uiTestSourceSHA256": "49a6579f8d82b7326df4febb1b5089bc8e8bfc7bc91edadd703233d0fc8478d1",
+    "bindingReportSHA256": "b59d689b33cc836a981392ed5c5b5af61f3a2650f32a0ab1ddb5db6a9a36369a"
+  },
+  "startupTestStarted": true,
+  "appStartup": {
+    "result": "Passed",
+    "passedTests": 1,
+    "failedTests": 0,
+    "skippedTests": 0
+  },
+  "error": "Owned command timed out: seed-synthetic-photo",
+  "photoDiagnostics": {
+    "captured": true,
+    "exitCode": 0
+  },
+  "peerDiagnostics": {
+    "captured": true,
+    "bytes": 426
+  },
+  "startupScreenshotsExported": 1,
+  "completedAt": "2026-09-23T01:44:01.283Z",
+  "diskFreeBytesAtEnd": 98552332288
+}

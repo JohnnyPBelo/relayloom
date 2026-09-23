@@ -1,0 +1,13 @@
+{
+  "commit": "426b471b72b0f8ca6ec3f42ce9a1fdf03a73e05b",
+  "sources": 757,
+  "allHashesMatch": true,
+  "counts": {
+    "full-node": 531,
+    "native-integration": 135,
+    "chromium": 110,
+    "firefox": 110,
+    "webkit": 110
+  },
+  "scope": "Browser fixture review after terminal-receipt/pinned-cache assumptions failed in WebKit. Only the browser fixture changed; unchanged Node/Go/build/process results retain their exact prior provenance. Automatic private owner receipt delivery and atomic visitor queue closure across Node, Go and browser; historical cancellation/expiry, locked-cache recovery, bounded retries, full proof binding and benign unmatched receipt handling without losing RTC. Full Node/native race, real crash/concurrent/network/adversarial controls and browser/worker regression. Owner decisions/publication/provenance and complete contribution UI remain required; no hardware or public deployment claim."
+}

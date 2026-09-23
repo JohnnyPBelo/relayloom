@@ -1,0 +1,72 @@
+[
+  {
+    "name": "compile-sites-only",
+    "command": [
+      "node",
+      "scripts/go.mjs",
+      "test",
+      "-p=1",
+      "./sites",
+      "-run",
+      "^$"
+    ],
+    "scope": "compilation only",
+    "exitCode": 0,
+    "seconds": 26.15220022201538,
+    "freeBefore": 19332046848,
+    "freeAfter": 19185889280
+  },
+  {
+    "name": "compile-race-only",
+    "command": [
+      "node",
+      "scripts/go.mjs",
+      "test",
+      "-race",
+      "-p=1",
+      "./app",
+      "-run",
+      "^$"
+    ],
+    "scope": "compilation only",
+    "exitCode": 0,
+    "seconds": 62.747071743011475,
+    "freeBefore": 19185885184,
+    "freeAfter": 18973708288
+  },
+  {
+    "name": "admission-vectors",
+    "command": [
+      "node",
+      "--import",
+      "tsx",
+      "--test",
+      "tests/site-contribution-receive-journal.test.ts"
+    ],
+    "scope": "executed controls",
+    "exitCode": 0,
+    "seconds": 1.825721263885498,
+    "freeBefore": 18973708288,
+    "freeAfter": 18973556736
+  },
+  {
+    "name": "browser-controls",
+    "command": [
+      "node",
+      "scripts/e2e.mjs",
+      "--config",
+      "tests/browser/matrix.config.ts",
+      "tests/browser/site-contribution-receipt-runtime.spec.ts",
+      "tests/browser/site-contribution-send.spec.ts",
+      "--grep",
+      "same-error-text|absent local history|owner receipt authority",
+      "--output",
+      ".cache/receipt-unmatched-review/artifacts"
+    ],
+    "scope": "executed controls",
+    "exitCode": 1,
+    "seconds": 0.4496772289276123,
+    "freeBefore": 18973556736,
+    "freeAfter": 18973552640
+  }
+]

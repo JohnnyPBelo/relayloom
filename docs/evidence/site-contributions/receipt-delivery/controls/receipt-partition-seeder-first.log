@@ -1,0 +1,52 @@
+TAP version 13
+# Subtest: node visitor receives an owner-signed private receipt from the other engine and never resumes the confirmed proposal after restart
+ok 1 - node visitor receives an owner-signed private receipt from the other engine and never resumes the confirmed proposal after restart
+  ---
+  duration_ms: 2922.059521
+  type: 'test'
+  ...
+# Subtest: native visitor receives an owner-signed private receipt from the other engine and never resumes the confirmed proposal after restart
+ok 2 - native visitor receives an owner-signed private receipt from the other engine and never resumes the confirmed proposal after restart
+  ---
+  duration_ms: 3125.342627
+  type: 'test'
+  ...
+# Subtest: late receipt survives an opaque seeder takeover and records reception without reviving a cancelled visitor proposal
+not ok 3 - late receipt survives an opaque seeder takeover and records reception without reviving a cancelled visitor proposal
+  ---
+  duration_ms: 21736.81258
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/native/site-contribution-receipt-network.test.ts:1:3928'
+  failureType: 'testCodeFailure'
+  error: 'condition timed out'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    until (/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/helpers.ts:222:9)
+    async TestContext.<anonymous> (/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/native/site-contribution-receipt-network.test.ts:324:26)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: late receipt survives an opaque seeder takeover and records reception without reviving a expired visitor proposal
+not ok 4 - late receipt survives an opaque seeder takeover and records reception without reviving a expired visitor proposal
+  ---
+  duration_ms: 33705.587225
+  type: 'test'
+  location: '/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/native/site-contribution-receipt-network.test.ts:1:3928'
+  failureType: 'testCodeFailure'
+  error: 'condition timed out'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    until (/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/helpers.ts:222:9)
+    async TestContext.<anonymous> (/home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/native/site-contribution-receipt-network.test.ts:324:26)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 2
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 61657.440614

@@ -1,0 +1,52 @@
+[
+  {
+    "shard": 1,
+    "artifact": 10728817087,
+    "archiveBytes": 2850813,
+    "sha256": "740f1651403c409104b209b444fed4aaa79c0a84d3944901c5f2552d5e77c26b",
+    "stats": {
+      "startTime": "2026-09-23T01:46:33.090Z",
+      "duration": 343139.407,
+      "expected": 90,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "partition": {
+      "status": "PASS",
+      "scope": "Playwright discovery partition only; no browser execution inferred",
+      "full": 159,
+      "shards": [
+        90,
+        69
+      ],
+      "disjoint": true,
+      "complete": true
+    }
+  },
+  {
+    "shard": 2,
+    "artifact": 10728134555,
+    "archiveBytes": 35009,
+    "sha256": "2ce1fd2c58b71936dfd503010727c97d93f42c7a46766a63c4626ba5ddaeb2bf",
+    "stats": {
+      "startTime": "2026-09-23T01:53:20.190Z",
+      "duration": 487755.773,
+      "expected": 69,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "partition": {
+      "status": "PASS",
+      "scope": "Playwright discovery partition only; no browser execution inferred",
+      "full": 159,
+      "shards": [
+        90,
+        69
+      ],
+      "disjoint": true,
+      "complete": true
+    }
+  }
+]

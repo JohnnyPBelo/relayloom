@@ -23,3 +23,27 @@ Recusa assinada é distinta de descarte local. Não divulgar valores ao enviar r
 Editor com selecção real de destino/campos, validação junto ao campo, pré-visualização de tipos, avisos de dados que mudam de audiência e confirmação de publicação baseada na versão actual. Caixa de revisão com cabeçalho claro, metadados secundários acessíveis, comparação de valores, estado pendente/erro/expiração e navegação por teclado. Material Liquid Glass com contraste/legibilidade e redução de transparência/movimento; nenhuma informação crítica depende só de cor.
 
 Testes reais de três contas nos browsers e nos dois backends, worker de produção, teclado/toque, idiomas, temas, Axe e revisão visual. Positivos/negativos de autoria e audiência, partição/heal, clique repetido/perda de resposta, concorrência de publicação, fonte/cópia corrompida, reinício do dono/visitante e seeder com dono offline. Revisão própria não substitui a revisão independente pendente. Publicar HTML só com distribuição exacta e gateHTTPS; não alegar Safari/iOS/hardware a partir de WebKit/compilação.
+
+
+## Questões de implementação resolvidas para a proveniência
+
+A proposta original vincula um formulário/snapshot. A publicação seguinte não pode simplesmente substituir a autoria da linha pela do visitante: o dono assina a versão do site e o visitante conserva a assinatura da proposta. Usar uma prova de incorporação do dono ligada a certificateId, destino da tabela/linha, valores incorporados, audiência e instante de decisão, com a proposta original intacta. A UI distingue valores originais e alterações do dono.
+
+Evitar referência circular: um certificado que faz parte do payload não pode incluir o hash da própria versão final que o contém. Ligar a intenção ao UUID da publicação no journal, e só concluir published depois de reler a versão/envelope realmente persistidos. A prova de incorporação pode estar dentro da versão assinada, com base/UUID/rowId, sem fingir que o mero certificado de decisão prova que essa versão chegou à rede.
+
+Expiração impede uma nova aprovação, mas não deve tornar impossível editar outra página de um site que já contém dados incorporados legitimamente. Conservar a prova de incorporação anterior para carry-forward dos mesmos valores/audiência; nova aprovação ou alargamento de leitores volta a exigir autorização compatível. Alterar valores não pode aparentar nova assinatura do visitante. Prazo/clock de uma decisão assinada é declaração do dono, não prova externa da precisão do relógio; não prometer impedir um dono malicioso de copiar texto que já leu.
+
+Introduzir a versão de documento/proveniência nos três parsers e verificadores, com limites de bytes/linhas/certificados. Uma mudança de esquema/audiência exige reconciliação e validação explícita, não apenas copiar um campo para um parser permissivo. Migração do editor e renderizador segura vem antes de expor formulários na paleta. Estes são requisitos do próximo incremento, ainda não implementação.
+
+## Formato recomendado e limites de divulgação
+
+Manter as tabelas v1 fechadas em id/values. Acrescentar proveniência numa versão nova do documento, com provas únicas e referências de colocação nas linhas. A prova assinada conserva a proposta original, valores incorporados e a audiência aprovada; as referências de colocação pertencem ao snapshot assinado do dono. Assim, duplicar/mover uma página dentro do mesmo site pode reutilizar a prova sem reescrever a assinatura do visitante. Valores/colocação diferentes são identificados como alteração/reutilização pelo dono. Outro endereço de site não reutiliza automaticamente a concessão original.
+
+Uma prova incluída no payload não pode apontar ao hash da própria versão que a contém. O journal liga o UUID da decisão/publicação à cópia real; a prova de incorporação contém referências anteriores e os dados de decisão, sem referência circular. Aprovação preparada não é publicação concluída.
+
+Não incorporar inadvertidamente a ACL privada do formulário na proveniência pública: schemaHash cobre também as regras de contribuidores. Mostrar os identificadores e valores assinados; rótulos/layout actuais pertencem ao dono. Se o leitor não consegue obter/decifrar o snapshot original, não afirmar que verificou esse contexto histórico. A UI deve explicar a disponibilidade da origem separadamente das assinaturas verificadas.
+
+O consentimento de publicação aplica-se à proposta completa. Se a prova inclui os valores originais, redigir essa consequência antes do envio e antes da publicação; omitir uma coluna visual não apaga os dados da prova. Não inventar divulgação selectiva/ZK nem alterar o protocolo de assinatura para ocultar essa limitação. A audiência do site tem de ficar dentro da concessão, também ao copiar provas antigas para uma revisão nova.
+
+
+Existe um rascunho de certificado de recusa em .cache/contribution-decision-draft/contribution-rejection.ts, sem valores da proposta e privado para dono+contribuidor. Ainda não integrado/compilado/testado; não é decisão funcional. O próximo incremento deve derivar a intenção da inbox autêntica, guardar destinatário público antes de libertar prova, preservar bloqueio/sessão/prazos e concluir emissão/admissão antes da UI. Recusa tardia não concede publicação, e descarte local permanece disponível sem obrigar a notificar uma pessoa bloqueada.

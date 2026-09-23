@@ -1,0 +1,602 @@
+TAP version 13
+# Subtest: node refuses public or forged proposals before storage and withholds unauthorized candidates
+ok 1 - node refuses public or forged proposals before storage and withholds unauthorized candidates
+  ---
+  duration_ms: 1412.656295
+  type: 'test'
+  ...
+# Subtest: native refuses public or forged proposals before storage and withholds unauthorized candidates
+ok 2 - native refuses public or forged proposals before storage and withholds unauthorized candidates
+  ---
+  duration_ms: 961.587045
+  type: 'test'
+  ...
+# Subtest: node unauthorized proposals for an available form cannot fill the private inbox ahead of an allowed contributor
+ok 3 - node unauthorized proposals for an available form cannot fill the private inbox ahead of an allowed contributor
+  ---
+  duration_ms: 9600.089393
+  type: 'test'
+  ...
+# Subtest: native unauthorized proposals for an available form cannot fill the private inbox ahead of an allowed contributor
+ok 4 - native unauthorized proposals for an available form cannot fill the private inbox ahead of an allowed contributor
+  ---
+  duration_ms: 8759.894155
+  type: 'test'
+  ...
+# (node:709870) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: node prepares without signing; the other runtime resumes the same private intent and certificate
+ok 5 - node prepares without signing; the other runtime resumes the same private intent and certificate
+  ---
+  duration_ms: 4768.06559
+  type: 'test'
+  ...
+# Subtest: go prepares without signing; the other runtime resumes the same private intent and certificate
+ok 6 - go prepares without signing; the other runtime resumes the same private intent and certificate
+  ---
+  duration_ms: 4472.079601
+  type: 'test'
+  ...
+# Subtest: real Go process exit before-intent-commit leaves exactly the committed state for Node recovery
+ok 7 - real Go process exit before-intent-commit leaves exactly the committed state for Node recovery
+  ---
+  duration_ms: 1192.456774
+  type: 'test'
+  ...
+# Subtest: real Go process exit after-intent leaves exactly the committed state for Node recovery
+ok 8 - real Go process exit after-intent leaves exactly the committed state for Node recovery
+  ---
+  duration_ms: 1194.296523
+  type: 'test'
+  ...
+# Subtest: real Go process exit before-signature-commit leaves exactly the committed state for Node recovery
+ok 9 - real Go process exit before-signature-commit leaves exactly the committed state for Node recovery
+  ---
+  duration_ms: 1239.211558
+  type: 'test'
+  ...
+# Subtest: real Go process exit after-signature leaves exactly the committed state for Node recovery
+ok 10 - real Go process exit after-signature leaves exactly the committed state for Node recovery
+  ---
+  duration_ms: 1222.467022
+  type: 'test'
+  ...
+# Subtest: Go catalogue honors expiry without renewing, rejects another request and preserves a new monotonic sequence
+ok 11 - Go catalogue honors expiry without renewing, rejects another request and preserves a new monotonic sequence
+  ---
+  duration_ms: 4368.353034
+  type: 'test'
+  ...
+# Subtest: Go refuses authenticated-but-inconsistent stage without replacing the preparation
+ok 12 - Go refuses authenticated-but-inconsistent stage without replacing the preparation
+  ---
+  duration_ms: 1090.250538
+  type: 'test'
+  ...
+# Subtest: Go refuses authenticated-but-inconsistent record without replacing the preparation
+ok 13 - Go refuses authenticated-but-inconsistent record without replacing the preparation
+  ---
+  duration_ms: 1081.272785
+  type: 'test'
+  ...
+# Subtest: Go quota refusal leaves no proposal counter/stage and allows the original smaller request
+ok 14 - Go quota refusal leaves no proposal counter/stage and allows the original smaller request
+  ---
+  duration_ms: 1648.588125
+  type: 'test'
+  ...
+# Subtest: Go policy clock boundary -1ms rechecks the actual proposal handle
+ok 15 - Go policy clock boundary -1ms rechecks the actual proposal handle
+  ---
+  duration_ms: 1158.838089
+  type: 'test'
+  ...
+# Subtest: Go policy clock boundary 0ms rechecks the actual proposal handle
+ok 16 - Go policy clock boundary 0ms rechecks the actual proposal handle
+  ---
+  duration_ms: 1126.458978
+  type: 'test'
+  ...
+# Subtest: node seals a private envelope once and the other engine recovers its exact bytes and fixed deadline
+ok 17 - node seals a private envelope once and the other engine recovers its exact bytes and fixed deadline
+  ---
+  duration_ms: 2360.391609
+  type: 'test'
+  ...
+# Subtest: go seals a private envelope once and the other engine recovers its exact bytes and fixed deadline
+ok 18 - go seals a private envelope once and the other engine recovers its exact bytes and fixed deadline
+  ---
+  duration_ms: 3515.004305
+  type: 'test'
+  ...
+# Subtest: Go abrupt exit before-envelope-commit preserves only a committed encrypted envelope
+ok 19 - Go abrupt exit before-envelope-commit preserves only a committed encrypted envelope
+  ---
+  duration_ms: 1294.780329
+  type: 'test'
+  ...
+# Subtest: Go abrupt exit after-envelope preserves only a committed encrypted envelope
+ok 20 - Go abrupt exit after-envelope preserves only a committed encrypted envelope
+  ---
+  duration_ms: 1296.977388
+  type: 'test'
+  ...
+# Subtest: both catalogues reject a corrupted retained envelope without falling back to a fresh nonce
+ok 21 - both catalogues reject a corrupted retained envelope without falling back to a fresh nonce
+  ---
+  duration_ms: 1170.910204
+  type: 'test'
+  ...
+# Subtest: a Node sealer waits on the real Go writer transaction and recovers the envelope committed by that writer
+ok 22 - a Node sealer waits on the real Go writer transaction and recovers the envelope committed by that writer
+  ---
+  duration_ms: 1427.066044
+  type: 'test'
+  ...
+# Subtest: repeated Go cancellation of an old operation cannot remove the current preparation
+ok 23 - repeated Go cancellation of an old operation cannot remove the current preparation
+  ---
+  duration_ms: 1214.742018
+  type: 'test'
+  ...
+# Subtest: node queues before public copying, recovers bytes and frees only its own preparation slot
+ok 24 - node queues before public copying, recovers bytes and frees only its own preparation slot
+  ---
+  duration_ms: 3553.875868
+  type: 'test'
+  ...
+# Subtest: go queues before public copying, recovers bytes and frees only its own preparation slot
+ok 25 - go queues before public copying, recovers bytes and frees only its own preparation slot
+  ---
+  duration_ms: 4648.856095
+  type: 'test'
+  ...
+# Subtest: Go exit before-queue-commit retains either the signed stage or its durable queued replacement
+ok 26 - Go exit before-queue-commit retains either the signed stage or its durable queued replacement
+  ---
+  duration_ms: 244.889756
+  type: 'test'
+  ...
+# Subtest: Go exit after-queue retains either the signed stage or its durable queued replacement
+ok 27 - Go exit after-queue retains either the signed stage or its durable queued replacement
+  ---
+  duration_ms: 226.847887
+  type: 'test'
+  ...
+# Subtest: node admits historical owner receipt from queued, removes only the original payload and preserves a new preparation
+ok 28 - node admits historical owner receipt from queued, removes only the original payload and preserves a new preparation
+  ---
+  duration_ms: 1272.01254
+  type: 'test'
+  ...
+# Subtest: node admits historical owner receipt from cancelled, removes only the original payload and preserves a new preparation
+ok 29 - node admits historical owner receipt from cancelled, removes only the original payload and preserves a new preparation
+  ---
+  duration_ms: 1268.7169
+  type: 'test'
+  ...
+# Subtest: node admits historical owner receipt from expired, removes only the original payload and preserves a new preparation
+ok 30 - node admits historical owner receipt from expired, removes only the original payload and preserves a new preparation
+  ---
+  duration_ms: 1271.464041
+  type: 'test'
+  ...
+# Subtest: go admits historical owner receipt from queued, removes only the original payload and preserves a new preparation
+ok 31 - go admits historical owner receipt from queued, removes only the original payload and preserves a new preparation
+  ---
+  duration_ms: 2360.112665
+  type: 'test'
+  ...
+# Subtest: go admits historical owner receipt from cancelled, removes only the original payload and preserves a new preparation
+ok 32 - go admits historical owner receipt from cancelled, removes only the original payload and preserves a new preparation
+  ---
+  duration_ms: 2349.741249
+  type: 'test'
+  ...
+# Subtest: go admits historical owner receipt from expired, removes only the original payload and preserves a new preparation
+ok 33 - go admits historical owner receipt from expired, removes only the original payload and preserves a new preparation
+  ---
+  duration_ms: 2331.991799
+  type: 'test'
+  ...
+# Subtest: Go before-receipt-commit leaves receipt and payload on the same side of the transaction boundary
+ok 34 - Go before-receipt-commit leaves receipt and payload on the same side of the transaction boundary
+  ---
+  duration_ms: 254.533969
+  type: 'test'
+  ...
+# Subtest: Go after-receipt leaves receipt and payload on the same side of the transaction boundary
+ok 35 - Go after-receipt leaves receipt and payload on the same side of the transaction boundary
+  ---
+  duration_ms: 226.137996
+  type: 'test'
+  ...
+# Subtest: uncopied or cross-reference receipts cannot release an authorised private proposal
+ok 36 - uncopied or cross-reference receipts cannot release an authorised private proposal
+  ---
+  duration_ms: 2244.831014
+  type: 'test'
+  ...
+# Subtest: node form lookup derives permissions from real snapshots across process transfer, private access and restarted seeder takeover
+ok 37 - node form lookup derives permissions from real snapshots across process transfer, private access and restarted seeder takeover
+  ---
+  duration_ms: 4315.591156
+  type: 'test'
+  ...
+# Subtest: native form lookup derives permissions from real snapshots across process transfer, private access and restarted seeder takeover
+ok 38 - native form lookup derives permissions from real snapshots across process transfer, private access and restarted seeder takeover
+  ---
+  duration_ms: 4260.123986
+  type: 'test'
+  ...
+# Subtest: node owner discards a blocked verified proposal across TCP/restart/replay with a positive channel control
+ok 39 - node owner discards a blocked verified proposal across TCP/restart/replay with a positive channel control
+  ---
+  duration_ms: 1679.394356
+  type: 'test'
+  ...
+# Subtest: node owner discards a blocked missing-source proposal across TCP/restart/replay with a positive channel control
+ok 40 - node owner discards a blocked missing-source proposal across TCP/restart/replay with a positive channel control
+  ---
+  duration_ms: 1857.495434
+  type: 'test'
+  ...
+# Subtest: native owner discards a blocked verified proposal across TCP/restart/replay with a positive channel control
+ok 41 - native owner discards a blocked verified proposal across TCP/restart/replay with a positive channel control
+  ---
+  duration_ms: 1045.13702
+  type: 'test'
+  ...
+# Subtest: native owner discards a blocked missing-source proposal across TCP/restart/replay with a positive channel control
+ok 42 - native owner discards a blocked missing-source proposal across TCP/restart/replay with a positive channel control
+  ---
+  duration_ms: 1094.328805
+  type: 'test'
+  ...
+# Subtest: node journals a received proposal before inbox is opened and retains its source after cache-file loss and sender exit
+ok 43 - node journals a received proposal before inbox is opened and retains its source after cache-file loss and sender exit
+  ---
+  duration_ms: 1427.162193
+  type: 'test'
+  ...
+# Subtest: native journals a received proposal before inbox is opened and retains its source after cache-file loss and sender exit
+ok 44 - native journals a received proposal before inbox is opened and retains its source after cache-file loss and sender exit
+  ---
+  duration_ms: 1132.786342
+  type: 'test'
+  ...
+# Subtest: node keeps an out-of-order proposal unverified until the actual authenticated source reaches the owner
+ok 45 - node keeps an out-of-order proposal unverified until the actual authenticated source reaches the owner
+  ---
+  duration_ms: 2689.858345
+  type: 'test'
+  ...
+# Subtest: native keeps an out-of-order proposal unverified until the actual authenticated source reaches the owner
+ok 46 - native keeps an out-of-order proposal unverified until the actual authenticated source reaches the owner
+  ---
+  duration_ms: 2711.311079
+  type: 'test'
+  ...
+# (node:716883) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: node inbox persists an original proposal that the other process verifies and reopens with the same encrypted source
+ok 47 - node inbox persists an original proposal that the other process verifies and reopens with the same encrypted source
+  ---
+  duration_ms: 5584.901929
+  type: 'test'
+  ...
+# Subtest: go inbox persists an original proposal that the other process verifies and reopens with the same encrypted source
+ok 48 - go inbox persists an original proposal that the other process verifies and reopens with the same encrypted source
+  ---
+  duration_ms: 5513.662066
+  type: 'test'
+  ...
+# Subtest: Go inbox process exit before-commit during admit preserves the exact committed boundary
+ok 49 - Go inbox process exit before-commit during admit preserves the exact committed boundary
+  ---
+  duration_ms: 2257.491121
+  type: 'test'
+  ...
+# Subtest: Go inbox process exit after-command during admit preserves the exact committed boundary
+ok 50 - Go inbox process exit after-command during admit preserves the exact committed boundary
+  ---
+  duration_ms: 2273.425298
+  type: 'test'
+  ...
+# Subtest: Go inbox process exit before-commit during source preserves the exact committed boundary
+ok 51 - Go inbox process exit before-commit during source preserves the exact committed boundary
+  ---
+  duration_ms: 2339.379481
+  type: 'test'
+  ...
+# Subtest: Go inbox process exit after-command during source preserves the exact committed boundary
+ok 52 - Go inbox process exit after-command during source preserves the exact committed boundary
+  ---
+  duration_ms: 2369.899926
+  type: 'test'
+  ...
+# Subtest: native inbox refuses block/corruption and collects expired proof without erasing replay metadata
+ok 53 - native inbox refuses block/corruption and collects expired proof without erasing replay metadata
+  ---
+  duration_ms: 5436.460444
+  type: 'test'
+  ...
+# Subtest: node discards missing-source proposal durably across encrypted Node/Go reopen
+ok 54 - node discards missing-source proposal durably across encrypted Node/Go reopen
+  ---
+  duration_ms: 8396.10217
+  type: 'test'
+  ...
+# Subtest: node discards verified proposal durably across encrypted Node/Go reopen
+ok 55 - node discards verified proposal durably across encrypted Node/Go reopen
+  ---
+  duration_ms: 8465.928102
+  type: 'test'
+  ...
+# Subtest: go discards missing-source proposal durably across encrypted Node/Go reopen
+ok 56 - go discards missing-source proposal durably across encrypted Node/Go reopen
+  ---
+  duration_ms: 9428.477341
+  type: 'test'
+  ...
+# Subtest: go discards verified proposal durably across encrypted Node/Go reopen
+ok 57 - go discards verified proposal durably across encrypted Node/Go reopen
+  ---
+  duration_ms: 9535.994365
+  type: 'test'
+  ...
+# Subtest: Go discard process exit before-commit cannot separate proof disposal from replay tombstone
+ok 58 - Go discard process exit before-commit cannot separate proof disposal from replay tombstone
+  ---
+  duration_ms: 2294.788223
+  type: 'test'
+  ...
+# Subtest: Go discard process exit after-command cannot separate proof disposal from replay tombstone
+ok 59 - Go discard process exit after-command cannot separate proof disposal from replay tombstone
+  ---
+  duration_ms: 2263.601768
+  type: 'test'
+  ...
+# Subtest: Go dismissal detects corrupt evidence instead of laundering it through cleanup
+ok 60 - Go dismissal detects corrupt evidence instead of laundering it through cleanup
+  ---
+  duration_ms: 1100.742911
+  type: 'test'
+  ...
+# Subtest: Node discard process exit before-commit is recovered by Go without splitting proof and tombstone
+ok 61 - Node discard process exit before-commit is recovered by Go without splitting proof and tombstone
+  ---
+  duration_ms: 2383.158336
+  type: 'test'
+  ...
+# Subtest: Node discard process exit after-command is recovered by Go without splitting proof and tombstone
+ok 62 - Node discard process exit after-command is recovered by Go without splitting proof and tombstone
+  ---
+  duration_ms: 2307.044383
+  type: 'test'
+  ...
+# Subtest: node receipt intent, signature, exact envelope and copy survive cross-runtime reopen after proposal disposal
+ok 63 - node receipt intent, signature, exact envelope and copy survive cross-runtime reopen after proposal disposal
+  ---
+  duration_ms: 9721.009186
+  type: 'test'
+  ...
+# Subtest: go receipt intent, signature, exact envelope and copy survive cross-runtime reopen after proposal disposal
+ok 64 - go receipt intent, signature, exact envelope and copy survive cross-runtime reopen after proposal disposal
+  ---
+  duration_ms: 10802.439887
+  type: 'test'
+  ...
+# Subtest: Go receipt source exit before-commit preserves exactly the committed signing boundary
+ok 65 - Go receipt source exit before-commit preserves exactly the committed signing boundary
+  ---
+  duration_ms: 1258.019623
+  type: 'test'
+  ...
+# Subtest: Go receipt source exit after-command preserves exactly the committed signing boundary
+ok 66 - Go receipt source exit after-command preserves exactly the committed signing boundary
+  ---
+  duration_ms: 1271.544151
+  type: 'test'
+  ...
+# Subtest: Go receipt sign-receipt exit before-commit preserves exactly the committed signing boundary
+ok 67 - Go receipt sign-receipt exit before-commit preserves exactly the committed signing boundary
+  ---
+  duration_ms: 1222.009604
+  type: 'test'
+  ...
+# Subtest: Go receipt sign-receipt exit after-command preserves exactly the committed signing boundary
+ok 68 - Go receipt sign-receipt exit after-command preserves exactly the committed signing boundary
+  ---
+  duration_ms: 1201.21821
+  type: 'test'
+  ...
+# Subtest: Go receipt seal-receipt exit before-commit preserves exactly the committed signing boundary
+ok 69 - Go receipt seal-receipt exit before-commit preserves exactly the committed signing boundary
+  ---
+  duration_ms: 2327.264956
+  type: 'test'
+  ...
+# Subtest: Go receipt seal-receipt exit after-command preserves exactly the committed signing boundary
+ok 70 - Go receipt seal-receipt exit after-command preserves exactly the committed signing boundary
+  ---
+  duration_ms: 2312.455008
+  type: 'test'
+  ...
+# Subtest: Go receipt copy-receipt exit before-commit preserves exactly the committed signing boundary
+ok 71 - Go receipt copy-receipt exit before-commit preserves exactly the committed signing boundary
+  ---
+  duration_ms: 1289.672091
+  type: 'test'
+  ...
+# Subtest: Go receipt copy-receipt exit after-command preserves exactly the committed signing boundary
+ok 72 - Go receipt copy-receipt exit after-command preserves exactly the committed signing boundary
+  ---
+  duration_ms: 1280.558182
+  type: 'test'
+  ...
+# Subtest: Node receipt source exit before-commit is recoverable in the Go catalogue
+ok 73 - Node receipt source exit before-commit is recoverable in the Go catalogue
+  ---
+  duration_ms: 2335.003706
+  type: 'test'
+  ...
+# Subtest: Node receipt source exit after-command is recoverable in the Go catalogue
+ok 74 - Node receipt source exit after-command is recoverable in the Go catalogue
+  ---
+  duration_ms: 2353.46455
+  type: 'test'
+  ...
+# Subtest: Node receipt sign-receipt exit before-commit is recoverable in the Go catalogue
+ok 75 - Node receipt sign-receipt exit before-commit is recoverable in the Go catalogue
+  ---
+  duration_ms: 2324.7976
+  type: 'test'
+  ...
+# Subtest: Node receipt sign-receipt exit after-command is recoverable in the Go catalogue
+ok 76 - Node receipt sign-receipt exit after-command is recoverable in the Go catalogue
+  ---
+  duration_ms: 2302.224146
+  type: 'test'
+  ...
+# Subtest: Node receipt seal-receipt exit before-commit is recoverable in the Go catalogue
+ok 77 - Node receipt seal-receipt exit before-commit is recoverable in the Go catalogue
+  ---
+  duration_ms: 3429.905776
+  type: 'test'
+  ...
+# Subtest: Node receipt seal-receipt exit after-command is recoverable in the Go catalogue
+ok 78 - Node receipt seal-receipt exit after-command is recoverable in the Go catalogue
+  ---
+  duration_ms: 3399.390289
+  type: 'test'
+  ...
+# Subtest: Node receipt copy-receipt exit before-commit is recoverable in the Go catalogue
+ok 79 - Node receipt copy-receipt exit before-commit is recoverable in the Go catalogue
+  ---
+  duration_ms: 2385.706594
+  type: 'test'
+  ...
+# Subtest: Node receipt copy-receipt exit after-command is recoverable in the Go catalogue
+ok 80 - Node receipt copy-receipt exit after-command is recoverable in the Go catalogue
+  ---
+  duration_ms: 2371.908492
+  type: 'test'
+  ...
+# Subtest: tampered owner receipt preparation is rejected across both storage engines
+ok 81 - tampered owner receipt preparation is rejected across both storage engines
+  ---
+  duration_ms: 1169.757613
+  type: 'test'
+  ...
+# Subtest: concurrent Go and Node receipt writers commit one envelope while the losing writer observes the committed bytes
+ok 82 - concurrent Go and Node receipt writers commit one envelope while the losing writer observes the committed bytes
+  ---
+  duration_ms: 2509.295131
+  type: 'test'
+  ...
+# Subtest: node visitor receives an owner-signed private receipt from the other engine and never resumes the confirmed proposal after restart
+ok 83 - node visitor receives an owner-signed private receipt from the other engine and never resumes the confirmed proposal after restart
+  ---
+  duration_ms: 2956.420115
+  type: 'test'
+  ...
+# Subtest: native visitor receives an owner-signed private receipt from the other engine and never resumes the confirmed proposal after restart
+ok 84 - native visitor receives an owner-signed private receipt from the other engine and never resumes the confirmed proposal after restart
+  ---
+  duration_ms: 3238.240355
+  type: 'test'
+  ...
+# Subtest: late receipt survives an opaque seeder takeover and records reception without reviving a cancelled visitor proposal
+ok 85 - late receipt survives an opaque seeder takeover and records reception without reviving a cancelled visitor proposal
+  ---
+  duration_ms: 11842.364413
+  type: 'test'
+  ...
+# Subtest: late receipt survives an opaque seeder takeover and records reception without reviving a expired visitor proposal
+ok 86 - late receipt survives an opaque seeder takeover and records reception without reviving a expired visitor proposal
+  ---
+  duration_ms: 23981.081395
+  type: 'test'
+  ...
+# Subtest: node private proposals cross TCP/serial and an opaque seeder takes over after sender exit
+ok 87 - node private proposals cross TCP/serial and an opaque seeder takes over after sender exit
+  ---
+  duration_ms: 7355.469615
+  type: 'test'
+  ...
+# Subtest: native private proposals cross TCP/serial and an opaque seeder takes over after sender exit
+ok 88 - native private proposals cross TCP/serial and an opaque seeder takes over after sender exit
+  ---
+  duration_ms: 7129.819724
+  type: 'test'
+  ...
+# Subtest: node sends a private site proposal over real TCP and the owner resolves its signed form
+ok 89 - node sends a private site proposal over real TCP and the owner resolves its signed form
+  ---
+  duration_ms: 1132.804135
+  type: 'test'
+  ...
+# Subtest: native sends a private site proposal over real TCP and the owner resolves its signed form
+ok 90 - native sends a private site proposal over real TCP and the owner resolves its signed form
+  ---
+  duration_ms: 1117.902295
+  type: 'test'
+  ...
+# Subtest: node restarts a private proposal queue and heals a partition without renewing its envelope
+ok 91 - node restarts a private proposal queue and heals a partition without renewing its envelope
+  ---
+  duration_ms: 1900.760265
+  type: 'test'
+  ...
+# Subtest: native restarts a private proposal queue and heals a partition without renewing its envelope
+ok 92 - native restarts a private proposal queue and heals a partition without renewing its envelope
+  ---
+  duration_ms: 1777.504121
+  type: 'test'
+  ...
+# Subtest: node proposal source held only in its private queue recovers across real TCP with both relays paused
+ok 93 - node proposal source held only in its private queue recovers across real TCP with both relays paused
+  ---
+  duration_ms: 1893.196803
+  type: 'test'
+  ...
+# Subtest: node proposal source held only in its private queue cancels across real TCP with both relays paused
+ok 94 - node proposal source held only in its private queue cancels across real TCP with both relays paused
+  ---
+  duration_ms: 3448.006444
+  type: 'test'
+  ...
+# Subtest: node proposal source held only in its private queue blocks across real TCP with both relays paused
+ok 95 - node proposal source held only in its private queue blocks across real TCP with both relays paused
+  ---
+  duration_ms: 6831.23981
+  type: 'test'
+  ...
+# Subtest: native proposal source held only in its private queue recovers across real TCP with both relays paused
+ok 96 - native proposal source held only in its private queue recovers across real TCP with both relays paused
+  ---
+  duration_ms: 1688.019488
+  type: 'test'
+  ...
+# Subtest: native proposal source held only in its private queue cancels across real TCP with both relays paused
+ok 97 - native proposal source held only in its private queue cancels across real TCP with both relays paused
+  ---
+  duration_ms: 3248.411045
+  type: 'test'
+  ...
+# Subtest: native proposal source held only in its private queue blocks across real TCP with both relays paused
+ok 98 - native proposal source held only in its private queue blocks across real TCP with both relays paused
+  ---
+  duration_ms: 6857.119174
+  type: 'test'
+  ...
+1..98
+# tests 98
+# suites 0
+# pass 98
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 319871.686758

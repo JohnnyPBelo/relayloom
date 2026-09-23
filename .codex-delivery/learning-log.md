@@ -748,3 +748,12 @@ Um perfil pode reter mais recibos expirados do que o limite de 192 chaves por tr
 A cache de verificação de cards públicos exige exactShape antes de calcular/consultar a chave canónica. Um símbolo extra ou getter não pode reutilizar o resultado de um card válido anterior. Os controlos verificam a recusa e a ausência de execução do getter; a cache nunca contém política/sessão/prazo. Conservar assinaturas e referências originais ao migrar registos com prova; descartes antigos sem prova não ganham recibos inventados.
 
 O gate final e os logs distinguem tests helpers Go que exigem drivers, pacotes cached, processos reais e browsers. A execução curta TestContribution não é prova de toda a interoperabilidade; os drivers executam os casos/crashes efectivos. Nenhuma falha de produto ocorreu no gate desta persistência; a integração de entrega continua separada.
+
+
+## Recibos guardados antes de unlock e recusa local sem quebrar transporte
+
+O recibo pode chegar opacamente enquanto a identidade está bloqueada; o relaunch pode retomar uma ligação lembrada antes do unlock. A primeira prova de partição/seeder mostrou envelopes na cache e nenhuma confirmação local. Recuperar apenas candidatos limitados, autenticar novamente e exigir a intenção copiada permite concluir após unlock sem reactivar uma proposta cancelada/expirada. O controlo com dono offline/socket recusado passou depois.
+
+Recepção de um recibo autêntico para histórico ausente não é frame inválido. O browser fechava RTC nesse caso. Usar erro específico apenas depois de validar registo e assinatura permite consumir o controlo sem o admitir/guardar. Nunca apanhar por texto nem generalizar a toda a falha de recepção: corrupção privada, assinatura adulterada e erro comum com texto igual têm de continuar a propagar-se. O teste RTC falhou antes e passou depois com tráfego válido no mesmo canal.
+
+Cache de compilação eliminada para recuperar reserva de disco implica recompilação, não repetição de evidência antiga como nova. Relatórios distinguem compilation-only e testes. O SDK foi sparsificado com igualdade de hash/tamanho; não apagar perfis/AVD para obter espaço. Uma omissão do engine no driver foi corrigida só na fase que não executara testes.

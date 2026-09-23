@@ -1,0 +1,22 @@
+TAP version 13
+# Subtest: node refuses forged, public and cross-reference receipt traffic with positive packets on the same live channel
+ok 1 - node refuses forged, public and cross-reference receipt traffic with positive packets on the same live channel
+  ---
+  duration_ms: 2776.649273
+  type: 'test'
+  ...
+# Subtest: native refuses forged, public and cross-reference receipt traffic with positive packets on the same live channel
+ok 2 - native refuses forged, public and cross-reference receipt traffic with positive packets on the same live channel
+  ---
+  duration_ms: 2465.228067
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 5472.236715

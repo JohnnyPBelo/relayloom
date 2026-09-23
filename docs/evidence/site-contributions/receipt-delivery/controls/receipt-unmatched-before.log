@@ -1,0 +1,39 @@
+
+Running 1 test using 1 worker
+
+(node:947223) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [chromium] › tests/browser/site-contribution-send.spec.ts:937:1 › an authenticated receipt for retired or absent local history is ignored without closing the real RTC channel (922ms)
+
+
+  1) [chromium] › tests/browser/site-contribution-send.spec.ts:937:1 › an authenticated receipt for retired or absent local history is ignored without closing the real RTC channel 
+
+    Error: page.evaluate: Error: Ligação encerrada antes da confirmação
+        at RtcMessageChannel.close (http://127.0.0.1:34813/engine.js:9989:18)
+        at RTCDataChannel.<anonymous> (http://127.0.0.1:34813/engine.js:9907:52)
+        at RtcMessageChannel.close (http://127.0.0.1:34813/engine.js:9989:18)
+        at RTCDataChannel.<anonymous> (http://127.0.0.1:34813/engine.js:9907:52)
+        at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-contribution-send.spec.ts:947:35
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .cache/receipt-unmatched-before-artifacts/site-contribution-send-an--45559-losing-the-real-RTC-channel-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .cache/receipt-unmatched-before-artifacts/site-contribution-send-an--45559-losing-the-real-RTC-channel-chromium/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: .cache/receipt-unmatched-before-artifacts/site-contribution-send-an--45559-losing-the-real-RTC-channel-chromium/error-context.md
+
+    Error Context: .cache/receipt-unmatched-before-artifacts/site-contribution-send-an--45559-losing-the-real-RTC-channel-chromium/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    .cache/receipt-unmatched-before-artifacts/site-contribution-send-an--45559-losing-the-real-RTC-channel-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace .cache/receipt-unmatched-before-artifacts/site-contribution-send-an--45559-losing-the-real-RTC-channel-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › tests/browser/site-contribution-send.spec.ts:937:1 › an authenticated receipt for retired or absent local history is ignored without closing the real RTC channel 

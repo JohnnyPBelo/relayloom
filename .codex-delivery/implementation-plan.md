@@ -228,3 +228,12 @@ CI35786710953/f3f32fc confirmou mensagem privada em iOS e falhou no selector da 
 Passaram **526 Node, 17 pacotes Go/race, 117 casos entre processos e 97 casos por cada Chromium/Firefox/WebKit**, além de typecheck/builds. Os logs distinguem cache Go de execução nova. O controlo de 129 recibos e perda de resposta prova a limpeza em lotes sem aumentar o limite da transacção browser. [Comandos, hashes e âmbito](../docs/evidence/site-contributions/receipt-persistence).
 
 **Ainda sem entrega automática de recibos ou fecho da fila do visitante por confirmação.** Seguem runtime, recusa assinada, aprovação/CAS/reconciliação/proveniência e UI completa com três contas. O HTML público permanece na versão anterior; todo o contrato de plataformas, rádios, recuperação, grupos web e revisão independente mantém-se.
+
+
+## Entrega de recibos verificada — 23 de Setembro
+
+**426b471:** Node, Go e browser entregam o recibo privado assinado pelo dono e fecham atomicamente a fila do visitante. A confirmação exige vínculo à operação anteriormente copiada; recibos tardios conservam cancelled/expired sem renovar autorização. Cache recebida antes de unlock é recuperada; um recibo autêntico sem história local não fecha RTC nem inventa confirmação. O processamento do dono roda lotes limitados e conserva os mesmos envelopes após quota/retry.
+
+Passaram **531 Node, 17 pacotes Go/race, 135 testes entre processos e 110 casos por cada Chromium/Firefox/WebKit**, além de typecheck/builds. Os controlos incluem falhas de commit, concorrência real, partição/seeder com dono offline, mensagens positivas durante recusa e corrupção. [Provas, comandos e falhas corrigidas](../docs/evidence/site-contributions/receipt-delivery).
+
+**Recepção continua distinta de aprovação/publicação.** Faltam recusa assinada, decisões/CAS/reconciliação/proveniência e a interface completa de contribuições de três contas. Paleta e HTML público ainda no estado anterior. Restantes requisitos de plataformas, rádios, grupos web, recuperação/keystore e revisão independente mantêm-se.

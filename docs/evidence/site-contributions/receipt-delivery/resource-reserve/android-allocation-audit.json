@@ -1,0 +1,30 @@
+{
+  "status": "SYSTEM_IMAGE_ALLOCATION_ONLY_BYTES_UNCHANGED",
+  "files": [
+    {
+      "path": "/home/absint0o/projects/relayloom/.cache/android/sdk/system-images/android-36/google_apis/x86_64/system.img",
+      "size": 4415553536,
+      "allocatedBefore": 4415557632,
+      "sha256Before": "eb4bd8cc387915563a0a051c51ac58012e183e1bd21bb0fe2e82f1b255de45a1",
+      "wholeMiBZeroBytes": 782237696,
+      "allocatedAfter": 3623981056,
+      "sha256After": "eb4bd8cc387915563a0a051c51ac58012e183e1bd21bb0fe2e82f1b255de45a1"
+    },
+    {
+      "path": "/home/absint0o/projects/relayloom/.cache/android/sdk/system-images/android-36/google_apis/x86_64/vendor.img",
+      "size": 108003328,
+      "allocatedBefore": 108003328,
+      "sha256Before": "e6a3b07a3c77aaedda5763af0fb9196f8f91c7676371db6e81fb6ba2d74e941d",
+      "wholeMiBZeroBytes": 0
+    },
+    {
+      "path": "/home/absint0o/projects/relayloom/.cache/android/avd/relayloom-api36.avd/userdata-qemu.img.qcow2",
+      "size": 2392653824,
+      "allocatedBefore": 2392596480,
+      "sha256Before": "f6517122526d089a653173d2cb45f0243ca97eddbc0ca9a35efbb882be752224",
+      "wholeMiBZeroBytes": 0
+    }
+  ],
+  "avdDataModified": false,
+  "freeAfter": 17151139840
+}

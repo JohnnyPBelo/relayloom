@@ -1,0 +1,10 @@
+Error: Choose RELAYLOOM_MATRIX_ENGINE=chromium|firefox|webkit
+    at file:///home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/matrix.config.ts:6:9
+    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:681:26)
+    at requireOrImport (/home/absint0o/projects/relayloom/node_modules/playwright/lib/common/index.js:1081:12)
+    at loadUserConfig (/home/absint0o/projects/relayloom/node_modules/playwright/lib/common/index.js:1268:46)
+    at loadConfig (/home/absint0o/projects/relayloom/node_modules/playwright/lib/common/index.js:1275:22)
+    at Object.loadConfigFromFile (/home/absint0o/projects/relayloom/node_modules/playwright/lib/common/index.js:1490:10)
+    at runTests (/home/absint0o/projects/relayloom/node_modules/playwright/lib/cli/testActions.js:46:18)
+    at _Command.<anonymous> (/home/absint0o/projects/relayloom/node_modules/playwright/lib/program.js:55:7)

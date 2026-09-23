@@ -1,0 +1,10 @@
+
+Running 3 tests using 1 worker
+
+(node:917367) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/browser/site-contribution-receipt-runtime.spec.ts:347:3 › owner receipt authority unchanged-retry handles a retained policy reply without reviving revocation (743ms)
+  ✓  2 [chromium] › tests/browser/site-contribution-receipt-runtime.spec.ts:347:3 › owner receipt authority block-and-reallow handles a retained policy reply without reviving revocation (657ms)
+  ✓  3 [chromium] › tests/browser/site-contribution-receipt-runtime.spec.ts:347:3 › owner receipt authority close handles a retained policy reply without reviving revocation (626ms)
+
+  3 passed (2.8s)

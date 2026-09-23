@@ -1,0 +1,91 @@
+[
+  {
+    "name": "typecheck",
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "--noEmit"
+    ],
+    "env": {},
+    "exitCode": 0,
+    "seconds": 8.634745121002197
+  },
+  {
+    "name": "native-build",
+    "command": [
+      "node",
+      "scripts/native-build.mjs"
+    ],
+    "env": {},
+    "exitCode": 0,
+    "seconds": 1.3626365661621094
+  },
+  {
+    "name": "web-build",
+    "command": [
+      "node",
+      "node_modules/vite/bin/vite.js",
+      "build"
+    ],
+    "env": {},
+    "exitCode": 0,
+    "seconds": 3.1454849243164062
+  },
+  {
+    "name": "chromium",
+    "command": [
+      "node",
+      "scripts/e2e.mjs",
+      "--config",
+      "tests/browser/matrix.config.ts",
+      "tests/browser/site-contribution-receipt-runtime.spec.ts",
+      "tests/browser/site-contribution-send.spec.ts",
+      "tests/browser/site-contribution-worker.spec.ts",
+      "--output",
+      ".cache/receipt-runtime-browser-matrix/chromium-artifacts"
+    ],
+    "env": {
+      "RELAYLOOM_MATRIX_ENGINE": "chromium"
+    },
+    "exitCode": 0,
+    "seconds": 43.98904252052307
+  },
+  {
+    "name": "firefox",
+    "command": [
+      "node",
+      "scripts/e2e.mjs",
+      "--config",
+      "tests/browser/matrix.config.ts",
+      "tests/browser/site-contribution-receipt-runtime.spec.ts",
+      "tests/browser/site-contribution-send.spec.ts",
+      "tests/browser/site-contribution-worker.spec.ts",
+      "--output",
+      ".cache/receipt-runtime-browser-matrix/firefox-artifacts"
+    ],
+    "env": {
+      "RELAYLOOM_MATRIX_ENGINE": "firefox"
+    },
+    "exitCode": 0,
+    "seconds": 85.21067309379578
+  },
+  {
+    "name": "webkit",
+    "command": [
+      "node",
+      "scripts/e2e.mjs",
+      "--config",
+      "tests/browser/matrix.config.ts",
+      "tests/browser/site-contribution-receipt-runtime.spec.ts",
+      "tests/browser/site-contribution-send.spec.ts",
+      "tests/browser/site-contribution-worker.spec.ts",
+      "--output",
+      ".cache/receipt-runtime-browser-matrix/webkit-artifacts"
+    ],
+    "env": {
+      "RELAYLOOM_MATRIX_ENGINE": "webkit"
+    },
+    "exitCode": 0,
+    "seconds": 69.65720677375793
+  }
+]

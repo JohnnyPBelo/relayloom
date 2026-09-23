@@ -1,0 +1,51 @@
+
+Running 7 tests using 1 worker
+
+(node:746167) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/browser/site-contribution-receipt-runtime.spec.ts:20:3 › browser receipt admission cached preserves authority and original private queue facts (770ms)
+  ✓  2 [chromium] › tests/browser/site-contribution-receipt-runtime.spec.ts:20:3 › browser receipt admission cancelled preserves authority and original private queue facts (628ms)
+  ✘  3 [chromium] › tests/browser/site-contribution-receipt-runtime.spec.ts:20:3 › browser receipt admission expired preserves authority and original private queue facts (676ms)
+(node:746806) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  4 [chromium] › tests/browser/site-contribution-receipt-runtime.spec.ts:20:3 › browser receipt admission blocked preserves authority and original private queue facts (703ms)
+  ✓  5 [chromium] › tests/browser/site-contribution-receipt-runtime.spec.ts:20:3 › browser receipt admission lock-receive preserves authority and original private queue facts (795ms)
+  ✓  6 [chromium] › tests/browser/site-contribution-receipt-runtime.spec.ts:20:3 › browser receipt admission wrong-reference preserves authority and original private queue facts (578ms)
+  ✓  7 [chromium] › tests/browser/site-contribution-receipt-runtime.spec.ts:20:3 › browser receipt admission not-copied preserves authority and original private queue facts (510ms)
+
+
+  1) [chromium] › tests/browser/site-contribution-receipt-runtime.spec.ts:20:3 › browser receipt admission expired preserves authority and original private queue facts 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "expired"
+    Received: "received"
+
+      245 |     }
+      246 |     expect(result.refused).toBe(mode === "lock-receive");
+    > 247 |     expect(result.phase).toBe(
+          |                          ^
+      248 |       mode === "cancelled" || mode === "expired" ? mode : "received",
+      249 |     );
+      250 |     for (const k of [
+        at /home/absint0o/projects/relayloom/.cache/site-optional-resources/tests/browser/site-contribution-receipt-runtime.spec.ts:247:26
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .cache/receipt-browser-recovery-first-artifacts/site-contribution-receipt--4a9da-riginal-private-queue-facts-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: .cache/receipt-browser-recovery-first-artifacts/site-contribution-receipt--4a9da-riginal-private-queue-facts-chromium/error-context.md
+
+    Error Context: .cache/receipt-browser-recovery-first-artifacts/site-contribution-receipt--4a9da-riginal-private-queue-facts-chromium/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    .cache/receipt-browser-recovery-first-artifacts/site-contribution-receipt--4a9da-riginal-private-queue-facts-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace .cache/receipt-browser-recovery-first-artifacts/site-contribution-receipt--4a9da-riginal-private-queue-facts-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › tests/browser/site-contribution-receipt-runtime.spec.ts:20:3 › browser receipt admission expired preserves authority and original private queue facts 
+  6 passed (6.1s)

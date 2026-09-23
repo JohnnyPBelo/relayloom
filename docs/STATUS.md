@@ -1,5 +1,19 @@
 # RelayLoom — estado verificável
 
+## Entrega de recibos verificada — 23 de Setembro
+
+**426b471:** Node, Go e browser entregam o recibo privado assinado pelo dono e fecham atomicamente a fila do visitante. A confirmação exige vínculo à operação anteriormente copiada; recibos tardios conservam cancelled/expired sem renovar autorização. Cache recebida antes de unlock é recuperada; um recibo autêntico sem história local não fecha RTC nem inventa confirmação. O processamento do dono roda lotes limitados e conserva os mesmos envelopes após quota/retry.
+
+Passaram **531 Node, 17 pacotes Go/race, 135 testes entre processos e 110 casos por cada Chromium/Firefox/WebKit**, além de typecheck/builds. Os controlos incluem falhas de commit, concorrência real, partição/seeder com dono offline, mensagens positivas durante recusa e corrupção. [Provas, comandos e falhas corrigidas](evidence/site-contributions/receipt-delivery).
+
+**Recepção continua distinta de aprovação/publicação.** Faltam recusa assinada, decisões/CAS/reconciliação/proveniência e a interface completa de contribuições de três contas. Paleta e HTML público ainda no estado anterior. Restantes requisitos de plataformas, rádios, grupos web, recuperação/keystore e revisão independente mantêm-se.
+
+## CI14457fd — resultado terminal
+
+CI35802455142 terminou com falha apenas em iOS. Os dois shards browser passaram90+69=159casos, sem skips/falhas/flaky; Node nos três hosts, UI, Go/race, interop, Reticulum e pacotes desktopPASS. Build/install/startupXCTest iOSPASS, mas importação da fotografia excedeu60.364s antes do percurso principal; anexo/resposta ainda sem validação. [Provas e limites](evidence/ci-14457fd).
+
+As secções abaixo são histórico por versão. Afirmações de funcionalidade ainda ausente nesses marcos não substituem o estado actual acima.
+
 ## CI 1a53620 — dois limites distintos
 
 CI 35794083324 terminou: todos os jobs excepto iOS e browser autónomo passaram. No iOS, o selector novo compilou e o arranque da app passou; a importação da fotografia excedeu 60,720 s, antes do percurso funcional principal. Não comprova selecção/anexo/resposta. No browser, 151 dos 152 casos terminaram com passe antes do limite acumulado de 15 min do job; não há relatório terminal da suite. [Provas verificadas e anotação oficial](evidence/ci-1a53620).

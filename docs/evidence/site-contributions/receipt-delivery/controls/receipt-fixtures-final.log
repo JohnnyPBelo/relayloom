@@ -1,0 +1,9 @@
+
+Running 2 tests using 1 worker
+
+(node:3404241) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [webkit] › tests/browser/site-contribution-send.spec.ts:623:1 › two autonomous browser accounts send a private form proposal through real RTC while the sender relay is paused (3.3s)
+  ✓  2 [webkit] › tests/browser/site-contribution-send.spec.ts:834:1 › browser reception journals the original source before review and survives actual cache eviction with the RTC sender closed (3.1s)
+
+  2 passed (7.2s)

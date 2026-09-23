@@ -1,0 +1,22 @@
+TAP version 13
+# Subtest: node visitor receives an owner-signed private receipt from the other engine and never resumes the confirmed proposal after restart
+ok 1 - node visitor receives an owner-signed private receipt from the other engine and never resumes the confirmed proposal after restart
+  ---
+  duration_ms: 2883.946112
+  type: 'test'
+  ...
+# Subtest: native visitor receives an owner-signed private receipt from the other engine and never resumes the confirmed proposal after restart
+ok 2 - native visitor receives an owner-signed private receipt from the other engine and never resumes the confirmed proposal after restart
+  ---
+  duration_ms: 3127.00033
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 6183.555379

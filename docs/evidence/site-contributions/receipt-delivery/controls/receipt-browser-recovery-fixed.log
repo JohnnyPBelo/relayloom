@@ -1,0 +1,14 @@
+
+Running 7 tests using 1 worker
+
+(node:755319) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/browser/site-contribution-receipt-runtime.spec.ts:20:3 › browser receipt admission cached preserves authority and original private queue facts (685ms)
+  ✓  2 [chromium] › tests/browser/site-contribution-receipt-runtime.spec.ts:20:3 › browser receipt admission cancelled preserves authority and original private queue facts (676ms)
+  ✓  3 [chromium] › tests/browser/site-contribution-receipt-runtime.spec.ts:20:3 › browser receipt admission expired preserves authority and original private queue facts (614ms)
+  ✓  4 [chromium] › tests/browser/site-contribution-receipt-runtime.spec.ts:20:3 › browser receipt admission blocked preserves authority and original private queue facts (660ms)
+  ✓  5 [chromium] › tests/browser/site-contribution-receipt-runtime.spec.ts:20:3 › browser receipt admission lock-receive preserves authority and original private queue facts (745ms)
+  ✓  6 [chromium] › tests/browser/site-contribution-receipt-runtime.spec.ts:20:3 › browser receipt admission wrong-reference preserves authority and original private queue facts (553ms)
+  ✓  7 [chromium] › tests/browser/site-contribution-receipt-runtime.spec.ts:20:3 › browser receipt admission not-copied preserves authority and original private queue facts (495ms)
+
+  7 passed (5.2s)
