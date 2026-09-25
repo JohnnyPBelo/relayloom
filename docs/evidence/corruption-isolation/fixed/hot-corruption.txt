@@ -1,0 +1,22 @@
+TAP version 13
+# Subtest: node: corruption after a successful store read must not suppress another exact response in the same request
+ok 1 - node: corruption after a successful store read must not suppress another exact response in the same request
+  ---
+  duration_ms: 3212.100665
+  type: 'test'
+  ...
+# Subtest: native: corruption after a successful store read must not suppress another exact response in the same request
+ok 2 - native: corruption after a successful store read must not suppress another exact response in the same request
+  ---
+  duration_ms: 2475.972191
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 6007.713031

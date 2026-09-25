@@ -1,5 +1,7 @@
 # RelayLoom
 
+A correcção de cópias locais corrompidas em Node/Go passou os seus gates isolados: uma falha de leitura já não impede entregar os restantes conteúdos do mesmo pedido. [Âmbito, testes e limites](docs/CORRUPTION-ISOLATION.md). A web pública usa fonte `b993ea1`, distribuição `67da3c3c`, verificada por HTTPS; as melhorias de páginas em WIP continuam separadas. O CI desta nova fonte ainda está pendente; o último CI de produto b993ea1 teve16jobs passados e falha na preparação da fotografia iOS. O produto integral permanece em implementação.
+
 Um mensageiro cifrado entre pares, uma rede social e páginas pessoais feitas com blocos declarativos. A mesma interface Liquid Glass serve as aplicações instaladas e a versão web autónoma.
 
 **Experimental, em implementação. O produto não está concluído nem validado para catástrofes.** O contrato integral está em [PROJECT-BRIEF.md](PROJECT-BRIEF.md); funções, plataformas, falhas e pendentes estão em [STATUS](docs/STATUS.md).

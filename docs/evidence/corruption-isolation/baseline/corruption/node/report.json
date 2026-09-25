@@ -1,0 +1,12 @@
+{
+  "status": "FAIL",
+  "backend": "node",
+  "controlReplies": [
+    "984425b5e48d6991f126b1ea03d6233e64ee27c7cedd8d78029d049c075867e7",
+    "b305f9aa485a74d60fabbbaf4092bb2b18949c663d29bd3d0b7dc5da32795902"
+  ],
+  "damageReplies": [],
+  "scope": "Actual TCP peer, application process and live disk corruption after verified reads; not a restart-only or simulated-store control.",
+  "rejectedDelta": 1,
+  "error": "Error: condition timed out"
+}

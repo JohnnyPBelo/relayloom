@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "backend": "node",
+  "controlReplies": [
+    "cfa05be04207dc6368d0aebb5b2f14b7b8339375a40a0043dbaa0b37144ee193",
+    "bcad6b80b67395329251adb4bafe95b235f1105f57edb28bb7b0596eb6e58d60"
+  ],
+  "damageReplies": [
+    "bcad6b80b67395329251adb4bafe95b235f1105f57edb28bb7b0596eb6e58d60"
+  ],
+  "scope": "Actual TCP peer, application process and live disk corruption after verified reads; not a restart-only or simulated-store control.",
+  "rejectedDelta": 0
+}

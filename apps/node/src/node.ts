@@ -2073,7 +2073,14 @@ export class LoomNode extends EventEmitter {
             Date.now() - (this.requests.get("serve:" + id) ?? 0) > 1000
           ) {
             this.markRequest("serve:" + id);
-            const bundle = this.store.get(id, false);
+            let bundle: Bundle;
+            try {
+              bundle = this.store.get(id, false);
+            } catch {
+              // A damaged local copy consumes this slot but must not suppress
+              // healthy sibling requests. Presence is not proof of integrity.
+              continue;
+            }
             if (!this.maySeed(bundle.manifest)) continue;
             this.router.broadcast(
               { type: "bundle", bundle },

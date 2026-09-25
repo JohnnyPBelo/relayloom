@@ -609,7 +609,9 @@ func (n *Node) receiveLocked(delivery transport.Delivery) error {
 				n.rememberRequestLocked("serve:"+id, now)
 				b, err := n.Store.GetWithTouch(id, false)
 				if err != nil {
-					return err
+					// Local damage consumes this slot, without suppressing healthy
+					// sibling requests or weakening their subsequent policy checks.
+					continue
 				}
 				allowed, err := n.maySeedLocked(b.Manifest)
 				if err != nil {

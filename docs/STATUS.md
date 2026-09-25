@@ -1,5 +1,11 @@
 # RelayLoom — estado verificável
 
+## Marco actual — isolamento de corrupção local
+
+A correcção Node/Go foi verificada numa candidata exacta baseada em b993ea1: dois negativos reproduzidos antes e passados depois,35testeshost,Go/core/transport/webpeer/app comrace,14UI e12percursosbrowser/nativo.790hashes de fonte ficaram estáveis. [Comandos, prova e limitações](CORRUPTION-ISOLATION.md).
+
+A web pública é fonteb993ea1/distribuição67da3c3c; esta alteração é dos motores Node/Go. Novas páginas/polimento permanecem WIP separado. CI desta fontependente; o últimoCI deproduto b993ea1 teve16PASS/iOSFAIL na preparação da fotografia. Não é prontidão para catástrofes, paridade integral, revisão independente ou validação de hardware. As secções antigas abaixo pertencem às versões e fases indicadas.
+
 ## Entrega de recusa e serialização nativa verificadas — 23 de Setembro
 
 **ac77224** liga a recusa assinada à entrega e admissão em Node/Go/browser. A recepção conserva a decisão local de cancelamento/expiração, não apaga recibos anteriores e não reabre filas. Orçamento combinado, seeding opaco, percursos RTC→WS/TCP, recuperação e autorizações revogadas foram verificados. [Provas da entrega](evidence/site-contributions/rejection-delivery).

@@ -1,0 +1,224 @@
+TAP version 13
+# (node:619517) ExperimentalWarning: The MockTimers API is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: identity proof binds signing address, name and decryption key
+ok 1 - identity proof binds signing address, name and decryption key
+  ---
+  duration_ms: 2.616385
+  type: 'test'
+  ...
+# Subtest: vault encrypts private keys; recovery and wrong-password controls
+ok 2 - vault encrypts private keys; recovery and wrong-password controls
+  ---
+  duration_ms: 245.54791
+  type: 'test'
+  ...
+# Subtest: reader decrypts and seeds but cannot become author; unauthorized reader fails
+ok 3 - reader decrypts and seeds but cannot become author; unauthorized reader fails
+  ---
+  duration_ms: 4.972122
+  type: 'test'
+  ...
+# Subtest: ciphertext, manifest, expiry, depth and address negative controls
+ok 4 - ciphertext, manifest, expiry, depth and address negative controls
+  ---
+  duration_ms: 13.96312
+  type: 'test'
+  ...
+# Subtest: encrypted persistent seed takeover, deduplication, pin/quota, disk corruption
+ok 5 - encrypted persistent seed takeover, deduplication, pin/quota, disk corruption
+  ---
+  duration_ms: 45.327154
+  type: 'test'
+  ...
+# Subtest: object-count cap bounds small-object floods, survives restart and preserves pinned content
+ok 6 - object-count cap bounds small-object floods, survives restart and preserves pinned content
+  ---
+  duration_ms: 259.648638
+  type: 'test'
+  ...
+# Subtest: metadata listing does not replace real viewing order in LRU eviction
+ok 7 - metadata listing does not replace real viewing order in LRU eviction
+  ---
+  duration_ms: 58.224586
+  type: 'test'
+  ...
+# Subtest: cached manifest metadata is isolated, invalidated by disk changes, and never bypasses get verification
+ok 8 - cached manifest metadata is isolated, invalidated by disk changes, and never bypasses get verification
+  ---
+  duration_ms: 28.496608
+  type: 'test'
+  ...
+# Subtest: rejected quota decrease preserves existing files and policy; feasible decrease evicts only unpinned content
+ok 9 - rejected quota decrease preserves existing files and policy; feasible decrease evicts only unpinned content
+  ---
+  duration_ms: 166.107567
+  type: 'test'
+  ...
+# Subtest: invalid persisted index fails safely without deleting verified objects
+ok 10 - invalid persisted index fails safely without deleting verified objects
+  ---
+  duration_ms: 25.368484
+  type: 'test'
+  ...
+# Subtest: strict wire fields and every recipient envelope are validated before accepting signatures
+ok 11 - strict wire fields and every recipient envelope are validated before accepting signatures
+  ---
+  duration_ms: 3.592245
+  type: 'test'
+  ...
+# (node:619584) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: failed application profile commit cannot publish and a failed public copy remains recoverable
+ok 12 - failed application profile commit cannot publish and a failed public copy remains recoverable
+  ---
+  duration_ms: 777.973369
+  type: 'test'
+  ...
+# Subtest: the real application recovers its exact publication after process exit between authorization and public storage
+ok 13 - the real application recovers its exact publication after process exit between authorization and public storage
+  ---
+  duration_ms: 3636.595503
+  type: 'test'
+  ...
+# Subtest: a known newer head without bytes never falls back to an older site, including after profile unlock
+ok 14 - a known newer head without bytes never falls back to an older site, including after profile unlock
+  ---
+  duration_ms: 529.120041
+  type: 'test'
+  ...
+# Subtest: blocking a private-site reader pauses a committed copy and clears the publication error after resumption
+ok 15 - blocking a private-site reader pauses a committed copy and clears the publication error after resumption
+  ---
+  duration_ms: 398.393311
+  type: 'test'
+  ...
+# Subtest: real application APIs preserve revision identity, resolve updates and serve a new reader after the author exits
+ok 16 - real application APIs preserve revision identity, resolve updates and serve a new reader after the author exits
+  ---
+  duration_ms: 1865.703213
+  type: 'test'
+  ...
+# Subtest: private site APIs preserve reading scope and generic publication cannot bypass version authority
+ok 17 - private site APIs preserve reading scope and generic publication cannot bypass version authority
+  ---
+  duration_ms: 1693.040546
+  type: 'test'
+  ...
+# Subtest: a valid outer signature cannot smuggle another owner snapshot into application storage through TCP
+ok 18 - a valid outer signature cannot smuggle another owner snapshot into application storage through TCP
+  ---
+  duration_ms: 721.130403
+  type: 'test'
+  ...
+# Subtest: two installations with the same owner preserve a fork until the owner explicitly confirms all known heads
+ok 19 - two installations with the same owner preserve a fork until the owner explicitly confirms all known heads
+  ---
+  duration_ms: 1561.621898
+  type: 'test'
+  ...
+# Subtest: TCP parser handles split/coalesced frames, rejects tamper and replays only once
+ok 20 - TCP parser handles split/coalesced frames, rejects tamper and replays only once
+  ---
+  duration_ms: 85.050482
+  type: 'test'
+  ...
+# Subtest: non-reading TCP duplicate flood coalesces and bounds control output
+ok 21 - non-reading TCP duplicate flood coalesces and bounds control output
+  ---
+  duration_ms: 48.663049
+  type: 'test'
+  ...
+# Subtest: TCP malformed frame and unfinished-line floods disconnect and release state
+ok 22 - TCP malformed frame and unfinished-line floods disconnect and release state
+  ---
+  duration_ms: 23.03033
+  type: 'test'
+  ...
+# Subtest: distinct TCP packets cannot grow the ACK queue or exceed its output rate
+ok 23 - distinct TCP packets cannot grow the ACK queue or exceed its output rate
+  ---
+  duration_ms: 168.319013
+  type: 'test'
+  ...
+# Subtest: TCP incomplete assemblies have count and aggregate memory bounds
+ok 24 - TCP incomplete assemblies have count and aggregate memory bounds
+  ---
+  duration_ms: 2268.907213
+  type: 'test'
+  ...
+# Subtest: expired packets, invalid TTLs and exhausted hop limits never relay
+ok 25 - expired packets, invalid TTLs and exhausted hop limits never relay
+  ---
+  duration_ms: 134.756196
+  type: 'test'
+  ...
+# Subtest: queued expiry and stopped sockets release bounded output under backpressure
+ok 26 - queued expiry and stopped sockets release bounded output under backpressure
+  ---
+  duration_ms: 432.962795
+  type: 'test'
+  ...
+# Subtest: partial TCP loss retries exact bytes and missing ACK retries without duplicate delivery
+ok 27 - partial TCP loss retries exact bytes and missing ACK retries without duplicate delivery
+  ---
+  duration_ms: 4405.6661
+  type: 'test'
+  ...
+# Subtest: TCP reconnect delivers a partial transfer and packets created during the partition
+ok 28 - TCP reconnect delivers a partial transfer and packets created during the partition
+  ---
+  duration_ms: 1090.661421
+  type: 'test'
+  ...
+# Subtest: turning relay off cancels queued forwarded fragments and keeps local SOS available
+ok 29 - turning relay off cancels queued forwarded fragments and keeps local SOS available
+  ---
+  duration_ms: 107.902888
+  type: 'test'
+  ...
+# Subtest: relay pause cancels queued local seeding and prevents retained offline replay
+ok 30 - relay pause cancels queued local seeding and prevents retained offline replay
+  ---
+  duration_ms: 131.679467
+  type: 'test'
+  ...
+# Subtest: real TCP fragments preempt bulk for SOS while preserving bulk fairness
+ok 31 - real TCP fragments preempt bulk for SOS while preserving bulk fairness
+  ---
+  duration_ms: 85.489535
+  type: 'test'
+  ...
+# Subtest: many in-progress SOS transfers leave admission capacity for bulk fairness
+ok 32 - many in-progress SOS transfers leave admission capacity for bulk fairness
+  ---
+  duration_ms: 48.072171
+  type: 'test'
+  ...
+# Subtest: real serialport PTY fragments preempt bulk for SOS with the same fairness
+ok 33 - real serialport PTY fragments preempt bulk for SOS with the same fairness
+  ---
+  duration_ms: 149.855184
+  type: 'test'
+  ...
+# Subtest: real TCP transfer, two-hop forwarding and relay-off negative control
+ok 34 - real TCP transfer, two-hop forwarding and relay-off negative control
+  ---
+  duration_ms: 915.039135
+  type: 'test'
+  ...
+# Subtest: validation rejection prevents display and relay; positive valid control
+ok 35 - validation rejection prevents display and relay; positive valid control
+  ---
+  duration_ms: 533.523157
+  type: 'test'
+  ...
+1..35
+# tests 35
+# suites 0
+# pass 35
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 23767.878553
