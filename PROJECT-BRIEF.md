@@ -24,6 +24,9 @@ All running installations should participate as active packet relay nodes when p
 - Original cohesive design system with polished light/dark and reduced-motion states, responsive layouts, accessibility/keyboard/screen reader testing, meaningful error/empty/loading/offline states and real screenshots. No claims of objectively 'unprecedented' quality.
 
 ## Engineering workflow
+
+- Owner extension, 2026-09-25: do not use GitHub Actions for this project. GitHub is for normal commits/pushes of tested versions only; do not publish untested WIP. Preserve the full validation and platform requirements using authorised local tools and available devices. Historical Actions results remain historical; unavailable current-platform execution must stay explicitly pending/blocked.
+
 Develop through the existing graphical ChatGPT Community/Codex workspace using Astra via copilot-bridge with harness effort Ultra. Do not silently substitute a headless coding run. Use actual automatic/multi-agent delegation if this harness supports it; persist truthful evidence of agent identities/tasks/results, not invented logs. If delegation is unavailable, document the exact limitation.
 
 Start with architecture/threat model, stack selection, feature traceability, implementation phases and a runnable vertical slice. Continue into implementation and testing; a plan, frontend mockup, fake network animation, or documentation-only delivery does not satisfy the brief. Keep durable progress/TODO and factual verification reports so long sessions can resume. Parallel agents must have isolated file ownership/worktrees and integration review.
