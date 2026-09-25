@@ -667,22 +667,53 @@ export class Router extends EventEmitter {
     };
     for (const [id, old] of this.retained)
       if (old.packet.expires <= Date.now()) this.removeRetained(id);
-    while (
-      this.retained.size >= MAX_TRANSFERS ||
-      this.retainedBytes + bytes > MAX_PENDING
-    ) {
-      const victim = [...this.retained.values()]
-        .filter((t) => rank(t.packet.priority) >= rank(packet.priority))
-        .sort(
-          (a, b) =>
-            rank(b.packet.priority) - rank(a.packet.priority) ||
-            a.packet.created - b.packet.created,
-        )[0];
+    const existing = this.retained.get(packet.id);
+    if (existing) return existing;
+    const work = (id: string) => {
+      let queued = false,
+        sending = false;
+      for (const link of this.links) {
+        if (!link.active) continue;
+        const transfer = link.pending.get(id);
+        if (!transfer) continue;
+        queued = true;
+        sending ||= !!transfer.inFlight || transfer.next > 0;
+      }
+      return { idle: !queued, sending };
+    };
+    const victims = [...this.retained.values()]
+      .map((entry) => ({ entry, ...work(entry.packet.id) }))
+      .filter(
+        ({ entry, idle, sending }) =>
+          (rank(entry.packet.priority) >= rank(packet.priority) &&
+            (packet.priority === "sos" || !sending)) ||
+          (entry.packet.priority !== "sos" && idle),
+      )
+      .sort(
+        (a, b) =>
+          // Old, idle control packets must not exclude a newly requested body
+          // forever. Active fragments keep progressing; SOS retains precedence.
+          (packet.priority === "sos" ? 0 : Number(b.idle) - Number(a.idle)) ||
+          rank(b.entry.packet.priority) - rank(a.entry.packet.priority) ||
+          a.entry.packet.created - b.entry.packet.created,
+      );
+    const drop: string[] = [];
+    let count = this.retained.size,
+      size = this.retainedBytes;
+    while (count >= MAX_TRANSFERS || size + bytes > MAX_PENDING) {
+      const victim = victims.shift()?.entry;
       if (!victim) {
         this.counters.dropped++;
         return;
       }
-      this.removeRetained(victim.packet.id);
+      drop.push(victim.packet.id);
+      count--;
+      size -= victim.bytes;
+    }
+    // Plan before mutating: a larger admission that still cannot fit around
+    // protected traffic must not destroy unrelated cached packets on failure.
+    for (const id of drop) {
+      this.removeRetained(id);
       this.counters.dropped++;
     }
     this.retained.set(packet.id, value);

@@ -1,0 +1,254 @@
+{
+  "status": "PASS",
+  "baseHead": "b9bc4f631df18da9c173af9f67134e3575a2df08",
+  "selectedPatchFiles": {
+    "packages/transport/src/index.ts": "041fefe13386c5ee6b55208f8e36bb6bc433323610bc2cc15b53cb80ac87bf4b",
+    "packages/browser/src/router.ts": "b8d9e577da8d87a54d7604d21d4030266596d33915e48bbc4174306ded7a8706",
+    "packages/browser/src/rtc.ts": "20f100073dcf760fe86f129b4fed01fb054d15a4b9e3e118fb88c02c6b7de186",
+    "native/transport/router.go": "c106e332938bc99f95436fc042361d894c1ed95a186bdc461341cf8ea9ae3427",
+    "tests/transport-retention-progress.test.ts": "500c3e099ba8a7fb41ceb17ffed7a73db0dfb21d27359164602f463568257ea4",
+    "tests/browser/retention-progress.spec.ts": "897f0c2b433f6330c3ba107b14f349532a71f9a894acfbc40c8b85fc063f71cf",
+    "tests/browser/control-ack-budget.spec.ts": "f119ee6d6045190dd4d7de805630cc73f2592c40a72d09bc33d7aa7a5e34c07e",
+    "native/transport/retention_progress_test.go": "4d08736bcb942626c340a9c635a2aaf3a16a54070e926271b0ae434a273558c9"
+  },
+  "checks": [
+    {
+      "name": "build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "exitCode": 0,
+      "seconds": 12.455,
+      "tapTotals": {},
+      "browserPasses": []
+    },
+    {
+      "name": "native-build",
+      "command": [
+        "npm",
+        "run",
+        "native:build"
+      ],
+      "exitCode": 0,
+      "seconds": 10.468,
+      "tapTotals": {},
+      "browserPasses": []
+    },
+    {
+      "name": "node-transports",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "--test-concurrency=1",
+        "tests/transport-arrival-fairness.test.ts",
+        "tests/transport-cancellation.test.ts",
+        "tests/transport-hardening.test.ts",
+        "tests/transport-retention-progress.test.ts",
+        "tests/transport-serial.test.ts",
+        "tests/transport.test.ts",
+        "tests/heterogeneous.test.ts",
+        "tests/site-heterogeneous.test.ts",
+        "tests/native/mixed-network.test.ts"
+      ],
+      "exitCode": 0,
+      "seconds": 56.711,
+      "tapTotals": {
+        "tests": 32,
+        "pass": 32,
+        "fail": 0,
+        "skipped": 0
+      },
+      "browserPasses": []
+    },
+    {
+      "name": "go-race",
+      "command": [
+        "node",
+        "scripts/go.mjs",
+        "test",
+        "-race",
+        "-p=1",
+        "-count=1",
+        "./transport",
+        "./app"
+      ],
+      "exitCode": 0,
+      "seconds": 445.321,
+      "tapTotals": {},
+      "browserPasses": []
+    },
+    {
+      "name": "reticulum",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "--test-concurrency=1",
+        "tests/reticulum/heterogeneous.test.ts",
+        "tests/reticulum/authorization.test.ts",
+        "tests/reticulum/media.test.ts"
+      ],
+      "exitCode": 0,
+      "seconds": 212.865,
+      "tapTotals": {
+        "tests": 8,
+        "pass": 8,
+        "fail": 0,
+        "skipped": 0
+      },
+      "browserPasses": []
+    },
+    {
+      "name": "browser-chromium",
+      "command": [
+        "node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/browser.config.ts",
+        "tests/browser/control-ack-budget.spec.ts",
+        "tests/browser/retention-progress.spec.ts",
+        "tests/browser/routing.spec.ts",
+        "tests/browser/relay-policy-race.spec.ts",
+        "--browser",
+        "chromium",
+        "--reporter=list",
+        "--output=.cache/transport-retention-verification/chromium-artifacts"
+      ],
+      "exitCode": 0,
+      "seconds": 26.711,
+      "tapTotals": {},
+      "browserPasses": [
+        "16"
+      ]
+    },
+    {
+      "name": "rns-ui-chromium",
+      "command": [
+        "node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/reticulum/ui.config.ts",
+        "--browser",
+        "chromium",
+        "--reporter=list",
+        "--output=.cache/transport-retention-verification/rns-chromium-artifacts"
+      ],
+      "exitCode": 0,
+      "seconds": 115.43,
+      "tapTotals": {},
+      "browserPasses": [
+        "3"
+      ]
+    },
+    {
+      "name": "browser-firefox",
+      "command": [
+        "node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/browser.config.ts",
+        "tests/browser/control-ack-budget.spec.ts",
+        "tests/browser/retention-progress.spec.ts",
+        "tests/browser/routing.spec.ts",
+        "tests/browser/relay-policy-race.spec.ts",
+        "--browser",
+        "firefox",
+        "--reporter=list",
+        "--output=.cache/transport-retention-verification/firefox-artifacts"
+      ],
+      "exitCode": 0,
+      "seconds": 39.686,
+      "tapTotals": {},
+      "browserPasses": [
+        "16"
+      ]
+    },
+    {
+      "name": "rns-ui-firefox",
+      "command": [
+        "node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/reticulum/ui.config.ts",
+        "--browser",
+        "firefox",
+        "--reporter=list",
+        "--output=.cache/transport-retention-verification/rns-firefox-artifacts"
+      ],
+      "exitCode": 0,
+      "seconds": 119.397,
+      "tapTotals": {},
+      "browserPasses": [
+        "3"
+      ]
+    },
+    {
+      "name": "browser-webkit",
+      "command": [
+        "node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/browser.config.ts",
+        "tests/browser/control-ack-budget.spec.ts",
+        "tests/browser/retention-progress.spec.ts",
+        "tests/browser/routing.spec.ts",
+        "tests/browser/relay-policy-race.spec.ts",
+        "--browser",
+        "webkit",
+        "--reporter=list",
+        "--output=.cache/transport-retention-verification/webkit-artifacts"
+      ],
+      "exitCode": 0,
+      "seconds": 35.726,
+      "tapTotals": {},
+      "browserPasses": [
+        "16"
+      ]
+    },
+    {
+      "name": "rns-ui-webkit",
+      "command": [
+        "node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/reticulum/ui.config.ts",
+        "--browser",
+        "webkit",
+        "--reporter=list",
+        "--output=.cache/transport-retention-verification/rns-webkit-artifacts"
+      ],
+      "exitCode": 0,
+      "seconds": 121.725,
+      "tapTotals": {},
+      "browserPasses": [
+        "3"
+      ]
+    }
+  ],
+  "sourceFiles": 746,
+  "scope": "Isolated transport fix on committed base, without uncommitted contribution/UI features. This is root verification, not independent review or hardware validation.",
+  "current": null,
+  "nativeBinarySHA256": "e11190299819a63929bc2db5dd2feed54e3bde46aa46e13f7b4bf0823b734ae6",
+  "changedSources": [],
+  "freeBytes": 25723310080,
+  "testLogsSHA256": {
+    "browser-webkit.log": "94b91eb499c7c61d70c90c723e75838f1e6e7ca7583427d7c0bf61b02f93e5ba",
+    "browser-chromium.log": "91f225bd44139cb7e51f93ef554d8ad6c626cf62d11eb476a14e479098f54656",
+    "go-race.log": "7ed44497db68c52171f1c050303c2be7888f788c46c73764787dd78045a8c81c",
+    "reticulum.log": "1ec3e9fc68e55730ea9c99cad398eeb2a6ca6fb62e20d8db50b6da3fdec8b95b",
+    "browser-firefox.log": "324b2205711c2141b0f0838db0dc84677425f2e80c18a02df9af7c53691143e2",
+    "node-transports.log": "6ddd98613e718cf23c2ec2f1211ef2e8f9916ce33225ea3c2bbe71ac50257acd",
+    "build.log": "5dcf118d21b85f44155496362ef55ce9b4be70cb5fd435b2abad01e0234ca3aa",
+    "rns-ui-chromium.log": "41044fb15def3705da8fb59dd5fc93c52567c47d1d15595781fdb7b901be8718",
+    "rns-ui-firefox.log": "c18342e18d778d72d82a027aef108611abe5567150b82b9201c3be35e8bca314",
+    "native-build.log": "3ac064230880f9200889d5cd559082dea8fda0269451d3792404f4f783660cee",
+    "rns-ui-webkit.log": "3aca1f1946de47dc40f7043c388eebad81158e7c8b3fdc636281b54e2a6667bc"
+  },
+  "sourcesManifestSHA256": "2acc1a4908bc3dfee5fd8809c52ebbf49f1ad75b7b3a5d815843a2238cf985b5",
+  "boundary": "Verified isolated base plus the listed transport patch. Hardware radios, OS-wide execution and independent review are not claimed."
+}

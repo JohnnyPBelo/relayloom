@@ -385,6 +385,21 @@ export class RtcMessageChannel<T> {
   }
   private async accept(frame: any): Promise<void> {
     if (
+      frame?.t === "ack" &&
+      exactShape(frame, ["t", "id"]) &&
+      address(frame.id)
+    ) {
+      const pending = this.#pending.get(frame.id);
+      if (pending) {
+        // One reply retires one of our bounded outstanding transfers. Counting
+        // these replies as unsolicited controls closes healthy busy channels.
+        // Early ACKs remain valid for a packet already stored via another path.
+        // Replays/unmatched IDs still consume the control budget below.
+        pending.finish();
+        return;
+      }
+    }
+    if (
       frame?.t === "ping" ||
       frame?.t === "pong" ||
       frame?.t === "ack" ||

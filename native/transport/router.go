@@ -335,21 +335,54 @@ func (r *Router) retainLocked(p *packet, encoded []byte, relayOnly bool) (*retai
 	if existing := r.retained[p.id]; existing != nil {
 		return existing, nil
 	}
-	for len(r.retained) >= MaxTransfers || r.retainedBytes+len(encoded) > MaxPendingBytes {
-		var victim *retained
-		for _, value := range r.retained {
-			if priorityRank(value.packet.priority) < priorityRank(p.priority) {
+	type candidate struct {
+		value *retained
+		idle  bool
+	}
+	candidates := []candidate{}
+	for _, value := range r.retained {
+		idle, sending := true, false
+		for link := range r.links {
+			if !link.active {
 				continue
 			}
-			if victim == nil || priorityRank(value.packet.priority) > priorityRank(victim.packet.priority) || (value.packet.priority == victim.packet.priority && value.sequence < victim.sequence) {
-				victim = value
+			if transfer := link.pending[value.packet.id]; transfer != nil {
+				idle = false
+				sending = sending || transfer.inFlight || transfer.next > 0
 			}
 		}
-		if victim == nil {
+		if priorityRank(value.packet.priority) >= priorityRank(p.priority) && (p.priority == SOS || !sending) || value.packet.priority != SOS && idle {
+			candidates = append(candidates, candidate{value, idle})
+		}
+	}
+	sort.Slice(candidates, func(i, j int) bool {
+		a, b := candidates[i], candidates[j]
+		if p.priority != SOS && a.idle != b.idle {
+			return a.idle
+		}
+		if a.value.packet.priority != b.value.packet.priority {
+			return priorityRank(a.value.packet.priority) > priorityRank(b.value.packet.priority)
+		}
+		return a.value.sequence < b.value.sequence
+	})
+	count, size := len(r.retained), r.retainedBytes
+	drop := []string{}
+	for count >= MaxTransfers || size+len(encoded) > MaxPendingBytes {
+		if len(candidates) == 0 {
 			r.counters.Dropped++
 			return nil, ErrCapacity
 		}
-		r.removeRetainedLocked(victim.packet.id)
+		victim := candidates[0].value
+		candidates = candidates[1:]
+		drop = append(drop, victim.packet.id)
+		count--
+		size -= len(victim.encoded)
+	}
+	// Idle non-SOS history may make room for a requested body, without
+	// preempting an ordinary transfer already sending. Plan before mutation so
+	// an impossible admission leaves the existing cache intact.
+	for _, id := range drop {
+		r.removeRetainedLocked(id)
 		r.counters.Dropped++
 	}
 	r.sequence++

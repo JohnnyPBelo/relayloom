@@ -187,14 +187,33 @@ export class BrowserRouter {
       bytes = utf8(encoded).length;
     if (bytes > ROUTER_LIMITS.maxPacket)
       throw new Error("Pacote demasiado grande");
+    for (const [id, entry] of this.#retained)
+      if (entry.packet.expires <= Date.now()) this.remove(id);
     const old = this.#retained.get(packet.id);
     if (old) return old;
+    const work = (id: string) => {
+      let queued = false,
+        sending = false;
+      for (const link of this.#links.values()) {
+        if (link.endpoint.state === "closed") continue;
+        queued ||= link.queue.has(id);
+        sending ||= link.sending.has(id);
+      }
+      return { idle: !queued && !sending, sending };
+    };
     const victims = [...this.#retained.values()]
-      .filter((p) => rank(p.packet.priority) >= rank(packet.priority))
+      .map((entry) => ({ entry, ...work(entry.packet.id) }))
+      .filter(
+        ({ entry, idle, sending }) =>
+          (rank(entry.packet.priority) >= rank(packet.priority) &&
+            (packet.priority === "sos" || !sending)) ||
+          (entry.packet.priority !== "sos" && idle),
+      )
       .sort(
         (a, b) =>
-          rank(b.packet.priority) - rank(a.packet.priority) ||
-          a.packet.created - b.packet.created,
+          (packet.priority === "sos" ? 0 : Number(b.idle) - Number(a.idle)) ||
+          rank(b.entry.packet.priority) - rank(a.entry.packet.priority) ||
+          a.entry.packet.created - b.entry.packet.created,
       );
     const drop: string[] = [];
     let count = this.#retained.size,
@@ -203,7 +222,7 @@ export class BrowserRouter {
       count >= ROUTER_LIMITS.retained ||
       size + bytes > ROUTER_LIMITS.pendingBytes
     ) {
-      const v = victims.shift();
+      const v = victims.shift()?.entry;
       if (!v) throw new Error("Fila reservada a tráfego prioritário");
       drop.push(v.packet.id);
       size -= v.bytes;
