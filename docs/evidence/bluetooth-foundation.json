@@ -1,0 +1,77 @@
+{
+  "status": "PASS",
+  "baseline": "7ef646f1817aa1d94cc3581f538c460927e68bbc",
+  "scope": "Isolated Bluetooth transport foundation; no UI/offline/public-web release in this commit",
+  "tests": {
+    "browserStreamModels": 13,
+    "linuxGatewayCore": 8,
+    "chromiumRouting": 9
+  },
+  "commands": [
+    {
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "exitCode": 0,
+      "seconds": 12.127195835113525
+    },
+    {
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "--test-concurrency=1",
+        "tests/bluetooth-stream.test.ts"
+      ],
+      "exitCode": 0,
+      "seconds": 6.018078327178955
+    },
+    {
+      "command": [
+        ".cache/reticulum/venv/bin/python",
+        "tests/bluetooth/test_gatt_relay.py",
+        "-v"
+      ],
+      "exitCode": 0,
+      "seconds": 0.14734506607055664
+    },
+    {
+      "command": [
+        "node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/browser.config.ts",
+        "tests/browser/routing.spec.ts",
+        "--browser=chromium",
+        "--reporter=line,json"
+      ],
+      "exitCode": 0,
+      "seconds": 19.41909098625183
+    }
+  ],
+  "testedSourceSHA256": {
+    "packages/browser/src/bluetooth.ts": "64642855674790d86f714e69b69d2ffc1017b9b91a3d9d99e2365c0887d4d138",
+    "packages/browser/src/bluetooth-discovery.ts": "8b9498650a74deec62002c4faaa2dd97dfd29050f61610b9e6d0ecc58c1e4aa8",
+    "packages/browser/src/bluetooth-grants.ts": "88e6cf27f08cc5872629fa4f38b8375d4b20d92e338e288ef9a381369878b763",
+    "packages/browser/src/router.ts": "adae10986b0e0aa90d67877ca777e14d491e3e737cdf018e1f7d9c8949b4469d",
+    "packages/browser/src/rtc.ts": "91f838132fc36cf05140fac8e1dc122e81d5d51ca0fbc2530b3311c3e011c378",
+    "adapters/bluetooth/gatt_relay.py": "85231fb8609630bb2478e9a23c51cc986286e486928a677cf468c5c5556f3b7e",
+    "tests/bluetooth-stream.test.ts": "d164d0583824568d6b98bac30857c6aa16a12a26d6a3279ccbc43f580a658f1f",
+    "tests/bluetooth/test_gatt_relay.py": "e9f095567366040929a81e4d13d3db7bdb06983227ee76fa7cd312be0b5ce05c",
+    "docs/BROWSER-BLUETOOTH-TRANSPORT.md": "8ef78eadc6fefb04246f30ff06d2af5eaa0076401e53052220c2096e24a7a486"
+  },
+  "documentationOnlyCorrection": "The guide now says frames/capacidades instead of ficheiros/capacidades. No executable source changed after the isolated gates. README/STATUS summary and this evidence index were added afterwards.",
+  "sameBaselineDependencyVersionsAndIntegrity": true,
+  "physicalBluetoothTransfer": false,
+  "gattModelsSimulated": true,
+  "realLoopbackTCP": true,
+  "compiledWebManifestSHA256": "c7b5df888a0661235e5d16c696af7bbe95c04df69d2940021ee1988e990f19ff",
+  "limits": [
+    "UI integration remains WIP",
+    "Physical radios/mobile/Apple execution not established",
+    "Independent review and full product remain pending"
+  ]
+}

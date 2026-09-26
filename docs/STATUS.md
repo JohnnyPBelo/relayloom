@@ -1,5 +1,7 @@
 # RelayLoom — estado verificável
 
+**26/09 — núcleo Bluetooth experimental:** canal GATT para o browser, reconexão por escolhas do perfil e gateway Linux opcional. Passaram o build, 13 testes do cliente, 8 do gateway e 9 de encaminhamento em Chromium. O GATT dos testes é simulado; o TCP é real. A integração visual deste transporte, a actualização do site público, o rádio físico, a execução noutros sistemas e a revisão independente continuam pendentes. Sem GitHub Actions. [Guia](BROWSER-BLUETOOTH-TRANSPORT.md) · [Provas](evidence/bluetooth-foundation.json).
+
 ## Marco actual — isolamento de corrupção local
 
 A correcção Node/Go foi verificada numa candidata exacta baseada em b993ea1: dois negativos reproduzidos antes e passados depois,35testeshost,Go/core/transport/webpeer/app comrace,14UI e12percursosbrowser/nativo.790hashes de fonte ficaram estáveis. [Comandos, prova e limitações](CORRUPTION-ISOLATION.md).

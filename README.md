@@ -1,6 +1,8 @@
 # RelayLoom
 
-A correcção de cópias locais corrompidas em Node/Go passou os seus gates isolados: uma falha de leitura já não impede entregar os restantes conteúdos do mesmo pedido. [Âmbito, testes e limites](docs/CORRUPTION-ISOLATION.md). A web pública usa fonte `b993ea1`, distribuição `67da3c3c`, verificada por HTTPS; as melhorias de páginas em WIP continuam separadas. O CI desta nova fonte ainda está pendente; o último CI de produto b993ea1 teve16jobs passados e falha na preparação da fotografia iOS. O produto integral permanece em implementação.
+**26/09 — núcleo Bluetooth experimental verificado:** canal GATT no encaminhador web, reconexão limitada às escolhas do perfil e gateway Linux opcional. Passaram o build, 13 testes do cliente, 8 do gateway e 9 de encaminhamento em Chromium, numa cópia isolada. A integração visual e a versão web pública não fazem parte deste marco; a transmissão por rádio e a execução noutros sistemas continuam por validar. Sem GitHub Actions: estas provas são locais. [Guia](docs/BROWSER-BLUETOOTH-TRANSPORT.md) · [Provas](docs/evidence/bluetooth-foundation.json).
+
+A correcção de cópias locais corrompidas em Node/Go passou os seus gates isolados: uma falha de leitura já não impede entregar os restantes conteúdos do mesmo pedido. [Âmbito, testes e limites](docs/CORRUPTION-ISOLATION.md). A web pública usa fonte `b993ea1`, distribuição `67da3c3c`, verificada por HTTPS; as melhorias de páginas em WIP continuam separadas. O último CI histórico de produto b993ea1 teve 16 jobs passados e falha na preparação da fotografia iOS; novos gates são locais, conforme a proibição de GitHub Actions. O produto integral permanece em implementação.
 
 Um mensageiro cifrado entre pares, uma rede social e páginas pessoais feitas com blocos declarativos. A mesma interface Liquid Glass serve as aplicações instaladas e a versão web autónoma.
 

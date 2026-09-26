@@ -9,9 +9,11 @@ import {
   type Priority,
 } from "./packet";
 import { RtcTransportPeer, RtcCapacityError } from "./rtc";
+import { BluetoothStream, type BleDevice } from "./bluetooth";
+import { RtcMessageChannel, nativeStreamFraming } from "./rtc";
 import { BrowserWebSocketPeer } from "./websocket";
 interface PacketEndpoint {
-  readonly medium: "webrtc" | "websocket";
+  readonly medium: "webrtc" | "websocket" | "bluetooth";
   readonly state: "connecting" | "open" | "closed";
   readonly sent: number;
   readonly received: number;
@@ -44,7 +46,7 @@ type Link = {
 export type BrowserRoute = {
   hops: string[];
   source: string;
-  medium: "webrtc" | "websocket";
+  medium: "webrtc" | "websocket" | "bluetooth";
   packetId: string;
 };
 export interface BrowserRouterOptions {
@@ -318,6 +320,24 @@ export class BrowserRouter {
       if (this.permitted(value)) link.queue.set(value.packet.id, value);
     return { id, peer };
   }
+  connectBluetooth(device: BleDevice) {
+    this.tick();
+    if (this.#stopped || this.#links.size >= ROUTER_LIMITS.links) throw Error("Limite de ligações");
+    const id = crypto.randomUUID(), peer = new BluetoothStream(device);
+    const channel = new RtcMessageChannel(peer, p => this.accept(p, id, "bluetooth"), packetCodec,
+      { ...nativeStreamFraming, highWater: 4096, transferMs: 600000, heartbeatMs: 30000, heartbeatBuffer: 0 });
+    const link: Link = { id, endpoint: {
+      medium: "bluetooth",
+      get state() { return channel.closed || peer.readyState === "closed" ? "closed" : peer.readyState === "open" ? "open" : "connecting"; },
+      get sent() { return channel.counters.sent; },
+      get received() { return channel.counters.received; },
+      send: (packet, allowed, priority) => channel.send(packet, allowed, priority),
+      close: () => channel.close(),
+    }, queue: new Map(), sending: new Set(), turn: 0 };
+    this.#links.set(id, link);
+    for (const value of this.#retained.values()) if (this.permitted(value)) link.queue.set(value.packet.id, value);
+    return { id, peer };
+  }
   disconnect(id: string): void {
     const link = this.#links.get(id);
     if (link) {
@@ -365,7 +385,7 @@ export class BrowserRouter {
   private accept(
     packet: Packet,
     source: string,
-    medium: "webrtc" | "websocket",
+    medium: "webrtc" | "websocket" | "bluetooth",
   ): Promise<void> {
     const size = utf8(canonical(packet)).length;
     if (

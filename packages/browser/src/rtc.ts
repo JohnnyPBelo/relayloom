@@ -62,7 +62,7 @@ export interface ReliableMessageStream extends EventTarget {
   readonly readyState: RTCDataChannelState;
   readonly bufferedAmount: number;
   bufferedAmountLowThreshold: number;
-  send(data: string): void;
+  send(data: string, allowed?: () => boolean): void;
   close(): void;
 }
 const rtcFraming = {
@@ -105,6 +105,10 @@ export class RtcMessageChannel<T> {
       fragment: number;
       frame: number;
       repeated: boolean;
+      transferMs?: number;
+      highWater?: number;
+      heartbeatMs?: number;
+      heartbeatBuffer?: number;
     } = rtcFraming,
   ) {
     if (
@@ -113,7 +117,7 @@ export class RtcMessageChannel<T> {
       channel.maxRetransmits !== null
     )
       throw new Error("É necessário um canal fiável e ordenado");
-    channel.bufferedAmountLowThreshold = 64 * 1024;
+    channel.bufferedAmountLowThreshold = (this.framing.highWater ?? 128 * 1024) / 2;
     channel.addEventListener("close", () => this.close("remote"));
     channel.addEventListener("error", () => this.close("channel-error"));
     channel.addEventListener("message", (event) => {
@@ -162,10 +166,10 @@ export class RtcMessageChannel<T> {
         channel.readyState === "open" &&
         !this.#ping &&
         now - this.#lastProbe >= 2000 &&
-        channel.bufferedAmount <= 128 * 1024
+        channel.bufferedAmount <= (this.framing.heartbeatBuffer ?? 128 * 1024)
       ) {
         const nonce = crypto.randomUUID();
-        this.#ping = { nonce, deadline: now + 5000 };
+        this.#ping = { nonce, deadline: now + (this.framing.heartbeatMs ?? 5000) };
         this.#lastProbe = now;
         void this.write({ t: "ping", nonce }).catch(() => this.close());
       }
@@ -218,7 +222,7 @@ export class RtcMessageChannel<T> {
       const timer = setTimeout(() => {
         cleanup();
         reject(new Error("Não foi possível estabelecer o caminho entre pares"));
-      }, RTC_LIMITS.transferMs);
+      }, (this.framing.transferMs ?? RTC_LIMITS.transferMs));
       this.channel.addEventListener("open", opened);
       this.channel.addEventListener("close", closed);
     });
@@ -229,7 +233,7 @@ export class RtcMessageChannel<T> {
   ): Promise<void> {
     if (!allowed() || this.#closed || this.channel.readyState !== "open")
       throw new Error("Ligação indisponível");
-    if (this.channel.bufferedAmount > 128 * 1024) {
+    if (this.channel.bufferedAmount > (this.framing.highWater ?? 128 * 1024)) {
       await new Promise<void>((resolve, reject) => {
         const cleanup = () => {
           clearTimeout(timer);
@@ -247,7 +251,7 @@ export class RtcMessageChannel<T> {
         const timer = setTimeout(() => {
           cleanup();
           reject(new Error("Ligação congestionada"));
-        }, RTC_LIMITS.transferMs);
+        }, (this.framing.transferMs ?? RTC_LIMITS.transferMs));
         this.channel.addEventListener("bufferedamountlow", low);
         this.channel.addEventListener("close", closed);
       });
@@ -257,7 +261,7 @@ export class RtcMessageChannel<T> {
     const encoded = canonical(frame);
     if (encoded.length > this.framing.frame)
       throw new Error("Fragmento demasiado grande");
-    this.channel.send(encoded);
+    this.channel.send(encoded, allowed);
     this.counters.sent += utf8(encoded).length;
   }
   /** Resolves after peer acceptance; callers still need signed application receipts. */
@@ -305,7 +309,7 @@ export class RtcMessageChannel<T> {
       const timer = setTimeout(() => {
         finish(new Error("Confirmação de armazenamento em falta"));
         this.close("receipt-timeout");
-      }, RTC_LIMITS.transferMs);
+      }, (this.framing.transferMs ?? RTC_LIMITS.transferMs));
       finish = (error) => {
         if (settled) return;
         settled = true;
@@ -478,7 +482,7 @@ export class RtcMessageChannel<T> {
         count: frame.count,
         next: 0,
         bytes: 0,
-        deadline: Date.now() + RTC_LIMITS.transferMs,
+        deadline: Date.now() + (this.framing.transferMs ?? RTC_LIMITS.transferMs),
       };
       this.#assemblies.set(frame.id, a);
     }
@@ -527,7 +531,7 @@ export class RtcMessageChannel<T> {
     if (this.#closed) return;
     if (this.framing.repeated) {
       const now = Date.now(),
-        expires = this.codec.expires?.(bundle) ?? now + RTC_LIMITS.transferMs;
+        expires = this.codec.expires?.(bundle) ?? now + (this.framing.transferMs ?? RTC_LIMITS.transferMs);
       if (Number.isSafeInteger(expires) && expires > now) {
         if (this.#completed.size >= 4096)
           this.#completed.delete(this.#completed.keys().next().value!);
