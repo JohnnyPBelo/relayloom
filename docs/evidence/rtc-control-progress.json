@@ -1,0 +1,173 @@
+{
+  "state": "ISOLATED_CANDIDATE_PASS",
+  "base": "1efe643306fb8153f4d0c990397285a2c050884c",
+  "platform": "Linux amd64; Chromium, Firefox and WebKit on Linux",
+  "node": "v22.22.3",
+  "go": "go1.26.8 linux/amd64",
+  "sourceInputs": 753,
+  "inputManifestSha256": "e13b2b2a28bf61c73fb114d7b766a7337278d7f3f23e70843c1205a0108405ad",
+  "selectedFiles": {
+    "packages/browser/src/crypto.ts": "e6a428ff99674538ae7a594e627baa289ff8990a91ec1a0de959e010a0a3ff2c",
+    "packages/browser/src/rtc.ts": "2f78539d079e912d7f7dc005ebea67ef72acc2fba78eabd337dc1f3620c1faef",
+    "tests/browser/rtc-control-harness.ts": "019170aebe852891075858a11dcb4b2b3f0ac23502f0e5e0b1247a4d8a341110",
+    "tests/browser/rtc-control-host.ts": "4602fb07ed2195fd0152b5aa13b8c9aa49082dbf5c39b7dacdc86802e2a4c8cb",
+    "tests/browser/rtc-control-progress.spec.ts": "1ec9cb2dc875850c9e5ec0c804cfa1c8539c7cf4084aa0072416f4dfbee1605d",
+    "tests/browser/crypto-decoding.spec.ts": "fe8a05d6b262d7a766daf8161d414d94c87c6d2a5ad0609f181fd95c76c360d3"
+  },
+  "installedLockedPackagesChecked": 463,
+  "versionMismatches": [],
+  "tests": [
+    {
+      "name": "isolated-build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "result": "PASS",
+      "seconds": 19.7167546749115,
+      "stableInputs": true,
+      "stats": null
+    },
+    {
+      "name": "isolated-controls-chromium",
+      "command": [
+        "node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/browser.config.ts",
+        "tests/browser/rtc-control-progress.spec.ts",
+        "tests/browser/crypto-decoding.spec.ts",
+        "--browser=chromium",
+        "--reporter=line,json",
+        "--output=/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/rtc-control-candidate/docs/evidence/rtc-progress/isolated-controls-chromium/artifacts"
+      ],
+      "result": "PASS",
+      "seconds": 13.25518274307251,
+      "stableInputs": true,
+      "stats": {
+        "startTime": "2026-09-26T22:21:18.465Z",
+        "duration": 12491.613,
+        "expected": 6,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "name": "isolated-controls-firefox",
+      "command": [
+        "node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/browser.config.ts",
+        "tests/browser/rtc-control-progress.spec.ts",
+        "tests/browser/crypto-decoding.spec.ts",
+        "--browser=firefox",
+        "--reporter=line,json",
+        "--output=/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/rtc-control-candidate/docs/evidence/rtc-progress/isolated-controls-firefox/artifacts"
+      ],
+      "result": "PASS",
+      "seconds": 16.946431875228882,
+      "stableInputs": true,
+      "stats": {
+        "startTime": "2026-09-26T22:21:31.784Z",
+        "duration": 16234.081,
+        "expected": 6,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "name": "isolated-controls-webkit",
+      "command": [
+        "node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/browser.config.ts",
+        "tests/browser/rtc-control-progress.spec.ts",
+        "tests/browser/crypto-decoding.spec.ts",
+        "--browser=webkit",
+        "--reporter=line,json",
+        "--output=/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/rtc-control-candidate/docs/evidence/rtc-progress/isolated-controls-webkit/artifacts"
+      ],
+      "result": "PASS",
+      "seconds": 13.91389799118042,
+      "stableInputs": true,
+      "stats": {
+        "startTime": "2026-09-26T22:21:48.781Z",
+        "duration": 13269.498,
+        "expected": 6,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "name": "isolated-interop-routing",
+      "command": [
+        "node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/browser.config.ts",
+        "tests/browser/foundation.spec.ts",
+        "tests/browser/routing.spec.ts",
+        "--browser=chromium",
+        "--reporter=line,json",
+        "--output=/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/rtc-control-candidate/docs/evidence/rtc-progress/isolated-interop-routing/artifacts"
+      ],
+      "result": "PASS",
+      "seconds": 39.448357582092285,
+      "stableInputs": true,
+      "stats": {
+        "startTime": "2026-09-26T22:22:02.864Z",
+        "duration": 38807.028000000006,
+        "expected": 16,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "name": "isolated-ui",
+      "command": [
+        "node",
+        "scripts/e2e.mjs",
+        "--config",
+        "tests/browser/browser.config.ts",
+        "tests/browser/application.spec.ts",
+        "--browser=chromium",
+        "--reporter=line,json",
+        "--output=/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/rtc-control-candidate/docs/evidence/rtc-progress/isolated-ui/artifacts",
+        "--grep",
+        "owns identity|cached application code"
+      ],
+      "result": "PASS",
+      "seconds": 17.080760717391968,
+      "stableInputs": true,
+      "stats": {
+        "startTime": "2026-09-26T22:22:42.438Z",
+        "duration": 16399.476,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    }
+  ],
+  "axe": {
+    "reports": 4,
+    "violations": 0
+  },
+  "limits": {
+    "physicalBluetooth": false,
+    "iphone": false,
+    "allOS": false,
+    "independentReview": false,
+    "fullProduct": false,
+    "dynamicGroupUI": false,
+    "automaticOfflineGUIIncluded": false
+  },
+  "scope": "Only RTC control progress, canonical base64 decoding and dedicated regression tests. The large integration worktree is not this candidate. No timeout increase, crypto bypass, provider/bridge/configuration change or GitHub Actions."
+}

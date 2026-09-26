@@ -8,6 +8,8 @@ export const RTC_LIMITS = Object.freeze({
   bundle: 6 * 1024 * 1024,
   pending: 16 * 1024 * 1024,
   transfers: 8,
+  controlFrame: 256,
+  controlPending: 64,
   transferMs: 15_000,
   signalBytes: 64_000,
 });
@@ -84,6 +86,7 @@ export class RtcMessageChannel<T> {
   #pendingBytes = 0;
   #assemblyBytes = 0;
   #queuedBytes = 0;
+  #controlPending = 0;
   #chain = Promise.resolve();
   #closed = false;
   closeReason?: RtcCloseReason;
@@ -117,16 +120,58 @@ export class RtcMessageChannel<T> {
       channel.maxRetransmits !== null
     )
       throw new Error("É necessário um canal fiável e ordenado");
-    channel.bufferedAmountLowThreshold = (this.framing.highWater ?? 128 * 1024) / 2;
+    channel.bufferedAmountLowThreshold =
+      (this.framing.highWater ?? 128 * 1024) / 2;
     channel.addEventListener("close", () => this.close("remote"));
     channel.addEventListener("error", () => this.close("channel-error"));
     channel.addEventListener("message", (event) => {
       const frame = (event as MessageEvent).data;
-      if (
-        typeof frame !== "string" ||
-        frame.length > this.framing.frame ||
-        this.#queuedBytes + frame.length > RTC_LIMITS.pending
-      ) {
+      if (typeof frame !== "string" || frame.length > this.framing.frame) {
+        this.counters.rejected++;
+        this.close("invalid-frame");
+        return;
+      }
+      // Presence and transfer replies must not wait behind an application
+      // transaction. They still pass the exact-shape/rate checks in accept().
+      // Data and drop frames retain their ordered queue and durable ACK boundary.
+      if (frame.length <= RTC_LIMITS.controlFrame) {
+        let control: any;
+        try {
+          control = JSON.parse(frame);
+        } catch {
+          /* Normal parser rejects it below. */
+        }
+        if (["ack", "ping", "pong"].includes(control?.t)) {
+          if (this.#closed) return;
+          if (
+            control.t === "ack" &&
+            exactShape(control, ["t", "id"]) &&
+            address(control.id)
+          ) {
+            const pending = this.#pending.get(control.id);
+            if (pending) {
+              pending.finish();
+              return;
+            }
+          }
+          if (this.#controlPending >= RTC_LIMITS.controlPending) {
+            this.counters.rejected++;
+            this.close("invalid-frame");
+            return;
+          }
+          this.#controlPending++;
+          void this.accept(control)
+            .catch(() => {
+              this.counters.rejected++;
+              this.close("invalid-frame");
+            })
+            .finally(() => {
+              this.#controlPending--;
+            });
+          return;
+        }
+      }
+      if (this.#queuedBytes + frame.length > RTC_LIMITS.pending) {
         this.counters.rejected++;
         this.close("invalid-frame");
         return;
@@ -169,7 +214,10 @@ export class RtcMessageChannel<T> {
         channel.bufferedAmount <= (this.framing.heartbeatBuffer ?? 128 * 1024)
       ) {
         const nonce = crypto.randomUUID();
-        this.#ping = { nonce, deadline: now + (this.framing.heartbeatMs ?? 5000) };
+        this.#ping = {
+          nonce,
+          deadline: now + (this.framing.heartbeatMs ?? 5000),
+        };
         this.#lastProbe = now;
         void this.write({ t: "ping", nonce }).catch(() => this.close());
       }
@@ -183,6 +231,7 @@ export class RtcMessageChannel<T> {
       outgoingBytes: this.#pendingBytes,
       incomingBytes: this.#assemblyBytes,
       queuedBytes: this.#queuedBytes,
+      controlPending: this.#controlPending,
       outgoing: this.#pending.size,
       incoming: this.#assemblies.size,
       completed: this.#completed.size,
@@ -222,7 +271,7 @@ export class RtcMessageChannel<T> {
       const timer = setTimeout(() => {
         cleanup();
         reject(new Error("Não foi possível estabelecer o caminho entre pares"));
-      }, (this.framing.transferMs ?? RTC_LIMITS.transferMs));
+      }, this.framing.transferMs ?? RTC_LIMITS.transferMs);
       this.channel.addEventListener("open", opened);
       this.channel.addEventListener("close", closed);
     });
@@ -251,7 +300,7 @@ export class RtcMessageChannel<T> {
         const timer = setTimeout(() => {
           cleanup();
           reject(new Error("Ligação congestionada"));
-        }, (this.framing.transferMs ?? RTC_LIMITS.transferMs));
+        }, this.framing.transferMs ?? RTC_LIMITS.transferMs);
         this.channel.addEventListener("bufferedamountlow", low);
         this.channel.addEventListener("close", closed);
       });
@@ -309,7 +358,7 @@ export class RtcMessageChannel<T> {
       const timer = setTimeout(() => {
         finish(new Error("Confirmação de armazenamento em falta"));
         this.close("receipt-timeout");
-      }, (this.framing.transferMs ?? RTC_LIMITS.transferMs));
+      }, this.framing.transferMs ?? RTC_LIMITS.transferMs);
       finish = (error) => {
         if (settled) return;
         settled = true;
@@ -482,7 +531,8 @@ export class RtcMessageChannel<T> {
         count: frame.count,
         next: 0,
         bytes: 0,
-        deadline: Date.now() + (this.framing.transferMs ?? RTC_LIMITS.transferMs),
+        deadline:
+          Date.now() + (this.framing.transferMs ?? RTC_LIMITS.transferMs),
       };
       this.#assemblies.set(frame.id, a);
     }
@@ -531,7 +581,9 @@ export class RtcMessageChannel<T> {
     if (this.#closed) return;
     if (this.framing.repeated) {
       const now = Date.now(),
-        expires = this.codec.expires?.(bundle) ?? now + (this.framing.transferMs ?? RTC_LIMITS.transferMs);
+        expires =
+          this.codec.expires?.(bundle) ??
+          now + (this.framing.transferMs ?? RTC_LIMITS.transferMs);
       if (Number.isSafeInteger(expires) && expires > now) {
         if (this.#completed.size >= 4096)
           this.#completed.delete(this.#completed.keys().next().value!);

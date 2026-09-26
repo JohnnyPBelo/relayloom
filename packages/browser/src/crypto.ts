@@ -42,7 +42,12 @@ export function un64(
     !/^[A-Za-z0-9+/]*={0,2}$/.test(s)
   )
     throw new Error("Codificação inválida");
-  const bytes = Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+  // Preallocate instead of materialising a string iterator and mapped array for
+  // every byte. Authenticated profile pages can contain several MiB; the latter
+  // blocks receipt processing while decoding the protected authority reserve.
+  const decoded = atob(s),
+    bytes = new Uint8Array(decoded.length);
+  for (let i = 0; i < decoded.length; i++) bytes[i] = decoded.charCodeAt(i);
   if (b64(bytes) !== s) throw new Error("Codificação não canónica");
   return bytes;
 }
