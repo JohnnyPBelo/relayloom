@@ -1,0 +1,76 @@
+{
+  "scope": "Shared Node group-content observation policy; browser application integration remains separate WIP",
+  "base": "90e98a9bf8ea8e935fdb1665ee43626d19bf5272",
+  "sourceFiles": {
+    "apps/node/src/group-content.ts": "ae2cdddd7839be2ab2b2605ba006c9b325ed3cb29bc1102cf4ef57ba9df29576",
+    "packages/groups/src/content-model.ts": "ebd5c952f3a47d845236a45f87e899562505dd3575402dbc7373c197ff0ccd07"
+  },
+  "sourceInputs": 749,
+  "dependencyLockSHA256": "b7e14f1f5b3a754ae5bca349f2abb9dc3e4e82c75f81e4e46050d4536c72ccd8",
+  "requiredDependencyVersionsMatch": true,
+  "platform": "Linux",
+  "architecture": "x86_64",
+  "node": "v22.22.3",
+  "nodeCases": 34,
+  "UICases": 2,
+  "axeAudits": 4,
+  "axeViolations": 0,
+  "executions": {
+    "candidate-build": {
+      "status": "PASS",
+      "exitCode": 0,
+      "seconds": 13.362349510192871,
+      "stableInputs": true,
+      "commandTemplate": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "executionRecordSHA256": "3db318d83244b110bbbc41e2d25033811149c90d45f54798c6e8b7ca84f7fbf3",
+      "testLogSHA256": "1cb0775a4fa9f07ec5db7f8ffd6d662bac3ba19d207390ee47c1ae833ebbe6a4"
+    },
+    "candidate-node": {
+      "status": "PASS",
+      "exitCode": 0,
+      "seconds": 124.2341103553772,
+      "stableInputs": true,
+      "commandTemplate": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "--test-concurrency=1",
+        "tests/group-confirmations.test.ts",
+        "tests/group-confirmation-failures.test.ts",
+        "tests/group-events.test.ts",
+        "tests/group-event-failures.test.ts",
+        "tests/group-event-seeding.test.ts",
+        "tests/group-outbox.test.ts"
+      ],
+      "executionRecordSHA256": "e2b36a513dbd191c8c3b26cdefce85cacee07be91dd47d2c35690c4b1a10566a",
+      "testLogSHA256": "0fcc3fbcae0979d9fedf7938e29c842c856a98dc798f9ff7bb68201ea29347d1"
+    },
+    "candidate-ui": {
+      "status": "PASS",
+      "exitCode": 0,
+      "seconds": 20.33298110961914,
+      "stableInputs": true,
+      "commandTemplate": [
+        "node",
+        "scripts/e2e.mjs",
+        "tests/e2e/dynamic-groups.spec.ts",
+        "--browser=chromium",
+        "--reporter=line,json",
+        "--output=$PROJECT_LOCAL_EVIDENCE/artifacts"
+      ],
+      "executionRecordSHA256": "fd2ce45fe548463facf27cca3daee5b79b9a9eb15bc3aaf2bcb85b9bc53db07d",
+      "testLogSHA256": "38c5e146e29b9eb6079a5f755b3a8381c31232c949b7f973caa10b3f34cccc61"
+    }
+  },
+  "limitations": [
+    "Experimental project; no completion or disaster-readiness claim",
+    "No browser group UI activation in this milestone",
+    "No physical radio/mobile or independent review result",
+    "No GitHub Actions used"
+  ]
+}

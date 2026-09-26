@@ -22,7 +22,7 @@ import {
 } from "../../../packages/groups/src/access.js";
 import type { Content, DisplayObject } from "./node.js";
 import type { PrivateState } from "./local-state.js";
-import { applyConfirmations } from "./outbox.js";
+import { observeGroupContent } from "../../../packages/groups/src/content-model.js";
 import { validateContent } from "./content-validation.js";
 
 export interface GroupObservationResult {
@@ -148,74 +148,14 @@ export function observeGroupObject(
     if (readProfileState(tx)?.digest !== privateDigest)
       throw new Error("O estado privado mudou antes da admissão");
     return GroupLedger.run(tx, identity, (ledger) => {
-      const previousAdmission = ledger.accepted(id);
-      if (previousAdmission && previousAdmission.expires !== object.expires)
-        throw new Error("A expiração da admissão não corresponde ao conteúdo");
-      const { decision } = ledger.consider(
-        {
-          id: object.id,
-          kind: object.kind,
-          author: object.author,
-          readers: object.readers,
-          public: object.public,
-          content: object.content,
-        },
-        object.expires,
+      const { decision, changed, held } = observeGroupContent(
+        ledger,
+        object,
         bytes,
+        next,
         protectedIds,
         now,
       );
-      let changed = false;
-      if (decision.status === "accepted") {
-        if (object.kind === "edit" || object.kind === "delete") {
-          const target = ledger.accepted(object.content.target as string);
-          if (!target || target.context.author !== object.author.id)
-            throw new Error("Alvo de alteração sem contexto autenticado");
-          const previous = next.mutations[target.context.id];
-          if (previous && previous.author !== target.context.author)
-            throw new Error("Autoria do histórico de alterações não coincide");
-          if (
-            !previous ||
-            object.created > previous.created ||
-            (object.created === previous.created &&
-              object.id > previous.eventId) ||
-            (object.kind === "delete" && !previous.deleted)
-          ) {
-            next.mutations[target.context.id] = {
-              author: target.context.author,
-              expires: target.expires,
-              created: object.created,
-              eventId: object.id,
-              ...(previous?.deleted || object.kind === "delete"
-                ? { deleted: true }
-                : { text: object.content.text ?? "" }),
-            };
-            changed = true;
-          }
-        }
-        if (next.outbox && ["delivery", "receipt"].includes(object.kind)) {
-          const target = ledger.accepted(object.content.target as string);
-          const entry = Object.values(next.outbox).find(
-            (entry) => entry.id === object.content.target,
-          );
-          if (
-            entry &&
-            (!target ||
-              entry.author !== target.context.author ||
-              entry.conversation !== target.context.groupId ||
-              entry.expires !== target.expires ||
-              entry.groupEpoch !== target.context.epochId ||
-              canonical(
-                [entry.author, ...Object.keys(entry.confirmations)].sort(),
-              ) !== canonical(target.context.readers))
-          )
-            throw new Error(
-              "A confirmação não corresponde à intenção de grupo retida",
-            );
-          changed = applyConfirmations(next.outbox, [object], now) || changed;
-        }
-      }
-      const held = ledger.held().filter((entry) => entry.expires > now);
       const desired = [
         ...groupOutboxReservations(next.outbox, now).filter(
           (id) => available.has(id) && store.has(id),
