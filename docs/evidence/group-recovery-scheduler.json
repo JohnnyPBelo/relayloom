@@ -1,0 +1,59 @@
+{
+  "status": "ISOLATED_SCHEDULER_COMPONENT_PASS",
+  "base": "b38c82992694dfe92bda4ecd13dd769022c6b476",
+  "node": "v22.22.3",
+  "scope": "Bounded local work scheduler and seven deterministic models; no application/UI/radio integration in this milestone",
+  "newDependencies": false,
+  "commands": [
+    {
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "exitCode": 0,
+      "seconds": 16.239739179611206
+    },
+    {
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "tests/browser-group-recovery.test.ts"
+      ],
+      "exitCode": 0,
+      "seconds": 0.22459912300109863
+    }
+  ],
+  "inputCount": 755,
+  "stableInputs": true,
+  "inputManifestSHA256": "c73a992c44ef97ba18e60a46e8a11723feaaead1d8aa03e77b30c3522160cf27",
+  "sourceSHA256": {
+    "packages/browser/src/group-recovery.ts": "b179fa2b251fdbc3939ef47ae8d47290564dc89a204da8f290c7ad78aae6e623",
+    "tests/browser-group-recovery.test.ts": "5a75928e37dc0db9d4814b0de08652bc255890661a48626a5f91b51693409491"
+  },
+  "dependencyLockSHA256": "b7e14f1f5b3a754ae5bca349f2abb9dc3e4e82c75f81e4e46050d4536c72ccd8",
+  "tests": {
+    "passed": 7,
+    "failed": 0,
+    "virtualClock": true,
+    "browserOrPhysicalDeviceExecution": false
+  },
+  "controls": [
+    "Coalesced wakeups, one operation at a time and fair progress past failing items",
+    "Closing a session cancels a delayed scan",
+    "Excessive/duplicate work lists fail before recovery callbacks",
+    "Failed scans cannot reuse previous work until a complete fresh scan",
+    "Descriptors are copied and pending work rechecks changed authority",
+    "An empty completed scan is not repeated for control-only revisions; durable input wakes it",
+    "New-input wake during an unfinished empty scan is preserved"
+  ],
+  "limitations": [
+    "The host must enforce fresh bytes, authority and session guards in each recover callback",
+    "The host must wake the scheduler after committing new input and create a new instance per unlocked session",
+    "This component does not implement encryption, transport, persisted payloads or user interface by itself",
+    "Application integration and complete product acceptance remain separate WIP; no iPhone/physical-radio/all-OS readiness claim",
+    "No GitHub Actions were used"
+  ]
+}
