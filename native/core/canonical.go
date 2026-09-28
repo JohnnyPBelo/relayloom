@@ -472,6 +472,25 @@ func (p *jsonParser) text() (string, error) {
 	p.at++
 	var b bytes.Buffer
 	for p.at < len(p.data) {
+		// Copy unescaped ASCII runs together. Long attachment strings still
+		// pass every byte check; Unicode, escapes and controls use the path
+		// below. Keep the scan cursor local instead of mutating parser state
+		// and growing the buffer for every byte.
+		begin, end := p.at, p.at
+		for end < len(p.data) {
+			c := p.data[end]
+			if c < 32 || c >= utf8.RuneSelf || c == '"' || c == '\\' {
+				break
+			}
+			end++
+		}
+		if end > begin {
+			b.Write(p.data[begin:end])
+			p.at = end
+			if p.at == len(p.data) {
+				break
+			}
+		}
 		c := p.data[p.at]
 		p.at++
 		if c == '"' {

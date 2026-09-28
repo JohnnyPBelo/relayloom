@@ -1,0 +1,26 @@
+{
+  "command": [
+    "node",
+    ".cache/json-parser-isolated-20260928/scripts/go.mjs",
+    "test",
+    "-race",
+    "-p=1",
+    "-count=1",
+    "-v",
+    "-bench",
+    "^BenchmarkDecodeLargeJSONText$",
+    "-benchtime=3x",
+    "-benchmem",
+    "./core"
+  ],
+  "cwd": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/release-candidate-20260928",
+  "started": 1790570728.1023293,
+  "status": "FAIL",
+  "head": "79570fd38811e419bcbeac939e6fed81a0437177",
+  "npmCacheDirectory": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/release-candidate-20260928/.cache/npm",
+  "temporaryDirectory": "/home/absint0o/projects/relayloom/.cache/site-optional-resources/.cache/release-candidate-20260928/.cache/tmp",
+  "exitCode": 1,
+  "seconds": 9.125750541687012,
+  "inputs": 1090,
+  "stableInputs": true
+}

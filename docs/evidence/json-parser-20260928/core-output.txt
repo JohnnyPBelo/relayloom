@@ -1,0 +1,73 @@
+=== RUN   TestCanonicalStringRunCompatibility
+--- PASS: TestCanonicalStringRunCompatibility (0.02s)
+=== RUN   TestCanonicalFinalByteBudget
+--- PASS: TestCanonicalFinalByteBudget (1.28s)
+=== RUN   TestCanonicalNodeRunVectorsWorker
+    canonical_fastpath_test.go:111: parent-owned Node oracle fixture
+--- SKIP: TestCanonicalNodeRunVectorsWorker (0.00s)
+=== RUN   TestCanonicalJavaScriptVectors
+--- PASS: TestCanonicalJavaScriptVectors (0.00s)
+=== RUN   TestParserBoundsAndMalformedData
+--- PASS: TestParserBoundsAndMalformedData (0.00s)
+=== RUN   TestIdentityAuthorityAndVaultRecovery
+--- PASS: TestIdentityAuthorityAndVaultRecovery (1.72s)
+=== RUN   TestBundleReaderDoesNotBecomeAuthor
+--- PASS: TestBundleReaderDoesNotBecomeAuthor (0.02s)
+=== RUN   TestManifestBoundsExpiryAndKeySeparation
+--- PASS: TestManifestBoundsExpiryAndKeySeparation (0.04s)
+=== RUN   TestStoreRestartDedupCountPinsAndDiskVerification
+--- PASS: TestStoreRestartDedupCountPinsAndDiskVerification (0.34s)
+=== RUN   TestStoreMetadataReadDoesNotTouchLRU
+--- PASS: TestStoreMetadataReadDoesNotTouchLRU (0.07s)
+=== RUN   TestQuotaRejectionPreservesObjectsAndMalformedIndexFailsSafely
+--- PASS: TestQuotaRejectionPreservesObjectsAndMalformedIndexFailsSafely (0.59s)
+=== RUN   TestPasswordUnpairedSurrogatesMatchNodeUTF8
+--- PASS: TestPasswordUnpairedSurrogatesMatchNodeUTF8 (1.11s)
+=== RUN   TestStructuralParserBudget
+--- PASS: TestStructuralParserBudget (0.06s)
+=== RUN   TestStoredFingerprintChecksBytesDespiteRestoredTimestamp
+--- PASS: TestStoredFingerprintChecksBytesDespiteRestoredTimestamp (0.03s)
+=== RUN   TestFixedEnvelopeInteropWorker
+    fixed_envelope_test.go:12: parent-owned envelope fixture
+--- SKIP: TestFixedEnvelopeInteropWorker (0.00s)
+=== RUN   TestJSONTextRunsPreserveEscapesAndUnicode
+=== RUN   TestJSONTextRunsPreserveEscapesAndUnicode/ascii
+=== RUN   TestJSONTextRunsPreserveEscapesAndUnicode/escapes
+=== RUN   TestJSONTextRunsPreserveEscapesAndUnicode/unicode
+=== RUN   TestJSONTextRunsPreserveEscapesAndUnicode/surrogates
+--- PASS: TestJSONTextRunsPreserveEscapesAndUnicode (0.01s)
+    --- PASS: TestJSONTextRunsPreserveEscapesAndUnicode/ascii (0.00s)
+    --- PASS: TestJSONTextRunsPreserveEscapesAndUnicode/escapes (0.00s)
+    --- PASS: TestJSONTextRunsPreserveEscapesAndUnicode/unicode (0.00s)
+    --- PASS: TestJSONTextRunsPreserveEscapesAndUnicode/surrogates (0.00s)
+=== RUN   TestJSONTextRunsDoNotHideInvalidBytes
+--- PASS: TestJSONTextRunsDoNotHideInvalidBytes (0.06s)
+=== RUN   TestReservationsSurviveRestartAndPressureWithoutChangingPins
+--- PASS: TestReservationsSurviveRestartAndPressureWithoutChangingPins (0.09s)
+=== RUN   TestReservationByteQuotaRefusalIsAtomic
+--- PASS: TestReservationByteQuotaRefusalIsAtomic (0.34s)
+=== RUN   TestReservationDoesNotExtendSignedExpiry
+--- PASS: TestReservationDoesNotExtendSignedExpiry (1.14s)
+=== RUN   TestReservationCorruptionCannotReleaseExistingProtection
+--- PASS: TestReservationCorruptionCannotReleaseExistingProtection (0.06s)
+=== RUN   TestReservationWriteFailureProtectsUnionUntilReconciliation
+--- PASS: TestReservationWriteFailureProtectsUnionUntilReconciliation (0.08s)
+=== RUN   TestReservationDuplicateAtCountLimitAndMalformedIndex
+--- PASS: TestReservationDuplicateAtCountLimitAndMalformedIndex (0.04s)
+=== RUN   TestContentReservationProcessFixture
+    reservations_worker_test.go:12: driven by the real Node/Go reservation process test
+--- SKIP: TestContentReservationProcessFixture (0.00s)
+=== RUN   TestIdentityRejectsSmallOrderSigningKey
+--- PASS: TestIdentityRejectsSmallOrderSigningKey (0.00s)
+=== RUN   TestSigningKeyProfileReferenceVectors
+--- PASS: TestSigningKeyProfileReferenceVectors (0.05s)
+=== RUN   TestHistoricalReadDoesNotPrimeLiveCache
+--- PASS: TestHistoricalReadDoesNotPrimeLiveCache (0.05s)
+goos: linux
+goarch: amd64
+pkg: github.com/JohnnyPBelo/relayloom/native/core
+cpu: AMD RYZEN AI MAX+ 395 w/ Radeon 8060S
+BenchmarkDecodeLargeJSONText
+BenchmarkDecodeLargeJSONText-32    	       3	  19309082 ns/op	  54.38 MB/s	 3170810 B/op	       8 allocs/op
+PASS
+ok  	github.com/JohnnyPBelo/relayloom/native/core	8.377s
